@@ -1,6 +1,6 @@
 package content.region.asgarnia.dialogue.burthope
 
-import core.api.openNpcShop
+import core.api.interaction.openNpcShop
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
 import core.game.node.entity.npc.NPC
