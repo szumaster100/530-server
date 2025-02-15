@@ -12,10 +12,23 @@ import core.game.node.item.Item
 import core.tools.RandomFunction
 import org.rs.consts.Items
 
+/**
+ * Represents a table of items with assigned weights that can be rolled
+ * to generate a random selection of items based on their weight.
+ * Items are inserted into the table and can be rolled multiple times,
+ * with guaranteed items included in every roll.
+ */
 open class WeightBasedTable : ArrayList<WeightedItem>() {
-    var totalWeight = 0.0
-    val guaranteedItems = ArrayList<WeightedItem>()
+    var totalWeight = 0.0 // Total weight of all non-guaranteed items
+    val guaranteedItems = ArrayList<WeightedItem>() // List of guaranteed items
 
+    /**
+     * Adds an item to the table. Guaranteed items are added to the `guaranteedItems` list.
+     * Non-guaranteed items are added with their weight affecting the total weight.
+     *
+     * @param element The [WeightedItem] to add.
+     * @return True if the item was successfully added, false otherwise.
+     */
     override fun add(element: WeightedItem): Boolean {
         return if (element.guaranteed) {
             guaranteedItems.add(element)
@@ -32,10 +45,25 @@ open class WeightBasedTable : ArrayList<WeightedItem>() {
         }
     }
 
+    /**
+     * Rolls the table once to generate a list of items.
+     * Includes any guaranteed items in the roll.
+     *
+     * @param receiver The entity that will receive the items. Default is null.
+     * @return A list of items rolled.
+     */
     open fun roll(receiver: Entity? = null): ArrayList<Item> {
         return roll(receiver, 1)
     }
 
+    /**
+     * Rolls the table multiple times to generate a list of items.
+     * Includes any guaranteed items in each roll.
+     *
+     * @param receiver The entity that will receive the items. Default is null.
+     * @param times The number of times to roll.
+     * @return A list of items rolled.
+     */
     open fun roll(receiver: Entity? = null, times: Int = 1): ArrayList<Item> {
         val items = ArrayList<WeightedItem>((guaranteedItems.size + 1) * times)
 
@@ -59,6 +87,13 @@ open class WeightBasedTable : ArrayList<WeightedItem>() {
         return convertWeightedItems(items, receiver)
     }
 
+    /**
+     * Converts the rolled weighted items into actual items.
+     *
+     * @param weightedItems The list of weighted items.
+     * @param receiver The entity that will receive the items.
+     * @return A list of items corresponding to the weighted items.
+     */
     fun convertWeightedItems(weightedItems: ArrayList<WeightedItem>, receiver: Entity?): ArrayList<Item> {
         val safeItems = ArrayList<Item>()
         for (e in weightedItems) {
@@ -101,6 +136,12 @@ open class WeightBasedTable : ArrayList<WeightedItem>() {
         return safeItems
     }
 
+    /**
+     * Handles herb drop based on the equipment of the player.
+     *
+     * @param receiver The entity (player) that is receiving the item.
+     * @return The herb item to be dropped.
+     */
     private fun handleHerbDrop(receiver: Entity?): Item? {
         return if (receiver is Player && RandomFunction.nextBool()) {
             when {
@@ -108,18 +149,22 @@ open class WeightBasedTable : ArrayList<WeightedItem>() {
                     FOGGlovesListener.updateCharges(receiver)
                     Item(Items.GRIMY_IRIT_209)
                 }
+
                 inEquipment(receiver, Items.AVANTOE_GLOVES_12857) -> {
                     FOGGlovesListener.updateCharges(receiver)
                     Item(Items.GRIMY_AVANTOE_211)
                 }
+
                 inEquipment(receiver, Items.KWUARM_GLOVES_12858) -> {
                     FOGGlovesListener.updateCharges(receiver)
                     Item(Items.GRIMY_KWUARM_213)
                 }
+
                 inEquipment(receiver, Items.CADANTINE_GLOVES_12859) -> {
                     FOGGlovesListener.updateCharges(receiver)
                     Item(Items.GRIMY_CADANTINE_215)
                 }
+
                 else -> HerbDropTable.retrieve(receiver)
             }
         } else {
@@ -127,22 +172,27 @@ open class WeightBasedTable : ArrayList<WeightedItem>() {
         }
     }
 
+    /**
+     * Checks if the player can roll the table based on their inventory space.
+     *
+     * @param player The player attempting to roll the table.
+     * @return True if the player has space for the guaranteed items, otherwise false.
+     */
     open fun canRoll(player: Player): Boolean {
         val guaranteed = guaranteedItems.map { it.getItem() }.toTypedArray()
         return (guaranteed.isNotEmpty() && player.inventory.hasSpaceFor(*guaranteed)) || !player.inventory.isFull
     }
 
+    // Methods for inserting specific rolls into the table
     fun insertEasyClue(weight: Double): WeightBasedTable {
         this.add(WeightedItem(SLOT_CLUE_EASY, 1, 1, weight, false))
         return this
     }
 
-
     fun insertMediumClue(weight: Double): WeightBasedTable {
         this.add(WeightedItem(SLOT_CLUE_MEDIUM, 1, 1, weight, false))
         return this
     }
-
 
     fun insertHardClue(weight: Double): WeightBasedTable {
         this.add(WeightedItem(SLOT_CLUE_HARD, 1, 1, weight, false))
@@ -185,6 +235,12 @@ open class WeightBasedTable : ArrayList<WeightedItem>() {
     }
 
     companion object {
+        /**
+         * Creates a new [WeightBasedTable] from the specified items.
+         *
+         * @param items A variable number of [WeightedItem]s to add to the table.
+         * @return A new [WeightBasedTable] instance.
+         */
         @JvmStatic
         fun create(vararg items: WeightedItem): WeightBasedTable {
             val table = WeightBasedTable()
@@ -194,6 +250,7 @@ open class WeightBasedTable : ArrayList<WeightedItem>() {
             return table
         }
 
+        // Slot identifiers for different types of items
         @JvmField
         val SLOT_RDT = Items.TINDERBOX_31
         val SLOT_CLUE_EASY = Items.TOOLKIT_1
@@ -207,6 +264,11 @@ open class WeightBasedTable : ArrayList<WeightedItem>() {
         val SLOT_ASDT = Items.SACRED_CLAY_POUCH_CLASS_5_14430
     }
 
+    /**
+     * Returns a string representation of the table with the details of each item.
+     *
+     * @return A string description of the table.
+     */
     override fun toString(): String {
         val builder = StringBuilder()
         for (item in this) {
