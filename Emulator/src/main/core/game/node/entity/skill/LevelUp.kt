@@ -27,10 +27,7 @@ object LevelUp {
         if (!getAttribute(player, GameAttributes.TUTORIAL_COMPLETE, false)) return
 
         // Play level-up fireworks and jingle.
-        Graphics.send(
-            Graphics(
-                org.rs.consts.Graphics.FIREWORKS_WHEN_A_LVL_IS_GAINED_199
-            ), player.location)
+        Graphics.send(Graphics(org.rs.consts.Graphics.FIREWORKS_WHEN_A_LVL_IS_GAINED_199, 100), player.location)
         playJingle(player, getSkillJingle(player, slot))
 
         // Handle skill and combat milestones.
@@ -38,8 +35,8 @@ object LevelUp {
 
         // Display level-up messages.
         val skillName = Skills.SKILL_NAME[slot]
-        sendString(player, "<col=00008B>Congratulations, you've just advanced a $skillName level!", 740, 0)
-        sendString(player, "Your $skillName level is now ${player.getSkills().getStaticLevel(slot)}.", 740, 1)
+        sendString(player, "<col=00008B>Congratulations, you've just advanced a $skillName level!", Components.GAME_INTERFACE_740, 0)
+        sendString(player, "Your $skillName level is now ${player.getSkills().getStaticLevel(slot)}.", Components.GAME_INTERFACE_740, 1)
         sendMessage(player, "You've just advanced a $skillName level! You have reached level ${player.getSkills().getStaticLevel(slot)}.")
 
         // Handle prayer skill leveling.
@@ -51,33 +48,18 @@ object LevelUp {
         if (getStatLevel(player, slot) == 99 && !player.isArtificial) {
             Skillcape.trim(player)
             unlockEmote(player, 39)
-            Graphics.send(
-                Graphics(
-                    GRAPHIC.random(),
-                    0,
-                    50
-                ), player.location)
+            Graphics.send(Graphics(GRAPHIC.random(), 100, 50), player.location)
         }
 
         // Handle total level milestones.
         if (TOTAL_LEVEL_MILESTONES.contains(player.skills.getTotalLevel())) {
-            Graphics.send(
-                Graphics(
-                    GRAPHIC.random(),
-                    0,
-                    50
-                ), player.location)
+            Graphics.send(Graphics(GRAPHIC.random(), 100, 50), player.location)
             sendMessage(player, DARK_RED + "Well done! You've reached the total level ${player.skills.getTotalLevel()} milestone!")
         }
 
         // Maximum total level reached.
         if (player.skills.getTotalLevel() == 2376) {
-            Graphics.send(
-                Graphics(
-                    GRAPHIC.random(),
-                    0,
-                    50
-                ), player.location)
+            Graphics.send(Graphics(GRAPHIC.random(), 100, 50), player.location)
             sendMessage(player, DARK_RED + "Congratulations! You've reached the maximum Total level possible!")
         }
 
@@ -101,23 +83,13 @@ object LevelUp {
 
             // Special messages for combat milestones.
             if (i == 126 && !GameWorld.settings!!.isMembers) {
-                Graphics.send(
-                    Graphics(
-                        GRAPHIC.random(),
-                        0,
-                        50
-                    ), player.location)
+                Graphics.send(Graphics(GRAPHIC.random(), 100, 50), player.location)
                 sendMessage(player, "Congratulations! Your Combat level is now 126 - the highest possible Combat level on free worlds!")
                 break
             }
 
             if (i == 138) {
-                Graphics.send(
-                    Graphics(
-                        GRAPHIC.random(),
-                        0,
-                        50
-                    ), player.location)
+                Graphics.send(Graphics(GRAPHIC.random(), 100, 50), player.location)
                 sendMessage(player, "Congratulations! Your Combat level is now 138! You've achieved the highest Combat level possible!")
                 break
             }
@@ -137,7 +109,7 @@ object LevelUp {
 
         value = value or (player.getSkills().combatMilestone shl 23)
         value = value or (player.getSkills().skillMilestone shl 27)
-        setVarp(player, 1230, value)
+        setVarp(player, Vars.VARP_STATS_TAB_1230, value)
     }
 
     @JvmStatic
