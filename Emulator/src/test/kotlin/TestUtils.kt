@@ -23,7 +23,6 @@ import core.game.node.item.Item
 import core.game.node.scenery.Scenery
 import core.game.shops.Shop
 import core.game.shops.ShopItem
-import core.tools.Log
 import core.game.system.config.ConfigParser
 import core.game.system.config.ServerConfigParser
 import core.game.system.timer.TimerRegistry
@@ -38,6 +37,7 @@ import core.game.world.update.UpdateSequence
 import core.net.IoSession
 import core.net.packet.IoBuffer
 import core.net.packet.PacketProcessor
+import core.tools.Log
 import org.rs.consts.Items
 import java.net.URI
 import java.nio.ByteBuffer
@@ -46,7 +46,12 @@ object TestUtils {
     var uidCounter = 0
     const val PLAYER_DEATH_TICKS = 14
 
-    fun getMockPlayer(name: String, ironman: IronmanMode = IronmanMode.NONE, rights: Rights = Rights.ADMINISTRATOR, isBot: Boolean = false): MockPlayer {
+    fun getMockPlayer(
+        name: String,
+        ironman: IronmanMode = IronmanMode.NONE,
+        rights: Rights = Rights.ADMINISTRATOR,
+        isBot: Boolean = false,
+    ): MockPlayer {
         val p = MockPlayer(name, isBot)
         p.ironmanManager.mode = ironman
         p.details.accountInfo.uid = uidCounter++
@@ -59,27 +64,40 @@ object TestUtils {
         return p
     }
 
-    fun getMockShop(name: String, general: Boolean, highAlch: Boolean, vararg stock: Item): Shop {
+    fun getMockShop(
+        name: String,
+        general: Boolean,
+        highAlch: Boolean,
+        vararg stock: Item,
+    ): Shop {
         return Shop(
             name,
             stock.map { ShopItem(it.id, it.amount, 100) }.toTypedArray(),
             general,
-            highAlch = highAlch
+            highAlch = highAlch,
         )
     }
 
-    fun getMockTokkulShop(name: String, vararg stock: Item): Shop {
+    fun getMockTokkulShop(
+        name: String,
+        vararg stock: Item,
+    ): Shop {
         return Shop(
             name,
             stock.map { ShopItem(it.id, it.amount, 100) }.toTypedArray(),
-            currency = Items.TOKKUL_6529
+            currency = Items.TOKKUL_6529,
         )
     }
 
     fun preTestSetup() {
         if (ServerConfig.DATA_PATH == null) {
             ServerConfigParser.parse(this::class.java.getResource("test.conf"))
-            Cache.init(this::class.java.getResource("cache").path.toString())
+            Cache.init(
+                this::class.java
+                    .getResource("cache")
+                    .path
+                    .toString(),
+            )
             ConfigParser().prePlugin()
             ConfigParser().postPlugin()
             registerTimers()
@@ -98,27 +116,72 @@ object TestUtils {
         return resource?.toURI() ?: throw IllegalArgumentException("Resource not found at path: $path")
     }
 
-    fun advanceTicks(amount: Int, skipPulseUpdates: Boolean = true) {
+    fun advanceTicks(
+        amount: Int,
+        skipPulseUpdates: Boolean = true,
+    ) {
         log(this::class.java, Log.FINE, "Advancing ticks by $amount.")
         for (i in 0 until amount) {
             GameWorld.majorUpdateWorker.handleTickActions(skipPulseUpdates)
         }
     }
 
-    fun simulateInteraction(player: Player, target: Node, optionIndex: Int, iface: Int = -1, child: Int = -1) {
+    fun simulateInteraction(
+        player: Player,
+        target: Node,
+        optionIndex: Int,
+        iface: Int = -1,
+        child: Int = -1,
+    ) {
         when (target) {
-            is GroundItem -> PacketProcessor.enqueue(core.net.packet.`in`.Packet.GroundItemAction(player, optionIndex, target.id, target.location.x, target.location.y))
-            is Item -> PacketProcessor.enqueue(core.net.packet.`in`.Packet.ItemAction(player, optionIndex, target.id, target.slot, iface, child))
-            is NPC -> PacketProcessor.enqueue(core.net.packet.`in`.Packet.NpcAction(player, optionIndex, target.clientIndex))
-            is Scenery -> PacketProcessor.enqueue(core.net.packet.`in`.Packet.SceneryAction(player, optionIndex, target.id, target.location.x, target.location.y))
+            is GroundItem ->
+                PacketProcessor.enqueue(
+                    core.net.packet.`in`.Packet.GroundItemAction(
+                        player,
+                        optionIndex,
+                        target.id,
+                        target.location.x,
+                        target.location.y,
+                    ),
+                )
+            is Item ->
+                PacketProcessor.enqueue(
+                    core.net.packet.`in`.Packet
+                        .ItemAction(player, optionIndex, target.id, target.slot, iface, child),
+                )
+            is NPC ->
+                PacketProcessor.enqueue(
+                    core.net.packet.`in`.Packet
+                        .NpcAction(player, optionIndex, target.clientIndex),
+                )
+            is Scenery ->
+                PacketProcessor.enqueue(
+                    core.net.packet.`in`.Packet.SceneryAction(
+                        player,
+                        optionIndex,
+                        target.id,
+                        target.location.x,
+                        target.location.y,
+                    ),
+                )
         }
         advanceTicks(1, true)
     }
 }
 
-class MockPlayer(name: String, val isBot: Boolean) : Player(PlayerDetails(name)), AutoCloseable {
+class MockPlayer(
+    name: String,
+    val isBot: Boolean,
+) : Player(PlayerDetails(name)),
+    AutoCloseable {
     var hasInit = false
-    init { configureBasicProperties(); flagTutComplete(false); init(); flagTutComplete(true) }
+
+    init {
+        configureBasicProperties()
+        flagTutComplete(false)
+        init()
+        flagTutComplete(true)
+    }
 
     fun configureBasicProperties() {
         this.details.session = MockSession()
@@ -191,13 +254,19 @@ class MockSession : IoSession(null, null) {
     var disconnected = false
 
     @Suppress("ArrayInDataClass")
-    data class Packet(val opcode: Int, val payload: ByteArray)
+    data class Packet(
+        val opcode: Int,
+        val payload: ByteArray,
+    )
 
     override fun getRemoteAddress(): String? {
         return "127.0.0.1"
     }
 
-    override fun write(context: Any, instant: Boolean) {
+    override fun write(
+        context: Any,
+        instant: Boolean,
+    ) {
         if (context is IoBuffer) {
             receivedPackets.add(Packet(context.opcode(), context.array()))
         }
@@ -217,8 +286,9 @@ class MockSession : IoSession(null, null) {
     override fun getIsaacPair(): ISAACPair {
         return ISAACPair(
             ISAACCipher(
-                intArrayOf(0)
-            ), ISAACCipher(intArrayOf(0))
+                intArrayOf(0),
+            ),
+            ISAACCipher(intArrayOf(0)),
         )
     }
 
@@ -226,7 +296,9 @@ class MockSession : IoSession(null, null) {
 
     override fun write() {}
 
-    override fun disconnect() { disconnected = true }
+    override fun disconnect() {
+        disconnected = true
+    }
 
     fun clear() {
         receivedPackets.clear()

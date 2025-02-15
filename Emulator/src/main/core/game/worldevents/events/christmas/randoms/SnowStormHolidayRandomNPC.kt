@@ -52,8 +52,9 @@ class SnowStormHolidayRandomNPC : HolidayRandomEventNPC(NPCs.SNOW_6740) {
             val snowPath = Pathfinder.find(snow, getPathableRandomLocalCoordinate(player, 4, player.location))
             snowPath.walk(snow)
 
-            if (RandomFunction.roll(4))
+            if (RandomFunction.roll(4)) {
                 playGlobalAudio(snow.location, Sounds.ICY_WIND_2078)
+            }
         }
     }
 

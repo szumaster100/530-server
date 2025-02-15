@@ -1,17 +1,19 @@
 package content.region.kandarin.quest.arena.dialogue
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.*
 import core.api.quest.setQuestStage
 import core.game.dialogue.DialogueFile
 import core.game.dialogue.FaceAnim
 import core.game.global.action.DoorActionHandler
 import core.game.node.entity.npc.NPC
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 class WestDoorSupportDialogue : DialogueFile() {
-
-    override fun handle(componentID: Int, buttonID: Int) {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         npc = NPC(NPCs.KHAZARD_GUARD_257)
         when (stage) {
             0 -> {
@@ -23,7 +25,7 @@ class WestDoorSupportDialogue : DialogueFile() {
                 face(player!!, location(2603, 3155, 0))
                 npcl(
                     FaceAnim.NEUTRAL,
-                    "Nice observation guard. You could have just asked to be let in like a normal person."
+                    "Nice observation guard. You could have just asked to be let in like a normal person.",
                 ).also { stage++ }
             }
 

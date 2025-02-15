@@ -29,7 +29,11 @@ class Grave : AbstractNPC {
     constructor() : super(NPCs.GRAVESTONE_6571, Location.create(0, 0, 0), false)
     private constructor(id: Int, location: Location) : super(id, location)
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return Grave(id, location)
     }
 
@@ -43,9 +47,14 @@ class Grave : AbstractNPC {
         this.ticksRemaining = secondsToTicks(type.durationMinutes * 60)
     }
 
-    fun initialize(player: Player, location: Location, inventory: Array<Item>) {
-        if (!GraveController.allowGenerate(player))
+    fun initialize(
+        player: Player,
+        location: Location,
+        inventory: Array<Item>,
+    ) {
+        if (!GraveController.allowGenerate(player)) {
             return
+        }
 
         this.ownerUid = player.details.uid
         this.ownerUsername = player.username
@@ -86,10 +95,21 @@ class Grave : AbstractNPC {
         }
 
         GraveController.activeGraves[ownerUid] = this
-        sendMessage(player, colorize("%RBecause of your current gravestone, you have ${type.durationMinutes} minutes to get your items back."))
+        sendMessage(
+            player,
+            colorize(
+                "%RBecause of your current gravestone, you have ${type.durationMinutes} minutes to get your items back.",
+            ),
+        )
     }
 
-    fun setupFromJsonParams(playerUid: Int, ticks: Int, location: Location, items: Array<Item>, username: String) {
+    fun setupFromJsonParams(
+        playerUid: Int,
+        ticks: Int,
+        location: Location,
+        items: Array<Item>,
+        username: String,
+    ) {
         this.ownerUid = playerUid
         this.ticksRemaining = ticks
         this.location = location
@@ -120,12 +140,13 @@ class Grave : AbstractNPC {
         for (gi in items) {
             gi.decayTime = ticksRemaining
         }
-        if (ticksRemaining < 30)
+        if (ticksRemaining < 30) {
             transform(type.npcId + 2)
-        else if (ticksRemaining < 90)
+        } else if (ticksRemaining < 90) {
             transform(type.npcId + 1)
-        else
+        } else {
             transform(type.npcId)
+        }
     }
 
     fun collapse() {
@@ -143,8 +164,9 @@ class Grave : AbstractNPC {
     fun demolish() {
         val owner = Repository.uid_map[ownerUid] ?: return
         for (item in items) {
-            if (!item.isRemoved)
+            if (!item.isRemoved) {
                 item.decayTime = secondsToTicks(45)
+            }
         }
         clear()
         sendMessage(owner, "It looks like it'll last another ${getFormattedTimeRemaining()}.")

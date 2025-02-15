@@ -1,12 +1,11 @@
 package content.global.handlers.iface
 
-import org.rs.consts.Components
 import core.api.sendMessage
 import core.game.interaction.InterfaceListener
 import core.game.world.repository.Repository
+import org.rs.consts.Components
 
 class LogoutTabInterface : InterfaceListener {
-
     override fun defineInterfaceListeners() {
         on(Components.LOGOUT_182) { player, _, _, buttonID, _, _ ->
             if (buttonID == 6) {

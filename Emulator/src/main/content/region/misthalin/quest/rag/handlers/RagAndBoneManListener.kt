@@ -1,18 +1,16 @@
 package content.region.misthalin.quest.rag.handlers
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.impl.PulseType
 import core.game.system.task.Pulse
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class RagAndBoneManListener : InteractionListener {
-
     override fun defineListeners() {
-
         onUseWith(IntType.ITEM, Items.JUG_OF_VINEGAR_7810, Items.EMPTY_POT_1931) { player, _, _ ->
             if (removeItem(player, Items.JUG_OF_VINEGAR_7810) && (removeItem(player, Items.EMPTY_POT_1931))) {
                 addItem(player, Items.POT_OF_VINEGAR_7811)
@@ -38,9 +36,9 @@ class RagAndBoneManListener : InteractionListener {
                 Items.WILLOW_LOGS_1519,
                 Items.MAPLE_LOGS_1517,
                 Items.YEW_LOGS_1515,
-                Items.MAGIC_LOGS_1513
+                Items.MAGIC_LOGS_1513,
             ),
-            Scenery.POT_BOILER_14006
+            Scenery.POT_BOILER_14006,
         ) { player, used, _ ->
             if (removeItem(player, used)) {
                 sendMessage(player, "You place the logs into the grate.")
@@ -84,7 +82,7 @@ class RagAndBoneManListener : InteractionListener {
                             return true
                         }
                     },
-                    PulseType.CUSTOM_1
+                    PulseType.CUSTOM_1,
                 )
             }
             return@onUseWith true

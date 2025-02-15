@@ -1,9 +1,5 @@
 package content.region.morytania.quest.fenk
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
-import org.rs.consts.Quests
 import content.region.morytania.quest.fenk.dialogue.BookcaseEastDialogueFile
 import content.region.morytania.quest.fenk.dialogue.BookcaseWest
 import content.region.morytania.quest.fenk.dialogue.RoavarDialogueFile
@@ -20,6 +16,10 @@ import core.game.node.item.GroundItem
 import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
+import org.rs.consts.Scenery
 
 /*
     TODO: Check, remove content from later revisions,
@@ -71,18 +71,28 @@ import core.game.world.update.flag.context.Animation
 
  */
 class CreatureOfFenkenstrainListener : InteractionListener {
-
     override fun defineListeners() {
-
         addClimbDest(Location.create(3504, 9970, 0), Location.create(3504, 3571, 0))
 
         on(Items.NULL_5164, SCENERY, "read") { player, _ ->
             if (getQuestStage(player, Quests.CREATURE_OF_FENKENSTRAIN) < 7) {
-                sendDialogueLines(player, "The signpost has a note pinned onto it. The note says:", "'---- Braindead Butler Wanted ----", "Gravedigging skills essential - Hunchback advantageous", "See Dr Fenkenstrain at the castle NE of Canifis'")
+                sendDialogueLines(
+                    player,
+                    "The signpost has a note pinned onto it. The note says:",
+                    "'---- Braindead Butler Wanted ----",
+                    "Gravedigging skills essential - Hunchback advantageous",
+                    "See Dr Fenkenstrain at the castle NE of Canifis'",
+                )
             } else {
-                sendDialogueLines(player, "The signpost has a note pinned onto it. The note says:", "'AAARRGGGHHHHH!!!!!'")
+                sendDialogueLines(
+                    player,
+                    "The signpost has a note pinned onto it. The note says:",
+                    "'AAARRGGGHHHHH!!!!!'",
+                )
             }
-            if (getQuest(player, Quests.CREATURE_OF_FENKENSTRAIN).hasRequirements(player) && getQuestStage(player, Quests.CREATURE_OF_FENKENSTRAIN) == 0) {
+            if (getQuest(player, Quests.CREATURE_OF_FENKENSTRAIN).hasRequirements(player) &&
+                getQuestStage(player, Quests.CREATURE_OF_FENKENSTRAIN) == 0
+            ) {
                 setQuestStage(player, Quests.CREATURE_OF_FENKENSTRAIN, 1)
             }
             return@on true
@@ -118,7 +128,7 @@ class CreatureOfFenkenstrainListener : InteractionListener {
                         }
                         return true
                     }
-                }
+                },
             )
             return@on true
         }
@@ -141,7 +151,7 @@ class CreatureOfFenkenstrainListener : InteractionListener {
                 sendItemDialogue(
                     player,
                     Items.STAR_AMULET_4183,
-                    "The marble and obsidian amulets snap together tightly to form a six-pointed amulet."
+                    "The marble and obsidian amulets snap together tightly to form a six-pointed amulet.",
                 )
                 addItemOrDrop(player, Items.STAR_AMULET_4183)
             }
@@ -150,7 +160,11 @@ class CreatureOfFenkenstrainListener : InteractionListener {
 
         onUseWith(SCENERY, Items.STAR_AMULET_4183, Items.NULL_5167) { player, _, _ ->
             if (removeItem(player, Items.STAR_AMULET_4183)) {
-                sendItemDialogue(player, Items.STAR_AMULET_4183, "The star amulet fits exactly into the depression on the coffin lid.")
+                sendItemDialogue(
+                    player,
+                    Items.STAR_AMULET_4183,
+                    "The star amulet fits exactly into the depression on the coffin lid.",
+                )
                 setAttribute(player, CreatureOfFenkenstrain.attributeUnlockedMemorial, true)
             }
             return@onUseWith true
@@ -192,7 +206,7 @@ class CreatureOfFenkenstrainListener : InteractionListener {
                 sendItemDialogue(
                     player,
                     Items.DECAPITATED_HEAD_4198,
-                    "You squeeze the pickled brain into the decapitated head."
+                    "You squeeze the pickled brain into the decapitated head.",
                 )
                 addItemOrDrop(player, Items.DECAPITATED_HEAD_4198)
             }
@@ -201,9 +215,10 @@ class CreatureOfFenkenstrainListener : InteractionListener {
 
         on(Items.NULL_5167, SCENERY, "search") { player, node ->
             val scenery = node.asScenery()
-            if (getAttribute(player, CreatureOfFenkenstrain.attributeUnlockedMemorial, false) || getQuestStage(
+            if (getAttribute(player, CreatureOfFenkenstrain.attributeUnlockedMemorial, false) ||
+                getQuestStage(
                     player,
-                    Quests.CREATURE_OF_FENKENSTRAIN
+                    Quests.CREATURE_OF_FENKENSTRAIN,
                 ) > 2
             ) {
                 animateScenery(player, scenery, 1620)
@@ -221,14 +236,14 @@ class CreatureOfFenkenstrainListener : InteractionListener {
                                 teleport(player, dest!!)
                                 return true
                             }
-                        }
+                        },
                     )
                 }
             } else {
                 if (scenery.location.equals(Location(3505, 3571))) {
                     sendMessage(
                         player,
-                        "You find a depression in the memorial stone in the shape of a six-pointed star."
+                        "You find a depression in the memorial stone in the shape of a six-pointed star.",
                     )
                 } else {
                     sendMessage(player, "You find nothing remarkable about the memorial stone.")
@@ -257,7 +272,7 @@ class CreatureOfFenkenstrainListener : InteractionListener {
                                 teleport(player, dest!!)
                                 return true
                             }
-                        }
+                        },
                     )
                 }
             } else {
@@ -267,9 +282,10 @@ class CreatureOfFenkenstrainListener : InteractionListener {
         }
 
         on(Scenery.DOOR_5174, SCENERY, "open") { player, node ->
-            if (getAttribute(player, CreatureOfFenkenstrain.attributeUnlockedShed, false) || getQuestStage(
+            if (getAttribute(player, CreatureOfFenkenstrain.attributeUnlockedShed, false) ||
+                getQuestStage(
                     player,
-                    Quests.CREATURE_OF_FENKENSTRAIN
+                    Quests.CREATURE_OF_FENKENSTRAIN,
                 ) >= 5
             ) {
                 DoorActionHandler.handleAutowalkDoor(player, node.asScenery())
@@ -285,9 +301,10 @@ class CreatureOfFenkenstrainListener : InteractionListener {
         }
 
         onUseWith(SCENERY, Items.SHED_KEY_4186, Scenery.DOOR_5174) { player, used, with ->
-            if (getAttribute(player, CreatureOfFenkenstrain.attributeUnlockedShed, false) || getQuestStage(
+            if (getAttribute(player, CreatureOfFenkenstrain.attributeUnlockedShed, false) ||
+                getQuestStage(
                     player,
-                    Quests.CREATURE_OF_FENKENSTRAIN
+                    Quests.CREATURE_OF_FENKENSTRAIN,
                 ) >= 5
             ) {
                 DoorActionHandler.handleAutowalkDoor(player, with.asScenery())
@@ -314,7 +331,7 @@ class CreatureOfFenkenstrainListener : InteractionListener {
         onUseWith(
             ITEM,
             intArrayOf(Items.GARDEN_BRUSH_4190, Items.EXTENDED_BRUSH_4191, Items.EXTENDED_BRUSH_4192),
-            Items.GARDEN_CANE_4189
+            Items.GARDEN_CANE_4189,
         ) { player, used, with ->
             if (!inInventory(player, Items.BRONZE_WIRE_1794)) {
                 sendMessage(player, "You need some bronze wire to tie them together.")
@@ -345,7 +362,7 @@ class CreatureOfFenkenstrainListener : InteractionListener {
                 sendItemDialogue(
                     player,
                     Items.CONDUCTOR_MOULD_4200,
-                    "A lightning conductor mould falls down out of the chimney."
+                    "A lightning conductor mould falls down out of the chimney.",
                 )
                 addItemOrDrop(player, Items.CONDUCTOR_MOULD_4200)
                 return@on true
@@ -359,7 +376,7 @@ class CreatureOfFenkenstrainListener : InteractionListener {
             sendItemDialogue(
                 player,
                 Items.CONDUCTOR_MOULD_4200,
-                "A lightning conductor mould falls down out of the chimney."
+                "A lightning conductor mould falls down out of the chimney.",
             )
             addItemOrDrop(player, Items.CONDUCTOR_MOULD_4200)
             return@onUseWith true
@@ -374,7 +391,10 @@ class CreatureOfFenkenstrainListener : InteractionListener {
                 if (getQuestStage(player, Quests.CREATURE_OF_FENKENSTRAIN) == 4) {
                     setQuestStage(player, Quests.CREATURE_OF_FENKENSTRAIN, 5)
                 }
-                sendDialogue(player, "You repair the lightning conductor not one moment too soon - a tremendous bold of lightning melts the new lightning conductor, and power blazes throughout the castle, if only briefly.")
+                sendDialogue(
+                    player,
+                    "You repair the lightning conductor not one moment too soon - a tremendous bold of lightning melts the new lightning conductor, and power blazes throughout the castle, if only briefly.",
+                )
                 val scenery = node.asScenery()
                 replaceScenery(scenery, Items.NULL_5177, 3, node.location)
                 animateScenery(player, scenery, 1632)
@@ -403,29 +423,37 @@ class CreatureOfFenkenstrainListener : InteractionListener {
             if (getQuestStage(player, Quests.CREATURE_OF_FENKENSTRAIN) == 7) {
                 sendMessage(player, "You steal the Ring of Charos from Fenkenstrain.")
                 finishQuest(player, Quests.CREATURE_OF_FENKENSTRAIN)
-            } else if (getQuestStage(player, Quests.CREATURE_OF_FENKENSTRAIN) > 7 && hasAnItem(player, Items.RING_OF_CHAROS_4202).container == null) {
+            } else if (getQuestStage(player, Quests.CREATURE_OF_FENKENSTRAIN) > 7 &&
+                hasAnItem(player, Items.RING_OF_CHAROS_4202).container == null
+            ) {
                 addItemOrDrop(player, Items.RING_OF_CHAROS_4202, 1)
                 sendMessage(player, "You steal the Ring of Charos from Fenkenstrain.")
             } else {
-                sendNPCDialogue(player, NPCs.DR_FENKENSTRAIN_1670, "What do you think you're doing???", FaceAnim.NEUTRAL)
+                sendNPCDialogue(
+                    player,
+                    NPCs.DR_FENKENSTRAIN_1670,
+                    "What do you think you're doing???",
+                    FaceAnim.NEUTRAL,
+                )
             }
             return@on true
         }
     }
 
     companion object {
-        private val itemToAttribute = hashMapOf(
-            Items.ARMS_4195 to CreatureOfFenkenstrain.attributeArms,
-            Items.LEGS_4196 to CreatureOfFenkenstrain.attributeLegs,
-            Items.TORSO_4194 to CreatureOfFenkenstrain.attributeTorso,
-            Items.DECAPITATED_HEAD_4197 to CreatureOfFenkenstrain.attributeHead
-        )
+        private val itemToAttribute =
+            hashMapOf(
+                Items.ARMS_4195 to CreatureOfFenkenstrain.attributeArms,
+                Items.LEGS_4196 to CreatureOfFenkenstrain.attributeLegs,
+                Items.TORSO_4194 to CreatureOfFenkenstrain.attributeTorso,
+                Items.DECAPITATED_HEAD_4197 to CreatureOfFenkenstrain.attributeHead,
+            )
 
         enum class Graves(
             val location: Location,
             val graveName: String,
             val unearthText: String,
-            val unearthItem: Int?
+            val unearthItem: Int?,
         ) {
             GRAVE1(Location(3541, 3541), "Anton Hayes", "...but the grave is empty.", null),
             GRAVE2(Location(3542, 3486), "Callum Elding", "...but the grave is empty.", null),
@@ -434,7 +462,7 @@ class CreatureOfFenkenstrainListener : InteractionListener {
                 Location(3608, 3491),
                 "Ed Lestwit",
                 "...and you unearth a decapitated head.",
-                Items.DECAPITATED_HEAD_4197
+                Items.DECAPITATED_HEAD_4197,
             ),
             GRAVE5(Location(3588, 3472), "Elena Frey", "...but the grave is empty.", null),
             GRAVE6(Location(3593, 3509), "Eryn Treforest", "...but the grave is empty.", null),
@@ -454,7 +482,8 @@ class CreatureOfFenkenstrainListener : InteractionListener {
             GRAVE20(Location(3634, 3503), "Lord Rologarth", "...but the grave is empty.", null),
             GRAVE21(Location(3502, 3576), "Lady Rolobrae", "...and you unearth a torso.", Items.TORSO_4194),
             GRAVE22(Location(3504, 3577), "Lord Rolomere", "...and you unearth a pair of arms.", Items.ARMS_4195),
-            GRAVE23(Location(3506, 3576), "Lord Rolovanne", "...and you unearth a pair of legs.", Items.LEGS_4196);
+            GRAVE23(Location(3506, 3576), "Lord Rolovanne", "...and you unearth a pair of legs.", Items.LEGS_4196),
+            ;
 
             companion object {
                 @JvmField

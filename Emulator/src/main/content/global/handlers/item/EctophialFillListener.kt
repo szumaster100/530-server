@@ -1,9 +1,5 @@
 package content.global.handlers.item
 
-import org.rs.consts.Items
-import org.rs.consts.Scenery
-import org.rs.consts.Quests
-import org.rs.consts.Sounds
 import core.api.*
 import core.api.quest.hasRequirement
 import core.game.interaction.IntType
@@ -15,6 +11,10 @@ import core.game.node.item.Item
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Scenery
+import org.rs.consts.Sounds
 
 class EctophialFillListener : InteractionListener {
     private val fillAnimation = Animation(832)
@@ -32,7 +32,6 @@ class EctophialFillListener : InteractionListener {
     }
 
     override fun defineListeners() {
-
         onUseWith(IntType.SCENERY, Items.ECTOPHIAL_4252, Scenery.ECTOFUNTUS_5282) { player, _, _ ->
             refillEctophial(player)
             return@onUseWith true

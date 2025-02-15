@@ -17,13 +17,13 @@ import org.rs.consts.NPCs
  */
 @Initializable
 class CatableponNPC : AbstractNPC {
-
-    private val combatHandler = MultiSwingHandler(
-        SwitchAttack(CombatStyle.MELEE.swingHandler, null).setUseHandler(true),
-        SwitchAttack(CombatStyle.MELEE.swingHandler, null).setUseHandler(true),
-        SwitchAttack(CombatStyle.MELEE.swingHandler, null).setUseHandler(true),
-        SwitchAttack(CombatStyle.MAGIC.swingHandler, ANIMATION).setUseHandler(true)
-    )
+    private val combatHandler =
+        MultiSwingHandler(
+            SwitchAttack(CombatStyle.MELEE.swingHandler, null).setUseHandler(true),
+            SwitchAttack(CombatStyle.MELEE.swingHandler, null).setUseHandler(true),
+            SwitchAttack(CombatStyle.MELEE.swingHandler, null).setUseHandler(true),
+            SwitchAttack(CombatStyle.MAGIC.swingHandler, ANIMATION).setUseHandler(true),
+        )
 
     constructor() : super(0, null)
 
@@ -48,7 +48,11 @@ class CatableponNPC : AbstractNPC {
      * @param objects additional objects related to the npc.
      * @return a new instance of [CatableponNPC].
      */
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return CatableponNPC(id, location)
     }
 

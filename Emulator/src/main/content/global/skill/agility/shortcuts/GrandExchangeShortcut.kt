@@ -1,6 +1,5 @@
 package content.global.skill.agility.shortcuts
 
-import org.rs.consts.Animations
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
@@ -11,22 +10,25 @@ import core.game.node.scenery.Scenery
 import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
 
 class GrandExchangeShortcut : InteractionListener {
-
     companion object {
-        private val SHORTCUTS = mapOf(
-            9311 to listOf(
-                Location.create(3138, 3516, 0),
-                Location.create(3143, 3514, 0),
-                Location.create(3144, 3514, 0)
-            ),
-            9312 to listOf(
-                Location.create(3144, 3514, 0),
-                Location.create(3139, 3516, 0),
-                Location.create(3138, 3516, 0)
+        private val SHORTCUTS =
+            mapOf(
+                9311 to
+                    listOf(
+                        Location.create(3138, 3516, 0),
+                        Location.create(3143, 3514, 0),
+                        Location.create(3144, 3514, 0),
+                    ),
+                9312 to
+                    listOf(
+                        Location.create(3144, 3514, 0),
+                        Location.create(3139, 3516, 0),
+                        Location.create(3138, 3516, 0),
+                    ),
             )
-        )
         private val CLIMB_DOWN = Animation.create(Animations.CRAWL_UNDER_WALL_A_2589)
         private val CRAWL_THROUGH = Animation.create(Animations.CRAWL_UNDER_WALL_B_2590)
         private val CLIMB_UP = Animation.create(Animations.CRAWL_UNDER_WALL_C_2591)
@@ -54,7 +56,11 @@ class GrandExchangeShortcut : InteractionListener {
         return true
     }
 
-    private fun initiateForceMovement(player: Player, scenery: Scenery, path: List<Location>) {
+    private fun initiateForceMovement(
+        player: Player,
+        scenery: Scenery,
+        path: List<Location>,
+    ) {
         ForceMovement.run(
             player,
             path[0],
@@ -64,11 +70,14 @@ class GrandExchangeShortcut : InteractionListener {
             ForceMovement.direction(path[0], scenery.location),
             ForceMovement.WALKING_SPEED,
             ForceMovement.WALKING_SPEED,
-            false
+            false,
         )
     }
 
-    private fun handleShortcut(player: Player, path: List<Location>) {
+    private fun handleShortcut(
+        player: Player,
+        path: List<Location>,
+    ) {
         submitIndividualPulse(
             player,
             object : Pulse(1, player) {
@@ -97,7 +106,7 @@ class GrandExchangeShortcut : InteractionListener {
                         else -> false
                     }
                 }
-            }
+            },
         )
     }
 }

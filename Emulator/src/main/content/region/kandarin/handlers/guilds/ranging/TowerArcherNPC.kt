@@ -10,13 +10,19 @@ import org.rs.consts.NPCs
  * Tower archer NPC.
  */
 @Initializable
-class TowerArcherNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
+class TowerArcherNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
     override fun getIds(): IntArray {
         return intArrayOf(NPCs.TOWER_ARCHER_688, NPCs.TOWER_ARCHER_689, NPCs.TOWER_ARCHER_690, NPCs.TOWER_ARCHER_691)
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any?): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any?,
+    ): AbstractNPC {
         return TowerArcherNPC(id, location)
     }
 

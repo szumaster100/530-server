@@ -1,15 +1,15 @@
 package core.game.bots.impl
 
 import content.global.activity.shootingstar.ShootingStarPlugin
+import core.game.bots.GeneralBotCreator
+import core.game.bots.Script
+import core.game.interaction.IntType
+import core.game.interaction.InteractionListeners
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.world.map.Location
 import core.tools.RandomFunction
 import org.rs.consts.Items
-import core.game.bots.GeneralBotCreator
-import core.game.bots.Script
-import core.game.interaction.IntType
-import core.game.interaction.InteractionListeners
 
 class ShootingStarBot : Script() {
     private var state = State.FULL_IDLE
@@ -61,8 +61,9 @@ class ShootingStarBot : Script() {
 
     fun activate(instant: Boolean) {
         state = State.TELEPORT_TO
-        if (!instant)
+        if (!instant) {
             timerCountdown = RandomFunction.random(500)
+        }
     }
 
     fun sleep() {
@@ -81,11 +82,12 @@ class ShootingStarBot : Script() {
         FULL_IDLE,
         TELEPORT_TO,
         MINING,
-        TELEPORT_BACK
+        TELEPORT_BACK,
     }
 
     companion object {
         val spawnLoc = Location.create(2230, 3339, 0)
+
         fun new(): ShootingStarBot {
             val script = ShootingStarBot()
             GeneralBotCreator(script, spawnLoc)

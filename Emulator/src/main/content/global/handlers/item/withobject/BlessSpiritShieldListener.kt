@@ -1,47 +1,49 @@
 package content.global.handlers.item.withobject
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class BlessSpiritShieldListener : InteractionListener {
-
     companion object {
         private val COMPONENTS = intArrayOf(Items.HOLY_ELIXIR_13754, Items.SPIRIT_SHIELD_13734)
-        private val ALTARS = intArrayOf(
-            Scenery.ALTAR_409,
-            Scenery.ALTAR_2640,
-            Scenery.ALTAR_4008,
-            Scenery.ALTAR_18254,
-            Scenery.ALTAR_19145,
-            Scenery.ALTAR_24343,
-            Scenery.SARADOMIN_ALTAR_26287,
-            Scenery.ALTAR_27661,
-            Scenery.ALTAR_34616,
-            Scenery.ALTAR_36972,
-            Scenery.ALTAR_39842
-        )
-        private val ANVILS = intArrayOf(
-            Scenery.ANVIL_2782,
-            Scenery.ANVIL_2783,
-            Scenery.ANVIL_4306,
-            Scenery.ANVIL_6150,
-            Scenery.ANVIL_22725,
-            Scenery.LATHE_26817,
-            Scenery.ANVIL_26822,
-            Scenery.ANVIL_37622
-        )
-        private val SIGIL_MAP = mapOf(
-            Items.ARCANE_SIGIL_13746 to Items.ARCANE_SPIRIT_SHIELD_13738,
-            Items.DIVINE_SIGIL_13748 to Items.DIVINE_SPIRIT_SHIELD_13740,
-            Items.ELYSIAN_SIGIL_13750 to Items.ELYSIAN_SPIRIT_SHIELD_13742,
-            Items.SPECTRAL_SIGIL_13752 to Items.SPECTRAL_SPIRIT_SHIELD_13744
-        )
+        private val ALTARS =
+            intArrayOf(
+                Scenery.ALTAR_409,
+                Scenery.ALTAR_2640,
+                Scenery.ALTAR_4008,
+                Scenery.ALTAR_18254,
+                Scenery.ALTAR_19145,
+                Scenery.ALTAR_24343,
+                Scenery.SARADOMIN_ALTAR_26287,
+                Scenery.ALTAR_27661,
+                Scenery.ALTAR_34616,
+                Scenery.ALTAR_36972,
+                Scenery.ALTAR_39842,
+            )
+        private val ANVILS =
+            intArrayOf(
+                Scenery.ANVIL_2782,
+                Scenery.ANVIL_2783,
+                Scenery.ANVIL_4306,
+                Scenery.ANVIL_6150,
+                Scenery.ANVIL_22725,
+                Scenery.LATHE_26817,
+                Scenery.ANVIL_26822,
+                Scenery.ANVIL_37622,
+            )
+        private val SIGIL_MAP =
+            mapOf(
+                Items.ARCANE_SIGIL_13746 to Items.ARCANE_SPIRIT_SHIELD_13738,
+                Items.DIVINE_SIGIL_13748 to Items.DIVINE_SPIRIT_SHIELD_13740,
+                Items.ELYSIAN_SIGIL_13750 to Items.ELYSIAN_SPIRIT_SHIELD_13742,
+                Items.SPECTRAL_SIGIL_13752 to Items.SPECTRAL_SPIRIT_SHIELD_13744,
+            )
     }
 
     override fun defineListeners() {
@@ -78,7 +80,7 @@ class BlessSpiritShieldListener : InteractionListener {
             if (!hasLevelDyn(player, Skills.PRAYER, 90) || !hasLevelDyn(player, Skills.SMITHING, 85)) {
                 sendMessage(
                     player,
-                    "You need a Prayer level of 90 and a Smithing level of 85 in order to attach the sigil."
+                    "You need a Prayer level of 90 and a Smithing level of 85 in order to attach the sigil.",
                 )
                 return@onUseWith true
             }
@@ -99,7 +101,8 @@ class BlessSpiritShieldListener : InteractionListener {
                             sendItemDialogue(
                                 player,
                                 product.id,
-                                "You successfully attach the " + used.name.lowercase() + " to the blessed spirit shield."
+                                "You successfully attach the " + used.name.lowercase() +
+                                    " to the blessed spirit shield.",
                             )
                         }
                     }

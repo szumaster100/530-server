@@ -1,6 +1,5 @@
 package content.region.misthalin.quest.priest
 
-import org.rs.consts.*
 import core.api.*
 import core.api.quest.getQuestStage
 import core.api.quest.isQuestComplete
@@ -16,11 +15,10 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld.Pulser
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.*
 
 class RestlessGhostListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(COFFIN_IDS, IntType.SCENERY, "open", "close", "search") { player, node ->
             val option = getUsedOption(player)
             val obj = node.asScenery()
@@ -33,20 +31,27 @@ class RestlessGhostListener : InteractionListener {
 
             when (option) {
                 "open", "close" -> toggleCoffin(player, obj)
-                "search" -> when (node.id) {
-                    Scenery.COFFIN_2145 -> toggleCoffin(player, obj)
-                    Scenery.COFFIN_15052 -> sendMessage(player, "You search the coffin and find some human remains.")
-                    Scenery.COFFIN_15053 -> sendDialogue(player, "There's a nice and complete skeleton in here!")
-                    Scenery.ALTAR_15050 -> searchAltar(player, obj)
-                    Scenery.ALTAR_15051 -> {
-                        if (!isQuestComplete(player, Quests.THE_RESTLESS_GHOST) && !inBank(player, Items.SKULL_964) && !inInventory(player, Items.SKULL_964)
-                        ) {
-                            sendMessage(player, "You find another skull.")
-                            addItem(player, Items.SKULL_964)
+                "search" ->
+                    when (node.id) {
+                        Scenery.COFFIN_2145 -> toggleCoffin(player, obj)
+                        Scenery.COFFIN_15052 ->
+                            sendMessage(
+                                player,
+                                "You search the coffin and find some human remains.",
+                            )
+                        Scenery.COFFIN_15053 -> sendDialogue(player, "There's a nice and complete skeleton in here!")
+                        Scenery.ALTAR_15050 -> searchAltar(player, obj)
+                        Scenery.ALTAR_15051 -> {
+                            if (!isQuestComplete(player, Quests.THE_RESTLESS_GHOST) &&
+                                !inBank(player, Items.SKULL_964) &&
+                                !inInventory(player, Items.SKULL_964)
+                            ) {
+                                sendMessage(player, "You find another skull.")
+                                addItem(player, Items.SKULL_964)
+                            }
+                            player.questRepository.setStageNonmonotonic(player.questRepository.forIndex(25), 40)
                         }
-                        player.questRepository.setStageNonmonotonic(player.questRepository.forIndex(25), 40)
                     }
-                }
             }
             return@on true
         }
@@ -74,7 +79,10 @@ class RestlessGhostListener : InteractionListener {
         }
     }
 
-    private fun toggleCoffin(player: Player, n: Node) {
+    private fun toggleCoffin(
+        player: Player,
+        n: Node,
+    ) {
         val coffin = n.asScenery()
         val closedCoffin = n.id == Scenery.COFFIN_2145
 
@@ -82,19 +90,23 @@ class RestlessGhostListener : InteractionListener {
 
         animate(
             entity = player,
-            anim = if (closedCoffin) Animation(Animations.OPEN_CHEST_536) else
-                Animation(Animations.OPEN_POH_WARDROBE_535)
+            anim =
+                if (closedCoffin) {
+                    Animation(Animations.OPEN_CHEST_536)
+                } else {
+                    Animation(Animations.OPEN_POH_WARDROBE_535)
+                },
         )
 
         replaceScenery(
             toReplace = coffin,
             with = if (closedCoffin) 15061 else Scenery.COFFIN_2145,
-            forTicks = -1
+            forTicks = -1,
         )
 
         sendMessage(
             player = player,
-            message = "You " + (if (closedCoffin) "open" else "close") + " the coffin."
+            message = "You " + (if (closedCoffin) "open" else "close") + " the coffin.",
         )
 
         if (coffin.id == Scenery.COFFIN_2145 && !isQuestComplete(player, Quests.THE_RESTLESS_GHOST)) {
@@ -109,14 +121,17 @@ class RestlessGhostListener : InteractionListener {
                     endHeight = 42,
                     delay = 0,
                     speed = 30,
-                    angle = 0
+                    angle = 0,
                 )
             }
             sendGhost()
         }
     }
 
-    private fun searchAltar(player: Player, n: Node) {
+    private fun searchAltar(
+        player: Player,
+        n: Node,
+    ) {
         if (getQuestStage(player, Quests.THE_RESTLESS_GHOST) != 30) {
             sendMessage(player, "You search the altar and find nothing.")
             return
@@ -146,12 +161,14 @@ class RestlessGhostListener : InteractionListener {
                     GHOST!!.isInvisible = true
                     return true
                 }
-            }
+            },
         )
     }
 
     private fun sendSkeleton(player: Player) {
-        val skeleton = core.game.node.entity.npc.NPC.create(NPCs.SKELETON_459, Location.create(3120, 9568, 0))
+        val skeleton =
+            core.game.node.entity.npc.NPC
+                .create(NPCs.SKELETON_459, Location.create(3120, 9568, 0))
         skeleton.isWalks = false
         skeleton.isRespawn = false
         skeleton.setAttribute("player", player)
@@ -162,14 +179,15 @@ class RestlessGhostListener : InteractionListener {
     }
 
     companion object {
-        val COFFIN_IDS = intArrayOf(
-            Scenery.COFFIN_2145,
-            Scenery.ALTAR_15050,
-            Scenery.ALTAR_15051,
-            Scenery.COFFIN_15052,
-            Scenery.COFFIN_15053,
-            15061
-        )
+        val COFFIN_IDS =
+            intArrayOf(
+                Scenery.COFFIN_2145,
+                Scenery.ALTAR_15050,
+                Scenery.ALTAR_15051,
+                Scenery.COFFIN_15052,
+                Scenery.COFFIN_15053,
+                15061,
+            )
         var GHOST: RestlessGhostNPC? = null
     }
 }

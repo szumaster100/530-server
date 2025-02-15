@@ -13,7 +13,9 @@ import core.tools.secondsToTicks
 import org.rs.consts.Sounds
 import kotlin.reflect.full.createInstance
 
-abstract class HolidayRandomEventNPC(id: Int) : NPC(id) {
+abstract class HolidayRandomEventNPC(
+    id: Int,
+) : NPC(id) {
     lateinit var player: Player
     var spawnLocation: Location? = null
     var initialized = false
@@ -21,7 +23,10 @@ abstract class HolidayRandomEventNPC(id: Int) : NPC(id) {
     var timerPaused = false
     var ticksLeft = secondsToTicks(30)
 
-    open fun create(player: Player, type: String = ""): HolidayRandomEventNPC {
+    open fun create(
+        player: Player,
+        type: String = "",
+    ): HolidayRandomEventNPC {
         val event = this::class.createInstance()
         event.player = player
         event.spawnLocation = RegionManager.getSpawnLocation(player, this)
@@ -46,8 +51,8 @@ abstract class HolidayRandomEventNPC(id: Int) : NPC(id) {
                         return false
                     }
                 }
-                ),
-            PulseType.STANDARD
+            ),
+            PulseType.STANDARD,
         )
     }
 
@@ -84,8 +89,10 @@ abstract class HolidayRandomEventNPC(id: Int) : NPC(id) {
 
     override fun clear() {
         super.clear()
-        if (player.getAttribute<HolidayRandomEventNPC?>("holiday-npc", null) == this) // Check if the NPC is associated with the player
+        if (player.getAttribute<HolidayRandomEventNPC?>("holiday-npc", null) == this) {
+            // Check if the NPC is associated with the player
             player.removeAttribute("holiday-npc")
+        }
     }
 
     abstract fun talkTo(npc: NPC)

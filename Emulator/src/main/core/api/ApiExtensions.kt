@@ -52,8 +52,11 @@ inline fun <reified T> Collection<T>.isLast(element: T): Boolean {
  */
 inline fun <reified T> Collection<T>.getNext(element: T): T {
     val idx = this.indexOf(element)
-    return if (idx < this.size - 1) this.elementAt(idx + 1)
-    else element
+    return if (idx < this.size - 1) {
+        this.elementAt(idx + 1)
+    } else {
+        element
+    }
 }
 
 /**
@@ -84,8 +87,11 @@ fun IntArray.isLast(element: Int): Boolean {
  */
 fun IntArray.getNext(element: Int): Int {
     val idx = this.indexOf(element)
-    return if (idx < this.size - 1) this.elementAt(idx + 1)
-    else element
+    return if (idx < this.size - 1) {
+        this.elementAt(idx + 1)
+    } else {
+        element
+    }
 }
 
 /**

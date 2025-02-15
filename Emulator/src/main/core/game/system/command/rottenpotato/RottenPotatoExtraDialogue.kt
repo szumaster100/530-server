@@ -11,8 +11,9 @@ import core.plugin.Initializable
 import core.tools.colorize
 
 @Initializable
-class RottenPotatoExtraDialogue(player: Player? = null) : Dialogue(player) {
-
+class RottenPotatoExtraDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     val ID = 38575794
     val AMEs = arrayOf("chicken", "Sandwich Lady", "tree spirit", "rick turpentine", "Genie")
     val BossIDs = arrayOf(50, 8350, 8133, 2745)
@@ -27,52 +28,59 @@ class RottenPotatoExtraDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
-
-            0 -> when (buttonId) {
-                // Send Player Notification
-                1 -> {
-                    end()
-                    sendInputDialogue(player, InputType.STRING_LONG, "Enter the notification message:") { value ->
-                        val message = value as String
-                        for (p in Repository.players) {
-                            p ?: continue
-                            p.packetDispatch.sendString(colorize("%Y${message.replace("_", " ").capitalize()}"), 754, 5)
+            0 ->
+                when (buttonId) {
+                    // Send Player Notification
+                    1 -> {
+                        end()
+                        sendInputDialogue(player, InputType.STRING_LONG, "Enter the notification message:") { value ->
+                            val message = value as String
+                            for (p in Repository.players) {
+                                p ?: continue
+                                p.packetDispatch.sendString(
+                                    colorize("%Y${message.replace("_", " ").capitalize()}"),
+                                    754,
+                                    5,
+                                )
+                            }
                         }
                     }
-                }
-                // Targeted AME
-                2 -> {
-                    options(*AMEs)
-                    stage = 100
-                }
+                    // Targeted AME
+                    2 -> {
+                        options(*AMEs)
+                        stage = 100
+                    }
 
-                // Boss Spawn menu
-                3 -> {
-                    options(*BossNames)
-                    stage = 200
-                }
+                    // Boss Spawn menu
+                    3 -> {
+                        options(*BossNames)
+                        stage = 200
+                    }
 
-                // Force Area NPC Chat
-                4 -> {
-                    end()
-                    sendInputDialogue(player, InputType.STRING_LONG, "Enter the chat message:") { value ->
-                        val msg = value as String
+                    // Force Area NPC Chat
+                    4 -> {
+                        end()
+                        sendInputDialogue(player, InputType.STRING_LONG, "Enter the chat message:") { value ->
+                            val msg = value as String
+                            RegionManager.getLocalNpcs(player).forEach {
+                                it.sendChat(msg)
+                            }
+                        }
+                    }
+
+                    // Kill all nearby NPCs
+                    5 -> {
+                        end()
                         RegionManager.getLocalNpcs(player).forEach {
-                            it.sendChat(msg)
+                            it.finalizeDeath(player)
                         }
                     }
                 }
-
-                // Kill all nearby NPCs
-                5 -> {
-                    end()
-                    RegionManager.getLocalNpcs(player).forEach {
-                        it.finalizeDeath(player)
-                    }
-                }
-            }
             // AME Spawning
             100 -> {
                 end()

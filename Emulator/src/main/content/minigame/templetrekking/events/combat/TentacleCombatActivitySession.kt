@@ -1,20 +1,23 @@
 package content.minigame.templetrekking.events.combat
 
 import content.minigame.templetrekking.TempleTrekking
+import core.api.MapArea
 import core.api.getAttribute
 import core.api.getRegionBorders
 import core.api.registerLogoutListener
 import core.api.setAttribute
 import core.game.node.entity.player.Player
 import core.game.world.map.Location
-import core.api.MapArea
 import core.game.world.map.build.DynamicRegion
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.map.zone.ZoneRestriction
 
-class TentacleCombatActivitySession(val activity: TentacleCombatActivity? = null) : MapArea {
+class TentacleCombatActivitySession(
+    val activity: TentacleCombatActivity? = null,
+) : MapArea {
     constructor(region: DynamicRegion, activity: TentacleCombatActivity) : this(activity) {
-        this.region = region; this.base = region.baseLocation
+        this.region = region
+        this.base = region.baseLocation
     }
 
     lateinit var region: DynamicRegion

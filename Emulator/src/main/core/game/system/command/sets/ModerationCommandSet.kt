@@ -4,6 +4,7 @@ import core.ServerConfig
 import core.ServerStore
 import core.ServerStore.Companion.addToList
 import core.api.sendMessage
+import core.auth.UserAccountInfo
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.info.Rights
 import core.game.system.command.CommandMapping
@@ -13,7 +14,6 @@ import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.game.world.repository.Repository
 import core.plugin.Initializable
-import core.auth.UserAccountInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -25,7 +25,6 @@ import kotlin.math.abs
 
 @Initializable
 class ModerationCommandSet : CommandSet(Privilege.MODERATOR) {
-
     override fun defineCommands() {
         val maxJailTime = 1800 // Max jail time (in seconds)
 
@@ -39,7 +38,12 @@ class ModerationCommandSet : CommandSet(Privilege.MODERATOR) {
             }
         }
 
-        define(name = "ban", privilege = Privilege.ADMIN, usage = "::ban <lt>USERNAME<gt> <lt>TIME<gt>", description = "Bans the user. Time format: <lt>INT<gt>d/s/m/h ex: 30d for 30 days.") { player, args ->
+        define(
+            name = "ban",
+            privilege = Privilege.ADMIN,
+            usage = "::ban <lt>USERNAME<gt> <lt>TIME<gt>",
+            description = "Bans the user. Time format: <lt>INT<gt>d/s/m/h ex: 30d for 30 days.",
+        ) { player, args ->
             val name = args[1]
             if (!GameWorld.accountStorage.checkUsernameTaken(name)) {
                 reject(player, "Invalid username: $name")
@@ -51,21 +55,26 @@ class ModerationCommandSet : CommandSet(Privilege.MODERATOR) {
             var durationMillis = 0L
             var durationUnit: TimeUnit = TimeUnit.NANOSECONDS
             for (token in durationTokens) {
-                if (token.toString().toIntOrNull() != null) intToken += token
-                else {
-                    val durationInt: Int = (intToken.toIntOrNull() ?: -1).also {
-                        if (it == -1) reject(
-                            player,
-                            "Invalid duration: $intToken"
-                        )
-                    }
-                    durationUnit = when (token) {
-                        'd' -> TimeUnit.DAYS
-                        's' -> TimeUnit.SECONDS
-                        'm' -> TimeUnit.MINUTES
-                        'h' -> TimeUnit.HOURS
-                        else -> TimeUnit.SECONDS
-                    }
+                if (token.toString().toIntOrNull() != null) {
+                    intToken += token
+                } else {
+                    val durationInt: Int =
+                        (intToken.toIntOrNull() ?: -1).also {
+                            if (it == -1) {
+                                reject(
+                                    player,
+                                    "Invalid duration: $intToken",
+                                )
+                            }
+                        }
+                    durationUnit =
+                        when (token) {
+                            'd' -> TimeUnit.DAYS
+                            's' -> TimeUnit.SECONDS
+                            'm' -> TimeUnit.MINUTES
+                            'h' -> TimeUnit.HOURS
+                            else -> TimeUnit.SECONDS
+                        }
                     durationMillis = durationUnit.toMillis(durationInt.toLong())
                 }
             }
@@ -80,13 +89,18 @@ class ModerationCommandSet : CommandSet(Privilege.MODERATOR) {
                         GameWorld.accountStorage.update(info)
                         return true
                     }
-                }
+                },
             )
 
             notify(player, "Banned user $name for $intToken ${durationUnit.name.lowercase()}.")
         }
 
-        define(name = "ipban", privilege = Privilege.ADMIN, usage = "::ipban <lt>IP<gt> <lt>TIME<gt>", description = "Bans all players on the given ip. Time format: <lt>INT<gt>d/s/m/h ex: 30d for 30 days.") { player, args ->
+        define(
+            name = "ipban",
+            privilege = Privilege.ADMIN,
+            usage = "::ipban <lt>IP<gt> <lt>TIME<gt>",
+            description = "Bans all players on the given ip. Time format: <lt>INT<gt>d/s/m/h ex: 30d for 30 days.",
+        ) { player, args ->
             val ip = args[1]
             val durationString = args[2]
             val durationTokens = durationString.toCharArray()
@@ -94,21 +108,26 @@ class ModerationCommandSet : CommandSet(Privilege.MODERATOR) {
             var durationMillis = 0L
             var durationUnit: TimeUnit = TimeUnit.NANOSECONDS
             for (token in durationTokens) {
-                if (token.toString().toIntOrNull() != null) intToken += token
-                else {
-                    val durationInt: Int = (intToken.toIntOrNull() ?: -1).also {
-                        if (it == -1) reject(
-                            player,
-                            "Invalid duration: $intToken"
-                        )
-                    }
-                    durationUnit = when (token) {
-                        'd' -> TimeUnit.DAYS
-                        's' -> TimeUnit.SECONDS
-                        'm' -> TimeUnit.MINUTES
-                        'h' -> TimeUnit.HOURS
-                        else -> TimeUnit.SECONDS
-                    }
+                if (token.toString().toIntOrNull() != null) {
+                    intToken += token
+                } else {
+                    val durationInt: Int =
+                        (intToken.toIntOrNull() ?: -1).also {
+                            if (it == -1) {
+                                reject(
+                                    player,
+                                    "Invalid duration: $intToken",
+                                )
+                            }
+                        }
+                    durationUnit =
+                        when (token) {
+                            'd' -> TimeUnit.DAYS
+                            's' -> TimeUnit.SECONDS
+                            'm' -> TimeUnit.MINUTES
+                            'h' -> TimeUnit.HOURS
+                            else -> TimeUnit.SECONDS
+                        }
                     durationMillis = durationUnit.toMillis(durationInt.toLong())
                 }
             }
@@ -130,7 +149,7 @@ class ModerationCommandSet : CommandSet(Privilege.MODERATOR) {
                             GameWorld.accountStorage.update(info)
                             return true
                         }
-                    }
+                    },
                 )
             }
 
@@ -139,7 +158,12 @@ class ModerationCommandSet : CommandSet(Privilege.MODERATOR) {
             notify(player, "Banned all accounts on $ip for $intToken ${durationUnit.name.lowercase()}.")
         }
 
-        define(name = "mute", privilege = Privilege.MODERATOR, usage = "::mute <lt>USERNAME<gt> <lt>TIME<gt>", description = "Mutes the user. Time format: <lt>INT<gt>d/s/m/h ex: 30d for 30 days.") { player, args ->
+        define(
+            name = "mute",
+            privilege = Privilege.MODERATOR,
+            usage = "::mute <lt>USERNAME<gt> <lt>TIME<gt>",
+            description = "Mutes the user. Time format: <lt>INT<gt>d/s/m/h ex: 30d for 30 days.",
+        ) { player, args ->
             val name = args[1]
             if (!GameWorld.accountStorage.checkUsernameTaken(name)) {
                 reject(player, "Invalid username: $name")
@@ -151,21 +175,26 @@ class ModerationCommandSet : CommandSet(Privilege.MODERATOR) {
             var durationMillis = 0L
             var durationUnit: TimeUnit = TimeUnit.NANOSECONDS
             for (token in durationTokens) {
-                if (token.toString().toIntOrNull() != null) intToken += token
-                else {
-                    val durationInt: Int = (intToken.toIntOrNull() ?: -1).also {
-                        if (it == -1) reject(
-                            player,
-                            "Invalid duration: $intToken"
-                        )
-                    }
-                    durationUnit = when (token) {
-                        'd' -> TimeUnit.DAYS
-                        's' -> TimeUnit.SECONDS
-                        'm' -> TimeUnit.MINUTES
-                        'h' -> TimeUnit.HOURS
-                        else -> TimeUnit.SECONDS
-                    }
+                if (token.toString().toIntOrNull() != null) {
+                    intToken += token
+                } else {
+                    val durationInt: Int =
+                        (intToken.toIntOrNull() ?: -1).also {
+                            if (it == -1) {
+                                reject(
+                                    player,
+                                    "Invalid duration: $intToken",
+                                )
+                            }
+                        }
+                    durationUnit =
+                        when (token) {
+                            'd' -> TimeUnit.DAYS
+                            's' -> TimeUnit.SECONDS
+                            'm' -> TimeUnit.MINUTES
+                            'h' -> TimeUnit.HOURS
+                            else -> TimeUnit.SECONDS
+                        }
                     durationMillis = durationUnit.toMillis(durationInt.toLong())
                 }
             }
@@ -180,14 +209,19 @@ class ModerationCommandSet : CommandSet(Privilege.MODERATOR) {
                             GameWorld.accountStorage.update(info)
                             return true
                         }
-                    }
+                    },
                 )
             }
 
             notify(player, "Muted user $name for $intToken ${durationUnit.name.lowercase()}.")
         }
 
-        define(name = "jail", privilege = Privilege.MODERATOR, usage = "::jail <lt>SECONDS<gt> <lt>USERNAME<gt>", description = "Sends the player to the jail cells in Varrock.") { player, args ->
+        define(
+            name = "jail",
+            privilege = Privilege.MODERATOR,
+            usage = "::jail <lt>SECONDS<gt> <lt>USERNAME<gt>",
+            description = "Sends the player to the jail cells in Varrock.",
+        ) { player, args ->
             if (args.size < 3) {
                 reject(player, "Usage: ::jail <seconds> <player>")
             }
@@ -215,6 +249,7 @@ class ModerationCommandSet : CommandSet(Privilege.MODERATOR) {
                 object : Pulse(3) {
                     val originalLoc = otherPlayer.location
                     val releaseTime = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(timeSeconds.toLong())
+
                     override fun pulse(): Boolean {
                         val done = System.currentTimeMillis() >= releaseTime
                         if (otherPlayer.location != Location.create(3228, 3407, 0)) {
@@ -225,11 +260,16 @@ class ModerationCommandSet : CommandSet(Privilege.MODERATOR) {
                         }
                         return done
                     }
-                }
+                },
             )
         }
 
-        define(name = "modcr", privilege = Privilege.MODERATOR, usage = "::modcr <lt>user_name<gt> <lt>amount<gt>", description = "Modifies user_name's credits by the given amount.") { player, args ->
+        define(
+            name = "modcr",
+            privilege = Privilege.MODERATOR,
+            usage = "::modcr <lt>user_name<gt> <lt>amount<gt>",
+            description = "Modifies user_name's credits by the given amount.",
+        ) { player, args ->
             val username = (args.getOrNull(1) ?: "").lowercase()
             val amount = args.getOrNull(2)?.toIntOrNull() ?: Integer.MIN_VALUE
 
@@ -244,8 +284,12 @@ class ModerationCommandSet : CommandSet(Privilege.MODERATOR) {
             }
 
             val p = Repository.getPlayerByName(username)
-            val info: UserAccountInfo = if (p == null) GameWorld.accountStorage.getAccountInfo(username)
-            else p.details.accountInfo
+            val info: UserAccountInfo =
+                if (p == null) {
+                    GameWorld.accountStorage.getAccountInfo(username)
+                } else {
+                    p.details.accountInfo
+                }
 
             if (info.isDefault()) {
                 reject(player, "The user you specified ($username) does not exist.")
@@ -253,18 +297,26 @@ class ModerationCommandSet : CommandSet(Privilege.MODERATOR) {
             }
 
             info.credits += amount
-            if (p == null) GameWorld.accountStorage.update(info)
-            else sendMessage(p, "You have been ${if (amount > 0) "granted" else "penalized"} ${abs(amount)} credit(s).")
+            if (p == null) {
+                GameWorld.accountStorage.update(info)
+            } else {
+                sendMessage(p, "You have been ${if (amount > 0) "granted" else "penalized"} ${abs(amount)} credit(s).")
+            }
 
             notify(
                 player,
                 "Updated $username's credits to ${info.credits} by ${if (amount > 0) "adding" else "removing"} ${
-                abs(amount)
-                }."
+                    abs(amount)
+                }.",
             )
         }
 
-        define(name = "csvmodcr", privilege = Privilege.ADMIN, usage = "::csvmodcr filename", description = "Awards credits based on a csv list from a file. Relative to data dir.") { player, args ->
+        define(
+            name = "csvmodcr",
+            privilege = Privilege.ADMIN,
+            usage = "::csvmodcr filename",
+            description = "Awards credits based on a csv list from a file. Relative to data dir.",
+        ) { player, args ->
             val filename = args.getOrNull(1) ?: ""
 
             if (filename.isEmpty()) {
@@ -295,7 +347,12 @@ class ModerationCommandSet : CommandSet(Privilege.MODERATOR) {
             }
         }
 
-        define(name = "getattribute", privilege = Privilege.ADMIN, usage = "::getattribute <lt>username<gt> <lt>attribute<gt>", description = "Gets the value of an attribute for a player.") { player, args ->
+        define(
+            name = "getattribute",
+            privilege = Privilege.ADMIN,
+            usage = "::getattribute <lt>username<gt> <lt>attribute<gt>",
+            description = "Gets the value of an attribute for a player.",
+        ) { player, args ->
             val username = args.getOrNull(1) ?: ""
             val attribute = args.getOrNull(2) ?: ""
             if (username.isEmpty() || attribute.isEmpty()) {

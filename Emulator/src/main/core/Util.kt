@@ -12,31 +12,32 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 
 object Util {
+    private val tens_names =
+        arrayOf("", " ten", " twenty", " thirty", " forty", " fifty", " sixty", " seventy", " eighty", " ninety")
 
-    private val tens_names = arrayOf("", " ten", " twenty", " thirty", " forty", " fifty", " sixty", " seventy", " eighty", " ninety")
-
-    val number_names: Array<String> = arrayOf(
-        "",
-        " one",
-        " two",
-        " three",
-        " four",
-        " five",
-        " six",
-        " seven",
-        " eight",
-        " nine",
-        " ten",
-        " eleven",
-        " twelve",
-        " thirteen",
-        " fourteen",
-        " fifteen",
-        " sixteen",
-        " seventeen",
-        " eighteen",
-        " nineteen"
-    )
+    val number_names: Array<String> =
+        arrayOf(
+            "",
+            " one",
+            " two",
+            " three",
+            " four",
+            " five",
+            " six",
+            " seven",
+            " eight",
+            " nine",
+            " ten",
+            " eleven",
+            " twelve",
+            " thirteen",
+            " fourteen",
+            " fifteen",
+            " sixteen",
+            " seventeen",
+            " eighteen",
+            " nineteen",
+        )
 
     val random: Random = Random()
 
@@ -51,18 +52,27 @@ object Util {
 
     @JvmStatic
     fun parseLocation(locString: String): Location {
-        val locTokens = Arrays.stream(locString.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
-            .map { s: String -> s.toInt() }
-            .collect(Collectors.toList())
+        val locTokens =
+            Arrays
+                .stream(locString.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
+                .map { s: String -> s.toInt() }
+                .collect(Collectors.toList())
         return Location(locTokens[0], locTokens[1], locTokens[2])
     }
 
     @JvmStatic
-    fun getTimeUnitString(count: Long, singular: String, plural: String): String {
+    fun getTimeUnitString(
+        count: Long,
+        singular: String,
+        plural: String,
+    ): String {
         return if (count == 1L) "$count $singular" else "$count $plural"
     }
 
-    fun random(random: Random, i: Int): Int {
+    fun random(
+        random: Random,
+        i: Int,
+    ): Int {
         return random.nextInt(i + 1)
     }
 
@@ -92,12 +102,21 @@ object Util {
         return capitalize(name)
     }
 
-    fun clamp(input: Double, min: Double, max: Double): Double {
+    fun clamp(
+        input: Double,
+        min: Double,
+        max: Double,
+    ): Double {
         return kotlin.math.max(kotlin.math.min(input, max), min)
     }
 
-    fun clamp(input: Int, min: Int, max: Int): Int {
-        return kotlin.math.max(kotlin.math.min(input.toDouble(), max.toDouble()), min.toDouble())
+    fun clamp(
+        input: Int,
+        min: Int,
+        max: Int,
+    ): Int {
+        return kotlin.math
+            .max(kotlin.math.min(input.toDouble(), max.toDouble()), min.toDouble())
             .toInt()
     }
 
@@ -116,24 +135,42 @@ object Util {
         return cal.time.time
     }
 
-    inline fun <T> findMatching(array: Array<T>, predicate: (T) -> Boolean): T? {
+    inline fun <T> findMatching(
+        array: Array<T>,
+        predicate: (T) -> Boolean,
+    ): T? {
         return array.firstOrNull(predicate)
     }
 
-    fun <T> getOrDefault(primary: T?, defaultValue: T): T {
+    fun <T> getOrDefault(
+        primary: T?,
+        defaultValue: T,
+    ): T {
         return primary ?: defaultValue
     }
 
-    fun random(random: Random, min: Int, max: Int): Int {
+    fun random(
+        random: Random,
+        min: Int,
+        max: Int,
+    ): Int {
         val n = abs((max - min).toDouble()).toInt()
         return (kotlin.math.min(min.toDouble(), max.toDouble()) + (if (n == 0) 0 else random(random, n))).toInt()
     }
 
-    fun random(min: Int, max: Int): Int {
+    fun random(
+        min: Int,
+        max: Int,
+    ): Int {
         return random(random, min, max)
     }
 
-    fun getDistance(coordX1: Int, coordY1: Int, coordX2: Int, coordY2: Int): Int {
+    fun getDistance(
+        coordX1: Int,
+        coordY1: Int,
+        coordX2: Int,
+        coordY2: Int,
+    ): Int {
         val deltaX = coordX2 - coordX1
         val deltaY = coordY2 - coordY1
         return (sqrt(deltaX.toDouble().pow(2.0) + deltaY.toDouble().pow(2.0)).toInt())
@@ -174,23 +211,26 @@ object Util {
         val millions = snumber.substring(3, 6).toInt()
         val hundredThousands = snumber.substring(6, 9).toInt()
         val thousands = snumber.substring(9, 12).toInt()
-        val tradBillions = when (billions) {
-            0 -> ""
-            1 -> convertLessThanOneThousand(billions) + " billion "
-            else -> convertLessThanOneThousand(billions) + " billion "
-        }
+        val tradBillions =
+            when (billions) {
+                0 -> ""
+                1 -> convertLessThanOneThousand(billions) + " billion "
+                else -> convertLessThanOneThousand(billions) + " billion "
+            }
         var result = tradBillions
-        val tradMillions = when (millions) {
-            0 -> ""
-            1 -> convertLessThanOneThousand(millions) + " million "
-            else -> convertLessThanOneThousand(millions) + " million "
-        }
+        val tradMillions =
+            when (millions) {
+                0 -> ""
+                1 -> convertLessThanOneThousand(millions) + " million "
+                else -> convertLessThanOneThousand(millions) + " million "
+            }
         result = result + tradMillions
-        val tradHundredThousands = when (hundredThousands) {
-            0 -> ""
-            1 -> "one thousand "
-            else -> convertLessThanOneThousand(hundredThousands) + " thousand "
-        }
+        val tradHundredThousands =
+            when (hundredThousands) {
+                0 -> ""
+                1 -> "one thousand "
+                else -> convertLessThanOneThousand(hundredThousands) + " thousand "
+            }
         result = result + tradHundredThousands
         val tradThousand = convertLessThanOneThousand(thousands)
         result = result + tradThousand
@@ -212,11 +252,17 @@ object Util {
         return NumberFormat.getNumberInstance().format(number.toDouble())
     }
 
-    fun equals(a: Any?, b: Any): Boolean {
+    fun equals(
+        a: Any?,
+        b: Any,
+    ): Boolean {
         return (a === b) || (a != null && a == b)
     }
 
-    fun round(value: Double, places: Int): Double {
+    fun round(
+        value: Double,
+        places: Int,
+    ): Double {
         require(places >= 0)
         try {
             var bd = BigDecimal(value)

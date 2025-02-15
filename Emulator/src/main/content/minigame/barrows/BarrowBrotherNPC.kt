@@ -1,6 +1,5 @@
 package content.minigame.barrows
 
-import org.rs.consts.NPCs
 import core.api.clearHintIcon
 import core.api.removeAttribute
 import core.game.node.entity.Entity
@@ -11,9 +10,13 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.HintIconManager
 import core.game.world.map.Location
 import core.tools.RandomFunction
+import org.rs.consts.NPCs
 
-class BarrowBrotherNPC(val player: Player, id: Int, location: Location?) : NPC(id, location) {
-
+class BarrowBrotherNPC(
+    val player: Player,
+    id: Int,
+    location: Location?,
+) : NPC(id, location) {
     override fun init() {
         super.init()
         super.setRespawn(false)

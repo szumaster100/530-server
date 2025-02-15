@@ -23,5 +23,5 @@ enum class AuthResponse {
     InvalidLoginServer,
     MovingWorld,
     ErrorLoadingProfile,
-    BannedUser
+    BannedUser,
 }

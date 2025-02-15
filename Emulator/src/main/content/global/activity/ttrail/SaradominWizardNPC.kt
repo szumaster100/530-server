@@ -1,6 +1,5 @@
 package content.global.activity.ttrail
 
-import org.rs.consts.NPCs
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.CombatStyle
 import core.game.node.entity.combat.CombatSwingHandler
@@ -13,9 +12,9 @@ import core.game.node.entity.player.link.SpellBookManager.SpellBook
 import core.game.world.map.Location
 import core.game.world.map.RegionManager.getSpawnLocation
 import core.plugin.Plugin
+import org.rs.consts.NPCs
 
 class SaradominWizardNPC : AbstractNPC {
-
     private var clueScroll: ClueScrollPlugin? = null
 
     var player: Player? = null
@@ -26,7 +25,11 @@ class SaradominWizardNPC : AbstractNPC {
         this.isRespawn = false
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return SaradominWizardNPC(id, location)
     }
 
@@ -69,7 +72,11 @@ class SaradominWizardNPC : AbstractNPC {
         return entity is Player && entity == player || super.canAttack(entity)
     }
 
-    override fun isAttackable(entity: Entity, style: CombatStyle, message: Boolean): Boolean {
+    override fun isAttackable(
+        entity: Entity,
+        style: CombatStyle,
+        message: Boolean,
+    ): Boolean {
         return entity is Player && entity == player || super.isAttackable(entity, style, message)
     }
 
@@ -87,9 +94,10 @@ class SaradominWizardNPC : AbstractNPC {
     }
 
     companion object {
-        private val COMBAT_HANDLER = MultiSwingHandler(
-            SwitchAttack(CombatStyle.MELEE).setUseHandler(true),
-            SwitchAttack(CombatStyle.MAGIC).setUseHandler(true)
-        )
+        private val COMBAT_HANDLER =
+            MultiSwingHandler(
+                SwitchAttack(CombatStyle.MELEE).setUseHandler(true),
+                SwitchAttack(CombatStyle.MAGIC).setUseHandler(true),
+            )
     }
 }

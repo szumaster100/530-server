@@ -1,8 +1,5 @@
 package content.region.asgarnia.quest.death.dialogue
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Quests
 import core.api.*
 import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
@@ -14,20 +11,25 @@ import core.game.node.item.Item
 import core.game.world.update.flag.context.Graphics
 import core.tools.END_DIALOGUE
 import core.tools.START_DIALOGUE
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Quests
 
 class HaroldDialogueFile : DialogueFile() {
-
     companion object {
         const val ATTRIBUTE_JUMPSTAGE = "deathplateau:jumpStage"
         const val ATTRIBUTE_HAROLD_MONEY = "/save:deathplateau:haroldMoney"
+
         fun resetNpc(player: Player) {
             setAttribute(player, ATTRIBUTE_JUMPSTAGE, 0)
             setAttribute(player, ATTRIBUTE_HAROLD_MONEY, 200)
         }
     }
 
-    override fun handle(componentID: Int, buttonID: Int) {
-
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         if (getAttribute(player!!, ATTRIBUTE_JUMPSTAGE, 0) != 0) {
             stage = getAttribute(player!!, ATTRIBUTE_JUMPSTAGE, 0)
             setAttribute(player!!, ATTRIBUTE_JUMPSTAGE, 0)
@@ -40,15 +42,17 @@ class HaroldDialogueFile : DialogueFile() {
                     1 -> npcl(FaceAnim.FRIENDLY, "Hi.").also { stage++ }
                     2 -> playerl(FaceAnim.FRIENDLY, "You're the guard that was on duty last night?").also { stage++ }
                     3 -> npcl(FaceAnim.FRIENDLY, "Yeah.").also { stage++ }
-                    4 -> playerl(
-                        FaceAnim.HAPPY,
-                        "Denulth said that you lost the combination to the equipment room?"
-                    ).also { stage++ }
+                    4 ->
+                        playerl(
+                            FaceAnim.HAPPY,
+                            "Denulth said that you lost the combination to the equipment room?",
+                        ).also { stage++ }
 
-                    5 -> npcl(FaceAnim.FRIENDLY, "I don't want to talk about it!").also {
-                        setQuestStage(player!!, Quests.DEATH_PLATEAU, 11)
-                        stage = END_DIALOGUE
-                    }
+                    5 ->
+                        npcl(FaceAnim.FRIENDLY, "I don't want to talk about it!").also {
+                            setQuestStage(player!!, Quests.DEATH_PLATEAU, 11)
+                            stage = END_DIALOGUE
+                        }
                 }
             }
 
@@ -79,7 +83,7 @@ class HaroldDialogueFile : DialogueFile() {
                             sendItemDialogue(
                                 player!!,
                                 Items.ASGARNIAN_ALE_1905,
-                                "You give Harold an Asgarnian Ale."
+                                "You give Harold an Asgarnian Ale.",
                             ).also { stage++ }
                             runTask(npc!!, 5) {
                                 npcl(FaceAnim.FRIENDLY, "Arrh. That hit the spot!").also {
@@ -95,48 +99,55 @@ class HaroldDialogueFile : DialogueFile() {
                 when (stage) {
                     START_DIALOGUE -> player(FaceAnim.FRIENDLY, "Hello there.").also { stage++ }
                     1 -> npc(FaceAnim.FRIENDLY, "Hi.").also { stage++ }
-                    2 -> showTopics(
-                        Topic(FaceAnim.ASKING, "Where were you when you last had the combination?", 10),
-                        Topic(FaceAnim.FRIENDLY, "Would you like to gamble?", 30),
-                        Topic(FaceAnim.FRIENDLY, "Can I buy you a drink?", 20)
-                    )
+                    2 ->
+                        showTopics(
+                            Topic(FaceAnim.ASKING, "Where were you when you last had the combination?", 10),
+                            Topic(FaceAnim.FRIENDLY, "Would you like to gamble?", 30),
+                            Topic(FaceAnim.FRIENDLY, "Can I buy you a drink?", 20),
+                        )
 
-                    10 -> npcl(
-                        FaceAnim.FRIENDLY,
-                        "I honestly don't know! I've looked everywhere. I've searched the castle and my room!"
-                    ).also { stage++ }
+                    10 ->
+                        npcl(
+                            FaceAnim.FRIENDLY,
+                            "I honestly don't know! I've looked everywhere. I've searched the castle and my room!",
+                        ).also { stage++ }
 
-                    11 -> playerl(
-                        FaceAnim.ASKING,
-                        "Have you tried looking between here and the castle?"
-                    ).also { stage++ }
+                    11 ->
+                        playerl(
+                            FaceAnim.ASKING,
+                            "Have you tried looking between here and the castle?",
+                        ).also { stage++ }
 
                     12 -> npcl(FaceAnim.FRIENDLY, "Yeah, I tried that.").also { stage++ }
                     13 -> npcl(FaceAnim.FRIENDLY, "I need another beer.").also { stage = END_DIALOGUE }
-                    20 -> npcl(
-                        FaceAnim.FRIENDLY,
-                        "Sounds good! I normally drink Asgarnian Ale but you know what?"
-                    ).also { stage++ }
+                    20 ->
+                        npcl(
+                            FaceAnim.FRIENDLY,
+                            "Sounds good! I normally drink Asgarnian Ale but you know what?",
+                        ).also { stage++ }
 
                     21 -> playerl(FaceAnim.ASKING, "What?").also { stage++ }
-                    22 -> npc(
-                        FaceAnim.FRIENDLY,
-                        "I really fancy one of those Blurberry Specials. I never",
-                        "get over to the Gnome Stronghold so I haven't had one",
-                        "for ages!"
-                    ).also { stage++ }
+                    22 ->
+                        npc(
+                            FaceAnim.FRIENDLY,
+                            "I really fancy one of those Blurberry Specials. I never",
+                            "get over to the Gnome Stronghold so I haven't had one",
+                            "for ages!",
+                        ).also { stage++ }
 
                     23 -> {
-                        if (removeItem(player!!, Item(Items.BLURBERRY_SPECIAL_2064, 1)) || removeItem(
+                        if (removeItem(player!!, Item(Items.BLURBERRY_SPECIAL_2064, 1)) ||
+                            removeItem(
                                 player!!,
-                                Item(Items.BLURBERRY_SPECIAL_9520, 1)
-                            ) || removeItem(player!!, Item(Items.PREMADE_BLURB_SP_2028, 1))
+                                Item(Items.BLURBERRY_SPECIAL_9520, 1),
+                            ) ||
+                            removeItem(player!!, Item(Items.PREMADE_BLURB_SP_2028, 1))
                         ) {
                             sendMessage(player!!, "You give Harold a Blurberry Special.")
                             sendItemDialogue(
                                 player!!,
                                 Items.BLURBERRY_SPECIAL_2064,
-                                "You give Harold a Blurberry Special."
+                                "You give Harold a Blurberry Special.",
                             ).also { stage++ }
                         } else {
                             player(FaceAnim.FRIENDLY, "I'll go and get you one.").also { stage = END_DIALOGUE }
@@ -154,7 +165,7 @@ class HaroldDialogueFile : DialogueFile() {
                                 visualize(
                                     npc!!,
                                     2770,
-                                    Graphics(80, 96)
+                                    Graphics(80, 96),
                                 )
                                 runTask(npc!!, 6) {
                                     npc(FaceAnim.DRUNK, "Now THAT hit the spot!").also {
@@ -170,10 +181,11 @@ class HaroldDialogueFile : DialogueFile() {
                         }
                     }
 
-                    30 -> npcl(
-                        FaceAnim.FRIENDLY,
-                        "Good. Good. I have some dice. How much do you want to offer?"
-                    ).also { stage++ }
+                    30 ->
+                        npcl(
+                            FaceAnim.FRIENDLY,
+                            "Good. Good. I have some dice. How much do you want to offer?",
+                        ).also { stage++ }
 
                     31 -> {
                         sendInputDialogue(player!!, true, "Enter amount:") { value ->
@@ -184,11 +196,12 @@ class HaroldDialogueFile : DialogueFile() {
                             } else if (wagerAmount > 1000) {
                                 npcl(
                                     FaceAnim.FRIENDLY,
-                                    "Woah! Do you think I'm made of money? Max bet is 1000 gold."
+                                    "Woah! Do you think I'm made of money? Max bet is 1000 gold.",
                                 ).also { stage = END_DIALOGUE }
-                            } else if (!inInventory(player!!, Items.COINS_995) || amountInInventory(
+                            } else if (!inInventory(player!!, Items.COINS_995) ||
+                                amountInInventory(
                                     player!!,
-                                    Items.COINS_995
+                                    Items.COINS_995,
                                 ) < value
                             ) {
                                 sendMessage(player!!, "You do not have that much money!").also { stage = END_DIALOGUE }
@@ -200,10 +213,11 @@ class HaroldDialogueFile : DialogueFile() {
                         }
                     }
 
-                    32 -> npcl(
-                        FaceAnim.FRIENDLY,
-                        "Don't forget that once I start my roll you can't back out of the bet! If you do you lose your stake!"
-                    ).also { stage++ }
+                    32 ->
+                        npcl(
+                            FaceAnim.FRIENDLY,
+                            "Don't forget that once I start my roll you can't back out of the bet! If you do you lose your stake!",
+                        ).also { stage++ }
 
                     33 -> {
                         end()
@@ -223,7 +237,6 @@ class HaroldDialogueFile : DialogueFile() {
                         val wager = getAttribute(player!!, "deathplateau:wager", 0)
                         val haroldAmount = getAttribute(player!!, ATTRIBUTE_HAROLD_MONEY, 0)
                         if (getAttribute(player!!, "deathplateau:winstate", false)) {
-
                             if (wager > haroldAmount) {
                                 npcl(FaceAnim.FRIENDLY, "Oh dear, I seem to have run out of money!").also { stage++ }
                             } else {
@@ -234,11 +247,10 @@ class HaroldDialogueFile : DialogueFile() {
                                 sendItemDialogue(
                                     player!!,
                                     Items.COINS_6964,
-                                    "Harold has given you your winnings!"
+                                    "Harold has given you your winnings!",
                                 ).also { stage = END_DIALOGUE }
                             }
                         } else {
-
                             end()
                             setAttribute(player!!, ATTRIBUTE_HAROLD_MONEY, haroldAmount + wager)
                             sendItemDialogue(player!!, Items.COINS_6964, "You give Harold his winnings.").also {
@@ -248,17 +260,18 @@ class HaroldDialogueFile : DialogueFile() {
                     }
 
                     35 -> npcl(FaceAnim.FRIENDLY, "Here's what I have.").also { stage++ }
-                    36 -> sendItemDialogue(
-                        player!!,
-                        Items.COINS_6964,
-                        "Harold has given you some of your winnings!"
-                    ).also {
-                        sendMessage(player!!, "Harold has given you some of your winnings!")
-                        val haroldAmount = getAttribute(player!!, ATTRIBUTE_HAROLD_MONEY, 200)
-                        setAttribute(player!!, ATTRIBUTE_HAROLD_MONEY, 0)
-                        addItemOrDrop(player!!, Items.COINS_995, haroldAmount)
-                        stage++
-                    }
+                    36 ->
+                        sendItemDialogue(
+                            player!!,
+                            Items.COINS_6964,
+                            "Harold has given you some of your winnings!",
+                        ).also {
+                            sendMessage(player!!, "Harold has given you some of your winnings!")
+                            val haroldAmount = getAttribute(player!!, ATTRIBUTE_HAROLD_MONEY, 200)
+                            setAttribute(player!!, ATTRIBUTE_HAROLD_MONEY, 0)
+                            addItemOrDrop(player!!, Items.COINS_995, haroldAmount)
+                            stage++
+                        }
 
                     37 -> npcl(FaceAnim.FRIENDLY, "I'll write you out an IOU for the rest.").also { stage++ }
                     38 -> {
@@ -269,7 +282,7 @@ class HaroldDialogueFile : DialogueFile() {
                         sendItemDialogue(
                             player!!,
                             Items.IOU_3103,
-                            "Harold has given you an IOU scribbled on some paper."
+                            "Harold has given you an IOU scribbled on some paper.",
                         )
                     }
                 }
@@ -279,11 +292,12 @@ class HaroldDialogueFile : DialogueFile() {
                 when (stage) {
                     START_DIALOGUE -> player(FaceAnim.FRIENDLY, "Hello there.").also { stage++ }
                     1 -> npc(FaceAnim.DRUNK, "'Ello matey!'").also { stage++ }
-                    2 -> showTopics(
-                        Topic(FaceAnim.THINKING, "Where were you when you last had the combination?", 10),
-                        Topic(FaceAnim.FRIENDLY, "Would you like to gamble?", 20),
-                        Topic(FaceAnim.FRIENDLY, "Can I buy you a drink?", 15)
-                    )
+                    2 ->
+                        showTopics(
+                            Topic(FaceAnim.THINKING, "Where were you when you last had the combination?", 10),
+                            Topic(FaceAnim.FRIENDLY, "Would you like to gamble?", 20),
+                            Topic(FaceAnim.FRIENDLY, "Can I buy you a drink?", 15),
+                        )
 
                     10 -> npc(FaceAnim.DRUNK, "Hmm...!").also { stage++ }
                     11 -> npc(FaceAnim.DRUNK, "Er...!").also { stage++ }
@@ -305,9 +319,10 @@ class HaroldDialogueFile : DialogueFile() {
                                 npcl(FaceAnim.DRUNK, "Eashy tiger! Max bet ish 1000 coinsh.").also {
                                     stage = END_DIALOGUE
                                 }
-                            } else if (!inInventory(player!!, Items.COINS_995) || amountInInventory(
+                            } else if (!inInventory(player!!, Items.COINS_995) ||
+                                amountInInventory(
                                     player!!,
-                                    Items.COINS_995
+                                    Items.COINS_995,
                                 ) < value
                             ) {
                                 sendMessage(player!!, "You do not have that much money!").also { stage = END_DIALOGUE }
@@ -340,7 +355,7 @@ class HaroldDialogueFile : DialogueFile() {
                     30 -> {
                         sendDialogue(
                             player!!,
-                            "Harold is so drunk he can hardly see, let alone count!"
+                            "Harold is so drunk he can hardly see, let alone count!",
                         ).also { stage++ }
                         npc!!.isWalks = true
                         sendMessage(player!!, "Harold is so drunk he can hardly see, let alone count!")
@@ -380,7 +395,7 @@ class HaroldDialogueFile : DialogueFile() {
                         sendItemDialogue(
                             player!!,
                             Items.IOU_3103,
-                            "Harold has given you an IOU scribbled on some paper."
+                            "Harold has given you an IOU scribbled on some paper.",
                         ).also { stage = END_DIALOGUE }
                     }
                 }
@@ -388,13 +403,14 @@ class HaroldDialogueFile : DialogueFile() {
 
             15 -> {
                 when (stage) {
-                    START_DIALOGUE -> npcl(FaceAnim.FRIENDLY, "Hi.").also {
-                        if (inInventory(player!!, Items.IOU_3103)) {
-                            stage = 5
-                        } else {
-                            stage++
+                    START_DIALOGUE ->
+                        npcl(FaceAnim.FRIENDLY, "Hi.").also {
+                            if (inInventory(player!!, Items.IOU_3103)) {
+                                stage = 5
+                            } else {
+                                stage++
+                            }
                         }
-                    }
 
                     1 -> playerl(FaceAnim.FRIENDLY, "I've lost the IOU you gave me.").also { stage++ }
                     2 -> npcl(FaceAnim.FRIENDLY, "I'll write you another.").also { stage++ }
@@ -404,26 +420,29 @@ class HaroldDialogueFile : DialogueFile() {
                         sendItemDialogue(
                             player!!,
                             Items.IOU_3103,
-                            "Harold has given you an IOU scribbled on some paper."
+                            "Harold has given you an IOU scribbled on some paper.",
                         ).also { stage = END_DIALOGUE }
                     }
 
                     5 -> npc(FaceAnim.FRIENDLY, "Hi.").also { stage++ }
-                    6 -> showTopics(
-                        Topic(FaceAnim.ASKING, "Where were you when you last had the combination?", 10),
-                        Topic(FaceAnim.FRIENDLY, "Would you like to gamble?", 30),
-                        Topic(FaceAnim.FRIENDLY, "Can I buy you a drink?", 20)
-                    )
+                    6 ->
+                        showTopics(
+                            Topic(FaceAnim.ASKING, "Where were you when you last had the combination?", 10),
+                            Topic(FaceAnim.FRIENDLY, "Would you like to gamble?", 30),
+                            Topic(FaceAnim.FRIENDLY, "Can I buy you a drink?", 20),
+                        )
 
-                    10 -> npcl(
-                        FaceAnim.FRIENDLY,
-                        "I honestly don't know! I've looked everywhere. I've searched the castle and my room!"
-                    ).also { stage++ }
+                    10 ->
+                        npcl(
+                            FaceAnim.FRIENDLY,
+                            "I honestly don't know! I've looked everywhere. I've searched the castle and my room!",
+                        ).also { stage++ }
 
-                    11 -> playerl(
-                        FaceAnim.ASKING,
-                        "Have you tried looking between here and the castle?"
-                    ).also { stage++ }
+                    11 ->
+                        playerl(
+                            FaceAnim.ASKING,
+                            "Have you tried looking between here and the castle?",
+                        ).also { stage++ }
 
                     12 -> npcl(FaceAnim.HALF_GUILTY, "Yeah, I tried that.").also { stage++ }
                     13 -> npcl(FaceAnim.HALF_GUILTY, "I need another beer.").also { stage = END_DIALOGUE }
@@ -439,7 +458,7 @@ class HaroldDialogueFile : DialogueFile() {
                             sendItemDialogue(
                                 player!!,
                                 Items.ASGARNIAN_ALE_1905,
-                                "You give Harold an Asgarnian Ale."
+                                "You give Harold an Asgarnian Ale.",
                             ).also { stage++ }
                             animate(npc!!, Animations.EAT_OLD_829)
                             runTask(npc!!, 5) {
@@ -454,13 +473,16 @@ class HaroldDialogueFile : DialogueFile() {
 
             in 16..29 -> {
                 when (stage) {
-                    START_DIALOGUE -> npcl(FaceAnim.FRIENDLY, "Hi.").also {
-                        if (inInventory(player!!, Items.COMBINATION_3102) || inInventory(player!!, Items.IOU_3103)) {
-                            stage = 5
-                        } else {
-                            stage++
+                    START_DIALOGUE ->
+                        npcl(FaceAnim.FRIENDLY, "Hi.").also {
+                            if (inInventory(player!!, Items.COMBINATION_3102) ||
+                                inInventory(player!!, Items.IOU_3103)
+                            ) {
+                                stage = 5
+                            } else {
+                                stage++
+                            }
                         }
-                    }
 
                     1 -> playerl(FaceAnim.FRIENDLY, "I've lost the IOU you gave me.").also { stage++ }
                     2 -> npcl(FaceAnim.FRIENDLY, "I'll write you another.").also { stage++ }
@@ -470,26 +492,29 @@ class HaroldDialogueFile : DialogueFile() {
                         sendItemDialogue(
                             player!!,
                             Items.COMBINATION_3102,
-                            "Harold has given you the IOU, which you know is the combination."
+                            "Harold has given you the IOU, which you know is the combination.",
                         ).also { stage = END_DIALOGUE }
                     }
 
                     5 -> npc(FaceAnim.FRIENDLY, "Hi.").also { stage++ }
-                    6 -> showTopics(
-                        Topic(FaceAnim.ASKING, "Where were you when you last had the combination?", 10),
-                        Topic(FaceAnim.FRIENDLY, "Would you like to gamble?", 30),
-                        Topic(FaceAnim.FRIENDLY, "Can I buy you a drink?", 20)
-                    )
+                    6 ->
+                        showTopics(
+                            Topic(FaceAnim.ASKING, "Where were you when you last had the combination?", 10),
+                            Topic(FaceAnim.FRIENDLY, "Would you like to gamble?", 30),
+                            Topic(FaceAnim.FRIENDLY, "Can I buy you a drink?", 20),
+                        )
 
-                    10 -> npcl(
-                        FaceAnim.FRIENDLY,
-                        "I honestly don't know! I've looked everywhere. I've searched the castle and my room!"
-                    ).also { stage++ }
+                    10 ->
+                        npcl(
+                            FaceAnim.FRIENDLY,
+                            "I honestly don't know! I've looked everywhere. I've searched the castle and my room!",
+                        ).also { stage++ }
 
-                    11 -> playerl(
-                        FaceAnim.ASKING,
-                        "Have you tried looking between here and the castle?"
-                    ).also { stage++ }
+                    11 ->
+                        playerl(
+                            FaceAnim.ASKING,
+                            "Have you tried looking between here and the castle?",
+                        ).also { stage++ }
 
                     12 -> npcl(FaceAnim.FRIENDLY, "Yeah, I tried that.").also { stage++ }
                     13 -> npcl(FaceAnim.FRIENDLY, "I need another beer.").also { stage = END_DIALOGUE }
@@ -506,7 +531,7 @@ class HaroldDialogueFile : DialogueFile() {
                             sendItemDialogue(
                                 player!!,
                                 Items.ASGARNIAN_ALE_1905,
-                                "You give Harold an Asgarnian Ale."
+                                "You give Harold an Asgarnian Ale.",
                             ).also { stage++ }
                             runTask(npc!!, 5) {
                                 npcl(FaceAnim.FRIENDLY, "Arrh. That hit the spot!").also { stage = END_DIALOGUE }

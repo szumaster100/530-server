@@ -10,12 +10,15 @@ import core.plugin.Initializable
 
 @Initializable
 class AnimationCommandSet : CommandSet(Privilege.ADMIN) {
-
     private var npcs: List<NPC> = ArrayList()
 
     override fun defineCommands() {
-
-        define(name = "anim", privilege = Privilege.ADMIN, usage = "::anim <lt>Animation ID<gt>", description = "Plays the animation with the given ID.") { player, args ->
+        define(
+            name = "anim",
+            privilege = Privilege.ADMIN,
+            usage = "::anim <lt>Animation ID<gt>",
+            description = "Plays the animation with the given ID.",
+        ) { player, args ->
             if (args.size < 2) {
                 reject(player, "Syntax error: ::anim <Animation ID>")
             }
@@ -23,7 +26,12 @@ class AnimationCommandSet : CommandSet(Privilege.ADMIN) {
             player.animate(animation)
         }
 
-        define(name = "loopanim", privilege = Privilege.ADMIN, usage = "::loopanim <lt>Animation ID<gt> <lt>Times<gt>", description = "Plays the animation with the given ID the given number of times") { player, args ->
+        define(
+            name = "loopanim",
+            privilege = Privilege.ADMIN,
+            usage = "::loopanim <lt>Animation ID<gt> <lt>Times<gt>",
+            description = "Plays the animation with the given ID the given number of times",
+        ) { player, args ->
             if (args.size < 2) {
                 reject(player, "Syntax error: ::loopanim <Animation ID> <Loop Amount>")
             }
@@ -36,28 +44,37 @@ class AnimationCommandSet : CommandSet(Privilege.ADMIN) {
             GameWorld.Pulser.submit(
                 object : Pulse(3, player) {
                     var id = start
+
                     override fun pulse(): Boolean {
                         player.animate(Animation.create(id))
                         return ++id >= end
                     }
-                }
+                },
             )
         }
 
-        define(name = "ranim", privilege = Privilege.ADMIN, usage = "::ranim <lt>Render Anim ID<gt>", description = "Sets the player's render (walk/idle) animation.") { player, args ->
+        define(
+            name = "ranim",
+            privilege = Privilege.ADMIN,
+            usage = "::ranim <lt>Render Anim ID<gt>",
+            description = "Sets the player's render (walk/idle) animation.",
+        ) { player, args ->
             if (args.size < 2) {
                 reject(player, "Syntax error: ::ranim <Render Animation ID>")
             }
             if (args.size > 2) {
-                GameWorld.Pulser.submit(object : Pulse(3, player) {
-                    var id = args[1].toInt()
-                    override fun pulse(): Boolean {
-                        player.appearance.setAnimations(Animation.create(id))
-                        player.appearance.sync()
-                        player.sendChat("Current: $id")
-                        return ++id >= args[2].toInt()
-                    }
-                })
+                GameWorld.Pulser.submit(
+                    object : Pulse(3, player) {
+                        var id = args[1].toInt()
+
+                        override fun pulse(): Boolean {
+                            player.appearance.setAnimations(Animation.create(id))
+                            player.appearance.sync()
+                            player.sendChat("Current: $id")
+                            return ++id >= args[2].toInt()
+                        }
+                    },
+                )
             } else {
                 try {
                     player.appearance.setAnimations(Animation.create(args[1].toInt()))
@@ -68,7 +85,12 @@ class AnimationCommandSet : CommandSet(Privilege.ADMIN) {
             }
         }
 
-        define(name = "resetanim", privilege = Privilege.ADMIN, usage = "::resetanim", description = "Resets the player's render (walk/idle) animation to default.") { player, _ ->
+        define(
+            name = "resetanim",
+            privilege = Privilege.ADMIN,
+            usage = "::resetanim",
+            description = "Resets the player's render (walk/idle) animation to default.",
+        ) { player, _ ->
             player.appearance.prepareBodyData(player)
             player.appearance.setDefaultAnimations()
             player.appearance.setAnimations()

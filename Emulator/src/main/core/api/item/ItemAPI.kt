@@ -21,7 +21,10 @@ fun itemDefinition(id: Int): ItemDefinition {
  * @param ids The ids of the items to check for in the inventory.
  * @return True if all specified items are present in the inventory, otherwise false.
  */
-fun allInInventory(player: Player, vararg ids: Int): Boolean {
+fun allInInventory(
+    player: Player,
+    vararg ids: Int,
+): Boolean {
     return ids.all { id ->
         inInventory(player, id)
     }

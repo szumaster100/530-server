@@ -6,7 +6,10 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class PatchTests {
-    init { TestUtils.preTestSetup() }
+    init {
+        TestUtils.preTestSetup()
+    }
+
     @Test fun patchGettingDiseasedOrDyingShouldNotGoIntoInvalidState() {
         // Dead/Watered (state | 0x40) and Diseased (state | 0x80) are both invalid stages for limpwurt when fully grown (stage 4/state 32), so we use this as our testcase
         // specifically, limpwurt has an issue when the patch is ONLY watered (state | 0x40) OR diseased (state | 0x80), having both (state | 0x40 | 0x80) is fine.

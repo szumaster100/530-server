@@ -1,11 +1,10 @@
 package content.region.desert.quest.deserttreasure.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
-import core.api.event.applyPoison
 import content.region.desert.quest.deserttreasure.DesertTreasure
 import core.api.*
+import core.api.MapArea
+import core.api.event.applyPoison
+import core.api.quest.getQuestStage
 import core.game.dialogue.DialogueFile
 import core.game.dialogue.FaceAnim
 import core.game.dialogue.Topic
@@ -18,26 +17,27 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
 import core.game.world.map.Location
-import core.api.MapArea
-import core.api.quest.getQuestStage
 import core.game.world.map.zone.ZoneBorders
 import core.tools.END_DIALOGUE
 import core.tools.RandomFunction
 import core.tools.START_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 class DiamondOfShadowListener : InteractionListener {
-
     companion object {
-
         fun roll(player: Player): Boolean {
-
             val chance = RandomFunction.randomDouble(1.0, 100.0)
             val successChance = RandomFunction.getSkillSuccessChance(52.0, 128.0, getDynLevel(player, Skills.THIEVING))
 
             return chance < successChance
         }
 
-        fun pickAttempt(player: Player, picklockItem: Item?) {
+        fun pickAttempt(
+            player: Player,
+            picklockItem: Item?,
+        ) {
             queueScript(player, 0, QueueStrength.SOFT) { stage: Int ->
                 when (stage) {
                     0 -> {
@@ -123,7 +123,6 @@ class DiamondOfShadowListener : InteractionListener {
     }
 
     override fun defineListeners() {
-
         on(Scenery.LADDER_6561, SCENERY, "climb-down") { player, node ->
             teleport(player, Location(2630, 5072))
             return@on true
@@ -132,12 +131,11 @@ class DiamondOfShadowListener : InteractionListener {
         onEquip(Items.RING_OF_VISIBILITY_4657) { player, _ ->
 
             if ((
-                        DesertTreasure.getSubStage(player, DesertTreasure.attributeShadowStage) >= 3 &&
-                                getQuestStage(player, DesertTreasure.questName) >= 9
-                        ) ||
+                    DesertTreasure.getSubStage(player, DesertTreasure.attributeShadowStage) >= 3 &&
+                        getQuestStage(player, DesertTreasure.questName) >= 9
+                ) ||
                 getQuestStage(player, DesertTreasure.questName) >= 10
             ) {
-
                 setVarbit(player, DesertTreasure.varbitSmokeDungeonLadder, 1)
                 return@onEquip true
             }
@@ -156,37 +154,43 @@ class DiamondOfShadowListener : InteractionListener {
                     openDialogue(
                         player,
                         object : DialogueFile() {
-                            override fun handle(componentID: Int, buttonID: Int) {
+                            override fun handle(
+                                componentID: Int,
+                                buttonID: Int,
+                            ) {
                                 when (stage) {
-                                    START_DIALOGUE -> dialogue(
-                                        "Your skill as a thief allows you to see some kind of elaborate booby",
-                                        "trapped locking mechanism on this chest."
-                                    ).also { stage++ }
+                                    START_DIALOGUE ->
+                                        dialogue(
+                                            "Your skill as a thief allows you to see some kind of elaborate booby",
+                                            "trapped locking mechanism on this chest.",
+                                        ).also { stage++ }
 
-                                    1 -> showTopics(
-                                        Topic(FaceAnim.NEUTRAL, "Yes", 2, true),
-                                        Topic(FaceAnim.NEUTRAL, "No", END_DIALOGUE, true),
-                                        title = "Try to open the chest?"
-                                    )
+                                    1 ->
+                                        showTopics(
+                                            Topic(FaceAnim.NEUTRAL, "Yes", 2, true),
+                                            Topic(FaceAnim.NEUTRAL, "No", END_DIALOGUE, true),
+                                            title = "Try to open the chest?",
+                                        )
 
-                                    2 -> end().also {
-                                        if (inInventory(player, Items.LOCKPICK_1523)) {
-                                            pickAttempt(player, null)
-                                        } else {
-                                            sendMessage(player, "You need a lockpick in order to attempt this.")
+                                    2 ->
+                                        end().also {
+                                            if (inInventory(player, Items.LOCKPICK_1523)) {
+                                                pickAttempt(player, null)
+                                            } else {
+                                                sendMessage(player, "You need a lockpick in order to attempt this.")
+                                            }
                                         }
-                                    }
                                 }
                             }
-                        }
+                        },
                     )
                 } else {
                     sendMessage(player, "You need a lockpick in order to attempt this.")
                 }
             } else if ((
-                        DesertTreasure.getSubStage(player, DesertTreasure.attributeShadowStage) >= 2 &&
-                                getQuestStage(player, DesertTreasure.questName) >= 9
-                        ) ||
+                    DesertTreasure.getSubStage(player, DesertTreasure.attributeShadowStage) >= 2 &&
+                        getQuestStage(player, DesertTreasure.questName) >= 9
+                ) ||
                 getQuestStage(player, DesertTreasure.questName) >= 10
             ) {
                 if (inInventory(player, Items.GILDED_CROSS_4674)) {
@@ -206,9 +210,9 @@ class DiamondOfShadowListener : InteractionListener {
             if (DesertTreasure.getSubStage(player, DesertTreasure.attributeShadowStage) == 1) {
                 pickAttempt(player, used as Item)
             } else if ((
-                        DesertTreasure.getSubStage(player, DesertTreasure.attributeShadowStage) >= 2 &&
-                                getQuestStage(player, DesertTreasure.questName) >= 9
-                        ) ||
+                    DesertTreasure.getSubStage(player, DesertTreasure.attributeShadowStage) >= 2 &&
+                        getQuestStage(player, DesertTreasure.questName) >= 9
+                ) ||
                 getQuestStage(player, DesertTreasure.questName) >= 10
             ) {
                 sendMessage(player, "The chest is unlocked.")

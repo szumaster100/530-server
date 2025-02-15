@@ -1,20 +1,24 @@
 package content.region.kandarin.quest.grandtree.dialogue
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
-import core.api.quest.getQuestStage
 import core.api.openDialogue
+import core.api.quest.getQuestStage
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class ShipyardWorkerDialogue(player: Player? = null) : Dialogue(player) {
-
-    override fun handle(componentID: Int, buttonID: Int): Boolean {
+class ShipyardWorkerDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ): Boolean {
         when (stage) {
             0 ->
                 if (getQuestStage(player, Quests.THE_GRAND_TREE) == 55) {

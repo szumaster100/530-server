@@ -18,8 +18,8 @@ class SeedlingGrowth : PersistTimer(1, "farming:seedling", isSoft = true) {
             Seedling(
                 seedling,
                 System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(5),
-                seedling + if (seedling > 5400) 8 else 6
-            )
+                seedling + if (seedling > 5400) 8 else 6,
+            ),
         )
     }
 
@@ -37,8 +37,9 @@ class SeedlingGrowth : PersistTimer(1, "farming:seedling", isSoft = true) {
                     removeList.add(seed)
                 } else {
                     val inBank = player.bank.get(Item(seed.id))
-                    if (inBank == null) removeList.add(seed)
-                    else {
+                    if (inBank == null) {
+                        removeList.add(seed)
+                    } else {
                         player.bank.remove(Item(inBank.id, 1))
                         player.bank.add(Item(seed.sapling))
                         removeList.add(seed)
@@ -50,7 +51,10 @@ class SeedlingGrowth : PersistTimer(1, "farming:seedling", isSoft = true) {
         return seedlings.isNotEmpty()
     }
 
-    override fun save(root: JSONObject, entity: Entity) {
+    override fun save(
+        root: JSONObject,
+        entity: Entity,
+    ) {
         val seedArray = JSONArray()
         for (s in seedlings) {
             val seed = JSONObject()
@@ -62,7 +66,10 @@ class SeedlingGrowth : PersistTimer(1, "farming:seedling", isSoft = true) {
         root.put("seedlings", seedArray)
     }
 
-    override fun parse(root: JSONObject, entity: Entity) {
+    override fun parse(
+        root: JSONObject,
+        entity: Entity,
+    ) {
         (root["seedlings"] as JSONArray).forEach {
             val s = it as JSONObject
             val id = s["id"].toString().toInt()

@@ -1,12 +1,11 @@
 package content.global.skill.construction.decoration.skillhall
 
-import org.rs.consts.Scenery
 import core.api.openDialogue
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.Scenery
 
 class HeadTrophyListener : InteractionListener {
-
     override fun defineListeners() {
         on(Scenery.CRAWLING_HAND_13481, IntType.SCENERY, "talk-to") { player, node ->
             openDialogue(player, CrawlingHeadDialogue(), node)

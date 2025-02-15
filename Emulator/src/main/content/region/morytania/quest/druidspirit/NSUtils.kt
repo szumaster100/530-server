@@ -1,7 +1,5 @@
 package content.region.morytania.quest.druidspirit
 
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import content.region.morytania.handlers.npc.GhastNPC
 import core.api.*
 import core.game.node.entity.player.Player
@@ -10,9 +8,10 @@ import core.game.system.task.Pulse
 import core.game.world.map.RegionManager
 import core.game.world.update.flag.context.Graphics
 import core.tools.RandomFunction
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 
 object NSUtils {
-
     fun flagFungusPlaced(player: Player) {
         setAttribute(player, "/save:ns:fungus_placed", true)
     }
@@ -38,21 +37,24 @@ object NSUtils {
     }
 
     fun incrementGhastKC(player: Player) {
-
         setAttribute(player, "/save:ns:ghasts_killed", getGhastKC(player) + 1)
-        val msg = when (getGhastKC(player)) {
-            1 -> "That's one down, two more to go."
-            2 -> "Two down, only one more to go."
-            3 -> "That's it! I've killed all 3 Ghasts!"
-            else -> ""
-        }
+        val msg =
+            when (getGhastKC(player)) {
+                1 -> "That's one down, two more to go."
+                2 -> "Two down, only one more to go."
+                3 -> "That's it! I've killed all 3 Ghasts!"
+                else -> ""
+            }
 
         if (!msg.isEmpty()) {
             sendMessage(player, msg)
         }
     }
 
-    fun activatePouch(player: Player, attacker: GhastNPC): Boolean {
+    fun activatePouch(
+        player: Player,
+        attacker: GhastNPC,
+    ): Boolean {
         var shouldAddEmptyPouch = false
         val pouchAmt = amountInInventory(player, Items.DRUID_POUCH_2958)
         if (pouchAmt == 1) shouldAddEmptyPouch = true
@@ -64,22 +66,26 @@ object NSUtils {
             submitWorldPulse(
                 object : Pulse() {
                     var ticks = 0
+
                     override fun pulse(): Boolean {
                         when (ticks++) {
-                            2 -> visualize(
-                                attacker,
-                                -1,
-                                Graphics(org.rs.consts.Graphics.FIRST_CONTACT_GOES_WITH_ABOVE_269, 125)
-                            )
+                            2 ->
+                                visualize(
+                                    attacker,
+                                    -1,
+                                    Graphics(org.rs.consts.Graphics.FIRST_CONTACT_GOES_WITH_ABOVE_269, 125),
+                                )
 
-                            3 -> attacker.transform(attacker.id + 1).also {
-                                attacker.attack(player); attacker.setAttribute("woke", getWorldTicks())
-                                return true
-                            }
+                            3 ->
+                                attacker.transform(attacker.id + 1).also {
+                                    attacker.attack(player)
+                                    attacker.setAttribute("woke", getWorldTicks())
+                                    return true
+                                }
                         }
                         return false
                     }
-                }
+                },
             )
             return true
         }
@@ -132,7 +138,10 @@ object NSUtils {
         playAudio(player, Sounds.CAST_BLOOM_1493)
         val aroundPlayer = player.location.surroundingTiles
         for (location in aroundPlayer) {
-            player.packetDispatch.sendGlobalPositionGraphic(org.rs.consts.Graphics.SMALLS_STARS_SILVER_SICKLEB_263, location)
+            player.packetDispatch.sendGlobalPositionGraphic(
+                org.rs.consts.Graphics.SMALLS_STARS_SILVER_SICKLEB_263,
+                location,
+            )
         }
     }
 }

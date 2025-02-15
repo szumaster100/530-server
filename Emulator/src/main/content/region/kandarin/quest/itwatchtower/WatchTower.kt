@@ -2,7 +2,6 @@ package content.region.kandarin.quest.itwatchtower
 
 import core.api.*
 import core.api.quest.getQuestStage
-import org.rs.consts.Vars
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
@@ -10,36 +9,44 @@ import core.plugin.Initializable
 import org.rs.consts.Components
 import org.rs.consts.Items
 import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class WatchTower : Quest(Quests.WATCHTOWER, 131, 130, 4, Vars.VARP_QUEST_WATCHTOWER_PROGRESS_212, 0, 1, 13) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 12
 
-        if(stage == 0) {
+        if (stage == 0) {
             line(player, "I can start this quest by speaing to the !!Watchtower??", line++)
             line(player, "!!wizard?? on the top floor of Yanille's !!Watchtower??.", line++)
             line++
             line(player, "To complete this quest I need:", line++)
-            line(player, "!!Level 14 Magic??", line++,   getStatLevel(player, Skills.MAGIC) >= 14)
-            line(player, "!!Level 40 Mining??", line++,  getStatLevel(player, Skills.MINING) >= 40)
-            line(player, "!!Level 14 Herblore??", line++,getStatLevel(player, Skills.HERBLORE) >= 14)
-            line(player, "!!Level 15 Thieving??", line++,getStatLevel(player, Skills.THIEVING) >= 15)
+            line(player, "!!Level 14 Magic??", line++, getStatLevel(player, Skills.MAGIC) >= 14)
+            line(player, "!!Level 40 Mining??", line++, getStatLevel(player, Skills.MINING) >= 40)
+            line(player, "!!Level 14 Herblore??", line++, getStatLevel(player, Skills.HERBLORE) >= 14)
+            line(player, "!!Level 15 Thieving??", line++, getStatLevel(player, Skills.THIEVING) >= 15)
             line(player, "!!Level 25 Agility??", line++, getStatLevel(player, Skills.AGILITY) >= 25)
             line(player, "The north west guard wants a sign of !!friendship??.", line++)
             line++
         }
 
-        if(stage >= 1) {
+        if (stage >= 1) {
             line(player, "I accepted the challenge of finding the lost crystals.", line++)
             line++
         }
 
-        if(inInventory(player, Items.FINGERNAILS_2384)) {
+        if (inInventory(player, Items.FINGERNAILS_2384)) {
             line(player, "I found some fingernails as evidence.", line++, getQuestStage(player, Quests.WATCHTOWER) >= 2)
-            line(player, "I should take them to the Watchtower wizard.", line++, getQuestStage(player, Quests.WATCHTOWER) >= 2)
+            line(
+                player,
+                "I should take them to the Watchtower wizard.",
+                line++,
+                getQuestStage(player, Quests.WATCHTOWER) >= 2,
+            )
             line++
         }
 
@@ -83,11 +90,10 @@ class WatchTower : Quest(Quests.WATCHTOWER, 131, 130, 4, Vars.VARP_QUEST_WATCHTO
     override fun newInstance(`object`: Any?): Quest {
         return this
     }
-
 }
-//4 quest points
-//15,250 Magic experience
-//5,000 coins
-//A spell scroll, which will teach you how to use the Watchtower Teleport spell
-//Access to Gu'Tanoth and the Ogre Enclave
-//2 Treasure Hunter keys (Ironman accounts will not receive these)
+// 4 quest points
+// 15,250 Magic experience
+// 5,000 coins
+// A spell scroll, which will teach you how to use the Watchtower Teleport spell
+// Access to Gu'Tanoth and the Ogre Enclave
+// 2 Treasure Hunter keys (Ironman accounts will not receive these)

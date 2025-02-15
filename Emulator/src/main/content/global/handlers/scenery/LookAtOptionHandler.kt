@@ -10,7 +10,6 @@ import core.plugin.Plugin
 
 @Initializable
 class LookAtOptionHandler : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         for (i in 18877..18900) {
             SceneryDefinition.forId(i).handlers["option:look at"] = this
@@ -18,7 +17,11 @@ class LookAtOptionHandler : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         sendMessage(player, "The " + node.name.lowercase() + " seem to be going south-west.")
         return true
     }

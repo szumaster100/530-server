@@ -48,25 +48,33 @@ object ClassScanner {
         scanResults = ClassGraph().enableClassInfo().enableAnnotationInfo().scan()
     }
 
-	@JvmStatic
-	fun loadPureInterfaces() {
+    @JvmStatic
+    fun loadPureInterfaces() {
         try {
             loadContentInterfacesFrom(scanResults)
             logStartup("Loaded $amountLoaded content interfaces.")
         } catch (t: Throwable) {
-            log(this::class.java, Log.ERR,  "Error initializing Plugins -> " + t.localizedMessage + " for file -> " + lastLoaded)
+            log(
+                this::class.java,
+                Log.ERR,
+                "Error initializing Plugins -> " + t.localizedMessage + " for file -> " + lastLoaded,
+            )
             t.printStackTrace()
         } catch (e: Exception) {
-            log(this::class.java, Log.ERR,  "Error initializing Plugins -> " + e.localizedMessage + " for file -> " + lastLoaded)
+            log(
+                this::class.java,
+                Log.ERR,
+                "Error initializing Plugins -> " + e.localizedMessage + " for file -> " + lastLoaded,
+            )
             e.printStackTrace()
         }
     }
 
-    fun loadTimers () {
-        scanResults.getSubclasses ("core.game.system.timer.RSTimer").filter { !it.isAbstract }.forEach {
+    fun loadTimers() {
+        scanResults.getSubclasses("core.game.system.timer.RSTimer").filter { !it.isAbstract }.forEach {
             try {
                 val clazz = it.loadClass().newInstance() as RSTimer
-                TimerRegistry.registerTimer (clazz)
+                TimerRegistry.registerTimer(clazz)
             } catch (e: Exception) {
                 log(this::class.java, Log.ERR, "Error registering timer instance: ${it.simpleName}")
                 e.printStackTrace()
@@ -78,50 +86,57 @@ object ClassScanner {
         scanResults.getClassesImplementing("core.api.ContentInterface").filter { !it.isAbstract }.forEach {
             try {
                 val clazz = it.loadClass().newInstance()
-                if(clazz is WorldEvent) {
+                if (clazz is WorldEvent) {
                     if (!clazz.checkActive(ServerConfig.STARTUP_MOMENT)) return@forEach
                     WorldEvents.add(clazz)
                 }
-                if(clazz is LoginListener) GameWorld.loginListeners.add(clazz)
-                if(clazz is LogoutListener) GameWorld.logoutListeners.add(clazz)
-                if(clazz is TickListener) GameWorld.tickListeners.add(clazz)
-                if(clazz is StartupListener) GameWorld.startupListeners.add(clazz)
-                if(clazz is ShutdownListener) GameWorld.shutdownListeners.add(clazz)
-                if(clazz is PersistWorld) GameWorld.worldPersists.add(clazz)
-                if(clazz is InteractionListener) clazz.defineListeners().also { clazz.defineDestinationOverrides() }
-                if(clazz is InterfaceListener) clazz.defineInterfaceListeners()
-                if(clazz is Commands) clazz.defineCommands()
-                if(clazz is NPCBehavior) NPCBehavior.register(clazz.ids, clazz)
-                if(clazz is PersistPlayer) {
+                if (clazz is LoginListener) GameWorld.loginListeners.add(clazz)
+                if (clazz is LogoutListener) GameWorld.logoutListeners.add(clazz)
+                if (clazz is TickListener) GameWorld.tickListeners.add(clazz)
+                if (clazz is StartupListener) GameWorld.startupListeners.add(clazz)
+                if (clazz is ShutdownListener) GameWorld.shutdownListeners.add(clazz)
+                if (clazz is PersistWorld) GameWorld.worldPersists.add(clazz)
+                if (clazz is InteractionListener) clazz.defineListeners().also { clazz.defineDestinationOverrides() }
+                if (clazz is InterfaceListener) clazz.defineInterfaceListeners()
+                if (clazz is Commands) clazz.defineCommands()
+                if (clazz is NPCBehavior) NPCBehavior.register(clazz.ids, clazz)
+                if (clazz is PersistPlayer) {
                     PlayerSaver.contentHooks.add(clazz)
                     PlayerSaveParser.contentHooks.add(clazz)
                 }
-                if(clazz is MapArea)
-                {
-                    val zone = object : MapZone(clazz.javaClass.simpleName + "MapArea", true, *clazz.getRestrictions()){
-                        override fun enter(e: Entity?): Boolean {
-                            clazz.areaEnter(e ?: return super.enter(null))
-                            return super.enter(e)
-                        }
+                if (clazz is MapArea) {
+                    val zone =
+                        object : MapZone(clazz.javaClass.simpleName + "MapArea", true, *clazz.getRestrictions()) {
+                            override fun enter(e: Entity?): Boolean {
+                                clazz.areaEnter(e ?: return super.enter(null))
+                                return super.enter(e)
+                            }
 
-                        override fun leave(e: Entity?, logout: Boolean): Boolean {
-                            clazz.areaLeave(e ?: return super.leave(null, logout), logout)
-                            return super.leave(e, logout)
-                        }
+                            override fun leave(
+                                e: Entity?,
+                                logout: Boolean,
+                            ): Boolean {
+                                clazz.areaLeave(e ?: return super.leave(null, logout), logout)
+                                return super.leave(e, logout)
+                            }
 
-                        override fun move(e: Entity?, from: Location?, to: Location?): Boolean {
-                            if(e != null && from != null && to != null) clazz.entityStep(e, to, from)
-                            return super.move(e, from, to)
+                            override fun move(
+                                e: Entity?,
+                                from: Location?,
+                                to: Location?,
+                            ): Boolean {
+                                if (e != null && from != null && to != null) clazz.entityStep(e, to, from)
+                                return super.move(e, from, to)
+                            }
                         }
-                    }
-                    for(border in clazz.defineAreaBorders()) zone.register(border)
+                    for (border in clazz.defineAreaBorders()) zone.register(border)
                     ZoneBuilder.configure(zone)
-                    log(this::class.java, Log.FINE,  "Configured zone: ${clazz.javaClass.simpleName + "MapArea"}")
+                    log(this::class.java, Log.FINE, "Configured zone: ${clazz.javaClass.simpleName + "MapArea"}")
                     MapArea.zoneMaps[clazz.javaClass.simpleName + "MapArea"] = zone
                 }
                 amountLoaded++
             } catch (e: Exception) {
-                log(this::class.java, Log.ERR,  "Error loading content: ${it.simpleName}, ${e.localizedMessage}")
+                log(this::class.java, Log.ERR, "Error loading content: ${it.simpleName}, ${e.localizedMessage}")
                 e.printStackTrace()
             }
         }
@@ -135,31 +150,54 @@ object ClassScanner {
     }
 
     private fun loadPluginsFrom(scanResults: ScanResult) {
-        scanResults.getClassesWithAnnotation("core.plugin.Initializable").forEach(Consumer { p: ClassInfo ->
-            try {
-                val clazz = p.loadClass().getDeclaredConstructor().newInstance()
-                if (clazz is Plugin<*>) {
-                    definePlugin(clazz)
-                }
-            } catch (t: Throwable) {
-                log(this::class.java, Log.ERR,  "Failed to load plugin ${p.name}.")
+        scanResults.getClassesWithAnnotation("core.plugin.Initializable").forEach(
+            Consumer { p: ClassInfo ->
+                try {
+                    val clazz = p.loadClass().getDeclaredConstructor().newInstance()
+                    if (clazz is Plugin<*>) {
+                        definePlugin(clazz)
+                    }
+                } catch (t: Throwable) {
+                    log(this::class.java, Log.ERR, "Failed to load plugin ${p.name}.")
 
-                if (t is NoSuchMethodException && p.superclass.simpleName == core.game.dialogue.Dialogue::class.simpleName) {
-                    log(this::class.java, Log.ERR, 
-                        "Make sure the constructor signature matches " +
-                        "`${p.simpleName}(player: Player? = null) : Dialogue(player)'."
-                    )
-                }
+                    if (t is NoSuchMethodException &&
+                        p.superclass.simpleName == core.game.dialogue.Dialogue::class.simpleName
+                    ) {
+                        log(
+                            this::class.java,
+                            Log.ERR,
+                            "Make sure the constructor signature matches " +
+                                "`${p.simpleName}(player: Player? = null) : Dialogue(player)'.",
+                        )
+                    }
 
-                t.printStackTrace()
-            }
-        })
+                    t.printStackTrace()
+                }
+            },
+        )
 
         scanResults.getClassesWithAnnotation("core.game.bots.PlayerCompatible").forEach { res ->
-            val description = res.getAnnotationInfo("core.game.bots.ScriptDescription").parameterValues[0].value as Array<String>
-            val identifier = res.getAnnotationInfo("core.game.bots.ScriptIdentifier").parameterValues[0].value.toString()
-            val name = res.getAnnotationInfo("core.game.bots.ScriptName").parameterValues[0].value.toString()
-            PlayerScripts.identifierMap[identifier] = PlayerScripts.PlayerScript(identifier, description, name, res.loadClass())
+            val description =
+                res
+                    .getAnnotationInfo(
+                        "core.game.bots.ScriptDescription",
+                    ).parameterValues[0]
+                    .value as Array<String>
+            val identifier =
+                res
+                    .getAnnotationInfo(
+                        "core.game.bots.ScriptIdentifier",
+                    ).parameterValues[0]
+                    .value
+                    .toString()
+            val name =
+                res
+                    .getAnnotationInfo("core.game.bots.ScriptName")
+                    .parameterValues[0]
+                    .value
+                    .toString()
+            PlayerScripts.identifierMap[identifier] =
+                PlayerScripts.PlayerScript(identifier, description, name, res.loadClass())
         }
     }
 

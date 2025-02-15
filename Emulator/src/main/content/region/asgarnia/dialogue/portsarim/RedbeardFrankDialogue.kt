@@ -1,7 +1,5 @@
 package content.region.asgarnia.dialogue.portsarim
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.setAttribute
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
@@ -14,10 +12,13 @@ import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class RedbeardFrankDialogue(player: Player? = null) : Dialogue(player) {
-
+class RedbeardFrankDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     private var replacementReward = false
     private val level = 0
     private var quest: Quest? = null
@@ -31,10 +32,16 @@ class RedbeardFrankDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
-                if (quest!!.getStage(player) == 20 && !player.inventory.containsItem(KEY) && !player.bank.containsItem(KEY)) {
+                if (quest!!.getStage(player) == 20 &&
+                    !player.inventory.containsItem(KEY) &&
+                    !player.bank.containsItem(KEY)
+                ) {
                     player("I seem to have lost my chest key...")
                     stage = 700
                     return true
@@ -44,51 +51,58 @@ class RedbeardFrankDialogue(player: Player? = null) : Dialogue(player) {
                     stage = 20
                 }
                 if (quest!!.getStage(player) == 0) {
-                    options("I'm in search of treasure.", "Arr!", "Do you have anything for trade?", "Tell me about the Falador Achievement Diary.")
+                    options(
+                        "I'm in search of treasure.",
+                        "Arr!",
+                        "Do you have anything for trade?",
+                        "Tell me about the Falador Achievement Diary.",
+                    )
                     stage = 11
                 }
                 options("Arr!", "Do you have anything for trade?", "Tell me about the Falador Achievement Diary.")
                 stage = 10
             }
 
-            10 -> when (buttonId) {
-                1 -> {
-                    player("Arr!")
-                    stage = 12
+            10 ->
+                when (buttonId) {
+                    1 -> {
+                        player("Arr!")
+                        stage = 12
+                    }
+
+                    2 -> {
+                        player("Do you have anything for trade?")
+                        stage = 13
+                    }
+
+                    3 -> {
+                        player("Tell me about the Falador Achievement Diary.")
+                        stage = 80
+                    }
                 }
 
-                2 -> {
-                    player("Do you have anything for trade?")
-                    stage = 13
-                }
+            11 ->
+                when (buttonId) {
+                    1 -> {
+                        player("I'm in search of treasure.")
+                        stage = 40
+                    }
 
-                3 -> {
-                    player("Tell me about the Falador Achievement Diary.")
-                    stage = 80
-                }
-            }
+                    2 -> {
+                        player("Arr!")
+                        stage = 12
+                    }
 
-            11 -> when (buttonId) {
-                1 -> {
-                    player("I'm in search of treasure.")
-                    stage = 40
-                }
+                    3 -> {
+                        player("Do you have anything for trade?")
+                        stage = 13
+                    }
 
-                2 -> {
-                    player("Arr!")
-                    stage = 12
+                    4 -> {
+                        player("Tell me about the Falador Achievement Diary.")
+                        stage = 80
+                    }
                 }
-
-                3 -> {
-                    player("Do you have anything for trade?")
-                    stage = 13
-                }
-
-                4 -> {
-                    player("Tell me about the Falador Achievement Diary.")
-                    stage = 80
-                }
-            }
 
             12 -> {
                 npc("Arr!")
@@ -120,7 +134,12 @@ class RedbeardFrankDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             23 -> {
-                npc("The Customs office has been clampin' down on the", "export of spirits. You seem like a resourceful young lad,", "I'm sure ye'll be able to find a way to slip the stuff past", "them.")
+                npc(
+                    "The Customs office has been clampin' down on the",
+                    "export of spirits. You seem like a resourceful young lad,",
+                    "I'm sure ye'll be able to find a way to slip the stuff past",
+                    "them.",
+                )
                 stage = 24
             }
 
@@ -131,31 +150,46 @@ class RedbeardFrankDialogue(player: Player? = null) : Dialogue(player) {
 
             999 -> end()
             31 -> {
-                npc("Now a deal's a deal, I'll tell ye about the treasure. I", "used to serve under a pirate captain called One-Eyed", "Hector.")
+                npc(
+                    "Now a deal's a deal, I'll tell ye about the treasure. I",
+                    "used to serve under a pirate captain called One-Eyed",
+                    "Hector.",
+                )
                 stage = 32
             }
 
             32 -> {
-                npc("Hector were very successful and became very rich.", "But about a year ago we were boarded by the Customs", "and Excise Agents.")
+                npc(
+                    "Hector were very successful and became very rich.",
+                    "But about a year ago we were boarded by the Customs",
+                    "and Excise Agents.",
+                )
                 stage = 33
             }
 
             33 -> {
-                npc("Hector were killed along with many of the crew, I were", "one of the few to escape and I escaped with this.")
+                npc(
+                    "Hector were killed along with many of the crew, I were",
+                    "one of the few to escape and I escaped with this.",
+                )
                 stage = 34
             }
 
-            34 -> if (player.inventory.remove(KARAMJAN_RUM)) {
-                if (!player.inventory.add(KEY)) {
-                    GroundItemManager.create(KEY, player)
+            34 ->
+                if (player.inventory.remove(KARAMJAN_RUM)) {
+                    if (!player.inventory.add(KEY)) {
+                        GroundItemManager.create(KEY, player)
+                    }
+                    quest!!.setStage(player, 20)
+                    interpreter.sendItemMessage(KEY.id, "Frank happily takes the rum... ... and hands you a key")
+                    stage = 35
                 }
-                quest!!.setStage(player, 20)
-                interpreter.sendItemMessage(KEY.id, "Frank happily takes the rum... ... and hands you a key")
-                stage = 35
-            }
 
             35 -> {
-                npc("This be Hector's key. I believe it opens his chest in his", "old room in the Blue Moon Inn in Varrock.")
+                npc(
+                    "This be Hector's key. I believe it opens his chest in his",
+                    "old room in the Blue Moon Inn in Varrock.",
+                )
                 stage = 36
             }
 
@@ -170,7 +204,10 @@ class RedbeardFrankDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             40 -> {
-                npc("Arr, treasure you be after eh? Well I might be able to", "tell you where to find some... For a price...")
+                npc(
+                    "Arr, treasure you be after eh? Well I might be able to",
+                    "tell you where to find some... For a price...",
+                )
                 stage = 41
             }
 
@@ -194,18 +231,19 @@ class RedbeardFrankDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 45
             }
 
-            45 -> when (buttonId) {
-                1 -> {
-                    quest!!.start(player)
-                    player("Ok, I will bring you some rum.")
-                    stage = 47
-                }
+            45 ->
+                when (buttonId) {
+                    1 -> {
+                        quest!!.start(player)
+                        player("Ok, I will bring you some rum.")
+                        stage = 47
+                    }
 
-                2 -> {
-                    player("Not right now.")
-                    stage = 46
+                    2 -> {
+                        player("Not right now.")
+                        stage = 46
+                    }
                 }
-            }
 
             46 -> {
                 npc("Fair enough. I'll still be here and thirsty whenever you", "feel like helpin' out.")
@@ -223,7 +261,12 @@ class RedbeardFrankDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             49 -> {
-                npc("The Customs office has been clampin' down on the", "export of spirits. You seem like a resourceful young lad,", "I'm sure ye'll be able to find a way to slip the stuff past", "them.")
+                npc(
+                    "The Customs office has been clampin' down on the",
+                    "export of spirits. You seem like a resourceful young lad,",
+                    "I'm sure ye'll be able to find a way to slip the stuff past",
+                    "them.",
+                )
                 stage = 50
             }
 
@@ -269,22 +312,23 @@ class RedbeardFrankDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 91
             }
 
-            91 -> when (buttonId) {
-                1 -> {
-                    player("I've come for my reward.")
-                    stage = 200
-                }
+            91 ->
+                when (buttonId) {
+                    1 -> {
+                        player("I've come for my reward.")
+                        stage = 200
+                    }
 
-                2 -> {
-                    player("I'm doing good.")
-                    stage = 220
-                }
+                    2 -> {
+                        player("I'm doing good.")
+                        stage = 220
+                    }
 
-                3 -> {
-                    player("I have a question.")
-                    stage = 105
+                    3 -> {
+                        player("I have a question.")
+                        stage = 105
+                    }
                 }
-            }
 
             100 -> {
                 player("Er... I guess.")
@@ -292,7 +336,11 @@ class RedbeardFrankDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             101 -> {
-                npc("Arrr! That's the spirit! Soon ye'll be exploring", "underground caverns, sailin' the high seas and", "plundering booty!")
+                npc(
+                    "Arrr! That's the spirit! Soon ye'll be exploring",
+                    "underground caverns, sailin' the high seas and",
+                    "plundering booty!",
+                )
                 stage = 102
             }
 
@@ -313,79 +361,107 @@ class RedbeardFrankDialogue(player: Player? = null) : Dialogue(player) {
 
             105 ->
                 if (!Diary.hasClaimedLevelRewards(player, DiaryType.FALADOR, level)) {
-                    options("What is the Achievement Diary?", "What are the rewards?", "How do I claim the rewards?", "See you later.")
+                    options(
+                        "What is the Achievement Diary?",
+                        "What are the rewards?",
+                        "How do I claim the rewards?",
+                        "See you later.",
+                    )
                     stage = 106
                 } else {
-                    options("Can you remind me what my Falador shield does, please?", "What is the Achievement Diary?", "What are the rewards?", "How do I claim the rewards?", "See you later.")
+                    options(
+                        "Can you remind me what my Falador shield does, please?",
+                        "What is the Achievement Diary?",
+                        "What are the rewards?",
+                        "How do I claim the rewards?",
+                        "See you later.",
+                    )
                     stage = 107
                 }
 
-            106 -> when (buttonId) {
-                1 -> {
-                    player("What is the Achievement Diary?")
-                    stage = 110
+            106 ->
+                when (buttonId) {
+                    1 -> {
+                        player("What is the Achievement Diary?")
+                        stage = 110
+                    }
+
+                    2 -> {
+                        player("What are the rewards?")
+                        stage = 120
+                    }
+
+                    3 -> {
+                        player("How do I claim the rewards?")
+                        stage = 130
+                    }
+
+                    4 -> {
+                        player("See you later.")
+                        stage = 999
+                    }
                 }
 
-                2 -> {
-                    player("What are the rewards?")
-                    stage = 120
-                }
+            107 ->
+                when (buttonId) {
+                    1 -> {
+                        player("Can you remind me what my Falador shield does, please?")
+                        stage = 150
+                    }
 
-                3 -> {
-                    player("How do I claim the rewards?")
-                    stage = 130
-                }
+                    2 -> {
+                        player("What is the Achievement Diary?")
+                        stage = 110
+                    }
 
-                4 -> {
-                    player("See you later.")
-                    stage = 999
-                }
-            }
+                    3 -> {
+                        player("What are the rewards?")
+                        stage = 120
+                    }
 
-            107 -> when (buttonId) {
-                1 -> {
-                    player("Can you remind me what my Falador shield does, please?")
-                    stage = 150
-                }
+                    4 -> {
+                        player("How do I claim the rewards?")
+                        stage = 130
+                    }
 
-                2 -> {
-                    player("What is the Achievement Diary?")
-                    stage = 110
+                    5 -> {
+                        player("See you later.")
+                        stage = 999
+                    }
                 }
-
-                3 -> {
-                    player("What are the rewards?")
-                    stage = 120
-                }
-
-                4 -> {
-                    player("How do I claim the rewards?")
-                    stage = 130
-                }
-
-                5 -> {
-                    player("See you later.")
-                    stage = 999
-                }
-            }
 
             110 -> {
-                npc("Ah, well it's a diary that helps you keep track of", "particular achievements you've made here on", "Gielinor.")
+                npc(
+                    "Ah, well it's a diary that helps you keep track of",
+                    "particular achievements you've made here on",
+                    "Gielinor.",
+                )
                 stage = 111
             }
 
             111 -> {
-                npc("If you manage to complete a particular set of tasks,", "you will be rewarded for your explorative efforts.")
+                npc(
+                    "If you manage to complete a particular set of tasks,",
+                    "you will be rewarded for your explorative efforts.",
+                )
                 stage = 112
             }
 
             112 -> {
-                npc("You can access your Achievement Diary by going to", "the Quest Journal, then clicking on the green star icon", "in the top-right hand corner.")
+                npc(
+                    "You can access your Achievement Diary by going to",
+                    "the Quest Journal, then clicking on the green star icon",
+                    "in the top-right hand corner.",
+                )
                 stage = 105
             }
 
             120 -> {
-                npc("Ah, well there are different rewards for each", "Achievement Diary. For completing each stage of the", "Falador diary, you are presented with a Falador shield.")
+                npc(
+                    "Ah, well there are different rewards for each",
+                    "Achievement Diary. For completing each stage of the",
+                    "Falador diary, you are presented with a Falador shield.",
+                )
                 stage = 121
             }
 
@@ -400,37 +476,63 @@ class RedbeardFrankDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             130 -> {
-                npc("You need to complete all of the tasks in a particular", "difficulty, then you can claim your reward.")
+                npc(
+                    "You need to complete all of the tasks in a particular",
+                    "difficulty, then you can claim your reward.",
+                )
                 stage = 131
             }
 
             131 -> {
-                npc("Some of Falador's tasks are simple, some will require", "certain skill levels, and some might require quests to be", "started or completed.")
+                npc(
+                    "Some of Falador's tasks are simple, some will require",
+                    "certain skill levels, and some might require quests to be",
+                    "started or completed.",
+                )
                 stage = 132
             }
 
             132 -> {
-                npc("To claim your Falador Achievement Diary rewards,", "speak to the chemist in Rimmington, Sir Vyvin's squire", "in the White Knight's Castle, or myself.")
+                npc(
+                    "To claim your Falador Achievement Diary rewards,",
+                    "speak to the chemist in Rimmington, Sir Vyvin's squire",
+                    "in the White Knight's Castle, or myself.",
+                )
                 stage = 105
             }
 
             150 -> {
-                npc("This is the first stage fo the Falador shield: a buckler. It", "grants you access to a Prayer restore ability and an", "emote.")
+                npc(
+                    "This is the first stage fo the Falador shield: a buckler. It",
+                    "grants you access to a Prayer restore ability and an",
+                    "emote.",
+                )
                 stage = 151
             }
 
             151 -> {
-                npc("Each of these features can be triggered while wielding", "the shield by selecting the 'Operate' option. The Prayer", "restore can also be activated from your inventory.")
+                npc(
+                    "Each of these features can be triggered while wielding",
+                    "the shield by selecting the 'Operate' option. The Prayer",
+                    "restore can also be activated from your inventory.",
+                )
                 stage = 152
             }
 
             152 -> {
-                npc("The Prayer restore ability can only be used once per", "day, and gives you back a quarter of your Prayer", "points.")
+                npc(
+                    "The Prayer restore ability can only be used once per",
+                    "day, and gives you back a quarter of your Prayer",
+                    "points.",
+                )
                 stage = 153
             }
 
             153 -> {
-                npc("As well as all of these features, the shield is pretty", "handy in combat, and gives you a small Prayer boost.")
+                npc(
+                    "As well as all of these features, the shield is pretty",
+                    "handy in combat, and gives you a small Prayer boost.",
+                )
                 stage = 105
             }
 
@@ -460,23 +562,38 @@ class RedbeardFrankDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             203 -> {
-                npc("This is the first stage of the Falador shield: a buckler. It", "grants you access to a Prayer restore ability and an", "emote.")
+                npc(
+                    "This is the first stage of the Falador shield: a buckler. It",
+                    "grants you access to a Prayer restore ability and an",
+                    "emote.",
+                )
                 Diary.flagRewarded(player, DiaryType.FALADOR, level)
                 stage = 204
             }
 
             204 -> {
-                npc("Each of these features can be triggered while wielding", "the shield by selecting the 'Operate' option. The Prayer", "restore can also be activated from your inventory.")
+                npc(
+                    "Each of these features can be triggered while wielding",
+                    "the shield by selecting the 'Operate' option. The Prayer",
+                    "restore can also be activated from your inventory.",
+                )
                 stage = 205
             }
 
             205 -> {
-                npc("The Prayer restore ability can only be used once per", "day, and gives you back a quarter of your Prayer", "points.")
+                npc(
+                    "The Prayer restore ability can only be used once per",
+                    "day, and gives you back a quarter of your Prayer",
+                    "points.",
+                )
                 stage = 206
             }
 
             206 -> {
-                npc("As well as all of these features, the shield is pretty", "handy in combat, and gives you a small Prayer boost.")
+                npc(
+                    "As well as all of these features, the shield is pretty",
+                    "handy in combat, and gives you a small Prayer boost.",
+                )
                 stage = 207
             }
 

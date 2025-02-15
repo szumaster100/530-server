@@ -1,7 +1,8 @@
 package content.global.skill.construction
 
-class RoomTemplate(properties: RoomProperties) {
-
+class RoomTemplate(
+    properties: RoomProperties,
+) {
     var hotspots: MutableList<Hotspot> = ArrayList<Hotspot>()
 
     init {
@@ -13,30 +14,29 @@ class RoomTemplate(properties: RoomProperties) {
                     property.chunkX,
                     property.chunkY,
                     property.chunkX2,
-                    property.chunkY2
-                )
+                    property.chunkY2,
+                ),
             )
         }
     }
 
     fun rotate(clockwise: Boolean) {
-
-        hotspots = hotspots.map {
-            if (!clockwise) {
-
-                val newChunkX = it.chunkY
-                val newChunkY = 7 - it.chunkX
-                val newChunkX2 = it.chunkY2
-                val newChunkY2 = 7 - it.chunkX2
-                Hotspot(it.hotspot, newChunkX, newChunkY, newChunkX2, newChunkY2)
-            } else {
-
-                val newChunkY = it.chunkX
-                val newChunkX = 7 - it.chunkY
-                val newChunkY2 = it.chunkX2
-                val newChunkX2 = 7 - it.chunkY2
-                Hotspot(it.hotspot, newChunkX, newChunkY, newChunkX2, newChunkY2)
-            }
-        }.toMutableList()
+        hotspots =
+            hotspots
+                .map {
+                    if (!clockwise) {
+                        val newChunkX = it.chunkY
+                        val newChunkY = 7 - it.chunkX
+                        val newChunkX2 = it.chunkY2
+                        val newChunkY2 = 7 - it.chunkX2
+                        Hotspot(it.hotspot, newChunkX, newChunkY, newChunkX2, newChunkY2)
+                    } else {
+                        val newChunkY = it.chunkX
+                        val newChunkX = 7 - it.chunkY
+                        val newChunkY2 = it.chunkX2
+                        val newChunkX2 = 7 - it.chunkY2
+                        Hotspot(it.hotspot, newChunkX, newChunkY, newChunkX2, newChunkY2)
+                    }
+                }.toMutableList()
     }
 }

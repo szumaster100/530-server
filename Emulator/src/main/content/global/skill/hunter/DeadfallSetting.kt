@@ -11,19 +11,19 @@ import core.game.world.map.Direction
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 
-class DeadfallSetting : TrapSetting(
-    intArrayOf(28935, 19205),
-    arrayOf(Item(946)),
-    intArrayOf(28937, 19206),
-    intArrayOf(10138, 6006, 12574, 341, 2132),
-    "set-trap",
-    23,
-    -1,
-    Animation(5208),
-    Animation(9726),
-    true
-) {
-
+class DeadfallSetting :
+    TrapSetting(
+        intArrayOf(28935, 19205),
+        arrayOf(Item(946)),
+        intArrayOf(28937, 19206),
+        intArrayOf(10138, 6006, 12574, 341, 2132),
+        "set-trap",
+        23,
+        -1,
+        Animation(5208),
+        Animation(9726),
+        true,
+    ) {
     override fun hasItems(player: Player): Boolean {
         if (!super.hasItems(player)) {
             sendMessage(player, "You need a knife in order to set a deadfall trap.")
@@ -42,19 +42,33 @@ class DeadfallSetting : TrapSetting(
         return TrapHook(wrapper, getLocations(wrapper.`object`).toTypedArray())
     }
 
-    override fun reward(player: Player, node: Node, wrapper: TrapWrapper) {
+    override fun reward(
+        player: Player,
+        node: Node,
+        wrapper: TrapWrapper,
+    ) {
         removeItem(player, getLog(player)!!.logId)
     }
 
-    override fun clear(wrapper: TrapWrapper, type: Int): Boolean {
+    override fun clear(
+        wrapper: TrapWrapper,
+        type: Int,
+    ): Boolean {
         if (super.clear(wrapper, type)) {
-            addScenery(wrapper.`object`.transform(getNodeForObjectId(if (wrapper.isCaught) wrapper.originalId else wrapper.`object`.id)))
+            addScenery(
+                wrapper.`object`.transform(
+                    getNodeForObjectId(if (wrapper.isCaught) wrapper.originalId else wrapper.`object`.id),
+                ),
+            )
             return true
         }
         return false
     }
 
-    override fun canCatch(wrapper: TrapWrapper, npc: NPC): Boolean {
+    override fun canCatch(
+        wrapper: TrapWrapper,
+        npc: NPC,
+    ): Boolean {
         val x = wrapper.`object`.location.x
         val y = wrapper.`object`.location.y
         val direction = wrapper.`object`.direction
@@ -73,21 +87,33 @@ class DeadfallSetting : TrapSetting(
         return true
     }
 
-    override fun isSuccess(player: Player, node: TrapNode): Boolean {
+    override fun isSuccess(
+        player: Player,
+        node: TrapNode,
+    ): Boolean {
         return true
     }
 
-    override fun getTransformId(wrapper: TrapWrapper, node: TrapNode): Int {
+    override fun getTransformId(
+        wrapper: TrapWrapper,
+        node: TrapNode,
+    ): Int {
         val dir = wrapper.`object`.attributes.getAttribute("kebbit-dir", 0)
         val id = if (dir == 0) node.objectIds[0] else node.objectIds[1]
         return id
     }
 
-    override fun getFinalId(wrapper: TrapWrapper, node: TrapNode): Int {
+    override fun getFinalId(
+        wrapper: TrapWrapper,
+        node: TrapNode,
+    ): Int {
         return node.objectIds[2]
     }
 
-    override fun buildObject(player: Player, node: Node): Scenery {
+    override fun buildObject(
+        player: Player,
+        node: Node,
+    ): Scenery {
         return node.asScenery().transform(getObjectForNode(node))
     }
 

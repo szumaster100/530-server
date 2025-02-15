@@ -1,7 +1,5 @@
 package content.region.fremennik.quest.horror.handlers
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.fremennik.quest.horror.dialogue.JossikDialogueFile
 import core.api.*
 import core.api.quest.setQuestStage
@@ -12,10 +10,19 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class DagonnothBabyNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+class DagonnothBabyNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return DagonnothBabyNPC(id, location)
     }
 
@@ -38,13 +45,14 @@ class DagonnothBabyNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id
             GameWorld.Pulser.submit(
                 object : Pulse(2, dag) {
                     override fun pulse(): Boolean {
-                        if (player.location.withinDistance(dag.location, 20))
+                        if (player.location.withinDistance(dag.location, 20)) {
                             dag.init()
+                        }
                         registerHintIcon(player, dag)
                         dag.attack(player)
                         return true
                     }
-                }
+                },
             )
         }
     }

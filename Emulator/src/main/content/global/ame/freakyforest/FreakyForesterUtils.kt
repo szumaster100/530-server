@@ -1,13 +1,13 @@
 package content.global.ame.freakyforest
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.data.GameAttributes
 import content.data.RandomEvent
 import core.api.*
 import core.game.node.entity.player.Player
 import core.game.world.map.zone.ZoneBorders
 import core.tools.RandomFunction
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 object FreakyForesterUtils {
     const val FREAK_NPC = NPCs.FREAKY_FORESTER_2458
@@ -32,7 +32,7 @@ object FreakyForesterUtils {
             RandomEvent.save(),
             GameAttributes.RE_FREAK_TASK,
             GameAttributes.RE_FREAK_COMPLETE,
-            GameAttributes.RE_FREAK_KILLS
+            GameAttributes.RE_FREAK_KILLS,
         )
         removeAll(player, Items.RAW_PHEASANT_6178)
         removeAll(player, Items.RAW_PHEASANT_6178, Container.BANK)

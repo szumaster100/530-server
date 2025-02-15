@@ -1,10 +1,9 @@
 package content.minigame.allfiredup
 
-import org.rs.consts.Components
 import core.game.interaction.InterfaceListener
+import org.rs.consts.Components
 
 class BeaconMapInterface : InterfaceListener {
-
     companion object {
         const val BEACON_MAP_575 = Components.BEACON_MAP_575
     }

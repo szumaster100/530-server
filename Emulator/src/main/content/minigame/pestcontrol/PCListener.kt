@@ -1,6 +1,5 @@
 package content.minigame.pestcontrol
 
-import org.rs.consts.*
 import content.global.travel.charter.Charter
 import content.minigame.pestcontrol.npc.*
 import core.api.*
@@ -12,11 +11,10 @@ import core.game.node.item.Item
 import core.game.world.map.RegionManager.getLocalNpcs
 import core.game.world.update.flag.context.Graphics
 import core.tools.RandomFunction
+import org.rs.consts.*
 
 class PCListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(VOID_SEAL, IntType.ITEM, "rub", "operate") { player, node ->
             val operate = getUsedOption(player) == "operate"
 
@@ -48,11 +46,14 @@ class PCListener : InteractionListener {
             player.graphics(Graphics.create(org.rs.consts.Graphics.GREEN_CIRCLE_WAVES_1177))
 
             for (npc in getLocalNpcs(player, 2)) {
-                if (npc is PCDefilerNPC || npc is PCRavagerNPC || npc is PCShifterNPC ||
-                    npc is PCSpinnerNPC || npc is PCSplatterNPC || npc is PCTorcherNPC ||
+                if (npc is PCDefilerNPC ||
+                    npc is PCRavagerNPC ||
+                    npc is PCShifterNPC ||
+                    npc is PCSpinnerNPC ||
+                    npc is PCSplatterNPC ||
+                    npc is PCTorcherNPC ||
                     npc is PCBrawlerNPC
                 ) {
-
                     npc.impactHandler.manualHit(player, 7 + RandomFunction.randomize(5), HitsplatType.NORMAL, 1)
                     npc.graphics(Graphics.create(org.rs.consts.Graphics.RED_CIRCLE_WAVES_1176))
                 }
@@ -103,20 +104,20 @@ class PCListener : InteractionListener {
                 Items.VOID_SEAL4_11670,
                 Items.VOID_SEAL3_11671,
                 Items.VOID_SEAL2_11672,
-                Items.VOID_SEAL1_11673
+                Items.VOID_SEAL1_11673,
             )
         val VOID_KNIGHT =
             intArrayOf(
                 NPCs.VOID_KNIGHT_3786,
                 NPCs.VOID_KNIGHT_3788,
                 NPCs.VOID_KNIGHT_3789,
-                NPCs.VOID_KNIGHT_5956
+                NPCs.VOID_KNIGHT_5956,
             )
         val LADDER =
             intArrayOf(
                 Scenery.LADDER_14314,
                 Scenery.LADDER_25629,
-                Scenery.LADDER_25630
+                Scenery.LADDER_25630,
             )
     }
 }

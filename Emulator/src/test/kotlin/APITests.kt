@@ -3,8 +3,8 @@ import content.global.skill.slayer.SlayerManager
 import content.global.skill.slayer.SlayerMaster
 import content.global.skill.slayer.Tasks
 import core.api.IfaceSettingsBuilder
-import core.game.dialogue.splitLines
 import core.api.utils.Vector
+import core.game.dialogue.splitLines
 import core.game.node.item.Item
 import core.game.world.map.Direction
 import org.json.simple.JSONObject
@@ -53,16 +53,17 @@ class APITests {
         Assertions.assertEquals(1 shl 22, testUseOnSelf, "Testing use on self flag")
 
         builder = IfaceSettingsBuilder()
-        val testAllOptions = builder
-            .enableAllOptions()
-            .enableExamine()
-            .enableNullSlotSwitch()
-            .enableSlotSwitch()
-            .enableUseOnSelf()
-            .enableUseOption()
-            .setInterfaceEventsDepth(2)
-            .setUseOnSettings(true, true, true, true, true, true)
-            .build()
+        val testAllOptions =
+            builder
+                .enableAllOptions()
+                .enableExamine()
+                .enableNullSlotSwitch()
+                .enableSlotSwitch()
+                .enableUseOnSelf()
+                .enableUseOption()
+                .setInterfaceEventsDepth(2)
+                .setUseOnSettings(true, true, true, true, true, true)
+                .build()
         Assertions.assertEquals(15466494, testAllOptions, "Testing all options")
     }
 
@@ -128,16 +129,17 @@ class APITests {
     }
 
     @Test fun testKnownProblemSaveParsesCorrectly() {
-        val jsonString = "{\"slayer\": {\n" +
-            "    \"taskStreak\": \"21\",\n" +
-            "    \"rewardFlags\": 17301511,\n" +
-            "    \"equipmentFlags\": 31,\n" +
-            "    \"taskFlags\": 307220,\n" +
-            "    \"removedTasks\": [\n" +
-            "      \"73\"\n" +
-            "    ],\n" +
-            "    \"totalTasks\": \"108\"\n" +
-            "  }}"
+        val jsonString =
+            "{\"slayer\": {\n" +
+                "    \"taskStreak\": \"21\",\n" +
+                "    \"rewardFlags\": 17301511,\n" +
+                "    \"equipmentFlags\": 31,\n" +
+                "    \"taskFlags\": 307220,\n" +
+                "    \"removedTasks\": [\n" +
+                "      \"73\"\n" +
+                "    ],\n" +
+                "    \"totalTasks\": \"108\"\n" +
+                "  }}"
 
         val slayerData = JSONParser().parse(jsonString) as JSONObject
         var manager = SlayerManager()
@@ -159,7 +161,8 @@ class APITests {
         Assertions.assertEquals(expectedLine2, lines.getOrNull(1) ?: "")
         Assertions.assertEquals(2, lines.size)
 
-        testCase = "Dramenwood staffs are crafted from branches of the Dramen tree, so they are. I hear there's a Dramen tree over on the island of Entrana in a cave."
+        testCase =
+            "Dramenwood staffs are crafted from branches of the Dramen tree, so they are. I hear there's a Dramen tree over on the island of Entrana in a cave."
         expectedLine1 = "Dramenwood staffs are crafted from branches of the"
         expectedLine2 = "Dramen tree, so they are. I hear there's a Dramen tree"
         var expectedLine3 = "over on the island of Entrana in a cave."
@@ -174,7 +177,8 @@ class APITests {
         Assertions.assertEquals(testCase, lines[0])
         Assertions.assertEquals(1, lines.size)
 
-        testCase = "I just told you: from the Seer. You will need to persuade him to take the time to make a forecast somehow."
+        testCase =
+            "I just told you: from the Seer. You will need to persuade him to take the time to make a forecast somehow."
         lines = splitLines(testCase)
         expectedLine1 = "I just told you: from the Seer. You will need to"
         expectedLine2 = "persuade him to take the time to make a forecast"
@@ -206,11 +210,12 @@ class APITests {
     }
 
     @Test fun consumableMultiPieceItemShouldBeRemovedFromCorrectSlot() {
-        val consumables: Array<Item?> = arrayOf(
-            Item(Items.CAKE_1891, 8),
-            Item(Items.TWO_THIRDS_CAKE_1893, 8),
-            Item(Items.SLICE_OF_CAKE_1895, 8)
-        )
+        val consumables: Array<Item?> =
+            arrayOf(
+                Item(Items.CAKE_1891, 8),
+                Item(Items.TWO_THIRDS_CAKE_1893, 8),
+                Item(Items.SLICE_OF_CAKE_1895, 8),
+            )
 
         TestUtils.getMockPlayer("Inventory Consumable Multi Piece Tester").use { player ->
             // Inventory setup
@@ -240,11 +245,12 @@ class APITests {
 
     @Test fun consumableMultiPieceItemShouldAddReturnItemToCorrectSlot() {
         val PIE_DISH_NONCONSUMABLE_2313 = Items.PIE_DISH_2313
-        val consumables: Array<Item?> = arrayOf(
-            Item(Items.APPLE_PIE_2323, 8),
-            Item(Items.HALF_AN_APPLE_PIE_2335, 8),
-            Item(Items.REDBERRY_PIE_2325, 8)
-        )
+        val consumables: Array<Item?> =
+            arrayOf(
+                Item(Items.APPLE_PIE_2323, 8),
+                Item(Items.HALF_AN_APPLE_PIE_2335, 8),
+                Item(Items.REDBERRY_PIE_2325, 8),
+            )
 
         TestUtils.getMockPlayer("Inventory Consumable Multi Piece With Return Tester").use { player ->
             // Inventory setup
@@ -289,11 +295,12 @@ class APITests {
     }
 
     @Test fun consumableItemShouldNotHaveReturnItem() {
-        val consumables: Array<Item?> = arrayOf(
-            Item(Items.TROUT_333, 8),
-            Item(Items.SHARK_385, 8),
-            Item(Items.LOBSTER_379, 8)
-        )
+        val consumables: Array<Item?> =
+            arrayOf(
+                Item(Items.TROUT_333, 8),
+                Item(Items.SHARK_385, 8),
+                Item(Items.LOBSTER_379, 8),
+            )
         TestUtils.getMockPlayer("Inventory Consumable No Return Item Tester").use { player ->
             // Inventory setup
             player.inventory.clear()
@@ -352,19 +359,20 @@ class APITests {
     }
 
     @Test fun vectorToDirectionShouldReturnExpectedDirections() {
-        val testData = arrayOf(
-            Pair(Vector(1.0, 0.0), Direction.EAST),
-            Pair(Vector(-1.0, 0.0), Direction.WEST),
-            Pair(Vector(0.0, 1.0), Direction.NORTH),
-            Pair(Vector(0.0, -1.0), Direction.SOUTH),
-            Pair(Vector(1.0, 1.0), Direction.NORTH_EAST),
-            Pair(Vector(1.0, -1.0), Direction.SOUTH_EAST),
-            Pair(Vector(-1.0, 1.0), Direction.NORTH_WEST),
-            Pair(Vector(-1.0, -1.0), Direction.SOUTH_WEST),
-            Pair(Vector(15.0, 0.0), Direction.EAST),
-            Pair(Vector(15.0, 1.0), Direction.EAST),
-            Pair(Vector(-15.0, -9.7), Direction.SOUTH_WEST)
-        )
+        val testData =
+            arrayOf(
+                Pair(Vector(1.0, 0.0), Direction.EAST),
+                Pair(Vector(-1.0, 0.0), Direction.WEST),
+                Pair(Vector(0.0, 1.0), Direction.NORTH),
+                Pair(Vector(0.0, -1.0), Direction.SOUTH),
+                Pair(Vector(1.0, 1.0), Direction.NORTH_EAST),
+                Pair(Vector(1.0, -1.0), Direction.SOUTH_EAST),
+                Pair(Vector(-1.0, 1.0), Direction.NORTH_WEST),
+                Pair(Vector(-1.0, -1.0), Direction.SOUTH_WEST),
+                Pair(Vector(15.0, 0.0), Direction.EAST),
+                Pair(Vector(15.0, 1.0), Direction.EAST),
+                Pair(Vector(-15.0, -9.7), Direction.SOUTH_WEST),
+            )
 
         for ((vec, expDir) in testData) {
             Assertions.assertEquals(expDir, vec.toDirection(), "Vector: $vec")

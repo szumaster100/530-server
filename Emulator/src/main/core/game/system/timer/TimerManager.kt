@@ -8,7 +8,9 @@ import core.game.node.entity.player.Player
 import core.tools.Log
 import org.json.simple.JSONObject
 
-class TimerManager(val entity: Entity) {
+class TimerManager(
+    val entity: Entity,
+) {
     val activeTimers = ArrayList<RSTimer>()
     val newTimers = ArrayList<RSTimer>()
     val toRemoveTimers = ArrayList<RSTimer>()
@@ -32,12 +34,14 @@ class TimerManager(val entity: Entity) {
             try {
                 if (timer.run(entity)) {
                     timer.nextExecution = getWorldTicks() + timer.runInterval
-                } else removeTimer(timer)
+                } else {
+                    removeTimer(timer)
+                }
             } catch (e: Exception) {
                 log(
                     this::class.java,
                     Log.ERR,
-                    "Prematurely removing timer ${timer::class.java.simpleName} from ${entity.name} because it threw an exception when ran. Exception follows:"
+                    "Prematurely removing timer ${timer::class.java.simpleName} from ${entity.name} because it threw an exception when ran. Exception follows:",
                 )
                 e.printStackTrace()
                 removeTimer(timer)
@@ -60,8 +64,9 @@ class TimerManager(val entity: Entity) {
 
     fun onEntityDeath() {
         for (timer in activeTimers) {
-            if (timer.flags.contains(TimerFlag.ClearOnDeath))
+            if (timer.flags.contains(TimerFlag.ClearOnDeath)) {
                 removeTimer(timer)
+            }
         }
     }
 
@@ -89,7 +94,7 @@ class TimerManager(val entity: Entity) {
                 log(
                     this::class.java,
                     Log.ERR,
-                    "Tried to load data for persistent timer identified by $identifier, but no such timer seems to exist."
+                    "Tried to load data for persistent timer identified by $identifier, but no such timer seems to exist.",
                 )
                 continue
             }
@@ -100,48 +105,65 @@ class TimerManager(val entity: Entity) {
     }
 
     inline fun <reified T : RSTimer> removeTimer() {
-        for (timer in activeTimers)
-            if (timer is T)
+        for (timer in activeTimers) {
+            if (timer is T) {
                 removeTimer(timer)
-        for (timer in newTimers)
-            if (timer is T)
+            }
+        }
+        for (timer in newTimers) {
+            if (timer is T) {
                 removeTimer(timer)
+            }
+        }
     }
 
     inline fun <reified T : RSTimer> getTimer(): T? {
         var t: T? = null
-        for (timer in activeTimers)
-            if (timer is T)
+        for (timer in activeTimers) {
+            if (timer is T) {
                 t = timer
-        for (timer in newTimers)
-            if (timer is T)
+            }
+        }
+        for (timer in newTimers) {
+            if (timer is T) {
                 t = timer
+            }
+        }
         if (t == null) return null
-        if (toRemoveTimers.contains(t))
+        if (toRemoveTimers.contains(t)) {
             return null
+        }
         return t
     }
 
     fun getTimer(identifier: String): RSTimer? {
         var t: RSTimer? = null
-        for (timer in activeTimers)
-            if (timer.identifier == identifier)
+        for (timer in activeTimers) {
+            if (timer.identifier == identifier) {
                 t = timer
-        for (timer in newTimers)
-            if (timer.identifier == identifier)
+            }
+        }
+        for (timer in newTimers) {
+            if (timer.identifier == identifier) {
                 t = timer
+            }
+        }
         if (t == null) return null
         if (toRemoveTimers.contains(t)) return null
         return t
     }
 
     fun removeTimer(identifier: String) {
-        for (timer in activeTimers)
-            if (timer.identifier == identifier)
+        for (timer in activeTimers) {
+            if (timer.identifier == identifier) {
                 removeTimer(timer)
-        for (timer in newTimers)
-            if (timer.identifier == identifier)
+            }
+        }
+        for (timer in newTimers) {
+            if (timer.identifier == identifier) {
                 removeTimer(timer)
+            }
+        }
     }
 
     fun removeTimer(timer: RSTimer) {

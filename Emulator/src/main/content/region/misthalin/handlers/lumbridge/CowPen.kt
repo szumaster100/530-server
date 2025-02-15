@@ -10,9 +10,13 @@ import core.plugin.Initializable
 import core.plugin.Plugin
 
 @Initializable
-class CowPen : MapZone("lumbridge cows", true), Plugin<Any?> {
-
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+class CowPen :
+    MapZone("lumbridge cows", true),
+    Plugin<Any?> {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 
@@ -25,7 +29,10 @@ class CowPen : MapZone("lumbridge cows", true), Plugin<Any?> {
         return this
     }
 
-    override fun death(e: Entity, killer: Entity): Boolean {
+    override fun death(
+        e: Entity,
+        killer: Entity,
+    ): Boolean {
         if (killer is Player && e is NPC) {
             incrementDailyCowDeaths()
         }

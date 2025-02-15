@@ -6,7 +6,10 @@ import kotlin.math.ceil
 object DialogueUtils {
     val tagRegex = "<([A-Za-z0-9=/]+)>".toRegex()
 
-    fun removeMatches(message: String, regex: Regex): String {
+    fun removeMatches(
+        message: String,
+        regex: Regex,
+    ): String {
         return regex.replace(message, "")
     }
 }
@@ -16,8 +19,14 @@ object DialogueUtils {
  *
  * Should this not work out for any reason, you should fall back to standard npc and player methods for dialogue.
  */
-fun splitLines(message: String, perLineLimit: Int = 54): Array<String> {
-    var lines = Array(ceil(DialogueUtils.removeMatches(message, DialogueUtils.tagRegex).length / perLineLimit.toFloat()).toInt()) { "" }
+fun splitLines(
+    message: String,
+    perLineLimit: Int = 54,
+): Array<String> {
+    var lines =
+        Array(
+            ceil(DialogueUtils.removeMatches(message, DialogueUtils.tagRegex).length / perLineLimit.toFloat()).toInt(),
+        ) { "" }
 
     if (lines.size == 1) {
         lines[0] = message
@@ -36,7 +45,6 @@ fun splitLines(message: String, perLineLimit: Int = 54): Array<String> {
 
         for (lineTag in DialogueUtils.tagRegex.findAll(line)) {
             if (lineTag.value[1] == '/') {
-
                 for (openTag in openTags.descendingIterator()) {
                     val lineTagName = lineTag.value.substring(2, lineTag.value.length - 1)
                     val openTagName = openTag.substring(1, lineTag.value.length - 2)

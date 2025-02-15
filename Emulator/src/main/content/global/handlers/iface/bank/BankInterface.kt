@@ -1,18 +1,18 @@
 package content.global.handlers.iface.bank
 
-import org.rs.consts.Components
-import org.rs.consts.Items
 import content.global.dialogue.BankDepositDialogue
 import content.global.dialogue.BankHelpDialogue
 import core.ServerConfig
 import core.api.*
-import core.game.component.Component
-import core.game.container.Container
 import core.api.IfaceSettingsBuilder
 import core.api.interaction.openBankAccount
+import core.game.component.Component
+import core.game.container.Container
 import core.game.dialogue.InputType
 import core.game.interaction.InterfaceListener
 import core.game.node.entity.player.Player
+import org.rs.consts.Components
+import org.rs.consts.Items
 
 class BankInterface : InterfaceListener {
     companion object {
@@ -43,24 +43,30 @@ class BankInterface : InterfaceListener {
         private const val BANK_TAB_8 = 27
         private const val BANK_TAB_9 = 25
 
-        private val BANK_TABS = intArrayOf(
-            BANK_TAB_1,
-            BANK_TAB_2,
-            BANK_TAB_3,
-            BANK_TAB_4,
-            BANK_TAB_5,
-            BANK_TAB_6,
-            BANK_TAB_7,
-            BANK_TAB_8,
-            BANK_TAB_9
-        )
+        private val BANK_TABS =
+            intArrayOf(
+                BANK_TAB_1,
+                BANK_TAB_2,
+                BANK_TAB_3,
+                BANK_TAB_4,
+                BANK_TAB_5,
+                BANK_TAB_6,
+                BANK_TAB_7,
+                BANK_TAB_8,
+                BANK_TAB_9,
+            )
 
         private const val OP_SET_TAB = 155
         private const val OP_COLLAPSE_TAB = 196
         private const val THRESHOLD_TO_DISPLAY_EXACT_QUANTITY_ON_EXAMINE = 100000
 
         @JvmStatic
-        fun transferX(player: Player, slot: Int, withdraw: Boolean, after: (() -> Unit)? = null) {
+        fun transferX(
+            player: Player,
+            slot: Int,
+            withdraw: Boolean,
+            after: (() -> Unit)? = null,
+        ) {
             sendInputDialogue(player, InputType.AMOUNT, "Enter the amount:") { value ->
                 val number = Integer.parseInt(value.toString())
                 if (withdraw) {
@@ -75,12 +81,16 @@ class BankInterface : InterfaceListener {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    private fun onBankInterfaceOpen(player: Player, component: Component): Boolean {
-        val settings = IfaceSettingsBuilder()
-            .enableAllOptions()
-            .enableSlotSwitch()
-            .setInterfaceEventsDepth(2)
-            .build()
+    private fun onBankInterfaceOpen(
+        player: Player,
+        component: Component,
+    ): Boolean {
+        val settings =
+            IfaceSettingsBuilder()
+                .enableAllOptions()
+                .enableSlotSwitch()
+                .setInterfaceEventsDepth(2)
+                .build()
 
         player.packetDispatch.sendIfaceSettings(settings, 73, Components.BANK_V2_MAIN_762, 0, ServerConfig.BANK_SIZE)
         player.bank.refresh()
@@ -95,7 +105,7 @@ class BankInterface : InterfaceListener {
         opcode: Int,
         buttonID: Int,
         slot: Int,
-        itemID: Int
+        itemID: Int,
     ): Boolean {
         resetSearch(player)
         val clickedTabIndex = -((buttonID - 41) / 2)
@@ -122,7 +132,7 @@ class BankInterface : InterfaceListener {
         opcode: Int,
         buttonID: Int,
         slot: Int,
-        itemID: Int
+        itemID: Int,
     ): Boolean {
         val item = player.bank.get(slot) ?: return true
         player.bank.refresh()
@@ -159,7 +169,7 @@ class BankInterface : InterfaceListener {
         opcode: Int,
         buttonID: Int,
         slot: Int,
-        itemID: Int
+        itemID: Int,
     ): Boolean {
         val item = player.inventory.get(slot) ?: return true
         player.bank.refresh()
@@ -216,7 +226,10 @@ class BankInterface : InterfaceListener {
         on(Components.BANK_V2_SIDE_763, ::handleInventoryMenu)
     }
 
-    private fun isCoinOverrideNeeded(id: Int, container: Container): Boolean {
+    private fun isCoinOverrideNeeded(
+        id: Int,
+        container: Container,
+    ): Boolean {
         val amount = container.getAmount(id)
         if (id == Items.COINS_995 && amount >= THRESHOLD_TO_DISPLAY_EXACT_QUANTITY_ON_EXAMINE) {
             return true

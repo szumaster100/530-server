@@ -1,9 +1,5 @@
 package content.global.handlers.item
 
-import org.rs.consts.Animations
-import org.rs.consts.Graphics
-import org.rs.consts.Components
-import org.rs.consts.Items
 import core.api.*
 import core.game.component.Component
 import core.game.component.ComponentDefinition
@@ -13,19 +9,26 @@ import core.game.interaction.QueueStrength
 import core.game.node.Node
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
+import core.plugin.ClassScanner
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner
+import org.rs.consts.Animations
+import org.rs.consts.Components
+import org.rs.consts.Graphics
+import org.rs.consts.Items
 
 @Initializable
 class SnowGlobeHandler : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         ClassScanner.definePlugin(SnowGlobeInterface())
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         return true
     }
 
@@ -41,7 +44,7 @@ class SnowGlobeHandler : OptionHandler() {
             opcode: Int,
             button: Int,
             slot: Int,
-            itemId: Int
+            itemId: Int,
         ): Boolean {
             when (button) {
                 2 -> {

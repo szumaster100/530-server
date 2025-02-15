@@ -1,7 +1,5 @@
 package content.global.skill.thieving
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.*
 import core.cache.def.impl.SceneryDefinition
 import core.game.global.action.DoorActionHandler
@@ -18,10 +16,11 @@ import core.game.world.map.Location
 import core.plugin.Initializable
 import core.plugin.Plugin
 import core.tools.RandomFunction
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
 class PickableDoorsHandler : OptionHandler() {
-
     var door: PickableDoor? = null
 
     override fun newInstance(arg: Any?): Plugin<Any> {
@@ -46,7 +45,11 @@ class PickableDoorsHandler : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         door = forDoor(node.location)
         if (option == "open") {
             if (door == null) {
@@ -67,7 +70,10 @@ class PickableDoorsHandler : OptionHandler() {
         return false
     }
 
-    override fun getDestination(node: Node, n: Node): Location? {
+    override fun getDestination(
+        node: Node,
+        n: Node,
+    ): Location? {
         if (n is Scenery) {
             val `object` = n
             if (`object`.definition.hasAction("pick-lock")) {
@@ -93,10 +99,12 @@ class PickableDoorsHandler : OptionHandler() {
         val level: Int,
         val experience: Double,
         val isLockpick: Boolean = false,
-        private val flipped: Boolean = false
+        private val flipped: Boolean = false,
     ) {
-
-        fun open(player: Player, door: Scenery) {
+        fun open(
+            player: Player,
+            door: Scenery,
+        ) {
             if (isInside(player, door) != flipped) {
                 handleAutowalkDoor(player, door.asScenery())
                 sendMessage(player, "You go through the door.")
@@ -105,7 +113,10 @@ class PickableDoorsHandler : OptionHandler() {
             }
         }
 
-        fun pickLock(player: Player, door: Scenery) {
+        fun pickLock(
+            player: Player,
+            door: Scenery,
+        ) {
             val success = RandomFunction.random(12) >= 4
             if (isInside(player, door.asScenery()) != flipped) {
                 sendMessage(player, "The door is already unlocked.")
@@ -118,7 +129,7 @@ class PickableDoorsHandler : OptionHandler() {
                 sendMessageWithDelay(
                     player,
                     if (hit) "You have activated a trap on the lock." else "You fail to pick the lock.",
-                    1
+                    1,
                 )
                 return
             }
@@ -135,7 +146,10 @@ class PickableDoorsHandler : OptionHandler() {
             sendMessageWithDelay(player, "You " + (if (success) "manage" else "fail") + " to pick the lock.", 1)
         }
 
-        private fun isInside(player: Player, door: Scenery): Boolean {
+        private fun isInside(
+            player: Player,
+            door: Scenery,
+        ): Boolean {
             var inside = false
             val dir = Direction.getLogicalDirection(player.location, door.location)
             val direction = door.direction
@@ -154,23 +168,50 @@ class PickableDoorsHandler : OptionHandler() {
         if (getAttribute(player, "shantay-jail", false)) {
             removeAttribute(player, "shantay-jail")
             sendNPCDialogueWithDelay(
-                player, 2, NPCs.SHANTAY_836,
-                "You should be in jail! But if you get into more trouble, you'll be back."
+                player,
+                2,
+                NPCs.SHANTAY_836,
+                "You should be in jail! But if you get into more trouble, you'll be back.",
             )
         }
     }
 
     companion object {
-
         private val LOCK_PICK = Items.LOCKPICK_1523
 
         private val pickableDoors: MutableList<PickableDoor> = ArrayList(20)
 
-        private val DOORS = intArrayOf(
-            2550, 2551, 2554, 2555, 2556, 2557, 2558, 2559, 5501,
-            7246, 9565, 13314, 13317, 13320, 13323, 13326, 13344,
-            13345, 13346, 13347, 13348, 13349, 15759, 34005, 34805,
-            34806, 34812, 40186, 42028
-        )
+        private val DOORS =
+            intArrayOf(
+                2550,
+                2551,
+                2554,
+                2555,
+                2556,
+                2557,
+                2558,
+                2559,
+                5501,
+                7246,
+                9565,
+                13314,
+                13317,
+                13320,
+                13323,
+                13326,
+                13344,
+                13345,
+                13346,
+                13347,
+                13348,
+                13349,
+                15759,
+                34005,
+                34805,
+                34806,
+                34812,
+                40186,
+                42028,
+            )
     }
 }

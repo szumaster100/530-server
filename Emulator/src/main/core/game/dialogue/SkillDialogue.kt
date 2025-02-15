@@ -5,8 +5,9 @@ import core.game.node.entity.player.Player
 import core.plugin.Initializable
 
 @Initializable
-class SkillDialogue(player: Player? = null) : Dialogue(player) {
-
+class SkillDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     private lateinit var handler: SkillDialogueHandler
 
     override fun newInstance(player: Player): Dialogue {
@@ -21,7 +22,10 @@ class SkillDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         var amount = handler.type!!.getAmount(handler, buttonId)
         var index = handler.type!!.getIndex(handler, buttonId)
 

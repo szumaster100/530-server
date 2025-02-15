@@ -9,10 +9,12 @@ open class TrapNode(
     @JvmField val level: Int,
     val experience: Double,
     val objectIds: IntArray,
-    @JvmField val rewards: Array<Item>
+    @JvmField val rewards: Array<Item>,
 ) {
-
-    open fun canCatch(wrapper: TrapWrapper, npc: NPC): Boolean {
+    open fun canCatch(
+        wrapper: TrapWrapper,
+        npc: NPC,
+    ): Boolean {
         val player = wrapper.player
 
         if (wrapper.isCaught || wrapper.isBusy || wrapper.isFailed) {

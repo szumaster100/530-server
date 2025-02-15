@@ -6,18 +6,18 @@ import core.game.node.entity.Entity
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.scenery.Scenery
-import core.tools.Log
 import core.game.world.map.zone.ZoneBorders
+import core.tools.Log
 import core.tools.RandomFunction
 import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantLock
 
 object RegionManager {
-
     private val REGION_CACHE: MutableMap<Int, Region> = HashMap()
 
     @JvmStatic val CLIPPING_FLAGS = HashMap<Int, Array<Int>>()
+
     @JvmStatic val PROJECTILE_FLAGS = HashMap<Int, Array<Int>>()
 
     public val LOCK = ReentrantLock()
@@ -57,7 +57,11 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun getClippingFlag(z: Int, x: Int, y: Int): Int {
+    fun getClippingFlag(
+        z: Int,
+        x: Int,
+        y: Int,
+    ): Int {
         val regionX = x shr 6
         val regionY = y shr 6
         val localX = x and 63
@@ -72,39 +76,55 @@ object RegionManager {
         regionY: Int,
         localX: Int,
         localY: Int,
-        projectile: Boolean = false
+        projectile: Boolean = false,
     ): Int {
         val (region, index) = getFlagIndex(z, regionX, regionY, localX, localY)
         var flag = getFlags(region, projectile)[index]
 
         if (flag == -1) {
             val r = forId((regionX shr 8) or regionY)
-            if (!r.isLoaded)
+            if (!r.isLoaded) {
                 Region.load(r)
-            if (!r.isHasFlags)
+            }
+            if (!r.isHasFlags) {
                 return -1
+            }
             flag = getFlags(region, projectile)[index]
         }
 
         return flag
     }
 
-    private fun getFlagIndex(z: Int, regionX: Int, regionY: Int, localX: Int, localY: Int): Pair<Int, Int> {
+    private fun getFlagIndex(
+        z: Int,
+        regionX: Int,
+        regionY: Int,
+        localX: Int,
+        localY: Int,
+    ): Pair<Int, Int> {
         return Pair((regionX shl 8) or regionY, (z * 64 * 64) + (localX * 64) + localY)
     }
 
     @JvmStatic
-    fun getFlags(regionX: Int, regionY: Int, projectile: Boolean): Array<Int> {
+    fun getFlags(
+        regionX: Int,
+        regionY: Int,
+        projectile: Boolean,
+    ): Array<Int> {
         val region = (regionX shl 8) or regionY
         return getFlags(region, projectile)
     }
 
     @JvmStatic
-    fun getFlags(regionId: Int, projectile: Boolean): Array<Int> {
-        return if (projectile)
+    fun getFlags(
+        regionId: Int,
+        projectile: Boolean,
+    ): Array<Int> {
+        return if (projectile) {
             PROJECTILE_FLAGS.getOrPut(regionId) { Array(16384) { 0 } }
-        else
+        } else {
             CLIPPING_FLAGS.getOrPut(regionId) { Array(16384) { -1 } }
+        }
     }
 
     @JvmStatic
@@ -114,11 +134,17 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun getWaterClipFlag(z: Int, x: Int, y: Int): Int {
+    fun getWaterClipFlag(
+        z: Int,
+        x: Int,
+        y: Int,
+    ): Int {
         val flag = getClippingFlag(z, x, y)
         return if (!isClipped(z, x, y)) {
             flag or 0x100
-        } else flag and 0x200000.inv()
+        } else {
+            flag and 0x200000.inv()
+        }
     }
 
     @JvmStatic
@@ -127,7 +153,11 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun isLandscape(z: Int, x: Int, y: Int): Boolean {
+    fun isLandscape(
+        z: Int,
+        x: Int,
+        y: Int,
+    ): Boolean {
         var x = x
         var y = y
         val region = forId(((x shr 6) shl 8) or (y shr 6))
@@ -141,7 +171,13 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun addClippingFlag(z: Int, x: Int, y: Int, projectile: Boolean, flag: Int) {
+    fun addClippingFlag(
+        z: Int,
+        x: Int,
+        y: Int,
+        projectile: Boolean,
+        flag: Int,
+    ) {
         var x = x
         var y = y
         val region = forId(((x shr 6) shl 8) or (y shr 6))
@@ -159,7 +195,13 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun removeClippingFlag(z: Int, x: Int, y: Int, projectile: Boolean, flag: Int) {
+    fun removeClippingFlag(
+        z: Int,
+        x: Int,
+        y: Int,
+        projectile: Boolean,
+        flag: Int,
+    ) {
         var x = x
         var y = y
         val region = forId(((x shr 6) shl 8) or (y shr 6))
@@ -177,7 +219,11 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun getProjectileFlag(z: Int, x: Int, y: Int): Int {
+    fun getProjectileFlag(
+        z: Int,
+        x: Int,
+        y: Int,
+    ): Int {
         val regionX = x shr 6
         val regionY = y shr 6
         val localX = x and 63
@@ -191,7 +237,11 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun isTeleportPermitted(z: Int, x: Int, y: Int): Boolean {
+    fun isTeleportPermitted(
+        z: Int,
+        x: Int,
+        y: Int,
+    ): Boolean {
         if (!isLandscape(z, x, y)) {
             return false
         }
@@ -205,7 +255,11 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun isClipped(z: Int, x: Int, y: Int): Boolean {
+    fun isClipped(
+        z: Int,
+        x: Int,
+        y: Int,
+    ): Boolean {
         if (!isLandscape(z, x, y)) {
             return true
         }
@@ -214,7 +268,10 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun getSpawnLocation(owner: Player?, node: Node?): Location? {
+    fun getSpawnLocation(
+        owner: Player?,
+        node: Node?,
+    ): Location? {
         if (owner == null || node == null) {
             return null
         }
@@ -259,12 +316,21 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun getObject(z: Int, x: Int, y: Int): Scenery? {
+    fun getObject(
+        z: Int,
+        x: Int,
+        y: Int,
+    ): Scenery? {
         return getObject(z, x, y, -1)
     }
 
     @JvmStatic
-    fun getObject(z: Int, x: Int, y: Int, objectId: Int): Scenery? {
+    fun getObject(
+        z: Int,
+        x: Int,
+        y: Int,
+        objectId: Int,
+    ): Scenery? {
         var x = x
         var y = y
         val regionId = ((x shr 6) shl 8) or (y shr 6)
@@ -275,7 +341,9 @@ object RegionManager {
         val scenery: Scenery? = region.planes[z].getChunkObject(x, y, objectId)
         return if (scenery != null && !scenery.isRenderable) {
             null
-        } else scenery
+        } else {
+            scenery
+        }
     }
 
     @JvmStatic
@@ -336,7 +404,10 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun getLocalEntitys(location: Location, distance: Int): List<Entity> {
+    fun getLocalEntitys(
+        location: Location,
+        distance: Int,
+    ): List<Entity> {
         val entitys: MutableList<Entity> = ArrayList(20)
         entitys.addAll(getLocalNpcs(location, distance))
         entitys.addAll(getLocalPlayers(location, distance))
@@ -344,7 +415,10 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun getLocalEntitys(entity: Entity, distance: Int): List<Entity> {
+    fun getLocalEntitys(
+        entity: Entity,
+        distance: Int,
+    ): List<Entity> {
         return getLocalEntitys(entity.location, distance)
     }
 
@@ -354,7 +428,10 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun getLocalNpcs(n: Entity, distance: Int): List<NPC> {
+    fun getLocalNpcs(
+        n: Entity,
+        distance: Int,
+    ): List<NPC> {
         val npcs: MutableList<NPC> = LinkedList()
         for (r in n.viewport.viewingPlanes) {
             for (npc in r.npcs) {
@@ -372,7 +449,10 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun getLocalPlayers(n: Entity, distance: Int): List<Player> {
+    fun getLocalPlayers(
+        n: Entity,
+        distance: Int,
+    ): List<Player> {
         val players: MutableList<Player> = LinkedList()
         for (r in n.viewport.viewingPlanes) {
             for (p in r.players) {
@@ -385,12 +465,19 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun getSurroundingPlayers(n: Node, vararg ignore: Node): List<Player> {
+    fun getSurroundingPlayers(
+        n: Node,
+        vararg ignore: Node,
+    ): List<Player> {
         return getSurroundingPlayers(n, 9, *ignore)
     }
 
     @JvmStatic
-    fun getSurroundingPlayers(n: Node, maximum: Int, vararg ignore: Node): List<Player> {
+    fun getSurroundingPlayers(
+        n: Node,
+        maximum: Int,
+        vararg ignore: Node,
+    ): List<Player> {
         val players = getLocalPlayers(n.location, 2)
         var count = 0
         val it = players.iterator()
@@ -419,20 +506,28 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun getSurroundingNPCs(n: Node, vararg ignore: Node): List<NPC> {
+    fun getSurroundingNPCs(
+        n: Node,
+        vararg ignore: Node,
+    ): List<NPC> {
         return getSurroundingNPCs(n, 9, *ignore)
     }
 
     @JvmStatic
-    fun getSurroundingNPCs(n: Node, maximum: Int, vararg ignore: Node): List<NPC> {
+    fun getSurroundingNPCs(
+        n: Node,
+        maximum: Int,
+        vararg ignore: Node,
+    ): List<NPC> {
         val npcs = getLocalNpcs(n.location, 2)
         var count = 0
         val it = npcs.iterator()
         while (it.hasNext()) {
             val p = it.next()
-            if (p.properties.teleportLocation != null && !p.properties.teleportLocation.withinMaxnormDistance(
+            if (p.properties.teleportLocation != null &&
+                !p.properties.teleportLocation.withinMaxnormDistance(
                     n.location,
-                    1
+                    1,
                 )
             ) {
                 it.remove()
@@ -466,7 +561,10 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun getTeleportLocation(location: Location, radius: Int): Location {
+    fun getTeleportLocation(
+        location: Location,
+        radius: Int,
+    ): Location {
         var radius = radius
         var mod = radius shr 1
         if (mod == 0) {
@@ -477,7 +575,11 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun getTeleportLocation(location: Location, areaX: Int, areaY: Int): Location {
+    fun getTeleportLocation(
+        location: Location,
+        areaX: Int,
+        areaY: Int,
+    ): Location {
         var destination = location
         var x: Int = RandomFunction.random(1 + areaX)
         var y: Int = RandomFunction.random(1 + areaY)
@@ -540,7 +642,10 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun getLocalPlayers(l: Location, distance: Int): MutableList<Player> {
+    fun getLocalPlayers(
+        l: Location,
+        distance: Int,
+    ): MutableList<Player> {
         val players: MutableList<Player> = LinkedList()
         for (regionX in ((l.regionX - 6) shr 3)..((l.regionX + 6) shr 3)) {
             for (regionY in ((l.regionY - 6) shr 3)..((l.regionY + 6) shr 3)) {
@@ -555,7 +660,11 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun getLocalPlayersBoundingBox(l: Location, xdist: Int, ydist: Int): MutableList<Player> {
+    fun getLocalPlayersBoundingBox(
+        l: Location,
+        xdist: Int,
+        ydist: Int,
+    ): MutableList<Player> {
         val players: MutableList<Player> = LinkedList()
         for (regionX in ((l.regionX - 6) shr 3)..((l.regionX + 6) shr 3)) {
             for (regionY in ((l.regionY - 6) shr 3)..((l.regionY + 6) shr 3)) {
@@ -574,7 +683,10 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun getLocalPlayersMaxNorm(l: Location, distance: Int): MutableList<Player> {
+    fun getLocalPlayersMaxNorm(
+        l: Location,
+        distance: Int,
+    ): MutableList<Player> {
         val players: MutableList<Player> = LinkedList()
         for (regionX in ((l.regionX - 6) shr 3)..((l.regionX + 6) shr 3)) {
             for (regionY in ((l.regionY - 6) shr 3)..((l.regionY + 6) shr 3)) {
@@ -594,17 +706,28 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun getNpc(entity: Entity, id: Int): NPC? {
+    fun getNpc(
+        entity: Entity,
+        id: Int,
+    ): NPC? {
         return getNpc(entity, id, 16)
     }
 
     @JvmStatic
-    fun getNpc(entity: Entity, id: Int, distance: Int): NPC? {
+    fun getNpc(
+        entity: Entity,
+        id: Int,
+        distance: Int,
+    ): NPC? {
         return getNpc(entity.location, id, distance)
     }
 
     @JvmStatic
-    fun getNpc(location: Location, id: Int, distance: Int): NPC? {
+    fun getNpc(
+        location: Location,
+        id: Int,
+        distance: Int,
+    ): NPC? {
         val npcs: List<NPC> = getLocalNpcs(location, distance)
         for (n in npcs) {
             if (n.id == id) {
@@ -615,7 +738,10 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun getLocalNpcs(l: Location, distance: Int): MutableList<NPC> {
+    fun getLocalNpcs(
+        l: Location,
+        distance: Int,
+    ): MutableList<NPC> {
         val npcs: MutableList<NPC> = LinkedList()
         for (regionX in ((l.regionX - 6) shr 3)..((l.regionX + 6) shr 3)) {
             for (regionY in ((l.regionY - 6) shr 3)..((l.regionY + 6) shr 3)) {
@@ -630,7 +756,10 @@ object RegionManager {
     }
 
     @JvmStatic
-    fun addRegion(id: Int, region: Region) {
+    fun addRegion(
+        id: Int,
+        region: Region,
+    ) {
         if (lock.tryLock() || LOCK.tryLock(10000, TimeUnit.MILLISECONDS)) {
             REGION_CACHE[id] = region
             LOCK.unlock()

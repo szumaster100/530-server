@@ -1,15 +1,17 @@
 package content.region.kandarin.quest.merlin.dialogue
 
-import org.rs.consts.NPCs
 import core.game.dialogue.DialogueFile
 import core.game.dialogue.FaceAnim
 import core.game.node.entity.npc.NPC
 import core.game.world.repository.Repository.findNPC
 import core.tools.END_DIALOGUE
+import org.rs.consts.NPCs
 
 class SirMordredDialogueFile : DialogueFile() {
-
-    override fun handle(componentID: Int, buttonID: Int) {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         npc = NPC(NPCs.SIR_MORDRED_247)
 
         when (stage) {

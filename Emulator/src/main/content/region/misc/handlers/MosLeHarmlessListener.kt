@@ -1,19 +1,17 @@
 package content.region.misc.handlers
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.*
 import core.api.interaction.openNpcShop
 import core.game.dialogue.FaceAnim
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.world.map.Location
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 class MosLeHarmlessListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(NPCs.HONEST_JIMMY_4362, IntType.NPC, "Join-Team") { player, _ ->
             sendMessage(player, "There must be at least 3 people on each team for the game to start.")
             return@on true
@@ -26,7 +24,14 @@ class MosLeHarmlessListener : InteractionListener {
 
         onUseWith(IntType.NPC, BERET_AND_MASK, NPCs.PATCHY_4359) { player, used, _ ->
             if (freeSlots(player) == 0 || freeSlots(player) < 2) {
-                sendNPCDialogueLines(player, NPCs.PATCHY_4359, FaceAnim.STRUGGLE, false, "Ye don't seem te have enough free space few the two items.", "Ye might want te visit the bank.")
+                sendNPCDialogueLines(
+                    player,
+                    NPCs.PATCHY_4359,
+                    FaceAnim.STRUGGLE,
+                    false,
+                    "Ye don't seem te have enough free space few the two items.",
+                    "Ye might want te visit the bank.",
+                )
                 return@onUseWith false
             }
             if (used.id != BERET_AND_MASK) {
@@ -35,7 +40,13 @@ class MosLeHarmlessListener : InteractionListener {
             }
 
             if (!removeItem(player, Items.BERET_AND_MASK_11282)) {
-                sendNPCDialogueLines(player, NPCs.PATCHY_4359, FaceAnim.SAD, false, "Sorry, I can't do anythin' with that.")
+                sendNPCDialogueLines(
+                    player,
+                    NPCs.PATCHY_4359,
+                    FaceAnim.SAD,
+                    false,
+                    "Sorry, I can't do anythin' with that.",
+                )
             } else {
                 addItemOrDrop(player, Items.BLACK_BERET_2635)
                 addItemOrDrop(player, Items.MIME_MASK_3057)
@@ -81,7 +92,8 @@ class MosLeHarmlessListener : InteractionListener {
     }
 
     companion object {
-        private val SHOP_OWNERS = intArrayOf(NPCs.MIKE_3166, NPCs.CHARLEY_3161, NPCs.MAMA_3164, NPCs.JOE_3163, NPCs.HONEST_JIMMY_4362)
+        private val SHOP_OWNERS =
+            intArrayOf(NPCs.MIKE_3166, NPCs.CHARLEY_3161, NPCs.MAMA_3164, NPCs.JOE_3163, NPCs.HONEST_JIMMY_4362)
         private const val BERET_AND_MASK = Items.BERET_AND_MASK_11282
     }
 }

@@ -1,6 +1,5 @@
 package content.region.asgarnia.quest.ball.handlers
 
-import org.rs.consts.Items
 import content.minigame.mta.TelekineticGrabSpell
 import content.region.asgarnia.quest.ball.handlers.npc.WitchExperimentNPC
 import core.api.getAttribute
@@ -19,6 +18,7 @@ import core.game.world.map.Location
 import core.plugin.Initializable
 import core.plugin.Plugin
 import core.tools.RED
+import org.rs.consts.Items
 
 @Initializable
 class BallInteractionPlugin : PluginInteraction() {
@@ -30,7 +30,11 @@ class BallInteractionPlugin : PluginInteraction() {
         return this
     }
 
-    override fun handle(player: Player, item: Item, option: Option): Boolean {
+    override fun handle(
+        player: Player,
+        item: Item,
+        option: Option,
+    ): Boolean {
         if (option.name.equals("take", ignoreCase = true)) {
             player.pulseManager.run(
                 object : MovementPulse(player, item.location.transform(0, -1, 0)) {
@@ -38,7 +42,7 @@ class BallInteractionPlugin : PluginInteraction() {
                         return true
                     }
                 },
-                PulseType.STANDARD
+                PulseType.STANDARD,
             )
             handleBall(player)
         }
@@ -57,21 +61,25 @@ class BallInteractionPlugin : PluginInteraction() {
                 val skillsToDecrease =
                     intArrayOf(Skills.DEFENCE, Skills.ATTACK, Skills.STRENGTH, Skills.RANGE, Skills.MAGIC)
                 for (i in skillsToDecrease.indices) {
-                    player.getSkills()
+                    player
+                        .getSkills()
                         .setLevel(i, if (player.getSkills().getLevel(i) > 5) player.getSkills().getLevel(i) - 5 else 1)
                 }
                 sendMessage(player, RED + "The experiment glares at you, and you feel yourself weaken.</col>")
                 WitchExperimentNPC(
                     player.getAttribute("witchs_house:experiment_id", 897),
                     Location.create(2936, 3463, 0),
-                    player
+                    player,
                 ).init()
                 setAttribute(player, "witchs-experiment:npc_spawned", true)
             }
         }
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 }

@@ -1,7 +1,5 @@
 package content.global.skill.agility.grapple
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
 import core.api.anyInEquipment
 import core.api.inEquipment
 import core.api.sendDialogue
@@ -20,10 +18,11 @@ import core.game.world.map.RegionManager.getObject
 import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Animations
+import org.rs.consts.Items
 
 @Initializable
 class WaterOrbGrapple : OptionHandler() {
-
     companion object {
         private val REQUIREMENTS = HashMap<Int?, Int>()
         private var requirementsString: String? = null
@@ -33,17 +32,26 @@ class WaterOrbGrapple : OptionHandler() {
             REQUIREMENTS.putIfAbsent(Skills.RANGE, 39)
             REQUIREMENTS.putIfAbsent(Skills.STRENGTH, 22)
             requirementsString =
-                "You need at least " + REQUIREMENTS[Skills.AGILITY] + " " + Skills.SKILL_NAME[Skills.AGILITY] + ", " + REQUIREMENTS[Skills.RANGE] + " " + Skills.SKILL_NAME[Skills.RANGE] + ", and " + REQUIREMENTS[Skills.STRENGTH] + " " + Skills.SKILL_NAME[Skills.STRENGTH] + " to use this shortcut."
+                "You need at least " + REQUIREMENTS[Skills.AGILITY] + " " + Skills.SKILL_NAME[Skills.AGILITY] + ", " +
+                REQUIREMENTS[Skills.RANGE] +
+                " " +
+                Skills.SKILL_NAME[Skills.RANGE] +
+                ", and " +
+                REQUIREMENTS[Skills.STRENGTH] +
+                " " +
+                Skills.SKILL_NAME[Skills.STRENGTH] +
+                " to use this shortcut."
         }
 
-        private val crossbowIds = intArrayOf(
-            Items.DORGESHUUN_CBOW_8880,
-            Items.MITH_CROSSBOW_9181,
-            Items.ADAMANT_CROSSBOW_9183,
-            Items.RUNE_CROSSBOW_9185,
-            Items.KARILS_CROSSBOW_4734,
-            Items.HUNTERS_CROSSBOW_10156
-        )
+        private val crossbowIds =
+            intArrayOf(
+                Items.DORGESHUUN_CBOW_8880,
+                Items.MITH_CROSSBOW_9181,
+                Items.ADAMANT_CROSSBOW_9183,
+                Items.RUNE_CROSSBOW_9185,
+                Items.KARILS_CROSSBOW_4734,
+                Items.HUNTERS_CROSSBOW_10156,
+            )
         private val grappleId = Items.MITH_GRAPPLE_9419
     }
 
@@ -52,7 +60,11 @@ class WaterOrbGrapple : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val destination: Location
         val current = player.location
         val rock = getObject(Location.create(2841, 3426, 0))
@@ -74,6 +86,7 @@ class WaterOrbGrapple : OptionHandler() {
                 Pulser.submit(
                     object : Pulse(1, player) {
                         var counter = 1
+
                         override fun pulse(): Boolean {
                             when (counter++) {
                                 1 -> {
@@ -81,12 +94,13 @@ class WaterOrbGrapple : OptionHandler() {
                                     player.animate(Animation(Animations.FIRE_CROSSBOW_4230))
                                 }
 
-                                3 -> player.packetDispatch.sendPositionedGraphic(
-                                    67,
-                                    10,
-                                    0,
-                                    Location.create(2840, 3427, 0)
-                                )
+                                3 ->
+                                    player.packetDispatch.sendPositionedGraphic(
+                                        67,
+                                        10,
+                                        0,
+                                        Location.create(2840, 3427, 0),
+                                    )
 
                                 4 -> {
                                     SceneryBuilder.replace(rock, rock!!.transform(rock.id + 1), 10)
@@ -102,15 +116,17 @@ class WaterOrbGrapple : OptionHandler() {
                             }
                             return false
                         }
-                    }
+                    },
                 )
             }
         }
         return true
     }
 
-    override fun getDestination(moving: Node, destination: Node): Location {
-
+    override fun getDestination(
+        moving: Node,
+        destination: Node,
+    ): Location {
         return Location.create(2841, 3427, 0)
     }
 }

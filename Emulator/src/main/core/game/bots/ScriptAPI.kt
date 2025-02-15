@@ -1,20 +1,27 @@
 package core.game.bots
 
+import content.data.consumables.Consumables
+import content.data.consumables.effects.HealingEffect
+import core.ServerConfig
+import core.ServerConfig.Companion.SERVER_GE_NAME
 import core.api.*
-import core.game.interaction.NodeUsageEvent
-import core.game.interaction.PluginInteractionManager
-import core.game.interaction.UseWithHandler
+import core.api.item.itemDefinition
+import core.api.utils.Vector
 import core.cache.def.impl.ItemDefinition
 import core.game.component.Component
 import core.game.consumable.Consumable
-import content.data.consumables.Consumables
 import core.game.consumable.Food
-import content.data.consumables.effects.HealingEffect
+import core.game.ge.GrandExchange
+import core.game.ge.GrandExchangeOffer
 import core.game.interaction.DestinationFlag
+import core.game.interaction.IntType
+import core.game.interaction.InteractionListeners
 import core.game.interaction.MovementPulse
+import core.game.interaction.NodeUsageEvent
 import core.game.interaction.Option
+import core.game.interaction.PluginInteractionManager
+import core.game.interaction.UseWithHandler
 import core.game.node.Node
-import core.game.node.scenery.Scenery
 import core.game.node.entity.Entity
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
@@ -22,65 +29,71 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.GroundItem
 import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
+import core.game.node.scenery.Scenery
+import core.game.system.config.ItemConfigParser
 import core.game.system.task.Pulse
+import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.game.world.map.RegionManager
 import core.game.world.map.path.Pathfinder
+import core.game.world.repository.Repository
+import core.game.world.update.flag.*
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.ChatMessage
 import core.game.world.update.flag.context.Graphics
-import core.game.world.update.flag.*
+import core.tools.Log
 import core.tools.RandomFunction
+import core.tools.colorize
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 import org.rs.consts.Items
-import core.ServerConfig.Companion.SERVER_GE_NAME
-import core.game.ge.GrandExchange
-import core.game.ge.GrandExchangeOffer
-import core.game.interaction.IntType
-import core.game.interaction.InteractionListeners
-import core.game.system.config.ItemConfigParser
-import core.game.world.GameWorld
-import core.game.world.repository.Repository
-import core.tools.Log
-import core.tools.colorize
 import java.util.*
 import java.util.concurrent.CountDownLatch
 import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.sqrt
-import core.ServerConfig
-import core.api.item.itemDefinition
-import core.api.utils.Vector
 import kotlin.random.Random
 
-class ScriptAPI(private val bot: Player) {
+class ScriptAPI(
+    private val bot: Player,
+) {
     val GRAPHICSUP = Graphics(1576)
     val ANIMATIONUP = Animation(8939)
     val GRAPHICSDOWN = Graphics(1577)
     val ANIMATIONDOWN = Animation(8941)
 
-    fun distance(n1: Node, n2: Node): Double {
+    fun distance(
+        n1: Node,
+        n2: Node,
+    ): Double {
         return sqrt(
-            (n1.location.x - n2.location.x.toDouble()).pow(2.0) + (n2.location.y - n1.location.y.toDouble()).pow(
-                2.0
-            )
+            (n1.location.x - n2.location.x.toDouble()).pow(2.0) +
+                (n2.location.y - n1.location.y.toDouble()).pow(
+                    2.0,
+                ),
         )
     }
 
-    fun interact(bot: Player, node: Node?, option: String) {
-
+    fun interact(
+        bot: Player,
+        node: Node?,
+        option: String,
+    ) {
         if (node == null) return
 
-        val type = when (node) {
-            is Scenery -> IntType.SCENERY
-            is NPC -> IntType.NPC
-            is Item -> IntType.ITEM
-            else -> null
-        } ?: return
-        val opt: Option? = node.interaction.options.filter { it != null && it.name.equals(option, true) }.firstOrNull()
+        val type =
+            when (node) {
+                is Scenery -> IntType.SCENERY
+                is NPC -> IntType.NPC
+                is Item -> IntType.ITEM
+                else -> null
+            } ?: return
+        val opt: Option? =
+            node.interaction.options
+                .filter { it != null && it.name.equals(option, true) }
+                .firstOrNull()
 
         if (opt == null) {
             log(this::class.java, Log.WARN, "Invalid option name provided: $option")
@@ -90,33 +103,43 @@ class ScriptAPI(private val bot: Player) {
         if (!InteractionListeners.run(node.id, type, option, bot, node)) node.interaction.handle(bot, opt)
     }
 
-    fun useWith(bot: Player, itemId: Int, node: Node?) {
+    fun useWith(
+        bot: Player,
+        itemId: Int,
+        node: Node?,
+    ) {
         if (node == null) return
 
-        val type = when (node) {
-            is Scenery -> IntType.SCENERY
-            is NPC -> IntType.NPC
-            is Item -> IntType.ITEM
-            else -> null
-        } ?: return
+        val type =
+            when (node) {
+                is Scenery -> IntType.SCENERY
+                is NPC -> IntType.NPC
+                is Item -> IntType.ITEM
+                else -> null
+            } ?: return
 
         val item = bot.inventory.getItem(Item(itemId))
 
         val childNode = node.asScenery()?.getChild(bot)
 
-        if (InteractionListeners.run(item, node, type, bot))
+        if (InteractionListeners.run(item, node, type, bot)) {
             return
+        }
         if (childNode != null && childNode.id != node.id) {
-            if (InteractionListeners.run(item, childNode, type, bot))
+            if (InteractionListeners.run(item, childNode, type, bot)) {
                 return
+            }
         }
         val flipped = type == IntType.ITEM && item.id < node.id
-        val event = if (flipped)
-            NodeUsageEvent(bot, 0, node, item)
-        else
-            NodeUsageEvent(bot, 0, item, childNode ?: node)
-        if (PluginInteractionManager.handle(bot, event))
+        val event =
+            if (flipped) {
+                NodeUsageEvent(bot, 0, node, item)
+            } else {
+                NodeUsageEvent(bot, 0, item, childNode ?: node)
+            }
+        if (PluginInteractionManager.handle(bot, event)) {
             return
+        }
         UseWithHandler.run(event)
     }
 
@@ -125,56 +148,68 @@ class ScriptAPI(private val bot: Player) {
         bot.updateMasks.register(EntityFlag.Chat, ChatMessage(bot, message, 0, 0))
     }
 
-    fun getNearestNodeFromList(acceptedNames: List<String>, isObject: Boolean): Node? {
-        if (isObject)
+    fun getNearestNodeFromList(
+        acceptedNames: List<String>,
+        isObject: Boolean,
+    ): Node? {
+        if (isObject) {
             return processEvaluationList(
                 RegionManager.forId(bot.location.regionId).planes[bot.location.z].objectList,
-                acceptedName = acceptedNames
+                acceptedName = acceptedNames,
             )
-        else
+        } else {
             return processEvaluationList(
                 RegionManager.forId(bot.location.regionId).planes[bot.location.z].entities,
-                acceptedName = acceptedNames
+                acceptedName = acceptedNames,
             )
+        }
     }
 
-    fun getNearestNode(id: Int, isObject: Boolean): Node? {
-        if (isObject)
+    fun getNearestNode(
+        id: Int,
+        isObject: Boolean,
+    ): Node? {
+        if (isObject) {
             return processEvaluationList(
                 RegionManager.forId(bot.location.regionId).planes[bot.location.z].objectList,
-                acceptedId = id
+                acceptedId = id,
             )
-        else
+        } else {
             return processEvaluationList(
                 RegionManager.forId(bot.location.regionId).planes[bot.location.z].entities,
-                acceptedId = id
+                acceptedId = id,
             )
+        }
     }
 
     fun getNearestNode(entityName: String): Node? {
         return processEvaluationList(
             RegionManager.forId(bot.location.regionId).planes[bot.location.z].entities,
-            acceptedName = listOf(entityName)
+            acceptedName = listOf(entityName),
         )
     }
 
-    fun getNearestNode(name: String, isObject: Boolean): Node? {
-        if (isObject)
+    fun getNearestNode(
+        name: String,
+        isObject: Boolean,
+    ): Node? {
+        if (isObject) {
             return processEvaluationList(
                 RegionManager.forId(bot.location.regionId).planes[bot.location.z].objectList,
-                acceptedName = listOf(name)
+                acceptedName = listOf(name),
             )
-        else
+        } else {
             return processEvaluationList(
                 RegionManager.forId(bot.location.regionId).planes[bot.location.z].entities,
-                acceptedName = listOf(name)
+                acceptedName = listOf(name),
             )
+        }
     }
 
     fun getNearestObjectByPredicate(predicate: (Node?) -> Boolean): Node? {
         return processEvaluationList(
             RegionManager.forId(bot.location.regionId).planes[bot.location.z].objectList,
-            acceptedPredicate = predicate
+            acceptedPredicate = predicate,
         )
     }
 
@@ -184,25 +219,32 @@ class ScriptAPI(private val bot: Player) {
         maxDistance: Double,
         acceptedNames: List<String>? = null,
         acceptedId: Int = -1,
-        acceptedPredicate: ((Node?) -> Boolean)? = null
+        acceptedPredicate: ((Node?) -> Boolean)? = null,
     ): Boolean {
-        if (e == null || !e.isActive)
+        if (e == null || !e.isActive) {
             return false
-        if (acceptedId != -1 && e.id != acceptedId)
+        }
+        if (acceptedId != -1 && e.id != acceptedId) {
             return false
+        }
 
         val dist = distance(bot, e)
-        if (dist > maxDistance || dist > minDistance)
+        if (dist > maxDistance || dist > minDistance) {
             return false
+        }
 
         if (acceptedPredicate != null) {
             return acceptedPredicate(e) && !Pathfinder.find(bot, e).isMoveNear
         } else {
             val name = e?.name
-            return (acceptedNames?.stream()?.anyMatch({ s -> s.equals(name, true) }) ?: true && !Pathfinder.find(
-                bot,
-                e
-            ).isMoveNear)
+            return (
+                acceptedNames?.stream()?.anyMatch({ s -> s.equals(name, true) }) ?: true &&
+                    !Pathfinder
+                        .find(
+                            bot,
+                            e,
+                        ).isMoveNear
+            )
         }
     }
 
@@ -210,7 +252,7 @@ class ScriptAPI(private val bot: Player) {
         list: List<Node>,
         acceptedName: List<String>? = null,
         acceptedId: Int = -1,
-        acceptedPredicate: ((Node?) -> Boolean)? = null
+        acceptedPredicate: ((Node?) -> Boolean)? = null,
     ): Node? {
         var entity: Node? = null
         var minDistance = Double.MAX_VALUE
@@ -241,7 +283,12 @@ class ScriptAPI(private val bot: Player) {
             val items: ArrayList<GroundItem>? = bot.getAttribute("botting:drops", null)
             if (items != null) {
                 for (item in items.filter { it.distance(bot.location) < 10 }) {
-                    if (item.id == id) return item.also { items.remove(item); bot.setAttribute("botting:drops", items) }
+                    if (item.id == id) {
+                        return item.also {
+                            items.remove(item)
+                            bot.setAttribute("botting:drops", items)
+                        }
+                    }
                 }
             }
         }
@@ -253,10 +300,15 @@ class ScriptAPI(private val bot: Player) {
         if (item != null) {
             item.interaction?.handle(bot, item.interaction[2])
             return true
-        } else return false
+        } else {
+            return false
+        }
     }
 
-    fun getNearestGameObject(loc: Location, objectId: Int): Scenery? {
+    fun getNearestGameObject(
+        loc: Location,
+        objectId: Int,
+    ): Scenery? {
         var nearestObject: Scenery? = null
         val minDistance = Double.MAX_VALUE
         for (o in RegionManager.forId(loc.regionId).planes[0].objects) {
@@ -271,7 +323,11 @@ class ScriptAPI(private val bot: Player) {
         return nearestObject
     }
 
-    private fun findTargets(entity: Entity, radius: Int, name: String? = null): List<Entity>? {
+    private fun findTargets(
+        entity: Entity,
+        radius: Int,
+        name: String? = null,
+    ): List<Entity>? {
         val targets: MutableList<Entity> = ArrayList()
         val localNPCs: Array<Any> = RegionManager.getLocalNpcs(entity, radius).toTypedArray()
         var length = localNPCs.size
@@ -285,7 +341,10 @@ class ScriptAPI(private val bot: Player) {
         return if (targets.size == 0) null else targets
     }
 
-    private fun checkValidTargets(target: NPC, name: String?): Boolean {
+    private fun checkValidTargets(
+        target: NPC,
+        name: String?,
+    ): Boolean {
         if (!target.isActive) {
             return false
         }
@@ -293,13 +352,17 @@ class ScriptAPI(private val bot: Player) {
             return false
         }
         if (name != null) {
-            if (target.name != name)
+            if (target.name != name) {
                 return false
+            }
         }
         return target.definition.hasAction("attack")
     }
 
-    fun attackNpcsInRadius(bot: Player, radius: Int): Boolean {
+    fun attackNpcsInRadius(
+        bot: Player,
+        radius: Int,
+    ): Boolean {
         if (bot.inCombat()) return true
         var creatures: List<Entity>? = findTargets(bot, radius) ?: return false
         bot.attack(creatures!![RandomFunction.getRandom(creatures.size - 1)])
@@ -322,25 +385,31 @@ class ScriptAPI(private val bot: Player) {
     }
 
     fun walkArray(steps: Array<Location>) {
-        bot.pulseManager.run(object : Pulse() {
-            var stepIndex = 0
-            override fun pulse(): Boolean {
-                if (stepIndex >= steps.size) return true
-                if (bot.location.withinDistance(steps[steps.size - 1], 2)) {
-                    return true
-                }
-                if (!bot.location.withinDistance(steps[stepIndex], 5)) {
-                    walkTo(steps[stepIndex])
+        bot.pulseManager.run(
+            object : Pulse() {
+                var stepIndex = 0
+
+                override fun pulse(): Boolean {
+                    if (stepIndex >= steps.size) return true
+                    if (bot.location.withinDistance(steps[steps.size - 1], 2)) {
+                        return true
+                    }
+                    if (!bot.location.withinDistance(steps[stepIndex], 5)) {
+                        walkTo(steps[stepIndex])
+                        return false
+                    }
+                    stepIndex++
+
                     return false
                 }
-                stepIndex++
-
-                return false
-            }
-        })
+            },
+        )
     }
 
-    fun randomWalkTo(loc: Location, radius: Int) {
+    fun randomWalkTo(
+        loc: Location,
+        radius: Int,
+    ) {
         if (!bot.walkingQueue.isMoving) {
             var newloc =
                 loc.transform(RandomFunction.random(radius, -radius), RandomFunction.random(radius, -radius), 0)
@@ -354,7 +423,7 @@ class ScriptAPI(private val bot: Player) {
         xMax: Int,
         yMin: Int,
         yMax: Int,
-        staticZ: Int
+        staticZ: Int,
     ): Location {
         val newX = location.x + Random.nextInt(xMin, xMax)
         val newY = location.y + Random.nextInt(yMin, yMax)
@@ -369,14 +438,20 @@ class ScriptAPI(private val bot: Player) {
         val norm = vec.normalized()
         val tiles = kotlin.math.min(kotlin.math.floor(vec.magnitude()).toInt(), ServerConfig.MAX_PATHFIND_DISTANCE - 1)
         val loc = bot.location.transform(norm * tiles)
-        bot.pulseManager.run(object : MovementPulse(bot, loc) {
-            override fun pulse(): Boolean {
-                return true
-            }
-        })
+        bot.pulseManager.run(
+            object : MovementPulse(bot, loc) {
+                override fun pulse(): Boolean {
+                    return true
+                }
+            },
+        )
     }
 
-    fun attackNpcInRadius(bot: Player, name: String, radius: Int): Boolean {
+    fun attackNpcInRadius(
+        bot: Player,
+        name: String,
+        radius: Int,
+    ): Boolean {
         if (bot.inCombat()) return true
         var creatures: List<Entity>? = findTargets(bot, radius, name) ?: return false
         bot.attack(creatures!![RandomFunction.getRandom(creatures.size - 1)])
@@ -404,15 +479,17 @@ class ScriptAPI(private val bot: Player) {
         bot.visualize(ANIMATIONUP, GRAPHICSUP)
         bot.impactHandler.disabledTicks = 4
         val location = Location.create(3165, 3482, 0)
-        bot.pulseManager.run(object : Pulse(4, bot) {
-            override fun pulse(): Boolean {
-                bot.unlock()
-                bot.properties.teleportLocation = location
-                bot.pulseManager.clear()
-                bot.animator.reset()
-                return true
-            }
-        })
+        bot.pulseManager.run(
+            object : Pulse(4, bot) {
+                override fun pulse(): Boolean {
+                    bot.unlock()
+                    bot.properties.teleportLocation = location
+                    bot.pulseManager.clear()
+                    bot.animator.reset()
+                    return true
+                }
+            },
+        )
         return true
     }
 
@@ -427,9 +504,12 @@ class ScriptAPI(private val bot: Player) {
                 val canSell = GrandExchange.addBotOffer(actualId, itemAmt)
                 if (canSell && saleIsBigNews(actualId, itemAmt)) {
                     Repository.sendNews(
-                        SERVER_GE_NAME + " just offered " + itemAmt + " " + ItemDefinition.forId(
-                            actualId
-                        ).name.toLowerCase() + " on the GE."
+                        SERVER_GE_NAME + " just offered " + itemAmt + " " +
+                            ItemDefinition
+                                .forId(
+                                    actualId,
+                                ).name
+                                .toLowerCase() + " on the GE.",
                     )
                 }
                 bot.bank.remove(Item(id, itemAmt))
@@ -459,9 +539,12 @@ class ScriptAPI(private val bot: Player) {
                     val canSell = GrandExchange.addBotOffer(actualId, itemAmt)
                     if (canSell && saleIsBigNews(actualId, itemAmt)) {
                         Repository.sendNews(
-                            SERVER_GE_NAME + " just offered " + itemAmt + " " + ItemDefinition.forId(
-                                actualId
-                            ).name.toLowerCase() + " on the GE."
+                            SERVER_GE_NAME + " just offered " + itemAmt + " " +
+                                ItemDefinition
+                                    .forId(
+                                        actualId,
+                                    ).name
+                                    .toLowerCase() + " on the GE.",
                         )
                     }
                     bot.bank.remove(item)
@@ -497,11 +580,15 @@ class ScriptAPI(private val bot: Player) {
                             1517 -> continue
                             1519 -> continue
                             1521 -> continue
-                            else -> sendNews(
-                                SERVER_GE_NAME + " just offered " + itemAmt + " " + ItemDefinition.forId(
-                                    actualId
-                                ).name.lowercase() + " on the GE."
-                            )
+                            else ->
+                                sendNews(
+                                    SERVER_GE_NAME + " just offered " + itemAmt + " " +
+                                        ItemDefinition
+                                            .forId(
+                                                actualId,
+                                            ).name
+                                            .lowercase() + " on the GE.",
+                                )
                         }
                     }
                     bot.bank.remove(item)
@@ -537,9 +624,14 @@ class ScriptAPI(private val bot: Player) {
         }
     }
 
-    fun saleIsBigNews(itemID: Int, amount: Int): Boolean {
-        return ItemDefinition.forId(itemID).getAlchemyValue(true) * amount >= (GameWorld.settings?.ge_announcement_limit
-            ?: 500)
+    fun saleIsBigNews(
+        itemID: Int,
+        amount: Int,
+    ): Boolean {
+        return ItemDefinition.forId(itemID).getAlchemyValue(true) * amount >= (
+            GameWorld.settings?.ge_announcement_limit
+                ?: 500
+        )
     }
 
     fun teleport(loc: Location): Boolean {
@@ -550,20 +642,22 @@ class ScriptAPI(private val bot: Player) {
         bot.visualize(ANIMATIONUP, GRAPHICSUP)
         bot.impactHandler.disabledTicks = 4
         val location = loc
-        GameWorld.Pulser.submit(object : Pulse(4, bot) {
-            override fun pulse(): Boolean {
-                bot.unlock()
-                bot.properties.teleportLocation = location
-                bot.pulseManager.clear()
-                bot.animator.reset()
-                return true
-            }
-        })
+        GameWorld.Pulser.submit(
+            object : Pulse(4, bot) {
+                override fun pulse(): Boolean {
+                    bot.unlock()
+                    bot.properties.teleportLocation = location
+                    bot.pulseManager.clear()
+                    bot.animator.reset()
+                    return true
+                }
+            },
+        )
         return true
     }
 
     fun bankItem(item: Int) {
-        class BankingPulse() : Pulse(20) {
+        class BankingPulse : Pulse(20) {
             override fun pulse(): Boolean {
                 val logs = bot.inventory.getAmount(item)
                 bot.inventory.remove(Item(item, logs))
@@ -575,7 +669,7 @@ class ScriptAPI(private val bot: Player) {
     }
 
     fun bankAll(onComplete: (() -> Unit)? = null) {
-        class BankingPulse() : Pulse(20) {
+        class BankingPulse : Pulse(20) {
             override fun pulse(): Boolean {
                 for (item in bot.inventory.toArray()) {
                     if (item != null) {
@@ -597,10 +691,12 @@ class ScriptAPI(private val bot: Player) {
 
     fun eat(foodId: Int) {
         val foodItem = Item(foodId)
-        if (bot.skills.getStaticLevel(Skills.HITPOINTS) * RandomFunction.random(
+        if (bot.skills.getStaticLevel(Skills.HITPOINTS) *
+            RandomFunction.random(
                 0.5,
-                0.75
-            ) >= bot.skills.lifepoints && bot.inventory.containsItem(foodItem)
+                0.75,
+            ) >= bot.skills.lifepoints &&
+            bot.inventory.containsItem(foodItem)
         ) {
             bot.lock(3)
             val food = bot.inventory.getItem(foodItem)
@@ -627,7 +723,11 @@ class ScriptAPI(private val bot: Player) {
         }
     }
 
-    fun buyFromGE(bot: Player, itemID: Int, amount: Int) {
+    fun buyFromGE(
+        bot: Player,
+        itemID: Int,
+        amount: Int,
+    ) {
         GlobalScope.launch {
             val offer = GrandExchangeOffer()
             offer.itemID = itemID
@@ -638,13 +738,15 @@ class ScriptAPI(private val bot: Player) {
             AIRepository.addOffer(bot, offer)
             var bought: Boolean = false
             val latch = CountDownLatch(1)
-            bot.pulseManager.run(object : Pulse(5) {
-                override fun pulse(): Boolean {
-                    bought = offer.completedAmount == offer.amount
-                    latch.countDown()
-                    return true
-                }
-            })
+            bot.pulseManager.run(
+                object : Pulse(5) {
+                    override fun pulse(): Boolean {
+                        bought = offer.completedAmount == offer.amount
+                        latch.countDown()
+                        return true
+                    }
+                },
+            )
             latch.await()
             if (bought) {
                 bot.bank.add(Item(offer.itemID, offer.completedAmount))
@@ -653,7 +755,10 @@ class ScriptAPI(private val bot: Player) {
         }
     }
 
-    fun withdraw(itemID: Int, amount: Int) {
+    fun withdraw(
+        itemID: Int,
+        amount: Int,
+    ) {
         var item: Item? = null
         if (bot.bank.containsItem(Item(itemID, amount))) {
             item = Item(itemID, amount)
@@ -679,13 +784,17 @@ class ScriptAPI(private val bot: Player) {
         val configs = item.definition.handlers
         val slot = configs["equipment_slot"] ?: return
         bot.equipment.add(
-            item, slot as Int,
-            false, false
+            item,
+            slot as Int,
+            false,
+            false,
         )
         val reqs = configs["requirements"]
-        if (reqs != null)
-            for (req in configs["requirements"] as HashMap<Int, Int>)
+        if (reqs != null) {
+            for (req in configs["requirements"] as HashMap<Int, Int>) {
                 bot.skills.setStaticLevel(req.key, req.value)
+            }
+        }
         bot.skills.updateCombatLevel()
     }
 
@@ -719,7 +828,9 @@ class ScriptAPI(private val bot: Player) {
         }
     }
 
-    class BottingOverlay(val player: Player) {
+    class BottingOverlay(
+        val player: Player,
+    ) {
         fun init() {
             player.interfaceManager.openOverlay(Component(195))
             player.packetDispatch.sendInterfaceConfig(195, 5, true)

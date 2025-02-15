@@ -1,9 +1,5 @@
 package content.region.asgarnia.quest.troll.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
-import org.rs.consts.Quests
 import content.region.asgarnia.quest.troll.dialogue.DadDialogueFile
 import core.api.*
 import core.api.interaction.transformNpc
@@ -20,13 +16,19 @@ import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.tools.RandomFunction
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
+import org.rs.consts.Scenery
 import kotlin.math.ceil
 
 class TrollStrongholdListener : InteractionListener {
-
     override fun defineListeners() {
-
-        on(intArrayOf(Scenery.ARENA_ENTRANCE_3782, Scenery.ARENA_ENTRANCE_3783), IntType.SCENERY, "open") { player, node ->
+        on(
+            intArrayOf(Scenery.ARENA_ENTRANCE_3782, Scenery.ARENA_ENTRANCE_3783),
+            IntType.SCENERY,
+            "open",
+        ) { player, node ->
 
             if (getQuestStage(player, Quests.TROLL_STRONGHOLD) == 1) {
                 openDialogue(player, DadDialogueFile(1), findNPC(NPCs.DAD_1125)!!)
@@ -74,6 +76,7 @@ class TrollStrongholdListener : InteractionListener {
             submitWorldPulse(
                 object : Pulse() {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             0 -> {
@@ -105,7 +108,7 @@ class TrollStrongholdListener : InteractionListener {
                         }
                         return false
                     }
-                }
+                },
             )
             return@on true
         }
@@ -116,6 +119,7 @@ class TrollStrongholdListener : InteractionListener {
             submitWorldPulse(
                 object : Pulse() {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             0 -> {
@@ -147,12 +151,15 @@ class TrollStrongholdListener : InteractionListener {
                         }
                         return false
                     }
-                }
+                },
             )
             return@on true
         }
 
-        fun unlockMadEadgarCellDoor(player: Player, node: Node) {
+        fun unlockMadEadgarCellDoor(
+            player: Player,
+            node: Node,
+        ) {
             if (inInventory(player, Items.CELL_KEY_1_3136)) {
                 sendMessage(player, "You unlock the cell door.")
                 if (getQuestStage(player, Quests.TROLL_STRONGHOLD) == 8) {
@@ -166,11 +173,11 @@ class TrollStrongholdListener : InteractionListener {
                 npc.walkRadius = 40
                 submitWorldPulse(
                     object : Pulse(0) {
-
                         var count = 0
                         var stage = 0
                         var trigger = true
                         var targetLocation = Location(0, 0, 0)
+
                         override fun pulse(): Boolean {
                             if (npc.location.equals(targetLocation)) {
                                 stage++
@@ -179,30 +186,34 @@ class TrollStrongholdListener : InteractionListener {
                             if (trigger) {
                                 trigger = false
                                 when (stage) {
-                                    0 -> forceWalk(npc, Location(2831, 10082, 0), "dumb").also {
-                                        npc.walkRadius = 11
-                                        npc.isWalks = false
-                                        targetLocation = Location(2831, 10082, 0)
-                                    }
+                                    0 ->
+                                        forceWalk(npc, Location(2831, 10082, 0), "dumb").also {
+                                            npc.walkRadius = 11
+                                            npc.isWalks = false
+                                            targetLocation = Location(2831, 10082, 0)
+                                        }
 
                                     1 ->
-                                        DoorActionHandler.handleAutowalkDoor(npc, node.asScenery())
+                                        DoorActionHandler
+                                            .handleAutowalkDoor(npc, node.asScenery())
                                             .also { targetLocation = Location(2832, 10082, 0) }
 
-                                    4 -> forceWalk(npc, Location(2836, 10082, 0), "dumb").also {
-                                        targetLocation = Location(2836, 10082, 0)
-                                    }
+                                    4 ->
+                                        forceWalk(npc, Location(2836, 10082, 0), "dumb").also {
+                                            targetLocation = Location(2836, 10082, 0)
+                                        }
 
-                                    5 -> forceWalk(npc, Location(2836, 10061, 0), "dumb").also {
-                                        targetLocation = Location(2836, 10061, 0)
-                                    }
+                                    5 ->
+                                        forceWalk(npc, Location(2836, 10061, 0), "dumb").also {
+                                            targetLocation = Location(2836, 10061, 0)
+                                        }
 
-                                    6 -> forceWalk(npc, Location(2824, 10050, 0), "dumb").also {
-                                        targetLocation = Location(2824, 10050, 0)
-                                    }
+                                    6 ->
+                                        forceWalk(npc, Location(2824, 10050, 0), "dumb").also {
+                                            targetLocation = Location(2824, 10050, 0)
+                                        }
 
                                     7 -> {
-
                                         npc.teleport(Location(2823, 10035, 0))
                                         npc.startDeath(null)
                                         npc.isWalks = true
@@ -218,7 +229,7 @@ class TrollStrongholdListener : InteractionListener {
                             }
                             return false
                         }
-                    }
+                    },
                 )
             } else {
                 sendMessage(player, "The cell door is locked.")
@@ -233,7 +244,10 @@ class TrollStrongholdListener : InteractionListener {
             return@on true
         }
 
-        fun unlockGodricCellDoor(player: Player, node: Node) {
+        fun unlockGodricCellDoor(
+            player: Player,
+            node: Node,
+        ) {
             if (inInventory(player, Items.CELL_KEY_2_3137)) {
                 sendMessage(player, "You unlock the cell door.")
                 if (getQuestStage(player, Quests.TROLL_STRONGHOLD) == 8) {
@@ -246,11 +260,11 @@ class TrollStrongholdListener : InteractionListener {
                 sendNPCDialogue(player, NPCs.GODRIC_1114, "Thank you, my friend.")
                 submitWorldPulse(
                     object : Pulse(0) {
-
                         var count = 0
                         var stage = 0
                         var trigger = true
                         var targetLocation = Location(0, 0, 0)
+
                         override fun pulse(): Boolean {
                             if (npc.location.equals(targetLocation)) {
                                 stage++
@@ -259,30 +273,34 @@ class TrollStrongholdListener : InteractionListener {
                             if (trigger) {
                                 trigger = false
                                 when (stage) {
-                                    0 -> forceWalk(npc, Location(2831, 10078, 0), "dumb").also {
-                                        npc.walkRadius = 11
-                                        npc.isWalks = false
-                                        targetLocation = Location(2831, 10078, 0)
-                                    }
+                                    0 ->
+                                        forceWalk(npc, Location(2831, 10078, 0), "dumb").also {
+                                            npc.walkRadius = 11
+                                            npc.isWalks = false
+                                            targetLocation = Location(2831, 10078, 0)
+                                        }
 
                                     1 ->
-                                        DoorActionHandler.handleAutowalkDoor(npc, node.asScenery())
+                                        DoorActionHandler
+                                            .handleAutowalkDoor(npc, node.asScenery())
                                             .also { targetLocation = Location(2832, 10078, 0) }
 
-                                    4 -> forceWalk(npc, Location(2836, 10078, 0), "dumb").also {
-                                        targetLocation = Location(2836, 10078, 0)
-                                    }
+                                    4 ->
+                                        forceWalk(npc, Location(2836, 10078, 0), "dumb").also {
+                                            targetLocation = Location(2836, 10078, 0)
+                                        }
 
-                                    5 -> forceWalk(npc, Location(2836, 10061, 0), "dumb").also {
-                                        targetLocation = Location(2836, 10061, 0)
-                                    }
+                                    5 ->
+                                        forceWalk(npc, Location(2836, 10061, 0), "dumb").also {
+                                            targetLocation = Location(2836, 10061, 0)
+                                        }
 
-                                    6 -> forceWalk(npc, Location(2824, 10050, 0), "dumb").also {
-                                        targetLocation = Location(2824, 10050, 0)
-                                    }
+                                    6 ->
+                                        forceWalk(npc, Location(2824, 10050, 0), "dumb").also {
+                                            targetLocation = Location(2824, 10050, 0)
+                                        }
 
                                     7 -> {
-
                                         npc.teleport(Location(2823, 10035, 0))
                                         npc.startDeath(null)
                                         npc.isWalks = true
@@ -299,7 +317,7 @@ class TrollStrongholdListener : InteractionListener {
                             }
                             return false
                         }
-                    }
+                    },
                 )
             } else {
                 sendMessage(player, "The cell door is locked.")
@@ -329,7 +347,10 @@ class TrollStrongholdListener : InteractionListener {
         }
     }
 
-    fun success(player: Player, skill: Int): Boolean {
+    fun success(
+        player: Player,
+        skill: Int,
+    ): Boolean {
         val level = player.getSkills().getLevel(skill).toDouble()
         val req = 30.0
         val successChance = ceil((level * 50 - req) / req / 3 * 4)

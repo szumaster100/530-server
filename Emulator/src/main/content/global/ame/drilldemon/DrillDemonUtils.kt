@@ -1,9 +1,5 @@
 package content.global.ame.drilldemon
 
-import org.rs.consts.Animations
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.data.GameAttributes
 import content.data.RandomEvent
 import core.api.*
@@ -13,6 +9,10 @@ import core.game.node.entity.player.link.TeleportManager
 import core.game.world.map.Location
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 object DrillDemonUtils {
     val DD_SIGN_VARP = 531
@@ -50,7 +50,6 @@ object DrillDemonUtils {
         for (i in 0 until tempList.size) {
             setVarbit(player, tempOffsetList[i], tempList[i], true)
         }
-
     }
 
     @JvmStatic
@@ -65,7 +64,10 @@ object DrillDemonUtils {
     }
 
     @JvmStatic
-    fun getMatTask(id: Int, player: Player): Int {
+    fun getMatTask(
+        id: Int,
+        player: Player,
+    ): Int {
         return getVarbit(player, getVarbitForId(id))
     }
 
@@ -76,7 +78,7 @@ object DrillDemonUtils {
         teleport(
             player,
             getAttribute(player, RandomEvent.save(), Location.create(3222, 3218, 0)),
-            TeleportManager.TeleportType.NORMAL
+            TeleportManager.TeleportType.NORMAL,
         )
         removeAttribute(player, RandomEvent.save())
         removeAttribute(player, GameAttributes.DRILL_TASK)

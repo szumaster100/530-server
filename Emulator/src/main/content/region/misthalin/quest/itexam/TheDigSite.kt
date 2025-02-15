@@ -1,18 +1,17 @@
 package content.region.misthalin.quest.itexam
 
-import org.rs.consts.Items
-import org.rs.consts.Quests
 import core.api.*
 import core.api.quest.getQuestStage
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.Quests
 import org.rs.consts.Vars
 
 @Initializable
 class TheDigSite : Quest(Quests.THE_DIG_SITE, 47, 46, 2, 131, 0, 1, 9) {
-
     companion object {
         const val attrGreenExam1Talked = "/save:digsite:greenexam1talked"
         const val attrGreenExam1ObtainAnswer = "/save:digsite:greenexam1answer"
@@ -59,7 +58,10 @@ class TheDigSite : Quest(Quests.THE_DIG_SITE, 47, 46, 2, 131, 0, 1, 9) {
         removeAttribute(player, attributeRopeWestWinch)
     }
 
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 11
         var stage = getStage(player)

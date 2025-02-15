@@ -1,3 +1,5 @@
 package core.api.utils
 
-class ConfigParseException(message: String) : Exception(message)
+class ConfigParseException(
+    message: String,
+) : Exception(message)

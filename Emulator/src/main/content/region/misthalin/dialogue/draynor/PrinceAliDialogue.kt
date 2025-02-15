@@ -1,7 +1,5 @@
 package content.region.misthalin.dialogue.draynor
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.removeAttribute
 import core.game.dialogue.Dialogue
 import core.game.node.entity.npc.NPC
@@ -11,10 +9,13 @@ import core.game.node.item.Item
 import core.game.system.task.Pulse
 import core.game.world.GameWorld.Pulser
 import core.plugin.Initializable
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class PrinceAliDialogue(player: Player? = null) : Dialogue(player) {
-
+class PrinceAliDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     private var quest: Quest? = null
 
     override fun open(vararg args: Any): Boolean {
@@ -30,7 +31,7 @@ class PrinceAliDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "I owe you my life for that escape. You cannot help me",
                     "this time, they know who you are. Go in peace, friend",
-                    "of Al-Kharid"
+                    "of Al-Kharid",
                 )
                 stage = 100
             }
@@ -40,7 +41,10 @@ class PrinceAliDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             100 -> end()
             0 -> {
@@ -51,7 +55,7 @@ class PrinceAliDialogue(player: Player? = null) : Dialogue(player) {
             1 -> {
                 player(
                     "With a disguise. I have removed the Lady Keli. She is",
-                    "tied up, but will not stay tied up for long."
+                    "tied up, but will not stay tied up for long.",
                 )
                 stage = 2
             }
@@ -79,7 +83,6 @@ class PrinceAliDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             4 -> {
-
                 npc.transform(921)
                 Pulser.submit(
                     object : Pulse(50) {
@@ -87,11 +90,11 @@ class PrinceAliDialogue(player: Player? = null) : Dialogue(player) {
                             npc.transform(920)
                             return true
                         }
-                    }
+                    },
                 )
                 npc(
                     "Thank you my friend, I must leave you now. My",
-                    "father will pay you well for this."
+                    "father will pay you well for this.",
                 )
                 stage = 5
             }
@@ -110,11 +113,11 @@ class PrinceAliDialogue(player: Player? = null) : Dialogue(player) {
                             npc.isInvisible = false
                             return true
                         }
-                    }
+                    },
                 )
                 interpreter.sendDialogue(
                     "The prince has escaped, well done! You are now a friend of Al-",
-                    "Kharid and may pass through the Al-Kharid toll gate for free."
+                    "Kharid and may pass through the Al-Kharid toll gate for free.",
                 )
                 stage = 7
             }

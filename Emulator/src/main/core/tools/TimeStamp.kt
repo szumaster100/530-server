@@ -1,7 +1,6 @@
 package core.tools
 
 class TimeStamp {
-
     private var start: Long = System.currentTimeMillis()
     private var interval: Long = start
 
@@ -18,7 +17,10 @@ class TimeStamp {
         return interval(debug, "")
     }
 
-    fun interval(debug: Boolean, info: String): Long {
+    fun interval(
+        debug: Boolean,
+        info: String,
+    ): Long {
         val current = System.currentTimeMillis()
         val difference = current - interval
         if (debug || difference > 100) {
@@ -28,11 +30,13 @@ class TimeStamp {
         return difference
     }
 
-    fun duration(debug: Boolean, info: String): Long {
+    fun duration(
+        debug: Boolean,
+        info: String,
+    ): Long {
         val current = System.currentTimeMillis()
         val difference = current - start
         if (debug) {
-
         }
         return difference
     }

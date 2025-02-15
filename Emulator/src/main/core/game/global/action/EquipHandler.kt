@@ -18,7 +18,6 @@ import core.plugin.Plugin
 import org.rs.consts.Sounds
 
 class EquipHandler : InteractionListener {
-
     override fun defineListeners() {
         on(IntType.ITEM, "equip", "wield", "wear", "hold") { player, node ->
             handleEquip(player, node)
@@ -27,9 +26,12 @@ class EquipHandler : InteractionListener {
     }
 
     companion object {
-
         @JvmStatic
-        fun unequip(player: Player, slot: Int, itemId: Int) {
+        fun unequip(
+            player: Player,
+            slot: Int,
+            itemId: Int,
+        ) {
             if (slot < 0 || slot > 13) {
                 return
             }
@@ -72,7 +74,10 @@ class EquipHandler : InteractionListener {
         }
 
         @JvmStatic
-        fun handleEquip(player: Player, node: Node) {
+        fun handleEquip(
+            player: Player,
+            node: Node,
+        ) {
             val item = node.asItem()
 
             if (item == null || player.inventory[item.slot] != item || item.name.lowercase().contains("goblin mail")) {
@@ -99,7 +104,6 @@ class EquipHandler : InteractionListener {
             }
 
             if (player.equipment.add(item, item.slot, true, true)) {
-
                 if (item.id in 13845..13857) {
                     player.debug("Registering gloves... ID: " + item.id)
                     BrawlingGlovesManager.getInstance(player).registerGlove(item.id)

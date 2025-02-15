@@ -8,10 +8,11 @@ import core.game.node.item.Item
 import core.tools.Log
 
 class LightSourceExtinguisherListener : InteractionListener {
-
     override fun defineListeners() {
-
-        fun Container.replace(item: Item, with: Item) {
+        fun Container.replace(
+            item: Item,
+            with: Item,
+        ) {
             if (remove(item)) {
                 add(with)
             }

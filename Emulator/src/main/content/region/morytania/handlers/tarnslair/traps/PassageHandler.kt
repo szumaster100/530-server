@@ -14,7 +14,6 @@ import core.plugin.Plugin
 
 @Initializable
 class PassageHandler : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         Passage.values().forEach { passage ->
             SceneryDefinition.forId(passage.passage.objectId).handlers["option:climb"] = this
@@ -23,7 +22,11 @@ class PassageHandler : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val scenery = node as? Scenery ?: return false
         val passage = Passage.getAllPassages()[scenery.location]
         if (passage != null) {

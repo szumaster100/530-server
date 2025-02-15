@@ -10,9 +10,14 @@ import core.game.interaction.InteractionListener
 import core.game.node.entity.Entity
 import core.game.node.entity.player.Player
 
-abstract class CastleWarsArea : MapArea, LogoutListener, InteractionListener {
-
-    override fun areaLeave(entity: Entity, logout: Boolean) {
+abstract class CastleWarsArea :
+    MapArea,
+    LogoutListener,
+    InteractionListener {
+    override fun areaLeave(
+        entity: Entity,
+        logout: Boolean,
+    ) {
         super.areaLeave(entity, logout)
         exitArea(entity as? Player ?: return)
     }
@@ -33,7 +38,12 @@ abstract class CastleWarsArea : MapArea, LogoutListener, InteractionListener {
 
         player.walkingQueue.isRunDisabled = false
 
-        if ((CastleWarsGameArea.areaBorders + CastleWarsWaitingArea.areaBorders).none { it.insideBorder(player.location) }) {
+        if ((CastleWarsGameArea.areaBorders + CastleWarsWaitingArea.areaBorders).none {
+                it.insideBorder(
+                    player.location,
+                )
+            }
+        ) {
             exitCastleWars(player)
         }
     }
@@ -43,12 +53,13 @@ abstract class CastleWarsArea : MapArea, LogoutListener, InteractionListener {
 
         removeTimer(player, "teleblock")
 
-        val cwarsItems = intArrayOf(
-            CastleWars.saradominTeamHoodedCloak,
-            CastleWars.zamorakTeamHoodedCloak,
-            CastleWars.saradominFlag,
-            CastleWars.zamorakFlag
-        )
+        val cwarsItems =
+            intArrayOf(
+                CastleWars.saradominTeamHoodedCloak,
+                CastleWars.zamorakTeamHoodedCloak,
+                CastleWars.saradominFlag,
+                CastleWars.zamorakFlag,
+            )
 
         player.equipment.removeAll(cwarsItems)
         player.inventory.removeAll(cwarsItems)
@@ -66,5 +77,4 @@ abstract class CastleWarsArea : MapArea, LogoutListener, InteractionListener {
             return@onUnequip true
         }
     }
-
 }

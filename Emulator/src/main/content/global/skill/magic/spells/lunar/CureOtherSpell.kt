@@ -1,8 +1,5 @@
 package content.global.skill.magic.spells.lunar
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import content.global.skill.magic.SpellListener
 import content.global.skill.magic.spells.LunarSpells
 import core.api.event.curePoison
@@ -10,11 +7,12 @@ import core.api.event.isPoisoned
 import core.api.isPlayer
 import core.api.sendMessage
 import core.game.node.item.Item
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 
 class CureOtherSpell : SpellListener("lunar") {
-
     override fun defineListeners() {
-
         onCast(LunarSpells.CURE_OTHER, PLAYER) { player, node ->
             node?.let {
                 if (!isPlayer(node)) {
@@ -37,7 +35,7 @@ class CureOtherSpell : SpellListener("lunar") {
                 requires(
                     player,
                     68,
-                    arrayOf(Item(Items.ASTRAL_RUNE_9075, 1), Item(Items.LAW_RUNE_563), Item(Items.EARTH_RUNE_557, 10))
+                    arrayOf(Item(Items.ASTRAL_RUNE_9075, 1), Item(Items.LAW_RUNE_563), Item(Items.EARTH_RUNE_557, 10)),
                 )
                 player.face(p)
                 visualizeSpell(player, Animations.LUNAR_CURE_OTHER_4411, 736, 130, Sounds.LUNAR_CURE_OTHER_2886)

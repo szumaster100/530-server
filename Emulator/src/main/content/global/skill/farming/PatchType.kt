@@ -1,6 +1,8 @@
 package content.global.skill.farming
 
-enum class PatchType(val stageGrowthTime: Int) {
+enum class PatchType(
+    val stageGrowthTime: Int,
+) {
     ALLOTMENT(10),
     HOPS_PATCH(10),
     TREE_PATCH(40),
@@ -13,7 +15,8 @@ enum class PatchType(val stageGrowthTime: Int) {
     BELLADONNA_PATCH(80),
     CACTUS_PATCH(60),
     EVIL_TURNIP_PATCH(5),
-    SPECIAL_PATCH(20);
+    SPECIAL_PATCH(20),
+    ;
 
     fun displayName(): String = name.lowercase().replace("_", " ")
 }

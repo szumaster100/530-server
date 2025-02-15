@@ -1,9 +1,5 @@
 package content.region.kandarin.quest.arena
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.addItemOrDrop
 import core.api.rewardXP
 import core.api.sendItemZoomOnInterface
@@ -11,11 +7,17 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class FightArena : Quest(Quests.FIGHT_ARENA, 61, 60, 2, Vars.VARP_QUEST_FIGHT_ARENA_PROGRESS_17, 0, 1, 14) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 11
         if (stage == 0) {
@@ -35,7 +37,7 @@ class FightArena : Quest(Quests.FIGHT_ARENA, 61, 60, 2, Vars.VARP_QUEST_FIGHT_AR
                 player,
                 "I headed to the arena to try and find !!Lady Servil's son?? and !!husband??.",
                 line++,
-                stage > 10
+                stage > 10,
             )
             line++
         }
@@ -47,7 +49,12 @@ class FightArena : Quest(Quests.FIGHT_ARENA, 61, 60, 2, Vars.VARP_QUEST_FIGHT_AR
             line++
         }
         if (stage >= 35) {
-            line(player, "I found Lady Servil's son, !!Jeremy Servil??, in one of the !!prison cells??.", line++, stage > 40)
+            line(
+                player,
+                "I found Lady Servil's son, !!Jeremy Servil??, in one of the !!prison cells??.",
+                line++,
+                stage > 40,
+            )
             line(player, "He told me that a bald, fat, !!lazy guard??", line++, stage > 40)
             line(player, "with a goatee was in charge of the keys.", line++, stage > 40)
             line++

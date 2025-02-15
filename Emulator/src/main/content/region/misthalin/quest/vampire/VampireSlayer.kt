@@ -1,20 +1,22 @@
 package content.region.misthalin.quest.vampire
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.rewardXP
 import core.api.sendItemZoomOnInterface
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class VampireSlayer : Quest(Quests.VAMPIRE_SLAYER, 30, 29, 3, Vars.VARP_QUEST_VAMPIRE_SLAYER_PROGRESS_178, 0, 1, 3) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 11
 

@@ -2,7 +2,6 @@ package content.global.activity.jobs
 
 import content.global.activity.jobs.dialogue.CheckJobDialogue
 import content.global.activity.jobs.dialogue.TutorDialogue
-import org.rs.consts.Items
 import content.global.activity.jobs.impl.BoneBuryingJobs
 import content.global.activity.jobs.impl.CombatJobs
 import content.global.activity.jobs.impl.Employers
@@ -16,11 +15,10 @@ import core.game.interaction.InteractionListener
 import core.game.node.entity.npc.NPC
 import core.game.node.item.Item
 import core.tools.StringUtils
+import org.rs.consts.Items
 
 class JobListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(Items.TASK_LIST_13464, ITEM, "read") { player, _ ->
             val playerJobManager: JobManager = JobManager.getInstance(player)
             val job = playerJobManager.job
@@ -34,7 +32,7 @@ class JobListener : InteractionListener {
             if (amount == 0) {
                 sendDialogue(
                     player,
-                    "I have completed my job. I should return to ${NPC(job.employer.npcId).name} for my reward."
+                    "I have completed my job. I should return to ${NPC(job.employer.npcId).name} for my reward.",
                 )
                 return@on true
             }
@@ -54,7 +52,7 @@ class JobListener : InteractionListener {
                     sendItemDialogue(
                         player,
                         job.boneIds.first(),
-                        "My job is to bury $amount more $boneNamePluralized in the ${job.buryArea.title}."
+                        "My job is to bury $amount more $boneNamePluralized in the ${job.buryArea.title}.",
                     )
                 }
 
@@ -65,7 +63,7 @@ class JobListener : InteractionListener {
                     sendNPCDialogue(
                         player,
                         job.monsterIds.first(),
-                        "My job is to kill $amount more $monsterNamePluralized."
+                        "My job is to kill $amount more $monsterNamePluralized.",
                     )
                 }
             }
@@ -75,7 +73,7 @@ class JobListener : InteractionListener {
         on(
             Employers.values().map { employer -> employer.npcId }.toIntArray(),
             IntType.NPC,
-            "work-for"
+            "work-for",
         ) { player, node ->
             val playerJobManager = JobManager.getInstance(player)
             val job = playerJobManager.job
@@ -86,7 +84,7 @@ class JobListener : InteractionListener {
                     sendNPCDialogue(
                         player,
                         job.employer.npcId,
-                        "There you go, thanks for your help. You're quite a skilled worker!"
+                        "There you go, thanks for your help. You're quite a skilled worker!",
                     )
                 } else {
                     openDialogue(player, CheckJobDialogue(), node as NPC)

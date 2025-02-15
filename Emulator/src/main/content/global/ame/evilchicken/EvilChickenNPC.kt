@@ -1,7 +1,5 @@
 package content.global.ame.evilchicken
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.global.ame.RandomEventNPC
 import core.api.getWorldTicks
 import core.api.utils.WeightBasedTable
@@ -10,20 +8,24 @@ import core.game.node.entity.npc.NPC
 import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
 import core.tools.RandomFunction
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 import java.lang.Integer.max
 
 val ids = 2463..2468
 
-class EvilChickenNPC(override var loot: WeightBasedTable? = null) : RandomEventNPC(NPCs.EVIL_CHICKEN_2463) {
-
-    val phrases = arrayOf(
-        "Bwuk",
-        "Bwuk bwuk bwuk",
-        "Flee from me, @name!",
-        "Begone, @name!",
-        "Bwaaaauuuk bwuk bwuk",
-        "MUAHAHAHAHAAA!"
-    )
+class EvilChickenNPC(
+    override var loot: WeightBasedTable? = null,
+) : RandomEventNPC(NPCs.EVIL_CHICKEN_2463) {
+    val phrases =
+        arrayOf(
+            "Bwuk",
+            "Bwuk bwuk bwuk",
+            "Flee from me, @name!",
+            "Begone, @name!",
+            "Bwaaaauuuk bwuk bwuk",
+            "MUAHAHAHAHAAA!",
+        )
 
     override fun talkTo(npc: NPC) {}
 
@@ -36,8 +38,8 @@ class EvilChickenNPC(override var loot: WeightBasedTable? = null) : RandomEventN
         sendChat(
             phrases.random().replace(
                 "@name",
-                player.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
-            )
+                player.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() },
+            ),
         )
         this.isRespawn = false
     }
@@ -55,11 +57,15 @@ class EvilChickenNPC(override var loot: WeightBasedTable? = null) : RandomEventN
             sendChat(
                 phrases.random().replace(
                     "@name",
-                    player.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
-                )
+                    player.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() },
+                ),
             )
         }
         super.tick()
-        if (!player.viewport.currentPlane.npcs.contains(this)) this.clear()
+        if (!player.viewport.currentPlane.npcs
+                .contains(this)
+        ) {
+            this.clear()
+        }
     }
 }

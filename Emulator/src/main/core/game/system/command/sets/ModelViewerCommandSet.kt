@@ -9,9 +9,7 @@ import core.plugin.Initializable
 
 @Initializable
 class ModelViewerCommandSet : CommandSet(Privilege.ADMIN) {
-
     companion object {
-
         const val DEF_BOOK = 10216
         const val TITLE = "Model Viewer"
         const val ATTRIBUTE_MODEL_NUMBER = "modelNumber"
@@ -20,7 +18,11 @@ class ModelViewerCommandSet : CommandSet(Privilege.ADMIN) {
         const val ATTRIBUTE_YAW = "modelYaw"
 
         @Suppress("UNUSED_PARAMETER")
-        private fun display(player: Player, pageNum: Int, buttonID: Int): Boolean {
+        private fun display(
+            player: Player,
+            pageNum: Int,
+            buttonID: Int,
+        ): Boolean {
             BookInterface.clearBookLines(player, BookInterface.FANCY_BOOK_2_27, BookInterface.FANCY_BOOK_2_27_LINE_IDS)
             BookInterface.clearButtons(player, BookInterface.FANCY_BOOK_2_27, BookInterface.FANCY_BOOK_2_27_BUTTON_IDS)
             BookInterface.setTitle(player, BookInterface.FANCY_BOOK_2_27, BookInterface.FANCY_BOOK_2_27_LINE_IDS, TITLE)
@@ -61,26 +63,99 @@ class ModelViewerCommandSet : CommandSet(Privilege.ADMIN) {
                 114 -> setAttribute(player, ATTRIBUTE_ZOOM, getAttribute(player, ATTRIBUTE_ZOOM, 700) - 100)
                 116 -> setAttribute(player, ATTRIBUTE_PITCH, getAttribute(player, ATTRIBUTE_PITCH, 0) - 100)
                 118 -> setAttribute(player, ATTRIBUTE_YAW, getAttribute(player, ATTRIBUTE_YAW, 0) - 100)
-                122 -> setAttribute(player, ATTRIBUTE_MODEL_NUMBER, getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK) - 1)
-                124 -> setAttribute(player, ATTRIBUTE_MODEL_NUMBER, getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK) - 10)
-                126 -> setAttribute(player, ATTRIBUTE_MODEL_NUMBER, getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK) - 100)
-                128 -> setAttribute(player, ATTRIBUTE_MODEL_NUMBER, getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK) - 1000)
+                122 ->
+                    setAttribute(
+                        player,
+                        ATTRIBUTE_MODEL_NUMBER,
+                        getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK) - 1,
+                    )
+                124 ->
+                    setAttribute(
+                        player,
+                        ATTRIBUTE_MODEL_NUMBER,
+                        getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK) - 10,
+                    )
+                126 ->
+                    setAttribute(
+                        player,
+                        ATTRIBUTE_MODEL_NUMBER,
+                        getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK) - 100,
+                    )
+                128 ->
+                    setAttribute(
+                        player,
+                        ATTRIBUTE_MODEL_NUMBER,
+                        getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK) - 1000,
+                    )
                 144 -> setAttribute(player, ATTRIBUTE_ZOOM, getAttribute(player, ATTRIBUTE_ZOOM, 700) + 100)
                 146 -> setAttribute(player, ATTRIBUTE_PITCH, getAttribute(player, ATTRIBUTE_PITCH, 0) + 100)
                 148 -> setAttribute(player, ATTRIBUTE_YAW, getAttribute(player, ATTRIBUTE_YAW, 0) + 100)
-                152 -> setAttribute(player, ATTRIBUTE_MODEL_NUMBER, getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK) + 1)
-                154 -> setAttribute(player, ATTRIBUTE_MODEL_NUMBER, getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK) + 10)
-                156 -> setAttribute(player, ATTRIBUTE_MODEL_NUMBER, getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK) + 100)
-                158 -> setAttribute(player, ATTRIBUTE_MODEL_NUMBER, getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK) + 1000)
+                152 ->
+                    setAttribute(
+                        player,
+                        ATTRIBUTE_MODEL_NUMBER,
+                        getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK) + 1,
+                    )
+                154 ->
+                    setAttribute(
+                        player,
+                        ATTRIBUTE_MODEL_NUMBER,
+                        getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK) + 10,
+                    )
+                156 ->
+                    setAttribute(
+                        player,
+                        ATTRIBUTE_MODEL_NUMBER,
+                        getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK) + 100,
+                    )
+                158 ->
+                    setAttribute(
+                        player,
+                        ATTRIBUTE_MODEL_NUMBER,
+                        getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK) + 1000,
+                    )
             }
 
             // Display model number.
-            player.packetDispatch.sendString("No: " + getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK) + "   " + getAttribute(player, ATTRIBUTE_ZOOM, 700) + " " + getAttribute(player, ATTRIBUTE_PITCH, 0) + " " + getAttribute(player, ATTRIBUTE_YAW, 0), BookInterface.FANCY_BOOK_2_27, 38)
-            player.packetDispatch.sendString("No: " + (getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK) + 1), BookInterface.FANCY_BOOK_2_27, 53)
+            player.packetDispatch.sendString(
+                "No: " + getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK) + "   " +
+                    getAttribute(player, ATTRIBUTE_ZOOM, 700) +
+                    " " +
+                    getAttribute(player, ATTRIBUTE_PITCH, 0) +
+                    " " +
+                    getAttribute(player, ATTRIBUTE_YAW, 0),
+                BookInterface.FANCY_BOOK_2_27,
+                38,
+            )
+            player.packetDispatch.sendString(
+                "No: " + (getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK) + 1),
+                BookInterface.FANCY_BOOK_2_27,
+                53,
+            )
 
             // Display the models in the middle.
-            BookInterface.setModelOnPage(player, 0, getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK), BookInterface.FANCY_BOOK_2_27, BookInterface.FANCY_BOOK_2_27_IMAGE_ENABLE_DRAW_IDS[7], BookInterface.FANCY_BOOK_2_27_IMAGE_DRAW_IDS[7], getAttribute(player, ATTRIBUTE_ZOOM, 700), getAttribute(player, ATTRIBUTE_PITCH, 0), getAttribute(player, ATTRIBUTE_YAW, 0))
-            BookInterface.setModelOnPage(player, 0, getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK) + 1, BookInterface.FANCY_BOOK_2_27, BookInterface.FANCY_BOOK_2_27_IMAGE_ENABLE_DRAW_IDS[22], BookInterface.FANCY_BOOK_2_27_IMAGE_DRAW_IDS[22], getAttribute(player, ATTRIBUTE_ZOOM, 700), getAttribute(player, ATTRIBUTE_PITCH, 0), getAttribute(player, ATTRIBUTE_YAW, 0))
+            BookInterface.setModelOnPage(
+                player,
+                0,
+                getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK),
+                BookInterface.FANCY_BOOK_2_27,
+                BookInterface.FANCY_BOOK_2_27_IMAGE_ENABLE_DRAW_IDS[7],
+                BookInterface.FANCY_BOOK_2_27_IMAGE_DRAW_IDS[7],
+                getAttribute(player, ATTRIBUTE_ZOOM, 700),
+                getAttribute(player, ATTRIBUTE_PITCH, 0),
+                getAttribute(player, ATTRIBUTE_YAW, 0),
+            )
+            BookInterface.setModelOnPage(
+                player,
+                0,
+                getAttribute(player, ATTRIBUTE_MODEL_NUMBER, DEF_BOOK) + 1,
+                BookInterface.FANCY_BOOK_2_27,
+                BookInterface.FANCY_BOOK_2_27_IMAGE_ENABLE_DRAW_IDS[22],
+                BookInterface.FANCY_BOOK_2_27_IMAGE_DRAW_IDS[22],
+                getAttribute(player, ATTRIBUTE_ZOOM, 700),
+                getAttribute(player, ATTRIBUTE_PITCH, 0),
+                getAttribute(player, ATTRIBUTE_YAW, 0),
+            )
             return true
         }
     }

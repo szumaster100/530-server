@@ -2,31 +2,28 @@ package core.net.packet.`in`
 
 import com.moandjiezana.toml.Toml
 import core.ServerConfig
-import core.cache.crypto.ISAACCipher
-import core.cache.crypto.ISAACPair
-import core.cache.misc.buffer.ByteBufferUtils
-import core.game.node.entity.player.Player
-import core.net.Constants
-import core.net.IoSession
-import core.tools.StringUtils
-import proto.management.JoinClanRequest
-import proto.management.PlayerStatusUpdate
-import proto.management.RequestContactInfo
 import core.ServerStore
 import core.ServerStore.Companion.addToList
 import core.ServerStore.Companion.getList
 import core.api.log
 import core.auth.AuthResponse
+import core.cache.crypto.ISAACCipher
+import core.cache.crypto.ISAACPair
+import core.cache.misc.buffer.ByteBufferUtils
+import core.game.node.entity.player.Player
 import core.game.node.entity.player.info.*
 import core.game.node.entity.player.info.login.LoginParser
-import core.tools.SystemLogger
 import core.game.world.GameWorld
 import core.game.world.repository.Repository
+import core.net.Constants
+import core.net.IoSession
 import core.tools.Log
-import core.tools.integration.discord.Discord
+import core.tools.StringUtils
 import core.worker.ManagementEvents.publish
+import proto.management.JoinClanRequest
+import proto.management.PlayerStatusUpdate
+import proto.management.RequestContactInfo
 import java.io.File
-import java.io.IOException
 import java.math.BigInteger
 import java.nio.BufferUnderflowException
 import java.nio.ByteBuffer
@@ -40,7 +37,7 @@ object Login {
     private var exceptionData: Toml? = null
     private var lastModifiedData = 0L
 
-    fun decodeFromBuffer(buffer: ByteBuffer) : Pair<AuthResponse, LoginInfo?> {
+    fun decodeFromBuffer(buffer: ByteBuffer): Pair<AuthResponse, LoginInfo?> {
         try {
             val info = LoginInfo.createDefault()
 
@@ -64,13 +61,13 @@ object Login {
             info.screenWidth = buffer.short.toInt()
             info.screenHeight = buffer.short.toInt()
             info.displayMode = buffer.get().toInt()
-            noop(buffer, 24) //Skip past a bunch of random (actually random) data the client sends
-            ByteBufferUtils.getString(buffer) //same as above
+            noop(buffer, 24) // Skip past a bunch of random (actually random) data the client sends
+            ByteBufferUtils.getString(buffer) // same as above
             info.adAffiliateId = buffer.int
             info.settingsHash = buffer.int
             info.currentPacketCount = buffer.short.toInt()
 
-            //Read client-reported CRC sums
+            // Read client-reported CRC sums
             for (i in 0 until CACHE_INDEX_COUNT) info.crcSums[i] = buffer.int
 
             val decryptedBuffer = decryptRSABuffer(buffer, ServerConfig.EXPONENT, ServerConfig.MODULUS)
@@ -90,10 +87,10 @@ object Login {
 
             return Pair(AuthResponse.Success, info)
         } catch (buf: BufferUnderflowException) {
-            //some issue in either the data they sent us or how we read it, either way out of scope of this class's handling.
+            // some issue in either the data they sent us or how we read it, either way out of scope of this class's handling.
             return Pair(AuthResponse.UnexpectedError, null)
         } catch (e: Exception) {
-            log(this::class.java, Log.ERR,  "Exception encountered during login packet parsing! See stack trace below.")
+            log(this::class.java, Log.ERR, "Exception encountered during login packet parsing! See stack trace below.")
             e.printStackTrace()
             return Pair(AuthResponse.UnexpectedError, null)
         }
@@ -101,18 +98,22 @@ object Login {
 
     private fun produceISAACPairFrom(buffer: ByteBuffer): ISAACPair {
         val incomingSeed = IntArray(4)
-        for(i in incomingSeed.indices) {
+        for (i in incomingSeed.indices) {
             incomingSeed[i] = buffer.int
         }
         val inCipher = ISAACCipher(incomingSeed)
-        for(i in incomingSeed.indices) {
+        for (i in incomingSeed.indices) {
             incomingSeed[i] += 50
         }
         val outCipher = ISAACCipher(incomingSeed)
         return ISAACPair(inCipher, outCipher)
     }
 
-    @JvmStatic fun decryptRSABuffer(buffer: ByteBuffer, exponent: BigInteger, modulus: BigInteger): ByteBuffer {
+    @JvmStatic fun decryptRSABuffer(
+        buffer: ByteBuffer,
+        exponent: BigInteger,
+        modulus: BigInteger,
+    ): ByteBuffer {
         return try {
             val numBytes = buffer.get().toInt() and 0xFF
             val encryptedBytes = ByteArray(numBytes)
@@ -125,9 +126,18 @@ object Login {
         }
     }
 
-    private fun noop(buffer: ByteBuffer, amount: Int = 1) {buffer.get(ByteArray(amount))}
+    private fun noop(
+        buffer: ByteBuffer,
+        amount: Int = 1,
+    ) {
+        buffer.get(ByteArray(amount))
+    }
 
-    fun proceedWith(session: IoSession, details: PlayerDetails, opcode: Int) {
+    fun proceedWith(
+        session: IoSession,
+        details: PlayerDetails,
+        opcode: Int,
+    ) {
         if (Repository.uid_map.contains(details.uid)) {
             session.write(AuthResponse.AlreadyOnline)
             return
@@ -138,7 +148,7 @@ object Login {
         val archive = ServerStore.getArchive("flagged-ips")
         val flaggedIps = archive.getList<String>("ips")
         if (flaggedIps.contains(details.ipAddress)) {
-            //Discord.postPlayerAlert(details.username, "Login from flagged IP ${details.ipAddress}")
+            // Discord.postPlayerAlert(details.username, "Login from flagged IP ${details.ipAddress}")
         }
 
         val player = Player(details)
@@ -158,7 +168,11 @@ object Login {
         return player.rights == Rights.ADMINISTRATOR || player.rights == Rights.PLAYER_MODERATOR
     }
 
-    private fun proceedWithAcceptableLogin(session: IoSession, player: Player, opcode: Int) {
+    private fun proceedWithAcceptableLogin(
+        session: IoSession,
+        player: Player,
+        opcode: Int,
+    ) {
         Repository.addPlayer(player)
         session.lastPing = System.currentTimeMillis()
         try {
@@ -170,7 +184,10 @@ object Login {
         }
     }
 
-    private fun checkAccountLimit(ipAddress: String, username: String): Boolean {
+    private fun checkAccountLimit(
+        ipAddress: String,
+        username: String,
+    ): Boolean {
         var accountLimit = ServerConfig.DAILY_ACCOUNT_LIMIT
 
         if (File(ServerConfig.CONFIG_PATH + "account_limit_exceptions.conf").exists()) {
@@ -193,8 +210,9 @@ object Login {
         val accounts = archive.getList<String>(ipAddress)
         if (username in accounts) return true
 
-        if (accounts.size >= accountLimit)
+        if (accounts.size >= accountLimit) {
             return false
+        }
 
         archive.addToList(ipAddress, username)
         return true

@@ -1,15 +1,13 @@
 package content.region.asgarnia.handlers.trollheim
 
-import org.rs.consts.Scenery
 import core.api.teleport
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.world.map.Location
+import org.rs.consts.Scenery
 
 class TrollweissListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(intArrayOf(Scenery.TUNNEL_5012, Scenery.TUNNEL_5013), IntType.SCENERY, "enter") { player, node ->
             when (node.id) {
                 5012 -> teleport(player, Location.create(2799, 10134, 0))

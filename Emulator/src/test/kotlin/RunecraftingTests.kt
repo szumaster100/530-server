@@ -4,7 +4,13 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class RunecraftTests {
-    fun rollRc(rcLevel: Int, rune: Rune, revision: Int, lo: Double, hi: Double) {
+    fun rollRc(
+        rcLevel: Int,
+        rune: Rune,
+        revision: Int,
+        lo: Double,
+        hi: Double,
+    ) {
         var total = 0.0
         for (i in 0 until 3000) {
             total += RunecraftPulse.getMultiplier(rcLevel, rune, revision, false)
@@ -34,6 +40,7 @@ class RunecraftTests {
         rollRc(99, Rune.NATURE, 573, 2.0, 2.0)
         rollRc(99, Rune.NATURE, 581, 2.04, 2.14)
     }
+
     @Test fun testLawRcMultipliers() {
         rollRc(54, Rune.LAW, 530, 1.0, 1.0)
         rollRc(54, Rune.LAW, 573, 1.0, 1.0)

@@ -7,15 +7,17 @@ import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.world.map.zone.ZoneBorders
-import core.tools.RandomFunction
 import core.tools.StringUtils
 import org.rs.consts.Animations
 import org.rs.consts.Items
 import org.rs.consts.Quests
 
-class FletchingPulse(player: Player?, node: Item?, amount: Int, fletch: Fletching.FletchingItems) :
-    SkillPulse<Item?>(player, node) {
-
+class FletchingPulse(
+    player: Player?,
+    node: Item?,
+    amount: Int,
+    fletch: Fletching.FletchingItems,
+) : SkillPulse<Item?>(player, node) {
     private val fletch: Fletching.FletchingItems
     private var amount = 0
     private val trim = getItemName(fletch.id).replace("(u)", "").trim()
@@ -30,7 +32,10 @@ class FletchingPulse(player: Player?, node: Item?, amount: Int, fletch: Fletchin
         if (getStatLevel(player, Skills.FLETCHING) < fletch.level) {
             sendDialogue(
                 player,
-                "You need a fletching skill of " + fletch.level + " or above to make " + (if (StringUtils.isPlusN(trim)) "an" else "a") + " " + trim
+                "You need a fletching skill of " + fletch.level + " or above to make " +
+                    (if (StringUtils.isPlusN(trim)) "an" else "a") +
+                    " " +
+                    trim,
             )
             return false
         }
@@ -77,21 +82,24 @@ class FletchingPulse(player: Player?, node: Item?, amount: Int, fletch: Fletchin
             val message = message
             sendMessage(player, message)
 
-            if (fletch.id == Fletching.FletchingItems.MAGIC_SHORTBOW.id && (
+            if (fletch.id == Fletching.FletchingItems.MAGIC_SHORTBOW.id &&
+                (
+                    ZoneBorders(
+                        2721,
+                        3489,
+                        2724,
+                        3493,
+                        0,
+                    ).insideBorder(player) ||
                         ZoneBorders(
-                            2721,
-                            3489,
-                            2724,
-                            3493,
-                            0
-                        ).insideBorder(player) || ZoneBorders(
                             2727,
                             3487,
                             2730,
                             3490,
-                            0
+                            0,
                         ).insideBorder(player)
-                        ) && !hasDiaryTaskComplete(player, DiaryType.SEERS_VILLAGE, 2, 2)
+                ) &&
+                !hasDiaryTaskComplete(player, DiaryType.SEERS_VILLAGE, 2, 2)
             ) {
                 setAttribute(player, "/save:diary:seers:fletch-magic-short-bow", true)
             }

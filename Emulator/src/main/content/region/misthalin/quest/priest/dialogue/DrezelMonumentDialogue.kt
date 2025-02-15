@@ -1,8 +1,5 @@
 package content.region.misthalin.quest.priest.dialogue
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.morytania.quest.druidspirit.DrezelDialogueFile
 import core.api.hasAnItem
 import core.api.openDialogue
@@ -13,10 +10,14 @@ import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
-
+class DrezelMonumentDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         var quest = player.getQuestRepository().getQuest(Quests.PRIEST_IN_PERIL)
@@ -25,22 +26,23 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                 FaceAnim.HALF_GUILTY,
                 "Ah, " + player.username + ". I see you finally made it down here.",
                 "Things are worse than I feared. I'm not sure if I will",
-                "be able to repair the damage."
+                "be able to repair the damage.",
             )
             stage = 900
             return true
         }
         if (quest.getStage(player) == 18) {
-            stage = if (player.inventory.contains(1436, 1) || player.inventory.contains(7936, 1)) {
-                player(FaceAnim.HALF_GUILTY, "I brought you some Rune Essence.")
-                100
-            } else {
-                player(
-                    FaceAnim.HALF_GUILTY,
-                    "How many more essence do I need to bring you?"
-                )
-                120
-            }
+            stage =
+                if (player.inventory.contains(1436, 1) || player.inventory.contains(7936, 1)) {
+                    player(FaceAnim.HALF_GUILTY, "I brought you some Rune Essence.")
+                    100
+                } else {
+                    player(
+                        FaceAnim.HALF_GUILTY,
+                        "How many more essence do I need to bring you?",
+                    )
+                    120
+                }
             return true
         }
         if (quest.getStage(player) == 100 && !player.getSavedData().questData.isTalkedDrezel) {
@@ -53,13 +55,15 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
             npc(
                 FaceAnim.HALF_GUILTY,
                 "Greetings again adventurer, How go your travels in",
-                "Morytania? Is it as evil as I have heard?"
+                "Morytania? Is it as evil as I have heard?",
             )
             stage = 420
-        } else if (quest.getStage(player) < 100 || hasAnItem(
+        } else if (quest.getStage(player) < 100 ||
+            hasAnItem(
                 player,
-                Items.WOLFBANE_2952
-            ).container == null && quest.getStage(player) == 100
+                Items.WOLFBANE_2952,
+            ).container == null &&
+            quest.getStage(player) == 100
         ) {
             openDialogue(player, DrezelDialogueFile(), npc)
         } else {
@@ -69,7 +73,10 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         val quest = player.getQuestRepository().getQuest(Quests.PRIEST_IN_PERIL)
         when (stage) {
             400 -> {
@@ -77,7 +84,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "Ah, " + player.username + ". For all the assistance you have given",
                     "both myself and Misthalin in your actions, I cannot let",
-                    "you pass without warning you."
+                    "you pass without warning you.",
                 )
                 stage = 401
             }
@@ -87,7 +94,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "Morytania is an evil land, filled with creatures and",
                     "monsters more terrifying than any you have yet",
-                    "encountered. Although I will pray for you"
+                    "encountered. Although I will pray for you",
                 )
                 stage = 402
             }
@@ -97,7 +104,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "you should take some basic precautions before heading",
                     "over the Salve into it. The first place you will come",
-                    "across is the Werewolf trading post."
+                    "across is the Werewolf trading post.",
                 )
                 stage = 403
             }
@@ -107,7 +114,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "In many ways Werewolves are like you and me, except",
                     "never forget that they are evil vicious beasts at heart.",
-                    "The dagger I have given you is named 'Wolfbane'"
+                    "The dagger I have given you is named 'Wolfbane'",
                 )
                 stage = 404
             }
@@ -117,7 +124,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "and it is a holy relic that prevents the werewolf people from",
                     "changing form, I suggest if you battle with them",
-                    "that you keep it always equipped, for their"
+                    "that you keep it always equipped, for their",
                 )
                 stage = 405
             }
@@ -127,7 +134,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "wolf form is incredibly powerful, and would savage you",
                     "very quickly. Please adventurer, promise me this: I",
-                    "should hate for you to die foolishly."
+                    "should hate for you to die foolishly.",
                 )
                 stage = 406
             }
@@ -136,7 +143,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                 player(
                     FaceAnim.HALF_GUILTY,
                     "Okay, I will keep it equipped whenever I fight",
-                    "werewolves."
+                    "werewolves.",
                 )
                 stage = 407
             }
@@ -149,28 +156,29 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
             420 -> {
                 options(
                     "Well, I'm going to look around a bit more.",
-                    "Is there anything else interesting to do around here?"
+                    "Is there anything else interesting to do around here?",
                 )
                 stage = 421
             }
 
-            421 -> when (buttonId) {
-                1 -> {
-                    playerl(FaceAnim.FRIENDLY, "Well, I'm going to look around a bit more.")
-                    stage++
-                }
+            421 ->
+                when (buttonId) {
+                    1 -> {
+                        playerl(FaceAnim.FRIENDLY, "Well, I'm going to look around a bit more.")
+                        stage++
+                    }
 
-                2 -> {
-                    playerl(FaceAnim.HALF_THINKING, "Is there anything else interesting to do around here?")
-                    stage = 425
+                    2 -> {
+                        playerl(FaceAnim.HALF_THINKING, "Is there anything else interesting to do around here?")
+                        stage = 425
+                    }
                 }
-            }
 
             422 -> {
                 npc(
                     FaceAnim.HALF_GUILTY,
                     "Well, that sounds like a good idea. Don't get into any",
-                    "trouble though!"
+                    "trouble though!",
                 )
                 stage = 423
             }
@@ -179,7 +187,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
             425 -> {
                 npcl(
                     FaceAnim.HALF_THINKING,
-                    "Well, not a great deal... but there is something you can do for me if you're interested. Though it is quite dangerous."
+                    "Well, not a great deal... but there is something you can do for me if you're interested. Though it is quite dangerous.",
                 )
                 stage++
             }
@@ -193,7 +201,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
             120 -> {
                 npc(
                     FaceAnim.HALF_GUILTY,
-                    "I need " + player.gameAttributes.getAttribute("priest-in-peril:rune", 50) + " more."
+                    "I need " + player.gameAttributes.getAttribute("priest-in-peril:rune", 50) + " more.",
                 )
                 stage = 121
             }
@@ -205,13 +213,18 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             101 -> {
-                var amt = if (player.inventory.contains(
-                        1436,
-                        1
-                    )
-                ) player.inventory.getAmount(ITEMS[0]) else player.inventory.getAmount(
-                    ITEMS[1]
-                )
+                var amt =
+                    if (player.inventory.contains(
+                            1436,
+                            1,
+                        )
+                    ) {
+                        player.inventory.getAmount(ITEMS[0])
+                    } else {
+                        player.inventory.getAmount(
+                            ITEMS[1],
+                        )
+                    }
                 player.inventory.remove(if (player.inventory.contains(1436, 1)) Item(1436, amt) else Item(7936, amt))
                 val runes = player.gameAttributes.getAttribute("priest-in-peril:rune", 50)
                 if (runes > amt) {
@@ -232,7 +245,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                         FaceAnim.HAPPY,
                         "Excellent! That should do it! I will bless these stones",
                         "and place them within the well, and Misthalin should be",
-                        "protected once more!"
+                        "protected once more!",
                     )
                     stage = 152
                 } else {
@@ -245,7 +258,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "Please take this dagger; it has been handed down within",
                     "my family for generations and is filled with the power of",
-                    "Saradomin. You will find that"
+                    "Saradomin. You will find that",
                 )
                 stage = 153
             }
@@ -255,7 +268,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "it has the power to prevent werewolves from adopting",
                     "their wolf form in combat as long as you have it",
-                    "equipped."
+                    "equipped.",
                 )
                 stage = 154
             }
@@ -275,7 +288,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "From what I can tell, after you killed the guard dog",
                     "who protected the entrance to the monuments, those",
-                    "Zamorakians forced the door into the main chamber"
+                    "Zamorakians forced the door into the main chamber",
                 )
                 stage = 902
             }
@@ -285,7 +298,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "and have used some kind of evil potion upon the well",
                     "which leads to the source of the river Salve. As they",
-                    "have done this at the very mouth of the river"
+                    "have done this at the very mouth of the river",
                 )
                 stage = 903
             }
@@ -295,7 +308,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "it will spread along the entire river, disrupting the",
                     "blessing placed upon it and allowing the evil creatures of",
-                    "Morytania to invade at their leisure."
+                    "Morytania to invade at their leisure.",
                 )
                 stage = 904
             }
@@ -310,7 +323,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "Well, as you can see, I have placed a holy barrier on",
                     "the entrance to this room from the South, but it is not",
-                    "very powerful and required me to remain"
+                    "very powerful and required me to remain",
                 )
                 stage = 906
             }
@@ -320,7 +333,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "here focussing upon it to keep it intact. Should an",
                     "attack come, they would be able to breach this defence",
-                    "very quickly indeed. What we need to do is"
+                    "very quickly indeed. What we need to do is",
                 )
                 stage = 907
             }
@@ -330,7 +343,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "find some kind of way of removing or counteracting the",
                     "evil magic that has been put into the river source at the",
-                    "well, so that the river will flow pure once again."
+                    "well, so that the river will flow pure once again.",
                 )
                 stage = 908
             }
@@ -339,7 +352,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                 player(
                     FaceAnim.HALF_GUILTY,
                     "Couldn't you bless the river to purify it? Like you did",
-                    "with the water I took from the well?"
+                    "with the water I took from the well?",
                 )
                 stage = 909
             }
@@ -349,7 +362,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "No, that would not work, the power I have from",
                     "Saradomin is not great enough to cleanse an entire",
-                    "river of this foul Zamorakian pollutant."
+                    "river of this foul Zamorakian pollutant.",
                 )
                 stage = 910
             }
@@ -358,7 +371,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     FaceAnim.HALF_GUILTY,
                     "I have only one idea how we could possibly cleanse the",
-                    "river."
+                    "river.",
                 )
                 stage = 911
             }
@@ -373,7 +386,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "I have heard rumours recently that Mages have found",
                     "some secret ore that absorbs magic into it and allows",
-                    "them to create runes."
+                    "them to create runes.",
                 )
                 stage = 913
             }
@@ -383,7 +396,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "Should you be able to collect enough of this ore, it is",
                     "possible it will soak up the evil potion that has been",
-                    "poured into the river, and purify it."
+                    "poured into the river, and purify it.",
                 )
                 stage = 914
             }
@@ -392,7 +405,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                 player(
                     FaceAnim.HALF_GUILTY,
                     "Kind of like a filter? Okay, I guess it's worth a try.",
-                    "How many should I get?"
+                    "How many should I get?",
                 )
                 stage = 915
             }
@@ -402,7 +415,7 @@ class DrezelMonumentDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "Well, I have no knowledge of these ores other than",
                     "speculation and gossip, but if the things I hear are true",
-                    "around fifty should be sufficient for the task."
+                    "around fifty should be sufficient for the task.",
                 )
                 stage = 916
             }

@@ -1,6 +1,5 @@
 package content.data.tables
 
-import org.rs.consts.Items
 import core.ServerConfig
 import core.api.StartupListener
 import core.api.log
@@ -12,6 +11,7 @@ import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.tools.Log
 import core.tools.RandomFunction
+import org.rs.consts.Items
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 import java.io.File
@@ -20,7 +20,6 @@ import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.parsers.ParserConfigurationException
 
 class RareDropTable : StartupListener {
-
     override fun startup() {
         if (ServerConfig.RDT_DATA_PATH != null && !File(ServerConfig.RDT_DATA_PATH!!).exists()) {
             log(this::class.java, Log.ERR, "Can't locate RDT file at " + ServerConfig.RDT_DATA_PATH)
@@ -31,40 +30,43 @@ class RareDropTable : StartupListener {
     }
 
     companion object {
-        private val TABLE: WeightBasedTable = object : WeightBasedTable() {
-            override fun roll(receiver: Entity?): ArrayList<Item> {
-                val items = ArrayList(guaranteedItems)
-                var effectiveWeight = totalWeight
-                val p = if (receiver is Player) receiver else null
-                if (p != null && shouldRemoveNothings(p))
-                    effectiveWeight -= nothingWeight
+        private val TABLE: WeightBasedTable =
+            object : WeightBasedTable() {
+                override fun roll(receiver: Entity?): ArrayList<Item> {
+                    val items = ArrayList(guaranteedItems)
+                    var effectiveWeight = totalWeight
+                    val p = if (receiver is Player) receiver else null
+                    if (p != null && shouldRemoveNothings(p)) {
+                        effectiveWeight -= nothingWeight
+                    }
 
-                if (this.size == 1) {
-                    items.add(get(0))
-                } else if (!this.isEmpty()) {
-                    var rngWeight = RandomFunction.randomDouble(effectiveWeight)
-                    for (item in this.shuffled()) {
-                        if (item.id == Items.DWARF_REMAINS_0) continue
-                        rngWeight -= item.weight
-                        if (rngWeight <= 0) {
-                            items.add(item)
-                            break
+                    if (this.size == 1) {
+                        items.add(get(0))
+                    } else if (!this.isEmpty()) {
+                        var rngWeight = RandomFunction.randomDouble(effectiveWeight)
+                        for (item in this.shuffled()) {
+                            if (item.id == Items.DWARF_REMAINS_0) continue
+                            rngWeight -= item.weight
+                            if (rngWeight <= 0) {
+                                items.add(item)
+                                break
+                            }
                         }
                     }
+                    return convertWeightedItems(items, receiver)
                 }
-                return convertWeightedItems(items, receiver)
-            }
 
-            private val nothingWeight: Double
-                get() {
-                    var sum = 0.0
-                    for (i in this) {
-                        if (i.id == Items.DWARF_REMAINS_0)
-                            sum += i.weight
+                private val nothingWeight: Double
+                    get() {
+                        var sum = 0.0
+                        for (i in this) {
+                            if (i.id == Items.DWARF_REMAINS_0) {
+                                sum += i.weight
+                            }
+                        }
+                        return sum
                     }
-                    return sum
-                }
-        }
+            }
 
         var factory: DocumentBuilderFactory = DocumentBuilderFactory.newInstance()
         var builder: DocumentBuilder? = null

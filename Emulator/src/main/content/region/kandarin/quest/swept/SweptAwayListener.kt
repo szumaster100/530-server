@@ -21,8 +21,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.rs.consts.*
 
-class SweptAwayListener : InteractionListener, InterfaceListener {
-
+class SweptAwayListener :
+    InteractionListener,
+    InterfaceListener {
     init {
         addScenery(39363, Location.create(3294, 4515, 0), 2, 22)
         addScenery(39364, Location.create(3295, 4515, 0), 2, 22)
@@ -96,7 +97,6 @@ class SweptAwayListener : InteractionListener, InterfaceListener {
     }
 
     override fun defineListeners() {
-
         /*
          * Handles opening the Betty's trapdoor.
          */
@@ -159,11 +159,13 @@ class SweptAwayListener : InteractionListener, InterfaceListener {
         on(NPCs.NORMAN_8203, IntType.NPC, "talk-to") { player, _ ->
             sendNPCDialogue(player, NPCs.NORMAN_8203, "Moo-ooooooooooo?", FaceAnim.CHILD_NORMAL)
             addDialogueAction(player) { p, button ->
-                if (button > 0) sendNPCDialogue(
-                    p,
-                    NPCs.MAGGIE_8078,
-                    "I wouldn't pester Norman at the mo - he's a bit on edge, what with Babe being poorly. The sneezing really gets to him!"
-                )
+                if (button > 0) {
+                    sendNPCDialogue(
+                        p,
+                        NPCs.MAGGIE_8078,
+                        "I wouldn't pester Norman at the mo - he's a bit on edge, what with Babe being poorly. The sneezing really gets to him!",
+                    )
+                }
             }
             return@on true
         }
@@ -175,11 +177,13 @@ class SweptAwayListener : InteractionListener, InterfaceListener {
         on(NPCs.BABE_8204, IntType.NPC, "talk-to") { player, _ ->
             sendNPCDialogue(player, NPCs.BABE_8204, "*Sniff* *sniffle* *snort* Ah-choo!", FaceAnim.CHILD_NORMAL)
             addDialogueAction(player) { p, button ->
-                if (button > 0) sendNPCDialogue(
-                    p,
-                    NPCs.MAGGIE_8078,
-                    "I wouldn't get too close to her if I were you. I gave her a portion of that goulash, so she's on the mend, but she still might be a bit contagious."
-                )
+                if (button > 0) {
+                    sendNPCDialogue(
+                        p,
+                        NPCs.MAGGIE_8078,
+                        "I wouldn't get too close to her if I were you. I gave her a portion of that goulash, so she's on the mend, but she still might be a bit contagious.",
+                    )
+                }
             }
             return@on true
         }
@@ -207,12 +211,13 @@ class SweptAwayListener : InteractionListener, InterfaceListener {
             return@on true
         }
 
-        val sweepLines = Int2ObjectOpenHashMap<(Player) -> Unit>().apply {
-            put(Scenery.LINE_39364, SweptUtils::sweepFirstLines)
-            put(Scenery.LINE_39377, SweptUtils::sweepSecondLines)
-            put(Scenery.LINE_39408, SweptUtils::sweepThirdLines)
-            put(Scenery.LINE_39414, SweptUtils::sweepFourthLines)
-        }
+        val sweepLines =
+            Int2ObjectOpenHashMap<(Player) -> Unit>().apply {
+                put(Scenery.LINE_39364, SweptUtils::sweepFirstLines)
+                put(Scenery.LINE_39377, SweptUtils::sweepSecondLines)
+                put(Scenery.LINE_39408, SweptUtils::sweepThirdLines)
+                put(Scenery.LINE_39414, SweptUtils::sweepFourthLines)
+            }
 
         /*
          * Handles sweeping the lines of the area during the quest.
@@ -250,7 +255,7 @@ class SweptAwayListener : InteractionListener, InterfaceListener {
                         animate(player, SweptUtils.TAKE_FROG_FROM_CRATE_ANIMATION)
                         sendMessage(
                             player,
-                            "You pull out a toad. It wriggles out of your hand and back into the crate."
+                            "You pull out a toad. It wriggles out of your hand and back into the crate.",
                         )
                         sendPlayerDialogue(player, "Yuk! A toad!", FaceAnim.EXTREMELY_SHOCKED)
                     }
@@ -259,7 +264,7 @@ class SweptAwayListener : InteractionListener, InterfaceListener {
                         animate(player, SweptUtils.TAKE_FROG_FROM_CRATE_ANIMATION)
                         sendMessage(
                             player,
-                            "You pull out a toad. It wriggles out of your hand and back into the crate."
+                            "You pull out a toad. It wriggles out of your hand and back into the crate.",
                         )
                         sendPlayerDialogue(player, "Yuk! A toad!", FaceAnim.EXTREMELY_SHOCKED)
                     }
@@ -279,7 +284,7 @@ class SweptAwayListener : InteractionListener, InterfaceListener {
                     NPCs.GUS_8205,
                     "No! remember what I said: we can't waste the stock.",
                     "One look should be enough. We wouldn't want to get",
-                    "Ms. Hetty Annoyed."
+                    "Ms. Hetty Annoyed.",
                 )
                 return@on true
             }
@@ -353,7 +358,7 @@ class SweptAwayListener : InteractionListener, InterfaceListener {
          */
 
         on(Scenery.CHEST_39279, IntType.SCENERY, "search") { player, _ ->
-            if(!getAttribute(player, GameAttributes.QUEST_SWEPT_AWAY_BETTY_WAND, false)) {
+            if (!getAttribute(player, GameAttributes.QUEST_SWEPT_AWAY_BETTY_WAND, false)) {
                 sendMessages(player, "You search the chest and find Betty's wand.")
                 addItemOrDrop(player, Items.BETTYS_WAND_14068)
                 setAttribute(player, GameAttributes.QUEST_SWEPT_AWAY_BETTY_WAND, true)
@@ -372,7 +377,6 @@ class SweptAwayListener : InteractionListener, InterfaceListener {
             return@on true
         }
 
-
         /*
          * Handles moving the creature in the pen.
          */
@@ -383,15 +387,19 @@ class SweptAwayListener : InteractionListener, InterfaceListener {
 
             // Authentically, this interaction with the messages occurs after
             // 4 minutes have passed, and then each subsequent interaction triggers a reset.
-            if(interactions > 16) {
+            if (interactions > 16) {
                 if (anyInInventory(player, *SweptUtils.CREATURE_PEN_ITEM)) {
                     for (creatureItem in SweptUtils.CREATURE_PEN_ITEM) {
                         removeItem(player, creatureItem)
-                        sendMessages(player,
+                        sendMessages(
+                            player,
                             "The creature laps out of your grasp and scampers away.",
-                            "You can't take a creature into a chamber that has another creature inside."
+                            "You can't take a creature into a chamber that has another creature inside.",
                         )
-                        sendPlayerDialogue(player, "I don't think I should take this little guy into a room that has another creature in it.")
+                        sendPlayerDialogue(
+                            player,
+                            "I don't think I should take this little guy into a room that has another creature in it.",
+                        )
                         removeAttribute(player, GameAttributes.QUEST_SWEPT_AWAY_CREATURE_INTER)
                     }
 
@@ -424,12 +432,16 @@ class SweptAwayListener : InteractionListener, InterfaceListener {
      */
 
     class MaggieSceneryInteraction : DialogueFile() {
-        override fun handle(componentID: Int, buttonID: Int) {
-            val emotes = listOf(
-                Pair(Emotes.TRICK, "Trick"),
-                Pair(Emotes.SCARED, "Terrified"),
-                Pair(Emotes.ZOMBIE_HAND, "Zombie hand")
-            )
+        override fun handle(
+            componentID: Int,
+            buttonID: Int,
+        ) {
+            val emotes =
+                listOf(
+                    Pair(Emotes.TRICK, "Trick"),
+                    Pair(Emotes.SCARED, "Terrified"),
+                    Pair(Emotes.ZOMBIE_HAND, "Zombie hand"),
+                )
 
             if (stage < emotes.size) {
                 val (emote, emoteName) = emotes[stage]
@@ -443,7 +455,6 @@ class SweptAwayListener : InteractionListener, InterfaceListener {
                 if (stage > emotes.size) {
                     closeInterface(player!!)
                 }
-
             } else {
                 closeInterface(player!!)
             }
@@ -455,11 +466,26 @@ class SweptAwayListener : InteractionListener, InterfaceListener {
      */
 
     class LottieSupportDialogue : DialogueFile() {
-        override fun handle(componentID: Int, buttonID: Int) {
+        override fun handle(
+            componentID: Int,
+            buttonID: Int,
+        ) {
             npc = NPC(NPCs.LOTTIE_8206)
             when (stage) {
-                0 -> npc(FaceAnim.SAD, "Eh? Something looks very wrong. Not all the creatures", "are there!").also { stage++ }
-                1 -> npc(FaceAnim.SAD, "I'll just put things back to how they were and have a", "look for the missing critters.").also { stage++ }
+                0 ->
+                    npc(
+                        FaceAnim.SAD,
+                        "Eh? Something looks very wrong. Not all the creatures",
+                        "are there!",
+                    ).also { stage++ }
+                1 ->
+                    npc(
+                        FaceAnim.SAD,
+                        "I'll just put things back to how they were and have a",
+                        "look for the missing critters.",
+                    ).also {
+                        stage++
+                    }
                 2 -> {
                     GlobalScope.launch {
                         openInterface(player!!, Components.FADE_TO_BLACK_120)
@@ -473,7 +499,14 @@ class SweptAwayListener : InteractionListener, InterfaceListener {
                         }
                     }
                 }
-                3 -> npc(FaceAnim.HAPPY, "Not to worry - I found everyone! All the critters are", "accounted for you're fine to start over.").also { stage++ }
+                3 ->
+                    npc(
+                        FaceAnim.HAPPY,
+                        "Not to worry - I found everyone! All the critters are",
+                        "accounted for you're fine to start over.",
+                    ).also {
+                        stage++
+                    }
             }
         }
     }
@@ -483,33 +516,40 @@ class SweptAwayListener : InteractionListener, InterfaceListener {
      */
 
     class GusSupportDialogue : DialogueFile() {
-        override fun handle(componentID: Int, buttonID: Int) {
+        override fun handle(
+            componentID: Int,
+            buttonID: Int,
+        ) {
             npc = NPC(NPCs.GUS_8205)
             when (stage) {
-                0 -> npc(
-                    "I see you've put new labels on all the crates. Oh, newts!",
-                    "This is so confusing, but I think something is wrong",
-                    "with the labelling."
-                ).also { stage++ }
+                0 ->
+                    npc(
+                        "I see you've put new labels on all the crates. Oh, newts!",
+                        "This is so confusing, but I think something is wrong",
+                        "with the labelling.",
+                    ).also { stage++ }
 
-                1 -> npc(
-                    "Please can you give it another go? Do you want me to",
-                    "put everything back to how it was for you?"
-                ).also { stage++ }
+                1 ->
+                    npc(
+                        "Please can you give it another go? Do you want me to",
+                        "put everything back to how it was for you?",
+                    ).also { stage++ }
 
-                2 -> options(
-                    "Yes, please.",
-                    "No, I think I can solve this.",
-                    "What's wrong with the way I did it?",
-                    "But, Gus..."
-                )
+                2 ->
+                    options(
+                        "Yes, please.",
+                        "No, I think I can solve this.",
+                        "What's wrong with the way I did it?",
+                        "But, Gus...",
+                    )
 
-                3 -> when (buttonID) {
-                    1 -> player("Yes, please.").also { stage++ }
-                    2 -> player("No, I think I can solve this.").also { stage = END_DIALOGUE }
-                    3 -> player("What's wrong with the way I did it?").also { stage = END_DIALOGUE }
-                    4 -> player("But, Gus...").also { stage = END_DIALOGUE }
-                }
+                3 ->
+                    when (buttonID) {
+                        1 -> player("Yes, please.").also { stage++ }
+                        2 -> player("No, I think I can solve this.").also { stage = END_DIALOGUE }
+                        3 -> player("What's wrong with the way I did it?").also { stage = END_DIALOGUE }
+                        4 -> player("But, Gus...").also { stage = END_DIALOGUE }
+                    }
 
                 4 -> {
                     end()
@@ -518,5 +558,4 @@ class SweptAwayListener : InteractionListener, InterfaceListener {
             }
         }
     }
-
 }

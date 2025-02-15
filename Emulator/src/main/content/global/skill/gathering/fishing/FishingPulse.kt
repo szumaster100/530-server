@@ -1,7 +1,5 @@
 package content.global.skill.gathering.fishing
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
 import core.api.*
 import core.game.event.ResourceProducedEvent
 import core.game.node.entity.npc.NPC
@@ -16,14 +14,21 @@ import core.game.world.GameWorld.Pulser
 import core.game.world.map.Location
 import core.game.world.map.path.Pathfinder
 import core.tools.RandomFunction
+import org.rs.consts.Animations
+import org.rs.consts.Items
 
-class FishingPulse(player: Player?, npc: NPC, private val option: FishingOption?) : SkillPulse<NPC?>(player, npc) {
-
+class FishingPulse(
+    player: Player?,
+    npc: NPC,
+    private val option: FishingOption?,
+) : SkillPulse<NPC?>(player, npc) {
     private var fish: Fish? = null
     private val location: Location = npc.location
 
     override fun start() {
-        if (player.familiarManager.hasFamiliar() && player.familiarManager.familiar is content.global.skill.summoning.familiar.Forager) {
+        if (player.familiarManager.hasFamiliar() &&
+            player.familiarManager.familiar is content.global.skill.summoning.familiar.Forager
+        ) {
             val forager = player.familiarManager.familiar as content.global.skill.summoning.familiar.Forager
             val dest = player.location.transform(player.direction)
             Pathfinder.find(forager.location, dest).walk(forager)
@@ -38,8 +43,13 @@ class FishingPulse(player: Player?, npc: NPC, private val option: FishingOption?
         player.debug(inInventory(player, option.tool).toString())
         if (!inInventory(player, option.tool) && !hasBarbTail()) {
             var msg = "You need a "
-            msg += if (getItemName(option.tool).contains("net", true)
-            ) "net to " else "${getItemName(option.tool).lowercase()} to "
+            msg +=
+                if (getItemName(option.tool).contains("net", true)
+                ) {
+                    "net to "
+                } else {
+                    "${getItemName(option.tool).lowercase()} to "
+                }
             msg += if (option.option in arrayOf("lure", "bait")) "${option.option} these fish." else "catch these fish."
             sendDialogue(player, msg)
             stop()
@@ -79,13 +89,14 @@ class FishingPulse(player: Player?, npc: NPC, private val option: FishingOption?
             Pulser.submit(
                 object : Pulse(1) {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             5 -> getCatchAnimationAndLoot(player)
                         }
                         return false
                     }
-                }
+                },
             )
         } else {
             animate(player, option!!.animation)
@@ -97,7 +108,9 @@ class FishingPulse(player: Player?, npc: NPC, private val option: FishingOption?
             super.setDelay(5)
             return false
         }
-        if (player.familiarManager.hasFamiliar() && player.familiarManager.familiar is content.global.skill.summoning.familiar.Forager) {
+        if (player.familiarManager.hasFamiliar() &&
+            player.familiarManager.familiar is content.global.skill.summoning.familiar.Forager
+        ) {
             val forager = player.familiarManager.familiar as content.global.skill.summoning.familiar.Forager
             forager.handlePassiveAction()
         }
@@ -117,21 +130,27 @@ class FishingPulse(player: Player?, npc: NPC, private val option: FishingOption?
 
     private fun isBareHanded(p: Player): Boolean {
         if (option == FishingOption.HARPOON || option == FishingOption.SHARK_HARPOON) {
-            if (checkFish(p) > 0 && !(
-                        inInventory(player, option.tool) || inEquipment(
+            if (checkFish(p) > 0 &&
+                !(
+                    inInventory(player, option.tool) ||
+                        inEquipment(
                             player,
-                            option.tool
-                        ) || hasBarbTail()
-                        )
+                            option.tool,
+                        ) ||
+                        hasBarbTail()
+                )
             ) {
                 return true
             }
-            if (checkFish(p) > 2 && !(
-                        inInventory(player, option.tool) || inEquipment(
+            if (checkFish(p) > 2 &&
+                !(
+                    inInventory(player, option.tool) ||
+                        inEquipment(
                             player,
-                            option.tool
-                        ) || hasBarbTail()
-                        )
+                            option.tool,
+                        ) ||
+                        hasBarbTail()
+                )
             ) {
                 return true
             }
@@ -142,27 +161,28 @@ class FishingPulse(player: Player?, npc: NPC, private val option: FishingOption?
     private fun getCatchAnimationAndLoot(p: Player): Int {
         val fishingFor = checkFish(p)
         when (node!!.id) {
-            324 -> when (fishingFor) {
-                1 -> {
-                    animate(player, Animations.BAREHAND_TUNA_6710)
-                    rewardXP(player, Skills.FISHING, 80.0)
-                    rewardXP(player, Skills.STRENGTH, 8.0)
-                    addItem(player, Items.RAW_TUNA_359)
-                }
-
-                2, 3 ->
-                    if (RandomFunction.random(1) == 1) {
+            324 ->
+                when (fishingFor) {
+                    1 -> {
                         animate(player, Animations.BAREHAND_TUNA_6710)
                         rewardXP(player, Skills.FISHING, 80.0)
                         rewardXP(player, Skills.STRENGTH, 8.0)
                         addItem(player, Items.RAW_TUNA_359)
-                    } else {
-                        animate(player, Animations.BAREHAND_SWORDFISH_6707)
-                        rewardXP(player, Skills.FISHING, 100.0)
-                        rewardXP(player, Skills.STRENGTH, 10.0)
-                        addItem(player, Items.RAW_SWORDFISH_371)
                     }
-            }
+
+                    2, 3 ->
+                        if (RandomFunction.random(1) == 1) {
+                            animate(player, Animations.BAREHAND_TUNA_6710)
+                            rewardXP(player, Skills.FISHING, 80.0)
+                            rewardXP(player, Skills.STRENGTH, 8.0)
+                            addItem(player, Items.RAW_TUNA_359)
+                        } else {
+                            animate(player, Animations.BAREHAND_SWORDFISH_6707)
+                            rewardXP(player, Skills.FISHING, 100.0)
+                            rewardXP(player, Skills.STRENGTH, 10.0)
+                            addItem(player, Items.RAW_SWORDFISH_371)
+                        }
+                }
 
             313 -> {
                 animate(player, Animations.BAREHAND_SHARK_6705)
@@ -188,11 +208,12 @@ class FishingPulse(player: Player?, npc: NPC, private val option: FishingOption?
         when (type) {
             0 -> sendMessage(player, option!!.getStartMessage())
             2 -> {
-                var msg = when (fish) {
-                    in arrayOf(Fish.ANCHOVIE, Fish.SHRIMP, Fish.SEAWEED) -> "You catch some "
-                    in arrayOf(Fish.OYSTER) -> "You catch an "
-                    else -> "You catch a "
-                }
+                var msg =
+                    when (fish) {
+                        in arrayOf(Fish.ANCHOVIE, Fish.SHRIMP, Fish.SEAWEED) -> "You catch some "
+                        in arrayOf(Fish.OYSTER) -> "You catch an "
+                        else -> "You catch a "
+                    }
                 msg += getItemName(fish!!.id).lowercase().replace("raw ", "").replace("big ", "")
                 msg += if (fish == Fish.SHARK) "!" else "."
                 sendMessage(player, msg)
@@ -223,9 +244,15 @@ class FishingPulse(player: Player?, npc: NPC, private val option: FishingOption?
                 if (p.skills.getLevel(Skills.FISHING) >= 70 && p.skills.getLevel(Skills.STRENGTH) >= 50) {
                     if (p.skills.getLevel(Skills.FISHING) >= 96 && p.skills.getLevel(Skills.STRENGTH) >= 76) {
                         3
-                    } else 2
-                } else 1
-            } else 0
+                    } else {
+                        2
+                    }
+                } else {
+                    1
+                }
+            } else {
+                0
+            }
         }
     }
 }

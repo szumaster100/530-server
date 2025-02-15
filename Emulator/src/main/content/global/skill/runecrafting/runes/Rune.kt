@@ -1,10 +1,15 @@
 package content.global.skill.runecrafting.runes
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import core.game.node.entity.combat.spell.Runes
 import core.game.node.item.Item
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 
-enum class Rune(val rune: Item, val level: Int, val experience: Double, private vararg val multiple: Int) {
+enum class Rune(
+    val rune: Item,
+    val level: Int,
+    val experience: Double,
+    private vararg val multiple: Int,
+) {
     AIR(Runes.AIR_RUNE.transform(), 1, 5.0, 1, 11, 22, 33, 44, 55, 66, 77, 88, 99, 110),
     MIND(Runes.MIND_RUNE.transform(), 2, 5.5, 1, 14, 28, 42, 56, 70, 84, 98, 112),
     WATER(Runes.WATER_RUNE.transform(), 5, 6.0, 1, 19, 38, 57, 76, 95, 114),
@@ -18,7 +23,8 @@ enum class Rune(val rune: Item, val level: Int, val experience: Double, private 
     LAW(Runes.LAW_RUNE.transform(), 54, 9.5, 1, 110),
     DEATH(Runes.DEATH_RUNE.transform(), 65, 10.0, 1, 131),
     BLOOD(Runes.BLOOD_RUNE.transform(), 77, 10.5, 1, 154),
-    SOUL(Runes.SOUL_RUNE.transform(), 90, 11.0);
+    SOUL(Runes.SOUL_RUNE.transform(), 90, 11.0),
+    ;
 
     fun getMultiple(): IntArray? {
         return multiple

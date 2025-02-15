@@ -1,9 +1,6 @@
 package content.global.skill.magic.spells.teleport
 
 import content.data.GameAttributes
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
 import content.global.skill.magic.SpellListener
 import content.global.skill.magic.TeleportMethod
 import content.global.skill.magic.spells.ModernSpells
@@ -11,8 +8,8 @@ import content.region.misthalin.handlers.VarrockAchievementDiary
 import core.ServerConfig
 import core.api.finishDiaryTask
 import core.api.getAttribute
-import core.api.quest.hasRequirement
 import core.api.openInterface
+import core.api.quest.hasRequirement
 import core.api.removeAttribute
 import core.api.sendMessage
 import core.api.submitWorldPulse
@@ -23,11 +20,12 @@ import core.game.node.entity.player.link.diary.DiaryType
 import core.game.node.item.Item
 import core.game.system.task.Pulse
 import core.game.world.map.Location
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
 
 class ModernSpellbookTeleport : SpellListener("modern") {
-
     override fun defineListeners() {
-
         onCast(ModernSpells.HOME_TELEPORT, NONE) { player, _ ->
             requires(player)
             if (!getAttribute(player, GameAttributes.TUTORIAL_COMPLETE, false)) {
@@ -42,14 +40,14 @@ class ModernSpellbookTeleport : SpellListener("modern") {
             requires(
                 player = player,
                 magicLevel = 25,
-                runes = arrayOf(Item(Items.FIRE_RUNE_554), Item(Items.AIR_RUNE_556, 3), Item(Items.LAW_RUNE_563))
+                runes = arrayOf(Item(Items.FIRE_RUNE_554), Item(Items.AIR_RUNE_556, 3), Item(Items.LAW_RUNE_563)),
             )
             val alternateTeleport = getAttribute(player, VarrockAchievementDiary.ATTRIBUTE_VARROCK_ALT_TELE, false)
             val dest = if (alternateTeleport) Location.create(3165, 3472, 0) else Location.create(3213, 3424, 0)
             sendTeleport(
                 player = player,
                 xp = 35.0,
-                location = dest
+                location = dest,
             )
         }
 
@@ -57,12 +55,12 @@ class ModernSpellbookTeleport : SpellListener("modern") {
             requires(
                 player = player,
                 magicLevel = 31,
-                runes = arrayOf(Item(Items.EARTH_RUNE_557), Item(Items.AIR_RUNE_556, 3), Item(Items.LAW_RUNE_563))
+                runes = arrayOf(Item(Items.EARTH_RUNE_557), Item(Items.AIR_RUNE_556, 3), Item(Items.LAW_RUNE_563)),
             )
             sendTeleport(
                 player = player,
                 xp = 41.0,
-                location = Location.create(3221, 3219, 0)
+                location = Location.create(3221, 3219, 0),
             )
         }
 
@@ -70,12 +68,12 @@ class ModernSpellbookTeleport : SpellListener("modern") {
             requires(
                 player = player,
                 magicLevel = 37,
-                runes = arrayOf(Item(Items.WATER_RUNE_555), Item(Items.AIR_RUNE_556, 3), Item(Items.LAW_RUNE_563))
+                runes = arrayOf(Item(Items.WATER_RUNE_555), Item(Items.AIR_RUNE_556, 3), Item(Items.LAW_RUNE_563)),
             )
             sendTeleport(
                 player = player,
                 xp = 47.0,
-                location = Location.create(2965, 3378, 0)
+                location = Location.create(2965, 3378, 0),
             )
         }
 
@@ -83,75 +81,80 @@ class ModernSpellbookTeleport : SpellListener("modern") {
             requires(
                 player = player,
                 magicLevel = 45,
-                runes = arrayOf(Item(Items.AIR_RUNE_556, 5), Item(Items.LAW_RUNE_563))
+                runes = arrayOf(Item(Items.AIR_RUNE_556, 5), Item(Items.LAW_RUNE_563)),
             )
             sendTeleport(
                 player = player,
                 xp = 55.5,
-                location = Location.create(2758, 3478, 0)
+                location = Location.create(2758, 3478, 0),
             )
             finishDiaryTask(player, DiaryType.SEERS_VILLAGE, 1, 5)
         }
 
         onCast(ModernSpells.ARDOUGNE_TELEPORT, NONE) { player, _ ->
-            if (!hasRequirement(player, Quests.PLAGUE_CITY))
+            if (!hasRequirement(player, Quests.PLAGUE_CITY)) {
                 return@onCast
+            }
             requires(
                 player = player,
                 magicLevel = 51,
-                runes = arrayOf(Item(Items.WATER_RUNE_555, 2), Item(Items.LAW_RUNE_563, 2))
+                runes = arrayOf(Item(Items.WATER_RUNE_555, 2), Item(Items.LAW_RUNE_563, 2)),
             )
             sendTeleport(
                 player = player,
                 xp = 61.0,
-                location = Location.create(2662, 3307, 0)
+                location = Location.create(2662, 3307, 0),
             )
         }
 
         onCast(ModernSpells.WATCHTOWER_TELEPORT, NONE) { player, _ ->
-            if (!hasRequirement(player, Quests.WATCHTOWER))
+            if (!hasRequirement(player, Quests.WATCHTOWER)) {
                 return@onCast
+            }
             requires(
                 player = player,
                 magicLevel = 58,
-                runes = arrayOf(Item(Items.EARTH_RUNE_557, 2), Item(Items.LAW_RUNE_563, 2))
+                runes = arrayOf(Item(Items.EARTH_RUNE_557, 2), Item(Items.LAW_RUNE_563, 2)),
             )
             sendTeleport(
                 player = player,
                 xp = 68.0,
-                location = Location.create(2549, 3112, 0)
+                location = Location.create(2549, 3112, 0),
             )
         }
 
         onCast(ModernSpells.TROLLHEIM_TELEPORT, NONE) { player, _ ->
-            if (!hasRequirement(player, Quests.EADGARS_RUSE))
+            if (!hasRequirement(player, Quests.EADGARS_RUSE)) {
                 return@onCast
+            }
             requires(
                 player = player,
                 magicLevel = 61,
-                runes = arrayOf(Item(Items.FIRE_RUNE_554, 2), Item(Items.LAW_RUNE_563, 2))
+                runes = arrayOf(Item(Items.FIRE_RUNE_554, 2), Item(Items.LAW_RUNE_563, 2)),
             )
             sendTeleport(
                 player = player,
                 xp = 68.0,
-                location = Location.create(2891, 3678, 0)
+                location = Location.create(2891, 3678, 0),
             )
         }
 
         onCast(ModernSpells.APE_ATOLL_TELEPORT, NONE) { player, _ ->
-            if (!hasRequirement(player, Quests.MONKEY_MADNESS))
+            if (!hasRequirement(player, Quests.MONKEY_MADNESS)) {
                 return@onCast
+            }
             requires(
                 player = player,
                 magicLevel = 64,
-                runes = arrayOf(
-                    Item(Items.FIRE_RUNE_554, 2),
-                    Item(Items.WATER_RUNE_555, 2),
-                    Item(Items.LAW_RUNE_563, 2),
-                    Item(
-                        Items.BANANA_1963
-                    )
-                )
+                runes =
+                    arrayOf(
+                        Item(Items.FIRE_RUNE_554, 2),
+                        Item(Items.WATER_RUNE_555, 2),
+                        Item(Items.LAW_RUNE_563, 2),
+                        Item(
+                            Items.BANANA_1963,
+                        ),
+                    ),
             )
             sendTeleport(player, 74.0, Location.create(2754, 2784, 0))
         }
@@ -160,13 +163,17 @@ class ModernSpellbookTeleport : SpellListener("modern") {
             requires(
                 player = player,
                 magicLevel = 40,
-                runes = arrayOf(Item(Items.LAW_RUNE_563), Item(Items.AIR_RUNE_556), Item(Items.EARTH_RUNE_557))
+                runes = arrayOf(Item(Items.LAW_RUNE_563), Item(Items.AIR_RUNE_556), Item(Items.EARTH_RUNE_557)),
             )
             attemptHouseTeleport(player)
         }
     }
 
-    private fun sendTeleport(player: Player, xp: Double, location: Location) {
+    private fun sendTeleport(
+        player: Player,
+        xp: Double,
+        location: Location,
+    ) {
         if (player.isTeleBlocked) {
             removeAttribute(player, "spell:runes")
             sendMessage(player, "A magical force prevents you from teleporting.")
@@ -210,7 +217,7 @@ class ModernSpellbookTeleport : SpellListener("modern") {
                     player.houseManager.postEnter(player, false)
                     return true
                 }
-            }
+            },
         )
     }
 }

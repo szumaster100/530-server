@@ -10,7 +10,6 @@ import org.rs.consts.*
 
 class WhileGuthixSleepsListeners : InteractionListener {
     override fun defineListeners() {
-
         on(NPCs.KHAZARD_LAUNDERER_8428, IntType.NPC, "talk-to") { player, _ ->
             openDialogue(player, KhazardLaundererDialogue())
             return@on true
@@ -19,7 +18,8 @@ class WhileGuthixSleepsListeners : InteractionListener {
         onUseWith(IntType.ITEM, Items.ENRICHED_SNAPDRAGON_14487, Items.TRUTH_SERUM_6952) { player, used, with ->
             sendMessages(
                 player,
-                "You mix the enriched snapdragon into the truth serum.","It dissolves immediately and gives off a delicious, delicate aroma."
+                "You mix the enriched snapdragon into the truth serum.",
+                "It dissolves immediately and gives off a delicious, delicate aroma.",
             )
             animate(player, 3283)
             runTask(player, 1) {
@@ -50,6 +50,7 @@ class WhileGuthixSleepsListeners : InteractionListener {
                         player,
                         object : Pulse(1) {
                             var counter = 0
+
                             override fun pulse(): Boolean {
                                 when (counter++) {
                                     0 -> openInterface(player, Components.FADE_TO_BLACK_115)
@@ -64,7 +65,7 @@ class WhileGuthixSleepsListeners : InteractionListener {
                                 }
                                 return false
                             }
-                        }
+                        },
                     )
                 }
             }

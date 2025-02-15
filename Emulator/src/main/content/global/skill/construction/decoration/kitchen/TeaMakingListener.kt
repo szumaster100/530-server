@@ -1,7 +1,5 @@
 package content.global.skill.construction.decoration.kitchen
 
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
@@ -9,9 +7,12 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.system.command.Privilege
 import core.game.system.task.Pulse
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
-class TeaMakingListener : InteractionListener, Commands {
-
+class TeaMakingListener :
+    InteractionListener,
+    Commands {
     companion object {
         private val KETTLE_IDS = intArrayOf(Items.KETTLE_7688, Items.FULL_KETTLE_7690, Items.HOT_KETTLE_7691)
         private val SINK_IDS = intArrayOf(Scenery.PUMP_AND_DRAIN_13559, Scenery.PUMP_AND_TUB_13561, Scenery.SINK_13563)
@@ -24,7 +25,6 @@ class TeaMakingListener : InteractionListener, Commands {
     }
 
     override fun defineListeners() {
-
         onUseWith(IntType.ITEM, Items.TEA_LEAVES_7738, *TEAPOT_IDS) { player, used, with ->
             val itemUsed = used.asItem()
             val usedWith = with.asItem()
@@ -44,13 +44,13 @@ class TeaMakingListener : InteractionListener, Commands {
             val usedWith = with.asItem()
 
             if (inInventory(player, Items.HOT_KETTLE_7691) && anyInInventory(player, *TEA_POT_IDS)) {
-
-                val offset = when (with.id) {
-                    Items.TEAPOT_WITH_LEAVES_7700 -> Items.POT_OF_TEA_4_7692
-                    Items.TEAPOT_WITH_LEAVES_7712 -> Items.POT_OF_TEA_4_7704
-                    Items.TEAPOT_WITH_LEAVES_7724 -> Items.POT_OF_TEA_4_7716
-                    else -> null
-                }
+                val offset =
+                    when (with.id) {
+                        Items.TEAPOT_WITH_LEAVES_7700 -> Items.POT_OF_TEA_4_7692
+                        Items.TEAPOT_WITH_LEAVES_7712 -> Items.POT_OF_TEA_4_7704
+                        Items.TEAPOT_WITH_LEAVES_7724 -> Items.POT_OF_TEA_4_7716
+                        else -> null
+                    }
 
                 replaceSlot(player, itemUsed.slot, Item(Items.KETTLE_7688, 1))
                 replaceSlot(player, usedWith.slot, Item(offset!!.toInt(), 1))
@@ -73,18 +73,19 @@ class TeaMakingListener : InteractionListener, Commands {
                 return@onUseWith false
             }
 
-            val unitItem = when (itemUsed.id) {
-                Items.POT_OF_TEA_4_7692 -> Items.POT_OF_TEA_3_7694
-                Items.POT_OF_TEA_3_7694 -> Items.POT_OF_TEA_2_7696
-                Items.POT_OF_TEA_2_7696 -> Items.POT_OF_TEA_1_7698
-                Items.POT_OF_TEA_4_7704 -> Items.POT_OF_TEA_3_7706
-                Items.POT_OF_TEA_3_7706 -> Items.POT_OF_TEA_2_7708
-                Items.POT_OF_TEA_2_7708 -> Items.POT_OF_TEA_1_7710
-                Items.POT_OF_TEA_4_7716 -> Items.POT_OF_TEA_3_7718
-                Items.POT_OF_TEA_3_7718 -> Items.POT_OF_TEA_2_7720
-                Items.POT_OF_TEA_2_7720 -> Items.POT_OF_TEA_1_7722
-                else -> null
-            }
+            val unitItem =
+                when (itemUsed.id) {
+                    Items.POT_OF_TEA_4_7692 -> Items.POT_OF_TEA_3_7694
+                    Items.POT_OF_TEA_3_7694 -> Items.POT_OF_TEA_2_7696
+                    Items.POT_OF_TEA_2_7696 -> Items.POT_OF_TEA_1_7698
+                    Items.POT_OF_TEA_4_7704 -> Items.POT_OF_TEA_3_7706
+                    Items.POT_OF_TEA_3_7706 -> Items.POT_OF_TEA_2_7708
+                    Items.POT_OF_TEA_2_7708 -> Items.POT_OF_TEA_1_7710
+                    Items.POT_OF_TEA_4_7716 -> Items.POT_OF_TEA_3_7718
+                    Items.POT_OF_TEA_3_7718 -> Items.POT_OF_TEA_2_7720
+                    Items.POT_OF_TEA_2_7720 -> Items.POT_OF_TEA_1_7722
+                    else -> null
+                }
 
             if (unitItem != null) {
                 replaceSlot(player, itemUsed.slot, Item(unitItem, 1))
@@ -104,8 +105,9 @@ class TeaMakingListener : InteractionListener, Commands {
 
             val teaCup = TeaCup.values.find { it.product == with.id } ?: return@onUseWith false
 
-            if (!inInventory(player, Items.BUCKET_OF_MILK_1927) || !anyInInventory(player, *CUP_OF_TEA_IDS))
+            if (!inInventory(player, Items.BUCKET_OF_MILK_1927) || !anyInInventory(player, *CUP_OF_TEA_IDS)) {
                 return@onUseWith false
+            }
 
             replaceSlot(player, itemUsed.slot, Item(Items.BUCKET_1925, 1))
             replaceSlot(player, usedWith.slot, Item(teaCup.product + 1, 1))
@@ -133,6 +135,7 @@ class TeaMakingListener : InteractionListener, Commands {
                 player,
                 object : Pulse(1) {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             0 -> {
@@ -151,7 +154,7 @@ class TeaMakingListener : InteractionListener, Commands {
 
                         return false
                     }
-                }
+                },
             )
 
             return@onUseWith true
@@ -159,33 +162,33 @@ class TeaMakingListener : InteractionListener, Commands {
     }
 
     override fun defineCommands() {
-
         define(
             name = "teakit",
             privilege = Privilege.ADMIN,
             usage = "::teakit",
-            description = "Stuff to making cup of tea."
+            description = "Stuff to making cup of tea.",
         ) { player, _ ->
 
-            val itemsToAdd = listOf(
-                Items.TEA_LEAVES_7738 to 3,
-                Items.HOT_KETTLE_7691 to 1,
-                Items.TEAPOT_7702 to 1,
-                Items.TEAPOT_7714 to 1,
-                Items.TEAPOT_7726 to 1,
-                Items.HOT_KETTLE_7691 to 1,
-                Items.TEAPOT_WITH_LEAVES_7700 to 1,
-                Items.TEAPOT_WITH_LEAVES_7712 to 1,
-                Items.TEAPOT_WITH_LEAVES_7724 to 1,
-                Items.HOT_KETTLE_7691 to 1,
-                Items.BUCKET_OF_MILK_1927 to 3,
-                Items.EMPTY_CUP_7728 to 1,
-                Items.CUP_OF_TEA_7730 to 1,
-                Items.CUP_OF_TEA_7733 to 2,
-                Items.PORCELAIN_CUP_7732 to 1,
-                Items.CUP_OF_TEA_7736 to 2,
-                Items.PORCELAIN_CUP_7735 to 1,
-            )
+            val itemsToAdd =
+                listOf(
+                    Items.TEA_LEAVES_7738 to 3,
+                    Items.HOT_KETTLE_7691 to 1,
+                    Items.TEAPOT_7702 to 1,
+                    Items.TEAPOT_7714 to 1,
+                    Items.TEAPOT_7726 to 1,
+                    Items.HOT_KETTLE_7691 to 1,
+                    Items.TEAPOT_WITH_LEAVES_7700 to 1,
+                    Items.TEAPOT_WITH_LEAVES_7712 to 1,
+                    Items.TEAPOT_WITH_LEAVES_7724 to 1,
+                    Items.HOT_KETTLE_7691 to 1,
+                    Items.BUCKET_OF_MILK_1927 to 3,
+                    Items.EMPTY_CUP_7728 to 1,
+                    Items.CUP_OF_TEA_7730 to 1,
+                    Items.CUP_OF_TEA_7733 to 2,
+                    Items.PORCELAIN_CUP_7732 to 1,
+                    Items.CUP_OF_TEA_7736 to 2,
+                    Items.PORCELAIN_CUP_7735 to 1,
+                )
 
             itemsToAdd.forEach { (item, amount) ->
                 addItem(player, item, amount)
@@ -194,19 +197,23 @@ class TeaMakingListener : InteractionListener, Commands {
     }
 }
 
-enum class TeaCup(val product: Int, val base: IntArray) {
+enum class TeaCup(
+    val product: Int,
+    val base: IntArray,
+) {
     CUP_OF_TEA_CLAY(
         Items.CUP_OF_TEA_7730,
-        intArrayOf(Items.POT_OF_TEA_1_7698, Items.POT_OF_TEA_2_7696, Items.POT_OF_TEA_3_7694, Items.POT_OF_TEA_4_7692)
+        intArrayOf(Items.POT_OF_TEA_1_7698, Items.POT_OF_TEA_2_7696, Items.POT_OF_TEA_3_7694, Items.POT_OF_TEA_4_7692),
     ),
     CUP_OF_TEA_WHITE(
         Items.CUP_OF_TEA_7733,
-        intArrayOf(Items.POT_OF_TEA_1_7710, Items.POT_OF_TEA_2_7708, Items.POT_OF_TEA_3_7706, Items.POT_OF_TEA_4_7704)
+        intArrayOf(Items.POT_OF_TEA_1_7710, Items.POT_OF_TEA_2_7708, Items.POT_OF_TEA_3_7706, Items.POT_OF_TEA_4_7704),
     ),
     CUP_OF_TEA_GOLD(
         Items.CUP_OF_TEA_7736,
-        intArrayOf(Items.POT_OF_TEA_1_7722, Items.POT_OF_TEA_2_7720, Items.POT_OF_TEA_3_7718, Items.POT_OF_TEA_4_7716)
-    );
+        intArrayOf(Items.POT_OF_TEA_1_7722, Items.POT_OF_TEA_2_7720, Items.POT_OF_TEA_3_7718, Items.POT_OF_TEA_4_7716),
+    ),
+    ;
 
     companion object {
         val values = enumValues<TeaCup>()

@@ -1,7 +1,5 @@
 package content.global.ame.strangeplant
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.data.GameAttributes
 import core.api.addItemOrDrop
 import core.api.getAttribute
@@ -10,9 +8,10 @@ import core.api.setAttribute
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.system.timer.impl.AntiMacro
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 class StrangePlantListener : InteractionListener {
-
     override fun defineListeners() {
         on(NPCs.STRANGE_PLANT_407, IntType.NPC, "pick") { player, node ->
             if (AntiMacro.getEventNpc(player) != node) {

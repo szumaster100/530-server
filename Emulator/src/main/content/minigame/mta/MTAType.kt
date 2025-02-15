@@ -1,8 +1,5 @@
 package content.minigame.mta
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import content.minigame.mta.room.AlchemistPlayground
 import content.minigame.mta.room.CreatureGraveyard
 import content.minigame.mta.room.EnchantmentChamber
@@ -13,24 +10,25 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.world.map.Location
-
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 enum class MTAType(
     val sceneryId: Int,
     val overlay: Component,
     private val startLocation: Location? = null,
     private val endLocation: Location,
-    val mtaZone: MTAZone
+    val mtaZone: MTAZone,
 ) {
-
     TELEKINETIC(
         Scenery.TELEKINETIC_TP_10778,
         Component(Components.MAGICTRAINING_TELE_198),
         null,
         Location.create(3363, 3316, 0),
-        TelekineticTheatre()
+        TelekineticTheatre(),
     ) {
         override fun hasRequirement(player: Player): Boolean {
             val magicLevel = getStatLevel(player, Skills.MAGIC)
@@ -38,7 +36,7 @@ enum class MTAType(
                 sendDialogueLines(
                     player,
                     "You need to be able to cast the Telekinetic Grab spell in order to",
-                    "enter."
+                    "enter.",
                 )
                 return false
             }
@@ -51,7 +49,7 @@ enum class MTAType(
         Component(Components.MAGICTRAINING_ALCH_STATS_194),
         Location(3366, 9623, 2),
         Location(3363, 3320, 0),
-        AlchemistPlayground.ZONE
+        AlchemistPlayground.ZONE,
     ) {
         override fun hasRequirement(player: Player): Boolean {
             val magicLevel = getStatLevel(player, Skills.MAGIC)
@@ -84,7 +82,7 @@ enum class MTAType(
         Component(Components.MAGICTRAINING_ENCHANT_195),
         Location(3363, 9649, 0),
         Location(3361, 3318, 0),
-        EnchantmentChamber.ZONE
+        EnchantmentChamber.ZONE,
     ) {
         override fun hasRequirement(player: Player): Boolean {
             val magicLevel = getStatLevel(player, Skills.MAGIC)
@@ -101,7 +99,7 @@ enum class MTAType(
         Component(Components.MAGICTRAINING_GRAVE_196),
         Location(3363, 9639, 1),
         Location(3365, 3318, 0),
-        CreatureGraveyard.ZONE
+        CreatureGraveyard.ZONE,
     ) {
         override fun hasRequirement(player: Player): Boolean {
             val magicLevel = getStatLevel(player, Skills.MAGIC)
@@ -109,7 +107,7 @@ enum class MTAType(
                 sendDialogueLines(
                     player,
                     "You need to be able to cast the Bones to Bananas spell in order to",
-                    "enter."
+                    "enter.",
                 )
                 return false
             }
@@ -119,13 +117,20 @@ enum class MTAType(
             }
             return true
         }
-    };
+    }, ;
 
     private val playerMagicLevels: Object2IntOpenHashMap<Player> = Object2IntOpenHashMap()
 
     fun enter(player: Player) {
-        if (!player.getSavedData().activityData.isStartedMta || !anyInInventory(player, *ProgressHat.hats) && !anyInEquipment(player, *ProgressHat.hats)) {
-            sendDialogueLines(player, "You need a Pizazz Progress Hat in order to enter. Talk to the", "Entrance Guardian if you don't have one.")
+        if (!player.getSavedData().activityData.isStartedMta ||
+            !anyInInventory(player, *ProgressHat.hats) &&
+            !anyInEquipment(player, *ProgressHat.hats)
+        ) {
+            sendDialogueLines(
+                player,
+                "You need a Pizazz Progress Hat in order to enter. Talk to the",
+                "Entrance Guardian if you don't have one.",
+            )
             return
         }
 
@@ -156,8 +161,10 @@ enum class MTAType(
 
     companion object {
         private val zoneCache: ObjectOpenHashSet<MTAType> = ObjectOpenHashSet(values().toList())
+
         @JvmStatic
         fun forZone(mtaZone: MTAZone) = zoneCache.firstOrNull { it.getZone() === mtaZone } ?: TELEKINETIC
+
         @JvmStatic
         fun forId(id: Int) = values().firstOrNull { it.sceneryId == id }
     }

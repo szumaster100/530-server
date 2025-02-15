@@ -17,14 +17,13 @@ import core.plugin.Plugin
 
 @Initializable
 class BasaltRockShortcut : AgilityShortcut {
-
     constructor() : super(intArrayOf(), 0, 0.0, "")
 
     constructor(ids: IntArray?, level: Int, experience: Double, vararg options: String?) : super(
         ids,
         level,
         experience,
-        *options
+        *options,
     )
 
     override fun newInstance(arg: Any?): Plugin<Any> {
@@ -41,7 +40,10 @@ class BasaltRockShortcut : AgilityShortcut {
         return this
     }
 
-    override fun getDestination(n: Node?, node: Node): Location? {
+    override fun getDestination(
+        n: Node?,
+        node: Node,
+    ): Location? {
         val obj = node as Scenery
         when (obj.id) {
             4550 -> {
@@ -88,12 +90,16 @@ class BasaltRockShortcut : AgilityShortcut {
         }
     }
 
-    override fun run(player: Player, obj: Scenery, option: String, failed: Boolean) {
+    override fun run(
+        player: Player,
+        obj: Scenery,
+        option: String,
+        failed: Boolean,
+    ) {
         submitWorldPulse(
             object : Pulse(1, player) {
                 override fun pulse(): Boolean {
                     when (obj.id) {
-
                         4550 -> {
                             if (player.location.y <= 3596) {
                                 sendMessage(player, "I can't reach.")
@@ -108,7 +114,7 @@ class BasaltRockShortcut : AgilityShortcut {
                                     20,
                                     0.0,
                                     null,
-                                    1
+                                    1,
                                 )
                             }
                             return true
@@ -128,7 +134,7 @@ class BasaltRockShortcut : AgilityShortcut {
                                     20,
                                     0.0,
                                     null,
-                                    1
+                                    1,
                                 )
                             }
                             return true
@@ -147,7 +153,7 @@ class BasaltRockShortcut : AgilityShortcut {
                                     Animation.create(769),
                                     20,
                                     0.0,
-                                    null
+                                    null,
                                 )
                             }
                             return true
@@ -166,7 +172,7 @@ class BasaltRockShortcut : AgilityShortcut {
                                     Animation.create(769),
                                     20,
                                     0.0,
-                                    null
+                                    null,
                                 )
                             }
                             return true
@@ -187,7 +193,7 @@ class BasaltRockShortcut : AgilityShortcut {
                                     20,
                                     0.0,
                                     null,
-                                    1
+                                    1,
                                 )
                             }
                             return true
@@ -208,7 +214,7 @@ class BasaltRockShortcut : AgilityShortcut {
                                     20,
                                     0.0,
                                     null,
-                                    1
+                                    1,
                                 )
                             }
                             return true
@@ -227,7 +233,7 @@ class BasaltRockShortcut : AgilityShortcut {
                                     Animation.create(769),
                                     20,
                                     0.0,
-                                    null
+                                    null,
                                 )
                             }
                             return true
@@ -246,7 +252,7 @@ class BasaltRockShortcut : AgilityShortcut {
                                     Animation.create(769),
                                     20,
                                     0.0,
-                                    null
+                                    null,
                                 )
                             }
                             return true
@@ -265,7 +271,7 @@ class BasaltRockShortcut : AgilityShortcut {
                                     Animation.create(769),
                                     20,
                                     0.0,
-                                    null
+                                    null,
                                 )
                             }
                             return true
@@ -285,7 +291,7 @@ class BasaltRockShortcut : AgilityShortcut {
                                     20,
                                     0.0,
                                     null,
-                                    1
+                                    1,
                                 )
                             }
                             return true
@@ -293,7 +299,7 @@ class BasaltRockShortcut : AgilityShortcut {
                     }
                     return false
                 }
-            }
+            },
         )
     }
 }

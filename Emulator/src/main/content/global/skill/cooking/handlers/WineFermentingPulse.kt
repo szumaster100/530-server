@@ -1,6 +1,5 @@
 package content.global.skill.cooking.handlers
 
-import org.rs.consts.Items
 import core.api.inInventory
 import core.api.replaceSlot
 import core.api.rewardXP
@@ -9,8 +8,12 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.system.task.Pulse
 import core.tools.RandomFunction
+import org.rs.consts.Items
 
-class WineFermentingPulse(delay: Int, val player: Player) : Pulse(delay) {
+class WineFermentingPulse(
+    delay: Int,
+    val player: Player,
+) : Pulse(delay) {
     private var count = 0
 
     override fun pulse(): Boolean {
@@ -22,7 +25,7 @@ class WineFermentingPulse(delay: Int, val player: Player) : Pulse(delay) {
                         replaceSlot(
                             player,
                             Item(Items.JUG_OF_BAD_WINE_1991).index,
-                            Item(Items.UNFERMENTED_WINE_1995, 1)
+                            Item(Items.UNFERMENTED_WINE_1995, 1),
                         )
                     } else if (player.bank.contains(Items.UNFERMENTED_WINE_1995, 1)) {
                         player.bank.replace(Item(Items.JUG_OF_BAD_WINE_1991, 1), player.bank.getSlot(Item(1995, 1)))

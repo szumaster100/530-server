@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class ZoneMonitorTests {
-
     val GLORIES = intArrayOf(1710, 1708, 1706, 1704)
 
     init {
@@ -21,7 +20,10 @@ class ZoneMonitorTests {
     /**
      * Evalutes success of glory teleport using all glory charged items
      */
-    fun teleportWithGlory(expected: Boolean, p: Player) {
+    fun teleportWithGlory(
+        expected: Boolean,
+        p: Player,
+    ) {
         for (id in GLORIES) {
             val glory = Item(id, 1)
             Assertions.assertEquals(expected, p.zoneMonitor.teleport(1, glory))
@@ -30,7 +32,6 @@ class ZoneMonitorTests {
 
     @Nested
     inner class GloryTeleportSuccess {
-
         @Test
         fun successOnLevel21Wilderness() {
             TestUtils.getMockPlayer("").use { p ->
@@ -68,7 +69,6 @@ class ZoneMonitorTests {
 
     @Nested
     inner class GloryTeleportFailure {
-
         @Test
         fun failOnTeleBlock() {
             TestUtils.getMockPlayer("").use { p ->

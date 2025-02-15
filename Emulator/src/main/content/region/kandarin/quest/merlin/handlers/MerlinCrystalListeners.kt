@@ -1,9 +1,5 @@
 package content.region.kandarin.quest.merlin.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
-import org.rs.consts.Quests
 import content.region.kandarin.quest.merlin.dialogue.*
 import core.api.*
 import core.api.quest.getQuestStage
@@ -14,20 +10,21 @@ import core.game.interaction.InteractionListener
 import core.game.interaction.QueueStrength
 import core.game.node.entity.player.Player
 import core.game.world.map.Location
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
+import org.rs.consts.Scenery
 
 class MerlinCrystalListeners : InteractionListener {
-
     override fun defineListeners() {
-
         on(intArrayOf(Scenery.LARGE_DOOR_72, Scenery.LARGE_DOOR_71), IntType.SCENERY, "open") { player, node ->
             val door = node.asScenery()
             if (door.location.x in 2763..2764 && door.location.y in 3401..3402) {
-
                 if (player.location.x >= 2764) {
                     DoorActionHandler.handleAutowalkDoor(
                         player,
                         node.asScenery(),
-                        Location.create(2763, player.location.y, 0)
+                        Location.create(2763, player.location.y, 0),
                     )
                     return@on true
                 }
@@ -49,9 +46,10 @@ class MerlinCrystalListeners : InteractionListener {
         }
 
         on(NPCs.SIR_MORDRED_247, IntType.NPC, "attack") { player, node ->
-            if (getQuestStage(player, Quests.MERLINS_CRYSTAL) == 30 || getQuestStage(
+            if (getQuestStage(player, Quests.MERLINS_CRYSTAL) == 30 ||
+                getQuestStage(
                     player,
-                    Quests.MERLINS_CRYSTAL
+                    Quests.MERLINS_CRYSTAL,
                 ) == 40
             ) {
                 player.attack(node.asNpc())
@@ -80,7 +78,7 @@ class MerlinCrystalListeners : InteractionListener {
             if (getQuestStage(player, Quests.MERLINS_CRYSTAL) == 40) {
                 player.dialogueInterpreter.sendDialogue(
                     "You find a small inscription at the bottom of the altar. It reads:",
-                    "'Snarthon Candtrick Termanto'."
+                    "'Snarthon Candtrick Termanto'.",
                 )
                 setAttribute(player, MerlinUtils.ATTR_STATE_ALTAR_FINISH, true)
                 return@on true
@@ -95,7 +93,6 @@ class MerlinCrystalListeners : InteractionListener {
                 if (getQuestStage(player, Quests.MERLINS_CRYSTAL) == 40 &&
                     player.getAttribute(MerlinUtils.ATTR_STATE_TALK_LADY, false) == true
                 ) {
-
                     val talkedToBeggar = player.getAttribute(MerlinUtils.ATTR_STATE_TALK_BEGGAR, false)
                     val dialogueFile = BeggarDialogueFile(door.asScenery())
 
@@ -103,7 +100,7 @@ class MerlinCrystalListeners : InteractionListener {
                         DoorActionHandler.handleAutowalkDoor(
                             player,
                             door as core.game.node.scenery.Scenery,
-                            Location.create(if (player.location.x < 3016) 3016 else 3015, door.location.y, 0)
+                            Location.create(if (player.location.x < 3016) 3016 else 3015, door.location.y, 0),
                         )
                     } else {
                         openDialogue(player, dialogueFile, NPCs.BEGGAR_252)
@@ -117,7 +114,7 @@ class MerlinCrystalListeners : InteractionListener {
             DoorActionHandler.handleAutowalkDoor(
                 player,
                 door as core.game.node.scenery.Scenery,
-                Location.create(if (player.location.x < 3016) 3016 else 3015, door.location.y, 0)
+                Location.create(if (player.location.x < 3016) 3016 else 3015, door.location.y, 0),
             )
             return@on true
         }
@@ -176,12 +173,15 @@ class MerlinCrystalListeners : InteractionListener {
         }
     }
 
-    private fun smashCrystal(player: Player, wielding: Boolean) {
+    private fun smashCrystal(
+        player: Player,
+        wielding: Boolean,
+    ) {
         if (getQuestStage(player, Quests.MERLINS_CRYSTAL) == 60) {
             sendDialogueLines(
                 player,
                 "You have already freed Merlin from the crystal.",
-                "Go and see King Arthur for your reward."
+                "Go and see King Arthur for your reward.",
             )
             return
         }
@@ -196,9 +196,10 @@ class MerlinCrystalListeners : InteractionListener {
         val delay = if (wielding) 1 else 0
 
         queueScript(player, delay, QueueStrength.SOFT) { _ ->
-            if (player.equipment.contains(Items.EXCALIBUR_35, 1) && getQuestStage(
+            if (player.equipment.contains(Items.EXCALIBUR_35, 1) &&
+                getQuestStage(
                     player,
-                    Quests.MERLINS_CRYSTAL
+                    Quests.MERLINS_CRYSTAL,
                 ) == 50
             ) {
                 sendMessage(player, "... and it shatters under the force of Excalibur!")

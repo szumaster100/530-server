@@ -1,25 +1,25 @@
 package content.region.misc.handlers.npc
 
-import org.rs.consts.NPCs
 import core.api.sendChat
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.npc.NPCBehavior
 import core.tools.RandomFunction
+import org.rs.consts.NPCs
 
 class TradeRefeeNPC : NPCBehavior(NPCs.TRADE_REFEREE_2127) {
-
-    private val forceChat = arrayOf(
-        "Stay inside your triangle!",
-        "Who's next?",
-        "Next bid please!",
-        "Need an offer, now!",
-        "Keep the goods flowing!",
-        "Keep it civil!",
-        "Come on, come on!",
-        "Go again please.",
-        "Keep the goods flowing!",
-        "Hold on there!"
-    )
+    private val forceChat =
+        arrayOf(
+            "Stay inside your triangle!",
+            "Who's next?",
+            "Next bid please!",
+            "Need an offer, now!",
+            "Keep the goods flowing!",
+            "Keep it civil!",
+            "Come on, come on!",
+            "Go again please.",
+            "Keep the goods flowing!",
+            "Hold on there!",
+        )
 
     override fun onCreation(self: NPC) {
         self.walkRadius = 6

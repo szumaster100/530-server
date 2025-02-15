@@ -1,10 +1,12 @@
 package content.region.wilderness.handlers.revs
 
-import org.rs.consts.NPCs
 import core.cache.def.impl.NPCDefinition
+import org.rs.consts.NPCs
 
-enum class RevenantsType(val maxHit: Int, vararg val ids: Int) {
-
+enum class RevenantsType(
+    val maxHit: Int,
+    vararg val ids: Int,
+) {
     IMP(
         8,
         NPCs.REVENANT_IMP_6604,
@@ -14,7 +16,7 @@ enum class RevenantsType(val maxHit: Int, vararg val ids: Int) {
         NPCs.REVENANT_IMP_6677,
         NPCs.REVENANT_IMP_6697,
         NPCs.REVENANT_IMP_6703,
-        NPCs.REVENANT_IMP_6715
+        NPCs.REVENANT_IMP_6715,
     ),
 
     GOBLIN(
@@ -46,7 +48,7 @@ enum class RevenantsType(val maxHit: Int, vararg val ids: Int) {
         NPCs.REVENANT_GOBLIN_6716,
         NPCs.REVENANT_GOBLIN_6717,
         NPCs.REVENANT_GOBLIN_6718,
-        NPCs.REVENANT_GOBLIN_6719
+        NPCs.REVENANT_GOBLIN_6719,
     ),
 
     ICEFIEND(
@@ -59,7 +61,7 @@ enum class RevenantsType(val maxHit: Int, vararg val ids: Int) {
         NPCs.REVENANT_ICEFIEND_6682,
         NPCs.REVENANT_ICEFIEND_6694,
         NPCs.REVENANT_ICEFIEND_6708,
-        NPCs.REVENANT_ICEFIEND_6720
+        NPCs.REVENANT_ICEFIEND_6720,
     ),
 
     PYREFIEND(
@@ -71,7 +73,7 @@ enum class RevenantsType(val maxHit: Int, vararg val ids: Int) {
         NPCs.REVENANT_PYREFIEND_6668,
         NPCs.REVENANT_PYREFIEND_6683,
         NPCs.REVENANT_PYREFIEND_6709,
-        NPCs.REVENANT_PYREFIEND_6721
+        NPCs.REVENANT_PYREFIEND_6721,
     ),
 
     HOGOBLIN(
@@ -82,7 +84,7 @@ enum class RevenantsType(val maxHit: Int, vararg val ids: Int) {
         NPCs.REVENANT_HOBGOBLIN_6684,
         NPCs.REVENANT_HOBGOBLIN_6710,
         NPCs.REVENANT_HOBGOBLIN_6722,
-        NPCs.REVENANT_HOBGOBLIN_6727
+        NPCs.REVENANT_HOBGOBLIN_6727,
     ),
 
     VAMPIRE(
@@ -99,7 +101,7 @@ enum class RevenantsType(val maxHit: Int, vararg val ids: Int) {
         NPCs.REVENANT_VAMPIRE_6695,
         NPCs.REVENANT_VAMPIRE_6700,
         NPCs.REVENANT_VAMPIRE_6711,
-        NPCs.REVENANT_VAMPIRE_6723
+        NPCs.REVENANT_VAMPIRE_6723,
     ),
 
     WEREWOLF(
@@ -117,25 +119,25 @@ enum class RevenantsType(val maxHit: Int, vararg val ids: Int) {
         NPCs.REVENANT_WEREWOLF_6701,
         NPCs.REVENANT_WEREWOLF_6712,
         NPCs.REVENANT_WEREWOLF_6724,
-        NPCs.REVENANT_WEREWOLF_6728
+        NPCs.REVENANT_WEREWOLF_6728,
     ),
 
     CYCLOPS(
         24,
         NPCs.REVENANT_CYCLOPS_6645,
-        NPCs.REVENANT_CYCLOPS_6687
+        NPCs.REVENANT_CYCLOPS_6687,
     ),
 
     HELLHOUND(
         25,
         NPCs.REVENANT_HELLHOUND_6646,
-        NPCs.REVENANT_HELLHOUND_6688
+        NPCs.REVENANT_HELLHOUND_6688,
     ),
 
     DEMON(
         25,
         NPCs.REVENANT_DEMON_6647,
-        NPCs.REVENANT_DEMON_6689
+        NPCs.REVENANT_DEMON_6689,
     ),
 
     ORK(
@@ -157,13 +159,13 @@ enum class RevenantsType(val maxHit: Int, vararg val ids: Int) {
         NPCs.REVENANT_ORK_6702,
         NPCs.REVENANT_ORK_6713,
         NPCs.REVENANT_ORK_6725,
-        NPCs.REVENANT_ORK_6729
+        NPCs.REVENANT_ORK_6729,
     ),
 
     DARK_BEAST(
         36,
         NPCs.REVENANT_DARK_BEAST_6649,
-        NPCs.REVENANT_DARK_BEAST_6691
+        NPCs.REVENANT_DARK_BEAST_6691,
     ),
 
     KNIGHT(
@@ -181,16 +183,18 @@ enum class RevenantsType(val maxHit: Int, vararg val ids: Int) {
         NPCs.REVENANT_KNIGHT_6692,
         NPCs.REVENANT_KNIGHT_6714,
         NPCs.REVENANT_KNIGHT_6726,
-        NPCs.REVENANT_KNIGHT_6730
+        NPCs.REVENANT_KNIGHT_6730,
     ),
 
-    DRAGON(60, NPCs.REVENANT_DRAGON_6998, NPCs.REVENANT_DRAGON_6999);
+    DRAGON(60, NPCs.REVENANT_DRAGON_6998, NPCs.REVENANT_DRAGON_6999),
+    ;
 
     companion object {
-
-        private val idToTypeMap: Map<Int, RevenantsType> = values().flatMap { type ->
-            type.ids.toList().map { id -> id to type }
-        }.toMap()
+        private val idToTypeMap: Map<Int, RevenantsType> =
+            values()
+                .flatMap { type ->
+                    type.ids.toList().map { id -> id to type }
+                }.toMap()
 
         fun forId(id: Int): RevenantsType? = idToTypeMap[id]
 

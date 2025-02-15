@@ -7,7 +7,6 @@ import core.plugin.Initializable
 @Initializable
 class ConfigCommandSet : CommandSet(Privilege.ADMIN) {
     override fun defineCommands() {
-
         define(name = "sconfigrange", Privilege.ADMIN) { player, args ->
             if (args.size < 3) {
                 reject(player, "usage: sconfigrange idlo idhi")
@@ -32,7 +31,12 @@ class ConfigCommandSet : CommandSet(Privilege.ADMIN) {
             }
         }
 
-        define(name = "iface", privilege = Privilege.ADMIN, usage = "::iface <lt>Interface ID<gt>", description = "Opens the interface with the given ID.") { player, args ->
+        define(
+            name = "iface",
+            privilege = Privilege.ADMIN,
+            usage = "::iface <lt>Interface ID<gt>",
+            description = "Opens the interface with the given ID.",
+        ) { player, args ->
             if (args.size < 2) {
                 reject(player, "usage: iface id")
                 return@define

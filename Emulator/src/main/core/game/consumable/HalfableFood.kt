@@ -4,9 +4,15 @@ import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import java.util.*
 
-class HalfableFood(ids: IntArray?, effect: ConsumableEffect?, vararg messages: String?) : Food(ids, effect, *messages) {
-
-    override fun sendDefaultMessages(player: Player, item: Item) {
+class HalfableFood(
+    ids: IntArray?,
+    effect: ConsumableEffect?,
+    vararg messages: String?,
+) : Food(ids, effect, *messages) {
+    override fun sendDefaultMessages(
+        player: Player,
+        item: Item,
+    ) {
         val formattedName = getFormattedName(item)
 
         when (item.id) {

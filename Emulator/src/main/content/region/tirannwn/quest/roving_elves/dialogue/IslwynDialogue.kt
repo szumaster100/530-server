@@ -1,8 +1,5 @@
 package content.region.tirannwn.quest.roving_elves.dialogue
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.tirannwn.quest.roving_elves.RovingElves
 import core.api.*
 import core.api.quest.finishQuest
@@ -15,9 +12,13 @@ import core.game.dialogue.FaceAnim
 import core.game.node.entity.player.Player
 import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
-class IslwynDialogue(player: Player? = null) : Dialogue(player) {
-
+class IslwynDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         val quest = player.getQuestRepository().getQuest(Quests.ROVING_ELVES)
         val waterfall = player.getQuestRepository().getQuest(Quests.WATERFALL_QUEST)
@@ -40,11 +41,18 @@ class IslwynDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             500 -> end()
             1000 -> {
-                npc(FaceAnim.HALF_GUILTY, "Hello there, it's a lovely day for a walk in the woods.", "So what can I help you with?")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "Hello there, it's a lovely day for a walk in the woods.",
+                    "So what can I help you with?",
+                )
                 stage = 1001
             }
 
@@ -55,7 +63,12 @@ class IslwynDialogue(player: Player? = null) : Dialogue(player) {
 
             2000 -> {
                 if (getQuestStage(player, Quests.ROVING_ELVES) == 15) {
-                    player(FaceAnim.HALF_GUILTY, "Yes I have! She explained that I have to visit", "Glarial's old tomb and obtain a consecration seed", "from the temple guardian in there.")
+                    player(
+                        FaceAnim.HALF_GUILTY,
+                        "Yes I have! She explained that I have to visit",
+                        "Glarial's old tomb and obtain a consecration seed",
+                        "from the temple guardian in there.",
+                    )
                     stage = 2001
                 }
                 if (getQuestStage(player, Quests.ROVING_ELVES) != 15) {
@@ -65,7 +78,12 @@ class IslwynDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             2001 -> {
-                interpreter.sendDialogues(1680, FaceAnim.HALF_GUILTY, "Good luck against the guardian, adventurer.", "Do it in the name of my grandmother Glarial.")
+                interpreter.sendDialogues(
+                    1680,
+                    FaceAnim.HALF_GUILTY,
+                    "Good luck against the guardian, adventurer.",
+                    "Do it in the name of my grandmother Glarial.",
+                )
                 stage = 500
             }
 
@@ -76,14 +94,26 @@ class IslwynDialogue(player: Player? = null) : Dialogue(player) {
                     stage = 2000
                 }
                 if (getQuestStage(player, Quests.ROVING_ELVES) == 20) {
-                    interpreter.sendDialogues(1680, FaceAnim.HALF_GUILTY, "You have returned! Thank you for all you have done.", "Now both me and my grandmother can rest in peace.")
+                    interpreter.sendDialogues(
+                        1680,
+                        FaceAnim.HALF_GUILTY,
+                        "You have returned! Thank you for all you have done.",
+                        "Now both me and my grandmother can rest in peace.",
+                    )
                     stage = 19
-                } else if (getQuestStage(player, Quests.ROVING_ELVES) != 10 && getQuestStage(
+                } else if (getQuestStage(player, Quests.ROVING_ELVES) != 10 &&
+                    getQuestStage(
                         player,
-                        Quests.ROVING_ELVES
+                        Quests.ROVING_ELVES,
                     ) != 15
                 ) {
-                    interpreter.sendDialogues(1680, FaceAnim.HALF_GUILTY, "Leave me be, I have no time for easterners. Between", "your lot and them gnomes, all you do is take and", "destroy. No thought for others.")
+                    interpreter.sendDialogues(
+                        1680,
+                        FaceAnim.HALF_GUILTY,
+                        "Leave me be, I have no time for easterners. Between",
+                        "your lot and them gnomes, all you do is take and",
+                        "destroy. No thought for others.",
+                    )
                     stage = 1
                 }
             }
@@ -94,7 +124,12 @@ class IslwynDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             2 -> {
-                npc(FaceAnim.HALF_GUILTY, "Save your excuses young one! It was one of your", "species that disturbed my grandmother's remains. Will", "she never get the peace she deserves?")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "Save your excuses young one! It was one of your",
+                    "species that disturbed my grandmother's remains. Will",
+                    "she never get the peace she deserves?",
+                )
                 stage = 3
             }
 
@@ -104,7 +139,12 @@ class IslwynDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             4 -> {
-                npc(FaceAnim.HALF_GUILTY, "Yes! Someone took her ashes from her tomb. If it", "wasn't for them gnomes she'd have been left in peace.", "But now I can sense her restlessness.")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "Yes! Someone took her ashes from her tomb. If it",
+                    "wasn't for them gnomes she'd have been left in peace.",
+                    "But now I can sense her restlessness.",
+                )
                 stage = 5
             }
 
@@ -114,7 +154,12 @@ class IslwynDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             6 -> {
-                npc(FaceAnim.HALF_GUILTY, "Yes gnomes! One of those little pests took the key to", "my grandmother's tomb. He must've given it to the", "human that desecrated the tomb.")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "Yes gnomes! One of those little pests took the key to",
+                    "my grandmother's tomb. He must've given it to the",
+                    "human that desecrated the tomb.",
+                )
                 stage = 7
             }
 
@@ -133,25 +178,42 @@ class IslwynDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 10
             }
 
-            10 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "It's a bit of a long tale, but to cut the story short, her", "remains reside in Baxtorian's home. I thought it's where", "she'd want to be. It was I that removed your", "grandmother's ashes.")
-                    stage = 11
-                }
+            10 ->
+                when (buttonId) {
+                    1 -> {
+                        player(
+                            FaceAnim.HALF_GUILTY,
+                            "It's a bit of a long tale, but to cut the story short, her",
+                            "remains reside in Baxtorian's home. I thought it's where",
+                            "she'd want to be. It was I that removed your",
+                            "grandmother's ashes.",
+                        )
+                        stage = 11
+                    }
 
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "I just guessed.", "Well, now that that's over, I really need to be", "going.")
-                    stage = 500
-                }
+                    2 -> {
+                        player(
+                            FaceAnim.HALF_GUILTY,
+                            "I just guessed.",
+                            "Well, now that that's over, I really need to be",
+                            "going.",
+                        )
+                        stage = 500
+                    }
 
-                3 -> {
-                    player(FaceAnim.HALF_GUILTY, "On second thought, I really should be going.")
-                    stage = 500
+                    3 -> {
+                        player(FaceAnim.HALF_GUILTY, "On second thought, I really should be going.")
+                        stage = 500
+                    }
                 }
-            }
 
             11 -> {
-                npc(FaceAnim.HALF_GUILTY, "You've been in grandfather's home? That's where we", "originally wanted to leave Glarial's ashes to rest, but we", "could not understand how to enter.")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "You've been in grandfather's home? That's where we",
+                    "originally wanted to leave Glarial's ashes to rest, but we",
+                    "could not understand how to enter.",
+                )
                 stage = 12
             }
 
@@ -165,25 +227,38 @@ class IslwynDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 14
             }
 
-            14 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "Maybe I could help. What needs doing to consecrate", "her new tomb?")
-                    stage = 15
-                }
+            14 ->
+                when (buttonId) {
+                    1 -> {
+                        player(
+                            FaceAnim.HALF_GUILTY,
+                            "Maybe I could help. What needs doing to consecrate",
+                            "her new tomb?",
+                        )
+                        stage = 15
+                    }
 
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "Sounds like you've got a lot to do.")
-                    stage = 500
+                    2 -> {
+                        player(FaceAnim.HALF_GUILTY, "Sounds like you've got a lot to do.")
+                        stage = 500
+                    }
                 }
-            }
 
             15 -> {
-                npc(FaceAnim.HALF_GUILTY, "Are you offering to help?!? Maybe not all humans are", "as bad as I thought.")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "Are you offering to help?!? Maybe not all humans are",
+                    "as bad as I thought.",
+                )
                 stage = 16
             }
 
             16 -> {
-                npc(FaceAnim.HALF_GUILTY, "I don't know the consecration process. You should speak", "with Eluned... she is wise in the ways of the ritual.")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "I don't know the consecration process. You should speak",
+                    "with Eluned... she is wise in the ways of the ritual.",
+                )
                 stage = 17
             }
 
@@ -203,22 +278,41 @@ class IslwynDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             20 -> {
-                npc(FaceAnim.HALF_GUILTY, "Her restlessness has finally left me. Here - I should", "give you something for your effort.")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "Her restlessness has finally left me. Here - I should",
+                    "give you something for your effort.",
+                )
                 stage = 21
             }
 
             21 -> {
-                sendDoubleItemDialogue(player, RovingElves.CRYSTAL_BOW_FULL, RovingElves.CRYSTAL_SHIELD_FULL, "Islwyn shows you a crystal bow and a crystal shield.")
+                sendDoubleItemDialogue(
+                    player,
+                    RovingElves.CRYSTAL_BOW_FULL,
+                    RovingElves.CRYSTAL_SHIELD_FULL,
+                    "Islwyn shows you a crystal bow and a crystal shield.",
+                )
                 stage = 22
             }
 
             22 -> {
-                npc(FaceAnim.HALF_GUILTY, "Crystal equipment is at its best when new and", "previously unused. The bow does not require", "ammunition and reduces in strength the more it's fired.", "The shield decreases in defensive capabilities the more")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "Crystal equipment is at its best when new and",
+                    "previously unused. The bow does not require",
+                    "ammunition and reduces in strength the more it's fired.",
+                    "The shield decreases in defensive capabilities the more",
+                )
                 stage = 23
             }
 
             23 -> {
-                npc(FaceAnim.HALF_GUILTY, "it's hit. Both the shield and the bow I am carrying only", "have 500 uses before they revert to seed.")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "it's hit. Both the shield and the bow I am carrying only",
+                    "have 500 uses before they revert to seed.",
+                )
                 stage = 24
             }
 
@@ -228,26 +322,40 @@ class IslwynDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             25 -> {
-                npc(FaceAnim.HALF_GUILTY, "Ahhh, young one. It was thousands of years before we", "fully understood that ourselves. All will be explained if", "we feel you are ready. Now which one of these crystal", "creations would you like?")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "Ahhh, young one. It was thousands of years before we",
+                    "fully understood that ourselves. All will be explained if",
+                    "we feel you are ready. Now which one of these crystal",
+                    "creations would you like?",
+                )
                 stage = 26
             }
 
             26 -> {
-                options("Shields are for wimps! Give me the bow!", "I don't like running and hiding behind mushrooms. Shield please!")
+                options(
+                    "Shields are for wimps! Give me the bow!",
+                    "I don't like running and hiding behind mushrooms. Shield please!",
+                )
                 stage = 27
             }
 
-            27 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "Shields are for wimps! Give me the bow!")
-                    stage = 30
-                }
+            27 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_GUILTY, "Shields are for wimps! Give me the bow!")
+                        stage = 30
+                    }
 
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "I don't like running and hiding behind mushrooms.", "Shield please!")
-                    stage = 301
+                    2 -> {
+                        player(
+                            FaceAnim.HALF_GUILTY,
+                            "I don't like running and hiding behind mushrooms.",
+                            "Shield please!",
+                        )
+                        stage = 301
+                    }
                 }
-            }
 
             30 -> {
                 if (!isQuestComplete(player, Quests.ROVING_ELVES)) {
@@ -270,7 +378,11 @@ class IslwynDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             31 -> {
-                npc(FaceAnim.HALF_GUILTY, "Welcome back to the land of the elves, friend!", "Do you need your seeds charged into equipment?")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "Welcome back to the land of the elves, friend!",
+                    "Do you need your seeds charged into equipment?",
+                )
                 stage = 32
             }
 
@@ -279,34 +391,40 @@ class IslwynDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 33
             }
 
-            33 -> when (buttonId) {
-                1 -> {
-                    npc(FaceAnim.HALF_GUILTY, "Ah, very well.", "I will sell you a new bow or shield for 900,000 coins.")
-                    stage = 37
-                }
+            33 ->
+                when (buttonId) {
+                    1 -> {
+                        npc(
+                            FaceAnim.HALF_GUILTY,
+                            "Ah, very well.",
+                            "I will sell you a new bow or shield for 900,000 coins.",
+                        )
+                        stage = 37
+                    }
 
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "I need to recharge my current seeds into equipment.")
-                    stage = 34
+                    2 -> {
+                        player(FaceAnim.HALF_GUILTY, "I need to recharge my current seeds into equipment.")
+                        stage = 34
+                    }
                 }
-            }
 
             34 -> {
                 options("Recharge seed into bow", "Recharge seed into shield")
                 stage = 35
             }
 
-            35 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "Recharge my seed into a bow, please.")
-                    stage = 36
-                }
+            35 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_GUILTY, "Recharge my seed into a bow, please.")
+                        stage = 36
+                    }
 
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "Recharge my seed into a shield, please.")
-                    stage = 3601
+                    2 -> {
+                        player(FaceAnim.HALF_GUILTY, "Recharge my seed into a shield, please.")
+                        stage = 3601
+                    }
                 }
-            }
 
             36 -> {
                 if (!inInventory(player, RovingElves.CRYSTAL_SEED, 1)) {
@@ -353,17 +471,18 @@ class IslwynDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 38
             }
 
-            38 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "I'd like to buy a new bow.")
-                    stage = 39
-                }
+            38 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_GUILTY, "I'd like to buy a new bow.")
+                        stage = 39
+                    }
 
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "I'd like to buy a new shield.")
-                    stage = 40
+                    2 -> {
+                        player(FaceAnim.HALF_GUILTY, "I'd like to buy a new shield.")
+                        stage = 40
+                    }
                 }
-            }
 
             39 -> {
                 val price = crystalWeaponPrice(0)

@@ -1,6 +1,5 @@
 package content.region.morytania.quest.ahoy
 
-import org.rs.consts.*
 import content.region.morytania.quest.ahoy.GhostsAhoyUtils.jumpRockPath
 import content.region.morytania.quest.ahoy.GiantLobsterNPC.Companion.spawnGiantLobster
 import content.region.morytania.quest.ahoy.dialogue.RobinDialogueFile
@@ -15,11 +14,12 @@ import core.game.interaction.InterfaceListener
 import core.game.node.entity.npc.NPC
 import core.game.world.map.Location
 import core.tools.END_DIALOGUE
+import org.rs.consts.*
 
-class GhostsAhoyListener : InteractionListener, InterfaceListener {
-
+class GhostsAhoyListener :
+    InteractionListener,
+    InterfaceListener {
     override fun defineListeners() {
-
         on(Scenery.DOOR_5244, IntType.SCENERY, "open") { player, node ->
             if (node.location == Location(3461, 3555, 0)) {
                 DoorActionHandler.handleDoor(player, node.asScenery())
@@ -34,7 +34,10 @@ class GhostsAhoyListener : InteractionListener, InterfaceListener {
                 openDialogue(
                     player,
                     object : DialogueFile() {
-                        override fun handle(componentID: Int, buttonID: Int) {
+                        override fun handle(
+                            componentID: Int,
+                            buttonID: Int,
+                        ) {
                             npc = NPC(NPCs.GHOST_DISCIPLE_1686)
                             when (stage) {
                                 0 ->
@@ -44,11 +47,26 @@ class GhostsAhoyListener : InteractionListener, InterfaceListener {
                                         npc("What are you doing going in there?").also { stage++ }
                                     }
                                 1 -> player("Err, I was just curious...").also { stage++ }
-                                2 -> npc("Inside that room is a coffin, inside which lie", "the mortal remains of our most glorious master,", "Necrovarus. None may enter.").also { stage = END_DIALOGUE }
-                                3 -> sendDialogue(player, "You get the general impression that the ghost doesn't want you to open the door.").also { stage = END_DIALOGUE }
+                                2 ->
+                                    npc(
+                                        "Inside that room is a coffin, inside which lie",
+                                        "the mortal remains of our most glorious master,",
+                                        "Necrovarus. None may enter.",
+                                    ).also {
+                                        stage =
+                                            END_DIALOGUE
+                                    }
+                                3 ->
+                                    sendDialogue(
+                                        player,
+                                        "You get the general impression that the ghost doesn't want you to open the door.",
+                                    ).also {
+                                        stage =
+                                            END_DIALOGUE
+                                    }
                             }
                         }
-                    }
+                    },
                 )
             }
             return@on false
@@ -67,7 +85,11 @@ class GhostsAhoyListener : InteractionListener, InterfaceListener {
 
         on(Scenery.COFFIN_5279, IntType.SCENERY, "search") { player, _ ->
             if (!inInventory(player, Items.MYSTICAL_ROBES_4247)) {
-                sendItemDialogue(player, Items.MYSTICAL_ROBES_4247, "You take the Robes of Necrovarus from the remains of his mortal body.")
+                sendItemDialogue(
+                    player,
+                    Items.MYSTICAL_ROBES_4247,
+                    "You take the Robes of Necrovarus from the remains of his mortal body.",
+                )
                 addItemOrDrop(player, Items.MYSTICAL_ROBES_4247)
             } else {
                 sendMessage(player, "You search the coffin and find nothing.")
@@ -122,10 +144,20 @@ class GhostsAhoyListener : InteractionListener, InterfaceListener {
         }
 
         onUseWith(IntType.ITEM, mapPieces, *mapPieces) { player, _, _ ->
-            if (!inInventory(player, Items.MAP_SCRAP_4274) || !inInventory(player, Items.MAP_SCRAP_4275) || !inInventory(player, Items.MAP_SCRAP_4276)) {
+            if (!inInventory(player, Items.MAP_SCRAP_4274) ||
+                !inInventory(player, Items.MAP_SCRAP_4275) ||
+                !inInventory(player, Items.MAP_SCRAP_4276)
+            ) {
                 sendMessage(player, "You don't have all the pieces of the map yet.")
-            } else if (removeItem(player, Items.MAP_SCRAP_4274) && removeItem(player, Items.MAP_SCRAP_4275) && removeItem(player, Items.MAP_SCRAP_4276)) {
-                sendItemDialogue(player, Items.TREASURE_MAP_4277, "You piece the three map scraps together to form a complete map.")
+            } else if (removeItem(player, Items.MAP_SCRAP_4274) &&
+                removeItem(player, Items.MAP_SCRAP_4275) &&
+                removeItem(player, Items.MAP_SCRAP_4276)
+            ) {
+                sendItemDialogue(
+                    player,
+                    Items.TREASURE_MAP_4277,
+                    "You piece the three map scraps together to form a complete map.",
+                )
                 addItemOrDrop(player, Items.TREASURE_MAP_4277)
             }
             return@onUseWith true
@@ -148,7 +180,10 @@ class GhostsAhoyListener : InteractionListener, InterfaceListener {
         }
 
         on(GhostsAhoyUtils.shipModel, IntType.ITEM, "repair") { player, _ ->
-            sendDialogue(player, "You need some silk to replace the flag, something to sew it to the boat, and something to cut the flag to the right size.")
+            sendDialogue(
+                player,
+                "You need some silk to replace the flag, something to sew it to the boat, and something to cut the flag to the right size.",
+            )
             return@on true
         }
 
@@ -156,7 +191,11 @@ class GhostsAhoyListener : InteractionListener, InterfaceListener {
             val shipFlagColor = getAttribute(player, GhostsAhoyUtils.shipFlag, "")
             val shipBottomColor = getAttribute(player, GhostsAhoyUtils.shipBottom, "")
             val shipSkullColor = getAttribute(player, GhostsAhoyUtils.shipSkull, "")
-            sendItemDialogue(player, Items.MODEL_SHIP_4254, "The top of the flag is $shipFlagColor. The skull emblem is $shipSkullColor. The bottom of the flag is $shipBottomColor.")
+            sendItemDialogue(
+                player,
+                Items.MODEL_SHIP_4254,
+                "The top of the flag is $shipFlagColor. The skull emblem is $shipSkullColor. The bottom of the flag is $shipBottomColor.",
+            )
             return@on true
         }
 
@@ -173,7 +212,7 @@ class GhostsAhoyListener : InteractionListener, InterfaceListener {
         onUseWith(
             IntType.ITEM,
             intArrayOf(Items.RED_DYE_1763, Items.YELLOW_DYE_1765, Items.BLUE_DYE_1767),
-            Items.MODEL_SHIP_4254
+            Items.MODEL_SHIP_4254,
         ) { player, node, _ ->
             setAttribute(player, GhostsAhoyUtils.colorMatching, 0)
             if (getAttribute(player, GhostsAhoyUtils.colorMatching, 0) == 3) {
@@ -182,11 +221,20 @@ class GhostsAhoyListener : InteractionListener, InterfaceListener {
             openDialogue(
                 player,
                 object : DialogueFile() {
-                    override fun handle(componentID: Int, buttonID: Int) {
+                    override fun handle(
+                        componentID: Int,
+                        buttonID: Int,
+                    ) {
                         when (stage) {
                             0 -> {
                                 setTitle(player, 3)
-                                sendDialogueOptions(player, "Which part of the flag do you want to dye?", "Top half", "Bottom half", "Skull emblem")
+                                sendDialogueOptions(
+                                    player,
+                                    "Which part of the flag do you want to dye?",
+                                    "Top half",
+                                    "Bottom half",
+                                    "Skull emblem",
+                                )
                                 stage++
                             }
 
@@ -194,7 +242,7 @@ class GhostsAhoyListener : InteractionListener, InterfaceListener {
                         }
                     }
                 },
-                node.asItem()
+                node.asItem(),
             )
             return@onUseWith true
         }
@@ -210,13 +258,17 @@ class GhostsAhoyListener : InteractionListener, InterfaceListener {
             if (inBorders(player, 3619, 3543, 3617, 3541)) {
                 animate(player, Animations.HUMAN_OPEN_CHEST_536)
                 addScenery(Scenery.OPEN_CHEST_5273, Location(3618, 3542, 0), 0, 10)
-                removeScenery(core.game.node.scenery.Scenery(Scenery.CLOSED_CHEST_5270, Location(3618, 3542, 0)))
-            }
-
-            else {
+                removeScenery(
+                    core.game.node.scenery
+                        .Scenery(Scenery.CLOSED_CHEST_5270, Location(3618, 3542, 0)),
+                )
+            } else {
                 animate(player, Animations.HUMAN_OPEN_CHEST_536)
                 addScenery(Scenery.OPEN_CHEST_5273, Location(3606, 3564, 0), 3, 10)
-                removeScenery(core.game.node.scenery.Scenery(Scenery.CLOSED_CHEST_5272, Location(3606, 3564, 0)))
+                removeScenery(
+                    core.game.node.scenery
+                        .Scenery(Scenery.CLOSED_CHEST_5272, Location(3606, 3564, 0)),
+                )
             }
             return@on true
         }
@@ -226,7 +278,10 @@ class GhostsAhoyListener : InteractionListener, InterfaceListener {
             removeItem(player, Items.CHEST_KEY_2404)
             sendItemDialogue(player, Items.CHEST_KEY_2404, "You unlock the chest.")
             addScenery(Scenery.OPEN_CHEST_5273, Location(3619, 3545, 1), 2, 10)
-            removeScenery(core.game.node.scenery.Scenery(Scenery.CLOSED_CHEST_5270, Location(3619, 3545, 1)))
+            removeScenery(
+                core.game.node.scenery
+                    .Scenery(Scenery.CLOSED_CHEST_5270, Location(3619, 3545, 1)),
+            )
             return@onUseWith true
         }
 
@@ -234,15 +289,22 @@ class GhostsAhoyListener : InteractionListener, InterfaceListener {
 
             if (inBorders(player, 3604, 3563, 3607, 3565)) {
                 addScenery(Scenery.CLOSED_CHEST_5270, Location(3606, 3564, 0), 3, 10)
-                removeScenery(core.game.node.scenery.Scenery(Scenery.OPEN_CHEST_5273, Location(3606, 3564, 0)))
-            }
-
-            else if (inBorders(player, 3619, 3543, 3617, 3541)) {
+                removeScenery(
+                    core.game.node.scenery
+                        .Scenery(Scenery.OPEN_CHEST_5273, Location(3606, 3564, 0)),
+                )
+            } else if (inBorders(player, 3619, 3543, 3617, 3541)) {
                 addScenery(Scenery.CLOSED_CHEST_5270, Location(3618, 3542, 0), 0, 10)
-                removeScenery(core.game.node.scenery.Scenery(Scenery.OPEN_CHEST_5273, Location(3618, 3542, 0)))
+                removeScenery(
+                    core.game.node.scenery
+                        .Scenery(Scenery.OPEN_CHEST_5273, Location(3618, 3542, 0)),
+                )
             } else {
                 addScenery(Scenery.CLOSED_CHEST_5270, Location(3619, 3545, 1), 2, 10)
-                removeScenery(core.game.node.scenery.Scenery(Scenery.OPEN_CHEST_5273, Location(3619, 3545, 1)))
+                removeScenery(
+                    core.game.node.scenery
+                        .Scenery(Scenery.OPEN_CHEST_5273, Location(3619, 3545, 1)),
+                )
             }
             return@on true
         }
@@ -256,28 +318,38 @@ class GhostsAhoyListener : InteractionListener, InterfaceListener {
                     addItem(player, Items.MAP_SCRAP_4274, 1)
                     sendItemDialogue(player, Items.MAP_SCRAP_4274, "You find a piece of a map inside the chest.")
                 } else if (!hasMapScrap1 && freeSlots(player) < 1) {
-                    sendItemDialogue(player, Items.MAP_SCRAP_4274, "You unlock the chest and find a map inside but you don't have enough room to take it.")
+                    sendItemDialogue(
+                        player,
+                        Items.MAP_SCRAP_4274,
+                        "You unlock the chest and find a map inside but you don't have enough room to take it.",
+                    )
                 } else if (hasMapScrap1 && freeSlots(player) > 1) {
                     sendDialogue(player, "You already have the map from this chest.")
                 }
             } else if (inBorders(player, 3604, 3563, 3607, 3565)) {
-
                 if (!hasMapScrap2 && freeSlots(player) > 1) {
                     addItem(player, Items.MAP_SCRAP_4276, 1)
                     sendItemDialogue(player, Items.MAP_SCRAP_4276, "You find a piece of a map inside the chest.")
                 } else if (!hasMapScrap2 && freeSlots(player) < 1) {
-                    sendItemDialogue(player, Items.MAP_SCRAP_4276, "You find a map inside but you don't have enough room to take it.")
+                    sendItemDialogue(
+                        player,
+                        Items.MAP_SCRAP_4276,
+                        "You find a map inside but you don't have enough room to take it.",
+                    )
                 } else if (hasMapScrap2 && freeSlots(player) > 1) {
                     sendDialogue(player, "You already have the map from this chest.")
                 }
             } else if (inBorders(player, 3619, 3543, 3617, 3541)) {
-
                 if (getAttribute(player, GhostsAhoyUtils.lastMapScrap, false)) {
                     if (!hasMapScrap3 && freeSlots(player) > 1) {
                         addItem(player, Items.MAP_SCRAP_4275, 1)
                         sendItemDialogue(player, Items.MAP_SCRAP_4275, "You find a piece of a map inside the chest.")
                     } else if (!hasMapScrap2 && freeSlots(player) < 1) {
-                        sendItemDialogue(player, Items.MAP_SCRAP_4275, "You find a map inside but you don't have enough room to take it.")
+                        sendItemDialogue(
+                            player,
+                            Items.MAP_SCRAP_4275,
+                            "You find a map inside but you don't have enough room to take it.",
+                        )
                     } else if (hasMapScrap2 && freeSlots(player) > 1) {
                         sendDialogue(player, "You already have the map from this chest.")
                     }
@@ -290,13 +362,22 @@ class GhostsAhoyListener : InteractionListener, InterfaceListener {
     }
 
     override fun defineInterfaceListeners() {
-
         onOpen(Components.AHOY_BLACKOUT_7) { player, _ ->
             setMinimapState(player, 2)
             if (!inBorders(player, 3788, 3556, 3797, 3562)) {
-                sendString(player, "After a long boat trip you arrive at Dragontooth Island...", Components.AHOY_BLACKOUT_7, 1)
+                sendString(
+                    player,
+                    "After a long boat trip you arrive at Dragontooth Island...",
+                    Components.AHOY_BLACKOUT_7,
+                    1,
+                )
             } else {
-                sendString(player, "After a long boat trip you return to Port Phasmatys...", Components.AHOY_BLACKOUT_7, 1)
+                sendString(
+                    player,
+                    "After a long boat trip you return to Port Phasmatys...",
+                    Components.AHOY_BLACKOUT_7,
+                    1,
+                )
             }
             return@onOpen true
         }

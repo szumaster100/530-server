@@ -1,12 +1,9 @@
 package content.global.ame.mime
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import core.api.ui.restoreTabs
 import content.data.GameAttributes
 import content.data.RandomEvent
 import core.api.*
+import core.api.ui.restoreTabs
 import core.game.interaction.QueueStrength
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.emote.Emotes
@@ -14,6 +11,9 @@ import core.game.node.scenery.Scenery
 import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.tools.RandomFunction
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 object MimeUtils {
     val MIME_EVENT_LOCATION = Location(2008, 4764, 0)
@@ -34,7 +34,7 @@ object MimeUtils {
             GameAttributes.RE_MIME_EMOTE,
             GameAttributes.RE_MIME_INDEX,
             GameAttributes.RE_MIME_CORRECT,
-            GameAttributes.RE_MIME_WRONG
+            GameAttributes.RE_MIME_WRONG,
         )
         restoreTabs(player)
         closeInterface(player)
@@ -85,15 +85,19 @@ object MimeUtils {
             npc!!,
             object : Pulse() {
                 var counter = 0
+
                 override fun pulse(): Boolean {
                     when (counter++) {
                         0 -> npc.faceLocation(location(2011, 4759, 0))
-                        1 -> replaceScenery(
-                            Scenery(
-                                LIGH_ON,
-                                PLAYER_LOCATION
-                            ), LIGHT_OFF, -1
-                        )
+                        1 ->
+                            replaceScenery(
+                                Scenery(
+                                    LIGH_ON,
+                                    PLAYER_LOCATION,
+                                ),
+                                LIGHT_OFF,
+                                -1,
+                            )
 
                         3 -> {
                             when (emoteId) {
@@ -111,19 +115,24 @@ object MimeUtils {
 
                         10 -> npc.faceLocation(location(2008, 4762, 0))
                         11 -> animate(npc, Emotes.BOW)
-                        14 -> replaceScenery(
-                            Scenery(
-                                LIGH_ON,
-                                SCENERY_LOCATION
-                            ), LIGHT_OFF, -1
-                        )
+                        14 ->
+                            replaceScenery(
+                                Scenery(
+                                    LIGH_ON,
+                                    SCENERY_LOCATION,
+                                ),
+                                LIGHT_OFF,
+                                -1,
+                            )
 
                         15 -> {
                             replaceScenery(
                                 Scenery(
                                     LIGHT_OFF,
-                                    PLAYER_LOCATION
-                                ), LIGH_ON, -1
+                                    PLAYER_LOCATION,
+                                ),
+                                LIGH_ON,
+                                -1,
                             )
                             openInterface(player, Components.MACRO_MIME_EMOTES_188)
                             return true
@@ -131,7 +140,7 @@ object MimeUtils {
                     }
                     return false
                 }
-            }
+            },
         )
     }
 
@@ -140,6 +149,7 @@ object MimeUtils {
             player,
             object : Pulse() {
                 var counter = 0
+
                 override fun pulse(): Boolean {
                     when (counter++) {
                         4 -> {
@@ -158,21 +168,25 @@ object MimeUtils {
                                     replaceScenery(
                                         Scenery(
                                             LIGH_ON,
-                                            PLAYER_LOCATION
-                                        ), LIGHT_OFF, -1
+                                            PLAYER_LOCATION,
+                                        ),
+                                        LIGHT_OFF,
+                                        -1,
                                     )
                                     replaceScenery(
                                         Scenery(
                                             LIGHT_OFF,
-                                            SCENERY_LOCATION
-                                        ), LIGH_ON, -1
+                                            SCENERY_LOCATION,
+                                        ),
+                                        LIGH_ON,
+                                        -1,
                                     )
                                     sendUnclosablePlainDialogue(
                                         player,
                                         true,
                                         "",
                                         "Watch the Mime.",
-                                        "See what emote he performs."
+                                        "See what emote he performs.",
                                     )
                                     getEmote(player)
                                 }
@@ -181,7 +195,7 @@ object MimeUtils {
                     }
                     return false
                 }
-            }
+            },
         )
     }
 }

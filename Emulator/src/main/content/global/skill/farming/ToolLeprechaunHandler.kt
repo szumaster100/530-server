@@ -1,7 +1,5 @@
 package content.global.skill.farming
 
-import org.rs.consts.Components
-import org.rs.consts.NPCs
 import content.minigame.vinesweeper.VinesweeperListener
 import core.cache.def.impl.NPCDefinition
 import core.game.component.Component
@@ -11,6 +9,8 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Components
+import org.rs.consts.NPCs
 
 val TL_IDS = arrayOf(NPCs.TOOL_LEPRECHAUN_3021, NPCs.GOTH_LEPRECHAUN_8000, NPCs.TOOL_LEPRECHAUN_4965, NPCs.TECLYN_2861)
 
@@ -25,7 +25,11 @@ class ToolLeprechaunHandler : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player?, node: Node?, option: String?): Boolean {
+    override fun handle(
+        player: Player?,
+        node: Node?,
+        option: String?,
+    ): Boolean {
         node ?: return false
         when (option) {
             "exchange" -> player?.interfaceManager?.open(Component(Components.FARMING_TOOLS_125))

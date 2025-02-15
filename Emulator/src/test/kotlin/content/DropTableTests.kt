@@ -16,6 +16,7 @@ class DropTableTests {
     init {
         TestUtils.preTestSetup()
     }
+
     @Test fun chromaticDragonsShouldDropEggsOnlyAfter99Summoning() {
         val npc = NPC.create(NPCs.BLACK_DRAGON_54, ServerConfig.HOME_LOCATION)
         val oldTable = npc.definition.dropTables.table
@@ -31,15 +32,17 @@ class DropTableTests {
             var hasEgg = false
 
             var items = npc.definition.dropTables.roll(npc, p, 1)
-            for (item in items)
+            for (item in items) {
                 if (item.id == Items.BLACK_DRAGON_EGG_12480) hasEgg = true
+            }
             Assertions.assertEquals(false, hasEgg)
 
             p.skills.setStaticLevel(Skills.SUMMONING, 99)
 
             items = npc.definition.dropTables.roll(npc, p, 1)
-            for (item in items)
+            for (item in items) {
                 if (item.id == Items.BLACK_DRAGON_EGG_12480) hasEgg = true
+            }
             Assertions.assertEquals(true, hasEgg)
         }
 

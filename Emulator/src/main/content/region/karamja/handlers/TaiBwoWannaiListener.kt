@@ -6,9 +6,7 @@ import core.game.interaction.InteractionListener
 import core.game.shops.Shops
 
 class TaiBwoWannaiListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(GABOOTY_NPC_WRAPPERS, IntType.NPC, "trade-co-op", "trade-drinks") { player, node ->
             if (node.id in GABOOTY_NPC_WRAPPERS) {
                 when (getUsedOption(player)) {

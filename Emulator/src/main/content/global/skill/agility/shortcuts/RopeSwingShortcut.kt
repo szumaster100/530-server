@@ -1,7 +1,5 @@
 package content.global.skill.agility.shortcuts
 
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import content.global.skill.agility.AgilityHandler
 import core.api.animationDuration
 import core.api.playAudio
@@ -15,10 +13,11 @@ import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 
 @Initializable
 class RopeSwingShortcut : UseWithHandler() {
-
     companion object {
         private var ropeDelay = 0
         private val END_LOCATION = Location.create(2505, 3087, 0)
@@ -55,7 +54,7 @@ class RopeSwingShortcut : UseWithHandler() {
                 50,
                 22.0,
                 "You skillfully swing across.",
-                1
+                1,
             )
             return true
         }

@@ -12,7 +12,10 @@ import core.game.world.map.Location
  * @param player The player for whom the ground item will be produced.
  * @param item The item id of the ground item to be created.
  */
-fun produceGroundItem(player: Player, item: Int) {
+fun produceGroundItem(
+    player: Player,
+    item: Int,
+) {
     GroundItemManager.create(Item(item), player)
 }
 
@@ -25,7 +28,12 @@ fun produceGroundItem(player: Player, item: Int) {
  * @param location The location where the ground item will be placed.
  * @return The created [GroundItem] at the specified location.
  */
-fun produceGroundItem(owner: Player?, id: Int, amount: Int, location: Location): GroundItem {
+fun produceGroundItem(
+    owner: Player?,
+    id: Int,
+    amount: Int,
+    location: Location,
+): GroundItem {
     return GroundItemManager.create(Item(id, amount), location, owner)
 }
 

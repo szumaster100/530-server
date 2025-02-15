@@ -1,24 +1,23 @@
 package content.global.skill.magic.spells.lunar
 
-import org.rs.consts.*
 import content.global.skill.magic.SpellListener
 import content.global.skill.magic.spells.LunarSpells
 import core.api.faceLocation
-import core.api.ui.openSingleTab
 import core.api.sendMessage
 import core.api.sendString
+import core.api.ui.openSingleTab
 import core.game.node.item.Item
 import core.game.system.config.NPCConfigParser
+import org.rs.consts.*
 
 class MonsterExamineSpell : SpellListener("lunar") {
-
     override fun defineListeners() {
         onCast(LunarSpells.MONSTER_EXAMINE, NPC) { player, node ->
             val npc = node!!.asNpc()
             requires(
                 player,
                 66,
-                arrayOf(Item(Items.ASTRAL_RUNE_9075), Item(Items.MIND_RUNE_558), Item(Items.COSMIC_RUNE_564))
+                arrayOf(Item(Items.ASTRAL_RUNE_9075), Item(Items.MIND_RUNE_558), Item(Items.COSMIC_RUNE_564)),
             )
             if (!npc.location.withinDistance(player.location)) {
                 sendMessage(player, "You must get closer to use this spell.")
@@ -30,7 +29,7 @@ class MonsterExamineSpell : SpellListener("lunar") {
                 player,
                 Animations.LUNAR_MONSTER_EXAMINE_6293,
                 Graphics.STAT_SPY_GFX_1060,
-                soundID = Sounds.LUNAR_STAT_SPY_3620
+                soundID = Sounds.LUNAR_STAT_SPY_3620,
             )
             removeRunes(player)
             addXP(player, 66.0)
@@ -43,18 +42,21 @@ class MonsterExamineSpell : SpellListener("lunar") {
                 player,
                 "Hitpoints : ${npc.definition.handlers[NPCConfigParser.LIFEPOINTS] ?: 0}",
                 Components.DREAM_MONSTER_STAT_522,
-                2
+                2,
             )
             sendString(
                 player,
                 "Max hit : ${npc.getSwingHandler(false).calculateHit(npc, player, 1.0)}",
                 Components.DREAM_MONSTER_STAT_522,
-                3
+                3,
             )
 
-            val poisonStatus = if (npc.definition.handlers.getOrDefault(NPCConfigParser.POISON_IMMUNE, false) == true) {
-                "This creature is immune to poison."
-            } else "This creature is not immune to poison."
+            val poisonStatus =
+                if (npc.definition.handlers.getOrDefault(NPCConfigParser.POISON_IMMUNE, false) == true) {
+                    "This creature is immune to poison."
+                } else {
+                    "This creature is not immune to poison."
+                }
 
             sendString(player, poisonStatus, Components.DREAM_MONSTER_STAT_522, 4)
         }

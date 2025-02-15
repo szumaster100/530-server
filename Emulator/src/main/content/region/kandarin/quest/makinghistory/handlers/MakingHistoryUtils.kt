@@ -1,12 +1,12 @@
 package content.region.kandarin.quest.makinghistory.handlers
 
-import org.rs.consts.Quests
 import core.api.getStatLevel
 import core.api.getVarbit
 import core.api.quest.isQuestComplete
 import core.api.setVarbit
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
+import org.rs.consts.Quests
 
 object MakingHistoryUtils {
     const val PROGRESS = 1383
@@ -22,9 +22,9 @@ object MakingHistoryUtils {
 
     fun checkRequirements(player: Player): Boolean {
         return getStatLevel(player, Skills.CRAFTING) >= 24 &&
-                getStatLevel(player, Skills.MINING) >= 40 &&
-                getStatLevel(player, Skills.SMITHING) >= 40 &&
-                isQuestComplete(player, Quests.PRIEST_IN_PERIL)
+            getStatLevel(player, Skills.MINING) >= 40 &&
+            getStatLevel(player, Skills.SMITHING) >= 40 &&
+            isQuestComplete(player, Quests.PRIEST_IN_PERIL)
     }
 
     fun checkProgress(player: Player) {

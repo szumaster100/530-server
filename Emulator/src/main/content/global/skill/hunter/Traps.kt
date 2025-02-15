@@ -7,11 +7,14 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.game.node.scenery.Scenery
-import core.tools.Log
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import core.tools.Log
 
-enum class Traps(@JvmField val settings: TrapSetting, vararg nodes: TrapNode) {
+enum class Traps(
+    @JvmField val settings: TrapSetting,
+    vararg nodes: TrapNode,
+) {
     BIRD_SNARE(
         TrapSetting(
             10006,
@@ -21,7 +24,7 @@ enum class Traps(@JvmField val settings: TrapSetting, vararg nodes: TrapNode) {
             19174,
             Animation.create(5208),
             Animation.create(5207),
-            1
+            1,
         ),
         TrapNode(intArrayOf(5073), 1, 34.0, intArrayOf(19179, 19180), arrayOf(Item(10088, 8), Item(9978), Item(526))),
         TrapNode(intArrayOf(5075), 5, 48.0, intArrayOf(19183, 19184), arrayOf(Item(10090, 8), Item(9978), Item(526))),
@@ -33,12 +36,15 @@ enum class Traps(@JvmField val settings: TrapSetting, vararg nodes: TrapNode) {
             39,
             167.0,
             intArrayOf(28931, 28930),
-            arrayOf(Item(11525, 8), Item(9978), Item(526))
+            arrayOf(Item(11525, 8), Item(9978), Item(526)),
         ) {
-            override fun canCatch(wrapper: TrapWrapper, npc: NPC): Boolean {
+            override fun canCatch(
+                wrapper: TrapWrapper,
+                npc: NPC,
+            ): Boolean {
                 return false
             }
-        }
+        },
     ),
     BOX_TRAP(
         TrapSetting(
@@ -49,7 +55,7 @@ enum class Traps(@JvmField val settings: TrapSetting, vararg nodes: TrapNode) {
             19192,
             Animation.create(5208),
             Animation(9726),
-            27
+            27,
         ),
         BoxTrapNode(intArrayOf(5081), 27, 100.0, arrayOf(Item(10092)), 1),
         BoxTrapNode(intArrayOf(6918, 7289, 7290, 7291, 7292), 27, 100.0, arrayOf(Item(12184)), 10),
@@ -61,12 +67,16 @@ enum class Traps(@JvmField val settings: TrapSetting, vararg nodes: TrapNode) {
         BoxTrapNode(intArrayOf(7012, 7014), 66, 400.0, arrayOf(Item(12535)), 1),
         BoxTrapNode(intArrayOf(8654), 73, 315.0, arrayOf(Item(14861)), 1),
         object : BoxTrapNode(intArrayOf(7010, 7011), 77, 0.0, arrayOf(Item(12539, 1)), 1) {
-            override fun canCatch(wrapper: TrapWrapper, npc: NPC): Boolean {
-
-                wrapper.player.sendMessage("Note: Giving 0 xp for grenwalls until this area and its requirements are implemented.")
+            override fun canCatch(
+                wrapper: TrapWrapper,
+                npc: NPC,
+            ): Boolean {
+                wrapper.player.sendMessage(
+                    "Note: Giving 0 xp for grenwalls until this area and its requirements are implemented.",
+                )
                 return super.canCatch(wrapper, npc)
             }
-        }
+        },
     ),
     RABBIT_SNARE(
         TrapSetting(
@@ -77,12 +87,12 @@ enum class Traps(@JvmField val settings: TrapSetting, vararg nodes: TrapNode) {
             -1,
             Animation.create(5208),
             Animation.create(9726),
-            27
-        )
+            27,
+        ),
     ),
     IMP_BOX(
         MagicBoxSetting(),
-        TrapNode(intArrayOf(708, 709, 1531), 71, 450.0, intArrayOf(-1, 19226), arrayOf(Item(10027)))
+        TrapNode(intArrayOf(708, 709, 1531), 71, 450.0, intArrayOf(-1, 19226), arrayOf(Item(10027))),
     ),
     DEAD_FALL(
         DeadfallSetting(),
@@ -90,7 +100,7 @@ enum class Traps(@JvmField val settings: TrapSetting, vararg nodes: TrapNode) {
         TrapNode(intArrayOf(5088), 33, 168.0, intArrayOf(19211, 19212, 19217), arrayOf(Item(10129), Item(526))),
         TrapNode(intArrayOf(5086), 37, 204.0, intArrayOf(19208, 19208, 19217), arrayOf(Item(10105), Item(526))),
         TrapNode(intArrayOf(7039), 44, 200.0, intArrayOf(28939, 28940, 28941), arrayOf(Item(12567), Item(526))),
-        TrapNode(intArrayOf(5087), 51, 200.0, intArrayOf(19209, 19210, 19216), arrayOf(Item(10109), Item(526)))
+        TrapNode(intArrayOf(5087), 51, 200.0, intArrayOf(19209, 19210, 19216), arrayOf(Item(10109), Item(526))),
     ),
     NET_TRAP(
         NetTrapSetting(),
@@ -98,19 +108,26 @@ enum class Traps(@JvmField val settings: TrapSetting, vararg nodes: TrapNode) {
         TrapNode(intArrayOf(5114), 47, 224.0, intArrayOf(), arrayOf(Item(10146))),
         TrapNode(intArrayOf(6921), 29, 152.0, intArrayOf(), arrayOf(Item(12130))),
         TrapNode(intArrayOf(5115), 59, 272.0, intArrayOf(), arrayOf(Item(10147))),
-        TrapNode(intArrayOf(5116), 67, 304.0, intArrayOf(), arrayOf(Item(10148)))
-    );
+        TrapNode(intArrayOf(5116), 67, 304.0, intArrayOf(), arrayOf(Item(10148))),
+    ),
+    ;
 
     private val hooks: MutableList<TrapHook> = ArrayList(5)
 
     @JvmField
     val nodes: Array<TrapNode> = nodes as Array<TrapNode>
 
-    fun create(player: Player, node: Node) {
+    fun create(
+        player: Player,
+        node: Node,
+    ) {
         player.pulseManager.run(TrapCreatePulse(player, node, this))
     }
 
-    fun dismantle(player: Player, scenery: Scenery) {
+    fun dismantle(
+        player: Player,
+        scenery: Scenery,
+    ) {
         val instance = HunterManager.getInstance(player)
 
         if (!instance.isOwner(scenery)) {
@@ -125,11 +142,17 @@ enum class Traps(@JvmField val settings: TrapSetting, vararg nodes: TrapNode) {
         player.pulseManager.run(TrapDismantlePulse(player, scenery, instance.getWrapper(scenery)!!))
     }
 
-    fun investigate(player: Player, scenery: Scenery) {
+    fun investigate(
+        player: Player,
+        scenery: Scenery,
+    ) {
         settings.investigate(player, scenery)
     }
 
-    fun catchNpc(wrapper: TrapWrapper, npc: NPC) {
+    fun catchNpc(
+        wrapper: TrapWrapper,
+        npc: NPC,
+    ) {
         val trapNode = forNpc(npc)
         if (trapNode == null || !trapNode.canCatch(wrapper, npc) || !settings.canCatch(wrapper, npc)) {
             return
@@ -168,7 +191,6 @@ enum class Traps(@JvmField val settings: TrapSetting, vararg nodes: TrapNode) {
     }
 
     companion object {
-
         @JvmStatic
         fun forNode(node: Node): Traps? {
             for (trap in values()) {
@@ -194,7 +216,12 @@ enum class Traps(@JvmField val settings: TrapSetting, vararg nodes: TrapNode) {
                 }
                 if (trap == NET_TRAP) {
                     for (net in NetTrap.values()) {
-                        if (net.original == node.id || net.failed == node.id || net.net == node.id || net.bent == node.id || net.caught == node.id) {
+                        if (net.original == node.id ||
+                            net.failed == node.id ||
+                            net.net == node.id ||
+                            net.bent == node.id ||
+                            net.caught == node.id
+                        ) {
                             return trap
                         }
                     }

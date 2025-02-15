@@ -11,11 +11,16 @@ enum class RoomProperties(
     @JvmField val chunkX: Int,
     @JvmField val chunkY: Int,
     private val configuration: Int,
-    vararg hotspots: Hotspot
+    vararg hotspots: Hotspot,
 ) {
-
     PARLOUR(
-        1000, 1, 0, 0, 7, Room.CHAMBER, Hotspot(BuildHotspot.BOOKCASE, 0, 1),
+        1000,
+        1,
+        0,
+        0,
+        7,
+        Room.CHAMBER,
+        Hotspot(BuildHotspot.BOOKCASE, 0, 1),
         Hotspot(BuildHotspot.WINDOW, 0, 2),
         Hotspot(BuildHotspot.WINDOW, 0, 5),
         Hotspot(BuildHotspot.WINDOW, 2, 0),
@@ -52,21 +57,33 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.FIREPLACE, 3, 7, 4, 7),
         Hotspot(BuildHotspot.CHAIRS_3, 4, 3),
         Hotspot(BuildHotspot.CHAIRS_2, 5, 4),
-        Hotspot(BuildHotspot.BOOKCASE, 7, 1)
+        Hotspot(BuildHotspot.BOOKCASE, 7, 1),
     ),
 
     GARDEN(
-        1000, 1, 0, 0, 1, Room.LAND, Hotspot(BuildHotspot.CENTREPIECE_1, 3, 3, 4, 4),
+        1000,
+        1,
+        0,
+        0,
+        1,
+        Room.LAND,
+        Hotspot(BuildHotspot.CENTREPIECE_1, 3, 3, 4, 4),
         Hotspot(BuildHotspot.BIG_PLANT_2, 0, 0, 1, 1),
         Hotspot(BuildHotspot.BIG_TREE_1, 1, 5, 2, 6),
         Hotspot(BuildHotspot.SMALL_PLANT_1, 3, 1),
         Hotspot(BuildHotspot.SMALL_PLANT_2, 4, 5),
         Hotspot(BuildHotspot.BIG_PLANT_1, 6, 0, 7, 1),
-        Hotspot(BuildHotspot.TREE_1, 6, 6, 7, 7)
+        Hotspot(BuildHotspot.TREE_1, 6, 6, 7, 7),
     ),
 
     KITCHEN(
-        5000, 5, 0, 2, 7, Room.CHAMBER, Hotspot(BuildHotspot.CAT_BLANKET, 0, 0),
+        5000,
+        5,
+        0,
+        2,
+        7,
+        Room.CHAMBER,
+        Hotspot(BuildHotspot.CAT_BLANKET, 0, 0),
         Hotspot(BuildHotspot.WINDOW, 0, 2),
         Hotspot(BuildHotspot.WINDOW, 0, 5),
         Hotspot(BuildHotspot.WINDOW, 2, 0),
@@ -82,11 +99,17 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.SINK, 7, 3, 7, 4),
         Hotspot(BuildHotspot.SHELVES, 1, 7),
         Hotspot(BuildHotspot.SHELVES, 6, 7),
-        Hotspot(BuildHotspot.SHELVES_2, 7, 6)
+        Hotspot(BuildHotspot.SHELVES_2, 7, 6),
     ),
 
     DINING_ROOM(
-        5000, 10, 0, 4, 7, Room.CHAMBER, Hotspot(BuildHotspot.FIREPLACE_DINING, 3, 7, 4, 7),
+        5000,
+        10,
+        0,
+        4,
+        7,
+        Room.CHAMBER,
+        Hotspot(BuildHotspot.FIREPLACE_DINING, 3, 7, 4, 7),
         Hotspot(BuildHotspot.WINDOW, 0, 2),
         Hotspot(BuildHotspot.WINDOW, 0, 5),
         Hotspot(BuildHotspot.WINDOW, 2, 0),
@@ -110,11 +133,17 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.DINING_BENCH_1, 4, 2),
         Hotspot(BuildHotspot.DINING_BENCH_1, 5, 2),
         Hotspot(BuildHotspot.ROPE_BELL_PULL, 0, 0),
-        Hotspot(BuildHotspot.DINING_TABLE, 2, 3, 5, 4)
+        Hotspot(BuildHotspot.DINING_TABLE, 2, 3, 5, 4),
     ),
 
     WORKSHOP(
-        10000, 15, 0, 0, 5, Room.CHAMBER, Hotspot(BuildHotspot.WORKBENCH, 3, 4, 4, 4),
+        10000,
+        15,
+        0,
+        0,
+        5,
+        Room.CHAMBER,
+        Hotspot(BuildHotspot.WORKBENCH, 3, 4, 4, 4),
         Hotspot(BuildHotspot.WINDOW, 0, 2),
         Hotspot(BuildHotspot.WINDOW, 0, 5),
         Hotspot(BuildHotspot.WINDOW, 2, 0),
@@ -131,11 +160,17 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.TOOL2, 6, 0),
         Hotspot(BuildHotspot.TOOL1, 1, 0),
         Hotspot(BuildHotspot.TOOL3, 0, 1),
-        Hotspot(BuildHotspot.TOOL5, 0, 6)
+        Hotspot(BuildHotspot.TOOL5, 0, 6),
     ),
 
     BEDROOM(
-        10000, 20, 0, 6, 7, Room.CHAMBER, Hotspot(BuildHotspot.BED, 3, 6, 4, 7),
+        10000,
+        20,
+        0,
+        6,
+        7,
+        Room.CHAMBER,
+        Hotspot(BuildHotspot.BED, 3, 6, 4, 7),
         Hotspot(BuildHotspot.FIREPLACE2, 7, 3, 7, 4),
         Hotspot(BuildHotspot.CLOCK, 7, 0),
         Hotspot(BuildHotspot.DRESSER, 0, 7, 1, 7),
@@ -183,11 +218,17 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.BEDROOM_RUG3, 1, 1),
         Hotspot(BuildHotspot.BEDROOM_RUG3, 1, 4),
         Hotspot(BuildHotspot.BEDROOM_RUG3, 6, 1),
-        Hotspot(BuildHotspot.BEDROOM_RUG3, 6, 4)
+        Hotspot(BuildHotspot.BEDROOM_RUG3, 6, 4),
     ),
 
     SKILL_HALL(
-        15000, 25, 0, 1, 6, Room.CHAMBER, Hotspot(BuildHotspot.STAIRWAYS, 3, 3, 4, 4),
+        15000,
+        25,
+        0,
+        1,
+        6,
+        Room.CHAMBER,
+        Hotspot(BuildHotspot.STAIRWAYS, 3, 3, 4, 4),
         Hotspot(BuildHotspot.ARMOUR_SPACE, 2, 3),
         Hotspot(BuildHotspot.ARMOUR_SPACE2, 5, 3),
         Hotspot(BuildHotspot.HEAD_TROPHY, 6, 7),
@@ -236,11 +277,16 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.HALL_RUG3, 1, 1),
         Hotspot(BuildHotspot.HALL_RUG3, 1, 6),
         Hotspot(BuildHotspot.HALL_RUG3, 6, 1),
-        Hotspot(BuildHotspot.HALL_RUG3, 6, 6)
+        Hotspot(BuildHotspot.HALL_RUG3, 6, 6),
     ),
 
     GAMES_ROOM(
-        25000, 30, 0, 5, 4, Room.CHAMBER,
+        25000,
+        30,
+        0,
+        5,
+        4,
+        Room.CHAMBER,
         Hotspot(BuildHotspot.RANGING_GAME, 1, 0),
         Hotspot(BuildHotspot.ATTACK_STONE, 2, 4),
         Hotspot(BuildHotspot.PRIZE_CHEST, 3, 7),
@@ -253,11 +299,17 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.WINDOW, 7, 2),
         Hotspot(BuildHotspot.WINDOW, 7, 5),
         Hotspot(BuildHotspot.WINDOW, 2, 7),
-        Hotspot(BuildHotspot.WINDOW, 5, 7)
+        Hotspot(BuildHotspot.WINDOW, 5, 7),
     ),
 
     COMBAT_ROOM(
-        25000, 32, 0, 3, 4, Room.CHAMBER, Hotspot(BuildHotspot.STORAGE_SPACE, 3, 7),
+        25000,
+        32,
+        0,
+        3,
+        4,
+        Room.CHAMBER,
+        Hotspot(BuildHotspot.STORAGE_SPACE, 3, 7),
         Hotspot(BuildHotspot.WALL_DECORATION2, 1, 7),
         Hotspot(BuildHotspot.WALL_DECORATION2, 6, 7),
         Hotspot(BuildHotspot.WINDOW, 0, 2),
@@ -307,11 +359,17 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.CR_INVISIBLE_WALL2, 2, 4),
         Hotspot(BuildHotspot.CR_INVISIBLE_WALL, 3, 5),
         Hotspot(BuildHotspot.CR_INVISIBLE_WALL, 5, 3),
-        Hotspot(BuildHotspot.CR_INVISIBLE_WALL, 4, 2)
+        Hotspot(BuildHotspot.CR_INVISIBLE_WALL, 4, 2),
     ),
 
     QUEST_HALL(
-        25000, 35, 0, 5, 6, Room.CHAMBER, Hotspot(BuildHotspot.QUEST_STAIRWAYS, 3, 3, 4, 4),
+        25000,
+        35,
+        0,
+        5,
+        6,
+        Room.CHAMBER,
+        Hotspot(BuildHotspot.QUEST_STAIRWAYS, 3, 3, 4, 4),
         Hotspot(BuildHotspot.MAP, 7, 1),
         Hotspot(BuildHotspot.SWORD, 7, 6),
         Hotspot(BuildHotspot.LANDSCAPE, 6, 7),
@@ -361,11 +419,17 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.Q_HALL_RUG3, 1, 1),
         Hotspot(BuildHotspot.Q_HALL_RUG3, 1, 6),
         Hotspot(BuildHotspot.Q_HALL_RUG3, 6, 1),
-        Hotspot(BuildHotspot.Q_HALL_RUG3, 6, 6)
+        Hotspot(BuildHotspot.Q_HALL_RUG3, 6, 6),
     ),
 
     STUDY_ROOM(
-        50000, 40, 0, 4, 5, Room.CHAMBER, Hotspot(BuildHotspot.GLOBE, 1, 4, 3, 6),
+        50000,
+        40,
+        0,
+        4,
+        5,
+        Room.CHAMBER,
+        Hotspot(BuildHotspot.GLOBE, 1, 4, 3, 6),
         Hotspot(BuildHotspot.LECTERN, 2, 2),
         Hotspot(BuildHotspot.CRYSTAL_BALL, 5, 2),
         Hotspot(BuildHotspot.BOOKCASE3, 3, 7, 3, 7),
@@ -382,11 +446,17 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.WINDOW, 7, 2),
         Hotspot(BuildHotspot.WINDOW, 7, 5),
         Hotspot(BuildHotspot.WINDOW, 2, 7),
-        Hotspot(BuildHotspot.WINDOW, 5, 7)
+        Hotspot(BuildHotspot.WINDOW, 5, 7),
     ),
 
     COSTUME_ROOM(
-        50000, 42, 0, 6, 1, Room.CHAMBER, Hotspot(BuildHotspot.WINDOW, 0, 2),
+        50000,
+        42,
+        0,
+        6,
+        1,
+        Room.CHAMBER,
+        Hotspot(BuildHotspot.WINDOW, 0, 2),
         Hotspot(BuildHotspot.WINDOW, 0, 5),
         Hotspot(BuildHotspot.WINDOW, 2, 0),
         Hotspot(BuildHotspot.WINDOW, 5, 0),
@@ -397,11 +467,16 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.MAGIC_WARDROBE, 3, 7, 5, 7),
         Hotspot(BuildHotspot.CAPE_RACK, 6, 6),
         Hotspot(BuildHotspot.TOY_BOX, 7, 3, 7, 4),
-        Hotspot(BuildHotspot.COSTUME_BOX, 3, 3, 4, 4)
+        Hotspot(BuildHotspot.COSTUME_BOX, 3, 3, 4, 4),
     ),
 
     CHAPEL(
-        50000, 45, 0, 2, 5, Room.CHAMBER,
+        50000,
+        45,
+        0,
+        2,
+        5,
+        Room.CHAMBER,
         Hotspot(BuildHotspot.ALTAR, 3, 5, 4, 5),
         Hotspot(BuildHotspot.STATUE, 7, 0),
         Hotspot(BuildHotspot.STATUE, 0, 0),
@@ -424,11 +499,17 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.CHAPEL_WINDOW, 2, 7),
         Hotspot(BuildHotspot.CHAPEL_WINDOW, 5, 7),
         Hotspot(BuildHotspot.CHAPEL_WINDOW, 7, 5),
-        Hotspot(BuildHotspot.CHAPEL_WINDOW, 7, 2)
+        Hotspot(BuildHotspot.CHAPEL_WINDOW, 7, 2),
     ),
 
     PORTAL_CHAMBER(
-        100000, 50, 0, 1, 4, Room.CHAMBER, Hotspot(BuildHotspot.TELEPORT_FOCUS, 3, 3, 4, 4),
+        100000,
+        50,
+        0,
+        1,
+        4,
+        Room.CHAMBER,
+        Hotspot(BuildHotspot.TELEPORT_FOCUS, 3, 3, 4, 4),
         Hotspot(BuildHotspot.PORTAL1, 0, 3, 0, 4),
         Hotspot(BuildHotspot.PORTAL2, 3, 7, 4, 7),
         Hotspot(BuildHotspot.PORTAL3, 7, 3, 7, 4),
@@ -439,11 +520,17 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.WINDOW, 7, 2),
         Hotspot(BuildHotspot.WINDOW, 7, 5),
         Hotspot(BuildHotspot.WINDOW, 2, 7),
-        Hotspot(BuildHotspot.WINDOW, 5, 7)
+        Hotspot(BuildHotspot.WINDOW, 5, 7),
     ),
 
     FORMAL_GARDEN(
-        75000, 55, 0, 2, 1, Room.LAND, Hotspot(BuildHotspot.CENTREPIECE_2, 3, 3, 4, 4),
+        75000,
+        55,
+        0,
+        2,
+        1,
+        Room.LAND,
+        Hotspot(BuildHotspot.CENTREPIECE_2, 3, 3, 4, 4),
         Hotspot(BuildHotspot.FENCING, 0, 0),
         Hotspot(BuildHotspot.FENCING, 1, 0),
         Hotspot(BuildHotspot.FENCING, 2, 0),
@@ -500,11 +587,16 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.SMALL_PLANT1, 2, 6),
         Hotspot(BuildHotspot.BIG_PLANT1, 1, 6),
         Hotspot(BuildHotspot.BIG_PLANT1, 1, 1),
-        Hotspot(BuildHotspot.BIG_PLANT1, 6, 1)
+        Hotspot(BuildHotspot.BIG_PLANT1, 6, 1),
     ),
 
     THRONE_ROOM(
-        150000, 60, 0, 6, 5, Room.CHAMBER,
+        150000,
+        60,
+        0,
+        6,
+        5,
+        Room.CHAMBER,
         Hotspot(BuildHotspot.WINDOW, 0, 2),
         Hotspot(BuildHotspot.WINDOW, 0, 5),
         Hotspot(BuildHotspot.WINDOW, 2, 0),
@@ -534,11 +626,16 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.SEATING2, 7, 4),
         Hotspot(BuildHotspot.SEATING2, 7, 5),
         Hotspot(BuildHotspot.DECORATION, 3, 7),
-        Hotspot(BuildHotspot.DECORATION, 4, 7)
+        Hotspot(BuildHotspot.DECORATION, 4, 7),
     ),
 
     OUBILETTE(
-        150000, 65, 0, 6, 3, Room.DUNGEON,
+        150000,
+        65,
+        0,
+        6,
+        3,
+        Room.DUNGEON,
         Hotspot(BuildHotspot.FLOOR_CORNER, 2, 2),
         Hotspot(BuildHotspot.FLOOR_CORNER, 5, 2),
         Hotspot(BuildHotspot.FLOOR_CORNER, 5, 5),
@@ -592,11 +689,16 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.PRISON, 5, 3),
         Hotspot(BuildHotspot.PRISON, 5, 4),
         Hotspot(BuildHotspot.PRISON, 4, 5),
-        Hotspot(BuildHotspot.PRISON_DOOR, 3, 5)
+        Hotspot(BuildHotspot.PRISON_DOOR, 3, 5),
     ),
 
     DUNGEON_CORRIDOR(
-        7500, 70, 0, 4, 3, Room.DUNGEON,
+        7500,
+        70,
+        0,
+        4,
+        3,
+        Room.DUNGEON,
         Hotspot(BuildHotspot.DUNGEON_DOOR_RIGHT, 3, 1),
         Hotspot(BuildHotspot.DUNGEON_DOOR_LEFT, 4, 1),
         Hotspot(BuildHotspot.DUNGEON_DOOR_LEFT2, 3, 6),
@@ -611,11 +713,16 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.DUNGEON_TRAP, 3, 5),
         Hotspot(BuildHotspot.DUNGEON_TRAP, 4, 5),
         Hotspot(BuildHotspot.DUNGEON_LIGHT, 3, 6),
-        Hotspot(BuildHotspot.DUNGEON_LIGHT, 4, 6)
+        Hotspot(BuildHotspot.DUNGEON_LIGHT, 4, 6),
     ),
 
     DUNGEON_JUNCTION(
-        7500, 70, 0, 0, 3, Room.DUNGEON,
+        7500,
+        70,
+        0,
+        0,
+        3,
+        Room.DUNGEON,
         Hotspot(BuildHotspot.DUNGEON_DOOR_RIGHT, 3, 1),
         Hotspot(BuildHotspot.DUNGEON_DOOR_LEFT, 4, 1),
         Hotspot(BuildHotspot.DUNGEON_DOOR_LEFT2, 3, 6),
@@ -630,11 +737,16 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.DUNGEON_DECO, 1, 3),
         Hotspot(BuildHotspot.DUNGEON_DECO, 6, 4),
         Hotspot(BuildHotspot.DUNGEON_LIGHT, 1, 4),
-        Hotspot(BuildHotspot.DUNGEON_LIGHT, 6, 3)
+        Hotspot(BuildHotspot.DUNGEON_LIGHT, 6, 3),
     ),
 
     DUNGEON_STAIRS(
-        7500, 70, 0, 2, 3, Room.DUNGEON,
+        7500,
+        70,
+        0,
+        2,
+        3,
+        Room.DUNGEON,
         Hotspot(BuildHotspot.STAIRWAYS_DUNGEON, 3, 3),
         Hotspot(BuildHotspot.HALL_RUG, 3, 3),
         Hotspot(BuildHotspot.HALL_RUG, 4, 3),
@@ -663,11 +775,16 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.DUNGEON_GUARD3, 1, 1),
         Hotspot(BuildHotspot.DUNGEON_GUARD2, 5, 5),
         Hotspot(BuildHotspot.DUNGEON_DECO, 6, 1),
-        Hotspot(BuildHotspot.DUNGEON_DECO, 1, 6)
+        Hotspot(BuildHotspot.DUNGEON_DECO, 1, 6),
     ),
 
     DUNGEON_PIT(
-        10000, 70, 0, 5, 2, Room.DUNGEON,
+        10000,
+        70,
+        0,
+        5,
+        2,
+        Room.DUNGEON,
         Hotspot(BuildHotspot.DUNGEON_DOOR_RIGHT3, 3, 1),
         Hotspot(BuildHotspot.DUNGEON_DOOR_LEFT3, 4, 1),
         Hotspot(BuildHotspot.DUNGEON_DOOR_LEFT3, 3, 6),
@@ -686,11 +803,16 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.DUNGEON_LIGHT2, 1, 5),
         Hotspot(BuildHotspot.DUNGEON_LIGHT2, 6, 2),
         Hotspot(BuildHotspot.DUNGEON_LIGHT, 6, 5),
-        Hotspot(BuildHotspot.DUNGEON_PIT_GUARD, 3, 3)
+        Hotspot(BuildHotspot.DUNGEON_PIT_GUARD, 3, 3),
     ),
 
     TREASURE_ROOM(
-        250000, 75, 0, 7, 4, Room.DUNGEON,
+        250000,
+        75,
+        0,
+        7,
+        4,
+        Room.DUNGEON,
         Hotspot(BuildHotspot.DUNGEON_DOOR_RIGHT2, 3, 1),
         Hotspot(BuildHotspot.DUNGEON_DOOR_LEFT2, 4, 1),
         Hotspot(BuildHotspot.DUNGEON_LIGHT, 2, 1),
@@ -702,7 +824,7 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.MONSTER, 3, 3),
         Hotspot(BuildHotspot.TREASURE_CHEST1, 2, 6),
         Hotspot(BuildHotspot.WALL_DECORATION1, 3, 6),
-        Hotspot(BuildHotspot.WALL_DECORATION1, 4, 6)
+        Hotspot(BuildHotspot.WALL_DECORATION1, 4, 6),
     ),
 
     ROOF_2_EXIT(0, 0, 0, 1, 2, Room.ROOF),
@@ -712,7 +834,13 @@ enum class RoomProperties(
     ROOF_4_EXIT(0, 0, 0, 5, 2, Room.ROOF),
 
     SKILL_HALL_2(
-        0, 25, 0, 3, 6, Room.CHAMBER, Hotspot(BuildHotspot.STAIRS_DOWN, 3, 3),
+        0,
+        25,
+        0,
+        3,
+        6,
+        Room.CHAMBER,
+        Hotspot(BuildHotspot.STAIRS_DOWN, 3, 3),
         Hotspot(BuildHotspot.ARMOUR_SPACE, 2, 3),
         Hotspot(BuildHotspot.ARMOUR_SPACE2, 5, 3),
         Hotspot(BuildHotspot.HEAD_TROPHY, 6, 7),
@@ -761,11 +889,17 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.HALL_RUG3, 1, 1),
         Hotspot(BuildHotspot.HALL_RUG3, 1, 6),
         Hotspot(BuildHotspot.HALL_RUG3, 6, 1),
-        Hotspot(BuildHotspot.HALL_RUG3, 6, 6)
+        Hotspot(BuildHotspot.HALL_RUG3, 6, 6),
     ),
 
     QUEST_HALL_2(
-        25000, 35, 0, 7, 6, Room.CHAMBER, Hotspot(BuildHotspot.STAIRS_DOWN2, 3, 3),
+        25000,
+        35,
+        0,
+        7,
+        6,
+        Room.CHAMBER,
+        Hotspot(BuildHotspot.STAIRS_DOWN2, 3, 3),
         Hotspot(BuildHotspot.MAP, 7, 1),
         Hotspot(BuildHotspot.SWORD, 7, 6),
         Hotspot(BuildHotspot.LANDSCAPE, 6, 7),
@@ -815,7 +949,7 @@ enum class RoomProperties(
         Hotspot(BuildHotspot.Q_HALL_RUG3, 1, 1),
         Hotspot(BuildHotspot.Q_HALL_RUG3, 1, 6),
         Hotspot(BuildHotspot.Q_HALL_RUG3, 6, 1),
-        Hotspot(BuildHotspot.Q_HALL_RUG3, 6, 6)
+        Hotspot(BuildHotspot.Q_HALL_RUG3, 6, 6),
     ),
     ;
 
@@ -838,11 +972,15 @@ enum class RoomProperties(
                 isExit(chunk, 7, 3),
                 isExit(chunk, 3, 0),
                 isExit(chunk, 0, 3),
-                isExit(chunk, 3, 7)
+                isExit(chunk, 3, 7),
             )
         }
 
-    private fun isExit(chunk: RegionChunk, x: Int, y: Int): Boolean {
+    private fun isExit(
+        chunk: RegionChunk,
+        x: Int,
+        y: Int,
+    ): Boolean {
         for (`object` in chunk.getObjects(x, y)) {
             if (`object` != null && (`object`.id == 15313 || `object`.id == 15314 || `object`.id == 15317)) {
                 return true

@@ -1,6 +1,5 @@
 package content.region.karamja.handlers.npc
 
-import org.rs.consts.NPCs
 import core.game.node.entity.combat.ImpactHandler.HitsplatType
 import core.game.node.entity.impl.Animator.Priority
 import core.game.node.entity.npc.AbstractNPC
@@ -10,13 +9,20 @@ import core.game.world.map.RegionManager.getLocalPlayers
 import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
 import core.tools.RandomFunction
+import org.rs.consts.NPCs
 
 @Initializable
-class FlyTrapNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
+class FlyTrapNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
     private var attackDelay = 0
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return FlyTrapNPC(id, location)
     }
 

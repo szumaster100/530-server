@@ -11,8 +11,8 @@ import core.game.world.repository.Repository.players
 import java.util.concurrent.Executors
 
 class SystemUpdate : Pulse(DEFAULT_COUNTDOWN) {
-
     var isCreateBackup = false
+
     override fun pulse(): Boolean {
         if (delay >= BACKUP_TICK && isCreateBackup) {
             try {
@@ -81,7 +81,6 @@ class SystemUpdate : Pulse(DEFAULT_COUNTDOWN) {
     }
 
     companion object {
-
         const val DEFAULT_COUNTDOWN = 100
 
         const val BACKUP_TICK = 10

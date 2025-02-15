@@ -1,16 +1,14 @@
 package content.region.morytania.quest.hauntedmine
 
-import org.rs.consts.*
 import core.api.*
 import core.api.quest.getQuestStage
 import core.api.quest.isQuestInProgress
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.*
 
 class HauntedMineListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(NPCs.ZEALOT_1528, IntType.NPC, "pickpocket") { player, _ ->
             if (isQuestInProgress(player, Quests.HAUNTED_MINE, 1, 2)) {
                 lock(player, 1)
@@ -23,7 +21,16 @@ class HauntedMineListener : InteractionListener {
                 if (inBank(player, Items.ZEALOTS_KEY_4078) || inEquipmentOrInventory(player, Items.ZEALOTS_KEY_4078)) {
                     sendMessage(player, "I've already picked his pockets.")
                 } else {
-                    sendMessage(player, if (getQuestStage(player, Quests.HAUNTED_MINE) < 2) "I doubt he's got much of value on him." else "You pick the zealot's pocket and retrieve a small silvery key.")
+                    sendMessage(
+                        player,
+                        if (getQuestStage(player, Quests.HAUNTED_MINE) <
+                            2
+                        ) {
+                            "I doubt he's got much of value on him."
+                        } else {
+                            "You pick the zealot's pocket and retrieve a small silvery key."
+                        },
+                    )
                     addItem(player, Items.ZEALOTS_KEY_4078)
                 }
             }

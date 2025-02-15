@@ -1,15 +1,17 @@
 package content.region.asgarnia.quest.zep.cutscene
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.location
 import core.api.quest.setQuestStage
 import core.game.activity.Cutscene
 import core.game.dialogue.FaceAnim
 import core.game.node.entity.player.Player
 import core.game.world.map.Direction
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
-class SecondExperimentCutscene(player: Player) : Cutscene(player) {
+class SecondExperimentCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(location(2808, 3355, 0))
         if (player.settings.isRunToggled) {

@@ -1,6 +1,5 @@
 package content.minigame.mta
 
-import org.rs.consts.Sounds
 import content.minigame.mta.room.TelekineticTheatre
 import core.api.*
 import core.game.global.action.PickupHandler.canTake
@@ -22,15 +21,27 @@ import core.game.world.GameWorld.Pulser
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
 import core.plugin.Plugin
+import org.rs.consts.Sounds
 
-class TelekineticGrabSpell : MagicSpell(SpellBookManager.SpellBook.MODERN, 33, 43.0, ANIMATION, START_Graphics, SOUND, arrayOf(Item(Runes.AIR_RUNE.id), Item(Runes.LAW_RUNE.id, 1))) {
-
+class TelekineticGrabSpell :
+    MagicSpell(
+        SpellBookManager.SpellBook.MODERN,
+        33,
+        43.0,
+        ANIMATION,
+        START_Graphics,
+        SOUND,
+        arrayOf(Item(Runes.AIR_RUNE.id), Item(Runes.LAW_RUNE.id, 1)),
+    ) {
     override fun newInstance(arg: SpellType?): Plugin<SpellType?> {
         SpellBookManager.SpellBook.MODERN.register(SPELL_ID, this)
         return this
     }
 
-    override fun cast(entity: Entity, target: Node): Boolean {
+    override fun cast(
+        entity: Entity,
+        target: Node,
+    ): Boolean {
         if (target !is GroundItem) return false
         if (!canCast(entity, target)) {
             return false
@@ -41,13 +52,19 @@ class TelekineticGrabSpell : MagicSpell(SpellBookManager.SpellBook.MODERN, 33, 4
         return true
     }
 
-    override fun visualize(entity: Entity, target: Node) {
+    override fun visualize(
+        entity: Entity,
+        target: Node,
+    ) {
         super.visualize(entity, target)
         entity.faceLocation(target.location)
         getProjectile(entity, target as GroundItem).send()
     }
 
-    fun getGrabPulse(entity: Entity, ground: GroundItem): Pulse {
+    fun getGrabPulse(
+        entity: Entity,
+        ground: GroundItem,
+    ): Pulse {
         return object : Pulse(getDelay(ground.location.getDistance(entity.location)), entity) {
             override fun pulse(): Boolean {
                 val player = if (entity is Player) entity else null
@@ -87,7 +104,10 @@ class TelekineticGrabSpell : MagicSpell(SpellBookManager.SpellBook.MODERN, 33, 4
         }
     }
 
-    fun canCast(entity: Entity, item: GroundItem?): Boolean {
+    fun canCast(
+        entity: Entity,
+        item: GroundItem?,
+    ): Boolean {
         if (entity.locks.isInteractionLocked || entity.locks.isComponentLocked) {
             return false
         }
@@ -109,7 +129,10 @@ class TelekineticGrabSpell : MagicSpell(SpellBookManager.SpellBook.MODERN, 33, 4
         return super.meetsRequirements(entity, true, true)
     }
 
-    fun getProjectile(entity: Entity, item: GroundItem): Projectile {
+    fun getProjectile(
+        entity: Entity,
+        item: GroundItem,
+    ): Projectile {
         return Projectile.create(
             entity.location,
             item.location,
@@ -119,7 +142,7 @@ class TelekineticGrabSpell : MagicSpell(SpellBookManager.SpellBook.MODERN, 33, 4
             START_DELAY,
             Projectile.getSpeed(entity, item.location),
             ANGLE,
-            11
+            11,
         )
     }
 

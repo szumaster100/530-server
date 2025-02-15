@@ -1,6 +1,5 @@
 package content.region.kandarin.quest.fishingcompo.handlers
 
-import org.rs.consts.Items
 import content.region.kandarin.quest.fishingcompo.FishingContest
 import core.api.setAttribute
 import core.game.interaction.MovementPulse
@@ -15,10 +14,10 @@ import core.game.node.scenery.Scenery
 import core.game.world.map.Location
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Items
 
 @Initializable
 class GarlicPipeInteraction : PluginInteraction() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         setIds(intArrayOf(FishingContest.GARLIC.id, 41))
         PluginInteractionManager.register(this, PluginInteractionManager.InteractionType.USEWITH)
@@ -26,16 +25,23 @@ class GarlicPipeInteraction : PluginInteraction() {
         return this
     }
 
-    override fun handle(player: Player, event: NodeUsageEvent): Boolean {
+    override fun handle(
+        player: Player,
+        event: NodeUsageEvent,
+    ): Boolean {
         if (event.used is Item && event.usedWith is Scenery) {
             val usedWith = event.usedWith.asScenery()
             val used = event.usedItem
 
-            if (used.id == Items.GARLIC_1550 && usedWith.id == 41 && usedWith.location == Location.create(
+            if (used.id == Items.GARLIC_1550 &&
+                usedWith.id == 41 &&
+                usedWith.location ==
+                Location.create(
                     2638,
                     3446,
-                    0
-                ) && player.getQuestRepository().getStage("Fishing Contest") > 0
+                    0,
+                ) &&
+                player.getQuestRepository().getStage("Fishing Contest") > 0
             ) {
                 player.pulseManager.run(
                     object : MovementPulse(player, usedWith.location.transform(0, -1, 0)) {
@@ -46,7 +52,7 @@ class GarlicPipeInteraction : PluginInteraction() {
                             return true
                         }
                     },
-                    PulseType.STANDARD
+                    PulseType.STANDARD,
                 )
                 return true
             }
@@ -54,14 +60,20 @@ class GarlicPipeInteraction : PluginInteraction() {
         return false
     }
 
-    override fun handle(player: Player, node: Node): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+    ): Boolean {
         if (node is Scenery) {
             val scenery = node.asScenery()
-            if (scenery.id == 41 && scenery.location == Location.create(
+            if (scenery.id == 41 &&
+                scenery.location ==
+                Location.create(
                     2638,
                     3446,
-                    0
-                ) && player.getAttribute("fishing_contest:garlic", false)
+                    0,
+                ) &&
+                player.getAttribute("fishing_contest:garlic", false)
             ) {
                 player.pulseManager.run(
                     object : MovementPulse(player, scenery.location.transform(0, -1, 0)) {
@@ -70,7 +82,7 @@ class GarlicPipeInteraction : PluginInteraction() {
                             return true
                         }
                     },
-                    PulseType.STANDARD
+                    PulseType.STANDARD,
                 )
                 return true
             }
@@ -78,7 +90,10 @@ class GarlicPipeInteraction : PluginInteraction() {
         return false
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 }

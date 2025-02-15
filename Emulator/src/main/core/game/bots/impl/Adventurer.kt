@@ -1,12 +1,17 @@
 package core.game.bots.impl
 
 import core.ServerConfig
+import core.game.bots.AIRepository
+import core.game.bots.CombatBotAssembler
+import core.game.bots.Script
 import core.game.interaction.DestinationFlag
+import core.game.interaction.IntType
+import core.game.interaction.InteractionListeners
 import core.game.interaction.MovementPulse
-import core.game.node.scenery.Scenery
 import core.game.node.entity.combat.CombatStyle
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import core.game.node.scenery.Scenery
 import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
@@ -15,20 +20,15 @@ import core.game.world.map.zone.ZoneBorders
 import core.game.world.update.flag.*
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
-import core.game.bots.AIRepository
-import core.game.bots.CombatBotAssembler
-import core.game.bots.Script
-import core.game.interaction.IntType
-import core.game.interaction.InteractionListeners
 import java.io.File
 import java.io.FileReader
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.random.Random
 
-
-class Adventurer(val style: CombatStyle) : Script() {
-
+class Adventurer(
+    val style: CombatStyle,
+) : Script() {
     var city: Location = lumbridge
     var poiloc: Location = karamja
     var geSocialLoc: Location = getRandomGESocialLocation()
@@ -47,11 +47,12 @@ class Adventurer(val style: CombatStyle) : Script() {
     var geWait: Int = 0
     var geLongWait: Int = 0
 
-    val type = when (style) {
-        CombatStyle.MELEE -> CombatBotAssembler.Type.MELEE
-        CombatStyle.MAGIC -> CombatBotAssembler.Type.MAGE
-        CombatStyle.RANGE -> CombatBotAssembler.Type.RANGE
-    }
+    val type =
+        when (style) {
+            CombatStyle.MELEE -> CombatBotAssembler.Type.MELEE
+            CombatStyle.MAGIC -> CombatBotAssembler.Type.MAGE
+            CombatStyle.RANGE -> CombatBotAssembler.Type.RANGE
+        }
 
     init {
         skills[Skills.AGILITY] = 99
@@ -66,13 +67,13 @@ class Adventurer(val style: CombatStyle) : Script() {
 
     override fun toString(): String {
         return "${bot.username} is an Adventurer bot " +
-                "at ${bot.location}! " +
-                "State: $state - " +
-                "City: $city - " +
-                "Ticks: $ticks - " +
-                "Freshspawn: $freshspawn - " +
-                "Sold: $sold - " +
-                "Counter: $counter"
+            "at ${bot.location}! " +
+            "State: $state - " +
+            "City: $city - " +
+            "Ticks: $ticks - " +
+            "Freshspawn: $freshspawn - " +
+            "Sold: $sold - " +
+            "Counter: $counter"
     }
 
     var state = State.START
@@ -146,11 +147,18 @@ class Adventurer(val style: CombatStyle) : Script() {
         }
     }
 
-    val resources = listOf(
-        "Rocks", "Tree", "Oak", "Willow",
-        "Maple tree", "Yew", "Magic tree",
-        "Teak", "Mahogany"
-    )
+    val resources =
+        listOf(
+            "Rocks",
+            "Tree",
+            "Oak",
+            "Willow",
+            "Maple tree",
+            "Yew",
+            "Magic tree",
+            "Teak",
+            "Mahogany",
+        )
 
     fun immerse() {
         if (counter++ >= Random.nextInt(150, 300)) {
@@ -165,18 +173,23 @@ class Adventurer(val style: CombatStyle) : Script() {
             if (bot.inventory.isFull) {
                 checkNearBank()
             }
-
         } else {
             if (bot.inventory.isFull) {
                 checkNearBank()
             } else {
                 val resource = scriptAPI.getNearestNodeFromList(resources, true)
                 if (resource != null) {
-                    if (resource.name.contains("ocks")) InteractionListeners.run(
-                        resource.id,
-                        IntType.SCENERY, "mine", bot, resource
-                    )
-                    else InteractionListeners.run(resource.id, IntType.SCENERY, "chop down", bot, resource)
+                    if (resource.name.contains("ocks")) {
+                        InteractionListeners.run(
+                            resource.id,
+                            IntType.SCENERY,
+                            "mine",
+                            bot,
+                            resource,
+                        )
+                    } else {
+                        InteractionListeners.run(resource.id, IntType.SCENERY, "chop down", bot, resource)
+                    }
                 }
             }
         }
@@ -206,17 +219,19 @@ class Adventurer(val style: CombatStyle) : Script() {
         }
 
         when (state) {
-
             State.LOOT_DELAY -> {
-                bot.pulseManager.run(object : Pulse() {
-                    var counter1 = 0
-                    override fun pulse(): Boolean {
-                        when (counter1++) {
-                            7 -> return true.also { state = State.LOOT }
+                bot.pulseManager.run(
+                    object : Pulse() {
+                        var counter1 = 0
+
+                        override fun pulse(): Boolean {
+                            when (counter1++) {
+                                7 -> return true.also { state = State.LOOT }
+                            }
+                            return false
                         }
-                        return false
-                    }
-                })
+                    },
+                )
             }
 
             State.LOOT -> {
@@ -284,16 +299,17 @@ class Adventurer(val style: CombatStyle) : Script() {
                 }
 
                 if (poi && randomNumberFromOne(1000) <= 50) {
-                    val roamDistancePoi = when (poiloc) {
-                        gemrocks, chaosnpc, chaosnpc2 -> 1
-                        magics, coalTrucks -> 7
-                        miningguild, teakfarm, crawlinghands -> 5
-                        varLumberYard -> 20
-                        keldagrimout, teak1 -> 30
-                        eaglespeek, isafdar -> 40
-                        treegnome -> 50
-                        else -> 60
-                    }
+                    val roamDistancePoi =
+                        when (poiloc) {
+                            gemrocks, chaosnpc, chaosnpc2 -> 1
+                            magics, coalTrucks -> 7
+                            miningguild, teakfarm, crawlinghands -> 5
+                            varLumberYard -> 20
+                            keldagrimout, teak1 -> 30
+                            eaglespeek, isafdar -> 40
+                            treegnome -> 50
+                            else -> 60
+                        }
                     scriptAPI.randomWalkTo(poiloc, roamDistancePoi)
                     return
                 }
@@ -397,6 +413,7 @@ class Adventurer(val style: CombatStyle) : Script() {
                 sold = false
                 val ge: Scenery? = scriptAPI.getNearestNode("Desk", true) as Scenery?
                 if (ge == null || bot.bank.isEmpty) state = State.ADVENTURE
+
                 class GEPulse : MovementPulse(bot, ge, DestinationFlag.OBJECT) {
                     override fun pulse(): Boolean {
                         bot.faceLocation(ge?.location)
@@ -455,7 +472,6 @@ class Adventurer(val style: CombatStyle) : Script() {
                 return
             }
 
-
             State.FIND_CITY -> {
                 if (counter++ >= 500 || cityLocationsGE.contains(city)) {
                     scriptAPI.teleport(getRandomCity().also { city = it })
@@ -469,9 +485,7 @@ class Adventurer(val style: CombatStyle) : Script() {
                 checkCounter(600)
                 return
             }
-
         }
-
     }
 
     fun dialogue() {
@@ -499,24 +513,26 @@ class Adventurer(val style: CombatStyle) : Script() {
 
         var localPlayers = RegionManager.getLocalPlayers(bot)
         if (localPlayers.isNotEmpty()) {
-            val localPlayer = localPlayers
-                .filter { it.name != bot.name }
-                .randomOrNull()
+            val localPlayer =
+                localPlayers
+                    .filter { it.name != bot.name }
+                    .randomOrNull()
             if (localPlayer != null) {
-                val chat = if (lineAlt.isNotEmpty() && Random.nextBoolean()) {
-                    lineAlt
-                } else {
-                    lineStd
-                }
-                    .replace("@name", localPlayer.username)
-                    .replace("@timer", until.toString())
+                val chat =
+                    if (lineAlt.isNotEmpty() && Random.nextBoolean()) {
+                        lineAlt
+                    } else {
+                        lineStd
+                    }.replace("@name", localPlayer.username)
+                        .replace("@timer", until.toString())
                 scriptAPI.sendChat(chat)
             } else {
-                val chat = if (lineAlt.isNotEmpty() && Random.nextBoolean()) {
-                    lineAlt
-                } else {
-                    lineStd
-                }
+                val chat =
+                    if (lineAlt.isNotEmpty() && Random.nextBoolean()) {
+                        lineAlt
+                    } else {
+                        lineStd
+                    }
                 scriptAPI.sendChat(chat)
             }
         }
@@ -532,18 +548,18 @@ class Adventurer(val style: CombatStyle) : Script() {
         TELEPORTING,
         LOOT,
         LOOT_DELAY,
-        FIND_GE
+        FIND_GE,
     }
-
 
     override fun newInstance(): Script {
         val script = Adventurer(style)
         script.state = State.START
         val tier = CombatBotAssembler.Tier.MED
-        if (type == CombatBotAssembler.Type.RANGE)
+        if (type == CombatBotAssembler.Type.RANGE) {
             script.bot = CombatBotAssembler().RangeAdventurer(tier, bot.startLocation)
-        else
+        } else {
             script.bot = CombatBotAssembler().MeleeAdventurer(tier, bot.startLocation)
+        }
         return script
     }
 
@@ -592,119 +608,166 @@ class Adventurer(val style: CombatStyle) : Script() {
         var citygroupA = listOf(falador, varrock, draynor, rimmington, lumbridge, edgeville)
         var citygroupB = listOf(yanille, ardougne, seers, catherby)
 
-        val cities = listOf(
-            swGEClerk, neGEClerk, nwGEBanker, seGEBanker,
-            yanille, ardougne, seers, catherby,
-            falador, varrock, draynor, rimmington,
-            lumbridge, edgeville
-        )
+        val cities =
+            listOf(
+                swGEClerk,
+                neGEClerk,
+                nwGEBanker,
+                seGEBanker,
+                yanille,
+                ardougne,
+                seers,
+                catherby,
+                falador,
+                varrock,
+                draynor,
+                rimmington,
+                lumbridge,
+                edgeville,
+            )
 
-        val pois = listOf(
-            karamja, karamja, alkharid,
-            alkharid, feldiphills, feldiphills,
-            isafdar, eaglespeek, eaglespeek,
-            canafis, treegnome, treegnome,
-            teak1, teakfarm, keldagrimout,
-            miningguild, coalTrucks, crawlinghands,
-            magics, gemrocks, chaosnpc, chaosnpc,
-            chaosnpc2, taverly,
-            varLumberYard
-        )
+        val pois =
+            listOf(
+                karamja,
+                karamja,
+                alkharid,
+                alkharid,
+                feldiphills,
+                feldiphills,
+                isafdar,
+                eaglespeek,
+                eaglespeek,
+                canafis,
+                treegnome,
+                treegnome,
+                teak1,
+                teakfarm,
+                keldagrimout,
+                miningguild,
+                coalTrucks,
+                crawlinghands,
+                magics,
+                gemrocks,
+                chaosnpc,
+                chaosnpc,
+                chaosnpc2,
+                taverly,
+                varLumberYard,
+            )
 
         val cityLocationsGE = listOf(swGEClerk, neGEClerk, nwGEBanker, seGEBanker)
 
-        val socialLocationsGE = listOf(
-            Location.create(3158, 3483, 0),
-            Location.create(3165, 3480, 0),
-            Location.create(3172, 3483, 0),
-            Location.create(3174, 3489, 0),
-            Location.create(3171, 3497, 0),
-            Location.create(3164, 3499, 0),
-            Location.create(3157, 3497, 0),
-            Location.create(3155, 3489, 0),
-            Location.create(3167, 3492, 0),
-            Location.create(3162, 3492, 0),
-            Location.create(3162, 3487, 0),
-            Location.create(3167, 3487, 0)
-        )
+        val socialLocationsGE =
+            listOf(
+                Location.create(3158, 3483, 0),
+                Location.create(3165, 3480, 0),
+                Location.create(3172, 3483, 0),
+                Location.create(3174, 3489, 0),
+                Location.create(3171, 3497, 0),
+                Location.create(3164, 3499, 0),
+                Location.create(3157, 3497, 0),
+                Location.create(3155, 3489, 0),
+                Location.create(3167, 3492, 0),
+                Location.create(3162, 3492, 0),
+                Location.create(3162, 3487, 0),
+                Location.create(3167, 3487, 0),
+            )
 
-        val clerkLocationsGe = listOf(
-            Location.create(3165, 3492, 0),
-            Location.create(3164, 3492, 0),
-            Location.create(3164, 3487, 0),
-            Location.create(3165, 3487, 0)
-        )
+        val clerkLocationsGe =
+            listOf(
+                Location.create(3165, 3492, 0),
+                Location.create(3164, 3492, 0),
+                Location.create(3164, 3487, 0),
+                Location.create(3165, 3487, 0),
+            )
 
-        var bankMap = mapOf<Location, ZoneBorders>(
-            falador to ZoneBorders(2950, 3374, 2943, 3368),
-            varrock to ZoneBorders(3182, 3435, 3189, 3446),
-            draynor to ZoneBorders(3092, 3240, 3095, 3246),
-            edgeville to ZoneBorders(3093, 3498, 3092, 3489),
-            yanille to ZoneBorders(2610, 3089, 2613, 3095),
-            ardougne to ZoneBorders(2649, 3281, 2655, 3286),
-            seers to ZoneBorders(2729, 3493, 2722, 3490),
-            catherby to ZoneBorders(2807, 3438, 2811, 3441)
-        )
+        var bankMap =
+            mapOf<Location, ZoneBorders>(
+                falador to ZoneBorders(2950, 3374, 2943, 3368),
+                varrock to ZoneBorders(3182, 3435, 3189, 3446),
+                draynor to ZoneBorders(3092, 3240, 3095, 3246),
+                edgeville to ZoneBorders(3093, 3498, 3092, 3489),
+                yanille to ZoneBorders(2610, 3089, 2613, 3095),
+                ardougne to ZoneBorders(2649, 3281, 2655, 3286),
+                seers to ZoneBorders(2729, 3493, 2722, 3490),
+                catherby to ZoneBorders(2807, 3438, 2811, 3441),
+            )
 
         private val whiteWolfMountainTop = Location(2850, 3496, 0)
         private val catherbyToTopOfWhiteWolf =
             arrayOf(Location(2856, 3442, 0), Location(2848, 3455, 0), Location(2848, 3471, 0), Location(2848, 3487, 0))
-        private val tavleryToTopOfWhiteWolf = arrayOf(
-            Location(2872, 3425, 0),
-            Location(2863, 3440, 0),
-            Location(2863, 3459, 0),
-            Location(2854, 3475, 0),
-            Location(2859, 3488, 0)
-        )
+        private val tavleryToTopOfWhiteWolf =
+            arrayOf(
+                Location(2872, 3425, 0),
+                Location(2863, 3440, 0),
+                Location(2863, 3459, 0),
+                Location(2854, 3475, 0),
+                Location(2859, 3488, 0),
+            )
 
-        val common_stuck_locations = mapOf(
-            ZoneBorders(2878, 3386, 2884, 3395) to { it: Adventurer ->
-                it.scriptAPI.walkArray(tavleryToTopOfWhiteWolf + whiteWolfMountainTop + catherbyToTopOfWhiteWolf.reversedArray())
-            },
-            ZoneBorders(2874, 3390, 2880, 3401) to { it: Adventurer ->
-                it.scriptAPI.walkArray(tavleryToTopOfWhiteWolf + whiteWolfMountainTop + catherbyToTopOfWhiteWolf.reversedArray())
-            },
-            ZoneBorders(2865, 3408, 2874, 3423) to { it: Adventurer ->
-                it.scriptAPI.walkArray(tavleryToTopOfWhiteWolf + whiteWolfMountainTop + catherbyToTopOfWhiteWolf.reversedArray())
-            },
-            ZoneBorders(2855, 3454, 2852, 3450) to { it: Adventurer ->
-                it.scriptAPI.walkArray(tavleryToTopOfWhiteWolf + whiteWolfMountainTop + catherbyToTopOfWhiteWolf.reversedArray())
-            },
-            ZoneBorders(2861, 3425, 2867, 3432) to { it: Adventurer ->
-                it.scriptAPI.walkArray(catherbyToTopOfWhiteWolf + whiteWolfMountainTop + tavleryToTopOfWhiteWolf.reversedArray())
-            },
-            ZoneBorders(2863, 3441, 2859, 3438) to { it: Adventurer ->
-                it.scriptAPI.walkArray(catherbyToTopOfWhiteWolf + whiteWolfMountainTop + tavleryToTopOfWhiteWolf.reversedArray())
-            },
-            ZoneBorders(2937, 3356, 2936, 3353) to { it: Adventurer ->
-                val wall = it.scriptAPI.getNearestNode("Crumbling wall", true)
-                if (wall == null) {
-                    it.refresh()
-                    it.ticks = 0
-                    return@to
-                }
-                it.scriptAPI.interact(it.bot, wall, "Climb-over")
-            },
-            ZoneBorders(3092, 3246, 3091, 3247) to { it: Adventurer ->
-                it.scriptAPI.walkTo(Location(3093, 3243, 0))
-            },
-            ZoneBorders(3140, 3468, 3140, 3468) to { it: Adventurer ->
-                it.scriptAPI.walkArray(
-                    arrayOf(
-                        Location.create(3135, 3516, 0),
-                        Location.create(3103, 3489, 0),
-                        Location.create(3082, 3423, 0)
+        val common_stuck_locations =
+            mapOf(
+                ZoneBorders(2878, 3386, 2884, 3395) to { it: Adventurer ->
+                    it.scriptAPI.walkArray(
+                        tavleryToTopOfWhiteWolf + whiteWolfMountainTop + catherbyToTopOfWhiteWolf.reversedArray(),
                     )
-                )
-            },
-        )
+                },
+                ZoneBorders(2874, 3390, 2880, 3401) to { it: Adventurer ->
+                    it.scriptAPI.walkArray(
+                        tavleryToTopOfWhiteWolf + whiteWolfMountainTop + catherbyToTopOfWhiteWolf.reversedArray(),
+                    )
+                },
+                ZoneBorders(2865, 3408, 2874, 3423) to { it: Adventurer ->
+                    it.scriptAPI.walkArray(
+                        tavleryToTopOfWhiteWolf + whiteWolfMountainTop + catherbyToTopOfWhiteWolf.reversedArray(),
+                    )
+                },
+                ZoneBorders(2855, 3454, 2852, 3450) to { it: Adventurer ->
+                    it.scriptAPI.walkArray(
+                        tavleryToTopOfWhiteWolf + whiteWolfMountainTop + catherbyToTopOfWhiteWolf.reversedArray(),
+                    )
+                },
+                ZoneBorders(2861, 3425, 2867, 3432) to { it: Adventurer ->
+                    it.scriptAPI.walkArray(
+                        catherbyToTopOfWhiteWolf + whiteWolfMountainTop + tavleryToTopOfWhiteWolf.reversedArray(),
+                    )
+                },
+                ZoneBorders(2863, 3441, 2859, 3438) to { it: Adventurer ->
+                    it.scriptAPI.walkArray(
+                        catherbyToTopOfWhiteWolf + whiteWolfMountainTop + tavleryToTopOfWhiteWolf.reversedArray(),
+                    )
+                },
+                ZoneBorders(2937, 3356, 2936, 3353) to { it: Adventurer ->
+                    val wall = it.scriptAPI.getNearestNode("Crumbling wall", true)
+                    if (wall == null) {
+                        it.refresh()
+                        it.ticks = 0
+                        return@to
+                    }
+                    it.scriptAPI.interact(it.bot, wall, "Climb-over")
+                },
+                ZoneBorders(3092, 3246, 3091, 3247) to { it: Adventurer ->
+                    it.scriptAPI.walkTo(Location(3093, 3243, 0))
+                },
+                ZoneBorders(3140, 3468, 3140, 3468) to { it: Adventurer ->
+                    it.scriptAPI.walkArray(
+                        arrayOf(
+                            Location.create(3135, 3516, 0),
+                            Location.create(3103, 3489, 0),
+                            Location.create(3082, 3423, 0),
+                        ),
+                    )
+                },
+            )
 
         val dialogue: JSONObject
         val dateCode: Int
 
         init {
             val reader = FileReader(ServerConfig.BOT_DATA_PATH + File.separator + "bot_dialogue.json")
-            val parser = org.json.simple.parser.JSONParser()
+            val parser =
+                org.json.simple.parser
+                    .JSONParser()
             val data = parser.parse(reader) as JSONObject
 
             dialogue = data

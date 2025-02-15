@@ -1,9 +1,5 @@
 package content.global.skill.cooking
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Sounds
 import content.global.skill.cooking.data.CookableItem
 import core.api.*
 import core.api.quest.isQuestComplete
@@ -17,15 +13,18 @@ import core.game.node.scenery.Scenery
 import core.game.system.task.Pulse
 import core.game.world.update.flag.context.Animation
 import core.tools.RandomFunction
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Sounds
 
 open class CookingPulse(
     open val player: Player,
     open val scenery: Scenery,
     open val initial: Int,
     open val product: Int,
-    open var amount: Int
+    open var amount: Int,
 ) : Pulse() {
-
     private var experience = 0.0
     private var burned = false
 
@@ -54,7 +53,6 @@ open class CookingPulse(
     open fun checkRequirements(): Boolean {
         this.experience = 0.0
         if (properties != null) {
-
             if (scenery.id == LUMBRIDGE_RANGE && !isQuestComplete(player, Quests.COOKS_ASSISTANT)) {
                 sendDialogue(player, "That requires completion of the Cook's Assistant quest in order to use it.")
                 return false
@@ -90,7 +88,11 @@ open class CookingPulse(
         return amount < 1
     }
 
-    open fun isBurned(player: Player, scenery: Scenery, food: Int): Boolean {
+    open fun isBurned(
+        player: Player,
+        scenery: Scenery,
+        food: Int,
+    ): Boolean {
         val hasGauntlets = player.equipment.containsItem(Item(Items.COOKING_GAUNTLETS_775))
         var effectiveCookingLevel = player.getSkills().getLevel(Skills.COOKING)
 
@@ -98,8 +100,9 @@ open class CookingPulse(
         val low: Int
         val high: Int
 
-        if (hasGauntlets && CookableItem.gauntletValues.containsKey(
-                food
+        if (hasGauntlets &&
+            CookableItem.gauntletValues.containsKey(
+                food,
             )
         ) {
             val successValues = CookableItem.gauntletValues[food]
@@ -109,7 +112,7 @@ open class CookingPulse(
             val successValues =
                 CookableItem.lumbridgeRangeValues.getOrDefault(
                     food,
-                    intArrayOf(item!!.lowRange, item.highRange)
+                    intArrayOf(item!!.lowRange, item.highRange),
                 )
             low = successValues[0]
             high = successValues[1]
@@ -123,7 +126,13 @@ open class CookingPulse(
         return host_ratio > client_ratio
     }
 
-    open fun cook(player: Player, sceneryId: Scenery?, burned: Boolean, initial: Int, product: Int): Boolean {
+    open fun cook(
+        player: Player,
+        sceneryId: Scenery?,
+        burned: Boolean,
+        initial: Int,
+        product: Int,
+    ): Boolean {
         val initialItem = Item(initial)
         val productItem = Item(product)
         animate()
@@ -131,7 +140,7 @@ open class CookingPulse(
         when (initial) {
             Items.SKEWERED_CHOMPY_7230, Items.SKEWERED_RABBIT_7224, Items.SKEWERED_BIRD_MEAT_9984, Items.SKEWERED_BEAST_9992, Items.IRON_SPIT_7225 ->
                 if (RandomFunction.random(
-                        15
+                        15,
                     ) == 5
                 ) {
                     sendMessage(player, "Your iron spit seems to have broken in the process.")
@@ -141,9 +150,10 @@ open class CookingPulse(
                     }
                 }
 
-            Items.UNCOOKED_CAKE_1889 -> if (!player.inventory.add(Item(Items.CAKE_TIN_1887))) {
-                GroundItemManager.create(Item(Items.CAKE_TIN_1887), player)
-            }
+            Items.UNCOOKED_CAKE_1889 ->
+                if (!player.inventory.add(Item(Items.CAKE_TIN_1887))) {
+                    GroundItemManager.create(Item(Items.CAKE_TIN_1887), player)
+                }
         }
         if (player.inventory.remove(initialItem)) {
             if (!burned) {
@@ -156,8 +166,8 @@ open class CookingPulse(
                         CookableItem.getBurnt(initial).id,
                         1,
                         sceneryId!!,
-                        initialItem.id
-                    )
+                        initialItem.id,
+                    ),
                 )
                 player.inventory.add(CookableItem.getBurnt(initial))
             }
@@ -168,7 +178,11 @@ open class CookingPulse(
         return false
     }
 
-    open fun getMessage(food: Item, product: Item, burned: Boolean): String? {
+    open fun getMessage(
+        food: Item,
+        product: Item,
+        burned: Boolean,
+    ): String? {
         return when {
             food.id == Items.RAW_OOMLIE_2337 -> "The meat is far too delicate to cook like this. Perhaps you should wrap something around it to protect it from the heat."
             product.id == Items.SODA_ASH_1781 && (food.id == Items.SEAWEED_401 || food.id == Items.SWAMP_WEED_10978) -> "You burn the ${food.name.lowercase()} into soda ash."
@@ -180,10 +194,12 @@ open class CookingPulse(
             product.id == Items.MEAT_PIE_2327 && !burned -> "You successfully bake a tasty meat pie."
             product.id == Items.APPLE_PIE_2323 && !burned -> "You successfully bake a traditional apple pie."
             product.id == Items.MUD_PIE_7170 && !burned -> "You successfully bake a mucky mud pie."
-            product.id in listOf(
-                Items.BOWL_OF_HOT_WATER_4456,
-                Items.CUP_OF_HOT_WATER_4460
-            ) -> if (burned) "You accidentally let the water boil over." else "You boil the water."
+            product.id in
+                listOf(
+                    Items.BOWL_OF_HOT_WATER_4456,
+                    Items.CUP_OF_HOT_WATER_4460,
+                )
+            -> if (burned) "You accidentally let the water boil over." else "You boil the water."
 
             CookableItem.intentionalBurn(food.id) -> "You deliberately burn the perfectly good piece of meat."
 

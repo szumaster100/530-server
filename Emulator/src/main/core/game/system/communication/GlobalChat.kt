@@ -9,10 +9,13 @@ import core.game.world.repository.Repository
 import core.tools.colorize
 
 class GlobalChat : Commands {
-
     override fun defineCommands() {
-
-        define(name = "muteglobal", privilege = Privilege.ADMIN, usage = "", description = "Toggles global chat on or off.") { player, _ ->
+        define(
+            name = "muteglobal",
+            privilege = Privilege.ADMIN,
+            usage = "",
+            description = "Toggles global chat on or off.",
+        ) { player, _ ->
             val original = getAttribute(player, ATTR_GLOBAL_MUTE, false)
             setAttribute(player, ATTR_GLOBAL_MUTE, !original)
             sendMessage(player, "Global chat is now ${if (original) "ON" else "OFF"}.")
@@ -22,21 +25,34 @@ class GlobalChat : Commands {
 
     companion object {
         val ATTR_GLOBAL_MUTE = "/save:globalmute"
-        fun process(sender: String, message: String, rights: Int) {
+
+        fun process(
+            sender: String,
+            message: String,
+            rights: Int,
+        ) {
             val msgSD = prepare(sender, message, false, rights)
             val msgHD = prepare(sender, message, true, rights)
             for (player in Repository.players.filter { !getAttribute(it, ATTR_GLOBAL_MUTE, false) }) {
-                if (player.interfaceManager.isResizable)
+                if (player.interfaceManager.isResizable) {
                     sendMessage(player, msgHD)
-                else
+                } else {
                     sendMessage(player, msgSD)
+                }
             }
         }
 
-        private fun prepare(sender: String, message: String, isResizable: Boolean, rights: Int): String {
+        private fun prepare(
+            sender: String,
+            message: String,
+            isResizable: Boolean,
+            rights: Int,
+        ): String {
             val baseColor = if (isResizable) "%f1b04c" else "%7512ff"
             val bracketColor = if (isResizable) "%ffffff" else "%000000"
-            return colorize("$bracketColor[${baseColor}G$bracketColor] ${if (rights > 0) "<img=${rights - 1}>" else ""}$sender: ${baseColor}$message")
+            return colorize(
+                "$bracketColor[${baseColor}G$bracketColor] ${if (rights > 0) "<img=${rights - 1}>" else ""}$sender: ${baseColor}$message",
+            )
         }
     }
 }

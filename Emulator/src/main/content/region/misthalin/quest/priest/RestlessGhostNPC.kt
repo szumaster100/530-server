@@ -1,7 +1,5 @@
 package content.region.misthalin.quest.priest
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.quest.isQuestComplete
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.CombatStyle
@@ -10,11 +8,19 @@ import core.game.node.entity.player.Player
 import core.game.world.GameWorld.ticks
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class RestlessGhostNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+class RestlessGhostNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return RestlessGhostNPC(id, location)
     }
 
@@ -37,7 +43,11 @@ class RestlessGhostNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id
         }
     }
 
-    override fun isAttackable(entity: Entity, style: CombatStyle, message: Boolean): Boolean {
+    override fun isAttackable(
+        entity: Entity,
+        style: CombatStyle,
+        message: Boolean,
+    ): Boolean {
         val player = (entity as Player)
         val pl = getAttribute<Player>("player", null)
         return pl != null && pl == player
@@ -59,5 +69,4 @@ class RestlessGhostNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id
     override fun getIds(): IntArray {
         return intArrayOf(NPCs.SKELETON_459, NPCs.RESTLESS_GHOST_457)
     }
-
 }

@@ -1,11 +1,13 @@
 package content.region.misthalin.handlers.lumbridge
 
-import org.rs.consts.Components
 import core.game.component.Component
 import core.game.node.entity.player.Player
+import org.rs.consts.Components
 
-enum class GnomeCopterSign(private val button: String, vararg info: String) {
-
+enum class GnomeCopterSign(
+    private val button: String,
+    vararg info: String,
+) {
     ENTRANCE(
         "~ Gnomecopter Tours ~",
         "Welcome to Gnomecopter",
@@ -19,8 +21,9 @@ enum class GnomeCopterSign(private val button: String, vararg info: String) {
         "",
         "",
         "Warning: all riders must be at",
-        "least 2ft, 6ins tall."
-    );
+        "least 2ft, 6ins tall.",
+    ),
+    ;
 
     private val info: Array<String> = info as Array<String>
 

@@ -1,14 +1,15 @@
 package content.region.fremennik.quest.viking.handlers
 
-import org.rs.consts.Items
 import core.api.*
 import core.game.node.entity.Entity
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
+import org.rs.consts.Items
 
-class DraugenNPC(val player: Player) : NPC(1279, player.location?.transform(1, 0, 0)) {
-
+class DraugenNPC(
+    val player: Player,
+) : NPC(1279, player.location?.transform(1, 0, 0)) {
     override fun init() {
         super.init()
         isRespawn = false

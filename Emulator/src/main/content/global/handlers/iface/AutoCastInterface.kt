@@ -1,14 +1,13 @@
 package content.global.handlers.iface
 
-import org.rs.consts.Components
 import core.api.getAttribute
 import core.api.removeAttribute
 import core.game.interaction.InterfaceListener
 import core.game.node.entity.combat.equipment.WeaponInterface
 import core.game.node.entity.player.Player
+import org.rs.consts.Components
 
 class AutoCastInterface : InterfaceListener {
-
     override fun defineInterfaceListeners() {
         on(Components.STAFF_SPELLS_319) { player, _, _, buttonID, _, _ ->
             autoCast(player, buttonID)
@@ -28,7 +27,10 @@ class AutoCastInterface : InterfaceListener {
         }
     }
 
-    private fun autoCast(player: Player, button: Int) {
+    private fun autoCast(
+        player: Player,
+        button: Int,
+    ) {
         if (!getAttribute(player, "autocast_select", false)) return
         removeAttribute(player, "autocast_select")
         val w = player.getExtension<WeaponInterface>(WeaponInterface::class.java)

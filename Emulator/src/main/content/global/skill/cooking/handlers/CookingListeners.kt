@@ -1,9 +1,5 @@
 package content.global.skill.cooking.handlers
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Scenery
-import org.rs.consts.Sounds
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
@@ -12,35 +8,40 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.system.task.Pulse
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Scenery
+import org.rs.consts.Sounds
 
 class CookingListeners : InteractionListener {
+    private val potteryId =
+        intArrayOf(
+            Scenery.POTTERY_OVEN_2643,
+            Scenery.POTTERY_OVEN_4308,
+            Scenery.POTTERY_OVEN_11601,
+            Scenery.POTTERY_OVEN_34802,
+        )
 
-    private val potteryId = intArrayOf(
-        Scenery.POTTERY_OVEN_2643,
-        Scenery.POTTERY_OVEN_4308,
-        Scenery.POTTERY_OVEN_11601,
-        Scenery.POTTERY_OVEN_34802
-    )
-
-    private val churnId = intArrayOf(
-        Scenery.DAIRY_CHURN_10093,
-        Scenery.DAIRY_CHURN_10094,
-        Scenery.DAIRY_CHURN_25720,
-        Scenery.DAIRY_CHURN_34800,
-        Scenery.DAIRY_CHURN_35931
-    )
+    private val churnId =
+        intArrayOf(
+            Scenery.DAIRY_CHURN_10093,
+            Scenery.DAIRY_CHURN_10094,
+            Scenery.DAIRY_CHURN_25720,
+            Scenery.DAIRY_CHURN_34800,
+            Scenery.DAIRY_CHURN_35931,
+        )
 
     private val kebabId = intArrayOf(Items.KEBAB_1971, Items.UGTHANKI_KEBAB_1883, Items.UGTHANKI_KEBAB_1885)
 
-    val meatId = intArrayOf(
-        Items.RAW_CHOMPY_2876,
-        Items.RAW_RABBIT_3226,
-        Items.RAW_BIRD_MEAT_9978,
-        Items.RAW_BEAST_MEAT_9986
-    )
+    val meatId =
+        intArrayOf(
+            Items.RAW_CHOMPY_2876,
+            Items.RAW_RABBIT_3226,
+            Items.RAW_BIRD_MEAT_9978,
+            Items.RAW_BEAST_MEAT_9986,
+        )
 
     override fun defineListeners() {
-
         onUseWith(IntType.ITEM, Items.CAKE_TIN_1887, Items.POT_OF_FLOUR_1933) { player, used, _ ->
             val itemSlot = used.asItem().slot
 
@@ -52,7 +53,7 @@ class CookingListeners : InteractionListener {
                     Item(Items.BUCKET_OF_MILK_1927, 1),
                     Item(Items.EGG_1944, 1),
                     Item(Items.CAKE_TIN_1887, 1),
-                    Item(Items.POT_OF_FLOUR_1933, 1)
+                    Item(Items.POT_OF_FLOUR_1933, 1),
                 )
             ) {
                 replaceSlot(player, itemSlot, Item(Items.UNCOOKED_CAKE_1889, 1))
@@ -135,11 +136,13 @@ class CookingListeners : InteractionListener {
         }
 
         on(churnId, IntType.SCENERY, "churn") { player, _ ->
-            if (!inInventory(player, Items.BUCKET_OF_MILK_1927, 1) && !inInventory(
+            if (!inInventory(player, Items.BUCKET_OF_MILK_1927, 1) &&
+                !inInventory(
                     player,
                     Items.POT_OF_CREAM_2130,
-                    1
-                ) && !inInventory(player, Items.PAT_OF_BUTTER_6697, 1)
+                    1,
+                ) &&
+                !inInventory(player, Items.PAT_OF_BUTTER_6697, 1)
             ) {
                 sendMessage(player, "You need some milk, cream or butter to use in the churn.")
                 return@on true
@@ -152,16 +155,19 @@ class CookingListeners : InteractionListener {
             player.pulseManager.run(
                 object : Pulse(1) {
                     val cut_animation = Animations.CUTTING_CHOCOLATE_BAR_1989
+
                     override fun pulse(): Boolean {
                         super.setDelay(4)
                         val amount = amountInInventory(player, Items.CHOCOLATE_BAR_1973)
-                        if (amount > 0) removeItem(player, Items.CHOCOLATE_BAR_1973).also {
-                            animate(player, cut_animation)
-                            addItem(player, Items.CHOCOLATE_DUST_1975)
+                        if (amount > 0) {
+                            removeItem(player, Items.CHOCOLATE_BAR_1973).also {
+                                animate(player, cut_animation)
+                                addItem(player, Items.CHOCOLATE_DUST_1975)
+                            }
                         }
                         return amount <= 0
                     }
-                }
+                },
             )
             return@onUseWith true
         }
@@ -172,13 +178,14 @@ class CookingListeners : InteractionListener {
                 return@onUseWith false
             }
 
-            val productId = when (used.id) {
-                Items.RAW_CHOMPY_2876 -> Items.SKEWERED_CHOMPY_7230
-                Items.RAW_RABBIT_3226 -> Items.SKEWERED_RABBIT_7224
-                Items.RAW_BIRD_MEAT_9978 -> Items.SKEWERED_BIRD_MEAT_9984
-                Items.RAW_BEAST_MEAT_9986 -> Items.SKEWERED_BEAST_9992
-                else -> null
-            }
+            val productId =
+                when (used.id) {
+                    Items.RAW_CHOMPY_2876 -> Items.SKEWERED_CHOMPY_7230
+                    Items.RAW_RABBIT_3226 -> Items.SKEWERED_RABBIT_7224
+                    Items.RAW_BIRD_MEAT_9978 -> Items.SKEWERED_BIRD_MEAT_9984
+                    Items.RAW_BEAST_MEAT_9986 -> Items.SKEWERED_BEAST_9992
+                    else -> null
+                }
 
             if (productId != null) {
                 if (removeItem(player, used.asItem()) && removeItem(player, with.asItem())) {

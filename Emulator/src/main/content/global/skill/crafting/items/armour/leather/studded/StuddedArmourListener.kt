@@ -1,15 +1,14 @@
 package content.global.skill.crafting.items.armour.leather.studded
 
-import org.rs.consts.Items
 import core.api.amountInInventory
 import core.api.skill.sendSkillDialogue
 import core.api.submitIndividualPulse
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.item.Item
+import org.rs.consts.Items
 
 class StuddedArmourListener : InteractionListener {
-
     private val leatherItem = StuddedArmour.values().map { it.leather }.toIntArray()
 
     override fun defineListeners() {
@@ -21,7 +20,7 @@ class StuddedArmourListener : InteractionListener {
                 create { _, amount ->
                     submitIndividualPulse(
                         entity = player,
-                        pulse = StuddedArmourPulse(player, Item(item.leather), item, amount)
+                        pulse = StuddedArmourPulse(player, Item(item.leather), item, amount),
                     )
                 }
 

@@ -1,6 +1,5 @@
 package content.region.misthalin.dialogue.varrock
 
-import org.rs.consts.NPCs
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
 import core.game.global.Skillcape.purchase
@@ -8,10 +7,12 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
-class HeadChefDialogue(player: Player? = null) : Dialogue(player) {
-
+class HeadChefDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         var door = false
@@ -21,7 +22,7 @@ class HeadChefDialogue(player: Player? = null) : Dialogue(player) {
                 847,
                 FaceAnim.NEUTRAL,
                 "You can't come in here unless you're wearing a chef's",
-                "hat or something like that."
+                "hat or something like that.",
             )
             stage = 0
             return true
@@ -33,7 +34,7 @@ class HeadChefDialogue(player: Player? = null) : Dialogue(player) {
                 "Hello, welcome to the Cooking Guild. It's always great to",
                 "have such an accomplished chef visit. Say would you be",
                 "interested in a Skillcape of Cooking? They're only available",
-                "to master chefs."
+                "to master chefs.",
             )
             stage = 100
             return true
@@ -43,13 +44,16 @@ class HeadChefDialogue(player: Player? = null) : Dialogue(player) {
             FaceAnim.HAPPY,
             "Hello, welcome to the Cooking Guild. Only accomplished",
             "chefs and cooks are allowed in here. Feel free to use any",
-            "of our facilities."
+            "of our facilities.",
         )
         stage = 1
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> end()
             1 -> {
@@ -57,17 +61,18 @@ class HeadChefDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 2
             }
 
-            2 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HAPPY, "Nice cape, you're wearing!")
-                    stage = 10
-                }
+            2 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HAPPY, "Nice cape, you're wearing!")
+                        stage = 10
+                    }
 
-                2 -> {
-                    player(FaceAnim.FRIENDLY, "Thanks, bye.")
-                    stage = 3
+                    2 -> {
+                        player(FaceAnim.FRIENDLY, "Thanks, bye.")
+                        stage = 3
+                    }
                 }
-            }
 
             3 -> end()
             10 -> {
@@ -76,7 +81,7 @@ class HeadChefDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HAPPY,
                     "Thank you! It's my most prized possession, it's a Skillcape",
                     "of Cooking; it shows that I've achieved level 99 Cooking",
-                    "and am one of the best chefs in the land!"
+                    "and am one of the best chefs in the land!",
                 )
                 stage = 11
             }
@@ -87,17 +92,18 @@ class HeadChefDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 101
             }
 
-            101 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.FRIENDLY, "No thanks.")
-                    stage = 110
-                }
+            101 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.FRIENDLY, "No thanks.")
+                        stage = 110
+                    }
 
-                2 -> {
-                    player("Yes, please.")
-                    stage = 150
+                    2 -> {
+                        player("Yes, please.")
+                        stage = 150
+                    }
                 }
-            }
 
             110 -> {
                 interpreter.sendDialogues(847, FaceAnim.HAPPY, "Okay, come back to me if you change your mind.")
@@ -110,7 +116,7 @@ class HeadChefDialogue(player: Player? = null) : Dialogue(player) {
                     847,
                     FaceAnim.HALF_GUILTY,
                     "Most certainly, just as soon as you give me 99000 gold",
-                    "coins."
+                    "coins.",
                 )
                 stage = 151
             }
@@ -120,17 +126,18 @@ class HeadChefDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 152
             }
 
-            152 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.EXTREMELY_SHOCKED, "That's much too expensive.")
-                    stage = 160
-                }
+            152 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.EXTREMELY_SHOCKED, "That's much too expensive.")
+                        stage = 160
+                    }
 
-                2 -> {
-                    player(FaceAnim.HAPPY, "Sure.")
-                    stage = 200
+                    2 -> {
+                        player(FaceAnim.HAPPY, "Sure.")
+                        stage = 200
+                    }
                 }
-            }
 
             160 -> {
                 interpreter.sendDialogues(847, FaceAnim.HALF_GUILTY, "I'm sorry you feel that way.")

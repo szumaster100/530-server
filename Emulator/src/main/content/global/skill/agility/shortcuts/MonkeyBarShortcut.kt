@@ -17,7 +17,6 @@ import core.tools.RandomFunction
 
 @Initializable
 class MonkeyBarShortcut : AgilityShortcut {
-
     constructor() : super(intArrayOf(29375), 1, 14.0, "swing across")
     constructor(ids: IntArray?, level: Int, experience: Double, option: String?) : super(ids, level, experience, option)
 
@@ -26,7 +25,12 @@ class MonkeyBarShortcut : AgilityShortcut {
         return super.newInstance(arg)
     }
 
-    override fun run(player: Player, scenery: Scenery, option: String, failed: Boolean) {
+    override fun run(
+        player: Player,
+        scenery: Scenery,
+        option: String,
+        failed: Boolean,
+    ) {
         player.lock(5)
         var direct = Direction.get((scenery.direction.toInteger() + 2) % 4)
         if (scenery.id == 29375) {
@@ -36,11 +40,12 @@ class MonkeyBarShortcut : AgilityShortcut {
                 direct = Direction.SOUTH
             }
         } else if (scenery.id == 2321) {
-            direct = if (player.location.y >= 9494) {
-                Direction.SOUTH
-            } else {
-                Direction.NORTH
-            }
+            direct =
+                if (player.location.y >= 9494) {
+                    Direction.SOUTH
+                } else {
+                    Direction.NORTH
+                }
         }
 
         val start = player.location
@@ -51,7 +56,7 @@ class MonkeyBarShortcut : AgilityShortcut {
             start.transform(dir),
             start.transform(dir.stepX shl 1, dir.stepY shl 1, 0),
             Animation.create(742),
-            Animation.create(744)
+            Animation.create(744),
         )
         player.logoutListeners["monkey-bar"] = { p: Player ->
             p.location = start
@@ -59,6 +64,7 @@ class MonkeyBarShortcut : AgilityShortcut {
         Pulser.submit(
             object : Pulse(2, player) {
                 var count: Int = 0
+
                 override fun pulse(): Boolean {
                     if (++count == 1) {
                         if (scenery.id == 2321 && (AgilityHandler.hasFailed(player, 57, 0.01).also { failed = it })) {
@@ -74,7 +80,7 @@ class MonkeyBarShortcut : AgilityShortcut {
                             player.location.transform(dir.stepX * 4, dir.stepY * 4, 0),
                             Animation.create(662),
                             0.0,
-                            null
+                            null,
                         )
                     } else if (count == 2) {
                         if (failed) {
@@ -86,7 +92,7 @@ class MonkeyBarShortcut : AgilityShortcut {
                                 Location(2599, 9564, 0),
                                 Animation.create(768),
                                 RandomFunction.random(1, 3),
-                                null
+                                null,
                             )
                             player.logoutListeners.remove("monkey-bar")
                             return true
@@ -99,18 +105,21 @@ class MonkeyBarShortcut : AgilityShortcut {
                             Animation.create(743),
                             10,
                             experience,
-                            null
+                            null,
                         )
                         player.logoutListeners.remove("monkey-bar")
                         return true
                     }
                     return false
                 }
-            }
+            },
         )
     }
 
-    override fun getDestination(n: Node, node: Node): Location? {
+    override fun getDestination(
+        n: Node,
+        node: Node,
+    ): Location? {
         if (node.location == Location(2598, 9489, 0)) {
             return Location(2597, 9488, 0)
         } else if (node.location == Location(2598, 9494, 0)) {
@@ -130,15 +139,16 @@ class MonkeyBarShortcut : AgilityShortcut {
     }
 
     companion object {
-        private val MBAR_LOCATIONS = arrayOf(
-            arrayOf(Location(3120, 9969, 0), Location.create(3121, 9969, 0)),
-            arrayOf(Location(3119, 9969, 0), Location.create(3120, 9969, 0)),
-            arrayOf(Location(3120, 9964, 0), Location.create(3121, 9964, 0)),
-            arrayOf(Location.create(3120, 9963, 0), Location.create(3120, 9964, 0)),
-            arrayOf(Location(2598, 9489, 0), Location(2597, 9488, 0)),
-            arrayOf(Location(2598, 9489, 0), Location(2600, 9488, 0)),
-            arrayOf(Location(2598, 9494, 0), Location(2597, 9495, 0)),
-            arrayOf(Location(2599, 9494, 0), Location(2600, 9495, 0))
-        )
+        private val MBAR_LOCATIONS =
+            arrayOf(
+                arrayOf(Location(3120, 9969, 0), Location.create(3121, 9969, 0)),
+                arrayOf(Location(3119, 9969, 0), Location.create(3120, 9969, 0)),
+                arrayOf(Location(3120, 9964, 0), Location.create(3121, 9964, 0)),
+                arrayOf(Location.create(3120, 9963, 0), Location.create(3120, 9964, 0)),
+                arrayOf(Location(2598, 9489, 0), Location(2597, 9488, 0)),
+                arrayOf(Location(2598, 9489, 0), Location(2600, 9488, 0)),
+                arrayOf(Location(2598, 9494, 0), Location(2597, 9495, 0)),
+                arrayOf(Location(2599, 9494, 0), Location(2600, 9495, 0)),
+            )
     }
 }

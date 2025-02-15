@@ -6,8 +6,11 @@ import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 
-class SnelmCraftingPulse(player: Player?, node: Item?, val itemId: Snelm) : SkillPulse<Item?>(player, node) {
-
+class SnelmCraftingPulse(
+    player: Player?,
+    node: Item?,
+    val itemId: Snelm,
+) : SkillPulse<Item?>(player, node) {
     override fun checkRequirements(): Boolean {
         if (getStatLevel(player, Skills.CRAFTING) < 15) {
             sendDialogue(player, "You need a crafting level of at least 15 in order to do this.")

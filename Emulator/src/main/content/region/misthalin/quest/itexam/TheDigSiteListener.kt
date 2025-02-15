@@ -1,9 +1,5 @@
 package content.region.misthalin.quest.itexam
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
-import org.rs.consts.Quests
 import content.global.skill.thieving.PickpocketListener
 import core.api.*
 import core.api.quest.getQuestStage
@@ -24,11 +20,13 @@ import core.game.world.map.Location
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.update.flag.context.Animation
 import core.tools.END_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
+import org.rs.consts.Scenery
 
 class TheDigSiteListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(Items.LEVEL_1_CERTIFICATE_691, ITEM, "look-at") { player, _ ->
             openInterface(player, 440)
             sendString(player, player.username, 440, 5)
@@ -50,7 +48,7 @@ class TheDigSiteListener : InteractionListener {
         on(
             intArrayOf(NPCs.DIGSITE_WORKMAN_613, NPCs.DIGSITE_WORKMAN_4564, NPCs.DIGSITE_WORKMAN_4565),
             NPC,
-            "steal-from"
+            "steal-from",
         ) { player, node ->
 
             if (getStatLevel(player, Skills.THIEVING) < 25) {
@@ -69,18 +67,19 @@ class TheDigSiteListener : InteractionListener {
                     queueScript(
                         player,
                         PickpocketListener.PICKPOCKET_ANIM.duration,
-                        QueueStrength.NORMAL
+                        QueueStrength.NORMAL,
                     ) { stage: Int ->
                         when (stage) {
                             0 -> {
                                 if (rollOutcome.size > 0) {
                                     addItemOrDrop(player, rollOutcome[0].id)
                                     when (rollOutcome[0].id) {
-                                        Items.ANIMAL_SKULL_671 -> sendItemDialogue(
-                                            player,
-                                            Items.ANIMAL_SKULL_671,
-                                            "You steal an animal skull."
-                                        )
+                                        Items.ANIMAL_SKULL_671 ->
+                                            sendItemDialogue(
+                                                player,
+                                                Items.ANIMAL_SKULL_671,
+                                                "You steal an animal skull.",
+                                            )
 
                                         else -> sendMessage(player, "You steal something.")
                                     }
@@ -105,7 +104,6 @@ class TheDigSiteListener : InteractionListener {
                     node.asNpc().face(null)
                 }
             } else {
-
                 player.animator.animate(PickpocketListener.PICKPOCKET_ANIM)
                 val rollOutcome =
                     PickpocketListener.pickpocketRoll(player, 84.0, 240.0, workmanPostQuestPickpocketingTable)
@@ -113,18 +111,19 @@ class TheDigSiteListener : InteractionListener {
                     queueScript(
                         player,
                         PickpocketListener.PICKPOCKET_ANIM.duration,
-                        QueueStrength.NORMAL
+                        QueueStrength.NORMAL,
                     ) { stage: Int ->
                         when (stage) {
                             0 -> {
                                 if (rollOutcome.size > 0) {
                                     addItemOrDrop(player, rollOutcome[0].id)
                                     when (rollOutcome[0].id) {
-                                        Items.ANIMAL_SKULL_671 -> sendItemDialogue(
-                                            player,
-                                            Items.ANIMAL_SKULL_671,
-                                            "You steal an animal skull."
-                                        )
+                                        Items.ANIMAL_SKULL_671 ->
+                                            sendItemDialogue(
+                                                player,
+                                                Items.ANIMAL_SKULL_671,
+                                                "You steal an animal skull.",
+                                            )
 
                                         else -> sendMessage(player, "You steal something.")
                                     }
@@ -167,19 +166,24 @@ class TheDigSiteListener : InteractionListener {
             openDialogue(
                 player,
                 object : DialogueFile() {
-                    override fun handle(componentID: Int, buttonID: Int) {
+                    override fun handle(
+                        componentID: Int,
+                        buttonID: Int,
+                    ) {
                         when (stage) {
-                            0 -> playerl("Hey, something has been dropped here...").also {
-                                addItemOrDrop(player, Items.TEDDY_673)
-                                stage++
-                            }
+                            0 ->
+                                playerl("Hey, something has been dropped here...").also {
+                                    addItemOrDrop(player, Items.TEDDY_673)
+                                    stage++
+                                }
 
-                            1 -> sendItemDialogue(player, Items.TEDDY_673, "You find... something.").also {
-                                stage = END_DIALOGUE
-                            }
+                            1 ->
+                                sendItemDialogue(player, Items.TEDDY_673, "You find... something.").also {
+                                    stage = END_DIALOGUE
+                                }
                         }
                     }
-                }
+                },
             )
             return@on true
         }
@@ -189,7 +193,7 @@ class TheDigSiteListener : InteractionListener {
                 sendNPCDialogue(
                     player,
                     with.id,
-                    "Ah! Lovely! You can't beat a good cuppa! You're free to pan all you want."
+                    "Ah! Lovely! You can't beat a good cuppa! You're free to pan all you want.",
                 )
                 setAttribute(player, TheDigSite.attributePanningGuideTea, true)
             }
@@ -237,7 +241,7 @@ class TheDigSiteListener : InteractionListener {
                                 sendItemDialogue(
                                     player,
                                     Items.PANNING_TRAY_679,
-                                    "You lift the full tray from the water."
+                                    "You lift the full tray from the water.",
                                 )
                                 if (removeItem(player, Items.PANNING_TRAY_677)) {
                                     addItemOrDrop(player, Items.PANNING_TRAY_679)
@@ -272,41 +276,47 @@ class TheDigSiteListener : InteractionListener {
                 if (tableRoll.size > 0) {
                     addItemOrDrop(player, tableRoll[0].id)
                     when (tableRoll[0].id) {
-                        Items.COINS_995 -> sendItemDialogue(
-                            player,
-                            Items.COINS_995,
-                            "You find some coins within the mud."
-                        )
+                        Items.COINS_995 ->
+                            sendItemDialogue(
+                                player,
+                                Items.COINS_995,
+                                "You find some coins within the mud.",
+                            )
 
-                        Items.NUGGETS_680 -> sendItemDialogue(
-                            player,
-                            Items.PANNING_TRAY_678,
-                            "You find some gold nuggets within the mud."
-                        )
+                        Items.NUGGETS_680 ->
+                            sendItemDialogue(
+                                player,
+                                Items.PANNING_TRAY_678,
+                                "You find some gold nuggets within the mud.",
+                            )
 
-                        Items.OYSTER_407 -> sendItemDialogue(
-                            player,
-                            Items.OYSTER_407,
-                            "You find an oyster within the mud."
-                        )
+                        Items.OYSTER_407 ->
+                            sendItemDialogue(
+                                player,
+                                Items.OYSTER_407,
+                                "You find an oyster within the mud.",
+                            )
 
-                        Items.UNCUT_OPAL_1625 -> sendItemDialogue(
-                            player,
-                            Items.UNCUT_OPAL_1625,
-                            "You find a gem within the mud!"
-                        )
+                        Items.UNCUT_OPAL_1625 ->
+                            sendItemDialogue(
+                                player,
+                                Items.UNCUT_OPAL_1625,
+                                "You find a gem within the mud!",
+                            )
 
-                        Items.UNCUT_JADE_1627 -> sendItemDialogue(
-                            player,
-                            Items.UNCUT_JADE_1627,
-                            "You find a gem within the mud!"
-                        )
+                        Items.UNCUT_JADE_1627 ->
+                            sendItemDialogue(
+                                player,
+                                Items.UNCUT_JADE_1627,
+                                "You find a gem within the mud!",
+                            )
 
-                        Items.SPECIAL_CUP_672 -> sendItemDialogue(
-                            player,
-                            Items.SPECIAL_CUP_672,
-                            "You find a shiny cup covered in mud."
-                        )
+                        Items.SPECIAL_CUP_672 ->
+                            sendItemDialogue(
+                                player,
+                                Items.SPECIAL_CUP_672,
+                                "You find a shiny cup covered in mud.",
+                            )
                     }
                 } else {
                     sendItemDialogue(player, Items.PANNING_TRAY_679, "The tray contains only plain mud.")
@@ -343,7 +353,12 @@ class TheDigSiteListener : InteractionListener {
                         }
                     }
                 } else {
-                    sendNPCDialogue(player, NPCs.DIGSITE_WORKMAN_613, "Oi! What do you think you're doing? There's fragile specimens around here!", FaceAnim.ANGRY)
+                    sendNPCDialogue(
+                        player,
+                        NPCs.DIGSITE_WORKMAN_613,
+                        "Oi! What do you think you're doing? There's fragile specimens around here!",
+                        FaceAnim.ANGRY,
+                    )
                 }
             }
 
@@ -373,7 +388,12 @@ class TheDigSiteListener : InteractionListener {
                         }
                     }
                 } else {
-                    sendNPCDialogue(player, NPCs.DIGSITE_WORKMAN_613, "Oi! What do you think you're doing? There's fragile specimens around here!", FaceAnim.ANGRY)
+                    sendNPCDialogue(
+                        player,
+                        NPCs.DIGSITE_WORKMAN_613,
+                        "Oi! What do you think you're doing? There's fragile specimens around here!",
+                        FaceAnim.ANGRY,
+                    )
                 }
             }
 
@@ -404,7 +424,12 @@ class TheDigSiteListener : InteractionListener {
                         }
                     }
                 } else {
-                    sendNPCDialogue(player, NPCs.DIGSITE_WORKMAN_613, "Oi! What do you think you're doing? There's fragile specimens around here!", FaceAnim.ANGRY)
+                    sendNPCDialogue(
+                        player,
+                        NPCs.DIGSITE_WORKMAN_613,
+                        "Oi! What do you think you're doing? There's fragile specimens around here!",
+                        FaceAnim.ANGRY,
+                    )
                 }
             }
 
@@ -455,7 +480,10 @@ class TheDigSiteListener : InteractionListener {
                 } else {
                     sendMessage(player, "You operate the winch...")
                     queueScript(player, 2, QueueStrength.NORMAL) {
-                        sendPlayerDialogue(player, "Hey, I think I could fit down here. I need something to help me get all the way down.")
+                        sendPlayerDialogue(
+                            player,
+                            "Hey, I think I could fit down here. I need something to help me get all the way down.",
+                        )
                         sendMessage(player, "The bucket descends, but does not reach the bottom.")
                         return@queueScript stopExecuting(player)
                     }
@@ -464,13 +492,32 @@ class TheDigSiteListener : InteractionListener {
                 openDialogue(
                     player,
                     object : DialogueFile() {
-                        override fun handle(componentID: Int, buttonID: Int) {
+                        override fun handle(
+                            componentID: Int,
+                            buttonID: Int,
+                        ) {
                             when (stage) {
-                                0 -> npc(NPCs.DIGSITE_WORKMAN_613, "Sorry; this area is private. The only way you'll get to", "use these is by impressing the archaeological expert up", "at the center.").also { stage++ }
-                                1 -> npc(NPCs.DIGSITE_WORKMAN_613, "Find something worthwhile and he might let you use the", "winches. Until then, get lost!").also { stage = END_DIALOGUE }
+                                0 ->
+                                    npc(
+                                        NPCs.DIGSITE_WORKMAN_613,
+                                        "Sorry; this area is private. The only way you'll get to",
+                                        "use these is by impressing the archaeological expert up",
+                                        "at the center.",
+                                    ).also {
+                                        stage++
+                                    }
+                                1 ->
+                                    npc(
+                                        NPCs.DIGSITE_WORKMAN_613,
+                                        "Find something worthwhile and he might let you use the",
+                                        "winches. Until then, get lost!",
+                                    ).also {
+                                        stage =
+                                            END_DIALOGUE
+                                    }
                             }
                         }
-                    }
+                    },
                 )
             }
 
@@ -486,13 +533,32 @@ class TheDigSiteListener : InteractionListener {
                     openDialogue(
                         player,
                         object : DialogueFile() {
-                            override fun handle(componentID: Int, buttonID: Int) {
+                            override fun handle(
+                                componentID: Int,
+                                buttonID: Int,
+                            ) {
                                 when (stage) {
-                                    0 -> npc(NPCs.DIGSITE_WORKMAN_613, "Sorry; this area is private. The only way you'll get to", "use these is by impressing the archaeological expert up", "at the center.").also { stage++ }
-                                    1 -> npc(NPCs.DIGSITE_WORKMAN_613, "Find something worthwhile and he might let you use the", "winches. Until then, get lost!").also { stage = END_DIALOGUE }
+                                    0 ->
+                                        npc(
+                                            NPCs.DIGSITE_WORKMAN_613,
+                                            "Sorry; this area is private. The only way you'll get to",
+                                            "use these is by impressing the archaeological expert up",
+                                            "at the center.",
+                                        ).also {
+                                            stage++
+                                        }
+                                    1 ->
+                                        npc(
+                                            NPCs.DIGSITE_WORKMAN_613,
+                                            "Find something worthwhile and he might let you use the",
+                                            "winches. Until then, get lost!",
+                                        ).also {
+                                            stage =
+                                                END_DIALOGUE
+                                        }
                                 }
                             }
-                        }
+                        },
                     )
                 }
             }
@@ -521,7 +587,7 @@ class TheDigSiteListener : InteractionListener {
                     queueScript(player, 2, QueueStrength.NORMAL) {
                         sendPlayerDialogue(
                             player,
-                            "Hey, I think I could fit down here. I need something to help me get all the way down."
+                            "Hey, I think I could fit down here. I need something to help me get all the way down.",
                         )
                         sendMessage(player, "The bucket descends, but does not reach the bottom.")
                         return@queueScript stopExecuting(player)
@@ -531,23 +597,28 @@ class TheDigSiteListener : InteractionListener {
                 openDialogue(
                     player,
                     object : DialogueFile() {
-                        override fun handle(componentID: Int, buttonID: Int) {
+                        override fun handle(
+                            componentID: Int,
+                            buttonID: Int,
+                        ) {
                             when (stage) {
-                                0 -> npc(
-                                    NPCs.DIGSITE_WORKMAN_613,
-                                    "Sorry; this area is private. The only way you'll get to",
-                                    "use these is by impressing the archaeological expert up",
-                                    "at the center."
-                                ).also { stage++ }
+                                0 ->
+                                    npc(
+                                        NPCs.DIGSITE_WORKMAN_613,
+                                        "Sorry; this area is private. The only way you'll get to",
+                                        "use these is by impressing the archaeological expert up",
+                                        "at the center.",
+                                    ).also { stage++ }
 
-                                1 -> npc(
-                                    NPCs.DIGSITE_WORKMAN_613,
-                                    "Find something worthwhile and he might let you use the",
-                                    "winches. Until then, get lost!"
-                                ).also { stage = END_DIALOGUE }
+                                1 ->
+                                    npc(
+                                        NPCs.DIGSITE_WORKMAN_613,
+                                        "Find something worthwhile and he might let you use the",
+                                        "winches. Until then, get lost!",
+                                    ).also { stage = END_DIALOGUE }
                             }
                         }
-                    }
+                    },
                 )
             }
             return@on true
@@ -562,23 +633,28 @@ class TheDigSiteListener : InteractionListener {
                     openDialogue(
                         player,
                         object : DialogueFile() {
-                            override fun handle(componentID: Int, buttonID: Int) {
+                            override fun handle(
+                                componentID: Int,
+                                buttonID: Int,
+                            ) {
                                 when (stage) {
-                                    0 -> npc(
-                                        NPCs.DIGSITE_WORKMAN_613,
-                                        "Sorry; this area is private. The only way you'll get to",
-                                        "use these is by impressing the archaeological expert up",
-                                        "at the center."
-                                    ).also { stage++ }
+                                    0 ->
+                                        npc(
+                                            NPCs.DIGSITE_WORKMAN_613,
+                                            "Sorry; this area is private. The only way you'll get to",
+                                            "use these is by impressing the archaeological expert up",
+                                            "at the center.",
+                                        ).also { stage++ }
 
-                                    1 -> npc(
-                                        NPCs.DIGSITE_WORKMAN_613,
-                                        "Find something worthwhile and he might let you use the",
-                                        "winches. Until then, get lost!"
-                                    ).also { stage = END_DIALOGUE }
+                                    1 ->
+                                        npc(
+                                            NPCs.DIGSITE_WORKMAN_613,
+                                            "Find something worthwhile and he might let you use the",
+                                            "winches. Until then, get lost!",
+                                        ).also { stage = END_DIALOGUE }
                                 }
                             }
-                        }
+                        },
                     )
                 }
             }
@@ -593,7 +669,7 @@ class TheDigSiteListener : InteractionListener {
         on(Items.INVITATION_LETTER_696, ITEM, "read") { player, _ ->
             sendPlayerDialogue(
                 player,
-                "It says, 'I give permission for the bearer... to use the mine shafts on site. - signed Terrance Balando, Archaeological Expert, City of Varrock."
+                "It says, 'I give permission for the bearer... to use the mine shafts on site. - signed Terrance Balando, Archaeological Expert, City of Varrock.",
             )
 
             return@on true
@@ -604,7 +680,7 @@ class TheDigSiteListener : InteractionListener {
                 sendPlayerDialogue(
                     player,
                     "Hmmm, there's a room past these bricks. If I could move them out of the way then I could find out what's inside. Maybe there's someone around here who can help...",
-                    FaceAnim.THINKING
+                    FaceAnim.THINKING,
                 )
                 setQuestStage(player, Quests.THE_DIG_SITE, 9)
             }
@@ -612,7 +688,7 @@ class TheDigSiteListener : InteractionListener {
                 sendPlayerDialogue(
                     player,
                     "Hmmm, there's a room past these bricks. If I could move them out of the way then I could find out what's inside. Maybe there's someone around here who can help...",
-                    FaceAnim.THINKING
+                    FaceAnim.THINKING,
                 )
             }
             if (getQuestStage(player, Quests.THE_DIG_SITE) == 10) {
@@ -646,7 +722,6 @@ class TheDigSiteListener : InteractionListener {
                 }
             } else {
                 sendMessage(player, "You need to have a specimen jar when you are searching the tray.")
-
             }
             return@on true
         }
@@ -664,14 +739,15 @@ class TheDigSiteListener : InteractionListener {
                     player,
                     object : DialogueBuilderFile() {
                         override fun create(b: DialogueBuilder) {
-                            b.onPredicate { _ -> true }
+                            b
+                                .onPredicate { _ -> true }
                                 .item(Items.UNIDENTIFIED_LIQUID_702, "You fill the vial with the liquid.")
                                 .player(
                                     "I'm not sure what this stuff is. I had better be VERY",
-                                    "careful with it; I had better not drop it either..."
+                                    "careful with it; I had better not drop it either...",
                                 )
                         }
-                    }
+                    },
                 )
                 sendMessage(player, "You put the lid back on the barrel just in case it's dangerous.")
                 setVarbit(player, TheDigSite.barrelVarbit, 0)
@@ -683,7 +759,7 @@ class TheDigSiteListener : InteractionListener {
             sendPlayerDialogue(
                 player,
                 "Mmmm... The lid is shut tight; I'll have to find something to lever it off.",
-                FaceAnim.THINKING
+                FaceAnim.THINKING,
             )
             return@on true
         }
@@ -698,7 +774,7 @@ class TheDigSiteListener : InteractionListener {
             sendPlayerDialogue(
                 player,
                 "I can't pick this up with my bare hands! I'll need something to put it in. It looks and smells rather dangerous though, so it'll need to be something small and capable of containing dangerous chemicals.",
-                FaceAnim.THINKING
+                FaceAnim.THINKING,
             )
             return@on true
         }
@@ -751,7 +827,7 @@ class TheDigSiteListener : InteractionListener {
                     sendPlayerDialogue(
                         player,
                         "Ok, the mixture is all over the bricks. I need some way to ignite this compound.",
-                        FaceAnim.THINKING
+                        FaceAnim.THINKING,
                     )
                     setQuestStage(player, Quests.THE_DIG_SITE, 10)
                 }
@@ -776,13 +852,12 @@ class TheDigSiteListener : InteractionListener {
                             sendPlayerDialogue(
                                 player,
                                 "Woah! This is going to blow! I'd better run!",
-                                FaceAnim.EXTREMELY_SHOCKED
+                                FaceAnim.EXTREMELY_SHOCKED,
                             )
                             return@queueScript delayScript(player, BENDING_DOWN_ANIMATION.duration)
                         }
 
                         2 -> {
-
                             player.walkingQueue.reset()
                             player.walkingQueue.addPath(3366, 9830)
 
@@ -801,7 +876,7 @@ class TheDigSiteListener : InteractionListener {
                             sendPlayerDialogue(
                                 player,
                                 "Wow, that was a big explosion! What's that noise I can hear? Sounds like bones moving or something...",
-                                FaceAnim.EXTREMELY_SHOCKED
+                                FaceAnim.EXTREMELY_SHOCKED,
                             )
                             return@queueScript stopExecuting(player)
                         }
@@ -934,103 +1009,111 @@ class TheDigSiteListener : InteractionListener {
         val TROWEL_ANIMATION = Animation(2272)
         val PANNING_ANIMATION = Animation(4593)
 
-        val trainingDigTable = WeightBasedTable.create(
-            WeightedItem(0, 0, 0, 8.0, false),
-            WeightedItem(Items.COINS_995, 1, 1, 1.0, false),
-            WeightedItem(Items.CHARCOAL_973, 1, 1, 1.0, false),
-            WeightedItem(Items.BROKEN_ARROW_687, 1, 1, 1.0, false),
-            WeightedItem(Items.CRACKED_SAMPLE_674, 1, 1, 1.0, false),
-            WeightedItem(Items.VASE_710, 1, 1, 1.0, false),
-        )
-        val level1DigTable = WeightBasedTable.create(
-            WeightedItem(0, 0, 0, 2.0, false),
-            WeightedItem(Items.BUTTONS_688, 1, 1, 1.0, false),
-            WeightedItem(Items.VASE_710, 1, 1, 1.0, false),
-            WeightedItem(Items.COPPER_ORE_436, 1, 1, 1.0, false),
-            WeightedItem(Items.LEATHER_BOOTS_1061, 1, 1, 1.0, false),
-            WeightedItem(Items.OPAL_1609, 1, 1, 1.0, false),
-            WeightedItem(Items.OLD_TOOTH_695, 1, 1, 1.0, false),
-            WeightedItem(Items.ROTTEN_APPLE_1984, 1, 1, 1.0, false),
-            WeightedItem(Items.BROKEN_GLASS_1469, 1, 1, 1.0, false),
-            WeightedItem(Items.RUSTY_SWORD_686, 1, 1, 1.0, false),
-            WeightedItem(Items.BONES_526, 1, 1, 1.0, false),
-        )
-        val level2DigTable = WeightBasedTable.create(
-            WeightedItem(0, 0, 0, 3.0, false),
-            WeightedItem(Items.BONES_526, 1, 1, 2.0, false),
-            WeightedItem(Items.DAMAGED_ARMOUR_697, 1, 1, 1.0, false),
-            WeightedItem(Items.LEATHER_BOOTS_1061, 1, 1, 1.0, false),
-            WeightedItem(Items.BOWL_1923, 1, 1, 1.0, false),
-            WeightedItem(Items.BROKEN_STAFF_689, 1, 1, 1.0, false),
-            WeightedItem(Items.BROKEN_ARMOUR_698, 1, 1, 1.0, false),
-            WeightedItem(Items.UNCUT_JADE_1627, 1, 1, 1.0, false),
-            WeightedItem(Items.BROKEN_GLASS_1469, 1, 1, 1.0, false),
-            WeightedItem(Items.JUG_1935, 1, 1, 1.0, false),
-            WeightedItem(Items.EMPTY_POT_1931, 1, 1, 1.0, false),
-            WeightedItem(Items.CLAY_434, 1, 1, 1.0, false),
-            WeightedItem(Items.UNCUT_OPAL_1625, 1, 1, 1.0, false),
-        )
-        val level3DigTable = WeightBasedTable.create(
-            WeightedItem(0, 0, 0, 1.0, false),
-            WeightedItem(Items.COINS_995, 10, 10, 2.0, false),
-            WeightedItem(Items.ANCIENT_TALISMAN_681, 1, 1, 1.0, false),
-            WeightedItem(Items.BELT_BUCKLE_684, 1, 1, 2.0, false),
-            WeightedItem(Items.BLACK_MED_HELM_1151, 1, 1, 1.0, false),
-            WeightedItem(Items.BONES_526, 1, 1, 1.0, false),
-            WeightedItem(Items.BROKEN_ARMOUR_698, 1, 1, 1.0, false),
-            WeightedItem(Items.BROKEN_ARROW_687, 1, 1, 1.0, false),
-            WeightedItem(Items.BROKEN_STAFF_689, 1, 1, 1.0, false),
-            WeightedItem(Items.BRONZE_SPEAR_1237, 1, 1, 1.0, false),
-            WeightedItem(Items.BUTTONS_688, 1, 1, 1.0, false),
-            WeightedItem(Items.CERAMIC_REMAINS_694, 1, 1, 1.0, false),
-            WeightedItem(Items.CLAY_434, 1, 1, 1.0, false),
-            WeightedItem(Items.DAMAGED_ARMOUR_697, 1, 1, 1.0, false),
-            WeightedItem(Items.IRON_KNIFE_863, 1, 1, 1.0, false),
-            WeightedItem(Items.LEATHER_BOOTS_1061, 1, 1, 1.0, false),
-            WeightedItem(Items.NEEDLE_1733, 1, 1, 1.0, false),
-            WeightedItem(Items.OLD_TOOTH_695, 1, 1, 1.0, false),
-            WeightedItem(Items.PIE_DISH_2313, 1, 1, 1.0, false),
-        )
+        val trainingDigTable =
+            WeightBasedTable.create(
+                WeightedItem(0, 0, 0, 8.0, false),
+                WeightedItem(Items.COINS_995, 1, 1, 1.0, false),
+                WeightedItem(Items.CHARCOAL_973, 1, 1, 1.0, false),
+                WeightedItem(Items.BROKEN_ARROW_687, 1, 1, 1.0, false),
+                WeightedItem(Items.CRACKED_SAMPLE_674, 1, 1, 1.0, false),
+                WeightedItem(Items.VASE_710, 1, 1, 1.0, false),
+            )
+        val level1DigTable =
+            WeightBasedTable.create(
+                WeightedItem(0, 0, 0, 2.0, false),
+                WeightedItem(Items.BUTTONS_688, 1, 1, 1.0, false),
+                WeightedItem(Items.VASE_710, 1, 1, 1.0, false),
+                WeightedItem(Items.COPPER_ORE_436, 1, 1, 1.0, false),
+                WeightedItem(Items.LEATHER_BOOTS_1061, 1, 1, 1.0, false),
+                WeightedItem(Items.OPAL_1609, 1, 1, 1.0, false),
+                WeightedItem(Items.OLD_TOOTH_695, 1, 1, 1.0, false),
+                WeightedItem(Items.ROTTEN_APPLE_1984, 1, 1, 1.0, false),
+                WeightedItem(Items.BROKEN_GLASS_1469, 1, 1, 1.0, false),
+                WeightedItem(Items.RUSTY_SWORD_686, 1, 1, 1.0, false),
+                WeightedItem(Items.BONES_526, 1, 1, 1.0, false),
+            )
+        val level2DigTable =
+            WeightBasedTable.create(
+                WeightedItem(0, 0, 0, 3.0, false),
+                WeightedItem(Items.BONES_526, 1, 1, 2.0, false),
+                WeightedItem(Items.DAMAGED_ARMOUR_697, 1, 1, 1.0, false),
+                WeightedItem(Items.LEATHER_BOOTS_1061, 1, 1, 1.0, false),
+                WeightedItem(Items.BOWL_1923, 1, 1, 1.0, false),
+                WeightedItem(Items.BROKEN_STAFF_689, 1, 1, 1.0, false),
+                WeightedItem(Items.BROKEN_ARMOUR_698, 1, 1, 1.0, false),
+                WeightedItem(Items.UNCUT_JADE_1627, 1, 1, 1.0, false),
+                WeightedItem(Items.BROKEN_GLASS_1469, 1, 1, 1.0, false),
+                WeightedItem(Items.JUG_1935, 1, 1, 1.0, false),
+                WeightedItem(Items.EMPTY_POT_1931, 1, 1, 1.0, false),
+                WeightedItem(Items.CLAY_434, 1, 1, 1.0, false),
+                WeightedItem(Items.UNCUT_OPAL_1625, 1, 1, 1.0, false),
+            )
+        val level3DigTable =
+            WeightBasedTable.create(
+                WeightedItem(0, 0, 0, 1.0, false),
+                WeightedItem(Items.COINS_995, 10, 10, 2.0, false),
+                WeightedItem(Items.ANCIENT_TALISMAN_681, 1, 1, 1.0, false),
+                WeightedItem(Items.BELT_BUCKLE_684, 1, 1, 2.0, false),
+                WeightedItem(Items.BLACK_MED_HELM_1151, 1, 1, 1.0, false),
+                WeightedItem(Items.BONES_526, 1, 1, 1.0, false),
+                WeightedItem(Items.BROKEN_ARMOUR_698, 1, 1, 1.0, false),
+                WeightedItem(Items.BROKEN_ARROW_687, 1, 1, 1.0, false),
+                WeightedItem(Items.BROKEN_STAFF_689, 1, 1, 1.0, false),
+                WeightedItem(Items.BRONZE_SPEAR_1237, 1, 1, 1.0, false),
+                WeightedItem(Items.BUTTONS_688, 1, 1, 1.0, false),
+                WeightedItem(Items.CERAMIC_REMAINS_694, 1, 1, 1.0, false),
+                WeightedItem(Items.CLAY_434, 1, 1, 1.0, false),
+                WeightedItem(Items.DAMAGED_ARMOUR_697, 1, 1, 1.0, false),
+                WeightedItem(Items.IRON_KNIFE_863, 1, 1, 1.0, false),
+                WeightedItem(Items.LEATHER_BOOTS_1061, 1, 1, 1.0, false),
+                WeightedItem(Items.NEEDLE_1733, 1, 1, 1.0, false),
+                WeightedItem(Items.OLD_TOOTH_695, 1, 1, 1.0, false),
+                WeightedItem(Items.PIE_DISH_2313, 1, 1, 1.0, false),
+            )
 
-        val specimenTrayTable = WeightBasedTable.create(
-            WeightedItem(0, 0, 0, 2.0, false),
-            WeightedItem(Items.BONES_526, 1, 1, 2.0, false),
-            WeightedItem(Items.COINS_995, 1, 1, 1.0, false),
-            WeightedItem(Items.IRON_DAGGER_1203, 1, 1, 1.0, false),
-            WeightedItem(Items.CHARCOAL_973, 1, 1, 1.0, false),
-            WeightedItem(Items.BROKEN_ARROW_687, 1, 1, 1.0, false),
-            WeightedItem(Items.BROKEN_GLASS_1469, 1, 1, 1.0, false),
-            WeightedItem(Items.CERAMIC_REMAINS_694, 1, 1, 1.0, false),
-            WeightedItem(Items.CRACKED_SAMPLE_674, 1, 1, 1.0, false),
-        )
+        val specimenTrayTable =
+            WeightBasedTable.create(
+                WeightedItem(0, 0, 0, 2.0, false),
+                WeightedItem(Items.BONES_526, 1, 1, 2.0, false),
+                WeightedItem(Items.COINS_995, 1, 1, 1.0, false),
+                WeightedItem(Items.IRON_DAGGER_1203, 1, 1, 1.0, false),
+                WeightedItem(Items.CHARCOAL_973, 1, 1, 1.0, false),
+                WeightedItem(Items.BROKEN_ARROW_687, 1, 1, 1.0, false),
+                WeightedItem(Items.BROKEN_GLASS_1469, 1, 1, 1.0, false),
+                WeightedItem(Items.CERAMIC_REMAINS_694, 1, 1, 1.0, false),
+                WeightedItem(Items.CRACKED_SAMPLE_674, 1, 1, 1.0, false),
+            )
 
-        val workmanPickpocketingTable = WeightBasedTable.create(
-            WeightedItem(Items.SPECIMEN_BRUSH_670, 1, 1, 3.0, false),
-            WeightedItem(Items.ANIMAL_SKULL_671, 1, 1, 3.0, false),
-            WeightedItem(Items.COINS_995, 10, 10, 1.0, false),
-            WeightedItem(Items.ROPE_954, 1, 1, 1.0, false),
-            WeightedItem(Items.BUCKET_1925, 1, 1, 1.0, false),
-            WeightedItem(Items.LEATHER_GLOVES_1059, 1, 1, 1.0, false),
-            WeightedItem(Items.SPADE_952, 1, 1, 1.0, false),
-        )
+        val workmanPickpocketingTable =
+            WeightBasedTable.create(
+                WeightedItem(Items.SPECIMEN_BRUSH_670, 1, 1, 3.0, false),
+                WeightedItem(Items.ANIMAL_SKULL_671, 1, 1, 3.0, false),
+                WeightedItem(Items.COINS_995, 10, 10, 1.0, false),
+                WeightedItem(Items.ROPE_954, 1, 1, 1.0, false),
+                WeightedItem(Items.BUCKET_1925, 1, 1, 1.0, false),
+                WeightedItem(Items.LEATHER_GLOVES_1059, 1, 1, 1.0, false),
+                WeightedItem(Items.SPADE_952, 1, 1, 1.0, false),
+            )
 
-        val workmanPostQuestPickpocketingTable = WeightBasedTable.create(
-            WeightedItem(Items.SPECIMEN_BRUSH_670, 1, 1, 3.0, false),
-            WeightedItem(Items.COINS_995, 10, 10, 4.0, false),
-            WeightedItem(Items.ROPE_954, 1, 1, 1.0, false),
-            WeightedItem(Items.BUCKET_1925, 1, 1, 1.0, false),
-            WeightedItem(Items.LEATHER_GLOVES_1059, 1, 1, 1.0, false),
-            WeightedItem(Items.SPADE_952, 1, 1, 1.0, false),
-        )
+        val workmanPostQuestPickpocketingTable =
+            WeightBasedTable.create(
+                WeightedItem(Items.SPECIMEN_BRUSH_670, 1, 1, 3.0, false),
+                WeightedItem(Items.COINS_995, 10, 10, 4.0, false),
+                WeightedItem(Items.ROPE_954, 1, 1, 1.0, false),
+                WeightedItem(Items.BUCKET_1925, 1, 1, 1.0, false),
+                WeightedItem(Items.LEATHER_GLOVES_1059, 1, 1, 1.0, false),
+                WeightedItem(Items.SPADE_952, 1, 1, 1.0, false),
+            )
 
-        val panningTable = WeightBasedTable.create(
-            WeightedItem(0, 0, 0, 20.0, false),
-            WeightedItem(Items.COINS_995, 1, 1, 4.0, false),
-            WeightedItem(Items.NUGGETS_680, 1, 1, 4.0, false),
-            WeightedItem(Items.OYSTER_407, 1, 1, 3.0, false),
-            WeightedItem(Items.UNCUT_OPAL_1625, 1, 1, 3.0, false),
-            WeightedItem(Items.UNCUT_JADE_1627, 1, 1, 3.0, false),
-            WeightedItem(Items.SPECIAL_CUP_672, 1, 1, 3.0, false),
-        )
+        val panningTable =
+            WeightBasedTable.create(
+                WeightedItem(0, 0, 0, 20.0, false),
+                WeightedItem(Items.COINS_995, 1, 1, 4.0, false),
+                WeightedItem(Items.NUGGETS_680, 1, 1, 4.0, false),
+                WeightedItem(Items.OYSTER_407, 1, 1, 3.0, false),
+                WeightedItem(Items.UNCUT_OPAL_1625, 1, 1, 3.0, false),
+                WeightedItem(Items.UNCUT_JADE_1627, 1, 1, 3.0, false),
+                WeightedItem(Items.SPECIAL_CUP_672, 1, 1, 3.0, false),
+            )
     }
 }

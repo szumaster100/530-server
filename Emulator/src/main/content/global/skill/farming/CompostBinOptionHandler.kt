@@ -11,32 +11,47 @@ import core.plugin.Plugin
 @Initializable
 class CompostBinOptionHandler : OptionHandler() {
     override fun newInstance(arg: Any?): Plugin<Any> {
-        for (i in 7836..7839)
+        for (i in 7836..7839) {
             SceneryDefinition.forId(i).configObjectIds!!.forEach {
                 val def = SceneryDefinition.forId(it)
                 def.handlers["option:open"] = this
                 def.handlers["option:close"] = this
                 def.handlers["option:take-tomato"] = this
             }
+        }
         return this
     }
 
-    override fun handle(player: Player?, node: Node?, option: String?): Boolean {
+    override fun handle(
+        player: Player?,
+        node: Node?,
+        option: String?,
+    ): Boolean {
         player ?: return false
         node ?: return false
         val cBin = CompostBins.forObject(node.asScenery()) ?: return false
         val bin = cBin.getBinForPlayer(player)
 
         when (option) {
-            "close" -> if (!bin.isFull()) sendMessage(
-                player,
-                "This shouldn't be happening. Report this."
-            ) else bin.close()
+            "close" ->
+                if (!bin.isFull()) {
+                    sendMessage(
+                        player,
+                        "This shouldn't be happening. Report this.",
+                    )
+                } else {
+                    bin.close()
+                }
 
-            "open" -> if (!bin.isFinished) sendMessage(
-                player,
-                "I should probably wait until it is done to open it."
-            ) else bin.open()
+            "open" ->
+                if (!bin.isFinished) {
+                    sendMessage(
+                        player,
+                        "I should probably wait until it is done to open it.",
+                    )
+                } else {
+                    bin.open()
+                }
 
             "take-tomato" -> {
                 if (!bin.isTomatoes || !bin.isFinished) {
@@ -46,8 +61,9 @@ class CompostBinOptionHandler : OptionHandler() {
                         sendMessage(player, "You don't have enough inventory space to do this.")
                     } else {
                         val reward = bin.takeItem()
-                        if (reward != null)
+                        if (reward != null) {
                             player.inventory.add(reward)
+                        }
                     }
                 }
             }

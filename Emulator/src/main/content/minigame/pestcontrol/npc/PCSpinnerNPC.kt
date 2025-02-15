@@ -1,6 +1,5 @@
 package content.minigame.pestcontrol.npc
 
-import org.rs.consts.NPCs
 import content.minigame.pestcontrol.PestControlSession
 import core.api.event.applyPoison
 import core.game.interaction.MovementPulse
@@ -19,6 +18,7 @@ import core.game.world.map.RegionManager.getLocalPlayers
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
 import core.tools.RandomFunction
+import org.rs.consts.NPCs
 
 class PCSpinnerNPC : AbstractNPC {
     private var session: PestControlSession? = null
@@ -49,7 +49,7 @@ class PCSpinnerNPC : AbstractNPC {
                                 return true
                             }
                         },
-                        PulseType.STANDARD
+                        PulseType.STANDARD,
                     )
                 }
             }
@@ -79,7 +79,7 @@ class PCSpinnerNPC : AbstractNPC {
                     clear()
                     return true
                 }
-            }
+            },
         )
     }
 
@@ -87,7 +87,10 @@ class PCSpinnerNPC : AbstractNPC {
         return mover is NPC
     }
 
-    override fun onImpact(entity: Entity, state: BattleState) {
+    override fun onImpact(
+        entity: Entity,
+        state: BattleState,
+    ) {
         super.onImpact(entity, state)
         if (session != null && state != null && entity is Player) {
             var total = 0
@@ -106,7 +109,11 @@ class PCSpinnerNPC : AbstractNPC {
         return this
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return PCSpinnerNPC(id, location)
     }
 

@@ -1,8 +1,5 @@
 package content.global.skill.agility.grapple
 
-import org.rs.consts.Animations
-import org.rs.consts.Components
-import org.rs.consts.Items
 import core.api.*
 import core.api.ui.restoreTabs
 import core.api.ui.setMinimapState
@@ -21,10 +18,12 @@ import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Animations
+import org.rs.consts.Components
+import org.rs.consts.Items
 
 @Initializable
 class FaladorGrapple : OptionHandler() {
-
     companion object {
         private val REQUIREMENTS = HashMap<Int?, Int>()
         private var requirementsString: String? = null
@@ -34,17 +33,26 @@ class FaladorGrapple : OptionHandler() {
             REQUIREMENTS.putIfAbsent(Skills.RANGE, 19)
             REQUIREMENTS.putIfAbsent(Skills.STRENGTH, 37)
             requirementsString =
-                "You need at least " + REQUIREMENTS[Skills.AGILITY] + " " + Skills.SKILL_NAME[Skills.AGILITY] + ", " + REQUIREMENTS[Skills.RANGE] + " " + Skills.SKILL_NAME[Skills.RANGE] + ", and " + REQUIREMENTS[Skills.STRENGTH] + " " + Skills.SKILL_NAME[Skills.STRENGTH] + " to use this shortcut."
+                "You need at least " + REQUIREMENTS[Skills.AGILITY] + " " + Skills.SKILL_NAME[Skills.AGILITY] + ", " +
+                REQUIREMENTS[Skills.RANGE] +
+                " " +
+                Skills.SKILL_NAME[Skills.RANGE] +
+                ", and " +
+                REQUIREMENTS[Skills.STRENGTH] +
+                " " +
+                Skills.SKILL_NAME[Skills.STRENGTH] +
+                " to use this shortcut."
         }
 
-        private val crossbowIds = intArrayOf(
-            Items.DORGESHUUN_CBOW_8880,
-            Items.MITH_CROSSBOW_9181,
-            Items.ADAMANT_CROSSBOW_9183,
-            Items.RUNE_CROSSBOW_9185,
-            Items.KARILS_CROSSBOW_4734,
-            Items.HUNTERS_CROSSBOW_10156
-        )
+        private val crossbowIds =
+            intArrayOf(
+                Items.DORGESHUUN_CBOW_8880,
+                Items.MITH_CROSSBOW_9181,
+                Items.ADAMANT_CROSSBOW_9183,
+                Items.RUNE_CROSSBOW_9185,
+                Items.KARILS_CROSSBOW_4734,
+                Items.HUNTERS_CROSSBOW_10156,
+            )
         private val grappleId = Items.MITH_GRAPPLE_9419
     }
 
@@ -56,17 +64,28 @@ class FaladorGrapple : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val destination: Location
         val current = player.location
         when (option) {
-            "jump" -> ForceMovement.run(
-                player,
-                current,
-                if (node.asScenery().id == 17051) Location.create(3033, 3390, 0) else Location.create(3032, 3388, 0),
-                Animation(Animations.JUMP_OVER_7268),
-                10
-            )
+            "jump" ->
+                ForceMovement.run(
+                    player,
+                    current,
+                    if (node.asScenery().id ==
+                        17051
+                    ) {
+                        Location.create(3033, 3390, 0)
+                    } else {
+                        Location.create(3032, 3388, 0)
+                    },
+                    Animation(Animations.JUMP_OVER_7268),
+                    10,
+                )
 
             "grapple" -> {
                 destination =
@@ -86,6 +105,7 @@ class FaladorGrapple : OptionHandler() {
                     object : Pulse(1, player) {
                         var counter = 1
                         var tab: Component? = null
+
                         override fun pulse(): Boolean {
                             when (counter++) {
                                 1 -> {
@@ -94,8 +114,8 @@ class FaladorGrapple : OptionHandler() {
                                         Animation(Animations.FIRE_CROSSBOW_TO_CLIMB_WALL_4455),
                                         Graphics(
                                             org.rs.consts.Graphics.MITHRIL_GRAPPLE_760,
-                                            100
-                                        )
+                                            100,
+                                        ),
                                     )
                                 }
 
@@ -122,14 +142,17 @@ class FaladorGrapple : OptionHandler() {
                             }
                             return false
                         }
-                    }
+                    },
                 )
             }
         }
         return true
     }
 
-    override fun getDestination(moving: Node, destination: Node): Location? {
+    override fun getDestination(
+        moving: Node,
+        destination: Node,
+    ): Location? {
         return if (destination.asScenery().id == 17050) Location.create(3032, 3388, 0) else null
     }
 }

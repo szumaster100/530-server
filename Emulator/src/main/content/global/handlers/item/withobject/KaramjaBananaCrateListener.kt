@@ -1,16 +1,15 @@
 package content.global.handlers.item.withobject
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.item.Item
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 import kotlin.math.min
 
 class KaramjaBananaCrateListener : InteractionListener {
-
     companion object {
         private const val CRATE_CAPACITY = 10
     }
@@ -71,7 +70,8 @@ class KaramjaBananaCrateListener : InteractionListener {
             }
             sendMessage(
                 player,
-                "The crate has " + currNumBananasInCrate + " banana" + (if (currNumBananasInCrate > 1) "s" else "") + " inside."
+                "The crate has " + currNumBananasInCrate + " banana" + (if (currNumBananasInCrate > 1) "s" else "") +
+                    " inside.",
             )
             return@on true
         }
@@ -97,7 +97,9 @@ class KaramjaBananaCrateListener : InteractionListener {
             lock(player, 2)
             animate(player, Animations.MULTI_TAKE_832)
             sendMessage(player, "You pack all your bananas into the crate.")
-            player.savedData.globalData.setKaramjaBannanas(player.savedData.globalData.karamjaBananas + bananasToBeAdded)
+            player.savedData.globalData.setKaramjaBannanas(
+                player.savedData.globalData.karamjaBananas + bananasToBeAdded,
+            )
             return@on true
         }
     }

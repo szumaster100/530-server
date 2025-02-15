@@ -1,6 +1,5 @@
 package content.region.kandarin.quest.merlin.handlers
 
-import org.rs.consts.NPCs
 import content.region.kandarin.quest.merlin.dialogue.MorganLeFayeDialogueFile
 import core.api.openDialogue
 import core.game.node.entity.Entity
@@ -11,11 +10,18 @@ import core.game.node.entity.player.Player
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Graphics
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
-class SirMordredNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
-    override fun construct(id: Int, location: Location?, vararg objects: Any?): AbstractNPC {
+class SirMordredNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location?,
+        vararg objects: Any?,
+    ): AbstractNPC {
         return SirMordredNPC(id, location)
     }
 
@@ -26,25 +32,37 @@ class SirMordredNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, l
     }
 
     override fun canAttack(victim: Entity?): Boolean {
-        if (lockMovementPlr != null)
+        if (lockMovementPlr != null) {
             return false
+        }
 
         return super.canAttack(victim)
     }
 
-    override fun isAttackable(entity: Entity?, style: CombatStyle?, message: Boolean): Boolean {
-        if (lockMovementPlr != null)
+    override fun isAttackable(
+        entity: Entity?,
+        style: CombatStyle?,
+        message: Boolean,
+    ): Boolean {
+        if (lockMovementPlr != null) {
             return false
+        }
 
         return super.isAttackable(entity, style, message)
     }
 
     override fun tick() {
         if (this.skills.lifepoints == 0) {
-            if (this.properties.combatPulse.getVictim() != null)
-                this.lockMovementPlr = this.properties.combatPulse.getVictim()!!.asPlayer()
-            else if (this.properties.combatPulse.lastVictim != null)
-                this.lockMovementPlr = this.properties.combatPulse.lastVictim!!.asPlayer()
+            if (this.properties.combatPulse.getVictim() != null) {
+                this.lockMovementPlr =
+                    this.properties.combatPulse
+                        .getVictim()!!
+                        .asPlayer()
+            } else if (this.properties.combatPulse.lastVictim != null) {
+                this.lockMovementPlr =
+                    this.properties.combatPulse.lastVictim!!
+                        .asPlayer()
+            }
 
             this.locks.lock()
             clearAttributes()

@@ -7,64 +7,35 @@ import java.io.IOException
 import java.util.*
 
 class GameSettings internal constructor(
-
     var name: String,
-
     var isBeta: Boolean,
-
     var isDevMode: Boolean,
-
     var isGui: Boolean,
-
     var worldId: Int,
-
     var countryIndex: Int,
-
     var activity: String,
-
     var isMembers: Boolean,
-
     var isPvp: Boolean,
-
     var isQuickChat: Boolean,
-
     var isLootshare: Boolean,
-
     var msAddress: String,
-
     var default_xp_rate: Double,
-
     var enable_default_clan: Boolean,
-
     var enable_bots: Boolean,
-
     var autostock_ge: Boolean,
-
     var allow_token_purchase: Boolean,
-
     var increased_door_time: Boolean,
-
     var enabled_botting: Boolean,
-
     var max_adv_bots: Int,
-
     var enable_doubling_money_scammers: Boolean,
-
     var wild_pvp_enabled: Boolean,
-
     var jad_practice_enabled: Boolean,
-
     var ge_announcement_limit: Int,
-
     var smartpathfinder_bfs: Boolean,
-
     var enable_castle_wars: Boolean,
-
     var message_model: Int,
-
-    var message_string: String
+    var message_string: String,
 ) {
-
     val isHosted: Boolean
         get() = !isDevMode
 
@@ -73,7 +44,6 @@ class GameSettings internal constructor(
     }
 
     companion object {
-
         fun parse(data: JSONObject): GameSettings {
             val name = ServerConfig.SERVER_NAME
             val debug = data["debug"] as Boolean
@@ -102,12 +72,34 @@ class GameSettings internal constructor(
             val message_of_the_week_text = data["message_of_the_week_text"].toString()
 
             return GameSettings(
-                name, debug, dev, startGui, worldId, countryId, activity,
-                true, pvpWorld, false, false, msip, default_xp_rate, enable_default_clan,
-                enable_bots, autostock_ge, allow_token_purchase, increased_door_time, enable_botting,
-                max_adv_bots, enable_doubling_money_scammers, wild_pvp_enabled, jad_practice_enabled,
-                ge_announcement_limit, smartpathfinder_bfs, enable_castle_wars,
-                message_of_the_week_identifier, message_of_the_week_text
+                name,
+                debug,
+                dev,
+                startGui,
+                worldId,
+                countryId,
+                activity,
+                true,
+                pvpWorld,
+                false,
+                false,
+                msip,
+                default_xp_rate,
+                enable_default_clan,
+                enable_bots,
+                autostock_ge,
+                allow_token_purchase,
+                increased_door_time,
+                enable_botting,
+                max_adv_bots,
+                enable_doubling_money_scammers,
+                wild_pvp_enabled,
+                jad_practice_enabled,
+                ge_announcement_limit,
+                smartpathfinder_bfs,
+                enable_castle_wars,
+                message_of_the_week_identifier,
+                message_of_the_week_text,
             )
         }
 

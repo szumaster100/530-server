@@ -1,8 +1,7 @@
 package content.global.skill.farming
 
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import core.api.*
+import core.api.quest.hasRequirement
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.interaction.QueueStrength
@@ -12,8 +11,9 @@ import core.game.node.item.Item
 import core.game.system.task.Pulse
 import core.tools.StringUtils
 import core.tools.prependArticle
+import org.rs.consts.Items
 import org.rs.consts.Quests
-import core.api.quest.hasRequirement
+import org.rs.consts.Sounds
 
 class UseWithPatchHandler : InteractionListener {
     val RAKE = Items.RAKE_5341
@@ -39,14 +39,15 @@ class UseWithPatchHandler : InteractionListener {
         onUseWith(
             IntType.SCENERY,
             allowedNodes.toIntArray(),
-            *FarmingPatch.patchNodes.toIntArray()
+            *FarmingPatch.patchNodes.toIntArray(),
         ) { player, used, with ->
             val patch = FarmingPatch.forObject(with.asScenery()) ?: return@onUseWith true
             val usedItem = used.asItem()
 
             if (patch == FarmingPatch.TROLL_STRONGHOLD_HERB) {
-                if (!hasRequirement(player, Quests.MY_ARMS_BIG_ADVENTURE))
+                if (!hasRequirement(player, Quests.MY_ARMS_BIG_ADVENTURE)) {
                     return@onUseWith true
+                }
             }
 
             player.faceLocation(with.location)
@@ -94,18 +95,23 @@ class UseWithPatchHandler : InteractionListener {
                                 player,
                                 object : Pulse() {
                                     override fun pulse(): Boolean {
-                                        if (usedItem.id == SECATEURS) animate(
-                                            player,
-                                            secateursTreeAnim
-                                        ) else animate(player, magicSecateursTreeAnim)
+                                        if (usedItem.id == SECATEURS) {
+                                            animate(
+                                                player,
+                                                secateursTreeAnim,
+                                            )
+                                        } else {
+                                            animate(player, magicSecateursTreeAnim)
+                                        }
                                         p.cureDisease()
                                         return true
                                     }
-                                }
+                                },
                             )
                         } else if (p.plantable == Plantable.WILLOW_SAPLING && p.harvestAmt > 0) {
-                            val pulse = CropHarvester.harvestPulse(player, with, Items.WILLOW_BRANCH_5933)
-                                ?: return@onUseWith false
+                            val pulse =
+                                CropHarvester.harvestPulse(player, with, Items.WILLOW_BRANCH_5933)
+                                    ?: return@onUseWith false
                             submitIndividualPulse(player, pulse)
                         }
                     }
@@ -141,10 +147,12 @@ class UseWithPatchHandler : InteractionListener {
                                 if (removeItem(player, Items.PLANT_POT_5350)) {
                                     animate(player, anim)
                                     addItem(player, Items.PLANT_POT_5354)
-                                } else return true
+                                } else {
+                                    return true
+                                }
                                 return false
                             }
-                        }
+                        },
                     )
                 }
 
@@ -210,7 +218,7 @@ class UseWithPatchHandler : InteractionListener {
                                     }
                                     return true
                                 }
-                            }
+                            },
                         )
                     } else {
                         sendMessage(player, "This patch doesn't need watering.")
@@ -230,14 +238,35 @@ class UseWithPatchHandler : InteractionListener {
                             if (player.inventory.remove(usedItem, false)) {
                                 sendMessage(player, "You treat the $patchName with ${usedItem.name.lowercase()}.")
                                 p.compost =
-                                    if (usedItem.id == Items.SUPERCOMPOST_6034) CompostType.SUPERCOMPOST else CompostType.COMPOST
-                                if (p.compost == CompostType.SUPERCOMPOST) rewardXP(
-                                    player,
-                                    Skills.FARMING,
-                                    26.0
-                                ) else rewardXP(player, Skills.FARMING, 18.5)
+                                    if (usedItem.id ==
+                                        Items.SUPERCOMPOST_6034
+                                    ) {
+                                        CompostType.SUPERCOMPOST
+                                    } else {
+                                        CompostType.COMPOST
+                                    }
+                                if (p.compost == CompostType.SUPERCOMPOST) {
+                                    rewardXP(
+                                        player,
+                                        Skills.FARMING,
+                                        26.0,
+                                    )
+                                } else {
+                                    rewardXP(player, Skills.FARMING, 18.5)
+                                }
                                 if (p.plantable != null && p.plantable?.applicablePatch != PatchType.FLOWER_PATCH) {
-                                    p.harvestAmt += if (p.compost == CompostType.COMPOST) 1 else if (p.compost == CompostType.SUPERCOMPOST) 2 else 0
+                                    p.harvestAmt +=
+                                        if (p.compost ==
+                                            CompostType.COMPOST
+                                        ) {
+                                            1
+                                        } else if (p.compost ==
+                                            CompostType.SUPERCOMPOST
+                                        ) {
+                                            2
+                                        } else {
+                                            0
+                                        }
                                 }
                                 p.cropLives += if (p.compost == CompostType.SUPERCOMPOST) 2 else 1
                                 addItem(player, Items.BUCKET_1925)
@@ -247,7 +276,7 @@ class UseWithPatchHandler : InteractionListener {
                     } else {
                         sendMessage(
                             player,
-                            "This $patchName has already been treated with ${p.compost.name.lowercase()}."
+                            "This $patchName has already been treated with ${p.compost.name.lowercase()}.",
                         )
                     }
                 }
@@ -258,9 +287,15 @@ class UseWithPatchHandler : InteractionListener {
                     if (plantable.applicablePatch != patch.type) {
                         val plantableNamePlural = StringUtils.plusS(plantable.displayName)
                         val patchType =
-                            if (plantable.applicablePatch == PatchType.ALLOTMENT) "a vegetable patch" else prependArticle(
-                                plantable.applicablePatch.displayName()
-                            )
+                            if (plantable.applicablePatch ==
+                                PatchType.ALLOTMENT
+                            ) {
+                                "a vegetable patch"
+                            } else {
+                                prependArticle(
+                                    plantable.applicablePatch.displayName(),
+                                )
+                            }
                         sendMessage(player, "You can only plant $plantableNamePlural in $patchType.")
                         return@onUseWith true
                     }
@@ -271,7 +306,11 @@ class UseWithPatchHandler : InteractionListener {
                     }
 
                     val p = patch.getPatchFor(player)
-                    if (p.getCurrentState() < 3 && p.isWeedy() && plantable != Plantable.SCARECROW && plantable != Plantable.ENRICHED_SEED) {
+                    if (p.getCurrentState() < 3 &&
+                        p.isWeedy() &&
+                        plantable != Plantable.SCARECROW &&
+                        plantable != Plantable.ENRICHED_SEED
+                    ) {
                         sendMessage(player, "This patch needs weeding first.")
                         return@onUseWith true
                     } else if (p.getCurrentState() > 3) {
@@ -279,34 +318,50 @@ class UseWithPatchHandler : InteractionListener {
                         return@onUseWith true
                     }
 
-                    val plantItem = when (patch.type) {
-                        PatchType.ALLOTMENT -> Item(plantable.itemID, 3)
-                        PatchType.HOPS_PATCH -> if (plantable == Plantable.JUTE_SEED) Item(
-                            plantable.itemID,
-                            3
-                        ) else Item(plantable.itemID, 4)
+                    val plantItem =
+                        when (patch.type) {
+                            PatchType.ALLOTMENT -> Item(plantable.itemID, 3)
+                            PatchType.HOPS_PATCH ->
+                                if (plantable == Plantable.JUTE_SEED) {
+                                    Item(
+                                        plantable.itemID,
+                                        3,
+                                    )
+                                } else {
+                                    Item(plantable.itemID, 4)
+                                }
 
-                        else -> Item(plantable.itemID, 1)
-                    }
+                            else -> Item(plantable.itemID, 1)
+                        }
 
                     if (!player.inventory.containsItem(plantItem)) {
                         val seedPlural = if (plantItem.amount == 1) "seed" else "seeds"
                         sendMessage(
                             player,
-                            "You need ${plantItem.amount} $seedPlural to plant ${prependArticle(patch.type.displayName())}."
+                            "You need ${plantItem.amount} $seedPlural to plant ${prependArticle(
+                                patch.type.displayName(),
+                            )}.",
                         )
                         return@onUseWith true
                     }
 
-                    val requiredItem = when (patch.type) {
-                        PatchType.TREE_PATCH, PatchType.FRUIT_TREE_PATCH -> Items.SPADE_952
-                        PatchType.FLOWER_PATCH -> if (plantable == Plantable.SCARECROW) null else Items.SEED_DIBBER_5343
-                        else -> Items.SEED_DIBBER_5343
-                    }
+                    val requiredItem =
+                        when (patch.type) {
+                            PatchType.TREE_PATCH, PatchType.FRUIT_TREE_PATCH -> Items.SPADE_952
+                            PatchType.FLOWER_PATCH ->
+                                if (plantable ==
+                                    Plantable.SCARECROW
+                                ) {
+                                    null
+                                } else {
+                                    Items.SEED_DIBBER_5343
+                                }
+                            else -> Items.SEED_DIBBER_5343
+                        }
                     if (requiredItem != null && !inInventory(player, requiredItem)) {
                         sendMessage(
                             player,
-                            "You need ${prependArticle(requiredItem.asItem().name.lowercase())} to plant that."
+                            "You need ${prependArticle(requiredItem.asItem().name.lowercase())} to plant that.",
                         )
                         return@onUseWith true
                     }
@@ -324,15 +379,24 @@ class UseWithPatchHandler : InteractionListener {
                             }
                         }
                         val delay =
-                            if (patch.type == PatchType.TREE_PATCH || patch.type == PatchType.FRUIT_TREE_PATCH || plantable == Plantable.SCARECROW) 0 else 3
+                            if (patch.type == PatchType.TREE_PATCH ||
+                                patch.type == PatchType.FRUIT_TREE_PATCH ||
+                                plantable == Plantable.SCARECROW
+                            ) {
+                                0
+                            } else {
+                                3
+                            }
                         submitIndividualPulse(
                             player,
                             object : Pulse(delay) {
                                 override fun pulse(): Boolean {
-                                    if (plantable == Plantable.JUTE_SEED && patch == FarmingPatch.MCGRUBOR_HOPS && !player.achievementDiaryManager.hasCompletedTask(
+                                    if (plantable == Plantable.JUTE_SEED &&
+                                        patch == FarmingPatch.MCGRUBOR_HOPS &&
+                                        !player.achievementDiaryManager.hasCompletedTask(
                                             DiaryType.SEERS_VILLAGE,
                                             0,
-                                            7
+                                            7,
                                         )
                                     ) {
                                         player.achievementDiaryManager.finishTask(player, DiaryType.SEERS_VILLAGE, 0, 7)
@@ -340,18 +404,30 @@ class UseWithPatchHandler : InteractionListener {
                                     p.plant(plantable)
                                     rewardXP(player, Skills.FARMING, plantable.plantingXP)
                                     p.setNewHarvestAmount()
-                                    if (p.patch.type == PatchType.TREE_PATCH || p.patch.type == PatchType.FRUIT_TREE_PATCH) {
+                                    if (p.patch.type == PatchType.TREE_PATCH ||
+                                        p.patch.type == PatchType.FRUIT_TREE_PATCH
+                                    ) {
                                         addItem(player, Items.PLANT_POT_5350)
                                     }
 
                                     val itemAmount =
-                                        if (p.patch.type == PatchType.TREE_PATCH || p.patch.type == PatchType.FRUIT_TREE_PATCH) "the"
-                                        else if (plantItem.amount == 1) "a"
-                                        else plantItem.amount
+                                        if (p.patch.type == PatchType.TREE_PATCH ||
+                                            p.patch.type == PatchType.FRUIT_TREE_PATCH
+                                        ) {
+                                            "the"
+                                        } else if (plantItem.amount == 1) {
+                                            "a"
+                                        } else {
+                                            plantItem.amount
+                                        }
                                     val itemName =
-                                        if (plantItem.amount == 1) plantable.displayName else StringUtils.plusS(
+                                        if (plantItem.amount == 1) {
                                             plantable.displayName
-                                        )
+                                        } else {
+                                            StringUtils.plusS(
+                                                plantable.displayName,
+                                            )
+                                        }
                                     val patchName = p.patch.type.displayName()
                                     if (plantable == Plantable.SCARECROW) {
                                         sendMessage(player, "You place the scarecrow in the $patchName.")
@@ -362,7 +438,7 @@ class UseWithPatchHandler : InteractionListener {
                                     player.unlock()
                                     return true
                                 }
-                            }
+                            },
                         )
                     }
                 }
@@ -396,13 +472,16 @@ class UseWithPatchHandler : InteractionListener {
                 Items.WATERING_CAN6_5338,
                 Items.WATERING_CAN7_5339,
                 Items.WATERING_CAN8_5340,
-                Items.PLANT_POT_5350
-            )
+                Items.PLANT_POT_5350,
+            ),
         )
     }
 
     private fun Int.getNext(): Int {
-        if (this == Items.WATERING_CAN1_5333) return Items.WATERING_CAN_5331
-        else return this - 1
+        if (this == Items.WATERING_CAN1_5333) {
+            return Items.WATERING_CAN_5331
+        } else {
+            return this - 1
+        }
     }
 }

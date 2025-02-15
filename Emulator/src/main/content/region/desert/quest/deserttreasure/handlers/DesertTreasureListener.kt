@@ -1,8 +1,5 @@
 package content.region.desert.quest.deserttreasure.handlers
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import content.region.desert.quest.deserttreasure.DesertTreasure
 import core.api.*
 import core.api.quest.getQuestStage
@@ -15,23 +12,24 @@ import core.game.interaction.InteractionListener
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.game.world.map.Location
+import org.rs.consts.Animations
 import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class DesertTreasureListener : InteractionListener {
-
     companion object {
         fun allDiamondsInserted(player: Player): Boolean {
             return getAttribute(player, DesertTreasure.attributeBloodDiamondInserted, 0) == 1 &&
-                    getAttribute(player, DesertTreasure.attributeSmokeDiamondInserted, 0) == 1 &&
-                    getAttribute(player, DesertTreasure.attributeIceDiamondInserted, 0) == 1 &&
-                    getAttribute(player, DesertTreasure.attributeShadowDiamondInserted, 0) == 1
+                getAttribute(player, DesertTreasure.attributeSmokeDiamondInserted, 0) == 1 &&
+                getAttribute(player, DesertTreasure.attributeIceDiamondInserted, 0) == 1 &&
+                getAttribute(player, DesertTreasure.attributeShadowDiamondInserted, 0) == 1
         }
     }
 
     var temp = 6517
 
     override fun defineListeners() {
-
         on(Scenery.MYSTICAL_MIRROR_6423, SCENERY, "look-into") { player, _ ->
             SouthMirrorLookCutscene(player).start()
             return@on true
@@ -60,7 +58,7 @@ class DesertTreasureListener : InteractionListener {
         onUseWith(
             IntType.SCENERY,
             intArrayOf(Items.ICE_DIAMOND_4671, Items.SMOKE_DIAMOND_4672, Items.SHADOW_DIAMOND_4673),
-            Scenery.OBELISK_6483
+            Scenery.OBELISK_6483,
         ) { player, used, with ->
             sendMessage(player, "That doesn't appear to be the correct diamond...")
             return@onUseWith true
@@ -87,7 +85,7 @@ class DesertTreasureListener : InteractionListener {
         onUseWith(
             IntType.SCENERY,
             intArrayOf(Items.BLOOD_DIAMOND_4670, Items.ICE_DIAMOND_4671, Items.SHADOW_DIAMOND_4673),
-            Scenery.OBELISK_6486
+            Scenery.OBELISK_6486,
         ) { player, _, _ ->
             sendMessage(player, "That doesn't appear to be the correct diamond...")
             return@onUseWith true
@@ -114,7 +112,7 @@ class DesertTreasureListener : InteractionListener {
         onUseWith(
             IntType.SCENERY,
             intArrayOf(Items.BLOOD_DIAMOND_4670, Items.SMOKE_DIAMOND_4672, Items.SHADOW_DIAMOND_4673),
-            Scenery.OBELISK_6489
+            Scenery.OBELISK_6489,
         ) { player, _, _ ->
             sendMessage(player, "That doesn't appear to be the correct diamond...")
             return@onUseWith true
@@ -141,7 +139,7 @@ class DesertTreasureListener : InteractionListener {
         onUseWith(
             IntType.SCENERY,
             intArrayOf(Items.BLOOD_DIAMOND_4670, Items.ICE_DIAMOND_4671, Items.SMOKE_DIAMOND_4672),
-            Scenery.OBELISK_6492
+            Scenery.OBELISK_6492,
         ) { player, _, with ->
             sendMessage(player, "That doesn't appear to be the correct diamond...")
             return@onUseWith true
@@ -234,8 +232,9 @@ class DesertTreasureListener : InteractionListener {
     }
 }
 
-class NorthMirrorLookCutscene(player: Player) : Cutscene(player) {
-
+class NorthMirrorLookCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(player.location.transform(0, 0, 0))
         loadRegion(11322)
@@ -270,15 +269,15 @@ class NorthMirrorLookCutscene(player: Player) : Cutscene(player) {
             4 -> {
                 end(false) {
                     fadeFromBlack()
-
                 }
             }
         }
     }
 }
 
-class NorthEastMirrorLookCutscene(player: Player) : Cutscene(player) {
-
+class NorthEastMirrorLookCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(player.location.transform(0, 0, 0))
         loadRegion(13878)
@@ -313,15 +312,15 @@ class NorthEastMirrorLookCutscene(player: Player) : Cutscene(player) {
             4 -> {
                 end(false) {
                     fadeFromBlack()
-
                 }
             }
         }
     }
 }
 
-class SouthEastMirrorLookCutscene(player: Player) : Cutscene(player) {
-
+class SouthEastMirrorLookCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(player.location.transform(0, 0, 0))
         loadRegion(13102)
@@ -356,15 +355,15 @@ class SouthEastMirrorLookCutscene(player: Player) : Cutscene(player) {
             4 -> {
                 end(false) {
                     fadeFromBlack()
-
                 }
             }
         }
     }
 }
 
-class SouthMirrorLookCutscene(player: Player) : Cutscene(player) {
-
+class SouthMirrorLookCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(player.location.transform(0, 0, 0))
         loadRegion(12845)
@@ -399,15 +398,15 @@ class SouthMirrorLookCutscene(player: Player) : Cutscene(player) {
             4 -> {
                 end(false) {
                     fadeFromBlack()
-
                 }
             }
         }
     }
 }
 
-class SouthWestMirrorLookCutscene(player: Player) : Cutscene(player) {
-
+class SouthWestMirrorLookCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(player.location.transform(0, 0, 0))
         loadRegion(12590)
@@ -442,15 +441,15 @@ class SouthWestMirrorLookCutscene(player: Player) : Cutscene(player) {
             4 -> {
                 end(false) {
                     fadeFromBlack()
-
                 }
             }
         }
     }
 }
 
-class NorthWestMirrorLookCutscene(player: Player) : Cutscene(player) {
-
+class NorthWestMirrorLookCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(player.location.transform(0, 0, 0))
         loadRegion(10037)
@@ -485,7 +484,6 @@ class NorthWestMirrorLookCutscene(player: Player) : Cutscene(player) {
             4 -> {
                 end(false) {
                     fadeFromBlack()
-
                 }
             }
         }

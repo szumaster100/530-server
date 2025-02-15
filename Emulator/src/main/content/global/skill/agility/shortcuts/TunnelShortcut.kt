@@ -1,6 +1,5 @@
 package content.global.skill.agility.shortcuts
 
-import org.rs.consts.Animations
 import content.global.skill.agility.AgilityShortcut
 import core.api.quest.hasRequirement
 import core.game.node.Node
@@ -15,6 +14,7 @@ import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Animations
 import org.rs.consts.Quests
 
 @Initializable
@@ -27,7 +27,7 @@ class TunnelShortcut : AgilityShortcut {
         ids,
         level,
         experience,
-        *options
+        *options,
     ) {
         this.offset = offset
     }
@@ -39,7 +39,12 @@ class TunnelShortcut : AgilityShortcut {
         return this
     }
 
-    override fun run(player: Player, obj: Scenery, option: String, failed: Boolean) {
+    override fun run(
+        player: Player,
+        obj: Scenery,
+        option: String,
+        failed: Boolean,
+    ) {
         if (obj.id == 14922 && !hasRequirement(player, Quests.SWAN_SONG)) {
             return
         }
@@ -75,17 +80,20 @@ class TunnelShortcut : AgilityShortcut {
                                 player.location,
                                 start.transform(direction, 4 + offset),
                                 Animation.create(Animations.CRAWL_UNDER_WALL_C_2591),
-                                19
+                                19,
                             )
                             false
                         }
 
                         4 -> {
                             player.animate(ForceMovement.WALK_ANIMATION)
-                            if ((obj.id == 9309 || obj.id == 9310) && !player.achievementDiaryManager.getDiary(DiaryType.FALADOR)!!
+                            if ((obj.id == 9309 || obj.id == 9310) &&
+                                !player.achievementDiaryManager
+                                    .getDiary(DiaryType.FALADOR)!!
                                     .isComplete(1, 1)
                             ) {
-                                player.achievementDiaryManager.getDiary(DiaryType.FALADOR)!!
+                                player.achievementDiaryManager
+                                    .getDiary(DiaryType.FALADOR)!!
                                     .updateTask(player, 1, 1, true)
                             }
                             true
@@ -94,11 +102,14 @@ class TunnelShortcut : AgilityShortcut {
                         else -> false
                     }
                 }
-            }
+            },
         )
     }
 
-    override fun getDestination(node: Node, n: Node): Location {
+    override fun getDestination(
+        node: Node,
+        n: Node,
+    ): Location {
         return if (n.id == 14922) {
             n.location.transform(getObjectDirection(n.asScenery().direction), 1)
         } else {
@@ -106,7 +117,10 @@ class TunnelShortcut : AgilityShortcut {
         }
     }
 
-    private fun getStart(location: Location, dir: Direction): Location {
+    private fun getStart(
+        location: Location,
+        dir: Direction,
+    ): Location {
         return when (dir) {
             Direction.NORTH, Direction.SOUTH -> location
             Direction.EAST -> location.transform(0, if (location.y == 3111) 1 else -1, 0)

@@ -1,6 +1,5 @@
 package content.region.misthalin.quest.vampire
 
-import org.rs.consts.*
 import content.region.misthalin.handlers.draynor.DraynorUtils
 import core.api.*
 import core.api.quest.getQuestStage
@@ -9,11 +8,10 @@ import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.npc.NPC
 import core.game.world.map.Location
+import org.rs.consts.*
 
 class VampireSlayerListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(DraynorUtils.cupBoard, IntType.SCENERY, "open") { player, node ->
             animate(player, Animations.OPEN_WARDROBE_542)
             playAudio(player, Sounds.CUPBOARD_OPEN_58)
@@ -59,7 +57,8 @@ class VampireSlayerListener : InteractionListener {
                     val o = player.getAttribute<NPC>("count", null)
                     if (o == null || !o.isActive) {
                         val vampire =
-                            core.game.node.entity.npc.NPC.create(NPCs.COUNT_DRAYNOR_757, Location.create(3078, 9775))
+                            core.game.node.entity.npc.NPC
+                                .create(NPCs.COUNT_DRAYNOR_757, Location.create(3078, 9775))
                         vampire.isRespawn = false
                         vampire.setAttribute("player", player)
                         vampire.init()

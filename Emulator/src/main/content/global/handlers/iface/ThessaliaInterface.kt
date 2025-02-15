@@ -43,22 +43,23 @@ private const val M_STITCHING = 23
 private const val M_RAGGED_TOP = 24
 private const val M_TWO_TONED = 25
 
-private val maleTorsoIDs = intArrayOf(
-    M_STRIPED_SWEATER,
-    M_WOOLLEN_VEST,
-    M_PRINCELY_VEST,
-    M_TATTERED_WAISTCOAT,
-    M_FINE_SHIRT,
-    M_WAISTCOAT,
-    M_PLAIN_TOP,
-    M_LIGHT_BUTTONS,
-    M_DARK_BUTTONS,
-    M_JACKET,
-    M_SHIRT,
-    M_STITCHING,
-    M_RAGGED_TOP,
-    M_TWO_TONED
-)
+private val maleTorsoIDs =
+    intArrayOf(
+        M_STRIPED_SWEATER,
+        M_WOOLLEN_VEST,
+        M_PRINCELY_VEST,
+        M_TATTERED_WAISTCOAT,
+        M_FINE_SHIRT,
+        M_WAISTCOAT,
+        M_PLAIN_TOP,
+        M_LIGHT_BUTTONS,
+        M_DARK_BUTTONS,
+        M_JACKET,
+        M_SHIRT,
+        M_STITCHING,
+        M_RAGGED_TOP,
+        M_TWO_TONED,
+    )
 
 private const val M_STRIPED_ARMS = 107
 private const val M_PRINCELY_SLEEVES = 108
@@ -73,20 +74,21 @@ private const val M_LARGE_CUFFED = 105
 private const val M_THIN_SLEEVED = 30
 private const val M_SHOULDER_PADS = 31
 
-private val maleSleeveIDs = intArrayOf(
-    M_STRIPED_ARMS,
-    M_PRINCELY_SLEEVES,
-    M_FINE_CUFFS,
-    M_WOOLLEN_SLEEVES,
-    M_RAGGED_ARMS,
-    M_TATTERED_SLEEVES,
-    M_LOOSE_SLEEVED,
-    M_REGULAR,
-    M_MUSCLEBOUND,
-    M_LARGE_CUFFED,
-    M_THIN_SLEEVED,
-    M_SHOULDER_PADS
-)
+private val maleSleeveIDs =
+    intArrayOf(
+        M_STRIPED_ARMS,
+        M_PRINCELY_SLEEVES,
+        M_FINE_CUFFS,
+        M_WOOLLEN_SLEEVES,
+        M_RAGGED_ARMS,
+        M_TATTERED_SLEEVES,
+        M_LOOSE_SLEEVED,
+        M_REGULAR,
+        M_MUSCLEBOUND,
+        M_LARGE_CUFFED,
+        M_THIN_SLEEVED,
+        M_SHOULDER_PADS,
+    )
 
 private const val M_PLAIN_TROUSERS = 36
 private const val M_PRINCELY_BREECHES = 85
@@ -100,19 +102,20 @@ private const val M_TURN_UPS = 39
 private const val M_FLARES = 38
 private const val M_FINE_BREECHES = 87
 
-private val maleLegIDs = intArrayOf(
-    M_PLAIN_TROUSERS,
-    M_PRINCELY_BREECHES,
-    M_SHORTS,
-    M_RAGGED_BREECHES,
-    M_TATTERED_BREECHES,
-    M_TORN_TROUSERS,
-    M_BREECHES,
-    M_STRIPED_TROUSERS,
-    M_TURN_UPS,
-    M_FLARES,
-    M_FINE_BREECHES
-)
+private val maleLegIDs =
+    intArrayOf(
+        M_PLAIN_TROUSERS,
+        M_PRINCELY_BREECHES,
+        M_SHORTS,
+        M_RAGGED_BREECHES,
+        M_TATTERED_BREECHES,
+        M_TORN_TROUSERS,
+        M_BREECHES,
+        M_STRIPED_TROUSERS,
+        M_TURN_UPS,
+        M_FLARES,
+        M_FINE_BREECHES,
+    )
 
 private const val F_STRIPED_SWEATER = 153
 private const val F_WOOLLEN_VEST = 155
@@ -126,19 +129,20 @@ private const val F_SIMPLE = 58
 private const val F_POLO_NECK = 59
 private const val F_TORN = 60
 
-private val femaleTopIDs = intArrayOf(
-    F_STRIPED_SWEATER,
-    F_WOOLLEN_VEST,
-    F_FRILLED_BLOUSE,
-    F_BODICE,
-    F_FINE_SHIRT,
-    F_RAGGED_TOP,
-    F_PLAIN_TOP,
-    F_CROP_TOP,
-    F_SIMPLE,
-    F_POLO_NECK,
-    F_TORN
-)
+private val femaleTopIDs =
+    intArrayOf(
+        F_STRIPED_SWEATER,
+        F_WOOLLEN_VEST,
+        F_FRILLED_BLOUSE,
+        F_BODICE,
+        F_FINE_SHIRT,
+        F_RAGGED_TOP,
+        F_PLAIN_TOP,
+        F_CROP_TOP,
+        F_SIMPLE,
+        F_POLO_NECK,
+        F_TORN,
+    )
 
 private const val F_STRIPED_ARMS = 149
 private const val F_FRILLED_SLEEVES = 150
@@ -152,19 +156,20 @@ private const val F_MUSCLY = 63
 private const val F_LARGE_CUFFS = 147
 private const val F_BARE_ARMS = 62
 
-private val femaleArmIDs = intArrayOf(
-    F_STRIPED_ARMS,
-    F_FRILLED_SLEEVES,
-    F_FINE_CUFFS,
-    F_WOOLLEN_ARMS,
-    F_RAGGED_SLEEVES,
-    F_TATTERED_SLEEVES,
-    F_LONG_SLEEVES,
-    F_SHORT_SLEEVES,
-    F_MUSCLY,
-    F_LARGE_CUFFS,
-    F_BARE_ARMS
-)
+private val femaleArmIDs =
+    intArrayOf(
+        F_STRIPED_ARMS,
+        F_FRILLED_SLEEVES,
+        F_FINE_CUFFS,
+        F_WOOLLEN_ARMS,
+        F_RAGGED_SLEEVES,
+        F_TATTERED_SLEEVES,
+        F_LONG_SLEEVES,
+        F_SHORT_SLEEVES,
+        F_MUSCLY,
+        F_LARGE_CUFFS,
+        F_BARE_ARMS,
+    )
 
 private const val F_FINE_SKIRT = 129
 private const val F_FRILLED_SKIRT = 130
@@ -182,24 +187,25 @@ private const val F_FLARES = 72
 private const val F_PLAIN_TROUSERS = 70
 private const val F_SHORTS = 77
 
-private val femaleLegIDs = intArrayOf(
-    F_FINE_SKIRT,
-    F_FRILLED_SKIRT,
-    F_LAYERED_SKIRT,
-    F_LONG_NARROW_SKIRT,
-    F_RAGGED_SKIRT,
-    F_TATTERED_SKIRT,
-    F_SHORT_SKIRT,
-    F_SASHED_SKIRT,
-    F_FITTED_SKIRT,
-    F_TORN_TROUSERS,
-    F_LONG_SKIRT,
-    F_TURN_UPS,
-    F_FLARES,
-    F_FLARES,
-    F_PLAIN_TROUSERS,
-    F_SHORTS
-)
+private val femaleLegIDs =
+    intArrayOf(
+        F_FINE_SKIRT,
+        F_FRILLED_SKIRT,
+        F_LAYERED_SKIRT,
+        F_LONG_NARROW_SKIRT,
+        F_RAGGED_SKIRT,
+        F_TATTERED_SKIRT,
+        F_SHORT_SKIRT,
+        F_SASHED_SKIRT,
+        F_FITTED_SKIRT,
+        F_TORN_TROUSERS,
+        F_LONG_SKIRT,
+        F_TURN_UPS,
+        F_FLARES,
+        F_FLARES,
+        F_PLAIN_TROUSERS,
+        F_SHORTS,
+    )
 
 private val COINS = Item(995, 1000)
 
@@ -208,10 +214,13 @@ class ThessaliaInterface : ComponentPlugin() {
     enum class colorType {
         TORSO,
         ARMS,
-        LEGS
+        LEGS,
     }
 
-    override fun open(player: Player?, component: Component?) {
+    override fun open(
+        player: Player?,
+        component: Component?,
+    ) {
         super.open(player, component)
         component ?: return
         player?.toggleWardrobe(true)
@@ -247,52 +256,57 @@ class ThessaliaInterface : ComponentPlugin() {
         opcode: Int,
         button: Int,
         slot: Int,
-        itemId: Int
+        itemId: Int,
     ): Boolean {
         player ?: return false
         when (button) {
             181, 180, 297 -> pay(player)
-            else -> when (component?.id) {
-                THESSALIA_MALE_COMPONENT -> {
-                    when (button) {
-                        182 -> setAttribute(player, "thes-type", colorType.TORSO)
-                        183 -> setAttribute(player, "thes-type", colorType.ARMS)
-                        184 -> setAttribute(player, "thes-type", colorType.LEGS)
+            else ->
+                when (component?.id) {
+                    THESSALIA_MALE_COMPONENT -> {
+                        when (button) {
+                            182 -> setAttribute(player, "thes-type", colorType.TORSO)
+                            183 -> setAttribute(player, "thes-type", colorType.ARMS)
+                            184 -> setAttribute(player, "thes-type", colorType.LEGS)
+                        }
+                        if (maleArmsButtonRange.contains(button)) updateArms(player, button, true)
+                        if (maleTorsoButtonRange.contains(button)) updateTop(player, button, true)
+                        if (maleLegsButtonRange.contains(button)) updateLegs(player, button, true)
+                        if (maleColorButtonRange.contains(button)) {
+                            updateColor(
+                                player,
+                                button,
+                                true,
+                                player.getAttribute(
+                                    "thes-type",
+                                    colorType.TORSO,
+                                ),
+                            )
+                        }
                     }
-                    if (maleArmsButtonRange.contains(button)) updateArms(player, button, true)
-                    if (maleTorsoButtonRange.contains(button)) updateTop(player, button, true)
-                    if (maleLegsButtonRange.contains(button)) updateLegs(player, button, true)
-                    if (maleColorButtonRange.contains(button)) updateColor(
-                        player,
-                        button,
-                        true,
-                        player.getAttribute(
-                            "thes-type",
-                            colorType.TORSO
-                        )
-                    )
-                }
 
-                THESSALIA_FEMALE_COMPONENT -> {
-                    when (button) {
-                        183 -> setAttribute(player, "thes-type", colorType.TORSO)
-                        184 -> setAttribute(player, "thes-type", colorType.ARMS)
-                        185 -> setAttribute(player, "thes-type", colorType.LEGS)
+                    THESSALIA_FEMALE_COMPONENT -> {
+                        when (button) {
+                            183 -> setAttribute(player, "thes-type", colorType.TORSO)
+                            184 -> setAttribute(player, "thes-type", colorType.ARMS)
+                            185 -> setAttribute(player, "thes-type", colorType.LEGS)
+                        }
+                        if (femaleArmsButtonRange.contains(button)) updateArms(player, button, false)
+                        if (femaleTorsoButtonRange.contains(button)) updateTop(player, button, false)
+                        if (femaleLegsButtonRange.contains(button)) updateLegs(player, button, false)
+                        if (femaleColorButtonRange.contains(button)) {
+                            updateColor(
+                                player,
+                                button,
+                                false,
+                                player.getAttribute(
+                                    "thes-type",
+                                    colorType.TORSO,
+                                ),
+                            )
+                        }
                     }
-                    if (femaleArmsButtonRange.contains(button)) updateArms(player, button, false)
-                    if (femaleTorsoButtonRange.contains(button)) updateTop(player, button, false)
-                    if (femaleLegsButtonRange.contains(button)) updateLegs(player, button, false)
-                    if (femaleColorButtonRange.contains(button)) updateColor(
-                        player,
-                        button,
-                        false,
-                        player.getAttribute(
-                            "thes-type",
-                            colorType.TORSO
-                        )
-                    )
                 }
-            }
         }
         return true
     }
@@ -311,28 +325,45 @@ class ThessaliaInterface : ComponentPlugin() {
         }
     }
 
-    fun updateTop(player: Player, button: Int, male: Boolean) {
+    fun updateTop(
+        player: Player,
+        button: Int,
+        male: Boolean,
+    ) {
         val usedArray = if (male) maleTorsoIDs else femaleTopIDs
         val subtractor = if (male) maleTorsoButtonRange.first else femaleTorsoButtonRange.first
         player.appearance.torso.changeLook(usedArray[button - subtractor])
         player.appearance.sync()
     }
 
-    fun updateLegs(player: Player, button: Int, male: Boolean) {
+    fun updateLegs(
+        player: Player,
+        button: Int,
+        male: Boolean,
+    ) {
         val usedArray = if (male) maleLegIDs else femaleLegIDs
         val subtractor = if (male) maleLegsButtonRange.first else femaleLegsButtonRange.first
         player.appearance.legs.changeLook(usedArray[button - subtractor])
         player.appearance.sync()
     }
 
-    fun updateArms(player: Player, button: Int, male: Boolean) {
+    fun updateArms(
+        player: Player,
+        button: Int,
+        male: Boolean,
+    ) {
         val usedArray = if (male) maleSleeveIDs else femaleArmIDs
         val subtractor = if (male) maleArmsButtonRange.first else femaleArmsButtonRange.first
         player.appearance.arms.changeLook(usedArray[button - subtractor])
         player.appearance.sync()
     }
 
-    fun updateColor(player: Player, button: Int, male: Boolean, type: colorType) {
+    fun updateColor(
+        player: Player,
+        button: Int,
+        male: Boolean,
+        type: colorType,
+    ) {
         val subtractor = if (male) maleColorButtonRange.first else femaleColorButtonRange.first
         when (type) {
             colorType.ARMS -> player.appearance.torso.changeColor(torsoColors[button - subtractor])

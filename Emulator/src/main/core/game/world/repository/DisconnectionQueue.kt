@@ -3,12 +3,11 @@ package core.game.world.repository
 import core.api.log
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.info.login.PlayerParser
-import core.tools.Log
 import core.game.system.task.TaskExecutor
 import core.game.world.GameWorld
+import core.tools.Log
 
 class DisconnectionQueue {
-
     private val queue = HashMap<String, DisconnectionEntry?>()
     private val queueTimers = HashMap<String, Int>()
 
@@ -19,8 +18,9 @@ class DisconnectionQueue {
         val entries = ArrayList(queue.entries)
 
         entries.forEach {
-            if (finish(it.value, false)) queue.remove(it.key)
-            else {
+            if (finish(it.value, false)) {
+                queue.remove(it.key)
+            } else {
                 queueTimers[it.key] = (queueTimers[it.key] ?: 0) + 3
                 if ((queueTimers[it.key] ?: Int.MAX_VALUE) >= 1500) {
                     it.value?.player?.let { player ->
@@ -30,7 +30,7 @@ class DisconnectionQueue {
                         log(
                             this::class.java,
                             Log.WARN,
-                            "Force-clearing ${it.key} after 15 minutes of being in the disconnection queue!"
+                            "Force-clearing ${it.key} after 15 minutes of being in the disconnection queue!",
                         )
                     }
                 }
@@ -42,7 +42,10 @@ class DisconnectionQueue {
         return queue.isEmpty()
     }
 
-    private fun finish(entry: DisconnectionEntry?, force: Boolean): Boolean {
+    private fun finish(
+        entry: DisconnectionEntry?,
+        force: Boolean,
+    ): Boolean {
         val player = entry!!.player
         if (!force && !player.allowRemoval()) {
             return false
@@ -51,8 +54,9 @@ class DisconnectionQueue {
         player.finishClear()
         Repository.removePlayer(player)
         try {
-            if (player.communication.clan != null)
+            if (player.communication.clan != null) {
                 player.communication.clan.leave(player, false)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -85,7 +89,10 @@ class DisconnectionQueue {
     }
 
     @JvmOverloads
-    fun add(player: Player, clear: Boolean = false) {
+    fun add(
+        player: Player,
+        clear: Boolean = false,
+    ) {
         if (queue[player.name] != null) return
         queue[player.name] = DisconnectionEntry(player, clear)
         log(this::class.java, Log.INFO, "Queueing ${player.name} for disconnection.")
@@ -100,9 +107,15 @@ class DisconnectionQueue {
         queueTimers.remove(name)
     }
 
-    internal data class DisconnectionEntry(val player: Player, var isClear: Boolean)
+    internal data class DisconnectionEntry(
+        val player: Player,
+        var isClear: Boolean,
+    )
 
-    fun save(player: Player, sql: Boolean): Boolean {
+    fun save(
+        player: Player,
+        sql: Boolean,
+    ): Boolean {
         try {
             PlayerParser.saveImmediately(player)
         } catch (t: Throwable) {

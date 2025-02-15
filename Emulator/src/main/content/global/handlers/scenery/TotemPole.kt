@@ -12,24 +12,23 @@ import org.rs.consts.Quests
 import org.rs.consts.Scenery
 
 class TotemPole : InteractionListener {
+    private val skillsNecklaces: IntArray =
+        intArrayOf(
+            Items.SKILLS_NECKLACE_11113,
+            Items.SKILLS_NECKLACE1_11111,
+            Items.SKILLS_NECKLACE2_11109,
+            Items.SKILLS_NECKLACE3_11107,
+        )
 
-    private val skillsNecklaces: IntArray = intArrayOf(
-        Items.SKILLS_NECKLACE_11113,
-        Items.SKILLS_NECKLACE1_11111,
-        Items.SKILLS_NECKLACE2_11109,
-        Items.SKILLS_NECKLACE3_11107
-    )
-
-
-    private val combatBracelets: IntArray = intArrayOf(
-        Items.COMBAT_BRACELET_11126,
-        Items.COMBAT_BRACELET1_11124,
-        Items.COMBAT_BRACELET2_11122,
-        Items.COMBAT_BRACELET3_11120
-    )
+    private val combatBracelets: IntArray =
+        intArrayOf(
+            Items.COMBAT_BRACELET_11126,
+            Items.COMBAT_BRACELET1_11124,
+            Items.COMBAT_BRACELET2_11122,
+            Items.COMBAT_BRACELET3_11120,
+        )
 
     override fun defineListeners() {
-
         /*
          * Handles use the totem pole allowed to
          * re-charge skill necklaces and combat bracelets.
@@ -39,11 +38,12 @@ class TotemPole : InteractionListener {
         onUseWith(IntType.SCENERY, (combatBracelets + skillsNecklaces), Scenery.TOTEM_POLE_2938) { player, used, with ->
             if (!hasRequirement(player, Quests.LEGENDS_QUEST)) return@onUseWith false
 
-            val baseItem = when (used.id) {
-                in skillsNecklaces -> Items.SKILLS_NECKLACE4_11105
-                in combatBracelets -> Items.COMBAT_BRACELET4_11118
-                else -> return@onUseWith false
-            }
+            val baseItem =
+                when (used.id) {
+                    in skillsNecklaces -> Items.SKILLS_NECKLACE4_11105
+                    in combatBracelets -> Items.COMBAT_BRACELET4_11118
+                    else -> return@onUseWith false
+                }
 
             val inventory = player.inventory
             val slot = inventory.getSlot(used.asItem())
@@ -64,11 +64,15 @@ class TotemPole : InteractionListener {
                             .append("recharges your necklace. You can now rub the<br>")
                             .append("necklace to teleport and wear it to get more caskets<br>")
                             .append("while big net Fishing.")
-                    }.toString()
+                    }.toString(),
                 )
             } else {
                 sendMessage(player, "You can't do that.")
-                log(this.javaClass, Log.WARN, "I'm Agent Mulder, this is Agent Scully. We're investigating a series of unusual occurrences in this area. [${with.location}}")
+                log(
+                    this.javaClass,
+                    Log.WARN,
+                    "I'm Agent Mulder, this is Agent Scully. We're investigating a series of unusual occurrences in this area. [${with.location}}",
+                )
             }
             return@onUseWith true
         }
@@ -83,7 +87,7 @@ class TotemPole : InteractionListener {
                 "This totem pole is truly awe inspiring.",
                 "It depicts powerful Karamja jungle animals.",
                 "It is very well carved and brings a sense of power",
-                "and spiritual fullfilmentto anyone who looks at it."
+                "and spiritual fullfilmentto anyone who looks at it.",
             )
             return@on true
         }
@@ -96,11 +100,10 @@ class TotemPole : InteractionListener {
             player.dialogueInterpreter.sendDialogue(
                 "This totem pole looks very corrupted,",
                 "there is a darkness about it that seems quite unnatural.",
-                "You don't like to look at it for too long."
+                "You don't like to look at it for too long.",
             )
             return@on true
         }
-
 
         /*
          * Handles looking on evil totem after replaced. (139)
@@ -113,7 +116,7 @@ class TotemPole : InteractionListener {
                 "And replace it with the one you carved yourself.",
                 "As you do so, you feel a lightness in the air,",
                 "almost as if the Kharazi jungle were sighing.",
-                "Perhaps Gujuo would like to see the totem pole."
+                "Perhaps Gujuo would like to see the totem pole.",
             )
             return@on true
         }

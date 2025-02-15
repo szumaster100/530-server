@@ -13,7 +13,6 @@ import core.tools.RandomFunction
 
 @Initializable
 class BurthorpeTrainNPC : AbstractNPC {
-
     private var delay: Long = 0
 
     constructor() : super(0, null)
@@ -38,7 +37,11 @@ class BurthorpeTrainNPC : AbstractNPC {
         }
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return BurthorpeTrainNPC(id, location)
     }
 
@@ -74,11 +77,12 @@ class BurthorpeTrainNPC : AbstractNPC {
                 Pulser.submit(
                     object : Pulse(1) {
                         val sold: NPC = sol
+
                         override fun pulse(): Boolean {
                             sold.sendChat("Yes, sir!")
                             return true
                         }
-                    }
+                    },
                 )
             }
 
@@ -95,7 +99,14 @@ class BurthorpeTrainNPC : AbstractNPC {
 
             1062 -> {
                 val rand = RandomFunction.random(5)
-                val animation = if (rand == 1) PUNCH else if (rand == 2) KICK else DEFEND
+                val animation =
+                    if (rand == 1) {
+                        PUNCH
+                    } else if (rand == 2) {
+                        KICK
+                    } else {
+                        DEFEND
+                    }
                 animate(animation)
                 delay = System.currentTimeMillis() + 3500
                 faceLocation(getLocation().transform(0, -1, 0))
@@ -111,7 +122,7 @@ class BurthorpeTrainNPC : AbstractNPC {
                             }
                             return true
                         }
-                    }
+                    },
                 )
             }
         }
@@ -123,16 +134,17 @@ class BurthorpeTrainNPC : AbstractNPC {
         private val KICK = Animation(423)
         private val DEFEND = Animation(424)
         private val EAT = Animation(1145)
-        private val MESSAGES = arrayOf(
-            "Good work soldier!",
-            "Push it!",
-            "Work it!",
-            "The dummy is the enemy. Kill it!",
-            "Put your back into it soldier!",
-            "You're not out for a sunday stroll soldier!",
-            "My daughter can hit harder than that!",
-            "I want to see you sweat!",
-            "Keep it up soldier!"
-        )
+        private val MESSAGES =
+            arrayOf(
+                "Good work soldier!",
+                "Push it!",
+                "Work it!",
+                "The dummy is the enemy. Kill it!",
+                "Put your back into it soldier!",
+                "You're not out for a sunday stroll soldier!",
+                "My daughter can hit harder than that!",
+                "I want to see you sweat!",
+                "Keep it up soldier!",
+            )
     }
 }

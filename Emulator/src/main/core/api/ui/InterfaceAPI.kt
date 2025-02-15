@@ -16,7 +16,12 @@ import core.net.packet.out.RepositionChild
  * @param interfaceID The interface id where the text will be displayed.
  * @param child The child id within the interface where the text will be shown.
  */
-fun setInterfaceText(player: Player, string: String, interfaceID: Int, child: Int) {
+fun setInterfaceText(
+    player: Player,
+    string: String,
+    interfaceID: Int,
+    child: Int,
+) {
     player.packetDispatch.sendString(string, interfaceID, child)
 }
 
@@ -35,7 +40,10 @@ fun restoreTabs(player: Player) {
  * @param player The player who will open the interface tab.
  * @param component The id of the component (interface tab) to open.
  */
-fun openSingleTab(player: Player, component: Int) {
+fun openSingleTab(
+    player: Player,
+    component: Int,
+) {
     player.interfaceManager.openSingleTab(Component(component))
 }
 
@@ -45,7 +53,10 @@ fun openSingleTab(player: Player, component: Int) {
  * @param player The player whose minimap state is being updated.
  * @param state The state of the minimap. This could represent whether the minimap is visible or hidden.
  */
-fun setMinimapState(player: Player, state: Int) {
+fun setMinimapState(
+    player: Player,
+    state: Int,
+) {
     return PacketRepository.send(MinimapState::class.java, MinimapStateContext(player, state))
 }
 
@@ -57,7 +68,12 @@ fun setMinimapState(player: Player, state: Int) {
  * @param childId The id of the specific child component within the interface.
  * @param hide If true, the child component will be hidden; if false, it will be shown.
  */
-fun sendInterfaceConfig(player: Player, interfaceId: Int, childId: Int, hide: Boolean) {
+fun sendInterfaceConfig(
+    player: Player,
+    interfaceId: Int,
+    childId: Int,
+    hide: Boolean,
+) {
     player.packetDispatch.sendInterfaceConfig(interfaceId, childId, hide)
 }
 
@@ -70,10 +86,16 @@ fun sendInterfaceConfig(player: Player, interfaceId: Int, childId: Int, hide: Bo
  * @param positionX The new X coordinate.
  * @param positionY The new Y coordinate.
  */
-fun repositionChild(player: Player, interfaceId: Int, childId: Int, positionX: Int, positionY: Int) {
+fun repositionChild(
+    player: Player,
+    interfaceId: Int,
+    childId: Int,
+    positionX: Int,
+    positionY: Int,
+) {
     return PacketRepository.send(
         RepositionChild::class.java,
-        ChildPositionContext(player, interfaceId, childId, positionX, positionY)
+        ChildPositionContext(player, interfaceId, childId, positionX, positionY),
     )
 }
 

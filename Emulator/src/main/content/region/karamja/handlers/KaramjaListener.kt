@@ -1,12 +1,11 @@
 package content.region.karamja.handlers
 
-import org.rs.consts.*
 import core.api.*
 import core.api.interaction.openNpcShop
 import core.api.item.produceGroundItem
+import core.api.quest.hasRequirement
 import core.api.quest.isQuestComplete
 import core.game.dialogue.FaceAnim
-import core.api.quest.hasRequirement
 import core.game.global.action.ClimbActionHandler
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
@@ -17,9 +16,9 @@ import core.game.node.item.Item
 import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.*
 
 class KaramjaListener : InteractionListener {
-
     private fun checkRequirement(player: Player): Boolean {
         return anyInEquipment(player, *MACHETE_ID) || anyInInventory(player, *MACHETE_ID)
     }
@@ -35,7 +34,6 @@ class KaramjaListener : InteractionListener {
     }
 
     override fun defineListeners() {
-
         on(JUNGLE_BUSH, IntType.SCENERY, "chop-down") { player, node ->
             val randomChop = (1..5).random()
             val chopDown = getAttribute(player, "chop-bush", randomChop)
@@ -53,6 +51,7 @@ class KaramjaListener : InteractionListener {
             player.pulseManager.run(
                 object : Pulse() {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         counter++
                         if (counter != randomChop) {
@@ -68,7 +67,7 @@ class KaramjaListener : InteractionListener {
                         }
                         return counter == chopDown
                     }
-                }
+                },
             )
             return@on true
         }
@@ -137,7 +136,7 @@ class KaramjaListener : InteractionListener {
                             player,
                             Items.PALM_LEAF_2339,
                             1,
-                            getPathableRandomLocalCoordinate(player, 1, node.location)
+                            getPathableRandomLocalCoordinate(player, 1, node.location),
                         )
                         sendMessage(player, "A palm leaf falls to the ground.")
                         return@queueScript stopExecuting(player)
@@ -161,7 +160,7 @@ class KaramjaListener : InteractionListener {
                         player,
                         NPCs.JIMINUA_560,
                         "You don't have any essence for me to un-note.",
-                        FaceAnim.HALF_GUILTY
+                        FaceAnim.HALF_GUILTY,
                     )
                     return@onUseWith false
                 }
@@ -176,7 +175,7 @@ class KaramjaListener : InteractionListener {
                         player,
                         NPCs.JIMINUA_560,
                         "I charge 2 gold coins to un-note each pure essence.",
-                        FaceAnim.HALF_GUILTY
+                        FaceAnim.HALF_GUILTY,
                     )
                     return@onUseWith false
                 }
@@ -200,27 +199,31 @@ class KaramjaListener : InteractionListener {
     }
 
     companion object {
-        private val PINEAPPLE_PLANT = intArrayOf(
-            Scenery.PINEAPPLE_PLANT_1408,
-            Scenery.PINEAPPLE_PLANT_1409,
-            Scenery.PINEAPPLE_PLANT_1410,
-            Scenery.PINEAPPLE_PLANT_1411,
-            Scenery.PINEAPPLE_PLANT_1412,
-            Scenery.PINEAPPLE_PLANT_1413
-        )
-        private val CUSTOM_OFFICERS = intArrayOf(
-            NPCs.CUSTOMS_OFFICER_380,
-            NPCs.CUSTOMS_OFFICER_381
-        )
-        private val MACHETE_ID = intArrayOf(
-            Items.MACHETE_975,
-            Items.JADE_MACHETE_6315,
-            Items.OPAL_MACHETE_6313,
-            Items.RED_TOPAZ_MACHETE_6317
-        )
-        private val JUNGLE_BUSH = intArrayOf(
-            Scenery.JUNGLE_BUSH_2892,
-            Scenery.JUNGLE_BUSH_2893
-        )
+        private val PINEAPPLE_PLANT =
+            intArrayOf(
+                Scenery.PINEAPPLE_PLANT_1408,
+                Scenery.PINEAPPLE_PLANT_1409,
+                Scenery.PINEAPPLE_PLANT_1410,
+                Scenery.PINEAPPLE_PLANT_1411,
+                Scenery.PINEAPPLE_PLANT_1412,
+                Scenery.PINEAPPLE_PLANT_1413,
+            )
+        private val CUSTOM_OFFICERS =
+            intArrayOf(
+                NPCs.CUSTOMS_OFFICER_380,
+                NPCs.CUSTOMS_OFFICER_381,
+            )
+        private val MACHETE_ID =
+            intArrayOf(
+                Items.MACHETE_975,
+                Items.JADE_MACHETE_6315,
+                Items.OPAL_MACHETE_6313,
+                Items.RED_TOPAZ_MACHETE_6317,
+            )
+        private val JUNGLE_BUSH =
+            intArrayOf(
+                Scenery.JUNGLE_BUSH_2892,
+                Scenery.JUNGLE_BUSH_2893,
+            )
     }
 }

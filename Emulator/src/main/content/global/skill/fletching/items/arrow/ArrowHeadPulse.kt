@@ -8,8 +8,12 @@ import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 
-class ArrowHeadPulse(player: Player?, node: Item?, private val arrow: ArrowHead, private var sets: Int) :
-    SkillPulse<Item?>(player, node) {
+class ArrowHeadPulse(
+    player: Player?,
+    node: Item?,
+    private val arrow: ArrowHead,
+    private var sets: Int,
+) : SkillPulse<Item?>(player, node) {
     override fun checkRequirements(): Boolean {
         if (arrow.unfinished == 4160) {
             if (!getInstance(player).flags.isBroadsUnlocked()) {
@@ -46,7 +50,15 @@ class ArrowHeadPulse(player: Player?, node: Item?, private val arrow: ArrowHead,
             val amount = if (tipAmount > shaftAmount) shaftAmount else tipAmount
             HEADLESS_ARROW.amount = amount
             tip.amount = amount
-            player.packetDispatch.sendMessage(if (amount == 1) "You attach an arrow head to an arrow shaft." else "You attach arrow heads to $amount arrow shafts.")
+            player.packetDispatch.sendMessage(
+                if (amount ==
+                    1
+                ) {
+                    "You attach an arrow head to an arrow shaft."
+                } else {
+                    "You attach arrow heads to $amount arrow shafts."
+                },
+            )
         }
         if (player.inventory.remove(HEADLESS_ARROW, tip)) {
             player.getSkills().addExperience(Skills.FLETCHING, arrow.experience * tip.amount, true)

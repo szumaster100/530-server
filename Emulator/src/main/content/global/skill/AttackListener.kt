@@ -1,15 +1,14 @@
 package content.global.skill
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.inEquipment
 import core.api.sendMessage
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.combat.CombatStyle
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 class AttackListener : InteractionListener {
-
     override fun defineListeners() {
         flagInstant()
         on(IntType.NPC, "attack") { player, npc ->

@@ -1,9 +1,5 @@
 package content.region.asgarnia.quest.hero.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
-import org.rs.consts.Quests
 import content.region.asgarnia.quest.hero.HeroesQuest
 import content.region.karamja.dialogue.brimhaven.CharlieTheCookDialogueFile
 import content.region.karamja.dialogue.brimhaven.GarvDialogueFile
@@ -24,12 +20,18 @@ import core.game.node.item.GroundItem
 import core.game.world.map.Location
 import core.tools.END_DIALOGUE
 import core.tools.START_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
+import org.rs.consts.Scenery
 
 class HeroesQuestListener : InteractionListener {
-
     override fun defineListeners() {
         on(Scenery.DOOR_2626, IntType.SCENERY, "open") { player, node ->
-            if (getQuestStage(player, Quests.HEROES_QUEST) >= 2 && getAttribute(player, HeroesQuest.attributeGruborLetsYouIn, false) && HeroesQuest.isBlackArm(player)) {
+            if (getQuestStage(player, Quests.HEROES_QUEST) >= 2 &&
+                getAttribute(player, HeroesQuest.attributeGruborLetsYouIn, false) &&
+                HeroesQuest.isBlackArm(player)
+            ) {
                 DoorActionHandler.handleAutowalkDoor(player, node.asScenery())
             } else {
                 openDialogue(player, GruborDialogueFile(), NPC(NPCs.GRUBOR_789))
@@ -68,18 +70,33 @@ class HeroesQuestListener : InteractionListener {
             openDialogue(
                 player,
                 object : DialogueFile() {
-                    override fun handle(componentID: Int, buttonID: Int) {
+                    override fun handle(
+                        componentID: Int,
+                        buttonID: Int,
+                    ) {
                         when (stage) {
-                            START_DIALOGUE -> sendNPCDialogue(player, NPCs.PIRATE_GUARD_799, "I don't think Mr Grip will like you opening that. That's his private drinks cabinet.").also { stage++ }
-                            1 -> showTopics(Topic(FaceAnim.NEUTRAL, "He won't notice me having a quick look.", 2), Topic(FaceAnim.NEUTRAL, "Ok, I'll leave it.", END_DIALOGUE))
-                            2 -> end().also {
-                                val gripNpc = findNPC(NPCs.GRIP_792)
-                                sendChat(gripNpc!!, "Stay out of my drinks cabinet!")
-                                forceWalk(gripNpc, Location(2777, 3198, 0), "smart")
-                            }
+                            START_DIALOGUE ->
+                                sendNPCDialogue(
+                                    player,
+                                    NPCs.PIRATE_GUARD_799,
+                                    "I don't think Mr Grip will like you opening that. That's his private drinks cabinet.",
+                                ).also {
+                                    stage++
+                                }
+                            1 ->
+                                showTopics(
+                                    Topic(FaceAnim.NEUTRAL, "He won't notice me having a quick look.", 2),
+                                    Topic(FaceAnim.NEUTRAL, "Ok, I'll leave it.", END_DIALOGUE),
+                                )
+                            2 ->
+                                end().also {
+                                    val gripNpc = findNPC(NPCs.GRIP_792)
+                                    sendChat(gripNpc!!, "Stay out of my drinks cabinet!")
+                                    forceWalk(gripNpc, Location(2777, 3198, 0), "smart")
+                                }
                         }
                     }
-                }
+                },
             )
             return@on true
         }
@@ -131,7 +148,10 @@ class HeroesQuestListener : InteractionListener {
                 if (getQuestStage(player, Quests.HEROES_QUEST) == 4) {
                     setQuestStage(player, Quests.HEROES_QUEST, 5)
                 }
-                sendDialogue(player, "You find two candlesticks in the chest. So that will be one for you, and one for the person who killed Grip for you.")
+                sendDialogue(
+                    player,
+                    "You find two candlesticks in the chest. So that will be one for you, and one for the person who killed Grip for you.",
+                )
                 addItemOrDrop(player, Items.PETES_CANDLESTICK_1577, 2)
             }
             return@on true

@@ -8,7 +8,8 @@ import org.junit.jupiter.api.Test
 class BlastStateTests {
     @Test
     fun tickPassedWithCokeInStoveShouldIncreaseStoveTemp() {
-        val state = BlastState(); state.disableBreaking = true
+        val state = BlastState()
+        state.disableBreaking = true
         state.addCoke(1)
         Assertions.assertEquals(0, state.stoveTemp)
 
@@ -18,53 +19,65 @@ class BlastStateTests {
 
     @Test
     fun stoveTempShouldNeverExceed100() {
-        val state = BlastState(); state.disableBreaking = true
+        val state = BlastState()
+        state.disableBreaking = true
         state.addCoke(BlastUtils.COKE_LIMIT)
 
-        for (i in 0 until 150)
+        for (i in 0 until 150) {
             state.tick(true, false)
+        }
         Assertions.assertEquals(100, state.stoveTemp)
     }
 
     @Test fun cokeShouldDisappearFromStove() {
-        val state = BlastState(); state.disableBreaking = true
+        val state = BlastState()
+        state.disableBreaking = true
         state.addCoke(1)
-        for (i in 0 until 10)
+        for (i in 0 until 10) {
             state.tick(true, false)
+        }
         Assertions.assertEquals(0, state.cokeInStove)
     }
 
     @Test fun stoveTempShouldLowerWithoutCoke() {
-        val state = BlastState(); state.disableBreaking = true
+        val state = BlastState()
+        state.disableBreaking = true
         state.addCoke(1)
-        for (i in 0 until 10)
+        for (i in 0 until 10) {
             state.tick(true, false)
+        }
         Assertions.assertEquals(10, state.stoveTemp)
-        for (i in 0 until 10)
+        for (i in 0 until 10) {
             state.tick(true, false)
+        }
         Assertions.assertEquals(0, state.stoveTemp)
     }
 
     @Test
     fun stoveTempShouldNeverGoBelow0() {
-        val state = BlastState(); state.disableBreaking = true
-        for (i in 0 until 100)
+        val state = BlastState()
+        state.disableBreaking = true
+        for (i in 0 until 100) {
             state.tick(true, false)
+        }
         Assertions.assertEquals(0, state.stoveTemp)
     }
 
     @Test fun furnaceTempShouldIncreaseProportionallyToStoveTempWhilePumping() {
-        val testData = arrayOf(
-            Pair(0, 0),
-            Pair(1, 1),
-            Pair(4, 2),
-            Pair(7, 3)
-        )
+        val testData =
+            arrayOf(
+                Pair(0, 0),
+                Pair(1, 1),
+                Pair(4, 2),
+                Pair(7, 3),
+            )
         for ((cokeToAdd, expectedTempRise) in testData) {
-            val state = BlastState(); state.disableBreaking = true
+            val state = BlastState()
+            state.disableBreaking = true
             state.addCoke(cokeToAdd)
-            for (i in 0 until state.cokeInStove * 10)
+            for (i in 0 until state.cokeInStove * 10) {
                 state.tick(false, false)
+            }
 
             state.tick(true, false)
             Assertions.assertEquals(expectedTempRise, state.furnaceTemp)
@@ -72,13 +85,15 @@ class BlastStateTests {
     }
 
     @Test fun pumpingShouldNotTransferHeatIfPipesBroken() {
-        val state1 = BlastState(); state1.disableBreaking = true
+        val state1 = BlastState()
+        state1.disableBreaking = true
         state1.addCoke(BlastUtils.COKE_LIMIT)
         state1.pumpPipeBroken = true
         for (i in 0 until 20) state1.tick(true, false)
         Assertions.assertEquals(0, state1.furnaceTemp)
 
-        val state2 = BlastState(); state2.disableBreaking = true
+        val state2 = BlastState()
+        state2.disableBreaking = true
         state2.addCoke(BlastUtils.COKE_LIMIT)
         state2.potPipeBroken = true
         for (i in 0 until 20) state2.tick(true, false)
@@ -86,7 +101,8 @@ class BlastStateTests {
     }
 
     @Test fun pumpingShouldNotTransferHeatIfBeltBroken() {
-        val state = BlastState(); state.disableBreaking = true
+        val state = BlastState()
+        state.disableBreaking = true
         state.addCoke(BlastUtils.COKE_LIMIT)
         state.beltBroken = true
         for (i in 0 until 20) state.tick(true, false)

@@ -1,18 +1,16 @@
 package content.global.skill.crafting.items.armour.headdress
 
-import org.rs.consts.Items
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import org.rs.consts.Items
 
 class FeatherHeaddressListener : InteractionListener {
-
     private val featherIDs = FeatherHeaddress.values().map { it.base }.toIntArray()
 
     override fun defineListeners() {
-
         onUseWith(IntType.ITEM, featherIDs, Items.COIF_1169) { player, used, with ->
             val item = FeatherHeaddress.forBase(used.id) ?: return@onUseWith false
             if (getStatLevel(player, Skills.CRAFTING) < 79) {

@@ -1,6 +1,5 @@
 package content.region.desert.quest.deserttreasure
 
-import org.rs.consts.Items
 import core.api.*
 import core.api.quest.getQuestStage
 import core.api.quest.isQuestComplete
@@ -8,11 +7,11 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Items
 import org.rs.consts.Quests
 
 @Initializable
 class DesertTreasure : Quest("Desert Treasure", 45, 44, 3, 440, 0, 1, 15) {
-
     companion object {
         const val questName = "Desert Treasure"
 
@@ -66,16 +65,23 @@ class DesertTreasure : Quest("Desert Treasure", 45, 44, 3, 440, 0, 1, 15) {
 
         fun completedAllSubstages(player: Player): Boolean {
             return getSubStage(player, attributeBloodStage) == 100 &&
-                    getSubStage(player, attributeSmokeStage) == 100 &&
-                    getSubStage(player, attributeIceStage) == 100 &&
-                    getSubStage(player, attributeShadowStage) == 100
+                getSubStage(player, attributeSmokeStage) == 100 &&
+                getSubStage(player, attributeIceStage) == 100 &&
+                getSubStage(player, attributeShadowStage) == 100
         }
 
-        fun getSubStage(player: Player, attributeName: String): Int {
+        fun getSubStage(
+            player: Player,
+            attributeName: String,
+        ): Int {
             return getAttribute(player, attributeName, 0)
         }
 
-        fun setSubStage(player: Player, attributeName: String, value: Int) {
+        fun setSubStage(
+            player: Player,
+            attributeName: String,
+            value: Int,
+        ) {
             return setAttribute(player, attributeName, value)
         }
 
@@ -95,7 +101,10 @@ class DesertTreasure : Quest("Desert Treasure", 45, 44, 3, 440, 0, 1, 15) {
         }
     }
 
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 12
         var stage = getStage(player)
@@ -114,7 +123,7 @@ class DesertTreasure : Quest("Desert Treasure", 45, 44, 3, 440, 0, 1, 15) {
             line(
                 player,
                 "I must have completed the following quests:",
-                line++
+                line++,
             )
             line(player, "The Digsite Quest", line++, isQuestComplete(player, Quests.THE_DIG_SITE))
             line(player, "The Tourist Trap", line++, isQuestComplete(player, Quests.THE_TOURIST_TRAP))
@@ -123,7 +132,6 @@ class DesertTreasure : Quest("Desert Treasure", 45, 44, 3, 440, 0, 1, 15) {
             line(player, "Waterfall Quest", line++, isQuestComplete(player, Quests.WATERFALL_QUEST))
             line(player, "Troll Stronghold", line++, isQuestComplete(player, Quests.TROLL_STRONGHOLD))
         } else {
-
             if (stage >= 2) {
                 line(player, "I took some etchings of a stone tablet discovered by the", line++, true)
                 line(player, "archaeologist in the desert to Terry Balando at the", line++, true)
@@ -176,13 +184,11 @@ class DesertTreasure : Quest("Desert Treasure", 45, 44, 3, 440, 0, 1, 15) {
             }
 
             if (stage >= 10 || (stage >= 9 && completedAllSubstages(player))) {
-
             } else if (stage >= 8) {
                 line(player, "I brought Eblis the ingredients so that he could cast the", line++, true)
                 line(player, "spell to see the places touched by the magic of the", line++, true)
                 line(player, "diamonds.", line++, true)
             } else if (stage >= 7) {
-
                 line(player, "To make the scrying glasses I need to bring the following", line++, false)
 
                 line(player, "items to Eblis:", line++, false)
@@ -198,9 +204,7 @@ class DesertTreasure : Quest("Desert Treasure", 45, 44, 3, 440, 0, 1, 15) {
             }
 
             if (stage >= 10 || (stage >= 9 && completedAllSubstages(player))) {
-
             } else if (stage >= 9 && !completedAllSubstages(player)) {
-
                 line(player, "I headed East into the desert and used the scrying", line++, true)
                 line(player, "glasses set up for me there by Eblis to try and find the", line++, true)
                 line(player, "Four Diamonds of Azzanadra.", line++, true)
@@ -221,7 +225,6 @@ class DesertTreasure : Quest("Desert Treasure", 45, 44, 3, 440, 0, 1, 15) {
                     line(player, "I defeated a vampire named Dessous to claim the Diamond", line++, true)
                     line(player, "of Blood.", line++, true)
                 } else if (getSubStage(player, attributeBloodStage) >= 1) {
-
                     line(player, "I discovered that the location of the Diamond of Blood was", line++, true)
                     line(player, "somewhere in Morytania, and in the possession of a", line++, true)
                     line(player, "vampire warrior named Dessous.", line++, true)
@@ -247,7 +250,7 @@ class DesertTreasure : Quest("Desert Treasure", 45, 44, 3, 440, 0, 1, 15) {
                             player,
                             "I then need to take that !!sacrificial pot?? to !!Entrana?? and get",
                             line++,
-                            false
+                            false,
                         )
                         line(player, "it blessed by the !!head priest??", line++, false)
                         line(player, "When I have done that, I should return to !!Malak??, and he will", line++, false)
@@ -256,7 +259,7 @@ class DesertTreasure : Quest("Desert Treasure", 45, 44, 3, 440, 0, 1, 15) {
                             player,
                             "I then need to add !!garlic?? and !!spices?? to the pot in order to",
                             line++,
-                            false
+                            false,
                         )
                         line(player, "lure Dessous from his tomb.", line++, false)
                         line(player, "When I have done all of this, I must !!kill Dessous!??", line++, false)
@@ -279,7 +282,6 @@ class DesertTreasure : Quest("Desert Treasure", 45, 44, 3, 440, 0, 1, 15) {
                     line(player, "key in a chest.", line++, true)
                     line(player, "I should find out what the !!key?? unlocks.", line++, false)
                 } else if (getSubStage(player, attributeSmokeStage) == 0) {
-
                     line(player, "I can use the !!scrying glasses?? to help find the", line++, false)
                     line(player, "!!Diamond of Smoke??.", line++, false)
                 }
@@ -290,7 +292,6 @@ class DesertTreasure : Quest("Desert Treasure", 45, 44, 3, 440, 0, 1, 15) {
                     line(player, "I defeated a warrior named Kamil, and now have the", line++, true)
                     line(player, "Diamond of Ice.", line++, true)
                 } else if (getSubStage(player, attributeIceStage) >= 1) {
-
                     line(player, "I met a crying ice troll child to the North of Trollheim.", line++, true)
                     if (getSubStage(player, attributeIceStage) >= 3) {
                         line(player, "I managed to cheer him up slightly with a sweet treat.", line++, true)
@@ -347,7 +348,7 @@ class DesertTreasure : Quest("Desert Treasure", 45, 44, 3, 440, 0, 1, 15) {
                             player,
                             "I need to find !!Laheeb's loot?? and retrieve the stolen !!gilded??",
                             line++,
-                            false
+                            false,
                         )
                         line(player, "!!cross??.", line++, false)
                     }
@@ -358,16 +359,13 @@ class DesertTreasure : Quest("Desert Treasure", 45, 44, 3, 440, 0, 1, 15) {
             }
 
             if (stage >= 10) {
-
             } else if (stage >= 9 && completedAllSubstages(player)) {
                 line(player, "Now that I have recovered all of the !!Diamonds of??", line++, false)
                 line(player, "!!Azzanadra?? I should take them all to !!Eblis?? and find out what.", line++, false)
                 line(player, "is so special about them.", line++, false)
-
             }
 
             if (stage >= 11) {
-
             } else if (stage >= 10) {
                 line(player, "I should explore the !!pyramid?? and see what !!treasure?? awaits", line++, false)
                 line(player, "me!", line++, false)
@@ -419,7 +417,7 @@ class DesertTreasure : Quest("Desert Treasure", 45, 44, 3, 440, 0, 1, 15) {
             player,
             varbitChildReunite,
             0,
-            true
+            true,
         )
         setVarbit(player, varbitCaveEntrance, 0, true)
 
@@ -451,13 +449,15 @@ class DesertTreasure : Quest("Desert Treasure", 45, 44, 3, 440, 0, 1, 15) {
         player.skills.addExperience(Skills.MAGIC, 20000.0)
     }
 
-    override fun setStage(player: Player, stage: Int) {
+    override fun setStage(
+        player: Player,
+        stage: Int,
+    ) {
         super.setStage(player, stage)
         this.updateVarps(player)
     }
 
     override fun updateVarps(player: Player) {
-
         setVarbit(player, varbitCaveEntrance, getAttribute(player, attributeTrollKillCount, 0))
 
         if (inEquipment(player, Items.RING_OF_VISIBILITY_4657)) {

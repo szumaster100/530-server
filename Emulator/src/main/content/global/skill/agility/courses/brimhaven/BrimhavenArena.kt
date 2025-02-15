@@ -33,9 +33,9 @@ import core.plugin.Plugin
 import core.tools.RandomFunction
 
 @Initializable
-class BrimhavenArena
-
-    : MapZone("Brimhaven agility arena", true), Plugin<Any?> {
+class BrimhavenArena :
+    MapZone("Brimhaven agility arena", true),
+    Plugin<Any?> {
     private fun setDispenser(player: Player) {
         if (!player.getAttribute("brim-tagged", false)) {
             setAttribute(player, "brim-tagcount", 0)
@@ -57,8 +57,8 @@ class BrimhavenArena
             HintIconManager.registerHeightHintIcon(
                 player,
                 DISPENSERS[index],
-                50
-            )
+                50,
+            ),
         )
     }
 
@@ -71,7 +71,10 @@ class BrimhavenArena
         return super.enter(entity)
     }
 
-    override fun leave(entity: Entity, logout: Boolean): Boolean {
+    override fun leave(
+        entity: Entity,
+        logout: Boolean,
+    ): Boolean {
         if (entity is Player && !logout) {
             val player = entity
             player.interfaceManager.closeOverlay()
@@ -86,7 +89,11 @@ class BrimhavenArena
         return super.enter(entity)
     }
 
-    override fun interact(entity: Entity, node: Node, option: Option): Boolean {
+    override fun interact(
+        entity: Entity,
+        node: Node,
+        option: Option,
+    ): Boolean {
         if (node is Scenery) {
             val `object` = node
             if (`object`.id == 3610) {
@@ -96,7 +103,9 @@ class BrimhavenArena
             if (`object`.id == 3608 || `object`.id == 3581) {
                 val player = entity as Player
                 if (`object`.location != DISPENSERS[player.getAttribute("brim-tag", 0)]) {
-                    player.packetDispatch.sendMessage("Tag the pillar indicated by the yellow arrow to get an Agility ticket.")
+                    player.packetDispatch.sendMessage(
+                        "Tag the pillar indicated by the yellow arrow to get an Agility ticket.",
+                    )
                     return true
                 }
                 if (player.getAttribute("brim-tagged", false)) {
@@ -117,10 +126,12 @@ class BrimhavenArena
                     player.packetDispatch.sendMessage("You have received an Agility Arena Ticket!")
                     return true
                 }
-                player.packetDispatch.sendMessage("You get tickets by tagging more than one pillar in a row, tag the next pillar!")
+                player.packetDispatch.sendMessage(
+                    "You get tickets by tagging more than one pillar in a row, tag the next pillar!",
+                )
                 player.dialogueInterpreter.sendDialogue(
                     "You get tickets by tagging more than one pillar in a row. <col=C04000>Tag the",
-                    "<col=C04000>next pillar for a ticket!</col>"
+                    "<col=C04000>next pillar for a ticket!</col>",
                 )
                 return true
             }
@@ -128,7 +139,11 @@ class BrimhavenArena
         return false
     }
 
-    override fun move(e: Entity, loc: Location, dest: Location): Boolean {
+    override fun move(
+        e: Entity,
+        loc: Location,
+        dest: Location,
+    ): Boolean {
         if (!e.locks.isMovementLocked && e is Player) {
             val hook = LOCATION_TRAPS[loc]
             if (hook != null) {
@@ -139,7 +154,10 @@ class BrimhavenArena
         return super.move(e, loc, dest)
     }
 
-    override fun locationUpdate(e: Entity, last: Location) {
+    override fun locationUpdate(
+        e: Entity,
+        last: Location,
+    ) {
         if (!e.locks.isMovementLocked && e is Player) {
             val hook = LOCATION_TRAPS[e.getLocation()]
             if (hook != null) {
@@ -238,24 +256,21 @@ class BrimhavenArena
                     }
                     return false
                 }
-            }
+            },
         )
     }
 
     private enum class PlankSet(
-
         var entrance: Array<Location>,
-
-        var exit: Array<Location>
+        var exit: Array<Location>,
     ) {
-
         FIRST(
             arrayOf(Location.create(2797, 9591, 3), Location.create(2797, 9590, 3), Location.create(2797, 9589, 3)),
             arrayOf(
                 Location.create(2802, 9591, 3),
                 Location.create(2802, 9590, 3),
-                Location.create(2802, 9589, 3)
-            )
+                Location.create(2802, 9589, 3),
+            ),
         ),
 
         SECOND(
@@ -263,9 +278,9 @@ class BrimhavenArena
             arrayOf(
                 Location.create(2769, 9558, 3),
                 Location.create(2769, 9557, 3),
-                Location.create(2769, 9556, 3)
-            )
-        )
+                Location.create(2769, 9556, 3),
+            ),
+        ),
     }
 
     @Throws(Throwable::class)
@@ -274,7 +289,10 @@ class BrimhavenArena
         return this
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 
@@ -301,10 +319,12 @@ class BrimhavenArena
                     val l = set.entrance[i]
                     for (x in 1 until set.exit[i].x - l.x) {
                         val `object` = getObject(l.transform(x, 0, 0))
-                        if (`object` != null) SceneryBuilder.replace(
-                            `object`,
-                            `object`.transform(if (avail) 3573 else 3576)
-                        )
+                        if (`object` != null) {
+                            SceneryBuilder.replace(
+                                `object`,
+                                `object`.transform(if (avail) 3573 else 3576),
+                            )
+                        }
                     }
                     getObject(set.entrance[i])!!.charge = if (avail) 1000 else 500
                     getObject(set.exit[i])!!.charge = if (avail) 1000 else 500

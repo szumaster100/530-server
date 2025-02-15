@@ -1,8 +1,5 @@
 package content.region.karamja.quest.totem
 
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.removeAttribute
 import core.api.rewardXP
 import core.game.node.entity.player.Player
@@ -11,15 +8,23 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class TribalTotem : Quest(Quests.TRIBAL_TOTEM, 126, 125, 1, Vars.VARP_QUEST_TRIBAL_TOTEM_PROGRESS_200, 0, 1, 5) {
-
-    class SkillRequirement(val skill: Int?, val level: Int?)
+    class SkillRequirement(
+        val skill: Int?,
+        val level: Int?,
+    )
 
     val requirements = arrayListOf<SkillRequirement>()
 
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 11
         val started = player?.questRepository?.getStage(Quests.TRIBAL_TOTEM)!! > 0

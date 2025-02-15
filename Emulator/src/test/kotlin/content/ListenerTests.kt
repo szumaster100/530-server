@@ -9,7 +9,10 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class ListenerTests : InteractionListener {
-    init { TestUtils.preTestSetup() }
+    init {
+        TestUtils.preTestSetup()
+    }
+
     @Test fun doubleDefinedListenerShouldThrowIllegalStateException() {
         on(0, IntType.ITEM, "touch") { _, _ -> return@on true }
         Assertions.assertThrows(IllegalStateException::class.java) {
@@ -34,8 +37,14 @@ class ListenerTests : InteractionListener {
     @Test fun specificListenerShouldOverrideCatchallListener() {
         var specificRan = false
         var catchAllRan = false
-        on(IntType.ITEM, "zap") { _, _ -> catchAllRan = true; return@on true }
-        on(1, IntType.ITEM, "zap") { _, _ -> specificRan = true; return@on true }
+        on(IntType.ITEM, "zap") { _, _ ->
+            catchAllRan = true
+            return@on true
+        }
+        on(1, IntType.ITEM, "zap") { _, _ ->
+            specificRan = true
+            return@on true
+        }
 
         InteractionListeners.run(1, IntType.ITEM, "zap", TestUtils.getMockPlayer("bilbots"), Item(1))
 

@@ -8,8 +8,9 @@ import core.game.world.map.zone.ZoneBuilder
 import core.plugin.Plugin
 import java.util.*
 
-class FOGWaitingZone : MapZone("Fog Waiting Room", true), Plugin<Any?> {
-
+class FOGWaitingZone :
+    MapZone("Fog Waiting Room", true),
+    Plugin<Any?> {
     @Throws(Throwable::class)
     override fun newInstance(arg: Any?): Plugin<Any?> {
         ZoneBuilder.configure(this)
@@ -20,11 +21,18 @@ class FOGWaitingZone : MapZone("Fog Waiting Room", true), Plugin<Any?> {
         return super.enter(e)
     }
 
-    override fun interact(e: Entity, target: Node, option: Option): Boolean {
+    override fun interact(
+        e: Entity,
+        target: Node,
+        option: Option,
+    ): Boolean {
         return super.interact(e, target, option)
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 

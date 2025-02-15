@@ -1,19 +1,21 @@
 package content.region.kandarin.quest.drunkmonk
 
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.addItemOrDrop
 import core.api.rewardXP
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class MonksFriend : Quest(Quests.MONKS_FRIEND, 89, 88, 1, Vars.VARP_QUEST_MONKS_FRIEND_PROGRESS_30, 0, 1, 80) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 11
         player ?: return

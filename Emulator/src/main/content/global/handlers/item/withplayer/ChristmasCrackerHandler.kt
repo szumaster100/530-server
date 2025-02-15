@@ -12,7 +12,6 @@ import core.tools.RandomFunction
 
 @Initializable
 class ChristmasCrackerHandler : UseWithHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any?> {
         addHandler(962, PLAYER_TYPE, this)
         return this
@@ -20,7 +19,11 @@ class ChristmasCrackerHandler : UseWithHandler() {
 
     override fun handle(event: NodeUsageEvent): Boolean {
         val target = event.usedWith as Player
-        if (target == null || !target.isActive || target.locks.isInteractionLocked || target.interfaceManager.opened != null) {
+        if (target == null ||
+            !target.isActive ||
+            target.locks.isInteractionLocked ||
+            target.interfaceManager.opened != null
+        ) {
             event.player.packetDispatch.sendMessage("The other player is currently busy.")
             return true
         }
@@ -36,7 +39,9 @@ class ChristmasCrackerHandler : UseWithHandler() {
             player.graphics(Graphics.create(176))
             player.sendMessage("You pull a Christmas cracker...")
             val winner = RandomFunction.random(2) == 1
-            player.sendMessage(if (winner) "You get the prize from the cracker." else "The person you pull the cracker with gets the prize.")
+            player.sendMessage(
+                if (winner) "You get the prize from the cracker." else "The person you pull the cracker with gets the prize.",
+            )
             if (winner) {
                 player.sendChat("Hey! I got the cracker!")
             } else {

@@ -12,9 +12,9 @@ import core.game.node.entity.player.link.IronmanMode
 import core.game.node.entity.player.link.SpellBookManager
 import core.game.node.entity.player.link.emote.Emotes
 import core.game.node.entity.player.link.music.MusicEntry
-import core.tools.Log
 import core.game.world.GameWorld
 import core.game.world.map.Location
+import core.tools.Log
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
@@ -23,7 +23,9 @@ import java.io.FileReader
 import java.sql.Timestamp
 import java.util.*
 
-class PlayerSaveParser(val player: Player) {
+class PlayerSaveParser(
+    val player: Player,
+) {
     companion object {
         val contentHooks = ArrayList<PersistPlayer>()
     }
@@ -41,7 +43,7 @@ class PlayerSaveParser(val player: Player) {
         reader ?: log(
             this::class.java,
             Log.WARN,
-            "Couldn't find save file for ${player.name}, or save is corrupted."
+            "Couldn't find save file for ${player.name}, or save is corrupted.",
         ).also { read = false }
         if (read) {
             saveFile = parser.parse(reader) as JSONObject
@@ -108,23 +110,25 @@ class PlayerSaveParser(val player: Player) {
                     player.gameAttributes.keyExpirations[key] = expireTime
                 }
                 player.gameAttributes.savedAttributes.add(key)
-                player.gameAttributes.attributes[key] = when (type) {
-                    "int" -> attr["value"].toString().toInt()
-                    "str" -> attr["value"].toString()
-                    "short" -> attr["value"].toString().toShort()
-                    "long" -> attr["value"].toString().toLong()
-                    "bool" -> attr["value"] as Boolean
-                    "byte" -> Base64.getDecoder().decode(attr["value"].toString())[0]
-                    "location" -> Location.fromString(attr["value"].toString())
-                    "time" -> Timestamp.valueOf("time")
-                    else -> null.also {
-                        log(
-                            this::class.java,
-                            Log.WARN,
-                            "Invalid data type for key: $key in PlayerSaveParser.kt Line 115"
-                        )
+                player.gameAttributes.attributes[key] =
+                    when (type) {
+                        "int" -> attr["value"].toString().toInt()
+                        "str" -> attr["value"].toString()
+                        "short" -> attr["value"].toString().toShort()
+                        "long" -> attr["value"].toString().toLong()
+                        "bool" -> attr["value"] as Boolean
+                        "byte" -> Base64.getDecoder().decode(attr["value"].toString())[0]
+                        "location" -> Location.fromString(attr["value"].toString())
+                        "time" -> Timestamp.valueOf("time")
+                        else ->
+                            null.also {
+                                log(
+                                    this::class.java,
+                                    Log.WARN,
+                                    "Invalid data type for key: $key in PlayerSaveParser.kt Line 115",
+                                )
+                            }
                     }
-                }
             }
         } else {
             player.gameAttributes.parse(player.name + ".xml")

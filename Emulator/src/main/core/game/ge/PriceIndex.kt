@@ -4,7 +4,6 @@ import core.api.item.itemDefinition
 import java.sql.ResultSet
 
 object PriceIndex {
-
     @JvmStatic
     fun canTrade(id: Int): Boolean {
         var canTrade = false
@@ -62,15 +61,24 @@ object PriceIndex {
     }
 
     @JvmStatic
-    fun addTrade(id: Int, amount: Int, pricePerUnit: Int) {
+    fun addTrade(
+        id: Int,
+        amount: Int,
+        pricePerUnit: Int,
+    ) {
         val oldInfo = getInfo(id) ?: return
         val newInfo = oldInfo.copy()
 
         val volumeResetThreshold =
-            if (pricePerUnit >= 1000000) 500
-            else if (pricePerUnit >= 100000) 1000
-            else if (pricePerUnit >= 25000) 2500
-            else 10000
+            if (pricePerUnit >= 1000000) {
+                500
+            } else if (pricePerUnit >= 100000) {
+                1000
+            } else if (pricePerUnit >= 25000) {
+                2500
+            } else {
+                10000
+            }
 
         // Update total value, unique trades, and current value
         newInfo.totalValue += (amount * pricePerUnit)
@@ -131,22 +139,20 @@ data class PriceInfo(
     var currentValue: Int,
     var totalValue: Long,
     var uniqueTrades: Int,
-    var lastUpdate: Long
+    var lastUpdate: Long,
 ) {
-
     fun copy(): PriceInfo {
         return PriceInfo(itemId, currentValue, totalValue, uniqueTrades, lastUpdate)
     }
 
     companion object {
-
         fun fromQuery(result: ResultSet): PriceInfo {
             return PriceInfo(
-                result.getInt(1),   // item_id
-                result.getInt(2),   // value
-                result.getLong(3),  // total_value
-                result.getInt(4),   // unique_trades
-                result.getLong(5)   // last_update
+                result.getInt(1), // item_id
+                result.getInt(2), // value
+                result.getLong(3), // total_value
+                result.getInt(4), // unique_trades
+                result.getLong(5), // last_update
             )
         }
     }

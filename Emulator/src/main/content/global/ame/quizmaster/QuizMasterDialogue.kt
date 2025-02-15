@@ -26,7 +26,6 @@ import java.util.*
  */
 @Initializable
 class QuizMasterDialogue : Dialogue {
-
     /**
      * The wrong button id.
      */
@@ -41,16 +40,28 @@ class QuizMasterDialogue : Dialogue {
     }
 
     override fun open(vararg args: Any?): Boolean {
-        npc("WELCOME to the GREATEST QUIZ SHOW in the", "whole of " + GameWorld.settings?.name + ".", "<col=7f0000>O <col=6f000f>D <col=5f001f>D <col=4f002f>O <col=3f003f>N <col=2f004f>E <col=1f005f>O <col=0f006f>U <col=00007f>T")
+        npc(
+            "WELCOME to the GREATEST QUIZ SHOW in the",
+            "whole of " + GameWorld.settings?.name + ".",
+            "<col=7f0000>O <col=6f000f>D <col=5f001f>D <col=4f002f>O <col=3f003f>N <col=2f004f>E <col=1f005f>O <col=0f006f>U <col=00007f>T",
+        )
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         var buttonId = buttonId
         when (stage) {
             0 -> player(FaceAnim.THINKING, "I'm sure I didn't ask to take part in a quiz show...").also { stage++ }
             1 -> {
-                npc("Please welcome our newest contestant:", RED + player.username, "Just pick the ODD ONE OUT", "Four questions right, and then you win!")
+                npc(
+                    "Please welcome our newest contestant:",
+                    RED + player.username,
+                    "Just pick the ODD ONE OUT",
+                    "Four questions right, and then you win!",
+                )
                 setAttribute(player, GameAttributes.RE_QUIZ_SCORE, 0)
                 stage++
             }
@@ -73,7 +84,11 @@ class QuizMasterDialogue : Dialogue {
                     player.incrementAttribute(GameAttributes.RE_QUIZ_SCORE)
                 }
                 if (player.getAttribute(GameAttributes.RE_QUIZ_SCORE, -1) == 4) {
-                    npc(BLUE + "CONGRATULATIONS!", "You are a " + RED + "WINNER</col>!", "Please choose your " + BLUE + "PRIZE</col>!")
+                    npc(
+                        BLUE + "CONGRATULATIONS!",
+                        "You are a " + RED + "WINNER</col>!",
+                        "Please choose your " + BLUE + "PRIZE</col>!",
+                    )
                     stage = 4
                 } else {
                     npcl(FaceAnim.HAPPY, if (wrong) QuizMaster.WRONG.random() else QuizMaster.CORRECT.random())
@@ -92,12 +107,13 @@ class QuizMasterDialogue : Dialogue {
                 end()
                 QuizMaster.cleanup(player)
                 submitIndividualPulse(
-                    player, object : Pulse(1) {
+                    player,
+                    object : Pulse(1) {
                         override fun pulse(): Boolean {
                             QuizMaster.cleanup(player)
                             return true
                         }
-                    }
+                    },
                 )
                 return false
             }
@@ -131,29 +147,34 @@ class QuizMasterDialogue : Dialogue {
      * @param model the model.
      * @param index the index.
      */
-    private fun sendItem(model: Int, index: Int) {
+    private fun sendItem(
+        model: Int,
+        index: Int,
+    ) {
         PacketRepository.send(
             DisplayModel::class.java,
-            DisplayModelContext(player, ModelType.MODEL, model, 1, Components.MACRO_QUIZSHOW_191, 6 + index)
+            DisplayModelContext(player, ModelType.MODEL, model, 1, Components.MACRO_QUIZSHOW_191, 6 + index),
         )
     }
 
     override fun getIds(): IntArray {
         return intArrayOf(NPCs.QUIZ_MASTER_2477)
     }
-
 }
 
 /**
  * Represents a quiz set.
  * @author Vexia
  */
-enum class QuizSet(internal vararg val ids: Int) {
+enum class QuizSet(
+    internal vararg val ids: Int,
+) {
     FISH(Items.NULL_6189, Items.NULL_6190),
     WEAPONRY(Items.NULL_6191, Items.NULL_6192),
     ARMOUR(Items.NULL_6193, Items.NULL_6194),
     TOOLS(Items.NULL_6195, Items.NULL_6196),
-    JEWELLERY(Items.NULL_6197, Items.NULL_6198);
+    JEWELLERY(Items.NULL_6197, Items.NULL_6198),
+    ;
 
     /**
      * Gets the model id.

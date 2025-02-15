@@ -1,37 +1,37 @@
 package content.minigame.ratpits
 
-import core.api.getRegionBorders
 import core.api.MapArea
 import core.api.closeOverlay
+import core.api.getRegionBorders
 import core.api.openOverlay
 import core.game.node.entity.Entity
 import core.game.node.entity.player.Player
 import core.game.world.map.zone.ZoneBorders
 import org.rs.consts.Components
 
-
-
 class RatPit : MapArea {
-
     override fun defineAreaBorders(): Array<ZoneBorders> {
         return arrayOf(
             getRegionBorders(VARROCK_RAT_PITS_REGION),
             getRegionBorders(PORT_SARIM_RAT_PITS_REGION),
             getRegionBorders(KELDAGRIM_RAT_PITS_REGION),
-            getRegionBorders(ARDOUGNE_RAT_PITS_REGION)
+            getRegionBorders(ARDOUGNE_RAT_PITS_REGION),
         )
     }
 
     override fun areaEnter(entity: Entity) {
         super.areaEnter(entity)
-        if(entity is Player) {
+        if (entity is Player) {
             openOverlay(entity.asPlayer(), Components.RATCATCHER_OVERLAY_284)
         }
     }
 
-    override fun areaLeave(entity: Entity, logout: Boolean) {
+    override fun areaLeave(
+        entity: Entity,
+        logout: Boolean,
+    ) {
         super.areaLeave(entity, logout)
-        if(entity is Player) {
+        if (entity is Player) {
             closeOverlay(entity.asPlayer())
         }
     }

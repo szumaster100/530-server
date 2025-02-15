@@ -1,25 +1,25 @@
 package content.global.skill.magic.spells.lunar
 
-import org.rs.consts.Animations
-import org.rs.consts.Graphics
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import content.global.skill.magic.SpellListener
 import content.global.skill.magic.spells.LunarSpells
 import core.api.*
 import core.game.node.item.Item
 import core.game.system.command.Privilege
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
+import org.rs.consts.Graphics
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 
-class HumidifySpell : SpellListener("lunar"), Commands {
-
+class HumidifySpell :
+    SpellListener("lunar"),
+    Commands {
     override fun defineListeners() {
-
         onCast(LunarSpells.HUMIDIFY, NONE) { player, _ ->
             requires(
                 player,
                 68,
-                arrayOf(Item(Items.ASTRAL_RUNE_9075, 1), Item(Items.WATER_RUNE_555, 3), Item(Items.FIRE_RUNE_554, 1))
+                arrayOf(Item(Items.ASTRAL_RUNE_9075, 1), Item(Items.WATER_RUNE_555, 3), Item(Items.FIRE_RUNE_554, 1)),
             )
             val playerEmpties = ArrayDeque<Item>()
 
@@ -36,7 +36,13 @@ class HumidifySpell : SpellListener("lunar"), Commands {
 
             removeRunes(player)
             delayEntity(player, Animation(Animations.LUNAR_HUMIDIFY_6294).duration)
-            visualizeSpell(player, Animations.LUNAR_HUMIDIFY_6294, Graphics.HUMIDIFY_GFX_1061, 20, Sounds.LUNAR_HUMIDIFY_3614)
+            visualizeSpell(
+                player,
+                Animations.LUNAR_HUMIDIFY_6294,
+                Graphics.HUMIDIFY_GFX_1061,
+                20,
+                Sounds.LUNAR_HUMIDIFY_3614,
+            )
             for (item in playerEmpties) {
                 val filled = HumidifyItems.forId(item.id)
                 removeItem(player, item.id) && addItem(player, filled)
@@ -45,7 +51,10 @@ class HumidifySpell : SpellListener("lunar"), Commands {
         }
     }
 
-    private enum class HumidifyItems(val empty: Int, val full: Int) {
+    private enum class HumidifyItems(
+        val empty: Int,
+        val full: Int,
+    ) {
         VIAL(Items.VIAL_229, Items.VIAL_OF_WATER_227),
         WATERSKIN0(Items.WATERSKIN0_1831, Items.WATERSKIN4_1823),
         WATERSKIN1(Items.WATERSKIN1_1829, Items.WATERSKIN4_1823),
@@ -65,7 +74,8 @@ class HumidifySpell : SpellListener("lunar"), Commands {
         FISHBOWL(Items.FISHBOWL_6667, Items.FISHBOWL_6668),
         KETTLE(Items.KETTLE_7688, Items.FULL_KETTLE_7690),
         ENCHANTED_VIAL(Items.ENCHANTED_VIAL_731, Items.HOLY_WATER_732),
-        CUP(Items.EMPTY_CUP_1980, Items.CUP_OF_WATER_4458);
+        CUP(Items.EMPTY_CUP_1980, Items.CUP_OF_WATER_4458),
+        ;
 
         companion object {
             private val productOfFill = values().associate { it.empty to it.full }

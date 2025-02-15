@@ -1,7 +1,5 @@
 package content.region.asgarnia.dialogue.taverley
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.quest.finishQuest
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
@@ -11,10 +9,13 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class KaqemeexDialogue(player: Player? = null) : Dialogue(player) {
-
+class KaqemeexDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         if (args.size >= 2) {
@@ -27,7 +28,10 @@ class KaqemeexDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 if (player.getQuestRepository().isComplete(Quests.DRUIDIC_RITUAL)) {
@@ -44,7 +48,7 @@ class KaqemeexDialogue(player: Player? = null) : Dialogue(player) {
                         "I have word from Sanfew that you have been very",
                         "helpful in assisting him with his preparations for the",
                         "purification ritual. As promised I will now teach you the",
-                        "ancient arts of Herblore."
+                        "ancient arts of Herblore.",
                     )
                     stage = 200
                 }
@@ -66,29 +70,30 @@ class KaqemeexDialogue(player: Player? = null) : Dialogue(player) {
                     stage = 2
                 }
 
-            2 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.ASKING, "Who are you?")
-                    stage = 10
-                }
+            2 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.ASKING, "Who are you?")
+                        stage = 10
+                    }
 
-                2 -> {
-                    player(FaceAnim.FRIENDLY, "I'm in search of a quest.")
-                    stage = 20
-                }
+                    2 -> {
+                        player(FaceAnim.FRIENDLY, "I'm in search of a quest.")
+                        stage = 20
+                    }
 
-                3 -> {
-                    player(FaceAnim.ASKING, "Did you build this?")
-                    stage = 30
+                    3 -> {
+                        player(FaceAnim.ASKING, "Did you build this?")
+                        stage = 30
+                    }
                 }
-            }
 
             10 -> {
                 npc(
                     FaceAnim.HALF_GUILTY,
                     "We are the druids of Guthix. We worship our god at",
                     "our famous stone circles. You will find them located",
-                    "throughout these lands."
+                    "throughout these lands.",
                 )
                 stage = 11
             }
@@ -110,7 +115,7 @@ class KaqemeexDialogue(player: Player? = null) : Dialogue(player) {
                     "What, personally? No, ofcourse I didn't. However, our",
                     "four fathers did. The first Druids of Guthix built many",
                     "stone circles across these lands over eight hundred",
-                    "years ago."
+                    "years ago.",
                 )
                 stage = 31
             }
@@ -119,7 +124,7 @@ class KaqemeexDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     FaceAnim.HALF_GUILTY,
                     "Unfortunately we only know of two remaining and of",
-                    "those only one is usable by us anymore."
+                    "those only one is usable by us anymore.",
                 )
                 stage = 32
             }
@@ -134,7 +139,7 @@ class KaqemeexDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HAPPY,
                     "Hmm. I think I may have a worthwhile quest for you",
                     "actually. I don't know if you are familiar with the stone",
-                    "circle south of Varrock or not, but..."
+                    "circle south of Varrock or not, but...",
                 )
                 stage = 21
             }
@@ -145,7 +150,7 @@ class KaqemeexDialogue(player: Player? = null) : Dialogue(player) {
                     "That used to be our stone circle. Unfortunately,",
                     "many years ago, dark wizards cast a wicked spell",
                     "upon it so that they could corrupt its power for their",
-                    "own evil ends."
+                    "own evil ends.",
                 )
                 stage = 22
             }
@@ -156,7 +161,7 @@ class KaqemeexDialogue(player: Player? = null) : Dialogue(player) {
                     "When they cursed the rocks for their rituals, they made",
                     "them useless to us and our magics. We require a brave",
                     "adventurer to go on a quest for us to help purify the",
-                    "circle of Varrock."
+                    "circle of Varrock.",
                 )
                 stage = 23
             }
@@ -166,24 +171,25 @@ class KaqemeexDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 24
             }
 
-            24 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "Ok, I will try and help.")
-                    stage = 26
-                }
+            24 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_GUILTY, "Ok, I will try and help.")
+                        stage = 26
+                    }
 
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "No, that doesn't sound very interesting.")
-                    stage = 25
+                    2 -> {
+                        player(FaceAnim.HALF_GUILTY, "No, that doesn't sound very interesting.")
+                        stage = 25
+                    }
                 }
-            }
 
             25 -> {
                 npc(
                     FaceAnim.HALF_GUILTY,
                     "I will not try and change your mind adventurer. Some",
                     "day when you have matured you may reconsider your",
-                    "position. We will wait until then."
+                    "position. We will wait until then.",
                 )
                 stage = 13
             }
@@ -195,7 +201,7 @@ class KaqemeexDialogue(player: Player? = null) : Dialogue(player) {
                     "Excellent. Go to the village south of this place and speak",
                     "to my fellow Sanfew who is working on the purification",
                     "ritual. He knows better than I what is required to",
-                    "complete it."
+                    "complete it.",
                 )
                 stage = 27
             }
@@ -211,7 +217,7 @@ class KaqemeexDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "You will need to speak to my fellow druid Sanfew in",
                     "the village south of here to continue in your quest",
-                    "adventurer."
+                    "adventurer.",
                 )
                 stage = 41
             }
@@ -222,34 +228,36 @@ class KaqemeexDialogue(player: Player? = null) : Dialogue(player) {
                 finishQuest(player, Quests.DRUIDIC_RITUAL)
             }
 
-            500 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_ASKING, "Who are you?")
-                    stage = 10
+            500 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_ASKING, "Who are you?")
+                        stage = 10
+                    }
+
+                    2 -> {
+                        player(FaceAnim.HALF_ASKING, "Did you build this?")
+                        stage = 30
+                    }
                 }
 
-                2 -> {
-                    player(FaceAnim.HALF_ASKING, "Did you build this?")
-                    stage = 30
-                }
-            }
+            501 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HAPPY, "Can I buy a Skillcape of Herblore?")
+                        stage = 800
+                    }
 
-            501 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HAPPY, "Can I buy a Skillcape of Herblore?")
-                    stage = 800
-                }
+                    2 -> {
+                        player(FaceAnim.ASKING, "Who are you?")
+                        stage = 10
+                    }
 
-                2 -> {
-                    player(FaceAnim.ASKING, "Who are you?")
-                    stage = 10
+                    3 -> {
+                        player(FaceAnim.HALF_ASKING, "Did you build this?")
+                        stage = 30
+                    }
                 }
-
-                3 -> {
-                    player(FaceAnim.HALF_ASKING, "Did you build this?")
-                    stage = 30
-                }
-            }
 
             600 -> {
                 player("Good good!")
@@ -270,7 +278,7 @@ class KaqemeexDialogue(player: Player? = null) : Dialogue(player) {
             1000 -> {
                 npc(
                     "Herblore is the skill of working with herbs and other",
-                    "ingredients, to make useful potions and poison."
+                    "ingredients, to make useful potions and poison.",
                 )
                 stage = 1001
             }
@@ -289,7 +297,7 @@ class KaqemeexDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "Refer to the Council's instructions in the Skills section",
                     "of the website for the items needed to make a particular",
-                    "kind of potion."
+                    "kind of potion.",
                 )
                 stage = 1004
             }
@@ -298,7 +306,7 @@ class KaqemeexDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "You must fill your vial with water and add the",
                     "ingredients you need. There are normally 2 ingredients",
-                    "to each type of potion."
+                    "to each type of potion.",
                 )
                 stage = 1005
             }
@@ -312,7 +320,7 @@ class KaqemeexDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "You may also have to grind some herbs before you can",
                     "use them. You will need a pestle and mortar in order",
-                    "to do this."
+                    "to do this.",
                 )
                 stage = 1007
             }
@@ -341,7 +349,7 @@ class KaqemeexDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "Once again, check the instructions found on the",
                     "Council's website for the levels needed to make a",
-                    "particulur potion."
+                    "particulur potion.",
                 )
                 stage = 1012
             }
@@ -367,14 +375,15 @@ class KaqemeexDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 802
             }
 
-            802 -> when (buttonId) {
-                1 -> {
-                    player("Yes, here you go.")
-                    stage = 803
-                }
+            802 ->
+                when (buttonId) {
+                    1 -> {
+                        player("Yes, here you go.")
+                        stage = 803
+                    }
 
-                2 -> end()
-            }
+                    2 -> end()
+                }
 
             803 -> {
                 if (purchase(player, Skills.HERBLORE)) {

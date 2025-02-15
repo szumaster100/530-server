@@ -1,20 +1,22 @@
 package content.region.kandarin.quest.itgronigen
 
 import core.api.*
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class Observatory :
     Quest(Quests.OBSERVATORY_QUEST, 96, 95, 2, Vars.VARP_QUEST_OBSERVATORY_QUEST_PROGRESS_112, 0, 1, 7) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 11
 
@@ -28,7 +30,12 @@ class Observatory :
             line(player, "due to the nearby goblins. The !!professor?? wants me to help by", line++, stage >= 10)
             line(player, "getting the following, with the help of his !!assistant??:", line++, stage >= 10)
             line++
-            line(player, "!!3 plain wooden planks??", line++, amountInInventory(player, Items.PLANK_960) < 3 || stage > 99)
+            line(
+                player,
+                "!!3 plain wooden planks??",
+                line++,
+                amountInInventory(player, Items.PLANK_960) < 3 || stage > 99,
+            )
             line(player, "!!1 bronze bar??", line++, inInventory(player, Items.BRONZE_BAR_2349) || stage > 99)
             line(player, "!!1 molten glass??", line++, inInventory(player, Items.MOLTEN_GLASS_1775) || stage > 99)
             line(player, "!!1 lens mould??", line++, inInventory(player, Items.LENS_MOULD_602) || stage > 99)

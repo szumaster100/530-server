@@ -9,8 +9,9 @@ import core.tools.END_DIALOGUE
 import org.rs.consts.NPCs
 
 @Initializable
-class SkavidDialogue(player: Player? = null) : Dialogue(player) {
-
+class SkavidDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc(FaceAnim.OLD_NEUTRAL, "Cur bidith...")
         sendMessage(player, "The skavid is trying to communicate...")
@@ -18,8 +19,11 @@ class SkavidDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
-        when(stage) {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
+        when (stage) {
             0 -> player("???").also { stage = END_DIALOGUE }
         }
         return true

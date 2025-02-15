@@ -1,7 +1,5 @@
 package content.global.ame.surpriseexam
 
-import org.rs.consts.Music
-import org.rs.consts.NPCs
 import content.data.RandomEvent
 import content.global.ame.RandomEventNPC
 import core.ServerConfig
@@ -12,13 +10,18 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.link.TeleportManager
 import core.game.system.timer.impl.AntiMacro
 import core.game.world.map.Location
+import org.rs.consts.Music
+import org.rs.consts.NPCs
 
-class PatternRecognitionNPC(var type: String = "", override var loot: WeightBasedTable? = null) :
-    RandomEventNPC(NPCs.MYSTERIOUS_OLD_MAN_410) {
-
+class PatternRecognitionNPC(
+    var type: String = "",
+    override var loot: WeightBasedTable? = null,
+) : RandomEventNPC(NPCs.MYSTERIOUS_OLD_MAN_410) {
     override fun init() {
         super.init()
-        sendChat("Surprise exam, ${player.username.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }}!")
+        sendChat(
+            "Surprise exam, ${player.username.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }}!",
+        )
         queueScript(player, 3, QueueStrength.SOFT) { stage: Int ->
             when (stage) {
                 0 -> {
@@ -34,7 +37,7 @@ class PatternRecognitionNPC(var type: String = "", override var loot: WeightBase
                     sendMessageWithDelay(
                         player,
                         "Answer three out of six questions correctly to be teleported back where you",
-                        3
+                        3,
                     )
                     sendMessageWithDelay(player, "came from.", 3)
                     AntiMacro.terminateEventNpc(player)

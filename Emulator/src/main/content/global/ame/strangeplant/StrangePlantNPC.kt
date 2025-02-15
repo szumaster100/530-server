@@ -1,6 +1,5 @@
 package content.global.ame.strangeplant
 
-import org.rs.consts.NPCs
 import content.data.GameAttributes
 import content.global.ame.RandomEventNPC
 import core.api.*
@@ -11,9 +10,11 @@ import core.game.system.timer.impl.AntiMacro
 import core.game.world.update.flag.context.Animation
 import core.tools.minutesToTicks
 import core.tools.secondsToTicks
+import org.rs.consts.NPCs
 
-class StrangePlantNPC(override var loot: WeightBasedTable? = null) : RandomEventNPC(NPCs.STRANGE_PLANT_407) {
-
+class StrangePlantNPC(
+    override var loot: WeightBasedTable? = null,
+) : RandomEventNPC(NPCs.STRANGE_PLANT_407) {
     private val strangePlantGrowAnim = Animation(348)
     private val strangePlantTransformAnim = Animation(351)
     private val strangePlantPickedAnim = Animation(350)
@@ -77,8 +78,9 @@ class StrangePlantNPC(override var loot: WeightBasedTable? = null) : RandomEvent
                     }
                 }
             }
-            if (transformed && !this.inCombat())
+            if (transformed && !this.inCombat()) {
                 this.attack(player)
+            }
         }
         if (!withinDistance(player, this.location, 8)) {
             AntiMacro.terminateEventNpc(player)
@@ -86,8 +88,9 @@ class StrangePlantNPC(override var loot: WeightBasedTable? = null) : RandomEvent
     }
 
     override fun follow() {
-        if (transformed)
+        if (transformed) {
             super.follow()
+        }
     }
 
     override fun talkTo(npc: NPC) {

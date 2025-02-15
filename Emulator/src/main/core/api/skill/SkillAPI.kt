@@ -65,23 +65,29 @@ class SkillDialogueBuilder {
  * @param init The lambda block to initialize the skill dialogue using the builder.
  * @throws IllegalStateException if the number of items in the dialogue is not between 1 and 5.
  */
-fun sendSkillDialogue(player: Player, init: SkillDialogueBuilder.() -> Unit) {
+fun sendSkillDialogue(
+    player: Player,
+    init: SkillDialogueBuilder.() -> Unit,
+) {
     val builder = SkillDialogueBuilder()
     builder.player = player
     builder.init()
 
     if (builder.items.size !in 1..5) {
-        throw IllegalStateException("Invalid number of items passed to skill dialogue (min 1, max 5): ${builder.items.size}")
+        throw IllegalStateException(
+            "Invalid number of items passed to skill dialogue (min 1, max 5): ${builder.items.size}",
+        )
     }
 
-    val type = when (builder.items.size) {
-        1 -> SkillDialogueHandler.SkillDialogue.ONE_OPTION
-        2 -> SkillDialogueHandler.SkillDialogue.TWO_OPTION
-        3 -> SkillDialogueHandler.SkillDialogue.THREE_OPTION
-        4 -> SkillDialogueHandler.SkillDialogue.FOUR_OPTION
-        5 -> SkillDialogueHandler.SkillDialogue.FIVE_OPTION
-        else -> null
-    }
+    val type =
+        when (builder.items.size) {
+            1 -> SkillDialogueHandler.SkillDialogue.ONE_OPTION
+            2 -> SkillDialogueHandler.SkillDialogue.TWO_OPTION
+            3 -> SkillDialogueHandler.SkillDialogue.THREE_OPTION
+            4 -> SkillDialogueHandler.SkillDialogue.FOUR_OPTION
+            5 -> SkillDialogueHandler.SkillDialogue.FIVE_OPTION
+            else -> null
+        }
 
     object : SkillDialogueHandler(player, type, *builder.items) {
         /**
@@ -90,7 +96,10 @@ fun sendSkillDialogue(player: Player, init: SkillDialogueBuilder.() -> Unit) {
          * @param amount The amount of the selected item to be created.
          * @param index The index of the selected item.
          */
-        override fun create(amount: Int, index: Int) {
+        override fun create(
+            amount: Int,
+            index: Int,
+        ) {
             builder.creationCallback(builder.items[index].id, amount)
         }
 
@@ -113,7 +122,10 @@ fun sendSkillDialogue(player: Player, init: SkillDialogueBuilder.() -> Unit) {
  * @param pickaxe If true, the function returns a pickaxe; otherwise, it returns a hatchet.
  * @return The appropriate [SkillingTool] for the player, or null if none is available.
  */
-fun getTool(player: Player, pickaxe: Boolean): SkillingTool? {
+fun getTool(
+    player: Player,
+    pickaxe: Boolean,
+): SkillingTool? {
     return if (pickaxe) SkillingTool.getPickaxe(player) else SkillingTool.getHatchet(player)
 }
 
@@ -125,7 +137,11 @@ fun getTool(player: Player, pickaxe: Boolean): SkillingTool? {
  * @param ticks The number of game ticks to delay the clock by.
  * @return Always returns false.
  */
-fun delayClock(entity: Entity, clock: Int, ticks: Int): Boolean {
+fun delayClock(
+    entity: Entity,
+    clock: Int,
+    ticks: Int,
+): Boolean {
     entity.clocks[clock] = getWorldTicks() + ticks
     return false
 }
@@ -137,9 +153,11 @@ fun delayClock(entity: Entity, clock: Int, ticks: Int): Boolean {
  * @param clock The clock ID to check.
  * @return True if the clock is ready, otherwise false.
  */
-fun clockReady(entity: Entity, clock: Int): Boolean {
+fun clockReady(
+    entity: Entity,
+    clock: Int,
+): Boolean {
     return entity.clocks[clock] <= getWorldTicks()
 }
-
 
 private class SkillAPI

@@ -28,11 +28,17 @@ class DropListener : InteractionListener {
         private val DESTROY_ITEM_SOUND = Sounds.DESTROY_OBJECT_2381
 
         @JvmStatic
-        fun drop(player: Player, item: Item): Boolean {
+        fun drop(
+            player: Player,
+            item: Item,
+        ): Boolean {
             return handleDropAction(player, item)
         }
 
-        private fun handleDropAction(player: Player, node: Node): Boolean {
+        private fun handleDropAction(
+            player: Player,
+            node: Node,
+        ): Boolean {
             val option = getUsedOption(player)
             var item = node as? Item ?: return false
             if (option == "drop") {
@@ -44,7 +50,10 @@ class DropListener : InteractionListener {
                     sendMessage(player, "You cannot drop items on top of graves!")
                     return false
                 }
-                if (player.houseManager.isInHouse(player) && player.houseManager.isBuildingMode && player.rights != Rights.ADMINISTRATOR) {
+                if (player.houseManager.isInHouse(player) &&
+                    player.houseManager.isBuildingMode &&
+                    player.rights != Rights.ADMINISTRATOR
+                ) {
                     sendMessage(player, "You cannot drop items while in building mode.")
                     return false
                 }
@@ -53,16 +62,23 @@ class DropListener : InteractionListener {
                 queueScript(player, strength = QueueStrength.SOFT) {
                     if (player.inventory.replace(null, item.slot) != item) return@queueScript stopExecuting(player)
                     val droppedItem = item.dropItem
-                    if (droppedItem.id == Items.COINS_995) playAudio(player, DROP_COINS_SOUND) else playAudio(
-                        player,
-                        DROP_ITEM_SOUND
-                    )
+                    if (droppedItem.id == Items.COINS_995) {
+                        playAudio(player, DROP_COINS_SOUND)
+                    } else {
+                        playAudio(
+                            player,
+                            DROP_ITEM_SOUND,
+                        )
+                    }
                     GroundItemManager.create(droppedItem, player.location, player)
                     setAttribute(player, "droppedItem:${droppedItem.id}", getWorldTicks() + 2)
                     PlayerParser.save(player)
                     return@queueScript stopExecuting(player)
                 }
-            } else if (option == "destroy" || option == "dissolve" || item.definition.handlers.getOrDefault(ItemConfigParser.DESTROY, false) as Boolean) {
+            } else if (option == "destroy" ||
+                option == "dissolve" ||
+                item.definition.handlers.getOrDefault(ItemConfigParser.DESTROY, false) as Boolean
+            ) {
                 player.dialogueInterpreter.sendDestroyItem(item.id, item.name)
                 addDialogueAction(player) { player, button ->
                     if (button == 3) {
@@ -71,7 +87,7 @@ class DropListener : InteractionListener {
                             thresholds.keys.forEach { activityData.decrementPizazz(it, 0) }
                             player.dialogueInterpreter.sendDialogue(
                                 "The hat whispers as you destroy it. You can get another from the",
-                                "Entrance Guardian."
+                                "Entrance Guardian.",
                             )
                             return@addDialogueAction
                         }

@@ -1,17 +1,20 @@
 package content.global.skill.crafting.items.armour.yakhide
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
 import content.global.skill.crafting.items.armour.leather.Thread
 import core.api.*
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import org.rs.consts.Animations
+import org.rs.consts.Items
 
-class YakArmourCraftingPulse(player: Player?, node: Item?, private val index: Int, private var amount: Int) :
-    SkillPulse<Item?>(player, node) {
-
+class YakArmourCraftingPulse(
+    player: Player?,
+    node: Item?,
+    private val index: Int,
+    private var amount: Int,
+) : SkillPulse<Item?>(player, node) {
     private var ticks = 0
 
     override fun checkRequirements(): Boolean {

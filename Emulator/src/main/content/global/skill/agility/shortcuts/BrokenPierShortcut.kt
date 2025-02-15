@@ -1,8 +1,5 @@
 package content.global.skill.agility.shortcuts
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import content.global.skill.agility.AgilityHandler
 import core.api.*
 import core.game.interaction.IntType
@@ -11,9 +8,11 @@ import core.game.interaction.QueueStrength
 import core.game.node.entity.player.link.diary.DiaryType
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class BrokenPierShortcut : InteractionListener {
-
     override fun defineListeners() {
         on(Scenery.BROKEN_PIER_41531, IntType.SCENERY, "step") { player, _ ->
             val animationDelay = Animation(Animations.JUMP_BRIDGE_769).duration
@@ -37,7 +36,7 @@ class BrokenPierShortcut : InteractionListener {
                             Animation(Animations.JUMP_BRIDGE_769),
                             animationCycles(Animations.JUMP_BRIDGE_769),
                             0.0,
-                            null
+                            null,
                         )
                         return@queueScript delayScript(player, animationDelay)
                     }
@@ -51,7 +50,7 @@ class BrokenPierShortcut : InteractionListener {
                             Animation(Animations.JUMP_OVER_OBSTACLE_6132),
                             animationCycles(Animations.JUMP_OVER_OBSTACLE_6132),
                             0.0,
-                            null
+                            null,
                         )
                         return@queueScript stopExecuting(player)
                     }

@@ -12,7 +12,9 @@ import kotlin.math.roundToInt
 
 class ShopTests {
     companion object {
-        init { TestUtils.preTestSetup() }
+        init {
+            TestUtils.preTestSetup()
+        }
     }
 
     private val testPlayer = TestUtils.getMockPlayer("test")
@@ -35,7 +37,11 @@ class ShopTests {
     }
 
     private fun assertTransactionSuccess(status: Shop.TransactionStatus) {
-        Assertions.assertEquals(true, status is Shop.TransactionStatus.Success, "Transaction failure: ${if (status is Shop.TransactionStatus.Failure) status.reason else ""}")
+        Assertions.assertEquals(
+            true,
+            status is Shop.TransactionStatus.Success,
+            "Transaction failure: ${if (status is Shop.TransactionStatus.Failure) status.reason else ""}",
+        )
     }
 
     @Test fun shouldSellItemToStore() {
@@ -79,19 +85,33 @@ class ShopTests {
         // bottoms out at 10% value (25% of the low alch price) after 10 items stocked
         val saleItemId = Items.RUNE_MED_HELM_1147
         val shopContainer = general.getContainer(testPlayer)
-        Assertions.assertFalse(shopContainer.containItems(saleItemId), "Pre-assertion, shop container should not have the unstocked item to begin with.")
+        Assertions.assertFalse(
+            shopContainer.containItems(saleItemId),
+            "Pre-assertion, shop container should not have the unstocked item to begin with.",
+        )
         testPlayer.setAttribute("shop-cont", shopContainer)
         val playerStock = general.playerStock
-        Assertions.assertFalse(playerStock.containItems(saleItemId), "Pre-assertion, player stock should not have the unstocked item to begin with.")
+        Assertions.assertFalse(
+            playerStock.containItems(saleItemId),
+            "Pre-assertion, player stock should not have the unstocked item to begin with.",
+        )
         val saleItem = Item(saleItemId, 1)
         val alchValue = saleItem.definition.getAlchemyValue(false)
         val value = saleItem.definition.value
-        Assertions.assertEquals((value * 0.4).roundToInt(), alchValue, "Pre-assertion, low alch value should be 40% value.")
+        Assertions.assertEquals(
+            (value * 0.4).roundToInt(),
+            alchValue,
+            "Pre-assertion, low alch value should be 40% value.",
+        )
 
         for (i in 0..14) {
             val expectedCoins = (alchValue.toDouble() - value * min(0.03 * i, 0.30)).roundToInt()
             testPlayer.inventory.add(saleItem.copy())
-            Assertions.assertEquals(saleItemId, testPlayer.inventory.getId(0), "Pre-assertion, should have item in inventory slot 0.")
+            Assertions.assertEquals(
+                saleItemId,
+                testPlayer.inventory.getId(0),
+                "Pre-assertion, should have item in inventory slot 0.",
+            )
 
             val status = general.sell(testPlayer, 0, 1)
 
@@ -101,7 +121,7 @@ class ShopTests {
             Assertions.assertEquals(
                 expectedCoins,
                 coinItem.amount,
-                "Selling item $i should yield the expected price."
+                "Selling item $i should yield the expected price.",
             )
             testPlayer.inventory.clear()
         }
@@ -113,19 +133,33 @@ class ShopTests {
         // bottoms out at 30% value (50% of the high alch price) after 10 items stocked
         val saleItemId = Items.RUNE_MED_HELM_1147
         val shopContainer = highAlch.getContainer(testPlayer)
-        Assertions.assertFalse(shopContainer.containItems(saleItemId), "Pre-assertion, shop container should not have the unstocked item to begin with.")
+        Assertions.assertFalse(
+            shopContainer.containItems(saleItemId),
+            "Pre-assertion, shop container should not have the unstocked item to begin with.",
+        )
         testPlayer.setAttribute("shop-cont", shopContainer)
         val playerStock = highAlch.playerStock
-        Assertions.assertFalse(playerStock.containItems(saleItemId), "Pre-assertion, player stock should not have the unstocked item to begin with.")
+        Assertions.assertFalse(
+            playerStock.containItems(saleItemId),
+            "Pre-assertion, player stock should not have the unstocked item to begin with.",
+        )
         val saleItem = Item(saleItemId, 1)
         val alchValue = saleItem.definition.getAlchemyValue(true)
         val value = saleItem.definition.value
-        Assertions.assertEquals((value * 0.6).roundToInt(), alchValue, "Pre-assertion, high alch value should be 60% value.")
+        Assertions.assertEquals(
+            (value * 0.6).roundToInt(),
+            alchValue,
+            "Pre-assertion, high alch value should be 60% value.",
+        )
 
         for (i in 0..14) {
             val expectedCoins = (alchValue.toDouble() - value * min(0.03 * i, 0.30)).roundToInt()
             testPlayer.inventory.add(saleItem.copy())
-            Assertions.assertEquals(saleItemId, testPlayer.inventory.getId(0), "Pre-assertion, should have item in inventory slot 0.")
+            Assertions.assertEquals(
+                saleItemId,
+                testPlayer.inventory.getId(0),
+                "Pre-assertion, should have item in inventory slot 0.",
+            )
 
             val status = highAlch.sell(testPlayer, 0, 1)
 
@@ -135,7 +169,7 @@ class ShopTests {
             Assertions.assertEquals(
                 expectedCoins,
                 coinItem.amount,
-                "Selling item $i should yield the expected price."
+                "Selling item $i should yield the expected price.",
             )
             testPlayer.inventory.clear()
         }
@@ -145,10 +179,16 @@ class ShopTests {
         val saleItemId = Items.RUNE_MED_HELM_1147
         var notedSaleItemId = Items.RUNE_MED_HELM_1148
         val shopContainer = highAlch.getContainer(testPlayer)
-        Assertions.assertFalse(shopContainer.containItems(saleItemId), "Pre-assertion, shop container should not have the unstocked item to begin with.")
+        Assertions.assertFalse(
+            shopContainer.containItems(saleItemId),
+            "Pre-assertion, shop container should not have the unstocked item to begin with.",
+        )
         testPlayer.setAttribute("shop-cont", shopContainer)
         val playerStock = highAlch.playerStock
-        Assertions.assertFalse(playerStock.containItems(saleItemId), "Pre-assertion, player stock should not have the unstocked item to begin with.")
+        Assertions.assertFalse(
+            playerStock.containItems(saleItemId),
+            "Pre-assertion, player stock should not have the unstocked item to begin with.",
+        )
         testPlayer.inventory.add(Item(saleItemId, 1))
         var status = highAlch.sell(testPlayer, 0, 1)
         assertTransactionSuccess(status)
@@ -166,7 +206,7 @@ class ShopTests {
         Assertions.assertEquals(
             expectedCoins,
             coinItem.amount,
-            "Selling noted item should yield the same devalued price as base item."
+            "Selling noted item should yield the same devalued price as base item.",
         )
     }
 
@@ -180,7 +220,7 @@ class ShopTests {
         Assertions.assertEquals(
             1,
             coinItem.amount,
-            "1 coin should be the minimum selling price."
+            "1 coin should be the minimum selling price.",
         )
     }
 
@@ -191,7 +231,11 @@ class ShopTests {
         testPlayer.setAttribute("shop-main", true)
         var status = tokkulShop.buy(testPlayer, 0, 1) // 1 death rune
         assertTransactionSuccess(status)
-        Assertions.assertEquals(Items.TOKKUL_6529, testPlayer.inventory[0].id, "Pre-assertion: First item should still be the currency used.")
+        Assertions.assertEquals(
+            Items.TOKKUL_6529,
+            testPlayer.inventory[0].id,
+            "Pre-assertion: First item should still be the currency used.",
+        )
         val cost = startingTokkul - testPlayer.inventory[0].amount
         status = tokkulShop.sell(testPlayer, 1, 1) // back to starting stock
         assertTransactionSuccess(status)
@@ -202,7 +246,11 @@ class ShopTests {
         assertTransactionSuccess(status)
 
         Assertions.assertEquals(Items.TOKKUL_6529, testPlayer.inventory[0].id, "Expected same currency back.")
-        Assertions.assertEquals((cost / 10.0).toInt(), testPlayer.inventory[0].amount, "Expected 10 times less for selling than for cost of buying.")
+        Assertions.assertEquals(
+            (cost / 10.0).toInt(),
+            testPlayer.inventory[0].amount,
+            "Expected 10 times less for selling than for cost of buying.",
+        )
     }
 
     @Test fun shouldSellUnstockedItemToGeneralStoreAsIronman() {
@@ -304,7 +352,7 @@ class ShopTests {
             {
                 status = general.buy(testPlayer, 36, 1)
             },
-            "Error selling to shop: ${general.playerStock}"
+            "Error selling to shop: ${general.playerStock}",
         )
         assertTransactionSuccess(status)
     }
@@ -329,8 +377,21 @@ class ShopTests {
         Assertions.assertDoesNotThrow {
             status = general.buy(testPlayer, 0, inStockAmount)
         }
-        Assertions.assertEquals(true, status is Shop.TransactionStatus.Success, "Transaction failure: ${if (status is Shop.TransactionStatus.Failure) (status as Shop.TransactionStatus.Failure).reason else ""}")
-        Assertions.assertEquals(0, general.getContainer(testPlayer).getAmount(0), "Buying all stock didn't... buy all stock.")
+        Assertions.assertEquals(
+            true,
+            status is Shop.TransactionStatus.Success,
+            "Transaction failure: ${if (status is Shop.TransactionStatus.Failure) {
+                (status as Shop.TransactionStatus.Failure)
+                    .reason
+            } else {
+                ""
+            }}",
+        )
+        Assertions.assertEquals(
+            0,
+            general.getContainer(testPlayer).getAmount(0),
+            "Buying all stock didn't... buy all stock.",
+        )
 
         testPlayer.inventory.replace(null, 1) // Remove the items we purchased
 
@@ -340,8 +401,16 @@ class ShopTests {
             status = general.buy(testPlayer, 0, 10)
         }
 
-        Assertions.assertEquals(true, status is Shop.TransactionStatus.Failure, "Status was not Failure for buying 0-stock item!")
-        Assertions.assertEquals(remainingGP, testPlayer.inventory.getAmount(995), "Coins were deducted for buying 0-stock item!")
+        Assertions.assertEquals(
+            true,
+            status is Shop.TransactionStatus.Failure,
+            "Status was not Failure for buying 0-stock item!",
+        )
+        Assertions.assertEquals(
+            remainingGP,
+            testPlayer.inventory.getAmount(995),
+            "Coins were deducted for buying 0-stock item!",
+        )
         Assertions.assertNull(testPlayer.inventory.get(1), "Player received purchased item despite being 0-stock!")
     }
 

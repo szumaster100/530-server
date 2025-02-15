@@ -13,9 +13,10 @@ import core.plugin.Plugin
 import core.tools.RandomFunction
 import java.util.*
 
-class BarrowsPuzzle private constructor(private val questionModels: IntArray, private vararg val answerModels: Int) :
-    ComponentPlugin() {
-
+class BarrowsPuzzle private constructor(
+    private val questionModels: IntArray,
+    private vararg val answerModels: Int,
+) : ComponentPlugin() {
     fun create(): BarrowsPuzzle {
         val answers = answerModels.copyOf(answerModels.size)
         val list: MutableList<Int> = ArrayList(20)
@@ -41,15 +42,16 @@ class BarrowsPuzzle private constructor(private val questionModels: IntArray, pr
         opcode: Int,
         button: Int,
         slot: Int,
-        itemId: Int
+        itemId: Int,
     ): Boolean {
         when (button) {
             2, 3, 5 -> {
                 player.interfaceManager.close()
-                val correct = player.getAttribute(
-                    "puzzle:answers",
-                    IntArray(3)
-                )[if (button == 5) 2 else button - 2] shr 16 and 0xFF == 1
+                val correct =
+                    player.getAttribute(
+                        "puzzle:answers",
+                        IntArray(3),
+                    )[if (button == 5) 2 else button - 2] shr 16 and 0xFF == 1
                 if (!correct) {
                     sendMessage(player, "You got the puzzle wrong! You can hear the catacombs moving around you.")
                     BarrowsActivityPlugin.shuffleCatacombs(player)
@@ -64,30 +66,34 @@ class BarrowsPuzzle private constructor(private val questionModels: IntArray, pr
     }
 
     companion object {
-        val SHAPES = BarrowsPuzzle(
-            intArrayOf(6734, 6735, 6736),
-            getAnswerModel(6731, true),
-            getAnswerModel(6732, false),
-            getAnswerModel(6733, false)
-        )
-        val LINES = BarrowsPuzzle(
-            intArrayOf(6728, 6729, 6730),
-            getAnswerModel(6725, true),
-            getAnswerModel(6726, false),
-            getAnswerModel(6727, false)
-        )
-        val SQUARES = BarrowsPuzzle(
-            intArrayOf(6722, 6723, 6724),
-            getAnswerModel(6719, true),
-            getAnswerModel(6720, false),
-            getAnswerModel(6721, false)
-        )
-        val TRIANGLE_CIRCLES = BarrowsPuzzle(
-            intArrayOf(6716, 6717, 6718),
-            getAnswerModel(6713, true),
-            getAnswerModel(6714, false),
-            getAnswerModel(6715, false)
-        )
+        val SHAPES =
+            BarrowsPuzzle(
+                intArrayOf(6734, 6735, 6736),
+                getAnswerModel(6731, true),
+                getAnswerModel(6732, false),
+                getAnswerModel(6733, false),
+            )
+        val LINES =
+            BarrowsPuzzle(
+                intArrayOf(6728, 6729, 6730),
+                getAnswerModel(6725, true),
+                getAnswerModel(6726, false),
+                getAnswerModel(6727, false),
+            )
+        val SQUARES =
+            BarrowsPuzzle(
+                intArrayOf(6722, 6723, 6724),
+                getAnswerModel(6719, true),
+                getAnswerModel(6720, false),
+                getAnswerModel(6721, false),
+            )
+        val TRIANGLE_CIRCLES =
+            BarrowsPuzzle(
+                intArrayOf(6716, 6717, 6718),
+                getAnswerModel(6713, true),
+                getAnswerModel(6714, false),
+                getAnswerModel(6715, false),
+            )
         private val COMPONENT = Component(25)
 
         fun open(player: Player) {
@@ -98,7 +104,10 @@ class BarrowsPuzzle private constructor(private val questionModels: IntArray, pr
             open(player, index)
         }
 
-        fun open(player: Player, index: Int) {
+        fun open(
+            player: Player,
+            index: Int,
+        ) {
             var puzzle = SHAPES
             when (index) {
                 1 -> puzzle = LINES
@@ -118,8 +127,8 @@ class BarrowsPuzzle private constructor(private val questionModels: IntArray, pr
                         puzzle.questionModels[i],
                         0,
                         25,
-                        6 + i
-                    )
+                        6 + i,
+                    ),
                 )
             }
             for (i in puzzle.answerModels.indices) {
@@ -131,8 +140,8 @@ class BarrowsPuzzle private constructor(private val questionModels: IntArray, pr
                         puzzle.answerModels[i] and 0xFFFF,
                         0,
                         25,
-                        2 + i
-                    )
+                        2 + i,
+                    ),
                 )
             }
             PacketRepository.send(
@@ -143,12 +152,15 @@ class BarrowsPuzzle private constructor(private val questionModels: IntArray, pr
                     puzzle.answerModels[2] and 0xFFFF,
                     0,
                     25,
-                    5
-                )
+                    5,
+                ),
             )
         }
 
-        private fun getAnswerModel(modelId: Int, correct: Boolean): Int {
+        private fun getAnswerModel(
+            modelId: Int,
+            correct: Boolean,
+        ): Int {
             return modelId or ((if (correct) 1 else 0) shl 16)
         }
     }

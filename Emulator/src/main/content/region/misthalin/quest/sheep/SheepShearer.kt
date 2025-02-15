@@ -1,20 +1,19 @@
 package content.region.misthalin.quest.sheep
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.*
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 import kotlin.math.min
 
 @Initializable
 class SheepShearer : Quest(Quests.SHEEP_SHEARER, 28, 27, 1, Vars.VARP_QUEST_SHEEP_SHEARER_PROGRESS_179, 0, 20, 21) {
-
     companion object {
         val ATTR_NUM_BALLS_OF_WOOL_DELIVERED = "/save:sheep-shearer:num-balls-of-wool-delivered"
         val ATTR_IS_PENGUIN_SHEEP_SHEARED = "/save:sheep-shearer:is-penguin-sheep-sheared"
@@ -49,7 +48,10 @@ class SheepShearer : Quest(Quests.SHEEP_SHEARER, 28, 27, 1, Vars.VARP_QUEST_SHEE
         return this
     }
 
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
 
         var ln = 11

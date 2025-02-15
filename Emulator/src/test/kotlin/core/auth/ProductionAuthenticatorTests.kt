@@ -17,7 +17,8 @@ class ProductionAuthenticatorTests {
             authProvider.configureFor(storageProvider)
         }
 
-        @BeforeAll @JvmStatic fun createTestAccount() {
+        @BeforeAll @JvmStatic
+        fun createTestAccount() {
             val details = UserAccountInfo.createDefault()
             details.username = "test"
             details.password = "testing"

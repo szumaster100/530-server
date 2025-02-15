@@ -1,6 +1,5 @@
 package content.global.skill.slayer.dungeon
 
-import org.rs.consts.Animations
 import content.global.skill.agility.AgilityHandler
 import core.api.getStatLevel
 import core.api.impact
@@ -23,20 +22,29 @@ import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
 import core.plugin.Plugin
 import core.tools.RandomFunction
+import org.rs.consts.Animations
 
 @Initializable
-class FremennikDungeon : MapZone("fremennik", true, ZoneRestriction.CANNON), Plugin<Any?> {
-
+class FremennikDungeon :
+    MapZone("fremennik", true, ZoneRestriction.CANNON),
+    Plugin<Any?> {
     override fun newInstance(arg: Any?): Plugin<Any?> {
         ZoneBuilder.configure(this)
         return this
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any?): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any?,
+    ): Any? {
         return true
     }
 
-    override fun interact(entity: Entity, target: Node, option: Option): Boolean {
+    override fun interact(
+        entity: Entity,
+        target: Node,
+        option: Option,
+    ): Boolean {
         if (entity is Player && target is Scenery) {
             val dir = Direction.getLogicalDirection(entity.location, target.location)
 
@@ -49,7 +57,11 @@ class FremennikDungeon : MapZone("fremennik", true, ZoneRestriction.CANNON), Plu
         return super.interact(entity, target, option)
     }
 
-    private fun handlePyrefiendArea(player: Player, scenery: Scenery, direction: Direction): Boolean {
+    private fun handlePyrefiendArea(
+        player: Player,
+        scenery: Scenery,
+        direction: Direction,
+    ): Boolean {
         if (getStatLevel(player, Skills.AGILITY) < 81) {
             sendMessage(player, "You need an agility level of at least 81 to do this.")
             return true
@@ -83,7 +95,7 @@ class FremennikDungeon : MapZone("fremennik", true, ZoneRestriction.CANNON), Plu
                                 Animation.create(1995),
                                 20,
                                 0.0,
-                                null
+                                null,
                             )
                             false
                         }
@@ -98,7 +110,7 @@ class FremennikDungeon : MapZone("fremennik", true, ZoneRestriction.CANNON), Plu
                         else -> true
                     }
                 }
-            }
+            },
         )
         return true
     }
@@ -111,7 +123,11 @@ class FremennikDungeon : MapZone("fremennik", true, ZoneRestriction.CANNON), Plu
         }
     }
 
-    private fun handleNarrowCrevice(player: Player, sceneryScenery: Scenery, dir: Direction): Boolean {
+    private fun handleNarrowCrevice(
+        player: Player,
+        sceneryScenery: Scenery,
+        dir: Direction,
+    ): Boolean {
         if (getStatLevel(player, Skills.AGILITY) < 62) {
             sendMessage(player, "You need an agility level of at least 62 to do this.")
             return true
@@ -124,7 +140,7 @@ class FremennikDungeon : MapZone("fremennik", true, ZoneRestriction.CANNON), Plu
             end,
             Animation.create(156),
             10.0,
-            "You climb your way through the narrow crevice."
+            "You climb your way through the narrow crevice.",
         )
         return true
     }

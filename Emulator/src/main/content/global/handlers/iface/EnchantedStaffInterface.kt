@@ -1,23 +1,24 @@
 package content.global.handlers.iface
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.*
 import core.game.interaction.InterfaceListener
 import core.game.node.item.Item
 import core.tools.StringUtils
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 class EnchantedStaffInterface : InterfaceListener {
-
     override fun defineInterfaceListeners() {
         onOpen(Components.STAFF_ENCHANT_332) { player, _ ->
-            for (staff in EnchantedStaff.values()) sendItemZoomOnInterface(
-                player,
-                Components.STAFF_ENCHANT_332,
-                staff.child,
-                staff.basic
-            )
+            for (staff in EnchantedStaff.values()) {
+                sendItemZoomOnInterface(
+                    player,
+                    Components.STAFF_ENCHANT_332,
+                    staff.child,
+                    staff.basic,
+                )
+            }
             return@onOpen true
         }
 
@@ -33,7 +34,17 @@ class EnchantedStaffInterface : InterfaceListener {
                 if (!inInventory(player, basicStaff.id)) {
                     sendMessage(
                         player,
-                        "You don't have a" + (if (StringUtils.isPlusN(basicStaff.name)) "n " else " ") + basicStaff.name + " to enchant."
+                        "You don't have a" + (
+                            if (StringUtils.isPlusN(
+                                    basicStaff.name,
+                                )
+                            ) {
+                                "n "
+                            } else {
+                                " "
+                            }
+                        ) + basicStaff.name +
+                            " to enchant.",
                     )
                     return@on true
                 }
@@ -43,7 +54,7 @@ class EnchantedStaffInterface : InterfaceListener {
                     sendNPCDialogue(
                         player,
                         NPCs.THORMAC_389,
-                        "I need $completeDiary coins for materials. Come back when you have the money!"
+                        "I need $completeDiary coins for materials. Come back when you have the money!",
                     )
                     return@on true
                 }
@@ -53,7 +64,7 @@ class EnchantedStaffInterface : InterfaceListener {
                     sendNPCDialogue(
                         player,
                         NPCs.THORMAC_389,
-                        "Just a moment... hang on... hocus pocus abra- cadabra... there you go! Enjoy your enchanted staff!"
+                        "Just a moment... hang on... hocus pocus abra- cadabra... there you go! Enjoy your enchanted staff!",
                     )
                     replaceSlot(player, basicStaff.slot, enchantedStaff)
                 }
@@ -62,14 +73,19 @@ class EnchantedStaffInterface : InterfaceListener {
         }
     }
 
-    enum class EnchantedStaff(val enchanted: Int, val basic: Int, val child: Int) {
+    enum class EnchantedStaff(
+        val enchanted: Int,
+        val basic: Int,
+        val child: Int,
+    ) {
         AIR(enchanted = Items.MYSTIC_AIR_STAFF_1405, basic = Items.AIR_BATTLESTAFF_1397, child = 21),
         WATER(enchanted = Items.MYSTIC_WATER_STAFF_1403, basic = Items.WATER_BATTLESTAFF_1395, child = 22),
         EARTH(enchanted = Items.MYSTIC_EARTH_STAFF_1407, basic = Items.EARTH_BATTLESTAFF_1399, child = 23),
         FIRE(enchanted = Items.MYSTIC_FIRE_STAFF_1401, basic = Items.FIRE_BATTLESTAFF_1393, child = 24),
         LAVA(enchanted = Items.MYSTIC_LAVA_STAFF_3054, basic = Items.LAVA_BATTLESTAFF_3053, child = 25),
         MUD(enchanted = Items.MYSTIC_MUD_STAFF_6563, basic = Items.MUD_BATTLESTAFF_6562, child = 26),
-        STEAM(enchanted = Items.MYSTIC_STEAM_STAFF_11738, basic = Items.STEAM_BATTLESTAFF_11736, child = 27);
+        STEAM(enchanted = Items.MYSTIC_STEAM_STAFF_11738, basic = Items.STEAM_BATTLESTAFF_11736, child = 27),
+        ;
 
         companion object {
             val basicToEnchanted = HashMap<Int, Int>()

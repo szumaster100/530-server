@@ -1,25 +1,25 @@
 package content.global.skill.construction.decoration.bedroom
 
-import org.rs.consts.Animations
-import org.rs.consts.Scenery
 import core.api.animate
 import core.api.openInterface
 import core.api.sendString
 import core.api.ui.sendInterfaceConfig
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.Animations
+import org.rs.consts.Scenery
 
 class DresserListener : InteractionListener {
-
-    private val dresserSpaceFurniture = intArrayOf(
-        Scenery.SHAVING_STAND_13162,
-        Scenery.SHAVING_STAND_13163,
-        Scenery.DRESSER_13164,
-        Scenery.DRESSER_13165,
-        Scenery.DRESSER_13166,
-        Scenery.DRESSER_13167,
-        Scenery.DRESSER_13168
-    )
+    private val dresserSpaceFurniture =
+        intArrayOf(
+            Scenery.SHAVING_STAND_13162,
+            Scenery.SHAVING_STAND_13163,
+            Scenery.DRESSER_13164,
+            Scenery.DRESSER_13165,
+            Scenery.DRESSER_13166,
+            Scenery.DRESSER_13167,
+            Scenery.DRESSER_13168,
+        )
 
     override fun defineListeners() {
         on(dresserSpaceFurniture, IntType.SCENERY, "preen") { player, node ->

@@ -7,10 +7,12 @@ import core.game.node.entity.player.link.request.trade.TradeModule
 open class RequestType(
     val message: String,
     val requestMessage: String,
-    val module: RequestModule
+    val module: RequestModule,
 ) {
-
-    open fun canRequest(player: Player?, target: Player?): Boolean {
+    open fun canRequest(
+        player: Player?,
+        target: Player?,
+    ): Boolean {
         return true
     }
 
@@ -19,7 +21,6 @@ open class RequestType(
     }
 
     companion object {
-
         val TRADE = RequestType("Sending a trade offer...", ":tradereq:", TradeModule(null, null))
 
         val ASSIST = RequestType("Sending assistance request...", ":assistreq:", AssistSession())

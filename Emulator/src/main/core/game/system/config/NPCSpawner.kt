@@ -3,9 +3,9 @@ package core.game.system.config
 import core.ServerConfig
 import core.api.log
 import core.game.node.entity.npc.NPC
-import core.tools.Log
 import core.game.world.map.Direction
 import core.game.world.map.Location
+import core.tools.Log
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
@@ -28,15 +28,21 @@ class NPCSpawner {
                 if (d.isEmpty()) {
                     continue
                 }
-                tokens = d.replace("{", "").replace("}", "").split(",".toRegex()).toTypedArray()
-                val npc = NPC.create(
-                    id,
-                    Location.create(
-                        Integer.valueOf(tokens[0].trim { it <= ' ' }),
-                        Integer.valueOf(tokens[1].trim { it <= ' ' }),
-                        Integer.valueOf(tokens[2].trim { it <= ' ' })
+                tokens =
+                    d
+                        .replace("{", "")
+                        .replace("}", "")
+                        .split(",".toRegex())
+                        .toTypedArray()
+                val npc =
+                    NPC.create(
+                        id,
+                        Location.create(
+                            Integer.valueOf(tokens[0].trim { it <= ' ' }),
+                            Integer.valueOf(tokens[1].trim { it <= ' ' }),
+                            Integer.valueOf(tokens[2].trim { it <= ' ' }),
+                        ),
                     )
-                )
                 npc.isWalks = tokens[3].trim { it <= ' ' } == "1"
                 npc.direction = Direction.values()[Integer.valueOf(tokens[4].trim { it <= ' ' })]
                 npc.setAttribute("spawned:npc", true)

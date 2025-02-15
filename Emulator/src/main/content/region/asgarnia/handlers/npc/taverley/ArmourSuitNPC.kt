@@ -1,6 +1,5 @@
 package content.region.asgarnia.handlers.npc.taverley
 
-import org.rs.consts.NPCs
 import core.api.addScenery
 import core.game.node.entity.npc.AbstractNPC
 import core.game.node.scenery.Scenery
@@ -8,10 +7,13 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld.Pulser
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
-class ArmourSuitNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
+class ArmourSuitNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
     override fun init() {
         super.init()
         super.setRespawn(false)
@@ -24,7 +26,7 @@ class ArmourSuitNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, l
                     }
                     return false
                 }
-            }
+            },
         )
     }
 
@@ -33,7 +35,11 @@ class ArmourSuitNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, l
         addScenery(Scenery(818, properties.spawnLocation, 1))
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return ArmourSuitNPC(id, location)
     }
 

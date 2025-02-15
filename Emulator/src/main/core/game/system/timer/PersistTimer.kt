@@ -10,13 +10,19 @@ abstract class PersistTimer(
     identifier: String,
     isSoft: Boolean = false,
     isAuto: Boolean = false,
-    flags: Array<TimerFlag> = arrayOf()
+    flags: Array<TimerFlag> = arrayOf(),
 ) : RSTimer(runInterval, identifier, isSoft, isAuto, flags) {
-    open fun save(root: JSONObject, entity: Entity) {
+    open fun save(
+        root: JSONObject,
+        entity: Entity,
+    ) {
         root["ticksLeft"] = (nextExecution - getWorldTicks()).toString()
     }
 
-    open fun parse(root: JSONObject, entity: Entity) {
+    open fun parse(
+        root: JSONObject,
+        entity: Entity,
+    ) {
         runInterval = root["ticksLeft"].toString().toInt()
     }
 

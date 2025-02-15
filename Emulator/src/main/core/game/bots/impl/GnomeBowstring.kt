@@ -1,11 +1,11 @@
 package core.game.bots.impl
 
 import content.global.skill.crafting.spinning.Spinning
+import content.global.skill.crafting.spinning.SpinningPulse
 import core.api.*
+import core.game.bots.*
 import core.game.interaction.DestinationFlag
 import core.game.interaction.MovementPulse
-import content.global.skill.crafting.spinning.SpinningPulse
-import core.game.bots.*
 import core.game.node.item.Item
 import core.game.world.map.Location
 import core.game.world.map.path.Pathfinder
@@ -29,10 +29,9 @@ class GnomeBowstring : Script() {
     val pick = ZoneBorders(2478, 3394, 339, 9)
     val bank = ZoneBorders(2447, 3415, 2444, 3434)
     var overlay: ScriptAPI.BottingOverlay? = null
+
     override fun tick() {
-
         when (state) {
-
             State.INIT -> {
                 overlay = scriptAPI.getOverlay()
                 overlay!!.init()
@@ -69,8 +68,9 @@ class GnomeBowstring : Script() {
                         }
                     }
                 }
-                if (stage == 0)
+                if (stage == 0) {
                     Pathfinder.find(bot, Location.create(2475, 3399, 1)).walk(bot).also { stage++ }
+                }
                 when (bot.location) {
                     Location.create(2475, 3399, 1) -> Pathfinder.find(bot, Location.create(2477, 3399, 1)).walk(bot)
                     Location.create(2477, 3399, 1) -> Pathfinder.find(bot, Location.create(2477, 3398, 1)).walk(bot)
@@ -78,20 +78,22 @@ class GnomeBowstring : Script() {
                     Location.create(2476, 3398, 1) -> {
                         val spinner = scriptAPI.getNearestNode(2644, true)
                         bot.faceLocation(spinner?.location)
-                        bot.pulseManager.run(object : MovementPulse(bot, spinner, DestinationFlag.OBJECT) {
-                            override fun pulse(): Boolean {
-                                bot.faceLocation(spinner?.location)
-                                state = State.SPINNING
-                                return true
-                            }
-                        })
+                        bot.pulseManager.run(
+                            object : MovementPulse(bot, spinner, DestinationFlag.OBJECT) {
+                                override fun pulse(): Boolean {
+                                    bot.faceLocation(spinner?.location)
+                                    state = State.SPINNING
+                                    return true
+                                }
+                            },
+                        )
                     }
                 }
             }
 
             State.SPINNING -> {
                 bot.pulseManager.run(
-                    SpinningPulse(bot, Item(Items.FLAX_1779), bot.inventory.getAmount(Items.FLAX_1779), Spinning.FLAX)
+                    SpinningPulse(bot, Item(Items.FLAX_1779), bot.inventory.getAmount(Items.FLAX_1779), Spinning.FLAX),
                 )
                 sLadderSwitch = true
                 state = State.FIND_BANK
@@ -125,13 +127,15 @@ class GnomeBowstring : Script() {
             State.BANKING -> {
                 val bank = scriptAPI.getNearestNode(2213, true)
                 if (bank != null) {
-                    bot.pulseManager.run(object : MovementPulse(bot, bank, DestinationFlag.OBJECT) {
-                        override fun pulse(): Boolean {
-                            bot.faceLocation(bank.location)
-                            scriptAPI.bankItem(Items.BOW_STRING_1777)
-                            return true
-                        }
-                    })
+                    bot.pulseManager.run(
+                        object : MovementPulse(bot, bank, DestinationFlag.OBJECT) {
+                            override fun pulse(): Boolean {
+                                bot.faceLocation(bank.location)
+                                scriptAPI.bankItem(Items.BOW_STRING_1777)
+                                return true
+                            }
+                        },
+                    )
                 }
                 if (freeSlots(bot) > 27) {
                     bLadderSwitch = true
@@ -175,5 +179,5 @@ enum class State {
     FIND_BANK,
     RETURN_TO_FLAX,
     BANKING,
-    INIT
+    INIT,
 }

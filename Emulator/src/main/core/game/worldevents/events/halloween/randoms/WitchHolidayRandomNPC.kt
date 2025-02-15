@@ -14,7 +14,6 @@ import org.rs.consts.NPCs
 import org.rs.consts.Sounds
 
 class WitchHolidayRandomNPC : HolidayRandomEventNPC(NPCs.WITCH_611) {
-
     override fun init() {
         super.init()
         when (RandomFunction.getRandom(4)) {

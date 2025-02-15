@@ -3,9 +3,12 @@ package core.game.world.update.flag.context
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.info.Rights
 
-class ChatMessage
-(player: Player, text: String, effects: Int, numChars: Int) {
-
+class ChatMessage(
+    player: Player,
+    text: String,
+    effects: Int,
+    numChars: Int,
+) {
     var player: Player = player
         private set
 

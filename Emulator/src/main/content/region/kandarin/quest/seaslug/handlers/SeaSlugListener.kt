@@ -1,6 +1,5 @@
 package content.region.kandarin.quest.seaslug.handlers
 
-import org.rs.consts.*
 import content.region.kandarin.quest.seaslug.SeaSlug
 import content.region.kandarin.quest.seaslug.cutscene.SafeAndSoundCustcene
 import content.region.kandarin.quest.seaslug.dialogue.KennithDialogueFile
@@ -14,9 +13,9 @@ import core.game.node.entity.combat.ImpactHandler.HitsplatType
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.game.world.map.Location
+import org.rs.consts.*
 
 class SeaSlugListener : InteractionListener {
-
     private fun getSmack(player: Player) {
         lock(player, 7)
         animate(player, 4785)
@@ -119,9 +118,10 @@ class SeaSlugListener : InteractionListener {
                 return@on true
             }
 
-            if (getAttribute(player, SeaSlug.ATTRIBUTE_TALK_WITH_KENT, false) && inInventory(
+            if (getAttribute(player, SeaSlug.ATTRIBUTE_TALK_WITH_KENT, false) &&
+                inInventory(
                     player,
-                    Items.LIT_TORCH_594
+                    Items.LIT_TORCH_594,
                 )
             ) {
                 lock(player, 3)

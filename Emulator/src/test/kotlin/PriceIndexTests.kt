@@ -4,7 +4,12 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class PriceIndexTests {
-    companion object { init { TestUtils.preTestSetup(); GEDatabase.init("ge_test.db") } }
+    companion object {
+        init {
+            TestUtils.preTestSetup()
+            GEDatabase.init("ge_test.db")
+        }
+    }
 
     @Test fun shouldAllowCheckingIfItemCanBeSoldOnGE() {
         PriceIndex.allowItem(4151)
@@ -32,6 +37,10 @@ class PriceIndexTests {
         PriceIndex.addTrade(1334, 1000, (defaultValue * 1.15).toInt())
         Assertions.assertEquals(true, PriceIndex.getValue(1334) > defaultValue)
         PriceIndex.addTrade(1334, 2000, (defaultValue * 0.85).toInt())
-        Assertions.assertEquals(true, PriceIndex.getValue(1334) < defaultValue, "Old: $defaultValue, New: ${PriceIndex.getValue(1334)}")
+        Assertions.assertEquals(
+            true,
+            PriceIndex.getValue(1334) < defaultValue,
+            "Old: $defaultValue, New: ${PriceIndex.getValue(1334)}",
+        )
     }
 }

@@ -1,14 +1,14 @@
 package core.game.bots.impl
 
 import core.api.item.produceGroundItem
-import core.game.node.item.Item
-import org.rs.consts.Items
-import core.game.bots.SkillingBotAssembler
 import core.game.bots.Script
+import core.game.bots.SkillingBotAssembler
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListeners
 import core.game.node.entity.skill.Skills
+import core.game.node.item.Item
 import core.game.world.map.zone.ZoneBorders
+import org.rs.consts.Items
 import org.rs.consts.NPCs
 
 class BarbarianSalmon : Script() {
@@ -27,7 +27,12 @@ class BarbarianSalmon : Script() {
             produceGroundItem(bot, Items.RAW_TROUT_335, 5, bot.location)
             bot.inventory.remove(Item(Items.RAW_TROUT_335, 5))
         }
-        if (bot.inventory.isFull && (!bot.inventory.containsAtLeastOneItem(Items.RAW_SALMON_331) || !bot.inventory.containsAtLeastOneItem(Items.RAW_TROUT_335))) {
+        if (bot.inventory.isFull &&
+            (
+                !bot.inventory.containsAtLeastOneItem(Items.RAW_SALMON_331) ||
+                    !bot.inventory.containsAtLeastOneItem(Items.RAW_TROUT_335)
+            )
+        ) {
             bot.inventory.clear()
             bot.inventory.add(Item(Items.FLY_FISHING_ROD_309))
             bot.inventory.add(Item(Items.FEATHER_314, 10000))

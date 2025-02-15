@@ -1,8 +1,5 @@
 package content.global.handlers.item
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import core.ServerConfig
 import core.api.*
 import core.game.container.impl.EquipmentContainer
@@ -25,16 +22,17 @@ import core.plugin.Initializable
 import core.plugin.Plugin
 import core.tools.minutesToTicks
 import core.tools.secondsToTicks
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 
 class DragonfireShieldListener : InteractionListener {
-
     val dragonfireShields = intArrayOf(Items.DRAGONFIRE_SHIELD_11283, Items.DRAGONFIRE_SHIELD_11284)
     val dfsEmptyAnim = Animations.SHIELD_DRAGONFIRE_6700
     val dfsEmptyGfx = org.rs.consts.Graphics.DFS_FUSE_DRAGONKIN_KEY_CHARGE_1160
     val dfsRecharge = if (ServerConfig.BETTER_DFS) secondsToTicks(30) else minutesToTicks(2)
 
     override fun defineListeners() {
-
         on(dragonfireShields, IntType.ITEM, "operate") { player, node ->
             val usingAttack = !getAttribute(player, "dfs_spec", false)
             if (!usingAttack) {
@@ -56,46 +54,73 @@ class DragonfireShieldListener : InteractionListener {
             }
             setVarp(player, 301, 1)
             player.setAttribute("dfs_spec", true)
-            val attack = SwitchAttack(null, Animation.create(6696), Graphics.create(org.rs.consts.Graphics.DFS_HIT_PROJECTILE_1165), Graphics(org.rs.consts.Graphics.DRAGONFIRE_SHIELD_BURST_1167, 96), Projectile.create(player, null, org.rs.consts.Graphics.DRAGONFIRE_SHIELD_PROJECTILE_1166, 36, 36, 80, 70, 0, 11))
-            val handler: DragonfireSwingHandler = object : DragonfireSwingHandler(false, 25, attack, true) {
-                override fun swing(entity: Entity?, victim: Entity?, state: BattleState?): Int {
-                    if (entity is Player) {
-                        if (!player.settings.isSpecialToggled) {
-                            setVarp(player, 301, 0)
+            val attack =
+                SwitchAttack(
+                    null,
+                    Animation.create(6696),
+                    Graphics.create(org.rs.consts.Graphics.DFS_HIT_PROJECTILE_1165),
+                    Graphics(org.rs.consts.Graphics.DRAGONFIRE_SHIELD_BURST_1167, 96),
+                    Projectile.create(
+                        player,
+                        null,
+                        org.rs.consts.Graphics.DRAGONFIRE_SHIELD_PROJECTILE_1166,
+                        36,
+                        36,
+                        80,
+                        70,
+                        0,
+                        11,
+                    ),
+                )
+            val handler: DragonfireSwingHandler =
+                object : DragonfireSwingHandler(false, 25, attack, true) {
+                    override fun swing(
+                        entity: Entity?,
+                        victim: Entity?,
+                        state: BattleState?,
+                    ): Int {
+                        if (entity is Player) {
+                            if (!player.settings.isSpecialToggled) {
+                                setVarp(player, 301, 0)
+                            }
+                            removeAttribute(player, "dfs_spec")
+                            val shield = player.equipment[EquipmentContainer.SLOT_SHIELD]
+                            if (shield == null || shield.id != Items.DRAGONFIRE_SHIELD_11283) {
+                                return -1
+                            }
+                            playGlobalAudio(entity.getLocation(), Sounds.DRAGONSLAYER_SHIELDFIRE_3761)
+                            delayEntity(player, 3)
+                            shield.charge -= 20
+                            if (shield.charge < 20 && node.asItem().slot == EquipmentContainer.SLOT_SHIELD) {
+                                replaceSlot(
+                                    player,
+                                    node.asItem().slot,
+                                    Item(Items.DRAGONFIRE_SHIELD_11284),
+                                    Item(Items.DRAGONFIRE_SHIELD_11283),
+                                    Container.EQUIPMENT,
+                                )
+                            }
+                            EquipmentContainer.updateBonuses(player)
+                            player.locks.lock("dfs_recharge", dfsRecharge)
                         }
-                        removeAttribute(player, "dfs_spec")
-                        val shield = player.equipment[EquipmentContainer.SLOT_SHIELD]
-                        if (shield == null || shield.id != Items.DRAGONFIRE_SHIELD_11283) {
-                            return -1
-                        }
-                        playGlobalAudio(entity.getLocation(), Sounds.DRAGONSLAYER_SHIELDFIRE_3761)
-                        delayEntity(player, 3)
-                        shield.charge -= 20
-                        if (shield.charge < 20 && node.asItem().slot == EquipmentContainer.SLOT_SHIELD) {
-                            replaceSlot(
-                                player,
-                                node.asItem().slot,
-                                Item(Items.DRAGONFIRE_SHIELD_11284),
-                                Item(Items.DRAGONFIRE_SHIELD_11283),
-                                Container.EQUIPMENT
-                            )
-                        }
-                        EquipmentContainer.updateBonuses(player)
-                        player.locks.lock("dfs_recharge", dfsRecharge)
+                        return super.swing(entity, victim, state)
                     }
-                    return super.swing(entity, victim, state)
-                }
 
-                override fun visualizeImpact(entity: Entity?, victim: Entity?, state: BattleState?) {
-                    playGlobalAudio(victim!!.location, Sounds.FIRESTRIKE_HIT_161, 20)
-                    super.visualizeImpact(entity, victim, state)
+                    override fun visualizeImpact(
+                        entity: Entity?,
+                        victim: Entity?,
+                        state: BattleState?,
+                    ) {
+                        playGlobalAudio(victim!!.location, Sounds.FIRESTRIKE_HIT_161, 20)
+                        super.visualizeImpact(entity, victim, state)
+                    }
                 }
-            }
             attack.handler = handler
             val victim = player.properties.combatPulse.getVictim()
-            if (player.properties.combatPulse.isAttacking && handler.canSwing(
+            if (player.properties.combatPulse.isAttacking &&
+                handler.canSwing(
                     player,
-                    victim!!
+                    victim!!,
                 ) == InteractionType.STILL_INTERACT
             ) {
                 swing(player, victim, handler)
@@ -110,7 +135,7 @@ class DragonfireShieldListener : InteractionListener {
                 player,
                 node.asItem().slot,
                 Item(Items.DRAGONFIRE_SHIELD_11284),
-                Item(Items.DRAGONFIRE_SHIELD_11283)
+                Item(Items.DRAGONFIRE_SHIELD_11283),
             )
             visualize(player, dfsEmptyAnim, dfsEmptyGfx)
             sendMessage(player, "You release the charges.")
@@ -135,7 +160,7 @@ class DragonfireShieldListener : InteractionListener {
                     player,
                     shield.slot,
                     Item(Items.DRAGONFIRE_SHIELD_11284),
-                    Item(Items.DRAGONFIRE_SHIELD_11283)
+                    Item(Items.DRAGONFIRE_SHIELD_11283),
                 )
                 shield = player.inventory.get(slot)
             }
@@ -147,7 +172,6 @@ class DragonfireShieldListener : InteractionListener {
 
 @Initializable
 class DFSItemPlugin : ItemPlugin() {
-
     @Throws(Throwable::class)
     override fun newInstance(arg: Any?): Plugin<Any> {
         register(Items.DRAGONFIRE_SHIELD_11283)

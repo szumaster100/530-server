@@ -1,8 +1,5 @@
 package content.minigame.blastfurnace
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import content.region.misc.dialogue.keldagrim.BlastFurnaceDoorDialogue
 import core.api.*
 import core.game.dialogue.DialogueFile
@@ -15,6 +12,9 @@ import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.tools.END_DIALOGUE
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 
 class BlastFurnaceListeners : InteractionListener {
     companion object {
@@ -28,17 +28,18 @@ class BlastFurnaceListeners : InteractionListener {
         val PEDAL_ANIM = Animations.USE_BIKE_MACHINE_2433
         val PEDAL_SCENERY = getScenery(PEDAL_LOC)!!
         val PUMP_SCENERY = getScenery(PUMP_LOC)!!
-        val validOreIds = intArrayOf(
-            Items.IRON_ORE_440,
-            Items.COPPER_ORE_436,
-            Items.TIN_ORE_438,
-            Items.COAL_453,
-            Items.MITHRIL_ORE_447,
-            Items.ADAMANTITE_ORE_449,
-            Items.SILVER_ORE_442,
-            Items.GOLD_ORE_444,
-            Items.RUNITE_ORE_451
-        )
+        val validOreIds =
+            intArrayOf(
+                Items.IRON_ORE_440,
+                Items.COPPER_ORE_436,
+                Items.TIN_ORE_438,
+                Items.COAL_453,
+                Items.MITHRIL_ORE_447,
+                Items.ADAMANTITE_ORE_449,
+                Items.SILVER_ORE_442,
+                Items.GOLD_ORE_444,
+                Items.RUNITE_ORE_451,
+            )
     }
 
     override fun defineListeners() {
@@ -83,11 +84,14 @@ class BlastFurnaceListeners : InteractionListener {
                                 addScenery(PUMP_SCENERY)
                                 super.stop()
                             }
-                        }
+                        },
                     )
                 }
-            } else if (BlastFurnace.pumper != null) sendMessage(p, "Someone else is already doing that.")
-            else sendMessage(p, "You need a Strength level of 30 to do that.")
+            } else if (BlastFurnace.pumper != null) {
+                sendMessage(p, "Someone else is already doing that.")
+            } else {
+                sendMessage(p, "You need a Strength level of 30 to do that.")
+            }
             return@on true
         }
         setDest(IntType.SCENERY, BlastUtils.PUMP) { _, _ -> Location.create(1951, 4961, 0) }
@@ -118,21 +122,25 @@ class BlastFurnaceListeners : InteractionListener {
                                 addScenery(PEDAL_SCENERY)
                                 super.stop()
                             }
-                        }
+                        },
                     )
                 }
-            } else if (BlastFurnace.pedaler != null) sendMessage(p, "Someone else is already doing that.")
-            else sendMessage(p, "You need an agility level of 30 to do that.")
+            } else if (BlastFurnace.pedaler != null) {
+                sendMessage(p, "Someone else is already doing that.")
+            } else {
+                sendMessage(p, "You need an agility level of 30 to do that.")
+            }
             return@on true
         }
         setDest(IntType.SCENERY, BlastUtils.PEDALS) { _, _ -> Location.create(1948, 4966, 0) }
 
         on(BlastUtils.COKE, SCENERY, "collect") { player, _ ->
             if (inInventory(player, Items.SPADE_952, 1)) {
-                if (removeItem(player, Items.SPADE_952, Container.INVENTORY) && addItem(
+                if (removeItem(player, Items.SPADE_952, Container.INVENTORY) &&
+                    addItem(
                         player,
                         Items.SPADEFUL_OF_COKE_6448,
-                        1
+                        1,
                     )
                 ) {
                     lockInteractions(player, 1)
@@ -183,10 +191,11 @@ class BlastFurnaceListeners : InteractionListener {
                     player,
                     object : Pulse() {
                         override fun pulse(): Boolean {
-                            return if (removeItem(player, Items.SPADEFUL_OF_COKE_6448, Container.INVENTORY) && addItem(
+                            return if (removeItem(player, Items.SPADEFUL_OF_COKE_6448, Container.INVENTORY) &&
+                                addItem(
                                     player,
                                     Items.SPADE_952,
-                                    1
+                                    1,
                                 )
                             ) {
                                 playAudio(player, Sounds.BF_REFUEL_STOVE_1059)
@@ -198,7 +207,7 @@ class BlastFurnaceListeners : InteractionListener {
                                 false
                             }
                         }
-                    }
+                    },
                 )
             } else {
                 sendMessage(player, "You need some coke to do that!")
@@ -210,13 +219,17 @@ class BlastFurnaceListeners : InteractionListener {
             openDialogue(
                 p,
                 object : DialogueFile() {
-                    override fun handle(componentID: Int, buttonID: Int) {
+                    override fun handle(
+                        componentID: Int,
+                        buttonID: Int,
+                    ) {
                         when (stage) {
                             0 -> sendDialogue(p, "Really place all your ore on the belt?").also { stage++ }
-                            1 -> showTopics(
-                                Topic("Yes.", 100, true),
-                                Topic("Nevermind.", END_DIALOGUE, true)
-                            )
+                            1 ->
+                                showTopics(
+                                    Topic("Yes.", 100, true),
+                                    Topic("Nevermind.", END_DIALOGUE, true),
+                                )
 
                             100 -> {
                                 end()
@@ -225,7 +238,7 @@ class BlastFurnaceListeners : InteractionListener {
                             }
                         }
                     }
-                }
+                },
             )
             return@on true
         }
@@ -356,7 +369,7 @@ class BlastFurnaceListeners : InteractionListener {
                         }
                         return true
                     }
-                }
+                },
             )
             return@on true
         }

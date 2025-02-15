@@ -1,15 +1,16 @@
 package content.region.misthalin.quest.phoenixgang.dialogue
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.misthalin.quest.phoenixgang.ShieldofArrav
 import core.game.dialogue.Dialogue
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
-class WeaponsMasterDialogue(player: Player? = null) : Dialogue(player) {
-
+class WeaponsMasterDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     private var quest: Quest? = null
 
     override fun open(vararg args: Any): Boolean {
@@ -29,61 +30,70 @@ class WeaponsMasterDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (quest!!.getStage(player)) {
-            else -> when (stage) {
-                600 -> {
-                    end()
-                    npc.properties.combatPulse.attack(player)
-                }
-
-                0 ->
-                    stage = if (ShieldofArrav.isPhoenix(player)) {
-                        npc("Hello fellow Phoenix! What are you after?")
-                        1
-                    } else {
-                        npc("Hey! Who are you? I'm gonna teach you not to stick", "your nose where it don't belong!")
-                        50
+            else ->
+                when (stage) {
+                    600 -> {
+                        end()
+                        npc.properties.combatPulse.attack(player)
                     }
 
-                50 -> {
-                    end()
-                    npc.properties.combatPulse.attack(player)
-                }
+                    0 ->
+                        stage =
+                            if (ShieldofArrav.isPhoenix(player)) {
+                                npc("Hello fellow Phoenix! What are you after?")
+                                1
+                            } else {
+                                npc(
+                                    "Hey! Who are you? I'm gonna teach you not to stick",
+                                    "your nose where it don't belong!",
+                                )
+                                50
+                            }
 
-                1 -> {
-                    options("I'm after a weapon or two.", "I'm looking for treasure.")
-                    stage = 2
-                }
+                    50 -> {
+                        end()
+                        npc.properties.combatPulse.attack(player)
+                    }
 
-                2 -> when (buttonId) {
                     1 -> {
-                        player("I'm after a weapon or two.")
-                        stage = 10
+                        options("I'm after a weapon or two.", "I'm looking for treasure.")
+                        stage = 2
                     }
 
-                    2 -> {
-                        player("I'm looking for treasure.")
-                        stage = 20
+                    2 ->
+                        when (buttonId) {
+                            1 -> {
+                                player("I'm after a weapon or two.")
+                                stage = 10
+                            }
+
+                            2 -> {
+                                player("I'm looking for treasure.")
+                                stage = 20
+                            }
+                        }
+
+                    10 -> {
+                        npc("No problem. Feel free to look around.")
+                        stage = 11
                     }
-                }
 
-                10 -> {
-                    npc("No problem. Feel free to look around.")
-                    stage = 11
-                }
+                    11 -> end()
+                    20 -> {
+                        npc(
+                            "Aren't we all? We've not got any up here. Go mug",
+                            "someone somewhere if you want some treasure.",
+                        )
+                        stage = 21
+                    }
 
-                11 -> end()
-                20 -> {
-                    npc(
-                        "Aren't we all? We've not got any up here. Go mug",
-                        "someone somewhere if you want some treasure."
-                    )
-                    stage = 21
+                    21 -> end()
                 }
-
-                21 -> end()
-            }
         }
         return true
     }

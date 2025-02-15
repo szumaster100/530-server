@@ -1,7 +1,5 @@
 package content.region.fremennik.handlers.neitiznot
 
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.api.*
 import core.api.skill.sendSkillDialogue
 import core.game.interaction.IntType
@@ -9,11 +7,11 @@ import core.game.interaction.InteractionListener
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class LogCuttingListener : InteractionListener {
-
     override fun defineListeners() {
-
         /*
          * Handles split arctic pine logs & creating fremennik shield.
          */
@@ -26,10 +24,9 @@ class LogCuttingListener : InteractionListener {
             logCutting(player)
             return@onUseWith true
         }
-
     }
 
-    private fun logCutting(player : Player) {
+    private fun logCutting(player: Player) {
         if (getStatLevel(player, Skills.WOODCUTTING) < 54) {
             sendMessage(player, "You need a woodcutting level of 54 in order to do this.")
             return
@@ -45,10 +42,11 @@ class LogCuttingListener : InteractionListener {
             create { id, amount ->
                 submitIndividualPulse(
                     player,
-                    if (id == FREMENNIK_SHIELD)
+                    if (id == FREMENNIK_SHIELD) {
                         FremennikShieldPulse(player, Item(ARCTIC_PINE_LOG), amount)
-                    else
+                    } else {
                         LogCuttingPulse(player, Item(ARCTIC_PINE_LOG), amount)
+                    },
                 )
             }
 

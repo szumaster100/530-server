@@ -13,8 +13,9 @@ import core.game.world.map.zone.ZoneBorders
 import core.tools.ticksPerMinute
 import org.rs.consts.Components
 
-class CastleWarsGameArea : CastleWarsArea(), TickListener {
-
+class CastleWarsGameArea :
+    CastleWarsArea(),
+    TickListener {
     companion object {
         private val saradominStandardFloor: ZoneBorders =
             ZoneBorders(Location.create(2426, 3073, 3), Location.create(2430, 3077, 3))
@@ -35,17 +36,18 @@ class CastleWarsGameArea : CastleWarsArea(), TickListener {
         private val zamorakTunnels: ZoneBorders =
             ZoneBorders(Location.create(2401, 9503, 0), Location.create(2366, 9529, 0))
 
-        val areaBorders = arrayOf(
-            saradominStandardFloor,
-            zamorakStandardFloor,
-            saradominUpperFloor,
-            zamorakUpperFloor,
-            saradominFloor,
-            zamorakFloor,
-            battleField,
-            saradominTunnels,
-            zamorakTunnels
-        )
+        val areaBorders =
+            arrayOf(
+                saradominStandardFloor,
+                zamorakStandardFloor,
+                saradominUpperFloor,
+                zamorakUpperFloor,
+                saradominFloor,
+                zamorakFloor,
+                battleField,
+                saradominTunnels,
+                zamorakTunnels,
+            )
 
         val saradominPlayers = mutableSetOf<Player>()
         val zamorakPlayers = mutableSetOf<Player>()
@@ -109,5 +111,4 @@ class CastleWarsGameArea : CastleWarsArea(), TickListener {
             endGame()
         }
     }
-
 }

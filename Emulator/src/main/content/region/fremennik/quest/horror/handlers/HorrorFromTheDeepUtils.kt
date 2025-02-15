@@ -1,7 +1,6 @@
 package content.region.fremennik.quest.horror.handlers
 
 object HorrorFromTheDeepUtils {
-
     const val LIGHTHOUSE_MECHANISM = "/save:hftd:lighthouse-fixed"
     const val UNLOCK_BRIDGE = "/save:hftd:lighthouse-bridge"
     const val STRANGE_WALL_DISCOVER = "/save:hftd:strange-wall"

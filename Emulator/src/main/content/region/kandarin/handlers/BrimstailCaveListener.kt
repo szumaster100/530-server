@@ -1,7 +1,5 @@
 package content.region.kandarin.handlers
 
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import content.global.travel.EssenceTeleport
 import core.api.sendDialogue
 import core.api.sendNPCDialogue
@@ -10,9 +8,10 @@ import core.game.dialogue.FaceAnim
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.world.map.Location
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 class BrimstailCaveListener : InteractionListener {
-
     companion object {
         private val CAVE_EXIT = intArrayOf(Scenery.TUNNEL_17222, Scenery.TUNNEL_17223)
         private const val CAVE_ENTER = Scenery.CAVE_ENTRANCE_17209
@@ -22,7 +21,6 @@ class BrimstailCaveListener : InteractionListener {
     }
 
     override fun defineListeners() {
-
         on(CAVE_ENTER, IntType.SCENERY, "enter") { player, _ ->
             teleport(player, Location.create(2408, 9812, 0))
             return@on true
@@ -38,7 +36,7 @@ class BrimstailCaveListener : InteractionListener {
                 player,
                 BRIMSTAIL,
                 "Stop, I don't want you to spill water on my books!",
-                FaceAnim.OLD_ANGRY1
+                FaceAnim.OLD_ANGRY1,
             )
             return@on true
         }

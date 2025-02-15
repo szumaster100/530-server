@@ -1,6 +1,5 @@
 package content.region.fremennik.quest.horror.handlers
 
-import org.rs.consts.*
 import core.api.*
 import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
@@ -9,11 +8,12 @@ import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.interaction.InterfaceListener
 import core.game.interaction.QueueStrength
+import org.rs.consts.*
 
-class StrangeWallListener : InteractionListener, InterfaceListener {
-
+class StrangeWallListener :
+    InteractionListener,
+    InterfaceListener {
     override fun defineListeners() {
-
         on(STRANGE_WALL, IntType.SCENERY, "study") { player, _ ->
             when (player.location.y) {
                 4626 -> {
@@ -55,10 +55,12 @@ class StrangeWallListener : InteractionListener, InterfaceListener {
             } else {
                 when (player.location.y) {
                     4626,
-                    10002 -> sendMessage(player, "You cannot see any way to move this part of the wall....")
+                    10002,
+                    -> sendMessage(player, "You cannot see any way to move this part of the wall....")
 
                     4627,
-                    10003 -> sendMessage(player, "You cannot see anything unusual about the wall from this side.")
+                    10003,
+                    -> sendMessage(player, "You cannot see anything unusual about the wall from this side.")
                 }
             }
             return@on true
@@ -66,14 +68,43 @@ class StrangeWallListener : InteractionListener, InterfaceListener {
     }
 
     override fun defineInterfaceListeners() {
-
         onOpen(Components.HORROR_METALDOOR_142) { player, _ ->
-            setComponentVisibility(player, Components.HORROR_METALDOOR_142, 2, getAttribute(player, HorrorFromTheDeepUtils.USE_FIRE_RUNE, 0) != 1)
-            setComponentVisibility(player, Components.HORROR_METALDOOR_142, 3, getAttribute(player, HorrorFromTheDeepUtils.USE_AIR_RUNE, 0) != 1)
-            setComponentVisibility(player, Components.HORROR_METALDOOR_142, 4, getAttribute(player, HorrorFromTheDeepUtils.USE_EARTH_RUNE, 0) != 1)
-            setComponentVisibility(player, Components.HORROR_METALDOOR_142, 5, getAttribute(player, HorrorFromTheDeepUtils.USE_WATER_RUNE, 0) != 1)
-            setComponentVisibility(player, Components.HORROR_METALDOOR_142, 6, getAttribute(player, HorrorFromTheDeepUtils.USE_ARROW, 0) != 1)
-            setComponentVisibility(player, Components.HORROR_METALDOOR_142, 7, getAttribute(player, HorrorFromTheDeepUtils.USE_SWORD, 0) != 1)
+            setComponentVisibility(
+                player,
+                Components.HORROR_METALDOOR_142,
+                2,
+                getAttribute(player, HorrorFromTheDeepUtils.USE_FIRE_RUNE, 0) != 1,
+            )
+            setComponentVisibility(
+                player,
+                Components.HORROR_METALDOOR_142,
+                3,
+                getAttribute(player, HorrorFromTheDeepUtils.USE_AIR_RUNE, 0) != 1,
+            )
+            setComponentVisibility(
+                player,
+                Components.HORROR_METALDOOR_142,
+                4,
+                getAttribute(player, HorrorFromTheDeepUtils.USE_EARTH_RUNE, 0) != 1,
+            )
+            setComponentVisibility(
+                player,
+                Components.HORROR_METALDOOR_142,
+                5,
+                getAttribute(player, HorrorFromTheDeepUtils.USE_WATER_RUNE, 0) != 1,
+            )
+            setComponentVisibility(
+                player,
+                Components.HORROR_METALDOOR_142,
+                6,
+                getAttribute(player, HorrorFromTheDeepUtils.USE_ARROW, 0) != 1,
+            )
+            setComponentVisibility(
+                player,
+                Components.HORROR_METALDOOR_142,
+                7,
+                getAttribute(player, HorrorFromTheDeepUtils.USE_SWORD, 0) != 1,
+            )
 
             if (getAttribute(player, HorrorFromTheDeepUtils.UNLOCK_DOOR, 0) > 5) {
                 closeInterface(player)
@@ -91,13 +122,14 @@ class StrangeWallListener : InteractionListener, InterfaceListener {
     companion object {
         private val STRANGE_WALL = intArrayOf(Scenery.STRANGE_WALL_4545, Scenery.STRANGE_WALL_4546)
         private val STRANGE_DOOR = intArrayOf(Scenery.STRANGE_WALL_4544, Scenery.STRANGE_WALL_4543)
-        private val STRANGE_W_REQ_ITEMS = intArrayOf(
-            Items.BRONZE_ARROW_882,
-            Items.BRONZE_SWORD_1277,
-            Items.AIR_RUNE_556,
-            Items.FIRE_RUNE_554,
-            Items.EARTH_RUNE_557,
-            Items.WATER_RUNE_555
-        )
+        private val STRANGE_W_REQ_ITEMS =
+            intArrayOf(
+                Items.BRONZE_ARROW_882,
+                Items.BRONZE_SWORD_1277,
+                Items.AIR_RUNE_556,
+                Items.FIRE_RUNE_554,
+                Items.EARTH_RUNE_557,
+                Items.WATER_RUNE_555,
+            )
     }
 }

@@ -1,14 +1,13 @@
 package content.global.handlers.item
 
-import org.rs.consts.Items
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.player.link.TeleportManager
 import core.game.node.item.Item
+import org.rs.consts.Items
 
 class HouseTeleportTabletListener : InteractionListener {
-
     private val houseTeleport = Items.TP_TO_HOUSE_8013
 
     override fun defineListeners() {

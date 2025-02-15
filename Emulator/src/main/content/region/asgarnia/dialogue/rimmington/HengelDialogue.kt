@@ -1,32 +1,44 @@
 package content.region.asgarnia.dialogue.rimmington
 
-import org.rs.consts.NPCs
 import core.game.dialogue.Dialogue
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.world.map.RegionManager.getLocalNpcs
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.NPCs
 
 @Initializable
-class HengelDialogue(player: Player? = null) : Dialogue(player) {
-
+class HengelDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         player("Hello.")
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> npc("What are you doing here?").also { stage++ }
-            1 -> options("I'm just wandering around.", "I was hoping you'd give me some free stuff.", "I've come to kill you.").also { stage++ }
+            1 ->
+                options(
+                    "I'm just wandering around.",
+                    "I was hoping you'd give me some free stuff.",
+                    "I've come to kill you.",
+                ).also {
+                    stage++
+                }
 
-            2 -> when (buttonId) {
-                1 -> player("I'm just wondering around.").also { stage++ }
-                2 -> player("I was hoping you'd give me some free stuff.").also { stage = 7 }
-                3 -> player("I've come to kill you.").also { stage = 9 }
-            }
+            2 ->
+                when (buttonId) {
+                    1 -> player("I'm just wondering around.").also { stage++ }
+                    2 -> player("I was hoping you'd give me some free stuff.").also { stage = 7 }
+                    3 -> player("I've come to kill you.").also { stage = 9 }
+                }
 
             3 -> npc("You do realise you're wandering around in my house?").also { stage++ }
             4 -> player("Yep.").also { stage++ }

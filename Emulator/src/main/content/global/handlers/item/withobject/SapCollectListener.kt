@@ -1,47 +1,47 @@
 package content.global.handlers.item.withobject
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Scenery
-import org.rs.consts.Sounds
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.item.Item
 import core.game.system.task.Pulse
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Scenery
+import org.rs.consts.Sounds
 
 class SapCollectListener : InteractionListener {
-
     companion object {
-        private val treeIDs = intArrayOf(
-            Scenery.TREE_1276,
-            Scenery.TREE_1277,
-            Scenery.TREE_1278,
-            Scenery.TREE_1280,
-            Scenery.EVERGREEN_1315,
-            Scenery.EVERGREEN_1316,
-            Scenery.EVERGREEN_1318,
-            Scenery.EVERGREEN_1319,
-            Scenery.TREE_1330,
-            Scenery.TREE_1331,
-            Scenery.TREE_1332,
-            Scenery.TUTORIAL_TREE_3033,
-            Scenery.TREE_3034,
-            Scenery.TREE_3035,
-            Scenery.TREE_3036,
-            Scenery.TREE_3879,
-            Scenery.TREE_3881,
-            Scenery.TREE_3882,
-            Scenery.TREE_3883,
-            Scenery.TREE_10041,
-            Scenery.TREE_14308,
-            Scenery.TREE_14309,
-            Scenery.TREE_30132,
-            Scenery.TREE_30133,
-            Scenery.TREE_37477,
-            Scenery.TREE_37478,
-            Scenery.TREE_37652
-        )
+        private val treeIDs =
+            intArrayOf(
+                Scenery.TREE_1276,
+                Scenery.TREE_1277,
+                Scenery.TREE_1278,
+                Scenery.TREE_1280,
+                Scenery.EVERGREEN_1315,
+                Scenery.EVERGREEN_1316,
+                Scenery.EVERGREEN_1318,
+                Scenery.EVERGREEN_1319,
+                Scenery.TREE_1330,
+                Scenery.TREE_1331,
+                Scenery.TREE_1332,
+                Scenery.TUTORIAL_TREE_3033,
+                Scenery.TREE_3034,
+                Scenery.TREE_3035,
+                Scenery.TREE_3036,
+                Scenery.TREE_3879,
+                Scenery.TREE_3881,
+                Scenery.TREE_3882,
+                Scenery.TREE_3883,
+                Scenery.TREE_10041,
+                Scenery.TREE_14308,
+                Scenery.TREE_14309,
+                Scenery.TREE_30132,
+                Scenery.TREE_30133,
+                Scenery.TREE_37477,
+                Scenery.TREE_37478,
+                Scenery.TREE_37652,
+            )
     }
 
     override fun defineListeners() {
@@ -62,7 +62,7 @@ class SapCollectListener : InteractionListener {
                         }
                         return false
                     }
-                }
+                },
             )
             return@onUseWith true
         }

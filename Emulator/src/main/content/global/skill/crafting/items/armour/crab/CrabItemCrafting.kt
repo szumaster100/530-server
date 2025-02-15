@@ -1,15 +1,13 @@
 package content.global.skill.crafting.items.armour.crab
 
-import org.rs.consts.Items
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.skill.Skills
+import org.rs.consts.Items
 
 class CrabItemCrafting : InteractionListener {
-
     override fun defineListeners() {
-
         /*
          * Handles crafting the crab claws.
          */
@@ -41,6 +39,5 @@ class CrabItemCrafting : InteractionListener {
             }
             return@onUseWith true
         }
-
     }
 }

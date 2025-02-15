@@ -1,6 +1,5 @@
 package content.region.misthalin.quest.losttribe
 
-import org.rs.consts.Animations
 import core.api.resetAnimator
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.ImpactHandler
@@ -16,10 +15,12 @@ import core.game.world.update.flag.context.Graphics
 import core.plugin.Initializable
 import core.plugin.Plugin
 import core.tools.RandomFunction
+import org.rs.consts.Animations
 
 @Initializable
-class CaveZone : MapZone("TLT Cave Zone", true), Plugin<Unit> {
-
+class CaveZone :
+    MapZone("TLT Cave Zone", true),
+    Plugin<Unit> {
     val triggers = ArrayList<Location>()
 
     override fun configure() {
@@ -37,7 +38,11 @@ class CaveZone : MapZone("TLT Cave Zone", true), Plugin<Unit> {
         triggers.add(Location.create(3302, 9618, 0))
     }
 
-    override fun move(e: Entity?, from: Location?, to: Location?): Boolean {
+    override fun move(
+        e: Entity?,
+        from: Location?,
+        to: Location?,
+    ): Boolean {
         if (triggers.contains(from) && e is Player) {
             e.asPlayer().walkingQueue.reset()
             e.asPlayer().lock()
@@ -50,7 +55,7 @@ class CaveZone : MapZone("TLT Cave Zone", true), Plugin<Unit> {
         if (RandomFunction.random(1, 6) <= 2) {
             player.animator.animate(
                 Animation(Animations.FALL_TRAPDOOR_1950),
-                Graphics(org.rs.consts.Graphics.HOLE_OPENS_IN_GROUND_572, 1, 3)
+                Graphics(org.rs.consts.Graphics.HOLE_OPENS_IN_GROUND_572, 1, 3),
             )
             GameWorld.Pulser.submit(
                 object : Pulse(5) {
@@ -60,12 +65,13 @@ class CaveZone : MapZone("TLT Cave Zone", true), Plugin<Unit> {
                         resetAnimator(player)
                         return true
                     }
-                }
+                },
             )
         } else {
             player.unlock()
-            player.animator.animate(Animation.RESET,
-                Graphics(302)
+            player.animator.animate(
+                Animation.RESET,
+                Graphics(302),
             )
             player.impactHandler.manualHit(player, RandomFunction.random(1, 7), ImpactHandler.HitsplatType.NORMAL)
         }
@@ -76,7 +82,10 @@ class CaveZone : MapZone("TLT Cave Zone", true), Plugin<Unit> {
         return this
     }
 
-    override fun fireEvent(identifier: String?, vararg args: Any?): Any {
+    override fun fireEvent(
+        identifier: String?,
+        vararg args: Any?,
+    ): Any {
         return Unit
     }
 }

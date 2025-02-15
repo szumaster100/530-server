@@ -1,8 +1,5 @@
 package content.region.asgarnia.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import content.global.handlers.iface.FairyRing
 import content.global.skill.crafting.glassblowing.lamps.LightSources
 import content.global.skill.farming.FarmingPatch
@@ -16,6 +13,9 @@ import core.game.node.entity.player.link.diary.DiaryLevel
 import core.game.node.entity.player.link.diary.DiaryType
 import core.game.node.entity.skill.Skills
 import core.game.world.map.zone.ZoneBorders
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 class FaladorAchievementDiary : DiaryEventHookBase(DiaryType.FALADOR) {
     companion object {
@@ -36,16 +36,42 @@ class FaladorAchievementDiary : DiaryEventHookBase(DiaryType.FALADOR) {
         private val CHEMIST_AREA = ZoneBorders(2929, 3213, 2936, 3207)
         private val PORT_SARIM_FLOWER_PATCH_AREA = ZoneBorders(3053, 3306, 3056, 3309)
 
-        private val PROSELYTE_FULL_ARMOR_MALE = intArrayOf(Items.PROSELYTE_SALLET_9672, Items.PROSELYTE_HAUBERK_9674, Items.PROSELYTE_CUISSE_9676)
-        private val PROSELYTE_FULL_ARMOR_FEMALE = intArrayOf(Items.PROSELYTE_SALLET_9672, Items.PROSELYTE_HAUBERK_9674, Items.PROSELYTE_TASSET_9678)
-        private val PARTY_BALLOONS = intArrayOf(Scenery.PARTY_BALLOON_115, Scenery.PARTY_BALLOON_116, Scenery.PARTY_BALLOON_117, Scenery.PARTY_BALLOON_118, Scenery.PARTY_BALLOON_119, Scenery.PARTY_BALLOON_120, Scenery.PARTY_BALLOON_121, Scenery.PARTY_BALLOON_122)
+        private val PROSELYTE_FULL_ARMOR_MALE =
+            intArrayOf(Items.PROSELYTE_SALLET_9672, Items.PROSELYTE_HAUBERK_9674, Items.PROSELYTE_CUISSE_9676)
+        private val PROSELYTE_FULL_ARMOR_FEMALE =
+            intArrayOf(Items.PROSELYTE_SALLET_9672, Items.PROSELYTE_HAUBERK_9674, Items.PROSELYTE_TASSET_9678)
+        private val PARTY_BALLOONS =
+            intArrayOf(
+                Scenery.PARTY_BALLOON_115,
+                Scenery.PARTY_BALLOON_116,
+                Scenery.PARTY_BALLOON_117,
+                Scenery.PARTY_BALLOON_118,
+                Scenery.PARTY_BALLOON_119,
+                Scenery.PARTY_BALLOON_120,
+                Scenery.PARTY_BALLOON_121,
+                Scenery.PARTY_BALLOON_122,
+            )
         private val PARK_DUCKS = intArrayOf(NPCs.DUCK_46, NPCs.DUCK_2693)
         private val FALADOR_GUARD = intArrayOf(NPCs.GUARD_9, NPCs.GUARD_3230, NPCs.GUARD_3228, NPCs.GUARD_3229)
-        private val SKELETAL_WYVERNS = intArrayOf(NPCs.SKELETAL_WYVERN_3068, NPCs.SKELETAL_WYVERN_3069, NPCs.SKELETAL_WYVERN_3070, NPCs.SKELETAL_WYVERN_3071)
-        private val CAPES = intArrayOf(Items.BLACK_CAPE_1019, Items.RED_CAPE_1007, Items.BLUE_CAPE_1021, Items.YELLOW_CAPE_1023, Items.GREEN_CAPE_1027, Items.PURPLE_CAPE_1029, Items.ORANGE_CAPE_1031)
+        private val SKELETAL_WYVERNS =
+            intArrayOf(
+                NPCs.SKELETAL_WYVERN_3068,
+                NPCs.SKELETAL_WYVERN_3069,
+                NPCs.SKELETAL_WYVERN_3070,
+                NPCs.SKELETAL_WYVERN_3071,
+            )
+        private val CAPES =
+            intArrayOf(
+                Items.BLACK_CAPE_1019,
+                Items.RED_CAPE_1007,
+                Items.BLUE_CAPE_1021,
+                Items.YELLOW_CAPE_1023,
+                Items.GREEN_CAPE_1027,
+                Items.PURPLE_CAPE_1029,
+                Items.ORANGE_CAPE_1031,
+            )
 
         object EasyTasks {
-
             const val PORT_SARIM_SARAH_BUY_FARMING_AMULET = 0
 
             const val RISING_SUN_BUY_A_STATBOOST = 1
@@ -78,7 +104,6 @@ class FaladorAchievementDiary : DiaryEventHookBase(DiaryType.FALADOR) {
         }
 
         object MediumTasks {
-
             const val PORT_SARIM_CRAFT_FRUIT_BASKET = 0
 
             const val CRAWL_UNDER_SOUTHERN_WALL = 1
@@ -105,7 +130,6 @@ class FaladorAchievementDiary : DiaryEventHookBase(DiaryType.FALADOR) {
         }
 
         object HardTasks {
-
             const val DARK_WIZARDS_TOWER_ASCEND_IN_FULL_PROSELYTE_ARMOR = 0
 
             const val CHANGE_FAMILY_CREST_TO_SARADOMIN = 1
@@ -129,39 +153,42 @@ class FaladorAchievementDiary : DiaryEventHookBase(DiaryType.FALADOR) {
     }
 
     override val areaTasks
-        get() = arrayOf(
-            DiaryAreaTask(
-                WHITE_KNIGHTS_CASTLE_ROOF_AREA,
-                DiaryLevel.EASY,
-                EasyTasks.WHITE_KNIGHTS_CASTLE_CLIMB_TO_TOP
-            ),
+        get() =
+            arrayOf(
+                DiaryAreaTask(
+                    WHITE_KNIGHTS_CASTLE_ROOF_AREA,
+                    DiaryLevel.EASY,
+                    EasyTasks.WHITE_KNIGHTS_CASTLE_CLIMB_TO_TOP,
+                ),
+                DiaryAreaTask(
+                    MINING_GUILD_AREA,
+                    DiaryLevel.HARD,
+                    HardTasks.ENTER_MINING_GUILD,
+                ),
+                DiaryAreaTask(
+                    DARK_WIZARDS_TOWER_ROOF_AREA,
+                    DiaryLevel.HARD,
+                    HardTasks.DARK_WIZARDS_TOWER_ASCEND_IN_FULL_PROSELYTE_ARMOR,
+                ) { player ->
+                    allInEquipment(player, *PROSELYTE_FULL_ARMOR_MALE) ||
+                        allInEquipment(
+                            player,
+                            *PROSELYTE_FULL_ARMOR_FEMALE,
+                        )
+                },
+            )
 
-            DiaryAreaTask(
-                MINING_GUILD_AREA,
-                DiaryLevel.HARD,
-                HardTasks.ENTER_MINING_GUILD
-            ),
-
-            DiaryAreaTask(
-                DARK_WIZARDS_TOWER_ROOF_AREA,
-                DiaryLevel.HARD,
-                HardTasks.DARK_WIZARDS_TOWER_ASCEND_IN_FULL_PROSELYTE_ARMOR
-            ) { player ->
-                allInEquipment(player, *PROSELYTE_FULL_ARMOR_MALE) || allInEquipment(
-                    player,
-                    *PROSELYTE_FULL_ARMOR_FEMALE
-                )
-            }
-        )
-
-    override fun onInteracted(player: Player, event: InteractionEvent) {
+    override fun onInteracted(
+        player: Player,
+        event: InteractionEvent,
+    ) {
         when (player.viewport.region.regionId) {
             FALADOR_PARTY_ROOM -> {
                 if (event.option == "burst" && event.target.id in PARTY_BALLOONS) {
                     finishTask(
                         player,
                         DiaryLevel.EASY,
-                        EasyTasks.POP_PARTY_BALLOON
+                        EasyTasks.POP_PARTY_BALLOON,
                     )
                 }
             }
@@ -172,89 +199,107 @@ class FaladorAchievementDiary : DiaryEventHookBase(DiaryType.FALADOR) {
                         finishTask(
                             player,
                             DiaryLevel.EASY,
-                            EasyTasks.PORT_SARIM_RECHARGE_PRAYER_POINTS
+                            EasyTasks.PORT_SARIM_RECHARGE_PRAYER_POINTS,
                         )
                     }
                 }
             }
         }
-
     }
 
-    override fun onDialogueOptionSelected(player: Player, event: DialogueOptionSelectionEvent) {
+    override fun onDialogueOptionSelected(
+        player: Player,
+        event: DialogueOptionSelectionEvent,
+    ) {
         when (event.dialogue) {
             is RisingSunInnBartenderDialogue -> {
                 if (event.currentStage in 12..14) {
                     finishTask(
                         player,
                         DiaryLevel.EASY,
-                        EasyTasks.RISING_SUN_BUY_A_STATBOOST
+                        EasyTasks.RISING_SUN_BUY_A_STATBOOST,
                     )
                 }
             }
         }
     }
 
-    override fun onResourceProduced(player: Player, event: ResourceProducedEvent) {
+    override fun onResourceProduced(
+        player: Player,
+        event: ResourceProducedEvent,
+    ) {
         when (player.viewport.region.id) {
-            11828 -> when (event.itemId) {
-                Items.YEW_LOGS_1515, Items.MAGIC_LOGS_1513 -> {
-                    if (inBorders(player, PARK_TREE_PATCH_AREA)) {
-                        finishTask(
-                            player,
-                            DiaryLevel.HARD,
-                            HardTasks.CUT_DOWN_GROWN_YEW_OR_MAGIC_TREE
-                        )
+            11828 ->
+                when (event.itemId) {
+                    Items.YEW_LOGS_1515, Items.MAGIC_LOGS_1513 -> {
+                        if (inBorders(player, PARK_TREE_PATCH_AREA)) {
+                            finishTask(
+                                player,
+                                DiaryLevel.HARD,
+                                HardTasks.CUT_DOWN_GROWN_YEW_OR_MAGIC_TREE,
+                            )
+                        }
                     }
                 }
-            }
 
-            11825 -> when (event.itemId) {
-                Items.BLURITE_LIMBS_9422 -> finishTask(
-                    player,
-                    DiaryLevel.MEDIUM,
-                    MediumTasks.SMITH_BLURITE_CROSSBOW_LIMBS_ON_THURGOS_ANVIL
-                )
-            }
+            11825 ->
+                when (event.itemId) {
+                    Items.BLURITE_LIMBS_9422 ->
+                        finishTask(
+                            player,
+                            DiaryLevel.MEDIUM,
+                            MediumTasks.SMITH_BLURITE_CROSSBOW_LIMBS_ON_THURGOS_ANVIL,
+                        )
+                }
 
-            11339 -> when (event.itemId) {
-                Items.AIR_TIARA_5527 -> finishTask(
-                    player,
-                    DiaryLevel.EASY,
-                    EasyTasks.MAKE_AIR_TIARA
-                )
-            }
+            11339 ->
+                when (event.itemId) {
+                    Items.AIR_TIARA_5527 ->
+                        finishTask(
+                            player,
+                            DiaryLevel.EASY,
+                            EasyTasks.MAKE_AIR_TIARA,
+                        )
+                }
         }
     }
 
-    override fun onNpcKilled(player: Player, event: NPCKillEvent) {
+    override fun onNpcKilled(
+        player: Player,
+        event: NPCKillEvent,
+    ) {
         when (player.viewport.region.id) {
-            11828 -> if (event.npc.id in PARK_DUCKS && inBorders(event.npc, PARK_POND_AREA)) {
-                finishTask(
-                    player,
-                    DiaryLevel.EASY,
-                    EasyTasks.PARK_KILL_A_DUCK
-                )
-            }
+            11828 ->
+                if (event.npc.id in PARK_DUCKS && inBorders(event.npc, PARK_POND_AREA)) {
+                    finishTask(
+                        player,
+                        DiaryLevel.EASY,
+                        EasyTasks.PARK_KILL_A_DUCK,
+                    )
+                }
 
-            12181 -> if (event.npc.id in SKELETAL_WYVERNS) {
-                finishTask(
-                    player,
-                    DiaryLevel.HARD,
-                    HardTasks.ICE_DUNGEON_KILL_SKELETAL_WYVERN
-                )
-            }
+            12181 ->
+                if (event.npc.id in SKELETAL_WYVERNS) {
+                    finishTask(
+                        player,
+                        DiaryLevel.HARD,
+                        HardTasks.ICE_DUNGEON_KILL_SKELETAL_WYVERN,
+                    )
+                }
         }
     }
 
-    override fun onItemPurchasedFromShop(player: Player, event: ItemShopPurchaseEvent) {
+    override fun onItemPurchasedFromShop(
+        player: Player,
+        event: ItemShopPurchaseEvent,
+    ) {
         when {
             inBorders(player, WAYNES_CHAINS_AREA) && (event.itemId == Items.BLACK_CHAINBODY_1107) -> {
                 fulfillTaskRequirement(
                     player,
                     DiaryLevel.EASY,
                     EasyTasks.WAYNE_BUY_AND_WEAR_BLACK_CHAINBODY,
-                    ATTRIBUTE_BLACK_CHAINBODY_PURCHASED
+                    ATTRIBUTE_BLACK_CHAINBODY_PURCHASED,
                 )
             }
 
@@ -262,61 +307,76 @@ class FaladorAchievementDiary : DiaryEventHookBase(DiaryType.FALADOR) {
                 finishTask(
                     player,
                     DiaryLevel.EASY,
-                    EasyTasks.PORT_SARIM_SARAH_BUY_FARMING_AMULET
+                    EasyTasks.PORT_SARIM_SARAH_BUY_FARMING_AMULET,
                 )
             }
         }
     }
 
-    override fun onItemEquipped(player: Player, event: ItemEquipEvent) {
+    override fun onItemEquipped(
+        player: Player,
+        event: ItemEquipEvent,
+    ) {
         when {
             inBorders(player, WAYNES_CHAINS_AREA) && (event.itemId == Items.BLACK_CHAINBODY_1107) -> {
                 whenTaskRequirementFulfilled(player, ATTRIBUTE_BLACK_CHAINBODY_PURCHASED) {
                     finishTask(
                         player,
                         DiaryLevel.EASY,
-                        EasyTasks.WAYNE_BUY_AND_WEAR_BLACK_CHAINBODY
+                        EasyTasks.WAYNE_BUY_AND_WEAR_BLACK_CHAINBODY,
                     )
                 }
             }
         }
     }
 
-    override fun onFairyRingDialed(player: Player, event: FairyRingDialEvent) {
+    override fun onFairyRingDialed(
+        player: Player,
+        event: FairyRingDialEvent,
+    ) {
         if (event.fairyRing == FairyRing.AIQ) {
             finishTask(
                 player,
                 DiaryLevel.HARD,
-                HardTasks.DIAL_FAIRY_RING_MUDSKIPPER_POINT
+                HardTasks.DIAL_FAIRY_RING_MUDSKIPPER_POINT,
             )
         }
     }
 
-    override fun onLightSourceLit(player: Player, event: LitLightSourceEvent) {
+    override fun onLightSourceLit(
+        player: Player,
+        event: LitLightSourceEvent,
+    ) {
         when {
             inBorders(player, CHEMIST_AREA) && (event.litLightSourceId == LightSources.BULLSEYE_LANTERN.litId) -> {
                 finishTask(
                     player,
                     DiaryLevel.MEDIUM,
-                    MediumTasks.CHEMISTS_LIGHT_BULLSEYE_LANTERN
+                    MediumTasks.CHEMISTS_LIGHT_BULLSEYE_LANTERN,
                 )
             }
         }
     }
 
-    override fun onUsedWith(player: Player, event: UseWithEvent) {
+    override fun onUsedWith(
+        player: Player,
+        event: UseWithEvent,
+    ) {
         when {
             inBorders(player, PORT_SARIM_FLOWER_PATCH_AREA) -> {
-                if (event.used == Items.SCARECROW_6059 && event.with == 7847 && hasLevelStat(
+                if (event.used == Items.SCARECROW_6059 &&
+                    event.with == 7847 &&
+                    hasLevelStat(
                         player,
                         Skills.FARMING,
-                        23
-                    ) && FarmingPatch.forObjectID(7840)?.getPatchFor(player)?.plantable == null
+                        23,
+                    ) &&
+                    FarmingPatch.forObjectID(7840)?.getPatchFor(player)?.plantable == null
                 ) {
                     finishTask(
                         player,
                         DiaryLevel.MEDIUM,
-                        MediumTasks.PORT_SARIM_NORTHERN_PATCH_PLACE_SCARECROW
+                        MediumTasks.PORT_SARIM_NORTHERN_PATCH_PLACE_SCARECROW,
                     )
                 }
             }
@@ -327,7 +387,7 @@ class FaladorAchievementDiary : DiaryEventHookBase(DiaryType.FALADOR) {
                 finishTask(
                     player,
                     DiaryLevel.HARD,
-                    HardTasks.PORT_SARIM_BETTY_DYE_CAPE_PINK
+                    HardTasks.PORT_SARIM_BETTY_DYE_CAPE_PINK,
                 )
             }
         }
@@ -338,7 +398,7 @@ class FaladorAchievementDiary : DiaryEventHookBase(DiaryType.FALADOR) {
                     finishTask(
                         player,
                         DiaryLevel.EASY,
-                        EasyTasks.FEED_RIDGELEY_AT_HAIRDRESSERS
+                        EasyTasks.FEED_RIDGELEY_AT_HAIRDRESSERS,
                     )
                 }
             }

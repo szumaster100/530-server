@@ -6,37 +6,47 @@ import core.game.node.entity.player.Player
 import core.plugin.Initializable
 
 @Initializable
-class BigDaveDialogue(player: Player? = null) : Dialogue(player) {
-
+class BigDaveDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         npc("Hey lad! Always nice to see a fresh face!")
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
-                interpreter.sendOptions("Choose an option:", "So you're the champ?", "Can I fish here instead of you?", "Do you have any tips for me?")
+                interpreter.sendOptions(
+                    "Choose an option:",
+                    "So you're the champ?",
+                    "Can I fish here instead of you?",
+                    "Do you have any tips for me?",
+                )
                 stage++
             }
 
-            1 -> when (buttonId) {
-                1 -> {
-                    player("So you're the champ?")
-                    stage = 10
-                }
+            1 ->
+                when (buttonId) {
+                    1 -> {
+                        player("So you're the champ?")
+                        stage = 10
+                    }
 
-                2 -> {
-                    player("Can I fish here instead of you?")
-                    stage = 20
-                }
+                    2 -> {
+                        player("Can I fish here instead of you?")
+                        stage = 20
+                    }
 
-                3 -> {
-                    player("Do you have any tips for me?")
-                    stage = 30
+                    3 -> {
+                        player("Do you have any tips for me?")
+                        stage = 30
+                    }
                 }
-            }
 
             9 -> end()
             10 -> {
@@ -50,7 +60,11 @@ class BigDaveDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             30 -> {
-                npc("Why would I help you? I wanna stay the best!", "I'm not givin' away my secrets like", "old Grandpa Jack does!")
+                npc(
+                    "Why would I help you? I wanna stay the best!",
+                    "I'm not givin' away my secrets like",
+                    "old Grandpa Jack does!",
+                )
                 stage++
             }
 
@@ -60,7 +74,11 @@ class BigDaveDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             32 -> {
-                npc("You really have no clue do you!", "He won this competition four years in a row!", "He lives in the house just outside the gate.")
+                npc(
+                    "You really have no clue do you!",
+                    "He won this competition four years in a row!",
+                    "He lives in the house just outside the gate.",
+                )
                 stage = 9
             }
         }

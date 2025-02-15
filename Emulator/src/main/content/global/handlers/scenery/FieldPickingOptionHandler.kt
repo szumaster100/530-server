@@ -1,9 +1,5 @@
 package content.global.handlers.scenery
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Scenery
-import org.rs.consts.Sounds
 import core.api.freeSlots
 import core.api.playAudio
 import core.api.sendMessage
@@ -24,10 +20,13 @@ import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
 import core.plugin.Plugin
 import core.tools.RandomFunction
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Scenery
+import org.rs.consts.Sounds
 
 @Initializable
 class FieldPickingOptionHandler : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         for (p in PickingPlant.values().map { it.objectId }.toIntArray()) {
             SceneryDefinition.forId(p).handlers["option:pick"] = this
@@ -36,7 +35,11 @@ class FieldPickingOptionHandler : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         if (player.getAttribute("delay:picking", -1) > ticks) {
             return true
         }
@@ -60,11 +63,16 @@ class FieldPickingOptionHandler : OptionHandler() {
         player.dispatch(ResourceProducedEvent(reward.id, reward.amount, node, -1))
         if (plant.name.startsWith(
                 "NETTLES",
-                true
-            ) && (player.equipment[EquipmentContainer.SLOT_HANDS] == null || player.equipment[EquipmentContainer.SLOT_HANDS] != null && !player.equipment[EquipmentContainer.SLOT_HANDS].name.contains(
-                "glove",
-                true
-            ))
+                true,
+            ) &&
+            (
+                player.equipment[EquipmentContainer.SLOT_HANDS] == null ||
+                    player.equipment[EquipmentContainer.SLOT_HANDS] != null &&
+                    !player.equipment[EquipmentContainer.SLOT_HANDS].name.contains(
+                        "glove",
+                        true,
+                    )
+            )
         ) {
             player.packetDispatch.sendMessage("You have been stung by the nettles!")
             player.impactHandler.manualHit(player, 2, HitsplatType.POISON)
@@ -91,7 +99,9 @@ class FieldPickingOptionHandler : OptionHandler() {
                         SceneryBuilder.replace(scenery, full)
                     }
                     val isBloomPlant =
-                        plant == PickingPlant.FUNGI_ON_LOG || plant == PickingPlant.BUDDING_BRANCH || plant == PickingPlant.GOLDEN_PEAR_BUSH
+                        plant == PickingPlant.FUNGI_ON_LOG ||
+                            plant == PickingPlant.BUDDING_BRANCH ||
+                            plant == PickingPlant.GOLDEN_PEAR_BUSH
                     if (isBloomPlant) {
                         full = scenery.transform(scenery.id - 1)
                         SceneryBuilder.replace(scenery, full)
@@ -100,7 +110,7 @@ class FieldPickingOptionHandler : OptionHandler() {
                         SceneryBuilder.replace(
                             if (plant == PickingPlant.BANANA_TREE_4) full else scenery,
                             scenery.transform(if (banana) plant.respawn else 0),
-                            if (banana) 300 else plant.respawn
+                            if (banana) 300 else plant.respawn,
                         )
                     }
                     if (plant.name.startsWith("MORT", true)) {
@@ -114,12 +124,16 @@ class FieldPickingOptionHandler : OptionHandler() {
                     }
                     return true
                 }
-            }
+            },
         )
         return true
     }
 
-    private fun handleFlaxPick(player: Player, scenery: core.game.node.scenery.Scenery, plant: PickingPlant) {
+    private fun handleFlaxPick(
+        player: Player,
+        scenery: core.game.node.scenery.Scenery,
+        plant: PickingPlant,
+    ) {
         val charge = scenery.charge
         playAudio(player, Sounds.PICK_2581)
         player.packetDispatch.sendMessage("You pick some flax.")
@@ -133,7 +147,11 @@ class FieldPickingOptionHandler : OptionHandler() {
         scenery.charge = charge + 1
     }
 
-    private enum class PickingPlant(val objectId: Int, val reward: Int, val respawn: Int) {
+    private enum class PickingPlant(
+        val objectId: Int,
+        val reward: Int,
+        val respawn: Int,
+    ) {
         POTATO(objectId = Scenery.POTATO_312, reward = Items.POTATO_1942, respawn = 30),
         WHEAT_0(objectId = Scenery.WHEAT_313, reward = Items.GRAIN_1947, respawn = 30),
         WHEAT_1(objectId = Scenery.WHEAT_5583, reward = Items.GRAIN_1947, respawn = 30),
@@ -197,10 +215,10 @@ class FieldPickingOptionHandler : OptionHandler() {
         PRIMWEED(objectId = Scenery.PRIMWEED_29116, reward = Items.PRIMWEED_12588, respawn = 30),
         STINKBLOOM(objectId = Scenery.STINKBLOOM_29117, reward = Items.STINKBLOOM_12590, respawn = 30),
         TROLLWEISS_FLOWERS(objectId = Scenery.TROLLWEISS_FLOWERS_37328, reward = Items.TROLLWEISS_4086, respawn = 30),
-        HOLLOW_LOG(objectId = Scenery.HOLLOW_LOG_37830, reward = Items.MUSHROOMS_10968, respawn = 30);
+        HOLLOW_LOG(objectId = Scenery.HOLLOW_LOG_37830, reward = Items.MUSHROOMS_10968, respawn = 30),
+        ;
 
         companion object {
-
             @JvmStatic
             fun forId(objectId: Int): PickingPlant? {
                 for (plant in values()) if (plant.objectId == objectId) return plant

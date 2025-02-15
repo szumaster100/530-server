@@ -8,7 +8,9 @@ import core.game.world.map.Location
 import core.tools.RandomFunction
 import java.util.*
 
-class PestControlNoviceBot(l: Location) : PvMBots(legitimizeLocation(l)) {
+class PestControlNoviceBot(
+    l: Location,
+) : PvMBots(legitimizeLocation(l)) {
     var tick = 0
     var combatMoveTimer = 0
     var justStartedGame = true
@@ -26,7 +28,7 @@ class PestControlNoviceBot(l: Location) : PvMBots(legitimizeLocation(l)) {
         OUTSIDE_GANGPLANK,
         WAITING_IN_BOAT,
         PLAY_GAME,
-        GET_TO_PC
+        GET_TO_PC,
     }
 
     init {
@@ -86,7 +88,7 @@ class PestControlNoviceBot(l: Location) : PvMBots(legitimizeLocation(l)) {
             test ?: println("PC: Gangplank Null")
             test!!.interaction.handle(
                 this,
-                test.interaction[0]
+                test.interaction[0],
             )
         }
         walkingQueue.isRunning = true

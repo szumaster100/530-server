@@ -1,7 +1,5 @@
 package content.minigame.fishingtrawler
 
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.api.*
 import core.game.activity.ActivityManager
 import core.game.dialogue.Dialogue
@@ -17,6 +15,8 @@ import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class FishingTrawlerInteractionHandler : InteractionListener {
     private val entrancePlank = Scenery.GANGPLANK_2178
@@ -29,7 +29,6 @@ class FishingTrawlerInteractionHandler : InteractionListener {
     private val fullBailBucket = Items.BAILING_BUCKET_585
 
     override fun defineListeners() {
-
         on(entrancePlank, IntType.SCENERY, "cross") { player, _ ->
             if (getStatLevel(player, Skills.FISHING) < 15) {
                 sendDialogue(player, "You need to be at least level 15 fishing to play.")
@@ -55,17 +54,23 @@ class FishingTrawlerInteractionHandler : InteractionListener {
             player.pulseManager.run(
                 object : Pulse() {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             0 -> player.animator.animate(Animation(827)).also { player.lock() }
-                            1 -> session.repairHole(player, node.asScenery())
-                                .also { player.incrementAttribute("/save:$STATS_BASE:$FISHING_TRAWLER_LEAKS_PATCHED"); player.unlock() }
+                            1 ->
+                                session
+                                    .repairHole(player, node.asScenery())
+                                    .also {
+                                        player.incrementAttribute("/save:$STATS_BASE:$FISHING_TRAWLER_LEAKS_PATCHED")
+                                        player.unlock()
+                                    }
 
                             2 -> return true
                         }
                         return false
                     }
-                }
+                },
             )
             return@on true
         }
@@ -91,7 +96,7 @@ class FishingTrawlerInteractionHandler : InteractionListener {
                 player,
                 "You climb onto the floating barrel and begin to kick your way to the",
                 "shore.",
-                "You make it to the shore tired and weary."
+                "You make it to the shore tired and weary.",
             )
             player.appearance.setDefaultAnimations()
             player.appearance.sync()
@@ -105,19 +110,21 @@ class FishingTrawlerInteractionHandler : InteractionListener {
             player.pulseManager.run(
                 object : Pulse() {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             0 -> player.animator.animate(Animation(2450))
                             1 -> {
-                                if (player.inventory.remove(node.asItem()))
+                                if (player.inventory.remove(node.asItem())) {
                                     player.inventory.add(Item(Items.BAILING_BUCKET_583))
+                                }
                                 player.unlock()
                                 return true
                             }
                         }
                         return false
                     }
-                }
+                },
             )
             return@on true
         }
@@ -137,25 +144,27 @@ class FishingTrawlerInteractionHandler : InteractionListener {
             player.pulseManager.run(
                 object : Pulse() {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             0 -> player.animator.animate(Animation(4471))
-                            1 -> if (player.inventory.remove(node.asItem())) {
-                                if (session.waterAmount > 0) {
-                                    session.waterAmount -= 20
-                                    if (session.waterAmount < 0) session.waterAmount = 0
-                                    player.inventory.add(Item(Items.BAILING_BUCKET_585))
-                                } else {
-                                    player.sendMessage("There's no water to remove.")
-                                    player.inventory.add(node.asItem())
+                            1 ->
+                                if (player.inventory.remove(node.asItem())) {
+                                    if (session.waterAmount > 0) {
+                                        session.waterAmount -= 20
+                                        if (session.waterAmount < 0) session.waterAmount = 0
+                                        player.inventory.add(Item(Items.BAILING_BUCKET_585))
+                                    } else {
+                                        player.sendMessage("There's no water to remove.")
+                                        player.inventory.add(node.asItem())
+                                    }
                                 }
-                            }
 
                             2 -> player.unlock().also { return true }
                         }
                         return false
                     }
-                }
+                },
             )
             return@on true
         }
@@ -163,9 +172,12 @@ class FishingTrawlerInteractionHandler : InteractionListener {
 }
 
 @Initializable
-class NetLootDialogue(player: Player? = null) : Dialogue(player) {
+class NetLootDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     var session: FishingTrawlerSession? = null
     var rolls = 0
+
     override fun newInstance(player: Player?): Dialogue {
         return NetLootDialogue(player)
     }
@@ -178,7 +190,10 @@ class NetLootDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         val level = player.skills.getLevel(Skills.FISHING)
         when (buttonId) {
             1 -> TrawlerLoot.addLootAndMessage(player, level, rolls, true)
@@ -186,7 +201,7 @@ class NetLootDialogue(player: Player? = null) : Dialogue(player) {
         }
         player.skills.addExperience(
             Skills.FISHING,
-            (((0.015 * player.skills.getLevel(Skills.FISHING))) * player.skills.getLevel(Skills.FISHING)) * rolls
+            (((0.015 * player.skills.getLevel(Skills.FISHING))) * player.skills.getLevel(Skills.FISHING)) * rolls,
         )
         player.removeAttribute("ft-rolls")
         end()
@@ -199,8 +214,11 @@ class NetLootDialogue(player: Player? = null) : Dialogue(player) {
 }
 
 @Initializable
-class NetRepairDialogue(player: Player? = null) : Dialogue(player) {
+class NetRepairDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     var session: FishingTrawlerSession? = null
+
     override fun newInstance(player: Player?): Dialogue {
         return NetRepairDialogue(player)
     }
@@ -217,19 +235,23 @@ class NetRepairDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         session ?: return false
         when (stage++) {
             0 -> end()
             10 -> options("Repair the net?", "Yes", "No")
-            11 -> when (buttonId) {
-                1 -> {
-                    end()
-                    session!!.repairNet(player)
-                }
+            11 ->
+                when (buttonId) {
+                    1 -> {
+                        end()
+                        session!!.repairNet(player)
+                    }
 
-                else -> {}
-            }
+                    else -> {}
+                }
 
             12 -> end()
         }

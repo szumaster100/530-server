@@ -9,7 +9,7 @@ enum class LightSources(
     val litId: Int,
     val sfxId: Int,
     val levelRequired: Int,
-    val openFlame: Boolean
+    val openFlame: Boolean,
 ) {
     WHITE_CANDLE(
         emptyId = 0,
@@ -17,7 +17,7 @@ enum class LightSources(
         litId = Items.LIT_CANDLE_33,
         sfxId = Sounds.SKILL_LIGHT_CANDLE_3226,
         levelRequired = 0,
-        openFlame = true
+        openFlame = true,
     ),
     BLACK_CANDLE(
         emptyId = 0,
@@ -25,7 +25,7 @@ enum class LightSources(
         litId = Items.LIT_BLACK_CANDLE_32,
         sfxId = Sounds.SKILL_LIGHT_CANDLE_3226,
         levelRequired = 0,
-        openFlame = true
+        openFlame = true,
     ),
     TORCH(
         emptyId = 0,
@@ -33,7 +33,7 @@ enum class LightSources(
         litId = Items.LIT_TORCH_594,
         sfxId = Sounds.SLUG_TORCH_LIT_3028,
         levelRequired = 0,
-        openFlame = true
+        openFlame = true,
     ),
     WHITE_CANDLE_LANTERN(
         emptyId = Items.CANDLE_LANTERN_4527,
@@ -41,7 +41,7 @@ enum class LightSources(
         litId = Items.CANDLE_LANTERN_4531,
         sfxId = Sounds.LIGHT_CANDLE_2305,
         levelRequired = 4,
-        openFlame = true
+        openFlame = true,
     ),
     BLACK_CANDLE_LANTERN(
         emptyId = Items.CANDLE_LANTERN_4527,
@@ -49,7 +49,7 @@ enum class LightSources(
         litId = Items.CANDLE_LANTERN_4534,
         sfxId = Sounds.LIGHT_CANDLE_2305,
         levelRequired = 4,
-        openFlame = true
+        openFlame = true,
     ),
     OIL_LAMP(
         emptyId = Items.OIL_LAMP_4525,
@@ -57,7 +57,7 @@ enum class LightSources(
         litId = Items.OIL_LAMP_4524,
         sfxId = Sounds.LIGHT_CANDLE_2305,
         levelRequired = 12,
-        openFlame = true
+        openFlame = true,
     ),
     BUG_LANTERN(
         emptyId = Items.UNLIT_BUG_LANTERN_7051,
@@ -65,7 +65,7 @@ enum class LightSources(
         litId = Items.LIT_BUG_LANTERN_7053,
         sfxId = Sounds.LIGHT_CANDLE_2305,
         levelRequired = 33,
-        openFlame = false
+        openFlame = false,
     ),
     OIL_LANTERN(
         emptyId = Items.OIL_LANTERN_4535,
@@ -73,7 +73,7 @@ enum class LightSources(
         litId = Items.OIL_LANTERN_4539,
         sfxId = Sounds.LIGHT_CANDLE_2305,
         levelRequired = 26,
-        openFlame = false
+        openFlame = false,
     ),
     BULLSEYE_LANTERN(
         emptyId = Items.BULLSEYE_LANTERN_4546,
@@ -81,7 +81,7 @@ enum class LightSources(
         litId = Items.BULLSEYE_LANTERN_4550,
         sfxId = Sounds.LIGHT_CANDLE_2305,
         levelRequired = 49,
-        openFlame = false
+        openFlame = false,
     ),
     SAPPHIRE_LANTERN(
         emptyId = 0,
@@ -89,7 +89,7 @@ enum class LightSources(
         litId = Items.SAPPHIRE_LANTERN_4702,
         sfxId = Sounds.LIGHT_CANDLE_2305,
         levelRequired = 49,
-        openFlame = false
+        openFlame = false,
     ),
     MINING_HELMET(
         emptyId = 0,
@@ -97,7 +97,7 @@ enum class LightSources(
         litId = Items.MINING_HELMET_5013,
         sfxId = Sounds.LIGHT_CANDLE_2305,
         levelRequired = 65,
-        openFlame = false
+        openFlame = false,
     ),
     EMERALD_LANTERN(
         emptyId = 0,
@@ -105,8 +105,9 @@ enum class LightSources(
         litId = Items.EMERALD_LANTERN_9065,
         sfxId = Sounds.LIGHT_CANDLE_2305,
         levelRequired = 49,
-        openFlame = false
-    );
+        openFlame = false,
+    ),
+    ;
 
     companion object {
         fun forId(id: Int): LightSources? {

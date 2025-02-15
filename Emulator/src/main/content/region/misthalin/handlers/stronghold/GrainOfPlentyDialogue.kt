@@ -12,15 +12,19 @@ import org.rs.consts.Items
 /**
  * Represents the Grain of plenty dialogue.
  */
-class GrainOfPlentyDialogue(player: Player? = null) : Dialogue(player) {
-
+class GrainOfPlentyDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         interpreter.sendDialogue("The grain shifts in the sack, sighing audible words....")
         stage = 0
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 if (!addItem(player, Items.COINS_995, 3000, Container.INVENTORY)) {
@@ -28,7 +32,11 @@ class GrainOfPlentyDialogue(player: Player? = null) : Dialogue(player) {
                     end()
                 }
                 player.getSavedData().globalData.getStrongHoldRewards()[1] = true
-                sendDialogueLines(player, "...congratualtions adventurer, you have been deemed worthy of this", "reward. You have also unlocked the Slap Head emote!")
+                sendDialogueLines(
+                    player,
+                    "...congratualtions adventurer, you have been deemed worthy of this",
+                    "reward. You have also unlocked the Slap Head emote!",
+                )
                 stage = 1
                 player.emoteManager.unlock(Emotes.SLAP_HEAD)
             }

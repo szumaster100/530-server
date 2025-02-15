@@ -1,8 +1,5 @@
 package content.global.ame.pillory
 
-import org.rs.consts.Animations
-import org.rs.consts.Graphics
-import org.rs.consts.NPCs
 import content.data.GameAttributes
 import core.api.*
 import core.game.interaction.QueueStrength
@@ -11,11 +8,20 @@ import core.game.world.map.Location
 import core.game.world.map.RegionManager
 import core.plugin.Initializable
 import core.tools.RandomFunction
+import org.rs.consts.Animations
+import org.rs.consts.Graphics
+import org.rs.consts.NPCs
 
 @Initializable
-class TrampNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+class TrampNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return TrampNPC(id, location)
     }
 

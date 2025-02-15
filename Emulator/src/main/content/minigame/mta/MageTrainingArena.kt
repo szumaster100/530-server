@@ -1,8 +1,5 @@
 package content.minigame.mta
 
-import org.rs.consts.Components
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import content.global.skill.agility.AgilityHandler
 import content.minigame.mta.room.TelekineticTheatre
 import core.api.hasLevelStat
@@ -21,13 +18,15 @@ import core.game.world.map.Direction
 import core.game.world.map.Location
 import core.game.world.map.zone.ZoneBuilder
 import core.game.world.update.flag.context.Animation
+import core.plugin.ClassScanner.definePlugins
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner.definePlugins
+import org.rs.consts.Components
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 @Initializable
 class MageTrainingArena : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         SceneryDefinition.forId(Scenery.DOORWAY_10721).handlers["option:enter"] = this
         NPCDefinition.forId(NPCs.REWARDS_GUARDIAN_3103).handlers["option:trade-with"] = this
@@ -44,7 +43,11 @@ class MageTrainingArena : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         when (node.id) {
             Scenery.DOORWAY_10721 -> {
                 if (!hasLevelStat(player, Skills.MAGIC, 7)) {
@@ -57,7 +60,7 @@ class MageTrainingArena : OptionHandler() {
                     player.location.transform(Direction.getDirection(player.location, node.location), 2),
                     Animation(1426),
                     0.0,
-                    null
+                    null,
                 )
             }
 
@@ -88,17 +91,25 @@ class MageTrainingArena : OptionHandler() {
         return true
     }
 
-    override fun isWalk(player: Player, n: Node): Boolean {
+    override fun isWalk(
+        player: Player,
+        n: Node,
+    ): Boolean {
         if (n !is GroundItem) {
             return true
         }
         return n.getId() != TelekineticTheatre.STATUE
     }
 
-    override fun getDestination(node: Node, n: Node): Location? {
+    override fun getDestination(
+        node: Node,
+        n: Node,
+    ): Location? {
         return if (n.id == NPCs.MAZE_GUARDIAN_3102) {
             n.location.transform(Direction.getDirection(node.location, n.location), -1)
-        } else null
+        } else {
+            null
+        }
     }
 
     override fun isWalk(): Boolean {

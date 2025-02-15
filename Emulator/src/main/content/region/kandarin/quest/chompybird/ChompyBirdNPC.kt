@@ -1,8 +1,5 @@
 package content.region.kandarin.quest.chompybird
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.*
 import core.api.item.produceGroundItem
 import core.game.interaction.IntType
@@ -21,10 +18,14 @@ import core.game.world.map.path.Pathfinder
 import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
 import core.tools.RandomFunction
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
-class ChompyBirdNPC : AbstractNPC, InteractionListener {
-
+class ChompyBirdNPC :
+    AbstractNPC,
+    InteractionListener {
     constructor() : super(NPCs.CHOMPY_BIRD_1550, null, true)
     private constructor(id: Int, location: Location) : super(id, location)
 
@@ -40,6 +41,7 @@ class ChompyBirdNPC : AbstractNPC, InteractionListener {
                 this,
                 object : MovementPulse(this, toad, Pathfinder.SMART) {
                     var bufferTicks = 7
+
                     override fun pulse(): Boolean {
                         if (bufferTicks-- == 0) {
                             setAttribute("toad_eaten", true)
@@ -48,13 +50,16 @@ class ChompyBirdNPC : AbstractNPC, InteractionListener {
                         }
                         return false
                     }
-                }
+                },
             )
         }
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any?): AbstractNPC {
-
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any?,
+    ): AbstractNPC {
         val npc = ChompyBirdNPC(id, location)
         npc.isRespawn = false
         return npc
@@ -64,7 +69,11 @@ class ChompyBirdNPC : AbstractNPC, InteractionListener {
         return intArrayOf(NPCs.CHOMPY_BIRD_1550)
     }
 
-    override fun isAttackable(entity: Entity, style: CombatStyle, message: Boolean): Boolean {
+    override fun isAttackable(
+        entity: Entity,
+        style: CombatStyle,
+        message: Boolean,
+    ): Boolean {
         if (entity !is Player) return true
 
         var attackable = super.isAttackable(entity, style, message)
@@ -88,6 +97,7 @@ class ChompyBirdNPC : AbstractNPC, InteractionListener {
             submitWorldPulse(
                 object : Pulse(2) {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             1 -> animate(Animation(Animations.CHOMPY_FLY_AWAY_6767))
@@ -96,7 +106,7 @@ class ChompyBirdNPC : AbstractNPC, InteractionListener {
                         }
                         return false
                     }
-                }
+                },
             )
         } else {
             sendChat("Screech!")
@@ -105,18 +115,19 @@ class ChompyBirdNPC : AbstractNPC, InteractionListener {
 
     override fun tick() {
         if (this.inCombat() && this.skills.lifepoints > 0) {
-            val newLoc = this.location.transform(
-                RandomFunction.random(-2, 2),
-                RandomFunction.random(-2, 2),
-                0
-            )
+            val newLoc =
+                this.location.transform(
+                    RandomFunction.random(-2, 2),
+                    RandomFunction.random(-2, 2),
+                    0,
+                )
             submitIndividualPulse(
                 this,
                 object : MovementPulse(this, newLoc, Pathfinder.DUMB) {
                     override fun pulse(): Boolean {
                         return true
                     }
-                }
+                },
             )
         }
         super.tick()
@@ -133,8 +144,9 @@ class ChompyBirdNPC : AbstractNPC, InteractionListener {
                 timeToLive = 100
             }
         } else {
-            if (timeToLive-- <= 0)
+            if (timeToLive-- <= 0) {
                 clear()
+            }
         }
     }
 

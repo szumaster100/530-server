@@ -1,6 +1,5 @@
 package content.region.misthalin.quest.dragon
 
-import org.rs.consts.*
 import content.global.skill.agility.AgilityHandler
 import content.region.misthalin.dialogue.lumbridge.DukeHoracioDialogue
 import content.region.misthalin.quest.dragon.cutscene.DragonSlayerCutscene
@@ -10,10 +9,10 @@ import content.region.misthalin.quest.dragon.dialogue.OziachDialogue
 import content.region.misthalin.quest.dragon.dialogue.WormbrainDialogue
 import content.region.misthalin.quest.dragon.npc.*
 import core.api.*
-import core.game.component.Component
-import core.game.event.EventHook
 import core.api.Event
 import core.api.quest.getQuestStage
+import core.game.component.Component
+import core.game.event.EventHook
 import core.game.event.PickUpEvent
 import core.game.event.SpellCastEvent
 import core.game.node.entity.Entity
@@ -25,13 +24,14 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld.Pulser
 import core.game.world.map.Location
 import core.game.world.map.RegionManager.getObject
-import core.plugin.Initializable
 import core.plugin.ClassScanner.definePlugins
+import core.plugin.Initializable
+import org.rs.consts.*
 
 @Initializable
-class DragonSlayer : Quest(Quests.DRAGON_SLAYER, 18, 17, 2, Vars.VARP_QUEST_DRAGON_SLAYER_PROGRESS_176, 0, 1, 10),
+class DragonSlayer :
+    Quest(Quests.DRAGON_SLAYER, 18, 17, 2, Vars.VARP_QUEST_DRAGON_SLAYER_PROGRESS_176, 0, 1, 10),
     LoginListener {
-
     override fun newInstance(`object`: Any?): Quest {
         definePlugins(
             DragonSlayerPlugin(),
@@ -49,41 +49,44 @@ class DragonSlayer : Quest(Quests.DRAGON_SLAYER, 18, 17, 2, Vars.VARP_QUEST_DRAG
             ElvargNPC(),
             WormbrainDialogue(),
             OziachDialogue(),
-            DukeHoracioDialogue()
+            DukeHoracioDialogue(),
         )
         return this
     }
 
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         when (getStage(player)) {
             0 -> {
                 player.packetDispatch.sendString(
                     BLUE + "I can start this quest by speaking to the " + RED + "Guildmaster " + BLUE + "in",
                     275,
-                    4 + 7
+                    4 + 7,
                 )
                 player.packetDispatch.sendString(
                     BLUE + "the " + RED + "Champions' Guild" + BLUE + " , south-west of Varrock.",
                     275,
-                    5 + 7
+                    5 + 7,
                 )
                 player.packetDispatch.sendString(
                     BLUE + "I will need to be able to defeat a " + RED + "level 83 dragon.",
                     275,
-                    6 + 7
+                    6 + 7,
                 )
                 if (player.questRepository.points < 32) {
                     player.packetDispatch.sendString(
                         BLUE + "To enter the Champions' Guild I need" + RED + " 32 Quest Points.",
                         275,
-                        7 + 7
+                        7 + 7,
                     )
                 } else {
                     player.packetDispatch.sendString(
                         "<str>To enter the Champions' Guild I need 32 Quest Points.",
                         275,
-                        7 + 7
+                        7 + 7,
                     )
                 }
             }
@@ -95,7 +98,7 @@ class DragonSlayer : Quest(Quests.DRAGON_SLAYER, 18, 17, 2, Vars.VARP_QUEST_DRAG
                 line(
                     player,
                     BLUE + "I should speak to " + RED + "Oziach" + BLUE + ", who lives by the cliffs to the",
-                    7 + 7
+                    7 + 7,
                 )
                 line(player, BLUE + "west of " + RED + "Edgeville.", 8 + 7)
             }
@@ -109,7 +112,7 @@ class DragonSlayer : Quest(Quests.DRAGON_SLAYER, 18, 17, 2, Vars.VARP_QUEST_DRAG
                 line(
                     player,
                     BLUE + "I should return to the " + RED + "Champions' Guild Guildmaster " + BLUE + "for",
-                    9 + 7
+                    9 + 7,
                 )
                 line(player, BLUE + "more detailed instructions.", 10 + 7)
             }
@@ -125,12 +128,12 @@ class DragonSlayer : Quest(Quests.DRAGON_SLAYER, 18, 17, 2, Vars.VARP_QUEST_DRAG
                 line(
                     player,
                     BLUE + "To defeat the dragon I will need to find a " + RED + "map " + BLUE + "to Crandor, a",
-                    11 + 7
+                    11 + 7,
                 )
                 line(
                     player,
                     RED + "ship" + BLUE + ", a " + RED + "captain " + BLUE + "to take me there and some kind of",
-                    12 + 7
+                    12 + 7,
                 )
                 line(player, RED + "protection " + BLUE + "against the dragon's breath.", 13 + 7)
                 if (!player.inventory.containsItem(MAZE_PIECE) && !player.bank.containsItem(MAZE_PIECE)) {
@@ -143,8 +146,9 @@ class DragonSlayer : Quest(Quests.DRAGON_SLAYER, 18, 17, 2, Vars.VARP_QUEST_DRAG
                 if (!player.inventory.containsItem(MAGIC_PIECE) && !player.bank.containsItem(MAGIC_PIECE)) {
                     line(
                         player,
-                        BLUE + "One-third of the map is hidden and only the " + RED + "Oracle " + BLUE + "on " + RED + "Ice",
-                        16 + 7
+                        BLUE + "One-third of the map is hidden and only the " + RED + "Oracle " + BLUE + "on " + RED +
+                            "Ice",
+                        16 + 7,
                     )
                     line(player, RED + "Mountain" + BLUE + " will know where it is.", 17 + 7)
                 } else {
@@ -155,7 +159,7 @@ class DragonSlayer : Quest(Quests.DRAGON_SLAYER, 18, 17, 2, Vars.VARP_QUEST_DRAG
                     line(
                         player,
                         BLUE + "One-third of the map was stolen by a " + RED + "goblin " + BLUE + "from the",
-                        18 + 7
+                        18 + 7,
                     )
                     line(player, RED + "Goblin Village.", 19 + 7)
                 } else {
@@ -166,7 +170,7 @@ class DragonSlayer : Quest(Quests.DRAGON_SLAYER, 18, 17, 2, Vars.VARP_QUEST_DRAG
                     line(
                         player,
                         BLUE + "I should ask the " + RED + "Duke of Lumbridge " + BLUE + "for an " + RED + "anti-",
-                        20 + 7
+                        20 + 7,
                     )
                     line(player, RED + "dragonbreath shield.", 21 + 7)
                 } else {
@@ -176,8 +180,9 @@ class DragonSlayer : Quest(Quests.DRAGON_SLAYER, 18, 17, 2, Vars.VARP_QUEST_DRAG
                 if (!player.savedData.questData.getDragonSlayerAttribute("ship")) {
                     line(
                         player,
-                        BLUE + "I should see if there is a " + RED + "ship " + BLUE + "for sale in " + RED + "Port Sarim",
-                        22 + 7
+                        BLUE + "I should see if there is a " + RED + "ship " + BLUE + "for sale in " + RED +
+                            "Port Sarim",
+                        22 + 7,
                     )
                 } else {
                     line(player, "<str>I bought a ship in Port Sarim called the Lady Lumbridge.", 22 + 7)
@@ -216,7 +221,7 @@ class DragonSlayer : Quest(Quests.DRAGON_SLAYER, 18, 17, 2, Vars.VARP_QUEST_DRAG
                 line(
                     player,
                     BLUE + "Now I should go to my ship in " + RED + "Port Sarim " + BLUE + "and set sail for",
-                    26 + 7
+                    26 + 7,
                 )
                 line(player, RED + "Crandor" + BLUE + "!", 27 + 7)
             }
@@ -246,7 +251,7 @@ class DragonSlayer : Quest(Quests.DRAGON_SLAYER, 18, 17, 2, Vars.VARP_QUEST_DRAG
                         line(
                             player,
                             BLUE + "I have slain the dragon! Now I just need to tell " + RED + "Oziach.",
-                            21 + 7
+                            21 + 7,
                         )
                     }
                 } else {
@@ -259,7 +264,7 @@ class DragonSlayer : Quest(Quests.DRAGON_SLAYER, 18, 17, 2, Vars.VARP_QUEST_DRAG
                         line(
                             player,
                             BLUE + "I have slain the dragon! Now I just need to tell " + RED + "Oziach.",
-                            24 + 7
+                            24 + 7,
                         )
                     }
                 }
@@ -292,8 +297,10 @@ class DragonSlayer : Quest(Quests.DRAGON_SLAYER, 18, 17, 2, Vars.VARP_QUEST_DRAG
                 line(player, "<col=FF0000>QUEST COMPLETE!</col>", 28 + 7)
                 line(
                     player,
-                    BLUE + "I gained " + RED + "2 Quest Points" + BLUE + ", " + RED + "18,650 Strength XP" + BLUE + ", " + RED + "18,650",
-                    29 + 7
+                    BLUE + "I gained " + RED + "2 Quest Points" + BLUE + ", " + RED + "18,650 Strength XP" + BLUE + ", " +
+                        RED +
+                        "18,650",
+                    29 + 7,
                 )
                 line(player, RED + "Defence XP " + BLUE + "and the right to wear " + RED + "rune platebodies.", 30 + 7)
             }
@@ -315,7 +322,10 @@ class DragonSlayer : Quest(Quests.DRAGON_SLAYER, 18, 17, 2, Vars.VARP_QUEST_DRAG
         player.unhook(PickedUpHook)
     }
 
-    override fun setStage(player: Player, stage: Int) {
+    override fun setStage(
+        player: Player,
+        stage: Int,
+    ) {
         super.setStage(player, stage)
         if (stage == 20) {
             player.hook(Event.SpellCast, SpellCastHook)
@@ -330,23 +340,30 @@ class DragonSlayer : Quest(Quests.DRAGON_SLAYER, 18, 17, 2, Vars.VARP_QUEST_DRAG
         }
     }
 
-    private val SpellCastHook = object : EventHook<SpellCastEvent> {
-        override fun process(entity: Entity, event: SpellCastEvent) {
-            if (event.spellId == 19 && event.target != null && event.target.id == Items.MAP_PART_1536) {
-                entity.unhook(this)
+    private val SpellCastHook =
+        object : EventHook<SpellCastEvent> {
+            override fun process(
+                entity: Entity,
+                event: SpellCastEvent,
+            ) {
+                if (event.spellId == 19 && event.target != null && event.target.id == Items.MAP_PART_1536) {
+                    entity.unhook(this)
+                }
             }
         }
-    }
-    private val PickedUpHook = object : EventHook<PickUpEvent> {
-        override fun process(entity: Entity, event: PickUpEvent) {
-            if (event.itemId == Items.MAP_PART_1536) {
-                entity.unhook(this)
+    private val PickedUpHook =
+        object : EventHook<PickUpEvent> {
+            override fun process(
+                entity: Entity,
+                event: PickUpEvent,
+            ) {
+                if (event.itemId == Items.MAP_PART_1536) {
+                    entity.unhook(this)
+                }
             }
         }
-    }
 
     companion object {
-
         @JvmField
         val MAZE_KEY = Item(Items.MAZE_KEY_1542)
 
@@ -398,11 +415,17 @@ class DragonSlayer : Quest(Quests.DRAGON_SLAYER, 18, 17, 2, Vars.VARP_QUEST_DRAG
         val ELVARG_HEAD = Item(Items.ELVARGS_HEAD_11279)
 
         @JvmStatic
-        fun handleMagicDoor(player: Player, interaction: Boolean): Boolean {
-            if (!player.savedData.questData.getDragonSlayerItem("lobster") || !player.savedData.questData.getDragonSlayerItem(
-                    "bowl"
-                ) || !player.savedData.questData.getDragonSlayerItem("silk") || !player.savedData.questData.getDragonSlayerItem(
-                    "wizard"
+        fun handleMagicDoor(
+            player: Player,
+            interaction: Boolean,
+        ): Boolean {
+            if (!player.savedData.questData.getDragonSlayerItem("lobster") ||
+                !player.savedData.questData.getDragonSlayerItem(
+                    "bowl",
+                ) ||
+                !player.savedData.questData.getDragonSlayerItem("silk") ||
+                !player.savedData.questData.getDragonSlayerItem(
+                    "wizard",
                 )
             ) {
                 if (interaction) {
@@ -418,21 +441,27 @@ class DragonSlayer : Quest(Quests.DRAGON_SLAYER, 18, 17, 2, Vars.VARP_QUEST_DRAG
             Pulser.submit(
                 object : Pulse(1, player) {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
-                            4 -> AgilityHandler.walk(
-                                player,
-                                0,
-                                player.location,
-                                if (player.location.x == 3051) Location.create(3049, 9840, 0) else Location.create(
-                                    3051,
-                                    9840,
-                                    0
-                                ),
-                                null,
-                                0.0,
-                                null
-                            )
+                            4 ->
+                                AgilityHandler.walk(
+                                    player,
+                                    0,
+                                    player.location,
+                                    if (player.location.x == 3051) {
+                                        Location.create(3049, 9840, 0)
+                                    } else {
+                                        Location.create(
+                                            3051,
+                                            9840,
+                                            0,
+                                        )
+                                    },
+                                    null,
+                                    0.0,
+                                    null,
+                                )
 
                             5 -> animateScenery(`object`, 6637)
                             6 -> {
@@ -442,7 +471,7 @@ class DragonSlayer : Quest(Quests.DRAGON_SLAYER, 18, 17, 2, Vars.VARP_QUEST_DRAG
                         }
                         return false
                     }
-                }
+                },
             )
             return true
         }

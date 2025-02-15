@@ -1,8 +1,7 @@
 package content.region.desert.quest.deserttreasure.handlers
 
-import org.rs.consts.Components
-import org.rs.consts.NPCs
 import core.api.*
+import core.api.MapArea
 import core.game.interaction.QueueStrength
 import core.game.node.entity.Entity
 import core.game.node.entity.npc.NPC
@@ -10,105 +9,102 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.game.world.map.Direction
 import core.game.world.map.Location
-import core.api.MapArea
 import core.game.world.map.zone.ZoneBorders
 import core.tools.RandomFunction
+import org.rs.consts.Components
+import org.rs.consts.NPCs
 
 class PyramidArea {
     companion object {
-
-        val sarcophagusList = arrayOf(
-
-            Location(2901, 4946, 3),
-            Location(2902, 4969, 3),
-            Location(2903, 4961, 3),
-            Location(2909, 4954, 3),
-            Location(2913, 4950, 3),
-            Location(2916, 4954, 3),
-            Location(2917, 4951, 3),
-            Location(2917, 4959, 3),
-            Location(2918, 4963, 3),
-
-            Location(2831, 4962, 2),
-            Location(2837, 4970, 2),
-            Location(2843, 4964, 2),
-            Location(2847, 4947, 2),
-            Location(2858, 4956, 2),
-            Location(2858, 4973, 2),
-            Location(2864, 4942, 2),
-            Location(2868, 4948, 2),
-            Location(2869, 4968, 2),
-
-            Location(2759, 4962, 1),
-            Location(2760, 4956, 1),
-            Location(2763, 4966, 1),
-            Location(2764, 4941, 1),
-            Location(2765, 4936, 1),
-            Location(2765, 4940, 1),
-            Location(2767, 4945, 1),
-            Location(2768, 4947, 1),
-            Location(2771, 4944, 1),
-            Location(2774, 4947, 1),
-            Location(2776, 4941, 1),
-            Location(2786, 4974, 1),
-            Location(2787, 4964, 1),
-            Location(2790, 4968, 1),
-            Location(2791, 4977, 1),
-            Location(2798, 4947, 1),
-            Location(2798, 4952, 1),
-            Location(2800, 4960, 1),
-            Location(2802, 4940, 1),
-            Location(2806, 4936, 1),
-            Location(2806, 4942, 1),
-            Location(2810, 4968, 1),
-            Location(2810, 4975, 1),
-
-            Location(3208, 9315, 0),
-            Location(3211, 9330, 0),
-            Location(3217, 9295, 0),
-            Location(3218, 9281, 0),
-            Location(3221, 9313, 0),
-            Location(3221, 9320, 0),
-            Location(3221, 9324, 0),
-            Location(3222, 9281, 0),
-            Location(3225, 9308, 0),
-            Location(3225, 9310, 0),
-            Location(3226, 9312, 0),
-            Location(3226, 9318, 0),
-            Location(3227, 9288, 0),
-            Location(3229, 9309, 0),
-            Location(3231, 9297, 0),
-            Location(3233, 9309, 0),
-            Location(3234, 9297, 0),
-            Location(3234, 9330, 0),
-            Location(3236, 9302, 0),
-            Location(3237, 9309, 0),
-            Location(3240, 9312, 0),
-            Location(3240, 9318, 0),
-            Location(3241, 9282, 0),
-            Location(3242, 9302, 0),
-            Location(3246, 9282, 0),
-            Location(3246, 9308, 0),
-            Location(3246, 9324, 0),
-            Location(3247, 9323, 0),
-            Location(3249, 9293, 0),
-            Location(3250, 9324, 0),
-            Location(3251, 9323, 0),
-            Location(3251, 9330, 0),
-            Location(3251, 9337, 0),
-            Location(3252, 9330, 0),
-            Location(3252, 9337, 0),
-            Location(3253, 9301, 0),
-            Location(3254, 9324, 0),
-            Location(3255, 9323, 0),
-            Location(3255, 9330, 0),
-            Location(3255, 9337, 0),
-            Location(3256, 9330, 0),
-            Location(3256, 9337, 0),
-            Location(3257, 9289, 0),
-            Location(3259, 9310, 0),
-            Location(3259, 9313, 0),
-        )
+        val sarcophagusList =
+            arrayOf(
+                Location(2901, 4946, 3),
+                Location(2902, 4969, 3),
+                Location(2903, 4961, 3),
+                Location(2909, 4954, 3),
+                Location(2913, 4950, 3),
+                Location(2916, 4954, 3),
+                Location(2917, 4951, 3),
+                Location(2917, 4959, 3),
+                Location(2918, 4963, 3),
+                Location(2831, 4962, 2),
+                Location(2837, 4970, 2),
+                Location(2843, 4964, 2),
+                Location(2847, 4947, 2),
+                Location(2858, 4956, 2),
+                Location(2858, 4973, 2),
+                Location(2864, 4942, 2),
+                Location(2868, 4948, 2),
+                Location(2869, 4968, 2),
+                Location(2759, 4962, 1),
+                Location(2760, 4956, 1),
+                Location(2763, 4966, 1),
+                Location(2764, 4941, 1),
+                Location(2765, 4936, 1),
+                Location(2765, 4940, 1),
+                Location(2767, 4945, 1),
+                Location(2768, 4947, 1),
+                Location(2771, 4944, 1),
+                Location(2774, 4947, 1),
+                Location(2776, 4941, 1),
+                Location(2786, 4974, 1),
+                Location(2787, 4964, 1),
+                Location(2790, 4968, 1),
+                Location(2791, 4977, 1),
+                Location(2798, 4947, 1),
+                Location(2798, 4952, 1),
+                Location(2800, 4960, 1),
+                Location(2802, 4940, 1),
+                Location(2806, 4936, 1),
+                Location(2806, 4942, 1),
+                Location(2810, 4968, 1),
+                Location(2810, 4975, 1),
+                Location(3208, 9315, 0),
+                Location(3211, 9330, 0),
+                Location(3217, 9295, 0),
+                Location(3218, 9281, 0),
+                Location(3221, 9313, 0),
+                Location(3221, 9320, 0),
+                Location(3221, 9324, 0),
+                Location(3222, 9281, 0),
+                Location(3225, 9308, 0),
+                Location(3225, 9310, 0),
+                Location(3226, 9312, 0),
+                Location(3226, 9318, 0),
+                Location(3227, 9288, 0),
+                Location(3229, 9309, 0),
+                Location(3231, 9297, 0),
+                Location(3233, 9309, 0),
+                Location(3234, 9297, 0),
+                Location(3234, 9330, 0),
+                Location(3236, 9302, 0),
+                Location(3237, 9309, 0),
+                Location(3240, 9312, 0),
+                Location(3240, 9318, 0),
+                Location(3241, 9282, 0),
+                Location(3242, 9302, 0),
+                Location(3246, 9282, 0),
+                Location(3246, 9308, 0),
+                Location(3246, 9324, 0),
+                Location(3247, 9323, 0),
+                Location(3249, 9293, 0),
+                Location(3250, 9324, 0),
+                Location(3251, 9323, 0),
+                Location(3251, 9330, 0),
+                Location(3251, 9337, 0),
+                Location(3252, 9330, 0),
+                Location(3252, 9337, 0),
+                Location(3253, 9301, 0),
+                Location(3254, 9324, 0),
+                Location(3255, 9323, 0),
+                Location(3255, 9330, 0),
+                Location(3255, 9337, 0),
+                Location(3256, 9330, 0),
+                Location(3256, 9337, 0),
+                Location(3257, 9289, 0),
+                Location(3259, 9310, 0),
+                Location(3259, 9313, 0),
+            )
 
         val safeZone = ZoneBorders(3227, 3239, 9310, 9320)
 
@@ -172,7 +168,10 @@ class PyramidArea {
             }
         }
 
-        fun spawnMummy(player: Player, sarcophagusLocation: Location) {
+        fun spawnMummy(
+            player: Player,
+            sarcophagusLocation: Location,
+        ) {
             stopWalk(player)
             lock(player, 3)
             val sarcophagusScenery = getScenery(sarcophagusLocation) ?: return
@@ -183,7 +182,7 @@ class PyramidArea {
                 sarcophagusScenery.id - 6,
                 5,
                 getNewFacing(sarcophagusScenery.direction),
-                locationInFront
+                locationInFront,
             )
             val mummyNpc = NPC(NPCs.MUMMY_1958)
             mummyNpc.isRespawn = false
@@ -237,7 +236,6 @@ class PyramidArea {
 }
 
 class PyramidAreaFirstThree : MapArea {
-
     override fun defineAreaBorders(): Array<ZoneBorders> {
         return arrayOf(
             getRegionBorders(11597),
@@ -247,18 +245,21 @@ class PyramidAreaFirstThree : MapArea {
         )
     }
 
-    override fun entityStep(entity: Entity, location: Location, lastLocation: Location) {
+    override fun entityStep(
+        entity: Entity,
+        location: Location,
+        lastLocation: Location,
+    ) {
         if (entity is Player) {
-
             if (!PyramidArea.safeZone.insideBorder(entity.location)) {
-                val averageLevel = (
+                val averageLevel =
+                    (
                         getDynLevel(entity, Skills.AGILITY) +
-                                getDynLevel(entity, Skills.THIEVING)
-                        ) / 2
+                            getDynLevel(entity, Skills.THIEVING)
+                    ) / 2
                 val randomValue = RandomFunction.randomDouble(99.5)
 
                 if ((1..10).random() == 1) {
-
                     val sarcoph = PyramidArea.nearSarcophagus(entity.location)
                     if (sarcoph != null) {
                         PyramidArea.spawnMummy(entity, sarcoph)
@@ -277,28 +278,28 @@ class PyramidAreaFirstThree : MapArea {
 }
 
 class PyramidAreaFinal : MapArea {
-
     override fun defineAreaBorders(): Array<ZoneBorders> {
         return arrayOf(
             getRegionBorders(12945),
         )
     }
 
-    override fun entityStep(entity: Entity, location: Location, lastLocation: Location) {
+    override fun entityStep(
+        entity: Entity,
+        location: Location,
+        lastLocation: Location,
+    ) {
         if (entity is Player) {
-
             if ((1..30).random() == 1) {
                 PyramidArea.spawnScarabs(entity)
             }
 
             if ((1..15).random() == 1) {
-
                 val sarcoph = PyramidArea.nearSarcophagus(entity.location)
                 if (sarcoph != null) {
                     PyramidArea.spawnMummy(entity, sarcoph)
                 }
             }
-
         }
     }
 }

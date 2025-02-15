@@ -12,8 +12,11 @@ import core.game.world.map.RegionManager.getSpawnLocation
 import core.game.world.map.path.Pathfinder
 import core.plugin.Plugin
 
-abstract class PyramidPlunderNPC(id: Int, location: Location?, val player: Player) : AbstractNPC(id, location) {
-
+abstract class PyramidPlunderNPC(
+    id: Int,
+    location: Location?,
+    val player: Player,
+) : AbstractNPC(id, location) {
     private val quotes: Array<String>? = null
     private var count = 0
     private var nextSpeech = 0
@@ -69,7 +72,12 @@ abstract class PyramidPlunderNPC(id: Int, location: Location?, val player: Playe
     }
 
     fun handleTimeUp() {}
-    override fun isAttackable(entity: Entity, style: CombatStyle, message: Boolean): Boolean {
+
+    override fun isAttackable(
+        entity: Entity,
+        style: CombatStyle,
+        message: Boolean,
+    ): Boolean {
         if (entity is Player && entity !== player) {
             entity.packetDispatch.sendMessage("It's not after you.")
             return false
@@ -82,7 +90,11 @@ abstract class PyramidPlunderNPC(id: Int, location: Location?, val player: Playe
         clear()
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC? {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC? {
         return null
     }
 
@@ -93,7 +105,7 @@ abstract class PyramidPlunderNPC(id: Int, location: Location?, val player: Playe
                     return false
                 }
             },
-            PulseType.STANDARD
+            PulseType.STANDARD,
         )
         face(player)
     }

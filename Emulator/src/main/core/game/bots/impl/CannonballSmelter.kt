@@ -33,7 +33,6 @@ class CannonballSmelter : Script() {
 
     override fun tick() {
         when (state) {
-
             State.INIT -> {
                 overlay = scriptAPI.getOverlay()
                 overlay!!.init()
@@ -57,12 +56,14 @@ class CannonballSmelter : Script() {
                 } else if (!coalMine.insideBorder(bot)) {
                     scriptAPI.walkTo(coalMine.randomLoc)
                 } else {
-                    val rock = scriptAPI.getNearestObjectByPredicate({ node ->
-                        node?.name?.equals(
-                            "rocks",
-                            true
-                        )!! && MiningNode.forId(node?.id!!)!!.reward == Items.COAL_453
-                    })
+                    val rock =
+                        scriptAPI.getNearestObjectByPredicate({ node ->
+                            node?.name?.equals(
+                                "rocks",
+                                true,
+                            )!! &&
+                                MiningNode.forId(node?.id!!)!!.reward == Items.COAL_453
+                        })
                     if (rock != null) {
                         scriptAPI.interact(bot, rock, "mine")
                     } else {
@@ -80,12 +81,14 @@ class CannonballSmelter : Script() {
                     var loc = ironMine.randomLoc
                     scriptAPI.walkTo(loc)
                 } else {
-                    val rock = scriptAPI.getNearestObjectByPredicate({ node ->
-                        node?.name?.equals(
-                            "rocks",
-                            true
-                        )!! && MiningNode.forId(node?.id!!)!!.reward == Items.IRON_ORE_440
-                    })
+                    val rock =
+                        scriptAPI.getNearestObjectByPredicate({ node ->
+                            node?.name?.equals(
+                                "rocks",
+                                true,
+                            )!! &&
+                                MiningNode.forId(node?.id!!)!!.reward == Items.IRON_ORE_440
+                        })
                     if (rock != null) {
                         scriptAPI.interact(bot, rock, "mine")
                     } else {
@@ -100,11 +103,13 @@ class CannonballSmelter : Script() {
                     val bank = scriptAPI.getNearestNode("bank booth", true)
                     if (bank != null) {
                         state = State.BANKING
-                        bot.pulseManager.run(object : BankingPulse(this, bank) {
-                            override fun pulse(): Boolean {
-                                return super.pulse()
-                            }
-                        })
+                        bot.pulseManager.run(
+                            object : BankingPulse(this, bank) {
+                                override fun pulse(): Boolean {
+                                    return super.pulse()
+                                }
+                            },
+                        )
                     }
                 } else {
                     if (bot.location.y > 3400) {
@@ -114,7 +119,6 @@ class CannonballSmelter : Script() {
                         } else {
                             val stairs = scriptAPI.getNearestNode(30943, true)
                             scriptAPI.interact(bot, stairs, "climb-up")
-
                         }
                     } else {
                         if (northMineEntrance.insideBorder(bot)) {
@@ -236,8 +240,10 @@ class CannonballSmelter : Script() {
         }
     }
 
-    open class BankingPulse(val script: Script, val bank: Node) :
-        MovementPulse(script.bot, bank, DestinationFlag.OBJECT) {
+    open class BankingPulse(
+        val script: Script,
+        val bank: Node,
+    ) : MovementPulse(script.bot, bank, DestinationFlag.OBJECT) {
         override fun pulse(): Boolean {
             script.bot.faceLocation(bank.location)
             return true
@@ -262,7 +268,7 @@ class CannonballSmelter : Script() {
         GO_BACK,
         TO_IRONMINE,
         MINING_IRON,
-        INIT
+        INIT,
     }
 
     init {

@@ -1,6 +1,5 @@
 package content.global.skill.runecrafting
 
-import org.rs.consts.*
 import content.global.handlers.item.equipment.gloves.FOGGlovesListener.Companion.updateCharges
 import content.global.skill.runecrafting.items.Talisman
 import content.global.skill.runecrafting.items.Talisman.Companion.forName
@@ -23,11 +22,17 @@ import core.game.world.GameWorld.ticks
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
 import core.tools.RandomFunction
+import org.rs.consts.*
 import java.util.*
 import kotlin.math.max
 
-class RunecraftPulse(player: Player?, node: Item?, val altar: Altar, private val combination: Boolean, private val combo: CombinationRune?) : SkillPulse<Item?>(player, node) {
-
+class RunecraftPulse(
+    player: Player?,
+    node: Item?,
+    val altar: Altar,
+    private val combination: Boolean,
+    private val combo: CombinationRune?,
+) : SkillPulse<Item?>(player, node) {
     private val rune: Rune
     private var talisman: Talisman? = null
 
@@ -58,7 +63,11 @@ class RunecraftPulse(player: Player?, node: Item?, val altar: Altar, private val
             sendMessage(player, "You need a runecrafting level of at least " + rune.level + " to craft this rune.")
             return false
         }
-        if (!altar.isOurania && rune.isNormal && !inInventory(player, PURE_ESSENCE) && !inInventory(player, RUNE_ESSENCE)) {
+        if (!altar.isOurania &&
+            rune.isNormal &&
+            !inInventory(player, PURE_ESSENCE) &&
+            !inInventory(player, RUNE_ESSENCE)
+        ) {
             sendMessage(player, "You need rune essence or pure essence in order to craft this rune.")
             return false
         }
@@ -105,7 +114,11 @@ class RunecraftPulse(player: Player?, node: Item?, val altar: Altar, private val
                 if (altar == Altar.OURANIA) {
                     sendMessage(player, "You bind the temple's power into runes.")
                 } else {
-                    sendMessage(player, "You bind the temple's power into " + (if (combination) combo!!.rune.name.lowercase() else rune.rune.name.lowercase() + "s."))
+                    sendMessage(
+                        player,
+                        "You bind the temple's power into " +
+                            (if (combination) combo!!.rune.name.lowercase() else rune.rune.name.lowercase() + "s."),
+                    )
                 }
         }
     }
@@ -116,7 +129,6 @@ class RunecraftPulse(player: Player?, node: Item?, val altar: Altar, private val
         if (!altar.isOurania) {
             var total = 0
             for (j in 0 until amount) {
-
                 total += multiplier
             }
             val i = Item(rune.rune.id, total)
@@ -124,7 +136,12 @@ class RunecraftPulse(player: Player?, node: Item?, val altar: Altar, private val
             if (removeItem(player, item) && hasSpaceFor(player, i)) {
                 addItem(player, i.id, total)
                 player.incrementAttribute("/save:$STATS_BASE:$STATS_RC", amount)
-                sendMessage(player, "You bind the temple's power into " + (if (combination) combo!!.rune.name.lowercase() else rune.rune.name.lowercase()) + "s.")
+                sendMessage(
+                    player,
+                    "You bind the temple's power into " +
+                        (if (combination) combo!!.rune.name.lowercase() else rune.rune.name.lowercase()) +
+                        "s.",
+                )
 
                 var xp = rune.experience * amount
                 if ((altar == Altar.AIR && inEquipment(player, Items.AIR_RUNECRAFTING_GLOVES_12863, 1)) ||
@@ -173,18 +190,35 @@ class RunecraftPulse(player: Player?, node: Item?, val altar: Altar, private val
 
     private fun combine() {
         val remove =
-            if (node!!.name.contains("talisman")) node!! else if (talisman != null) talisman!!.item else forName(Rune.forItem(node!!)!!.name)!!.item
+            if (node!!.name.contains("talisman")) {
+                node!!
+            } else if (talisman !=
+                null
+            ) {
+                talisman!!.item
+            } else {
+                forName(Rune.forItem(node!!)!!.name)!!.item
+            }
         val imbued = hasSpellImbue()
         if (if (!imbued) player.inventory.remove(remove) else imbued) {
             var amount = 0
             val essenceAmt = player.inventory.getAmount(PURE_ESSENCE)
-            val rune = if (node!!.name.contains("rune")) Rune.forItem(node!!)!!.rune else Rune.forName(Talisman.forItem(node!!)!!.name)!!.rune
+            val rune =
+                if (node!!.name.contains(
+                        "rune",
+                    )
+                ) {
+                    Rune.forItem(node!!)!!.rune
+                } else {
+                    Rune.forName(Talisman.forItem(node!!)!!.name)!!.rune
+                }
             val runeAmt = player.inventory.getAmount(rune)
-            amount = if (essenceAmt > runeAmt) {
-                runeAmt
-            } else {
-                essenceAmt
-            }
+            amount =
+                if (essenceAmt > runeAmt) {
+                    runeAmt
+                } else {
+                    essenceAmt
+                }
             if (player.inventory.remove(Item(PURE_ESSENCE, amount)) && player.inventory.remove(Item(rune.id, amount))) {
                 for (i in 0 until amount) {
                     if (RandomFunction.random(1, 3) == 1 || hasBindingNecklace()) {
@@ -257,7 +291,12 @@ class RunecraftPulse(player: Player?, node: Item?, val altar: Altar, private val
         private val ANIMATION = Animation(Animations.OLD_RUNECRAFT_791, Priority.HIGH)
         private val Graphics = Graphics(org.rs.consts.Graphics.RUNECRAFTING_GRAPHIC_186, 100)
 
-        fun getMultiplier(rcLevel: Int, rune: Rune, rcFormulaRevision: Int, lumbridgeDiary: Boolean): Int {
+        fun getMultiplier(
+            rcLevel: Int,
+            rune: Rune,
+            rcFormulaRevision: Int,
+            lumbridgeDiary: Boolean,
+        ): Int {
             val multipleLevels = rune.getMultiple()
             var i = 0
             for (level in multipleLevels!!) {
@@ -277,7 +316,8 @@ class RunecraftPulse(player: Player?, node: Item?, val altar: Altar, private val
                 }
             }
 
-            if ((lumbridgeDiary && ArrayList(listOf(Rune.AIR, Rune.WATER, Rune.FIRE, Rune.EARTH)).contains(rune)) && RandomFunction.getRandom(10) == 0
+            if ((lumbridgeDiary && ArrayList(listOf(Rune.AIR, Rune.WATER, Rune.FIRE, Rune.EARTH)).contains(rune)) &&
+                RandomFunction.getRandom(10) == 0
             ) {
                 i += 1
             }

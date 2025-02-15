@@ -1,6 +1,5 @@
 package content.region.misthalin.quest.haunted
 
-import org.rs.consts.Animations
 import core.api.sendMessage
 import core.api.setVarp
 import core.cache.def.impl.SceneryDefinition
@@ -19,11 +18,11 @@ import core.game.world.map.zone.ZoneBuilder
 import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Animations
 import java.awt.Point
 
 @Initializable
 class ErnestTheChickenHandler : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         SceneryDefinition.forId(org.rs.consts.Scenery.DOOR_11450).handlers["option:open"] = this
         for (lever in Lever.values()) {
@@ -36,7 +35,11 @@ class ErnestTheChickenHandler : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val scenery = (node as Scenery)
         val extension = LeverCacheExtension.extend(player)
         var lever = Lever.forObject(scenery.id)
@@ -55,11 +58,15 @@ class ErnestTheChickenHandler : OptionHandler() {
         return true
     }
 
-    class LeverCacheExtension(private val player: Player) {
-
+    class LeverCacheExtension(
+        private val player: Player,
+    ) {
         private val levers = BooleanArray(Lever.values().size)
 
-        fun pull(lever: Lever, scenery: Scenery) {
+        fun pull(
+            lever: Lever,
+            scenery: Scenery,
+        ) {
             val isUp = isUp(lever)
             levers[lever.ordinal] = !isUp
             player.animate(if (isUp) DOWN_ANIMATION else UP_ANIMATION)
@@ -69,12 +76,12 @@ class ErnestTheChickenHandler : OptionHandler() {
                         updateConfigs()
                         sendMessage(
                             player,
-                            "You pull lever ${lever.name.replace("LEVER_", "")} ${if (isUp) "down" else "up"}."
+                            "You pull lever ${lever.name.replace("LEVER_", "")} ${if (isUp) "down" else "up"}.",
                         )
                         sendMessage(player, "You hear a clunk.")
                         return true
                     }
-                }
+                },
             )
         }
 
@@ -108,11 +115,11 @@ class ErnestTheChickenHandler : OptionHandler() {
                             destination,
                             null,
                             0.0,
-                            null
+                            null,
                         )
                         return true
                     }
-                }
+                },
             )
         }
 
@@ -173,7 +180,10 @@ class ErnestTheChickenHandler : OptionHandler() {
 
         fun reset() {
             levers.fill(true)
-            player.getSavedData().questData.draynorLevers.fill(true)
+            player
+                .getSavedData()
+                .questData.draynorLevers
+                .fill(true)
             updateConfigs()
         }
 
@@ -205,7 +215,10 @@ class ErnestTheChickenHandler : OptionHandler() {
             return super.enter(entity)
         }
 
-        override fun leave(entity: Entity, logout: Boolean): Boolean {
+        override fun leave(
+            entity: Entity,
+            logout: Boolean,
+        ): Boolean {
             if (entity is Player) {
                 LeverCacheExtension.extend(entity).save()
             }
@@ -213,30 +226,37 @@ class ErnestTheChickenHandler : OptionHandler() {
         }
     }
 
-    enum class Lever(vararg val objectIds: Int) {
+    enum class Lever(
+        vararg val objectIds: Int,
+    ) {
         LEVER_A(org.rs.consts.Scenery.LEVER_A_11451, org.rs.consts.Scenery.LEVER_A_11452),
         LEVER_B(org.rs.consts.Scenery.LEVER_B_11453, org.rs.consts.Scenery.LEVER_B_11454),
         LEVER_C(org.rs.consts.Scenery.LEVER_C_11455, org.rs.consts.Scenery.LEVER_C_11456),
         LEVER_D(org.rs.consts.Scenery.LEVER_D_11457, org.rs.consts.Scenery.LEVER_D_11458),
         LEVER_E(org.rs.consts.Scenery.LEVER_E_11459, org.rs.consts.Scenery.LEVER_E_11460),
-        LEVER_F(org.rs.consts.Scenery.LEVER_F_11461, org.rs.consts.Scenery.LEVER_F_11462);
+        LEVER_F(org.rs.consts.Scenery.LEVER_F_11461, org.rs.consts.Scenery.LEVER_F_11462),
+        ;
 
         companion object {
-
             fun forObject(objectId: Int): Lever? {
                 return values().firstOrNull { lever -> lever.objectIds.contains(objectId) }
             }
         }
     }
 
-    override fun getDestination(node: Node, n: Node): Location? {
+    override fun getDestination(
+        node: Node,
+        n: Node,
+    ): Location? {
         if (n is Scenery) {
             val player = node as? Player ?: return null
             return when (n.id) {
                 11450 -> Location.create(3109, 3353, 0)
-                11451, 11452, 11453, 11454, 11455, 11456, 11457, 11458, 11459, 11460, 11461, 11462 -> LeverCacheExtension.extend(
-                    player
-                ).walkData[2] as Location
+                11451, 11452, 11453, 11454, 11455, 11456, 11457, 11458, 11459, 11460, 11461, 11462 ->
+                    LeverCacheExtension
+                        .extend(
+                            player,
+                        ).walkData[2] as Location
 
                 else -> null
             }

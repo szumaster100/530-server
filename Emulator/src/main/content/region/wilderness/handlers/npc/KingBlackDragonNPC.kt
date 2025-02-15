@@ -1,6 +1,5 @@
 package content.region.wilderness.handlers.npc
 
-import org.rs.consts.NPCs
 import core.api.combat.calculateDragonFireMaxHit
 import core.api.utils.BossKillCounter
 import core.game.node.entity.Entity
@@ -21,11 +20,11 @@ import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
 import core.plugin.Plugin
 import core.tools.RandomFunction
+import org.rs.consts.NPCs
 import kotlin.math.ceil
 
 @Initializable
 class KingBlackDragonNPC : AbstractNPC {
-
     private val combatHandler: CombatSwingHandler = KBDCombatSwingHandler()
 
     constructor() : super(-1, null)
@@ -42,7 +41,11 @@ class KingBlackDragonNPC : AbstractNPC {
         configureBossData()
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return KingBlackDragonNPC(id, location)
     }
 
@@ -63,12 +66,15 @@ class KingBlackDragonNPC : AbstractNPC {
     }
 
     internal class KBDCombatSwingHandler : CombatSwingHandler(CombatStyle.RANGE) {
-
         private var style = CombatStyle.RANGE
         var fireType: FireType = FireType.FIERY_BREATH
             private set
 
-        override fun adjustBattleState(entity: Entity, victim: Entity, state: BattleState) {
+        override fun adjustBattleState(
+            entity: Entity,
+            victim: Entity,
+            state: BattleState,
+        ) {
             if (style == CombatStyle.RANGE) {
                 fireType.task.exec(victim, entity)
                 state.style = null
@@ -86,14 +92,21 @@ class KingBlackDragonNPC : AbstractNPC {
             return CombatStyle.MAGIC.swingHandler.calculateAccuracy(entity)
         }
 
-        override fun calculateDefence(victim: Entity?, attacker: Entity?): Int {
+        override fun calculateDefence(
+            victim: Entity?,
+            attacker: Entity?,
+        ): Int {
             if (style == CombatStyle.MELEE) {
                 return style.swingHandler.calculateDefence(victim, attacker)
             }
             return CombatStyle.MAGIC.swingHandler.calculateDefence(victim, attacker)
         }
 
-        override fun calculateHit(entity: Entity?, victim: Entity?, modifier: Double): Int {
+        override fun calculateHit(
+            entity: Entity?,
+            victim: Entity?,
+            modifier: Double,
+        ): Int {
             if (style == CombatStyle.MELEE) {
                 return style.swingHandler.calculateHit(entity, victim, modifier)
             }
@@ -102,18 +115,22 @@ class KingBlackDragonNPC : AbstractNPC {
                 maxDamage = 56,
                 wyvern = false,
                 unprotectableDamage = if (fireType != FireType.FIERY_BREATH) 10 else 0,
-                sendMessage = true
+                sendMessage = true,
             )
         }
 
-        override fun canSwing(entity: Entity, victim: Entity): InteractionType? {
+        override fun canSwing(
+            entity: Entity,
+            victim: Entity,
+        ): InteractionType? {
             if (!isProjectileClipped(entity, victim, false)) {
                 return InteractionType.NO_INTERACT
             }
             if (victim.centerLocation.withinMaxnormDistance(
                     entity.centerLocation,
-                    getCombatDistance(entity, victim, 9)
-                ) && super.canSwing(entity, victim) == InteractionType.STILL_INTERACT
+                    getCombatDistance(entity, victim, 9),
+                ) &&
+                super.canSwing(entity, victim) == InteractionType.STILL_INTERACT
             ) {
                 entity.walkingQueue.reset()
                 return InteractionType.STILL_INTERACT
@@ -125,19 +142,35 @@ class KingBlackDragonNPC : AbstractNPC {
             return style.swingHandler.getArmourSet(e)
         }
 
-        override fun getSetMultiplier(e: Entity?, skillId: Int): Double {
+        override fun getSetMultiplier(
+            e: Entity?,
+            skillId: Int,
+        ): Double {
             return style.swingHandler.getSetMultiplier(e, skillId)
         }
 
-        override fun impact(entity: Entity?, victim: Entity?, state: BattleState?) {
+        override fun impact(
+            entity: Entity?,
+            victim: Entity?,
+            state: BattleState?,
+        ) {
             style.swingHandler.impact(entity, victim, state)
         }
 
-        override fun swing(entity: Entity?, victim: Entity?, state: BattleState?): Int {
+        override fun swing(
+            entity: Entity?,
+            victim: Entity?,
+            state: BattleState?,
+        ): Int {
             style = CombatStyle.RANGE
             var hit = 0
             var ticks = 1
-            if (victim!!.centerLocation.withinMaxnormDistance(entity!!.centerLocation, getCombatDistance(entity, victim, 1)) && RandomFunction.random(10) < 7) {
+            if (victim!!.centerLocation.withinMaxnormDistance(
+                    entity!!.centerLocation,
+                    getCombatDistance(entity, victim, 1),
+                ) &&
+                RandomFunction.random(10) < 7
+            ) {
                 style = CombatStyle.MELEE
             } else {
                 ticks += ceil(entity.location.getDistance(victim.location) * 0.3).toInt()
@@ -154,7 +187,11 @@ class KingBlackDragonNPC : AbstractNPC {
             return ticks
         }
 
-        override fun visualize(entity: Entity, victim: Entity?, state: BattleState?) {
+        override fun visualize(
+            entity: Entity,
+            victim: Entity?,
+            state: BattleState?,
+        ) {
             when (style) {
                 CombatStyle.MELEE -> entity.animate(MELEE_ATTACK)
                 CombatStyle.RANGE -> {
@@ -166,7 +203,11 @@ class KingBlackDragonNPC : AbstractNPC {
             }
         }
 
-        override fun visualizeImpact(entity: Entity?, victim: Entity?, state: BattleState?) {
+        override fun visualizeImpact(
+            entity: Entity?,
+            victim: Entity?,
+            state: BattleState?,
+        ) {
             if (style != CombatStyle.MELEE) {
                 DRAGONFIRE.visualizeImpact(entity, victim, state)
             } else {

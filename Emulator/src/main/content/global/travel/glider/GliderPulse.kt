@@ -1,6 +1,5 @@
 package content.global.travel.glider
 
-import org.rs.consts.Components
 import core.api.*
 import core.api.ui.setMinimapState
 import core.api.utils.PlayerCamera
@@ -10,8 +9,13 @@ import core.game.system.task.Pulse
 import core.net.packet.PacketRepository
 import core.net.packet.context.CameraContext
 import core.net.packet.out.CameraViewPacket
+import org.rs.consts.Components
 
-class GliderPulse(delay: Int, private val player: Player, private val glider: GliderData) : Pulse(delay, player) {
+class GliderPulse(
+    delay: Int,
+    private val player: Player,
+    private val glider: GliderData,
+) : Pulse(delay, player) {
     private var count: Int = 0
 
     init {
@@ -24,7 +28,10 @@ class GliderPulse(delay: Int, private val player: Player, private val glider: Gl
             setVarp(player, 153, glider.config)
             setMinimapState(player, 2)
         } else if (count == 2 && crash) {
-            PacketRepository.send(CameraViewPacket::class.java, CameraContext(player, CameraContext.CameraType.SHAKE, 4, 4, 1200, 4, 4))
+            PacketRepository.send(
+                CameraViewPacket::class.java,
+                CameraContext(player, CameraContext.CameraType.SHAKE, 4, 4, 1200, 4, 4),
+            )
             sendMessage(player, "The glider almost gets blown from its path as it withstands heavy winds.")
         }
         when (count) {

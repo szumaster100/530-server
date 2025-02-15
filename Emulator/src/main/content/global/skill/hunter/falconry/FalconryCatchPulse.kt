@@ -1,9 +1,5 @@
 package content.global.skill.hunter.falconry
 
-import org.rs.consts.Graphics
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Sounds
 import core.api.*
 import core.game.container.impl.EquipmentContainer
 import core.game.node.entity.impl.Projectile
@@ -17,9 +13,16 @@ import core.game.world.GameWorld.Pulser
 import core.game.world.map.Location
 import core.game.world.repository.Repository.findNPC
 import core.tools.RandomFunction
+import org.rs.consts.Graphics
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Sounds
 
-class FalconryCatchPulse(player: Player?, node: NPC, private val falconCatch: FalconCatch) :
-    SkillPulse<NPC?>(player, node) {
+class FalconryCatchPulse(
+    player: Player?,
+    node: NPC,
+    private val falconCatch: FalconCatch,
+) : SkillPulse<NPC?>(player, node) {
     private val originalLocation: Location = node.location
     private var checked = false
     private var ticks = 0
@@ -41,11 +44,13 @@ class FalconryCatchPulse(player: Player?, node: NPC, private val falconCatch: Fa
             if (getStatLevel(player, Skills.HUNTER) < falconCatch.level) {
                 sendMessage(
                     player,
-                    "You need a Hunter level of at least " + falconCatch.level + " to catch this kebbit."
+                    "You need a Hunter level of at least " + falconCatch.level + " to catch this kebbit.",
                 )
                 return false
             }
-            if (player.equipment[EquipmentContainer.SLOT_HANDS] != null || player.equipment[EquipmentContainer.SLOT_SHIELD] != null) {
+            if (player.equipment[EquipmentContainer.SLOT_HANDS] != null ||
+                player.equipment[EquipmentContainer.SLOT_SHIELD] != null
+            ) {
                 sendDialogue(player, "Sorry, free your hands, weapon, and shield slot first.")
                 return false
             }
@@ -77,7 +82,7 @@ class FalconryCatchPulse(player: Player?, node: NPC, private val falconCatch: Fa
         val success = success()
         sendMessage(
             player,
-            if (success) "The falcon successfully swoops down and captures the kebbit." else "The falcon swoops down on the kebbit, but just misses catching it."
+            if (success) "The falcon successfully swoops down and captures the kebbit." else "The falcon swoops down on the kebbit, but just misses catching it.",
         )
 
         if (success) {
@@ -99,17 +104,17 @@ class FalconryCatchPulse(player: Player?, node: NPC, private val falconCatch: Fa
                         projectile.send()
                         sendMessage(
                             player,
-                            "Your falcon has left its prey. You see it heading back toward the falconer."
+                            "Your falcon has left its prey. You see it heading back toward the falconer.",
                         )
                         falcon.clear()
                         return true
                     }
-                }
+                },
             )
         } else {
-            if(removeItem(player, GLOVE, Container.EQUIPMENT)) {
-                    player.equipment.add(FALCON, true, false)
-                }
+            if (removeItem(player, GLOVE, Container.EQUIPMENT)) {
+                player.equipment.add(FALCON, true, false)
+            }
         }
         player.face(null)
         return true

@@ -1,17 +1,15 @@
 package content.global.skill.crafting.casting.gold
 
-import org.rs.consts.Components
 import content.global.skill.slayer.SlayerManager
 import core.api.*
 import core.game.interaction.InterfaceListener
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.tools.StringUtils
+import org.rs.consts.Components
 
 class JewelleryCraftingInterface : InterfaceListener {
-
     override fun defineInterfaceListeners() {
-
         on(Components.CRAFTING_GOLD_446) { player, _, opcode, buttonID, _, itemID ->
             var amount = 0
             var data: Jewellery.JewelleryItem? = null
@@ -19,8 +17,13 @@ class JewelleryCraftingInterface : InterfaceListener {
                 20 -> data = Jewellery.JewelleryItem.GOLD_RING
                 22 -> data = Jewellery.JewelleryItem.SAPPHIRE_RING
                 24 -> data = Jewellery.JewelleryItem.EMERALD_RING
-                26 -> data = if (inInventory(player, Jewellery.PERFECT_GOLD_BAR))
-                    Jewellery.JewelleryItem.PERFECT_RING else Jewellery.JewelleryItem.RUBY_RING
+                26 ->
+                    data =
+                        if (inInventory(player, Jewellery.PERFECT_GOLD_BAR)) {
+                            Jewellery.JewelleryItem.PERFECT_RING
+                        } else {
+                            Jewellery.JewelleryItem.RUBY_RING
+                        }
 
                 28 -> data = Jewellery.JewelleryItem.DIAMOND_RING
                 30 -> data = Jewellery.JewelleryItem.DRAGONSTONE_RING
@@ -32,8 +35,13 @@ class JewelleryCraftingInterface : InterfaceListener {
                 39 -> data = Jewellery.JewelleryItem.GOLD_NECKLACE
                 41 -> data = Jewellery.JewelleryItem.SAPPHIRE_NECKLACE
                 43 -> data = Jewellery.JewelleryItem.EMERALD_NECKLACE
-                45 -> data = if (inInventory(player, Jewellery.PERFECT_GOLD_BAR))
-                    Jewellery.JewelleryItem.PERFECT_NECKLACE else Jewellery.JewelleryItem.RUBY_NECKLACE
+                45 ->
+                    data =
+                        if (inInventory(player, Jewellery.PERFECT_GOLD_BAR)) {
+                            Jewellery.JewelleryItem.PERFECT_NECKLACE
+                        } else {
+                            Jewellery.JewelleryItem.RUBY_NECKLACE
+                        }
 
                 47 -> data = Jewellery.JewelleryItem.DIAMOND_NECKLACE
                 49 -> data = Jewellery.JewelleryItem.DRAGONSTONE_NECKLACE
@@ -91,9 +99,13 @@ class JewelleryCraftingInterface : InterfaceListener {
                 196 -> amount = 5
                 124 -> {
                     amount =
-                        if (itemID == Jewellery.GOLD_BAR) player.inventory.getAmount(Item(Jewellery.GOLD_BAR))
-                        else if (itemID == Jewellery.PERFECT_GOLD_BAR) player.inventory.getAmount(Item(Jewellery.PERFECT_GOLD_BAR))
-                        else {
+                        if (itemID == Jewellery.GOLD_BAR) {
+                            player.inventory.getAmount(Item(Jewellery.GOLD_BAR))
+                        } else if (itemID ==
+                            Jewellery.PERFECT_GOLD_BAR
+                        ) {
+                            player.inventory.getAmount(Item(Jewellery.PERFECT_GOLD_BAR))
+                        } else {
                             val first = player.inventory.getAmount(Item(data.items[0]))
                             val second = player.inventory.getAmount(Item(data.items[1]))
 
@@ -116,8 +128,14 @@ class JewelleryCraftingInterface : InterfaceListener {
                 }
             }
 
-            if (!SlayerManager.getInstance(player).flags.isRingUnlocked() && data == Jewellery.JewelleryItem.SLAYER_RING) {
-                sendMessages(player, "You don't know how to make this. Talk to any Slayer master in order to learn the", "ability that creates Slayer rings.")
+            if (!SlayerManager.getInstance(player).flags.isRingUnlocked() &&
+                data == Jewellery.JewelleryItem.SLAYER_RING
+            ) {
+                sendMessages(
+                    player,
+                    "You don't know how to make this. Talk to any Slayer master in order to learn the",
+                    "ability that creates Slayer rings.",
+                )
                 return@on true
             }
 

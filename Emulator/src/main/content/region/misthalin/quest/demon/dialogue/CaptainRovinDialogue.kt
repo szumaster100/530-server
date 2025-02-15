@@ -1,7 +1,5 @@
 package content.region.misthalin.quest.demon.dialogue
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.misthalin.quest.demon.handlers.DemonSlayerUtils
 import core.api.freeSlots
 import core.api.inBank
@@ -11,9 +9,12 @@ import core.game.dialogue.FaceAnim
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
-class CaptainRovinDialogue(player: Player? = null) : Dialogue(player) {
-
+class CaptainRovinDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     private var quest: Quest? = null
 
     override fun open(vararg args: Any): Boolean {
@@ -28,7 +29,10 @@ class CaptainRovinDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (quest!!.getStage(player)) {
             else -> defaultDialogue(buttonId)
         }
@@ -42,22 +46,23 @@ class CaptainRovinDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 1
             }
 
-            1 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "I am one of the palace guards.")
-                    stage = 10
-                }
+            1 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_GUILTY, "I am one of the palace guards.")
+                        stage = 10
+                    }
 
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "What about the King? Surely you'd let him up here.")
-                    stage = 20
-                }
+                    2 -> {
+                        player(FaceAnim.HALF_GUILTY, "What about the King? Surely you'd let him up here.")
+                        stage = 20
+                    }
 
-                3 -> {
-                    player(FaceAnim.HALF_GUILTY, "Yes, I know but this is important.")
-                    stage = 30
+                    3 -> {
+                        player(FaceAnim.HALF_GUILTY, "Yes, I know but this is important.")
+                        stage = 30
+                    }
                 }
-            }
 
             30 -> {
                 npc(FaceAnim.HALF_GUILTY, "Ok, I'm listening. Tell me what's so important.")
@@ -82,7 +87,12 @@ class CaptainRovinDialogue(player: Player? = null) : Dialogue(player) {
             11 -> end()
 
             20 -> {
-                npc(FaceAnim.HALF_GUILTY, "Well, yes I suppose we'd let him up, He doesn't", "generally want to come up here, but if he did want to,", "he could.")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "Well, yes I suppose we'd let him up, He doesn't",
+                    "generally want to come up here, but if he did want to,",
+                    "he could.",
+                )
                 stage = 21
             }
 
@@ -90,9 +100,10 @@ class CaptainRovinDialogue(player: Player? = null) : Dialogue(player) {
             32 -> end()
 
             600 -> {
-                if (inInventory(player, DemonSlayerUtils.SECOND_KEY.id) || inBank(
+                if (inInventory(player, DemonSlayerUtils.SECOND_KEY.id) ||
+                    inBank(
                         player,
-                        DemonSlayerUtils.SECOND_KEY.id
+                        DemonSlayerUtils.SECOND_KEY.id,
                     )
                 ) {
                     npc("Yes, you said before, haven't you killed it yet?")
@@ -109,7 +120,10 @@ class CaptainRovinDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             602 -> {
-                npc("As good as the palace guards are, I don't know if", "they're up to taking on a very powerful demon.")
+                npc(
+                    "As good as the palace guards are, I don't know if",
+                    "they're up to taking on a very powerful demon.",
+                )
                 stage = 603
             }
 
@@ -124,7 +138,10 @@ class CaptainRovinDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             605 -> {
-                player("I'm going to use the powerful sword Silverlight, which I", "believe you have one of the keys for?")
+                player(
+                    "I'm going to use the powerful sword Silverlight, which I",
+                    "believe you have one of the keys for?",
+                )
                 stage = 606
             }
 
@@ -144,7 +161,12 @@ class CaptainRovinDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             609 -> {
-                npc("I didn't work my way up through the ranks of the", "palace guards so I could take orders from an ill-bred", "moron who only has his job because his great-", "grandfather was a hero with a silly name!")
+                npc(
+                    "I didn't work my way up through the ranks of the",
+                    "palace guards so I could take orders from an ill-bred",
+                    "moron who only has his job because his great-",
+                    "grandfather was a hero with a silly name!",
+                )
                 stage = 610
             }
 
@@ -154,7 +176,12 @@ class CaptainRovinDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             611 -> {
-                npc("Only because the king ordered him to! The king", "couldn't get Sir Prysin to part with his precious", "ancestral sword, but he made him lock it up so he", "couldn't lose it.")
+                npc(
+                    "Only because the king ordered him to! The king",
+                    "couldn't get Sir Prysin to part with his precious",
+                    "ancestral sword, but he made him lock it up so he",
+                    "couldn't lose it.",
+                )
                 stage = 612
             }
 
@@ -191,7 +218,10 @@ class CaptainRovinDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             620 -> {
-                player("Well I'm going to use the powerful sword Silverlight", "which I believe you have one of the keys for?")
+                player(
+                    "Well I'm going to use the powerful sword Silverlight",
+                    "which I believe you have one of the keys for?",
+                )
                 stage = 621
             }
 

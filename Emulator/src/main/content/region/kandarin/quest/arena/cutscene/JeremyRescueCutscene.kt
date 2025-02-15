@@ -1,7 +1,5 @@
 package content.region.kandarin.quest.arena.cutscene
 
-import org.rs.consts.Animations
-import org.rs.consts.NPCs
 import content.region.kandarin.quest.arena.handlers.FightArenaListener.Companion.Jeremy
 import content.region.kandarin.quest.arena.handlers.npc.OgreNPC.Companion.spawnOgre
 import core.api.*
@@ -10,8 +8,12 @@ import core.game.dialogue.FaceAnim
 import core.game.global.action.DoorActionHandler
 import core.game.node.entity.player.Player
 import core.game.world.map.Direction
+import org.rs.consts.Animations
+import org.rs.consts.NPCs
 
-class JeremyRescueCutscene(player: Player) : Cutscene(player) {
+class JeremyRescueCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(location(2603, 3155, 0))
         if (player.settings.isRunToggled) {
@@ -31,7 +33,7 @@ class JeremyRescueCutscene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.JEREMY_SERVIL_265,
                     FaceAnim.CHILD_NORMAL,
-                    "Wow! Please set me free, then we can find my dad. I overheard a guard talking. I think they're taken him to the arena."
+                    "Wow! Please set me free, then we can find my dad. I overheard a guard talking. I think they're taken him to the arena.",
                 )
             }
 
@@ -114,7 +116,7 @@ class JeremyRescueCutscene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     JEREMYRESCUE,
                     FaceAnim.CHILD_SAD,
-                    "Quick help him! That beast will kill him. He's too old to fight."
+                    "Quick help him! That beast will kill him. He's too old to fight.",
                 )
             }
 
@@ -150,8 +152,8 @@ class JeremyRescueCutscene(player: Player) : Cutscene(player) {
             20 -> {
                 getNPC(OGRE)!!.faceLocation(
                     getNPC(
-                        JUSTIN
-                    )!!.location
+                        JUSTIN,
+                    )!!.location,
                 )
                 animate(getNPC(OGRE)!!, 359, forced = true)
                 animate(getNPC(JUSTIN)!!, 404, forced = true)

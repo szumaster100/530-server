@@ -2,8 +2,6 @@ package content.region.morytania.dialogue.phasmatys
 
 import content.data.GameAttributes
 import content.region.kandarin.quest.swept.SweptUtils
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.misthalin.quest.anma.dialogue.OldCroneDialogue
 import content.region.morytania.quest.ahoy.dialogue.OldCroneDialogueFile
 import core.api.*
@@ -17,64 +15,93 @@ import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
 import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class OldCroneDialogue(player: Player? = null) : Dialogue(player) {
-
+class OldCroneDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         val animalMagnetism = getQuestStage(player, Quests.ANIMAL_MAGNETISM)
-        val sweptAway = isQuestComplete(player, Quests.SWEPT_AWAY) && inInventory(player, Items.BROOMSTICK_14057) && getDynLevel(player, Skills.MAGIC) >= 53 && getAttribute(player, GameAttributes.QUEST_SWEPT_AWAY_LABELS_COMPLETE, false)
+        val sweptAway =
+            isQuestComplete(player, Quests.SWEPT_AWAY) &&
+                inInventory(player, Items.BROOMSTICK_14057) &&
+                getDynLevel(player, Skills.MAGIC) >= 53 &&
+                getAttribute(player, GameAttributes.QUEST_SWEPT_AWAY_LABELS_COMPLETE, false)
         npc = args[0] as NPC
         when {
-            getQuestStage(player, Quests.GHOSTS_AHOY) >= 3 && (animalMagnetism < 16 || isQuestComplete(
-                player,
-                Quests.ANIMAL_MAGNETISM
-            )) -> openDialogue(player, OldCroneDialogueFile())
+            getQuestStage(player, Quests.GHOSTS_AHOY) >= 3 &&
+                (
+                    animalMagnetism < 16 ||
+                        isQuestComplete(
+                            player,
+                            Quests.ANIMAL_MAGNETISM,
+                        )
+                ) -> openDialogue(player, OldCroneDialogueFile())
 
-            animalMagnetism in 16..18 && getQuestStage(
-                player,
-                Quests.GHOSTS_AHOY
-            ) >= 3 -> options(
-                "Talk about quest. (Animal Magnetism)",
-                "Talk about quest. (Ghosts Ahoy)",
-                "Nevermind."
-            ).also { stage = 1 }
+            animalMagnetism in 16..18 &&
+                getQuestStage(
+                    player,
+                    Quests.GHOSTS_AHOY,
+                ) >= 3 ->
+                options(
+                    "Talk about quest. (Animal Magnetism)",
+                    "Talk about quest. (Ghosts Ahoy)",
+                    "Nevermind.",
+                ).also { stage = 1 }
 
-            animalMagnetism in 16..18 -> openDialogue(
-                player,
-                OldCroneDialogue()
-            )
+            animalMagnetism in 16..18 ->
+                openDialogue(
+                    player,
+                    OldCroneDialogue(),
+                )
             sweptAway -> options("Hello, old woman.", "Could you enchant this broom for me?").also { stage = 2 }
             else -> player("Hello, old woman.")
         }
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
-            0 -> npc(FaceAnim.HALF_GUILTY, "I lived here when this was all just fields, you know.").also {
-                stage = END_DIALOGUE
-            }
-
-            1 -> when (buttonId) {
-                1 -> openDialogue(
-                    player,
-                    OldCroneDialogue()
-                )
-
-                2 -> openDialogue(player, OldCroneDialogueFile())
-                3 -> end()
-            }
-
-            2 -> when (buttonId) {
-                1 -> npc(FaceAnim.HALF_GUILTY, "I lived here when this was all just fields, you know.").also {
+            0 ->
+                npc(FaceAnim.HALF_GUILTY, "I lived here when this was all just fields, you know.").also {
                     stage = END_DIALOGUE
                 }
 
-                2 -> player("Could you enchant this broom for me?").also { stage++ }
-            }
+            1 ->
+                when (buttonId) {
+                    1 ->
+                        openDialogue(
+                            player,
+                            OldCroneDialogue(),
+                        )
 
-            3 -> npc("Oh, this must be Maggie's broom. I suppose I could","enchant it, just this once, for old timers' sake. Just one", "moment...").also { stage++ }
+                    2 -> openDialogue(player, OldCroneDialogueFile())
+                    3 -> end()
+                }
+
+            2 ->
+                when (buttonId) {
+                    1 ->
+                        npc(FaceAnim.HALF_GUILTY, "I lived here when this was all just fields, you know.").also {
+                            stage = END_DIALOGUE
+                        }
+
+                    2 -> player("Could you enchant this broom for me?").also { stage++ }
+                }
+
+            3 ->
+                npc(
+                    "Oh, this must be Maggie's broom. I suppose I could",
+                    "enchant it, just this once, for old timers' sake. Just one",
+                    "moment...",
+                ).also {
+                    stage++
+                }
             4 -> {
                 end()
                 lock(player, 1)

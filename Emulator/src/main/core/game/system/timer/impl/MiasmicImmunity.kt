@@ -7,18 +7,20 @@ import core.game.system.timer.PersistTimer
 import core.game.system.timer.RSTimer
 import core.game.system.timer.TimerFlag
 
-class MiasmicImmunity : PersistTimer(
-    runInterval = 1,
-    identifier = "miasmic:immunity",
-    flags = arrayOf(TimerFlag.ClearOnDeath)
-) {
+class MiasmicImmunity :
+    PersistTimer(
+        runInterval = 1,
+        identifier = "miasmic:immunity",
+        flags = arrayOf(TimerFlag.ClearOnDeath),
+    ) {
     override fun run(entity: Entity): Boolean {
         return false
     }
 
     override fun onRegister(entity: Entity) {
-        if (hasTimerActive<Miasmic>(entity))
+        if (hasTimerActive<Miasmic>(entity)) {
             removeTimer<Miasmic>(entity)
+        }
     }
 
     override fun getTimer(vararg args: Any): RSTimer {

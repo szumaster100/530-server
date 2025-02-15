@@ -8,9 +8,12 @@ import core.game.node.item.Item
 import core.game.world.GameWorld.ticks
 import org.rs.consts.Animations
 
-class KebbitBoltPulse(player: Player?, node: Item, private val bolts: KebbitBolt, private var amount: Int) :
-    SkillPulse<Item?>(player, node) {
-
+class KebbitBoltPulse(
+    player: Player?,
+    node: Item,
+    private val bolts: KebbitBolt,
+    private var amount: Int,
+) : SkillPulse<Item?>(player, node) {
     override fun checkRequirements(): Boolean {
         if (getStatLevel(player, Skills.FLETCHING) < bolts.level) {
             sendDialogue(player, "You need a fletching level of " + bolts.level + " to do this.")

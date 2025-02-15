@@ -10,7 +10,6 @@ import org.rs.consts.NPCs
 import org.rs.consts.Sounds
 
 class BlackCatHolidayRandomNPC : HolidayRandomEventNPC(NPCs.BLACK_CAT_4607) {
-
     override fun init() {
         super.init()
         queueScript(this, 8, QueueStrength.SOFT) {

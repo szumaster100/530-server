@@ -1,24 +1,27 @@
 package content.minigame.mta
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import content.global.skill.magic.spells.ModernSpells
 import content.minigame.mta.room.AlchemistPlayground
 import core.api.*
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.game.world.update.flag.context.Graphics
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 
 class MTASpellListener : content.global.skill.magic.SpellListener("modern") {
     private val lowAlchemyAnimation = Animations.HUMAN_CAST_LOW_ALCHEMY_SPELL_712
     private val lowAlchemyGraphics = Graphics(112, 5)
     private val highAlchemyAnimation = Animations.HUMAN_CAST_HIGH_ALCHEMY_SPELL_713
     private val highAlchemyGraphics = Graphics(org.rs.consts.Graphics.HIGH_LEVEL_ALCHEMY_113, 5)
-    private val mtaAlchemyItems = AlchemistPlayground.AlchemistItem.values().map { it.item.id }.toIntArray()
+    private val mtaAlchemyItems =
+        AlchemistPlayground.AlchemistItem
+            .values()
+            .map { it.item.id }
+            .toIntArray()
 
     override fun defineListeners() {
-
         onCast(ModernSpells.HIGH_ALCHEMY, ITEM, *mtaAlchemyItems) { player, node ->
             val item = node?.asItem() ?: return@onCast
             requires(player, 55)

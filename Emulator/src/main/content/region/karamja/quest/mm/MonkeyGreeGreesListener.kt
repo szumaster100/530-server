@@ -1,19 +1,20 @@
 package content.region.karamja.quest.mm
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.*
+import core.api.EquipmentSlot
+import core.api.MapArea
 import core.game.global.action.EquipHandler
 import core.game.interaction.InteractionListener
 import core.game.node.entity.Entity
-import core.api.EquipmentSlot
 import core.game.node.entity.player.Player
-import core.api.MapArea
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.update.flag.context.Graphics
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
-class MonkeyGreeGreesListener : InteractionListener, MapArea {
-
+class MonkeyGreeGreesListener :
+    InteractionListener,
+    MapArea {
     companion object {
         private val APE_ATOLL_ZONE = ZoneBorders(2690, 2695, 2817, 2814)
         private val LOGOUT = "greegree-equip"
@@ -26,16 +27,17 @@ class MonkeyGreeGreesListener : InteractionListener, MapArea {
         private const val LARGE_ZOMBIE_MONKEY = Items.MONKEY_GREEGREE_4030
         private const val MONKEY_GREEGREE = Items.MONKEY_GREEGREE_4031
 
-        private val ALL_STAFFS = intArrayOf(
-            SMALL_NINJA_MONKEY,
-            MEDIUM_NINJA_MONKEY,
-            GORILLA_GREEGREE,
-            BEARDED_GORILLA_GREEGREE,
-            ANCIENT_MONKEY,
-            SMALL_ZOMBIE_MONKEY,
-            LARGE_ZOMBIE_MONKEY,
-            MONKEY_GREEGREE
-        )
+        private val ALL_STAFFS =
+            intArrayOf(
+                SMALL_NINJA_MONKEY,
+                MEDIUM_NINJA_MONKEY,
+                GORILLA_GREEGREE,
+                BEARDED_GORILLA_GREEGREE,
+                ANCIENT_MONKEY,
+                SMALL_ZOMBIE_MONKEY,
+                LARGE_ZOMBIE_MONKEY,
+                MONKEY_GREEGREE,
+            )
         private val AIR_BLAST_ANIMATION = Graphics(359, 96)
     }
 
@@ -43,7 +45,10 @@ class MonkeyGreeGreesListener : InteractionListener, MapArea {
         return arrayOf(APE_ATOLL_ZONE)
     }
 
-    override fun areaLeave(entity: Entity, logout: Boolean) {
+    override fun areaLeave(
+        entity: Entity,
+        logout: Boolean,
+    ) {
         super.areaLeave(entity, logout)
 
         if (entity is Player && !entity.isArtificial) {

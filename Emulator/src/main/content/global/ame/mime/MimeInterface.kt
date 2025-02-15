@@ -1,15 +1,13 @@
 package content.global.ame.mime
 
-import org.rs.consts.Components
 import content.data.GameAttributes
 import core.api.*
 import core.game.interaction.InterfaceListener
 import core.game.node.entity.player.link.emote.Emotes
+import org.rs.consts.Components
 
 class MimeInterface : InterfaceListener {
-
     override fun defineInterfaceListeners() {
-
         on(Components.MACRO_MIME_EMOTES_188) { player, _, _, buttonID, _, _ ->
 
             when (buttonID) {
@@ -23,11 +21,13 @@ class MimeInterface : InterfaceListener {
                 9 -> animate(player, Emotes.GLASS_WALL)
             }
 
-            for (i in (2..9))
-                if (i == buttonID && getAttribute(player, GameAttributes.RE_MIME_INDEX, -1) == i)
+            for (i in (2..9)) {
+                if (i == buttonID && getAttribute(player, GameAttributes.RE_MIME_INDEX, -1) == i) {
                     player.incrementAttribute(GameAttributes.RE_MIME_CORRECT)
-                else
+                } else {
                     setAttribute(player, GameAttributes.RE_MIME_WRONG, 1)
+                }
+            }
 
             runTask(player, 5) {
                 var correct = getAttribute(player, GameAttributes.RE_MIME_CORRECT, -1)

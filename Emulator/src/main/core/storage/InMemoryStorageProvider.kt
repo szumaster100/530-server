@@ -10,8 +10,12 @@ class InMemoryStorageProvider : AccountStorageProvider {
     }
 
     override fun getAccountInfo(username: String): UserAccountInfo {
-        return storage[username] ?: UserAccountInfo.createDefault()
-            .also { it.uid = username.hashCode(); storage[username] = it }
+        return storage[username] ?: UserAccountInfo
+            .createDefault()
+            .also {
+                it.uid = username.hashCode()
+                storage[username] = it
+            }
     }
 
     override fun store(info: UserAccountInfo) {

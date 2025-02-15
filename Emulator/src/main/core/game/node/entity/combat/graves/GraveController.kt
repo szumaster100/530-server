@@ -30,8 +30,11 @@ import org.rs.consts.Sounds
 import java.util.Map
 import kotlin.math.min
 
-class GraveController : PersistWorld, TickListener, InteractionListener, Commands {
-
+class GraveController :
+    PersistWorld,
+    TickListener,
+    InteractionListener,
+    Commands {
     override fun defineListeners() {
         on(GraveType.ids, IntType.NPC, "read", handler = this::onGraveReadOption)
         on(GraveType.ids, IntType.NPC, "bless", handler = this::onGraveBlessed)
@@ -52,7 +55,7 @@ class GraveController : PersistWorld, TickListener, InteractionListener, Command
                         sendMessage(player, "Rights restored")
                         return true
                     }
-                }
+                },
             )
         }
     }
@@ -72,7 +75,10 @@ class GraveController : PersistWorld, TickListener, InteractionListener, Command
         }
     }
 
-    private fun onGraveReadOption(player: Player, node: Node): Boolean {
+    private fun onGraveReadOption(
+        player: Player,
+        node: Node,
+    ): Boolean {
         val grave = node as? Grave ?: return false
         var isGraniteBackground = false
 
@@ -93,7 +99,10 @@ class GraveController : PersistWorld, TickListener, InteractionListener, Command
         return true
     }
 
-    private fun onGraveBlessed(player: Player, node: Node): Boolean {
+    private fun onGraveBlessed(
+        player: Player,
+        node: Node,
+    ): Boolean {
         val g = node as? Grave ?: return false
 
         if (getAttribute(g, "blessed", false)) {
@@ -130,7 +139,10 @@ class GraveController : PersistWorld, TickListener, InteractionListener, Command
         return true
     }
 
-    private fun onGraveRepaired(player: Player, node: Node): Boolean {
+    private fun onGraveRepaired(
+        player: Player,
+        node: Node,
+    ): Boolean {
         val g = node as? Grave ?: return false
 
         if (getAttribute(g, "repaired", false)) {
@@ -156,7 +168,10 @@ class GraveController : PersistWorld, TickListener, InteractionListener, Command
         return true
     }
 
-    private fun onGraveDemolished(player: Player, node: Node): Boolean {
+    private fun onGraveDemolished(
+        player: Player,
+        node: Node,
+    ): Boolean {
         val g = node as? Grave ?: return false
 
         if (player.details.uid != g.ownerUid) {
@@ -211,23 +226,29 @@ class GraveController : PersistWorld, TickListener, InteractionListener, Command
 
         @JvmStatic
         fun checkTransform(item: Item): Item {
-            if (item.hasItemPlugin())
+            if (item.hasItemPlugin()) {
                 return item.plugin!!.getDeathItem(item)
+            }
             return item
         }
 
         @JvmStatic
         fun allowGenerate(player: Player): Boolean {
-            if (player.skullManager.isSkulled)
+            if (player.skullManager.isSkulled) {
                 return false
-            if (player.skullManager.isWilderness)
+            }
+            if (player.skullManager.isWilderness) {
                 return false
-            if (WildernessZone.isInZone(player))
+            }
+            if (WildernessZone.isInZone(player)) {
                 return false
-            if (player.ironmanManager.mode == IronmanMode.HARDCORE)
+            }
+            if (player.ironmanManager.mode == IronmanMode.HARDCORE) {
                 return false
-            if (player.zoneMonitor.isRestricted(ZoneRestriction.GRAVES))
+            }
+            if (player.zoneMonitor.isRestricted(ZoneRestriction.GRAVES)) {
                 return false
+            }
             return true
         }
 
@@ -237,7 +258,10 @@ class GraveController : PersistWorld, TickListener, InteractionListener, Command
         }
 
         @JvmStatic
-        fun updateGraveType(player: Player, type: GraveType) {
+        fun updateGraveType(
+            player: Player,
+            type: GraveType,
+        ) {
             setAttribute(player, ATTR_GTYPE, type.ordinal)
         }
 

@@ -1,16 +1,18 @@
 package content.minigame.allfiredup
 
-import org.rs.consts.Items
 import core.api.addItem
 import core.api.getAttribute
 import core.api.removeAttribute
 import core.game.dialogue.DialogueFile
 import core.tools.END_DIALOGUE
 import core.tools.START_DIALOGUE
+import org.rs.consts.Items
 
 class KingRoaldAFUDialogue : DialogueFile() {
-
-    override fun handle(componentID: Int, buttonID: Int) {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         when (stage) {
             START_DIALOGUE -> npc("Did what?").also { stage++ }
             1 -> {
@@ -26,21 +28,33 @@ class KingRoaldAFUDialogue : DialogueFile() {
 
             2 -> {
                 npc("Oh, wonderful! Here is your reward then.")
-                if (getAttribute(player!!, "afu-mini:adze", false)) if (addItem(
-                        player!!,
-                        Items.INFERNO_ADZE_13661
-                    )
-                ) removeAttribute(player!!, "afu-mini:adze")
-                if (getAttribute(player!!, "afu-mini:gloves", false)) if (addItem(
-                        player!!,
-                        Items.FLAME_GLOVES_13660
-                    )
-                ) removeAttribute(player!!, "afu-mini:gloves")
-                if (getAttribute(player!!, "afu-mini:ring", false)) if (addItem(
-                        player!!,
-                        Items.RING_OF_FIRE_13659
-                    )
-                ) removeAttribute(player!!, "afu-mini:ring")
+                if (getAttribute(player!!, "afu-mini:adze", false)) {
+                    if (addItem(
+                            player!!,
+                            Items.INFERNO_ADZE_13661,
+                        )
+                    ) {
+                        removeAttribute(player!!, "afu-mini:adze")
+                    }
+                }
+                if (getAttribute(player!!, "afu-mini:gloves", false)) {
+                    if (addItem(
+                            player!!,
+                            Items.FLAME_GLOVES_13660,
+                        )
+                    ) {
+                        removeAttribute(player!!, "afu-mini:gloves")
+                    }
+                }
+                if (getAttribute(player!!, "afu-mini:ring", false)) {
+                    if (addItem(
+                            player!!,
+                            Items.RING_OF_FIRE_13659,
+                        )
+                    ) {
+                        removeAttribute(player!!, "afu-mini:ring")
+                    }
+                }
                 stage = END_DIALOGUE
             }
 

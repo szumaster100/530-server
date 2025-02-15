@@ -5,11 +5,11 @@ import core.api.log
 import core.game.node.item.GroundItem
 import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
-import core.tools.Log
 import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.game.world.repository.Repository
+import core.tools.Log
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
@@ -33,12 +33,22 @@ class GroundSpawnLoader {
                 val id = e["item_id"].toString().toInt()
                 for (d in data) {
                     if (d.isNullOrEmpty()) continue
-                    val tokens = d.replace("{", "").replace("}", "").split(",".toRegex()).toTypedArray()
-                    val spawn = GroundSpawn(
-                        tokens[4].toInt(),
-                        Item(id, tokens[0].toInt()),
-                        Location(Integer.valueOf(tokens[1]), Integer.valueOf(tokens[2]), Integer.valueOf(tokens[3]))
-                    )
+                    val tokens =
+                        d
+                            .replace("{", "")
+                            .replace("}", "")
+                            .split(",".toRegex())
+                            .toTypedArray()
+                    val spawn =
+                        GroundSpawn(
+                            tokens[4].toInt(),
+                            Item(id, tokens[0].toInt()),
+                            Location(
+                                Integer.valueOf(tokens[1]),
+                                Integer.valueOf(tokens[2]),
+                                Integer.valueOf(tokens[3]),
+                            ),
+                        )
                     spawn.init()
                     count++
                 }
@@ -53,8 +63,11 @@ class GroundSpawnLoader {
         log(this::class.java, Log.FINE, "Initialized $count ground items.")
     }
 
-    class GroundSpawn(var respawnRate: Int, item: Item, location: Location?) : GroundItem(item, location) {
-
+    class GroundSpawn(
+        var respawnRate: Int,
+        item: Item,
+        location: Location?,
+    ) : GroundItem(item, location) {
         override fun toString(): String {
             return "GroundSpawn [name=" + getName() + ", respawnRate=" + respawnRate + ", loc=" + getLocation() + "]"
         }
@@ -63,7 +76,9 @@ class GroundSpawnLoader {
             buffer.putInt(respawnRate)
             buffer.putShort(id.toShort())
             buffer.putInt(amount)
-            buffer.putShort((getLocation().x and 0xFFFF).toShort()).putShort((getLocation().y and 0xFFFF).toShort())
+            buffer
+                .putShort((getLocation().x and 0xFFFF).toShort())
+                .putShort((getLocation().y and 0xFFFF).toShort())
                 .put(getLocation().z.toByte())
         }
 
@@ -90,11 +105,14 @@ class GroundSpawnLoader {
                         GroundItemManager.create(this@GroundSpawn)
                         return true
                     }
-                }
+                },
             )
         }
 
-        fun setRespawnRate(min: Int, max: Int) {
+        fun setRespawnRate(
+            min: Int,
+            max: Int,
+        ) {
             respawnRate = min or max shl 16
         }
 

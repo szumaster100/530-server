@@ -2,14 +2,13 @@ package content.global.handlers.iface
 
 import content.data.GameAttributes
 import content.region.misc.handlers.tutorial.TutorialStage
-import org.rs.consts.Components
 import core.api.*
 import core.game.interaction.InterfaceListener
 import core.game.node.entity.skill.LevelUp
 import core.game.node.entity.skill.Skills
+import org.rs.consts.Components
 
 class StatsTabInterface : InterfaceListener {
-
     override fun defineInterfaceListeners() {
         on(Components.STATS_320) { player, _, _, buttonID, _, _ ->
             val config = skillMap[buttonID] ?: return@on true
@@ -49,32 +48,33 @@ class StatsTabInterface : InterfaceListener {
 
     companion object {
         val skillMap = HashMap<Int, SkillConfig>()
-        val ADVANCE_CONFIGS = intArrayOf(
-            9,
-            40,
-            17,
-            49,
-            25,
-            57,
-            33,
-            641,
-            659,
-            664,
-            121,
-            649,
-            89,
-            114,
-            107,
-            72,
-            64,
-            80,
-            673,
-            680,
-            99,
-            698,
-            689,
-            705
-        )
+        val ADVANCE_CONFIGS =
+            intArrayOf(
+                9,
+                40,
+                17,
+                49,
+                25,
+                57,
+                33,
+                641,
+                659,
+                664,
+                121,
+                649,
+                89,
+                114,
+                107,
+                72,
+                64,
+                80,
+                673,
+                680,
+                99,
+                698,
+                689,
+                705,
+            )
 
         init {
             for (skill in SkillConfig.values()) {
@@ -82,7 +82,11 @@ class StatsTabInterface : InterfaceListener {
             }
         }
 
-        enum class SkillConfig(val buttonID: Int, val configID: Int, val skillID: Int) {
+        enum class SkillConfig(
+            val buttonID: Int,
+            val configID: Int,
+            val skillID: Int,
+        ) {
             ATTACK(buttonID = 125, configID = 1, skillID = Skills.ATTACK),
             STRENGTH(buttonID = 126, configID = 2, skillID = Skills.STRENGTH),
             DEFENCE(buttonID = 127, configID = 5, skillID = Skills.DEFENCE),

@@ -23,7 +23,6 @@ class CosmicCrafter : Script() {
     var endZone = ZoneBorders(2405, 4392, 2410, 4397)
     var agility_part = 0
 
-
     var ruinsZone = ZoneBorders(2400, 4370, 2410, 4385)
     var cosmicZone = ZoneBorders(2160, 4830, 2170, 4840)
 
@@ -77,17 +76,17 @@ class CosmicCrafter : Script() {
             State.FIRST_AGILITY -> {
                 val squeezeWall = scriptAPI.getNearestNode(12127, true)
                 if (agility_part == 0) {
-                    if (!squeezeZone.insideBorder(bot))
+                    if (!squeezeZone.insideBorder(bot)) {
                         scriptAPI.walkTo(agility1EntryPoint)
-                    else {
+                    } else {
                         scriptAPI.interact(bot, squeezeWall, "squeeze-past")
                         agility_part = 1
                         timer = 6
                     }
                 } else if (agility_part == 1) {
-                    if (!endZone.insideBorder(bot))
+                    if (!endZone.insideBorder(bot)) {
                         scriptAPI.walkTo(agility2EntryPoint)
-                    else {
+                    } else {
                         scriptAPI.interact(bot, squeezeWall, "squeeze-past")
                         state = State.RUNNING_TO_ALTER
                         timer = 6
@@ -96,8 +95,9 @@ class CosmicCrafter : Script() {
             }
 
             State.RUNNING_TO_ALTER -> {
-                if (cosmicZone.insideBorder(bot))
+                if (cosmicZone.insideBorder(bot)) {
                     state = State.CRAFTING
+                }
 
                 val ruins = scriptAPI.getNearestNode(2458, true)
                 if (!ruinsZone.insideBorder(bot)) {
@@ -117,8 +117,9 @@ class CosmicCrafter : Script() {
             State.CRAFTING -> {
                 val alter = scriptAPI.getNearestNode(2484, true)
                 scriptAPI.interact(bot, alter, "craft-rune")
-                if (bot.inventory.containsAtLeastOneItem(Item(Items.COSMIC_RUNE_564)))
+                if (bot.inventory.containsAtLeastOneItem(Item(Items.COSMIC_RUNE_564))) {
                     state = State.LEAVING_ALTER
+                }
             }
 
             State.LEAVING_ALTER -> {
@@ -133,17 +134,17 @@ class CosmicCrafter : Script() {
             State.RETURN_AGILITY -> {
                 val squeezeWall = scriptAPI.getNearestNode(12127, true)
                 if (agility_part == 1) {
-                    if (!endZone.insideBorder(bot))
+                    if (!endZone.insideBorder(bot)) {
                         scriptAPI.walkTo(agility2ExitPoint)
-                    else {
+                    } else {
                         scriptAPI.interact(bot, squeezeWall, "squeeze-past")
                         agility_part = 0
                         timer = 6
                     }
                 } else if (agility_part == 0) {
-                    if (!squeezeZone.insideBorder(bot))
+                    if (!squeezeZone.insideBorder(bot)) {
                         scriptAPI.walkTo(agility1ExitPoint)
-                    else {
+                    } else {
                         scriptAPI.interact(bot, squeezeWall, "squeeze-past")
                         state = State.BANKING
                         timer = 6
@@ -170,7 +171,6 @@ class CosmicCrafter : Script() {
         RUNNING_TO_ALTER,
         CRAFTING,
         LEAVING_ALTER,
-        INVALID
+        INVALID,
     }
-
 }

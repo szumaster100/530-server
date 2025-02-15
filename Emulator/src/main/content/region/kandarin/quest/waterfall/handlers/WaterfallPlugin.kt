@@ -1,6 +1,5 @@
 package content.region.kandarin.quest.waterfall.handlers
 
-import org.rs.consts.Quests
 import core.api.*
 import core.cache.def.impl.ItemDefinition
 import core.cache.def.impl.NPCDefinition
@@ -22,11 +21,11 @@ import core.game.node.scenery.SceneryBuilder
 import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
-import core.plugin.Plugin
 import core.plugin.ClassScanner.definePlugin
+import core.plugin.Plugin
+import org.rs.consts.Quests
 
 class WaterfallPlugin : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         definePlugin(WaterfallUseWithHandler())
         NPCDefinition.forId(305).handlers["option:talk-to"] = this
@@ -52,7 +51,11 @@ class WaterfallPlugin : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val id = node.id
         val quest = player.getQuestRepository().getQuest(Quests.WATERFALL_QUEST)
         if (quest == null) {
@@ -65,10 +68,14 @@ class WaterfallPlugin : OptionHandler() {
                 player.pulseManager.run(
                     object : Pulse(2, player) {
                         override fun pulse(): Boolean {
-                            if ((player.equipment.containsAtLeastOneItem(295) || player.inventory.contains(
-                                    295,
-                                    1
-                                )) || player.getQuestRepository().isComplete("Waterfall")
+                            if ((
+                                    player.equipment.containsAtLeastOneItem(295) ||
+                                        player.inventory.contains(
+                                            295,
+                                            1,
+                                        )
+                                ) ||
+                                player.getQuestRepository().isComplete("Waterfall")
                             ) {
                                 player.packetDispatch.sendMessage("You walk through the door.")
                                 player.teleport(Location(2575, 9861))
@@ -78,7 +85,7 @@ class WaterfallPlugin : OptionHandler() {
                             }
                             return true
                         }
-                    }
+                    },
                 )
             }
 
@@ -94,7 +101,7 @@ class WaterfallPlugin : OptionHandler() {
                                 removeAttribute(player, "waterfall_placed_runes")
                                 return true
                             }
-                        }
+                        },
                     )
                 } else {
                     player.packetDispatch.sendMessage("You have already looted the treasure.")
@@ -112,10 +119,13 @@ class WaterfallPlugin : OptionHandler() {
                 if (player.location == Location(2568, 9893)) {
                     player.packetDispatch.sendMessage("The door is locked.")
                 } else if (node.location == Location(2566, 9901) || player.location == Location(2568, 9894, 0)) {
-                    if (quest.getStage(player) >= 100 && node.location == Location(
+                    if (quest.getStage(player) >= 100 &&
+                        node.location ==
+                        Location(
                             2566,
-                            9901
-                        ) && player.location == Location(2566, 9901)
+                            9901,
+                        ) &&
+                        player.location == Location(2566, 9901)
                     ) {
                         player.teleport(Location(2604, 9901))
                     } else {
@@ -128,14 +138,15 @@ class WaterfallPlugin : OptionHandler() {
                 }
             }
 
-            33046 -> SceneryBuilder.add(
-                Scenery(
-                    33047,
-                    Location.create(2530, 9844, 0),
-                    10,
-                    1
+            33046 ->
+                SceneryBuilder.add(
+                    Scenery(
+                        33047,
+                        Location.create(2530, 9844, 0),
+                        10,
+                        1,
+                    ),
                 )
-            )
 
             42319 ->
                 if (node.location == Location(2556, 9844)) {
@@ -144,34 +155,40 @@ class WaterfallPlugin : OptionHandler() {
                     climbLadder(player, node as Scenery, option)
                 }
 
-            33047 -> when (option) {
-                "open", "search" -> if (quest.getStage(player) >= 30) {
-                    if (!player.hasItem(Item(295))) {
-                        player.packetDispatch.sendMessage("You search the chest and find a small amulet.")
-                        player.inventory.add(Item(295, 1))
+            33047 ->
+                when (option) {
+                    "open", "search" ->
+                        if (quest.getStage(player) >= 30) {
+                            if (!player.hasItem(Item(295))) {
+                                player.packetDispatch.sendMessage("You search the chest and find a small amulet.")
+                                player.inventory.add(Item(295, 1))
+                            } else {
+                                player.packetDispatch.sendMessage("You search the chest and find nothing.")
+                            }
+                        }
+
+                    "close" ->
+                        SceneryBuilder.add(
+                            Scenery(
+                                33046,
+                                Location.create(2530, 9844, 0),
+                                10,
+                                1,
+                            ),
+                        )
+                }
+
+            33066 ->
+                if (quest.getStage(player) >= 30) {
+                    if (!player.inventory.contains(296, 1)) {
+                        player.packetDispatch.sendMessage(
+                            "You search the coffin and inside you find an urn full of ashes.",
+                        )
+                        player.inventory.add(Item(296, 1))
                     } else {
-                        player.packetDispatch.sendMessage("You search the chest and find nothing.")
+                        player.packetDispatch.sendMessage("You search the coffin and find nothing.")
                     }
                 }
-
-                "close" -> SceneryBuilder.add(
-                    Scenery(
-                        33046,
-                        Location.create(2530, 9844, 0),
-                        10,
-                        1
-                    )
-                )
-            }
-
-            33066 -> if (quest.getStage(player) >= 30) {
-                if (!player.inventory.contains(296, 1)) {
-                    player.packetDispatch.sendMessage("You search the coffin and inside you find an urn full of ashes.")
-                    player.inventory.add(Item(296, 1))
-                } else {
-                    player.packetDispatch.sendMessage("You search the coffin and find nothing.")
-                }
-            }
 
             32711 -> player.teleport(Location(2511, 3463))
             2020 -> player.dialogueInterpreter.open("waterfall_tree_dialogue", 0)
@@ -189,14 +206,16 @@ class WaterfallPlugin : OptionHandler() {
                     handleAutowalkDoor(player, (node as Scenery))
                     player.packetDispatch.sendMessage("You open the gate and walk through.")
                 } else if (player.inventory.contains(293, 1) && player.location.y < 9576) {
-                    player.packetDispatch.sendMessage("The gate is locked. You need to use the key on the door to enter.")
+                    player.packetDispatch.sendMessage(
+                        "The gate is locked. You need to use the key on the door to enter.",
+                    )
                 } else {
                     player.dialogueInterpreter.sendDialogues(
                         306,
                         FaceAnim.OLD_DEFAULT,
                         "Hello? Ah yes, the door is still locked.",
                         "If you want to get in here, you'll need to find the key",
-                        "that I hid in some crates in the eastern room."
+                        "that I hid in some crates in the eastern room.",
                     )
                 }
 
@@ -205,7 +224,9 @@ class WaterfallPlugin : OptionHandler() {
                     player.packetDispatch.sendMessage("You search the bookcase and find nothing of interest.")
                 } else if (!player.hasItem(Item(292)) && quest.getStage(player) == 20) {
                     player.inventory.add(Item(292, 1))
-                    player.packetDispatch.sendMessage("You search the bookcase and find a book named 'Book on Baxtorian'")
+                    player.packetDispatch.sendMessage(
+                        "You search the bookcase and find a book named 'Book on Baxtorian'",
+                    )
                 }
 
             10283, 1996 -> {
@@ -221,7 +242,7 @@ class WaterfallPlugin : OptionHandler() {
                     Location(2512, 3471, 0),
                     Animation.create(164),
                     0.0,
-                    null
+                    null,
                 )
                 player.packetDispatch.sendMessage("It looks like a long distance, but you swim out into the water.")
                 player.packetDispatch.sendMessage("The current is too strong, you feel yourself being pulled under", 3)
@@ -232,7 +253,7 @@ class WaterfallPlugin : OptionHandler() {
                             player.teleport(Location(2527, 3413))
                             return true
                         }
-                    }
+                    },
                 )
             }
 
@@ -255,7 +276,7 @@ class WaterfallPlugin : OptionHandler() {
                                 player.teleport(Location(2512, 3481))
                                 return true
                             }
-                        }
+                        },
                     )
                 } else {
                     player.dialogueInterpreter.sendDialogue("You have no reason to board this raft.")
@@ -266,7 +287,10 @@ class WaterfallPlugin : OptionHandler() {
         return true
     }
 
-    override fun getDestination(node: Node, n: Node): Location? {
+    override fun getDestination(
+        node: Node,
+        n: Node,
+    ): Location? {
         if (n is NPC) {
             if (n.id == 305) {
                 return Location.create(2512, 3481, 0)
@@ -281,7 +305,10 @@ class WaterfallPlugin : OptionHandler() {
         return null
     }
 
-    override fun isWalk(player: Player, node: Node): Boolean {
+    override fun isWalk(
+        player: Player,
+        node: Node,
+    ): Boolean {
         return node !is Item
     }
 
@@ -289,7 +316,10 @@ class WaterfallPlugin : OptionHandler() {
         return false
     }
 
-    fun handleObjects(add: Boolean, player: Player?) {
+    fun handleObjects(
+        add: Boolean,
+        player: Player?,
+    ) {
         if (add) {
             ROPES.add(Scenery(1997, Location.create(2512, 3468, 0), 10, 0))
             ROPES.add(Scenery(1998, Location.create(2512, 3469, 0), 10, 0))
@@ -312,8 +342,8 @@ class WaterfallPlugin : OptionHandler() {
                     1996,
                     Location.create(2512, 3468, 0),
                     10,
-                    0
-                )
+                    0,
+                ),
             )
         }
     }
@@ -327,17 +357,18 @@ class WaterfallPlugin : OptionHandler() {
         player.packetDispatch.sendGlobalPositionGraphic(580, Location(2569, 9910))
     }
 
-    inner class WaterfallUseWithHandler : UseWithHandler(
-        ROPE.id,
-        KEY.id,
-        PEBBLE.id,
-        KEY_2.id,
-        AMULET.id,
-        URN.id,
-        AIR_RUNE.id,
-        EARTH_RUNE.id,
-        WATER_RUNE.id
-    ) {
+    inner class WaterfallUseWithHandler :
+        UseWithHandler(
+            ROPE.id,
+            KEY.id,
+            PEBBLE.id,
+            KEY_2.id,
+            AMULET.id,
+            URN.id,
+            AIR_RUNE.id,
+            EARTH_RUNE.id,
+            WATER_RUNE.id,
+        ) {
         private val OBJECTS = intArrayOf(1996, 1997, 2020, 1991, 1992, 2002, 2006, 2014, 2004)
 
         override fun newInstance(arg: Any?): Plugin<Any> {
@@ -347,7 +378,10 @@ class WaterfallPlugin : OptionHandler() {
             return this
         }
 
-        override fun getDestination(playa: Player, n: Node): Location? {
+        override fun getDestination(
+            playa: Player,
+            n: Node,
+        ): Location? {
             if (n is Scenery) {
                 val obj = n
                 if (obj.id == 1996 || obj.id == 1997) {
@@ -384,7 +418,7 @@ class WaterfallPlugin : OptionHandler() {
                                 Location(2512, 3469, 0),
                                 Animation.create(273),
                                 0.0,
-                                null
+                                null,
                             )
                             player.pulseManager.run(
                                 object : Pulse(8, player) {
@@ -402,11 +436,11 @@ class WaterfallPlugin : OptionHandler() {
                                             handleObjects(false, player)
                                         }
                                     }
-                                }
+                                },
                             )
                             return true
                         }
-                    }
+                    },
                 )
             }
 
@@ -443,17 +477,21 @@ class WaterfallPlugin : OptionHandler() {
                             player.teleport(Location(2555, 9844))
                             return true
                         }
-                    }
+                    },
                 )
             } else if (!ItemDefinition.canEnterEntrana(player) && useditem.id == PEBBLE.id && scenery.id == 1992) {
                 player.packetDispatch.sendMessage("You place the pebble in the gravestone's small indent.")
                 player.packetDispatch.sendMessage("It fits perfectly.")
                 player.packetDispatch.sendMessage("But nothing happens.", 4)
             }
-            if ((useditem.id == AIR_RUNE.id || useditem.id == EARTH_RUNE.id || useditem.id == WATER_RUNE.id) && scenery.id == 2004) {
-                if (player.inventory.contains(555, 6) && player.inventory.contains(556, 6) && player.inventory.contains(
+            if ((useditem.id == AIR_RUNE.id || useditem.id == EARTH_RUNE.id || useditem.id == WATER_RUNE.id) &&
+                scenery.id == 2004
+            ) {
+                if (player.inventory.contains(555, 6) &&
+                    player.inventory.contains(556, 6) &&
+                    player.inventory.contains(
                         557,
-                        6
+                        6,
                     )
                 ) {
                     if (player.getAttribute<Any?>("waterfall_placed_runes") != null) {
@@ -471,9 +509,13 @@ class WaterfallPlugin : OptionHandler() {
                 }
             }
 
-            if (useditem.id == AMULET.id && scenery.id == 2006 && quest.getStage(player) != 100 && player.location != Location(
+            if (useditem.id == AMULET.id &&
+                scenery.id == 2006 &&
+                quest.getStage(player) != 100 &&
+                player.location !=
+                Location(
                     2603,
-                    9914
+                    9914,
                 )
             ) {
                 if (player.getAttribute<Any?>("waterfall_placed_runes") == null) {
@@ -484,10 +526,12 @@ class WaterfallPlugin : OptionHandler() {
                             override fun pulse(): Boolean {
                                 player.packetDispatch.sendGraphic(74)
                                 player.impactHandler.manualHit(player, 20, HitsplatType.NORMAL)
-                                player.packetDispatch.sendMessage("Rocks fall from the ceiling and hit you in the head.")
+                                player.packetDispatch.sendMessage(
+                                    "Rocks fall from the ceiling and hit you in the head.",
+                                )
                                 return true
                             }
-                        }
+                        },
                     )
                 } else if (player.getAttribute<Any?>("waterfall_placed_runes") != null) {
                     player.lock(7)
@@ -501,7 +545,7 @@ class WaterfallPlugin : OptionHandler() {
                                 player.teleport(Location(2603, 9914))
                                 return true
                             }
-                        }
+                        },
                     )
                 }
             }
@@ -526,7 +570,7 @@ class WaterfallPlugin : OptionHandler() {
                                 quest.finish(player)
                                 return true
                             }
-                        }
+                        },
                     )
                 }
             }

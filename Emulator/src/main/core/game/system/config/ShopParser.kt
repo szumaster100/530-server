@@ -13,9 +13,10 @@ class ShopParser {
     var reader: FileReader? = null
 
     companion object {
-
-        fun openUid(player: Player, uid: Int): Boolean {
-
+        fun openUid(
+            player: Player,
+            uid: Int,
+        ): Boolean {
             return true
         }
     }
@@ -25,7 +26,6 @@ class ShopParser {
         reader = FileReader(ServerConfig.CONFIG_PATH + "shops.json")
         val configlist = parser.parse(reader) as JSONArray
         for (config in configlist) {
-
             count++
         }
 

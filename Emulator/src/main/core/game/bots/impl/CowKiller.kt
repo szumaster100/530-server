@@ -1,13 +1,13 @@
 package core.game.bots.impl
 
+import core.game.bots.CombatBotAssembler
+import core.game.bots.Script
 import core.game.interaction.DestinationFlag
 import core.game.interaction.MovementPulse
 import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.game.world.map.zone.ZoneBorders
 import org.rs.consts.Items
-import core.game.bots.CombatBotAssembler
-import core.game.bots.Script
 
 class CowKiller : Script() {
     var state = State.KILLING
@@ -29,24 +29,27 @@ class CowKiller : Script() {
             }
 
             State.LOOTING -> {
-                bot.pulseManager.run(object : Pulse(4) {
-                    override fun pulse(): Boolean {
-                        state = State.KILLING
-                        scriptAPI.takeNearestGroundItem(Items.COWHIDE_1739)
-                        state = if (bot.inventory.getAmount(Items.COWHIDE_1739) > 22) {
-                            State.TO_BANK
-                        } else {
-                            State.KILLING
+                bot.pulseManager.run(
+                    object : Pulse(4) {
+                        override fun pulse(): Boolean {
+                            state = State.KILLING
+                            scriptAPI.takeNearestGroundItem(Items.COWHIDE_1739)
+                            state =
+                                if (bot.inventory.getAmount(Items.COWHIDE_1739) > 22) {
+                                    State.TO_BANK
+                                } else {
+                                    State.KILLING
+                                }
+                            return true
                         }
-                        return true
-                    }
-                })
+                    },
+                )
             }
 
             State.TO_BANK -> {
-                if (cowZone.insideBorder(bot))
+                if (cowZone.insideBorder(bot)) {
                     scriptAPI.walkTo(Location.create(3253, 3267, 0))
-                else {
+                } else {
                     val closedGate = scriptAPI.getNearestNode(15516, true)
                     if (closedGate != null && closedGate.location.withinDistance(bot.location, 2)) {
                         closedGate.interaction.handle(bot, closedGate.interaction[0])
@@ -76,26 +79,27 @@ class CowKiller : Script() {
             State.BANKING -> {
                 if (bankZone.insideBorder(bot)) {
                     val bank = scriptAPI.getNearestNode(36786, true)
-                    bot.pulseManager.run(object : MovementPulse(bot, bank, DestinationFlag.OBJECT) {
-                        override fun pulse(): Boolean {
-                            scriptAPI.bankItem(Items.COWHIDE_1739)
-                            if (bot.bank.getAmount(Items.COWHIDE_1739) > 75) {
-                                scriptAPI.teleportToGE()
-                                state = State.TELE_GE
-                            } else {
-                                state = State.BACK_TO_COWS
+                    bot.pulseManager.run(
+                        object : MovementPulse(bot, bank, DestinationFlag.OBJECT) {
+                            override fun pulse(): Boolean {
+                                scriptAPI.bankItem(Items.COWHIDE_1739)
+                                if (bot.bank.getAmount(Items.COWHIDE_1739) > 75) {
+                                    scriptAPI.teleportToGE()
+                                    state = State.TELE_GE
+                                } else {
+                                    state = State.BACK_TO_COWS
+                                }
+                                return true
                             }
-                            return true
-                        }
-                    })
+                        },
+                    )
                 }
             }
 
-
             State.BACK_TO_COWS -> {
-                if (bankZone.insideBorder(bot))
+                if (bankZone.insideBorder(bot)) {
                     scriptAPI.walkTo(Location.create(3206, 3229, 2))
-                else {
+                } else {
                     when (bot.location) {
                         Location.create(3206, 3229, 2) -> {
                             val stairs = scriptAPI.getNearestNode(36778, true)
@@ -122,12 +126,12 @@ class CowKiller : Script() {
                 }
             }
 
-
             State.TELE_GE -> {
-                if (bot.location == Location.create(3165, 3482, 0))
+                if (bot.location == Location.create(3165, 3482, 0)) {
                     state = State.SELL_GE
-                else
+                } else {
                     scriptAPI.walkTo(Location.create(3165, 3482, 0))
+                }
             }
 
             State.SELL_GE -> {
@@ -150,16 +154,17 @@ class CowKiller : Script() {
         BACK_TO_COWS,
         SELL_GE,
         TELE_GE,
-        TELE_LUM
+        TELE_LUM,
     }
 
     override fun newInstance(): Script {
         val script = CowKiller()
-        script.bot = CombatBotAssembler().produce(
-            CombatBotAssembler.Type.values().random(),
-            CombatBotAssembler.Tier.LOW,
-            spawnZone.randomLoc
-        )
+        script.bot =
+            CombatBotAssembler().produce(
+                CombatBotAssembler.Type.values().random(),
+                CombatBotAssembler.Tier.LOW,
+                spawnZone.randomLoc,
+            )
         script.state = State.KILLING
         return script
     }

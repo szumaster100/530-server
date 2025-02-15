@@ -7,9 +7,15 @@ import core.game.world.map.Location
 import core.plugin.Initializable
 
 @Initializable
-class SuspectNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+class SuspectNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return SuspectNPC(id, location)
     }
 

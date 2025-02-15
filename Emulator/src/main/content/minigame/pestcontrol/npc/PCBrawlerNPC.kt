@@ -1,6 +1,5 @@
 package content.minigame.pestcontrol.npc
 
-import org.rs.consts.NPCs
 import content.minigame.pestcontrol.PestControlSession
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.BattleState
@@ -8,9 +7,9 @@ import core.game.node.entity.combat.CombatStyle
 import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.player.Player
 import core.game.world.map.Location
+import org.rs.consts.NPCs
 
 class PCBrawlerNPC : AbstractNPC {
-
     private var session: PestControlSession? = null
 
     constructor() : super(NPCs.BRAWLER_3772, null)
@@ -30,7 +29,10 @@ class PCBrawlerNPC : AbstractNPC {
         return true
     }
 
-    override fun onImpact(entity: Entity, state: BattleState) {
+    override fun onImpact(
+        entity: Entity,
+        state: BattleState,
+    ) {
         super.onImpact(entity, state)
         if (session != null && state != null && entity is Player) {
             var total = 0
@@ -44,7 +46,11 @@ class PCBrawlerNPC : AbstractNPC {
         }
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return PCBrawlerNPC(id, location)
     }
 

@@ -11,7 +11,6 @@ import org.rs.consts.NPCs
 import org.rs.consts.Sounds
 
 class SpiderHolidayRandomNPC : HolidayRandomEventNPC(NPCs.SPIDER_61) {
-
     override fun init() {
         super.init()
         this.behavior = SpiderHolidayRandomBehavior()

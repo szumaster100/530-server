@@ -1,21 +1,25 @@
 package content.region.misthalin.dialogue.lumbridge.tutor
 
-import org.rs.consts.NPCs
 import core.game.dialogue.Dialogue
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
-class BarfyBillDialogue(player: Player? = null) : Dialogue(player) {
-
+class BarfyBillDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         player("Hello there.")
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 npc("Oh! Hello there.")
@@ -27,17 +31,21 @@ class BarfyBillDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 2
             }
 
-            2 -> when (buttonId) {
-                1 -> {
-                    player("Who are you?")
-                    stage = 1000
-                }
+            2 ->
+                when (buttonId) {
+                    1 -> {
+                        player("Who are you?")
+                        stage = 1000
+                    }
 
-                2 -> {
-                    npc("It's really quite simple. Just walk down to that tree on", "the water bank and chop it down.")
-                    stage = 24
+                    2 -> {
+                        npc(
+                            "It's really quite simple. Just walk down to that tree on",
+                            "the water bank and chop it down.",
+                        )
+                        stage = 24
+                    }
                 }
-            }
 
             24 -> {
                 npc("Then take your axe to it and shape it how you like!")
@@ -63,7 +71,7 @@ class BarfyBillDialogue(player: Player? = null) : Dialogue(player) {
             1002 -> {
                 npc(
                     "Yeah, I bought a lovely ship and was planning to make",
-                    "a fortune running her as a merchant vessel."
+                    "a fortune running her as a merchant vessel.",
                 )
                 stage = 1003
             }
@@ -113,14 +121,15 @@ class BarfyBillDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 504
             }
 
-            504 -> when (buttonId) {
-                1 -> {
-                    player("Could you teach me about canoes?")
-                    stage = 560
-                }
+            504 ->
+                when (buttonId) {
+                    1 -> {
+                        player("Could you teach me about canoes?")
+                        stage = 560
+                    }
 
-                2 -> end()
-            }
+                    2 -> end()
+                }
 
             560 -> {
                 npc("It's really quite simple. Just walk down to that tree on", "the water bank and chop it down.")

@@ -3,7 +3,6 @@ package core.api.utils
 object CameraUtils
 
 enum class CameraShakeType {
-
     TRUCK,
 
     PEDESTAL,
@@ -12,5 +11,5 @@ enum class CameraShakeType {
 
     PAN,
 
-    TILT
+    TILT,
 }

@@ -1,16 +1,17 @@
 package content.region.misthalin.dialogue.varrock
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class FatherLawrenceDialogue(player: Player? = null) : Dialogue(player) {
-
+class FatherLawrenceDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         val quest = player.getQuestRepository().getQuest(Quests.ROMEO_JULIET)
@@ -47,7 +48,10 @@ class FatherLawrenceDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         val quest = player.getQuestRepository().getQuest(Quests.ROMEO_JULIET)
         when (stage) {
             0 -> {
@@ -100,7 +104,7 @@ class FatherLawrenceDialogue(player: Player? = null) : Dialogue(player) {
                 player(
                     "Yes, very confused....Anyway, Romeo wishes to be",
                     "married to Juliet! She must be rescued from her",
-                    "father's control!"
+                    "father's control!",
                 )
                 stage = 49
             }
@@ -129,7 +133,7 @@ class FatherLawrenceDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "Then Romeo can collect her from the crypt! Go to the",
                     "Apothecary, tell him I sent you and that you'll need a",
-                    "'Cadava' potion."
+                    "'Cadava' potion.",
                 )
                 stage = 54
             }
@@ -164,7 +168,7 @@ class FatherLawrenceDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "I heard some kids saying they saw some the other day.",
                     "They were visiting the mining place to the south east",
-                    "Varrock."
+                    "Varrock.",
                 )
                 stage = 824
             }

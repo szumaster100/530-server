@@ -1,6 +1,5 @@
 package content.minigame.pestcontrol.npc
 
-import org.rs.consts.NPCs
 import content.minigame.pestcontrol.PestControlSession
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.BattleState
@@ -10,6 +9,7 @@ import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.player.Player
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.NPCs
 
 class PCSquireNPC : AbstractNPC {
     private var session: PestControlSession? = null
@@ -19,11 +19,19 @@ class PCSquireNPC : AbstractNPC {
 
     constructor(id: Int, location: Location?) : super(id, location, false)
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return PCSquireNPC(id, location)
     }
 
-    override fun isAttackable(entity: Entity, style: CombatStyle, message: Boolean): Boolean {
+    override fun isAttackable(
+        entity: Entity,
+        style: CombatStyle,
+        message: Boolean,
+    ): Boolean {
         return !(DeathTask.isDead(this) || entity is Player)
     }
 
@@ -52,7 +60,10 @@ class PCSquireNPC : AbstractNPC {
         }
     }
 
-    override fun onImpact(entity: Entity, state: BattleState) {
+    override fun onImpact(
+        entity: Entity,
+        state: BattleState,
+    ) {
         FlagInterfaceUpdate()
         super.onImpact(entity, state)
     }

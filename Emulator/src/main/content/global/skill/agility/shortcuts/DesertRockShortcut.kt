@@ -1,22 +1,20 @@
 package content.global.skill.agility.shortcuts
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.system.task.Pulse
 import core.game.world.GameWorld
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class DesertRockShortcut : InteractionListener {
-
     private val ROCK = Scenery.ROCK_28487
     private val ROPE = Scenery.ROPE_28490
     private val TIE_ROPE = Animations.HUMAN_TIE_ROPE_9086
 
     override fun defineListeners() {
-
         onUseWith(IntType.SCENERY, Items.ROPE_954, ROCK) { player, _, _ ->
             animate(player, TIE_ROPE)
             setVarbit(player, 4231, 1)
@@ -45,7 +43,7 @@ class DesertRockShortcut : InteractionListener {
                         }
                         return false
                     }
-                }
+                },
             )
             return@on true
         }

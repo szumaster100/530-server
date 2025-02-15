@@ -10,13 +10,16 @@ import core.plugin.Plugin
 
 @Initializable
 class CocktailShakerHandler : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         ItemDefinition.forId(2025).handlers["option:mix-cocktail"] = this
         return this
     }
 
-    override fun handle(player: Player?, node: Node?, option: String?): Boolean {
+    override fun handle(
+        player: Player?,
+        node: Node?,
+        option: String?,
+    ): Boolean {
         player ?: return false
         node ?: return false
         player.interfaceManager.open(Component(436))

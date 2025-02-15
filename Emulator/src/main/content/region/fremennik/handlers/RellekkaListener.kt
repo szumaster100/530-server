@@ -1,8 +1,5 @@
 package content.region.fremennik.handlers
 
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
-import org.rs.consts.Quests
 import core.api.lock
 import core.api.quest.requireQuest
 import core.api.teleport
@@ -11,11 +8,12 @@ import core.game.interaction.InteractionListener
 import core.game.node.entity.player.link.TeleportManager
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
+import org.rs.consts.Scenery
 
 class RellekkaListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(LADDER, IntType.SCENERY, "climb-down") { player, _ ->
             teleport(player, Location.create(2509, 10245, 0), TeleportManager.TeleportType.INSTANT)
             return@on true
@@ -37,28 +35,30 @@ class RellekkaListener : InteractionListener {
                 20,
                 1.0,
                 null,
-                0
+                0,
             )
             return@on true
         }
 
         on(STAIRS, IntType.SCENERY, "ascend", "descend") { player, _ ->
             if (player.location.y < 3802) {
-                player.properties.teleportLocation = when (player.location.x) {
-                    2715 -> DOWN1A
-                    2716 -> DOWN1B
-                    2726 -> DOWN2A
-                    2727 -> DOWN2B
-                    else -> player.location
-                }
+                player.properties.teleportLocation =
+                    when (player.location.x) {
+                        2715 -> DOWN1A
+                        2716 -> DOWN1B
+                        2726 -> DOWN2A
+                        2727 -> DOWN2B
+                        else -> player.location
+                    }
             } else {
-                player.properties.teleportLocation = when (player.location.x) {
-                    2715 -> UP1A
-                    2716 -> UP1B
-                    2726 -> UP2A
-                    2727 -> UP2B
-                    else -> player.location
-                }
+                player.properties.teleportLocation =
+                    when (player.location.x) {
+                        2715 -> UP1A
+                        2716 -> UP1B
+                        2726 -> UP2A
+                        2727 -> UP2B
+                        else -> player.location
+                    }
             }
             return@on true
         }

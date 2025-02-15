@@ -1,8 +1,5 @@
 package content.region.misc.handlers.tutorial
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import content.data.GameAttributes
 import core.api.*
 import core.game.component.Component
@@ -14,17 +11,27 @@ import core.game.interaction.InteractionListener
 import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.game.world.repository.Repository
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 import org.rs.consts.Sounds
 
 class TutorialListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(RS_GUIDE_DOOR, IntType.SCENERY, "open") { player, node ->
             if (getAttribute(player, TutorialStage.TUTORIAL_STAGE, 0) != 3) {
-                Component.setUnclosable(player, player.dialogueInterpreter.sendPlainMessage(false, "", "You may not pass this door yet. Try following the instructions", "")).also {
-                    TutorialStage.rollback(player)
-                }
+                Component
+                    .setUnclosable(
+                        player,
+                        player.dialogueInterpreter.sendPlainMessage(
+                            false,
+                            "",
+                            "You may not pass this door yet. Try following the instructions",
+                            "",
+                        ),
+                    ).also {
+                        TutorialStage.rollback(player)
+                    }
                 return@on true
             }
             setAttribute(player, TutorialStage.TUTORIAL_STAGE, 4)
@@ -33,16 +40,25 @@ class TutorialListener : InteractionListener {
             DoorActionHandler.handleAutowalkDoor(
                 player,
                 node as core.game.node.scenery.Scenery,
-                Location.create(3098, 3107, 0)
+                Location.create(3098, 3107, 0),
             )
             return@on true
         }
 
         on(WOODEN_GATE, IntType.SCENERY, "open") { player, node ->
             if (getAttribute(player, TutorialStage.TUTORIAL_STAGE, 0) != 16) {
-                Component.setUnclosable(player, player.dialogueInterpreter.sendPlainMessage(false, "", "You need to finish the Survival Expert tasks first.", "")).also {
-                    TutorialStage.rollback(player)
-                }
+                Component
+                    .setUnclosable(
+                        player,
+                        player.dialogueInterpreter.sendPlainMessage(
+                            false,
+                            "",
+                            "You need to finish the Survival Expert tasks first.",
+                            "",
+                        ),
+                    ).also {
+                        TutorialStage.rollback(player)
+                    }
                 return@on true
             }
             setAttribute(player, TutorialStage.TUTORIAL_STAGE, 17)
@@ -51,24 +67,25 @@ class TutorialListener : InteractionListener {
                 player,
                 node as core.game.node.scenery.Scenery,
                 node.asScenery().id,
-                node.asScenery().id
+                node.asScenery().id,
             )
             return@on true
         }
 
         on(COOK_GUIDE_DOOR, IntType.SCENERY, "open") { player, node ->
             if (getAttribute(player, TutorialStage.TUTORIAL_STAGE, 0) != 17) {
-                Component.setUnclosable(
-                    player,
-                    player.dialogueInterpreter.sendPlainMessage(
-                        false,
-                        "",
-                        "You may not pass this door yet. Try following the instructions",
-                        ""
-                    )
-                ).also {
-                    TutorialStage.rollback(player)
-                }
+                Component
+                    .setUnclosable(
+                        player,
+                        player.dialogueInterpreter.sendPlainMessage(
+                            false,
+                            "",
+                            "You may not pass this door yet. Try following the instructions",
+                            "",
+                        ),
+                    ).also {
+                        TutorialStage.rollback(player)
+                    }
                 return@on true
             }
             setAttribute(player, TutorialStage.TUTORIAL_STAGE, 18)
@@ -79,30 +96,32 @@ class TutorialListener : InteractionListener {
 
         on(COOK_GUIDE_DOOR_EXIT, IntType.SCENERY, "open") { player, node ->
             if (getAttribute(player, TutorialStage.TUTORIAL_STAGE, 0) != 22) {
-                Component.setUnclosable(
-                    player,
-                    player.dialogueInterpreter.sendPlainMessage(
-                        false,
-                        "",
-                        "You need to finish the Master Chef's tasks first.",
-                        ""
-                    )
-                ).also {
-                    TutorialStage.rollback(player)
-                }
+                Component
+                    .setUnclosable(
+                        player,
+                        player.dialogueInterpreter.sendPlainMessage(
+                            false,
+                            "",
+                            "You need to finish the Master Chef's tasks first.",
+                            "",
+                        ),
+                    ).also {
+                        TutorialStage.rollback(player)
+                    }
                 return@on true
             } else if (getAttribute(player, TutorialStage.TUTORIAL_STAGE, 0) > 22) {
-                Component.setUnclosable(
-                    player,
-                    player.dialogueInterpreter.sendPlainMessage(
-                        false,
-                        "",
-                        "Follow the path to the home of the quest guide.",
-                        ""
-                    )
-                ).also {
-                    TutorialStage.rollback(player)
-                }
+                Component
+                    .setUnclosable(
+                        player,
+                        player.dialogueInterpreter.sendPlainMessage(
+                            false,
+                            "",
+                            "Follow the path to the home of the quest guide.",
+                            "",
+                        ),
+                    ).also {
+                        TutorialStage.rollback(player)
+                    }
             }
             setAttribute(player, TutorialStage.TUTORIAL_STAGE, 23)
             TutorialStage.load(player, 23)
@@ -112,17 +131,18 @@ class TutorialListener : InteractionListener {
 
         on(QUEST_GUIDE_DOOR, IntType.SCENERY, "open") { player, node ->
             if (getAttribute(player, TutorialStage.TUTORIAL_STAGE, 0) != 26) {
-                Component.setUnclosable(
-                    player,
-                    player.dialogueInterpreter.sendPlainMessage(
-                        false,
-                        "",
-                        "You may not pass this door yet. Try following the instructions",
-                        ""
-                    )
-                ).also {
-                    TutorialStage.rollback(player)
-                }
+                Component
+                    .setUnclosable(
+                        player,
+                        player.dialogueInterpreter.sendPlainMessage(
+                            false,
+                            "",
+                            "You may not pass this door yet. Try following the instructions",
+                            "",
+                        ),
+                    ).also {
+                        TutorialStage.rollback(player)
+                    }
                 return@on true
             }
             setAttribute(player, TutorialStage.TUTORIAL_STAGE, 27)
@@ -132,8 +152,9 @@ class TutorialListener : InteractionListener {
         }
 
         on(QUEST_LADDER_DOWN, IntType.SCENERY, "climb-down") { player, node ->
-            if (getAttribute(player, TutorialStage.TUTORIAL_STAGE, 0) < 29)
+            if (getAttribute(player, TutorialStage.TUTORIAL_STAGE, 0) < 29) {
                 return@on true
+            }
 
             if (getAttribute(player, TutorialStage.TUTORIAL_STAGE, 0) == 29) {
                 setAttribute(player, TutorialStage.TUTORIAL_STAGE, 30)
@@ -151,7 +172,7 @@ class TutorialListener : InteractionListener {
                         sendChat(questTutor, "What are you doing, ${player.username}? Get back down the ladder.")
                         return true
                     }
-                }
+                },
             )
 
             return@on true
@@ -159,17 +180,18 @@ class TutorialListener : InteractionListener {
 
         on(COMBAT_GATE, IntType.SCENERY, "open") { player, node ->
             if (getAttribute(player, TutorialStage.TUTORIAL_STAGE, 0) != 43) {
-                Component.setUnclosable(
-                    player,
-                    player.dialogueInterpreter.sendPlainMessage(
-                        false,
-                        "",
-                        "You may not pass this door yet. Try following the instructions",
-                        ""
-                    )
-                ).also {
-                    TutorialStage.rollback(player)
-                }
+                Component
+                    .setUnclosable(
+                        player,
+                        player.dialogueInterpreter.sendPlainMessage(
+                            false,
+                            "",
+                            "You may not pass this door yet. Try following the instructions",
+                            "",
+                        ),
+                    ).also {
+                        TutorialStage.rollback(player)
+                    }
                 return@on true
             }
             setAttribute(player, TutorialStage.TUTORIAL_STAGE, 44)
@@ -184,7 +206,7 @@ class TutorialListener : InteractionListener {
                     NPCs.COMBAT_INSTRUCTOR_944,
                     FaceAnim.ANGRY,
                     "Oi, get away from there!",
-                    "Don't enter my rat pen unless I say so!"
+                    "Don't enter my rat pen unless I say so!",
                 )
                 return@on true
             }
@@ -197,8 +219,9 @@ class TutorialListener : InteractionListener {
         }
 
         on(COMBAT_LADDER, IntType.SCENERY, "climb-up") { player, node ->
-            if (getAttribute(player, TutorialStage.TUTORIAL_STAGE, 0) != 55)
+            if (getAttribute(player, TutorialStage.TUTORIAL_STAGE, 0) != 55) {
                 return@on true
+            }
 
             setAttribute(player, TutorialStage.TUTORIAL_STAGE, 56)
             TutorialStage.load(player, 56)
@@ -207,17 +230,18 @@ class TutorialListener : InteractionListener {
 
         on(BANK_GUIDE_DOOR, IntType.SCENERY, "open") { player, node ->
             if (getAttribute(player, TutorialStage.TUTORIAL_STAGE, 0) != 57) {
-                Component.setUnclosable(
-                    player,
-                    player.dialogueInterpreter.sendPlainMessage(
-                        false,
-                        "",
-                        "You may not pass this door yet. Try following the instructions",
-                        ""
-                    )
-                ).also {
-                    TutorialStage.rollback(player)
-                }
+                Component
+                    .setUnclosable(
+                        player,
+                        player.dialogueInterpreter.sendPlainMessage(
+                            false,
+                            "",
+                            "You may not pass this door yet. Try following the instructions",
+                            "",
+                        ),
+                    ).also {
+                        TutorialStage.rollback(player)
+                    }
                 return@on true
             }
             setAttribute(player, TutorialStage.TUTORIAL_STAGE, 58)
@@ -227,17 +251,18 @@ class TutorialListener : InteractionListener {
 
         on(FINANCE_GUIDE_DOOR, IntType.SCENERY, "open") { player, node ->
             if (getAttribute(player, TutorialStage.TUTORIAL_STAGE, 0) != 59) {
-                Component.setUnclosable(
-                    player,
-                    player.dialogueInterpreter.sendPlainMessage(
-                        false,
-                        "",
-                        "You may not pass this door yet. Try following the instructions",
-                        ""
-                    )
-                ).also {
-                    TutorialStage.rollback(player)
-                }
+                Component
+                    .setUnclosable(
+                        player,
+                        player.dialogueInterpreter.sendPlainMessage(
+                            false,
+                            "",
+                            "You may not pass this door yet. Try following the instructions",
+                            "",
+                        ),
+                    ).also {
+                        TutorialStage.rollback(player)
+                    }
                 return@on true
             }
             setAttribute(player, TutorialStage.TUTORIAL_STAGE, 60)
@@ -247,17 +272,18 @@ class TutorialListener : InteractionListener {
 
         on(CHURCH_DOOR, IntType.SCENERY, "open") { player, node ->
             if (getAttribute(player, TutorialStage.TUTORIAL_STAGE, 0) != 66) {
-                Component.setUnclosable(
-                    player,
-                    player.dialogueInterpreter.sendPlainMessage(
-                        false,
-                        "",
-                        "You may not pass this door yet. Try following the instructions",
-                        ""
-                    )
-                ).also {
-                    TutorialStage.rollback(player)
-                }
+                Component
+                    .setUnclosable(
+                        player,
+                        player.dialogueInterpreter.sendPlainMessage(
+                            false,
+                            "",
+                            "You may not pass this door yet. Try following the instructions",
+                            "",
+                        ),
+                    ).also {
+                        TutorialStage.rollback(player)
+                    }
                 return@on true
             }
             setAttribute(player, TutorialStage.TUTORIAL_STAGE, 67)

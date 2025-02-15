@@ -1,13 +1,15 @@
 package content.minigame.pyramidplunder
 
-import org.rs.consts.NPCs
 import core.game.node.entity.Entity
 import core.game.node.entity.player.Player
 import core.game.world.map.Location
 import core.tools.RandomFunction
+import org.rs.consts.NPCs
 
-class PyramidPlunderMummyNPC(location: Location?, player: Player?) : PyramidPlunderNPC(IDS.get(0), location, player!!) {
-
+class PyramidPlunderMummyNPC(
+    location: Location?,
+    player: Player?,
+) : PyramidPlunderNPC(IDS.get(0), location, player!!) {
     override fun init() {
         super.init()
         isRespawn = false

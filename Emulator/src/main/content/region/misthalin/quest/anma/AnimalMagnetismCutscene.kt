@@ -1,8 +1,5 @@
 package content.region.misthalin.quest.anma
 
-import org.rs.consts.Animations
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.*
 import core.api.quest.setQuestStage
 import core.game.activity.Cutscene
@@ -10,9 +7,13 @@ import core.game.dialogue.FaceAnim
 import core.game.node.entity.combat.ImpactHandler
 import core.game.node.entity.player.Player
 import core.game.world.map.Direction
+import org.rs.consts.Animations
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
-class AnimalMagnetismCutscene(player: Player) : Cutscene(player) {
-
+class AnimalMagnetismCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(player.location.transform(0, 0, 0))
         loadRegion(14391)
@@ -155,7 +156,7 @@ class AnimalMagnetismCutscene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     COWKILLER,
                     FaceAnim.HALF_THINKING,
-                    "Always the same, I can never get these animals to myself."
+                    "Always the same, I can never get these animals to myself.",
                 )
             }
 
@@ -174,7 +175,7 @@ class AnimalMagnetismCutscene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     COWKILLER,
                     FaceAnim.FRIENDLY,
-                    "Buying cowhides and feathers - ahh, that chicken is next, feathers for me!"
+                    "Buying cowhides and feathers - ahh, that chicken is next, feathers for me!",
                 )
             }
 

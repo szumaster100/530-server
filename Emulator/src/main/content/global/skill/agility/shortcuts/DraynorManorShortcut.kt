@@ -1,7 +1,5 @@
 package content.global.skill.agility.shortcuts
 
-import org.rs.consts.Animations
-import org.rs.consts.Scenery
 import content.global.skill.agility.AgilityHandler
 import core.api.hasLevelDyn
 import core.api.queueScript
@@ -14,9 +12,10 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.game.world.map.Direction
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
+import org.rs.consts.Scenery
 
 class DraynorManorShortcut : InteractionListener {
-
     override fun defineListeners() {
         on(Scenery.BROKEN_RAILING_37703, IntType.SCENERY, "squeeze-through") { player, _ ->
             if (!hasLevelDyn(player, Skills.AGILITY, 28)) {
@@ -39,7 +38,7 @@ class DraynorManorShortcut : InteractionListener {
                 Animation(Animations.SIDE_STEP_TO_CRAWL_THROUGH_MCGRUBOR_S_WOODS_FENCE_3844),
                 5,
                 0.0,
-                "You squeeze through the loose railing."
+                "You squeeze through the loose railing.",
             )
             return@queueScript stopExecuting(player)
         }

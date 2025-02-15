@@ -1,6 +1,5 @@
 package content.minigame.magearena.npc
 
-import org.rs.consts.NPCs
 import content.data.GodType
 import content.minigame.magearena.MageArenaMapZone
 import core.game.node.entity.Entity
@@ -11,9 +10,9 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.SpellBookManager.SpellBook
 import core.game.world.map.Location
 import core.tools.RandomFunction
+import org.rs.consts.NPCs
 
 class BattleMageNPC : AbstractNPC {
-
     private val type: GodType?
 
     constructor() : super(0, null) {
@@ -25,7 +24,11 @@ class BattleMageNPC : AbstractNPC {
         this.type = GodType.forId(id)
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return BattleMageNPC(id, location)
     }
 

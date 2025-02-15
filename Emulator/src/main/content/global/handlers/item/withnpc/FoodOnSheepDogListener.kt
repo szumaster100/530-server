@@ -1,24 +1,26 @@
 package content.global.handlers.item.withnpc
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.data.Meat
 import content.data.MeatState
 import content.global.skill.prayer.Bones
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 class FoodOnSheepDogListener : InteractionListener {
-
     companion object {
         private const val SHEEP_DOG_NPC = NPCs.SHEEPDOG_2311
         private val FEED_ANIMATION = Animations.HUMAN_BURYING_BONES_827
         private val CONSUMABLE_BONES = Bones.array.filter { it != Items.BURNT_BONES_528 }.toHashSet()
         private val CONSUMABLE_MEATS =
-            Meat.values().filter { it.state == MeatState.INEDIBLE_RAW || it.state == MeatState.EDIBLE_COOKED }
-                .map { it.id }.toHashSet()
+            Meat
+                .values()
+                .filter { it.state == MeatState.INEDIBLE_RAW || it.state == MeatState.EDIBLE_COOKED }
+                .map { it.id }
+                .toHashSet()
     }
 
     override fun defineListeners() {

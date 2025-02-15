@@ -1,7 +1,5 @@
 package content.global.activity.ttrail
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.removeAttribute
 import core.api.sendItemDialogue
 import core.game.dialogue.Dialogue
@@ -12,11 +10,12 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.world.map.Location
 import core.game.world.map.RegionManager.getSpawnLocation
-import core.plugin.Plugin
 import core.plugin.ClassScanner.definePlugin
+import core.plugin.Plugin
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 class UriNPC : AbstractNPC {
-
     private var clueScroll: ClueScrollPlugin? = null
 
     var player: Player? = null
@@ -27,7 +26,11 @@ class UriNPC : AbstractNPC {
         this.isRespawn = false
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return UriNPC(id, location)
     }
 
@@ -60,7 +63,11 @@ class UriNPC : AbstractNPC {
         }
     }
 
-    override fun isAttackable(entity: Entity, style: CombatStyle, message: Boolean): Boolean {
+    override fun isAttackable(
+        entity: Entity,
+        style: CombatStyle,
+        message: Boolean,
+    ): Boolean {
         return if (entity is Player && player == entity) {
             true
         } else {
@@ -105,7 +112,10 @@ class UriNPC : AbstractNPC {
             return true
         }
 
-        override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+        override fun handle(
+            interfaceId: Int,
+            buttonId: Int,
+        ): Boolean {
             when (stage) {
                 -1 -> end()
                 0 -> {
@@ -134,10 +144,12 @@ class UriNPC : AbstractNPC {
 
         private fun canSpeak(): Boolean {
             val scroll = asUri().clueScroll as EmoteClueScroll?
-            return asUri().player == player && player.getAttribute(
-                "commence-emote",
-                !scroll!!.hasCommencedEmote()
-            ) && scroll.hasEquipment(player, scroll.equipment)
+            return asUri().player == player &&
+                player.getAttribute(
+                    "commence-emote",
+                    !scroll!!.hasCommencedEmote(),
+                ) &&
+                scroll.hasEquipment(player, scroll.equipment)
         }
 
         private fun asUri(): UriNPC {
@@ -145,34 +157,41 @@ class UriNPC : AbstractNPC {
         }
 
         override fun getIds(): IntArray {
-            return intArrayOf(NPCs.URI_5141, NPCs.URI_5142, NPCs.URI_5143, NPCs.DOUBLE_AGENT_5144, NPCs.DOUBLE_AGENT_5145)
+            return intArrayOf(
+                NPCs.URI_5141,
+                NPCs.URI_5142,
+                NPCs.URI_5143,
+                NPCs.DOUBLE_AGENT_5144,
+                NPCs.DOUBLE_AGENT_5145,
+            )
         }
 
         companion object {
-            private val QUOTES = arrayOf(
-                "Once, I was a poor man, but then I found a party hat.",
-                "There were three goblins in a bar, which one left first?",
-                "Would you like to buy a pewter spoon?",
-                "In the end, only the three-legged survive.",
-                "I heard that the tall man fears only strong winds.",
-                "In Canifis the men are known for eating much spam.",
-                "I am the egg man, are you one of the egg men?",
-                "I believe that it is very rainy in Varrock.",
-                "The slowest of fishermen catch the swiftest of fish.",
-                "It is quite easy being green.",
-                "Don't forget to find the jade monkey.",
-                "Do you want ants? Because that's how you get ants.",
-                "I once named a duck after a girl. Big mistake.",
-                "Loser says what.",
-                "I'm looking for a girl named Molly. I can't find her.",
-                "Guys, let's lake dive!",
-                "I gave you what you needed; not what you think you needed.",
-                "Want to see me bend a spoon?",
-                "Is that Deziree?",
-                "This is the last night you'll spend alone.",
-                "(Breathing intensifies)",
-                "Init doe. Lyk, I hope yer reward iz goodd aye?"
-            )
+            private val QUOTES =
+                arrayOf(
+                    "Once, I was a poor man, but then I found a party hat.",
+                    "There were three goblins in a bar, which one left first?",
+                    "Would you like to buy a pewter spoon?",
+                    "In the end, only the three-legged survive.",
+                    "I heard that the tall man fears only strong winds.",
+                    "In Canifis the men are known for eating much spam.",
+                    "I am the egg man, are you one of the egg men?",
+                    "I believe that it is very rainy in Varrock.",
+                    "The slowest of fishermen catch the swiftest of fish.",
+                    "It is quite easy being green.",
+                    "Don't forget to find the jade monkey.",
+                    "Do you want ants? Because that's how you get ants.",
+                    "I once named a duck after a girl. Big mistake.",
+                    "Loser says what.",
+                    "I'm looking for a girl named Molly. I can't find her.",
+                    "Guys, let's lake dive!",
+                    "I gave you what you needed; not what you think you needed.",
+                    "Want to see me bend a spoon?",
+                    "Is that Deziree?",
+                    "This is the last night you'll spend alone.",
+                    "(Breathing intensifies)",
+                    "Init doe. Lyk, I hope yer reward iz goodd aye?",
+                )
         }
     }
 }

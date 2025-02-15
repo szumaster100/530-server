@@ -7,7 +7,6 @@ import core.net.packet.context.ClearChunkContext
 import core.net.packet.out.ClearRegionChunk
 
 object MapChunkRenderer {
-
     @JvmStatic
     fun render(player: Player) {
         val v = player.viewport
@@ -22,7 +21,7 @@ object MapChunkRenderer {
                 if (!containsChunk(current, previous)) {
                     PacketRepository.send(
                         ClearRegionChunk::class.java,
-                        ClearChunkContext(player, previous)
+                        ClearChunkContext(player, previous),
                     )
                 } else {
                     updated.add(previous)
@@ -44,7 +43,10 @@ object MapChunkRenderer {
         }
     }
 
-    private fun containsChunk(list: Array<Array<RegionChunk>>, c: RegionChunk): Boolean {
+    private fun containsChunk(
+        list: Array<Array<RegionChunk>>,
+        c: RegionChunk,
+    ): Boolean {
         val sizeList = list.size
         for (x in 0 until sizeList) {
             val chunkSize: Int = list[x].size

@@ -1,7 +1,5 @@
 package content.global.ame.surpriseexam
 
-import org.rs.consts.Components
-import org.rs.consts.Items
 import content.data.GameAttributes
 import content.data.RandomEvent
 import core.api.clearLogoutListener
@@ -12,9 +10,10 @@ import core.game.node.entity.player.Player
 import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
 import core.game.system.task.Pulse
+import org.rs.consts.Components
+import org.rs.consts.Items
 
 object SurpriseExamUtils {
-
     val SE_LOGOUT_KEY = "surprise_exam"
 
     val INTER_PATTERN_CHILDS = intArrayOf(6, 7, 8)
@@ -25,20 +24,25 @@ object SurpriseExamUtils {
 
     val INTERFACE = Components.PATTERN_NEXT_103
 
-    val sets = arrayOf(
-        intArrayOf(Items.GARDENING_TROWEL_5325, Items.SECATEURS_5329, Items.SEED_DIBBER_5343, Items.RAKE_5341),
-        intArrayOf(Items.SALMON_329, Items.SHARK_385, Items.TROUT_333, Items.SHRIMPS_315),
-        intArrayOf(
-            Items.BRONZE_SWORD_1277,
-            Items.WOODEN_SHIELD_1171,
-            Items.BRONZE_MED_HELM_1139,
-            Items.ADAMANT_BATTLEAXE_1371
-        ),
-        intArrayOf(Items.FLY_FISHING_ROD_309, Items.BARBARIAN_ROD_11323, Items.SMALL_FISHING_NET_303, Items.HARPOON_311)
-    )
+    val sets =
+        arrayOf(
+            intArrayOf(Items.GARDENING_TROWEL_5325, Items.SECATEURS_5329, Items.SEED_DIBBER_5343, Items.RAKE_5341),
+            intArrayOf(Items.SALMON_329, Items.SHARK_385, Items.TROUT_333, Items.SHRIMPS_315),
+            intArrayOf(
+                Items.BRONZE_SWORD_1277,
+                Items.WOODEN_SHIELD_1171,
+                Items.BRONZE_MED_HELM_1139,
+                Items.ADAMANT_BATTLEAXE_1371,
+            ),
+            intArrayOf(
+                Items.FLY_FISHING_ROD_309,
+                Items.BARBARIAN_ROD_11323,
+                Items.SMALL_FISHING_NET_303,
+                Items.HARPOON_311,
+            ),
+        )
 
     fun cleanup(player: Player) {
-
         player.properties.teleportLocation = player.getAttribute(RandomEvent.save(), null)
 
         clearLogoutListener(player, SE_LOGOUT_KEY)
@@ -55,12 +59,11 @@ object SurpriseExamUtils {
                     return true
                 }
             },
-            PulseType.CUSTOM_1
+            PulseType.CUSTOM_1,
         )
     }
 
     fun generateInterface(player: Player) {
-
         val set = sets.random()
 
         val setIndex = sets.indexOf(set)
@@ -85,7 +88,7 @@ object SurpriseExamUtils {
                     getFalseSet(setIndex)[i],
                     1,
                     INTERFACE,
-                    INTER_OPTION_CHILDS[i]
+                    INTER_OPTION_CHILDS[i],
                 )
             }
         }
@@ -94,7 +97,6 @@ object SurpriseExamUtils {
     }
 
     fun getFalseSet(trueSetIndex: Int): IntArray {
-
         val tempSets = sets.toMutableList()
         tempSets.removeAt(trueSetIndex)
 
@@ -102,7 +104,6 @@ object SurpriseExamUtils {
     }
 
     fun pickRandomDoor(player: Player) {
-
         setAttribute(player, GameAttributes.RE_PATTERN_OBJ, SE_DOORS.random())
     }
 }

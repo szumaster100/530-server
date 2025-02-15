@@ -8,8 +8,9 @@ import org.rs.consts.Items
  * Enum class representing various charged items and their respective item IDs for different charge levels.
  * Each enum value corresponds to an item that can have multiple charge levels, and the associated IDs for each level are defined.
  */
-enum class ChargedItem(val ids: IntArray) {
-
+enum class ChargedItem(
+    val ids: IntArray,
+) {
     /**
      * Amulet of Glory with different charge levels.
      */
@@ -98,7 +99,8 @@ enum class ChargedItem(val ids: IntArray) {
     /**
      * Ring of Slaying with different charge levels.
      */
-    RING_OF_SLAYING(ids = (Items.RING_OF_SLAYING8_13281..Items.RING_OF_SLAYING1_13288).toIntArray());
+    RING_OF_SLAYING(ids = (Items.RING_OF_SLAYING8_13281..Items.RING_OF_SLAYING1_13288).toIntArray()),
+    ;
 
     /**
      * Returns the ID corresponding to the item at the specified charge level.
@@ -108,7 +110,16 @@ enum class ChargedItem(val ids: IntArray) {
      * @return The item ID corresponding to the specified charge level.
      */
     fun forCharge(charge: Int): Int {
-        return ids[maxCharge() - if (charge < 1) 1 + maxCharge() - ids.size else if (charge > maxCharge()) maxCharge() else charge]
+        return ids[
+            maxCharge() -
+                if (charge < 1) {
+                    1 + maxCharge() - ids.size
+                } else if (charge > maxCharge()) {
+                    maxCharge()
+                } else {
+                    charge
+                },
+        ]
     }
 
     /**
@@ -138,7 +149,11 @@ enum class ChargedItem(val ids: IntArray) {
          */
         @JvmStatic
         private fun getMaxCharge(chargedItem: ChargedItem): Int {
-            return CHARGE_REGEX.find(ItemDefinition.forId(chargedItem.ids.first()).name)!!.groups[1]!!.value.toInt()
+            return CHARGE_REGEX
+                .find(ItemDefinition.forId(chargedItem.ids.first()).name)!!
+                .groups[1]!!
+                .value
+                .toInt()
         }
 
         /**

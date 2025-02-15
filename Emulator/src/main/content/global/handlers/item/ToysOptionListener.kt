@@ -1,24 +1,22 @@
 package content.global.handlers.item
 
-import org.rs.consts.*
 import content.global.dialogue.ZombieHeadDialogue
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.*
 
 class ToysOptionListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(MARIONETTES, IntType.ITEM, "jump", "walk", "bow", "dance") { player, marionette ->
             val index = MARIONETTES.indexOf(marionette.id)
 
             lockInteractions(player, 2)
             when (getUsedOption(player)) {
-                "jump"  -> visualize(player, MARIONETTE_JUMP, MARIONETTE_GFX[index][0])
-                "walk"  -> visualize(player, MARIONETTE_WALK, MARIONETTE_GFX[index][1])
-                "bow"   -> visualize(player, MARIONETTE_BOW, MARIONETTE_GFX[index][2])
+                "jump" -> visualize(player, MARIONETTE_JUMP, MARIONETTE_GFX[index][0])
+                "walk" -> visualize(player, MARIONETTE_WALK, MARIONETTE_GFX[index][1])
+                "bow" -> visualize(player, MARIONETTE_BOW, MARIONETTE_GFX[index][2])
                 "dance" -> visualize(player, MARIONETTE_DANCE, MARIONETTE_GFX[index][3])
             }
             return@on true
@@ -38,9 +36,9 @@ class ToysOptionListener : InteractionListener {
 
             lockInteractions(player, 2)
             when (option) {
-                "play"  -> animate(player, YOYO_PLAY)
-                "loop"  -> animate(player, YOYO_LOOP)
-                "walk"  -> animate(player, YOYO_WALK)
+                "play" -> animate(player, YOYO_PLAY)
+                "loop" -> animate(player, YOYO_LOOP)
+                "walk" -> animate(player, YOYO_WALK)
                 "crazy" -> animate(player, YOYO_CRAZY)
             }
             return@on true
@@ -115,12 +113,13 @@ class ToysOptionListener : InteractionListener {
         private val pharses =
             arrayOf("Come-on Dobbin, we can win the race!", "Hi-ho Silver, and away", "Neaahhhyyy! Giddy-up horsey!")
 
-        private val horseyMap = mapOf(
-            Items.TOY_HORSEY_2520 to Animations.HUMAN_PLAY_WITH_BROWN_HORSE_918,
-            Items.TOY_HORSEY_2522 to Animations.HUMAN_PLAY_WITH_WHITE_HORSE_919,
-            Items.TOY_HORSEY_2524 to Animations.HUMAN_PLAY_WITH_BLACK_HORSE_920,
-            Items.TOY_HORSEY_2526 to Animations.HUMAN_PLAY_WITH_GRAY_HORSE_921
-        )
+        private val horseyMap =
+            mapOf(
+                Items.TOY_HORSEY_2520 to Animations.HUMAN_PLAY_WITH_BROWN_HORSE_918,
+                Items.TOY_HORSEY_2522 to Animations.HUMAN_PLAY_WITH_WHITE_HORSE_919,
+                Items.TOY_HORSEY_2524 to Animations.HUMAN_PLAY_WITH_BLACK_HORSE_920,
+                Items.TOY_HORSEY_2526 to Animations.HUMAN_PLAY_WITH_GRAY_HORSE_921,
+            )
 
         private val SNOWGLOBE_SHAKE = Animation(Animations.SNOWGLOBE_SHAKE_7535)
         private val SNOWGLOBE_HOLDFACE = Animation(Animations.SNOWGLOBE_HOLD_FACE_7536)
@@ -145,25 +144,26 @@ class ToysOptionListener : InteractionListener {
         private val MARIONETTE_WALK = Animation(Animations.MARIONETTE_WALK_3004)
         private val MARIONETTE_BOW = Animation(Animations.MARIONETTE_BOW_3005)
         private val MARIONETTE_DANCE = Animation(Animations.MARIONETTE_DANCE_3006)
-        private val MARIONETTE_GFX = arrayOf(
-            intArrayOf(
-                Graphics.JUMP_MARIONETTE_RED_507,
-                Graphics.WALK_MARIONETTE_RED_508,
-                Graphics.BOW_MARIONETTE_RED_509,
-                Graphics.DANCE_MARIONETTE_RED_510
-            ),
-            intArrayOf(
-                Graphics.JUMP_MARIONETTE_BLUE_511,
-                Graphics.WALK_MARIONETTE_BLUE_512,
-                Graphics.BOW_MARIONETTE_BLUE_513,
-                Graphics.DANCE_MARIONETTE_BLUE_514
-            ),
-            intArrayOf(
-                Graphics.JUMP_MARIONETTE_GREEN_515,
-                Graphics.WALK_MARIONETTE_GREEN_516,
-                Graphics.BOW_MARIONETTE_GREEN_517,
-                Graphics.DANCE_MARIONETTE_GREEN_518
+        private val MARIONETTE_GFX =
+            arrayOf(
+                intArrayOf(
+                    Graphics.JUMP_MARIONETTE_RED_507,
+                    Graphics.WALK_MARIONETTE_RED_508,
+                    Graphics.BOW_MARIONETTE_RED_509,
+                    Graphics.DANCE_MARIONETTE_RED_510,
+                ),
+                intArrayOf(
+                    Graphics.JUMP_MARIONETTE_BLUE_511,
+                    Graphics.WALK_MARIONETTE_BLUE_512,
+                    Graphics.BOW_MARIONETTE_BLUE_513,
+                    Graphics.DANCE_MARIONETTE_BLUE_514,
+                ),
+                intArrayOf(
+                    Graphics.JUMP_MARIONETTE_GREEN_515,
+                    Graphics.WALK_MARIONETTE_GREEN_516,
+                    Graphics.BOW_MARIONETTE_GREEN_517,
+                    Graphics.DANCE_MARIONETTE_GREEN_518,
+                ),
             )
-        )
     }
 }

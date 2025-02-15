@@ -1,8 +1,5 @@
 package content.region.misthalin.handlers.lumbridge
 
-import org.rs.consts.Animations
-import org.rs.consts.Components
-import org.rs.consts.Items
 import core.GlobalStatistics
 import core.api.*
 import core.api.interaction.openBankAccount
@@ -19,12 +16,13 @@ import core.game.node.item.Item
 import core.game.node.scenery.Scenery
 import core.game.system.task.Pulse
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
+import org.rs.consts.Components
+import org.rs.consts.Items
 import kotlin.math.floor
 
 class LumbridgeListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(LumbridgeUtils.combatTutors, IntType.NPC, "claim") { player, node ->
             val npc = node as NPC
             openDialogue(player, npc.id, npc, true)
@@ -41,12 +39,12 @@ class LumbridgeListener : InteractionListener {
             if (cowDeaths > 0) {
                 sendDialogue(
                     player,
-                    "Local cowherders have reported that $cowDeaths cows have been slain in this field today by passing adventurers. Farmers throughout the land fear this may be an epidemic."
+                    "Local cowherders have reported that $cowDeaths cows have been slain in this field today by passing adventurers. Farmers throughout the land fear this may be an epidemic.",
                 )
             } else {
                 sendDialogue(
                     player,
-                    "The Lumbridge cow population has been thriving today, without a single cow death to worry about!"
+                    "The Lumbridge cow population has been thriving today, without a single cow death to worry about!",
                 )
             }
             return@on true
@@ -57,12 +55,12 @@ class LumbridgeListener : InteractionListener {
             if (deaths > 0) {
                 sendDialogue(
                     player,
-                    "So far today $deaths unlucky adventurers have died on RuneScape and been sent to their respawn location. Be careful out there."
+                    "So far today $deaths unlucky adventurers have died on RuneScape and been sent to their respawn location. Be careful out there.",
                 )
             } else {
                 sendDialogue(
                     player,
-                    "So far today not a single adventurer on RuneScape has met their end grisly or otherwise. Either the streets are getting safer or adventurers are getting warier."
+                    "So far today not a single adventurer on RuneScape has met their end grisly or otherwise. Either the streets are getting safer or adventurers are getting warier.",
                 )
             }
             return@on true
@@ -108,6 +106,7 @@ class LumbridgeListener : InteractionListener {
                     player,
                     object : Pulse(1, player) {
                         var counter: Int = 0
+
                         override fun pulse(): Boolean {
                             when (counter++) {
                                 0 -> {
@@ -128,7 +127,7 @@ class LumbridgeListener : InteractionListener {
                             super.stop()
                             LumbridgeUtils.flagInUse = false
                         }
-                    }
+                    },
                 )
             }
 
@@ -161,8 +160,10 @@ class LumbridgeListener : InteractionListener {
         }
     }
 
-    class ArcheryTargetPulse(private val player: Player, private val node: Scenery) : Pulse(1, player, node) {
-
+    class ArcheryTargetPulse(
+        private val player: Player,
+        private val node: Scenery,
+    ) : Pulse(1, player, node) {
         override fun pulse(): Boolean {
             if (delay == 1) {
                 delay = player.properties.attackSpeed
@@ -189,7 +190,8 @@ class LumbridgeListener : InteractionListener {
                 }
                 cumulativeStr *= 1.0
                 val hit =
-                    (14.0 + cumulativeStr + (bonus.toDouble() / 8) + ((cumulativeStr * bonus) * 0.016865)).toInt() / 10 + 1
+                    (14.0 + cumulativeStr + (bonus.toDouble() / 8) + ((cumulativeStr * bonus) * 0.016865)).toInt() / 10 +
+                        1
                 player.getSkills().addExperience(Skills.RANGE, ((hit * 1.33) / 10))
                 return !player.equipment.contains(9706, 1) || !player.equipment.contains(9705, 1)
             } else {

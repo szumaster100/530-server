@@ -1,8 +1,5 @@
 package content.global.travel.charter
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
 import content.global.travel.charter.CharterUtils.Destination.values
 import core.api.*
 import core.api.quest.requireQuest
@@ -17,10 +14,12 @@ import core.game.world.GameWorld.Pulser
 import core.game.world.map.Location
 import core.game.world.repository.Repository.findNPC
 import core.tools.StringUtils
+import org.rs.consts.Components
+import org.rs.consts.Items
 import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 object CharterUtils {
-
     val component: Component = Component(Components.SAILING_TRANSPORT_WORLD_MAP_95)
 
     private fun forButton(button: Int): Destination? {
@@ -55,7 +54,10 @@ object CharterUtils {
         }
     }
 
-    fun handle(player: Player, button: Int) {
+    fun handle(
+        player: Player,
+        button: Int,
+    ) {
         val destination = forButton(button) ?: return
         if (!destination.checkTravel(player)) {
             return
@@ -68,12 +70,15 @@ object CharterUtils {
                 NPCs.TRADER_CREWMEMBER_4651,
                 it,
                 destination,
-                cost
+                cost,
             )
         }
     }
 
-    fun getCost(player: Player, destination: Destination): Int {
+    fun getCost(
+        player: Player,
+        destination: Destination,
+    ): Int {
         val baseCost = destination.getCost(player, destination)
         return if (inEquipment(player, Items.RING_OF_CHAROSA_6465)) {
             (baseCost * 0.5).toInt()
@@ -82,7 +87,10 @@ object CharterUtils {
         }
     }
 
-    fun getHiddenComponents(player: Player?, base: Destination): IntArray {
+    fun getHiddenComponents(
+        player: Player?,
+        base: Destination,
+    ): IntArray {
         val restrictions = arrayOf(Destination.CRANDOR)
         val childs: MutableList<Int> = ArrayList(20)
         for (destination in restrictions) {
@@ -111,7 +119,7 @@ object CharterUtils {
         val button: Int,
         val costs: IntArray,
         val base: Location?,
-        vararg val components: Int
+        vararg val components: Int,
     ) {
         CATHERBY(
             Location.create(2792, 3417, 1),
@@ -119,7 +127,7 @@ object CharterUtils {
             intArrayOf(480, 0, 480, 625, 1600, 3250, 1000, 1600, 3200, 3400),
             Location.create(2797, 3414, 0),
             3,
-            14
+            14,
         ),
         PORT_PHASMATYS(
             Location.create(3705, 3503, 1),
@@ -127,7 +135,7 @@ object CharterUtils {
             intArrayOf(3650, 3250, 1850, 0, 0, 0, 2050, 1850, 3200, 1100),
             Location.create(3702, 3502, 0),
             2,
-            13
+            13,
         ) {
             override fun checkTravel(player: Player?): Boolean {
                 return requireQuest(player!!, Quests.PRIEST_IN_PERIL, "to go there.")
@@ -139,7 +147,7 @@ object CharterUtils {
             intArrayOf(0, 480, 480, 925, 400, 3650, 1600, 400, 3200, 3800),
             null,
             10,
-            21
+            21,
         ),
         BRIMHAVEN(
             Location.create(2763, 3238, 1),
@@ -147,9 +155,12 @@ object CharterUtils {
             intArrayOf(0, 480, 480, 925, 400, 3650, 1600, 400, 3200, 3800),
             Location.create(2760, 3238, 0),
             6,
-            17
+            17,
         ) {
-            override fun getCost(player: Player, destination: Destination): Int {
+            override fun getCost(
+                player: Player,
+                destination: Destination,
+            ): Int {
                 val hasGloves = DiaryType.KARAMJA.hasRewardEquipment(player)
                 if (destination == PORT_KHAZARD && hasGloves) return 15
                 return super.getCost(player, destination)
@@ -161,9 +172,12 @@ object CharterUtils {
             intArrayOf(1600, 1000, 0, 325, 1280, 650, 1280, 400, 3200, 1400),
             Location.create(3039, 3193, 0),
             8,
-            19
+            19,
         ) {
-            override fun getCost(player: Player, destination: Destination): Int {
+            override fun getCost(
+                player: Player,
+                destination: Destination,
+            ): Int {
                 val hasGloves = DiaryType.KARAMJA.hasRewardEquipment(player)
                 if (destination == KARAMJA && hasGloves) return 15
                 return super.getCost(player, destination)
@@ -175,7 +189,7 @@ object CharterUtils {
             intArrayOf(3200, 3200, 3200, 1600, 3200, 3200, 3200, 3200, 0, 3200),
             Location.create(2143, 3122, 0),
             1,
-            12
+            12,
         ),
         KARAMJA(
             Location.create(2957, 3158, 1),
@@ -183,9 +197,12 @@ object CharterUtils {
             intArrayOf(200, 480, 0, 225, 400, 1850, 0, 200, 3200, 2000),
             Location.create(2954, 3156, 0),
             5,
-            16
+            16,
         ) {
-            override fun getCost(player: Player, destination: Destination): Int {
+            override fun getCost(
+                player: Player,
+                destination: Destination,
+            ): Int {
                 val hasGloves = DiaryType.KARAMJA.hasRewardEquipment(player)
                 if (destination == PORT_SARIM && hasGloves) return 15
                 return super.getCost(player, destination)
@@ -197,9 +214,12 @@ object CharterUtils {
             intArrayOf(1600, 1000, 0, 325, 180, 650, 1280, 400, 3200, 1400),
             Location.create(2674, 3144, 0),
             7,
-            18
+            18,
         ) {
-            override fun getCost(player: Player, destination: Destination): Int {
+            override fun getCost(
+                player: Player,
+                destination: Destination,
+            ): Int {
                 val hasGloves = DiaryType.KARAMJA.hasRewardEquipment(player)
                 if (destination == BRIMHAVEN && hasGloves) return 15
                 return super.getCost(player, destination)
@@ -211,7 +231,7 @@ object CharterUtils {
             intArrayOf(400, 1600, 200, 225, 720, 1850, 400, 0, 3200, 900),
             Location.create(3001, 3032, 0),
             4,
-            15
+            15,
         ),
         OO_GLOG(
             Location.create(2623, 2857, 0),
@@ -219,7 +239,7 @@ object CharterUtils {
             intArrayOf(300, 3400, 2000, 550, 5000, 2800, 1400, 900, 3200, 0),
             Location.create(2622, 2857, 0),
             11,
-            22
+            22,
         ),
         MOS_LE_HARMLESS(
             Location.create(3668, 2931, 1),
@@ -227,26 +247,31 @@ object CharterUtils {
             intArrayOf(725, 625, 1025, 0, 1025, 0, 325, 275, 1600, 500),
             Location.create(3671, 2933, 0),
             9,
-            20
-        );
+            20,
+        ),
+        ;
 
         val xChild: Int = components[0]
         val nameChild: Int = components[1]
 
-        open fun getCost(player: Player, destination: Destination): Int {
+        open fun getCost(
+            player: Player,
+            destination: Destination,
+        ): Int {
             val current = getFromBase(player.location) ?: return 0
-            val costTable = arrayOf(
-                BRIMHAVEN,
-                CATHERBY,
-                KARAMJA,
-                MOS_LE_HARMLESS,
-                PORT_KHAZARD,
-                PORT_PHASMATYS,
-                PORT_SARIM,
-                SHIPYARD,
-                PORT_TYRAS,
-                OO_GLOG
-            )
+            val costTable =
+                arrayOf(
+                    BRIMHAVEN,
+                    CATHERBY,
+                    KARAMJA,
+                    MOS_LE_HARMLESS,
+                    PORT_KHAZARD,
+                    PORT_PHASMATYS,
+                    PORT_SARIM,
+                    SHIPYARD,
+                    PORT_TYRAS,
+                    OO_GLOG,
+                )
             var index = 0
             for (i in costTable.indices) {
                 if (costTable[i] == destination) {
@@ -281,7 +306,7 @@ object CharterUtils {
                                 setMinimapState(player, 0)
                                 sendMessage(
                                     player,
-                                    "You pay the fare and sail to " + StringUtils.formatDisplayName(name) + "."
+                                    "You pay the fare and sail to " + StringUtils.formatDisplayName(name) + ".",
                                 )
                                 if (start.withinDistance(Location.create(3001, 3032, 0))) {
                                     finishDiaryTask(player, DiaryType.KARAMJA, 1, 17)
@@ -291,7 +316,7 @@ object CharterUtils {
                         }
                         return false
                     }
-                }
+                },
             )
         }
     }

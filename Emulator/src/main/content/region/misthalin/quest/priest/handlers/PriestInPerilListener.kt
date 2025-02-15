@@ -1,6 +1,5 @@
 package content.region.misthalin.quest.priest.handlers
 
-import org.rs.consts.*
 import core.api.*
 import core.api.quest.setQuestStage
 import core.game.dialogue.FaceAnim
@@ -10,11 +9,15 @@ import core.game.interaction.QueueStrength
 import core.game.node.item.Item
 import core.game.node.scenery.Scenery
 import core.game.world.map.Location
+import org.rs.consts.*
 
 class PriestInPerilListener : InteractionListener {
-
     override fun defineListeners() {
-        on(intArrayOf(org.rs.consts.Scenery.TRAPDOOR_30571, org.rs.consts.Scenery.TRAPDOOR_30573), IntType.SCENERY, "open") { player, node ->
+        on(
+            intArrayOf(org.rs.consts.Scenery.TRAPDOOR_30571, org.rs.consts.Scenery.TRAPDOOR_30573),
+            IntType.SCENERY,
+            "open",
+        ) { player, node ->
             replaceScenery(node.asScenery(), org.rs.consts.Scenery.LADDER_30572, 80)
             sendMessage(player, "The trapdoor opens...")
             return@on true
@@ -143,19 +146,25 @@ class PriestInPerilListener : InteractionListener {
             setQuestStage(player, Quests.PRIEST_IN_PERIL, 15)
             sendMessage(player, "You have unlocked the cell door.")
 
-            val npc = core.game.node.entity.npc.NPC.create(NPCs.DREZEL_7690, player.location)
+            val npc =
+                core.game.node.entity.npc.NPC
+                    .create(NPCs.DREZEL_7690, player.location)
             npc.name = "Drezel"
             sendNPCDialogue(
                 player,
                 npc.id,
                 "Oh! Thank you! You have found the key!",
-                FaceAnim.HALF_GUILTY
+                FaceAnim.HALF_GUILTY,
             )
 
             return@onUseWith true
         }
 
-        onUseWith(IntType.SCENERY, Items.BUCKET_OF_WATER_2954, org.rs.consts.Scenery.MORYTANIA_COFFIN_30728) { player, used, _ ->
+        onUseWith(
+            IntType.SCENERY,
+            Items.BUCKET_OF_WATER_2954,
+            org.rs.consts.Scenery.MORYTANIA_COFFIN_30728,
+        ) { player, used, _ ->
             if (!removeItem(player, used)) {
                 return@onUseWith false
             }

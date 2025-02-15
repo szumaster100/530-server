@@ -9,10 +9,12 @@ open class BoxTrapNode(
     level: Int,
     experience: Double,
     rewards: Array<Item>,
-    private val summoningLevel: Int
+    private val summoningLevel: Int,
 ) : TrapNode(npcIds, level, experience, intArrayOf(19188, 19189), rewards) {
-
-    override fun canCatch(wrapper: TrapWrapper, npc: NPC): Boolean {
+    override fun canCatch(
+        wrapper: TrapWrapper,
+        npc: NPC,
+    ): Boolean {
         if (wrapper.player.getSkills().getStaticLevel(Skills.SUMMONING) < summoningLevel) {
             return false
         }

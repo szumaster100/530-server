@@ -1,7 +1,5 @@
 package content.region.morytania.quest.deal.cutscene
 
-import org.rs.consts.Components
-import org.rs.consts.NPCs
 import content.region.morytania.quest.deal.dialogue.CaptainBrainDeathDialogueFile
 import core.api.openDialogue
 import core.api.openOverlay
@@ -10,9 +8,12 @@ import core.game.activity.Cutscene
 import core.game.node.entity.player.Player
 import core.game.world.map.Direction
 import core.game.world.map.Location
+import org.rs.consts.Components
+import org.rs.consts.NPCs
 
-class ZombiePirateProtestingCutscene(player: Player) : Cutscene(player) {
-
+class ZombiePirateProtestingCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(Location(2144, 5108, 1))
         if (player.settings.isRunToggled) {

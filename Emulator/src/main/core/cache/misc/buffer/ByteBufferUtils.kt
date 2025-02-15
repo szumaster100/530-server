@@ -5,7 +5,6 @@ import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 
 object ByteBufferUtils {
-
     /*
      * Get a string from the buffer.
      */
@@ -27,7 +26,10 @@ object ByteBufferUtils {
      */
 
     @JvmStatic
-    fun putString(s: String, buffer: ByteBuffer) {
+    fun putString(
+        s: String,
+        buffer: ByteBuffer,
+    ) {
         buffer.put(s.toByteArray(StandardCharsets.UTF_8)).put(0.toByte())
     }
 
@@ -36,7 +38,10 @@ object ByteBufferUtils {
      */
 
     @JvmStatic
-    fun putGJ2String(s: String, buffer: ByteBuffer): ByteBuffer {
+    fun putGJ2String(
+        s: String,
+        buffer: ByteBuffer,
+    ): ByteBuffer {
         val packed = ByteArray(256)
         val length = packGJString2(0, packed, s)
         return buffer.put(0.toByte()).put(packed, 0, length).put(0.toByte())
@@ -47,7 +52,11 @@ object ByteBufferUtils {
      */
 
     @JvmStatic
-    fun packGJString2(position: Int, buffer: ByteArray, string: String): Int {
+    fun packGJString2(
+        position: Int,
+        buffer: ByteArray,
+        string: String,
+    ): Int {
         val length = string.length
         var offset = position
         for (i in 0 until length) {
@@ -75,8 +84,8 @@ object ByteBufferUtils {
     @JvmStatic
     fun getMedium(buffer: ByteBuffer): Int {
         return ((buffer.get().toInt() and 0xFF) shl 16) +
-                ((buffer.get().toInt() and 0xFF) shl 8) +
-                (buffer.get().toInt() and 0xFF)
+            ((buffer.get().toInt() and 0xFF) shl 8) +
+            (buffer.get().toInt() and 0xFF)
     }
 
     /*

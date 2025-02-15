@@ -8,21 +8,24 @@ import core.game.node.entity.npc.NPC
 import core.game.world.map.Location
 import core.tools.RandomFunction
 
-class BarbFishSpotManager : TickListener, StartupListener {
+class BarbFishSpotManager :
+    TickListener,
+    StartupListener {
     var ticks = 0
     val spots = ArrayList<BarbFishingSpot>()
 
     companion object {
         val usedLocations = arrayListOf<Location>()
-        val locations = listOf(
-            Location.create(2506, 3494, 0),
-            Location.create(2504, 3497, 0),
-            Location.create(2504, 3497, 0),
-            Location.create(2500, 3506, 0),
-            Location.create(2500, 3509, 0),
-            Location.create(2500, 3512, 0),
-            Location.create(2504, 3516, 0)
-        )
+        val locations =
+            listOf(
+                Location.create(2506, 3494, 0),
+                Location.create(2504, 3497, 0),
+                Location.create(2504, 3497, 0),
+                Location.create(2500, 3506, 0),
+                Location.create(2500, 3509, 0),
+                Location.create(2500, 3512, 0),
+                Location.create(2504, 3516, 0),
+            )
     }
 
     override fun tick() {
@@ -51,20 +54,24 @@ fun getNewLoc(): Location {
     return loc
 }
 
-class BarbFishingSpot(var loc: Location? = null, var ttl: Int) : NPC(1176) {
+class BarbFishingSpot(
+    var loc: Location? = null,
+    var ttl: Int,
+) : NPC(1176) {
     init {
         location = loc
     }
 
-    val locations = listOf(
-        Location.create(2506, 3494, 0),
-        Location.create(2504, 3497, 0),
-        Location.create(2504, 3497, 0),
-        Location.create(2500, 3506, 0),
-        Location.create(2500, 3509, 0),
-        Location.create(2500, 3512, 0),
-        Location.create(2504, 3516, 0)
-    )
+    val locations =
+        listOf(
+            Location.create(2506, 3494, 0),
+            Location.create(2504, 3497, 0),
+            Location.create(2504, 3497, 0),
+            Location.create(2500, 3506, 0),
+            Location.create(2500, 3509, 0),
+            Location.create(2500, 3512, 0),
+            Location.create(2504, 3516, 0),
+        )
 
     override fun handleTickActions() {
         if (location != loc) properties.teleportLocation = loc.also { ttl = getNewTTL() }

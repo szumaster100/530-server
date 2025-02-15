@@ -1,17 +1,19 @@
 package content.region.morytania.quest.deal
 
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.*
 import core.api.quest.isQuestComplete
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 class RumDeal : Quest("Rum Deal", 107, 106, 2, Vars.VARP_QUEST_RUM_DEAL_PROGRESS_600, 0, 1, 19) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 12
         player ?: return
@@ -19,12 +21,54 @@ class RumDeal : Quest("Rum Deal", 107, 106, 2, Vars.VARP_QUEST_RUM_DEAL_PROGRESS
             line(player, "I need to speak to !!Pirate Pete?? in Port Phasmatys.", line++, false)
             line++
             line(player, "To complete this quest I need:", line++, false)
-            line(player, if (getStatLevel(player, Skills.FARMING) >= 40) "---40 Farming/--" else "!!40 Farming??", line++)
-            line(player, if (getStatLevel(player, Skills.FISHING) >= 50) "---50 Fishing/--" else "!!50 Fishing??", line++)
+            line(
+                player,
+                if (getStatLevel(player, Skills.FARMING) >=
+                    40
+                ) {
+                    "---40 Farming/--"
+                } else {
+                    "!!40 Farming??"
+                },
+                line++,
+            )
+            line(
+                player,
+                if (getStatLevel(player, Skills.FISHING) >=
+                    50
+                ) {
+                    "---50 Fishing/--"
+                } else {
+                    "!!50 Fishing??"
+                },
+                line++,
+            )
             line(player, if (getStatLevel(player, Skills.PRAYER) >= 47) "---47 Prayer/--" else "!!47 Prayer??", line++)
-            line(player, if (getStatLevel(player, Skills.CRAFTING) >= 42) "---42 Crafting/--" else "!!42 Crafting??", line++)
+            line(
+                player,
+                if (getStatLevel(player, Skills.CRAFTING) >=
+                    42
+                ) {
+                    "---42 Crafting/--"
+                } else {
+                    "!!42 Crafting??"
+                },
+                line++,
+            )
             line(player, if (getStatLevel(player, Skills.SLAYER) >= 42) "---42 Slayer/--" else "!!42 Slayer??", line++)
-            line(player, if (!isQuestComplete(player, Quests.ZOGRE_FLESH_EATERS)) "---I must have completed Zogre Flesh Eaters/--" else "!!I must have completed Zogre Flesh Eaters??", line++)
+            line(
+                player,
+                if (!isQuestComplete(
+                        player,
+                        Quests.ZOGRE_FLESH_EATERS,
+                    )
+                ) {
+                    "---I must have completed Zogre Flesh Eaters/--"
+                } else {
+                    "!!I must have completed Zogre Flesh Eaters??"
+                },
+                line++,
+            )
             line(player, "!!To be able to defeat a level 150 Monster", line++)
         }
 
@@ -48,7 +92,12 @@ class RumDeal : Quest("Rum Deal", 107, 106, 2, Vars.VARP_QUEST_RUM_DEAL_PROGRESS
 
         if (stage >= 3) {
             line(player, "Captain Braindeath recommended that I try and intimidate the", line++, stage >= 4)
-            line(player, "!!Swabs?? guarding the Herb Patch if I want them to !!stop attacking me??.", line++, stage >= 4)
+            line(
+                player,
+                "!!Swabs?? guarding the Herb Patch if I want them to !!stop attacking me??.",
+                line++,
+                stage >= 4,
+            )
             line++
         }
 
@@ -60,16 +109,21 @@ class RumDeal : Quest("Rum Deal", 107, 106, 2, Vars.VARP_QUEST_RUM_DEAL_PROGRESS
 
     override fun hasRequirements(player: Player?): Boolean {
         if (player != null) {
-            if (getStatLevel(player, Skills.FARMING) < 40)
+            if (getStatLevel(player, Skills.FARMING) < 40) {
                 return false
-            if (getStatLevel(player, Skills.FISHING) < 50)
+            }
+            if (getStatLevel(player, Skills.FISHING) < 50) {
                 return false
-            if (getStatLevel(player, Skills.PRAYER) < 47)
+            }
+            if (getStatLevel(player, Skills.PRAYER) < 47) {
                 return false
-            if (getStatLevel(player, Skills.CRAFTING) < 42)
+            }
+            if (getStatLevel(player, Skills.CRAFTING) < 42) {
                 return false
-            if (getStatLevel(player, Skills.SLAYER) < 42)
+            }
+            if (getStatLevel(player, Skills.SLAYER) < 42) {
                 return false
+            }
             return true
         }
         return false

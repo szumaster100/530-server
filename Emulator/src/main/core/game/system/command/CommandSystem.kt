@@ -5,8 +5,10 @@ import core.game.node.entity.player.info.Rights
 import core.tools.colorize
 
 class CommandSystem {
-
-    fun parse(player: Player?, message: String): Boolean {
+    fun parse(
+        player: Player?,
+        message: String,
+    ): Boolean {
         player ?: return false
         val arguments = message.split(" ").toTypedArray()
         val command = CommandMapping.get(arguments[0])
@@ -21,10 +23,8 @@ class CommandSystem {
             player.sendMessage(colorize("-->%R${arguments[0]}: command not found"))
         } else {
             try {
-
                 command?.attemptHandling(player, arguments)
             } catch (e: IllegalStateException) {
-
                 return true
             }
         }
@@ -32,7 +32,6 @@ class CommandSystem {
     }
 
     companion object {
-
         val commandSystem = CommandSystem()
     }
 }

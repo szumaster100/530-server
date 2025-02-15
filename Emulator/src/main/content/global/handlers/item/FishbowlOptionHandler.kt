@@ -1,8 +1,5 @@
 package content.global.handlers.item
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import core.Util
 import core.api.*
 import core.cache.def.impl.ItemDefinition
@@ -19,14 +16,16 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.node.item.WeightedChanceItem
 import core.game.world.update.flag.context.Animation
+import core.plugin.ClassScanner
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner
 import core.tools.RandomFunction
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 
 @Initializable
 class FishbowlOptionHandler : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         ItemDefinition.forId(FISHBOWL_WATER).handlers["option:empty"] = this
         ItemDefinition.forId(FISHBOWL_SEAWEED).handlers["option:empty"] = this
@@ -43,33 +42,39 @@ class FishbowlOptionHandler : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         if (node is Item) {
             val item = node.asItem()
             when (item.id) {
-                FISHBOWL_WATER, FISHBOWL_SEAWEED -> if (removeItem(player, item)) {
-                    lock(player, 2)
-                    addItem(player, FISHBOWL_EMPTY)
-                    playAudio(player, Sounds.LIQUID_2401, 0, 1)
-                    sendMessage(player, "You empty the contents of the fishbowl onto the ground.")
-                }
-
-                FISHBOWL_BLUE, FISHBOWL_GREEN, FISHBOWL_SPINE -> when (option) {
-                    "talk-at" -> {
-                        lock(player, ANIM_TALK.duration)
-                        animate(player, ANIM_TALK)
-                        return player.dialogueInterpreter.open("fishbowl-options", option)
+                FISHBOWL_WATER, FISHBOWL_SEAWEED ->
+                    if (removeItem(player, item)) {
+                        lock(player, 2)
+                        addItem(player, FISHBOWL_EMPTY)
+                        playAudio(player, Sounds.LIQUID_2401, 0, 1)
+                        sendMessage(player, "You empty the contents of the fishbowl onto the ground.")
                     }
 
-                    "play-with" -> {
-                        lock(player, ANIM_TALK.duration)
-                        animate(player, ANIM_TALK)
-                        return player.dialogueInterpreter.open("fishbowl-options", option)
-                    }
+                FISHBOWL_BLUE, FISHBOWL_GREEN, FISHBOWL_SPINE ->
+                    when (option) {
+                        "talk-at" -> {
+                            lock(player, ANIM_TALK.duration)
+                            animate(player, ANIM_TALK)
+                            return player.dialogueInterpreter.open("fishbowl-options", option)
+                        }
 
-                    "feed" -> return player.dialogueInterpreter.open("fishbowl-options", option)
-                    "drop" -> return player.dialogueInterpreter.open("fishbowl-options", option, item)
-                }
+                        "play-with" -> {
+                            lock(player, ANIM_TALK.duration)
+                            animate(player, ANIM_TALK)
+                            return player.dialogueInterpreter.open("fishbowl-options", option)
+                        }
+
+                        "feed" -> return player.dialogueInterpreter.open("fishbowl-options", option)
+                        "drop" -> return player.dialogueInterpreter.open("fishbowl-options", option, item)
+                    }
             }
         }
 
@@ -77,7 +82,6 @@ class FishbowlOptionHandler : OptionHandler() {
     }
 
     private inner class FeedPetFishHandler : UseWithHandler(Items.FISH_FOOD_272) {
-
         override fun newInstance(arg: Any?): Plugin<Any?> {
             addHandler(FISHBOWL_BLUE, ITEM_TYPE, this)
             addHandler(FISHBOWL_GREEN, ITEM_TYPE, this)
@@ -90,7 +94,9 @@ class FishbowlOptionHandler : OptionHandler() {
         }
     }
 
-    inner class FishbowlDialogue(player: Player? = null) : Dialogue(player) {
+    inner class FishbowlDialogue(
+        player: Player? = null,
+    ) : Dialogue(player) {
         private var fishbowl: Item? = null
         private var option: String? = null
 
@@ -118,10 +124,11 @@ class FishbowlOptionHandler : OptionHandler() {
                 }
 
                 "feed" -> {
-                    if (player.inventory.containsAtLeastOneItem(Items.FISH_FOOD_272) && player.inventory.remove(
+                    if (player.inventory.containsAtLeastOneItem(Items.FISH_FOOD_272) &&
+                        player.inventory.remove(
                             Item(
-                                Items.FISH_FOOD_272
-                            )
+                                Items.FISH_FOOD_272,
+                            ),
                         )
                     ) {
                         player.inventory.add(Item(Items.AN_EMPTY_BOX_6675))
@@ -143,7 +150,10 @@ class FishbowlOptionHandler : OptionHandler() {
             return true
         }
 
-        override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+        override fun handle(
+            interfaceId: Int,
+            buttonId: Int,
+        ): Boolean {
             when (stage) {
                 999 -> end()
                 1 -> {
@@ -166,18 +176,19 @@ class FishbowlOptionHandler : OptionHandler() {
                     stage++
                 }
 
-                5 -> when (buttonId) {
-                    1 -> {
-                        sendDialogue("The fishbowl shatters on the ground.")
-                        player.inventory.remove(fishbowl)
-                        stage = 999
-                    }
+                5 ->
+                    when (buttonId) {
+                        1 -> {
+                            sendDialogue("The fishbowl shatters on the ground.")
+                            player.inventory.remove(fishbowl)
+                            stage = 999
+                        }
 
-                    2 -> {
-                        sendDialogue("You keep a hold of it for now.")
-                        stage = 999
+                        2 -> {
+                            sendDialogue("You keep a hold of it for now.")
+                            stage = 999
+                        }
                     }
-                }
             }
             return true
         }
@@ -188,14 +199,17 @@ class FishbowlOptionHandler : OptionHandler() {
     }
 
     class AquariumPlugin : OptionHandler() {
-
         override fun newInstance(arg: Any?): Plugin<Any?> {
             SceneryDefinition.forId(10091).handlers["option:fish-in"] = this
             ClassScanner.definePlugin(TinyNetHandler())
             return this
         }
 
-        override fun handle(player: Player, node: Node, option: String): Boolean {
+        override fun handle(
+            player: Player,
+            node: Node,
+            option: String,
+        ): Boolean {
             return getFish(player)
         }
 
@@ -211,11 +225,12 @@ class FishbowlOptionHandler : OptionHandler() {
                 val greenChance = Math.round(Util.clamp(0.2941 * level.toDouble() + 19.7059, 20.0, 40.0)).toInt()
                 val spineChance = Math.round(Util.clamp(0.6667 * level.toDouble() - 46.0, 0.0, 20.0)).toInt()
 
-                val fishChance = arrayOf(
-                    WeightedChanceItem(FISHBOWL_BLUE, 1, blueChance),
-                    WeightedChanceItem(FISHBOWL_GREEN, 1, greenChance),
-                    WeightedChanceItem(FISHBOWL_SPINE, 1, spineChance)
-                )
+                val fishChance =
+                    arrayOf(
+                        WeightedChanceItem(FISHBOWL_BLUE, 1, blueChance),
+                        WeightedChanceItem(FISHBOWL_GREEN, 1, greenChance),
+                        WeightedChanceItem(FISHBOWL_SPINE, 1, spineChance),
+                    )
 
                 val fish = RandomFunction.rollWeightedChanceTable(*fishChance)
                 player.inventory.add(fish)
@@ -235,7 +250,6 @@ class FishbowlOptionHandler : OptionHandler() {
         }
 
         private inner class TinyNetHandler : UseWithHandler(TINY_NET) {
-
             override fun newInstance(arg: Any?): Plugin<Any?> {
                 addHandler(10091, OBJECT_TYPE, this)
                 return this

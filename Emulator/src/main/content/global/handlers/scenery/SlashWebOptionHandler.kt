@@ -1,8 +1,5 @@
 package content.global.handlers.scenery
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import core.api.*
 import core.cache.def.impl.SceneryDefinition
 import core.game.container.Container
@@ -19,11 +16,19 @@ import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
 import core.plugin.Plugin
 import core.tools.RandomFunction
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 
 @Initializable
 class SlashWebOptionHandler : OptionHandler() {
-
-    private val sceneryIDs = intArrayOf(org.rs.consts.Scenery.WEB_733, org.rs.consts.Scenery.WEB_1810, org.rs.consts.Scenery.WEB_11400, org.rs.consts.Scenery.WEB_33237)
+    private val sceneryIDs =
+        intArrayOf(
+            org.rs.consts.Scenery.WEB_733,
+            org.rs.consts.Scenery.WEB_1810,
+            org.rs.consts.Scenery.WEB_11400,
+            org.rs.consts.Scenery.WEB_33237,
+        )
     private val baseAnimation = Animation(Animations.PICK_OBJECT_GROUND_451)
     private val cutSpiderWebAnimation = Animation(Animations.CUT_SPIDER_WEB_911)
     private val cutSpiderWebSoundEffect = Sounds.STABSWORD_SLASH_2548
@@ -38,7 +43,11 @@ class SlashWebOptionHandler : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val scenery = node as Scenery
         var weapon = getWeapon(player, player.equipment)
         if (weapon == null) {
@@ -59,19 +68,26 @@ class SlashWebOptionHandler : OptionHandler() {
             sendMessage(player, "You slash the web apart.")
             SceneryBuilder.replace(
                 scenery,
-                if (scenery.id == org.rs.consts.Scenery.SPIDER_WEB_27266 || scenery.id == org.rs.consts.Scenery.SPIDERWEB_29354) scenery.transform(734) else scenery.transform(
-                    scenery.id + 1
-                ),
-                100
+                if (scenery.id == org.rs.consts.Scenery.SPIDER_WEB_27266 ||
+                    scenery.id == org.rs.consts.Scenery.SPIDERWEB_29354
+                ) {
+                    scenery.transform(734)
+                } else {
+                    scenery.transform(
+                        scenery.id + 1,
+                    )
+                },
+                100,
             )
 
             if (scenery.id == org.rs.consts.Scenery.SPIDERWEB_29354) {
-
                 finishDiaryTask(player, DiaryType.VARROCK, 0, 17)
             }
 
-            if (scenery.id == org.rs.consts.Scenery.SPIDERWEB_29354 && player.inventory.containsAtLeastOneItem(Items.RED_SPIDERS_EGGS_223) && player.location.y <= 9897) {
-
+            if (scenery.id == org.rs.consts.Scenery.SPIDERWEB_29354 &&
+                player.inventory.containsAtLeastOneItem(Items.RED_SPIDERS_EGGS_223) &&
+                player.location.y <= 9897
+            ) {
                 finishDiaryTask(player, DiaryType.VARROCK, 1, 4)
             }
         } else {
@@ -80,7 +96,10 @@ class SlashWebOptionHandler : OptionHandler() {
         return true
     }
 
-    private fun getWeapon(player: Player, container: Container): Item? {
+    private fun getWeapon(
+        player: Player,
+        container: Container,
+    ): Item? {
         var item: Item? = if (container is EquipmentContainer) container.get(EquipmentContainer.SLOT_WEAPON) else null
         if (container is EquipmentContainer) {
             return checkEquipmentWeapon(player, item)
@@ -101,7 +120,10 @@ class SlashWebOptionHandler : OptionHandler() {
         return item
     }
 
-    private fun checkEquipmentWeapon(player: Player, item: Item?): Item? {
+    private fun checkEquipmentWeapon(
+        player: Player,
+        item: Item?,
+    ): Item? {
         if (item != null) {
             val inter = WeaponInterface.getWeaponInterface(item) ?: return null
             var success = false

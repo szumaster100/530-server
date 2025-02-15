@@ -1,7 +1,5 @@
 package content.region.fremennik.handlers.general
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.*
 import core.game.node.entity.Entity
 import core.game.node.entity.impl.Projectile
@@ -13,11 +11,19 @@ import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
-class GhostBouncerNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+class GhostBouncerNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return GhostBouncerNPC(id, location)
     }
 
@@ -44,7 +50,7 @@ class GhostBouncerNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id,
                         ghostBouncer.attack(player)
                         return true
                     }
-                }
+                },
             )
         }
     }
@@ -64,12 +70,16 @@ class GhostBouncerNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id,
                 endHeight = 30,
                 delay = 0,
                 speed = 250,
-                angle = 0
+                angle = 0,
             )
         }
         if (removeItem(killer!!.asPlayer(), Items.SEVERED_LEG_10857)) {
             runTask(killer.asPlayer(), 8) {
-                sendItemDialogue(killer.asPlayer(), Items.SHADOW_SWORD_10858, "You receive a shadow sword and 2000 Slayer xp.")
+                sendItemDialogue(
+                    killer.asPlayer(),
+                    Items.SHADOW_SWORD_10858,
+                    "You receive a shadow sword and 2000 Slayer xp.",
+                )
                 rewardXP(killer.asPlayer(), Skills.SLAYER, 2000.0)
                 addItemOrDrop(killer.asPlayer(), Items.SHADOW_SWORD_10858)
                 removeAttributes(
@@ -77,7 +87,7 @@ class GhostBouncerNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id,
                     GeneralShadowUtils.START_GENERAL_SHADOW,
                     GeneralShadowUtils.GS_SIN_SEER_TALK,
                     GeneralShadowUtils.GS_START,
-                    GeneralShadowUtils.GS_PROGRESS
+                    GeneralShadowUtils.GS_PROGRESS,
                 )
                 setAttribute(killer.asPlayer(), GeneralShadowUtils.GS_COMPLETE, true)
                 unlock(killer.asPlayer())

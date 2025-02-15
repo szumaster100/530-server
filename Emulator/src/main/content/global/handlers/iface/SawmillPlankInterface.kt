@@ -1,7 +1,5 @@
 package content.global.handlers.iface
 
-import org.rs.consts.Components
-import org.rs.consts.Items
 import content.global.skill.construction.items.Planks
 import core.api.*
 import core.game.component.Component
@@ -12,31 +10,51 @@ import core.game.node.entity.player.link.diary.DiaryType
 import core.game.node.item.Item
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Components
+import org.rs.consts.Items
 
 @Initializable
 class SawmillPlankInterface : ComponentPlugin() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         ComponentDefinition.put(Components.POH_SAWMILL_403, this)
         return this
     }
 
-    override fun handle(player: Player, component: Component, opcode: Int, button: Int, slot: Int, itemId: Int): Boolean {
-        val plank: Planks? = when (button) {
-            in 102..107 -> Planks.WOOD
-            in 109..113 -> Planks.OAK
-            in 115..119 -> Planks.TEAK
-            in 121..125 -> Planks.MAHOGANY
-            else -> null
-        }
+    override fun handle(
+        player: Player,
+        component: Component,
+        opcode: Int,
+        button: Int,
+        slot: Int,
+        itemId: Int,
+    ): Boolean {
+        val plank: Planks? =
+            when (button) {
+                in 102..107 -> Planks.WOOD
+                in 109..113 -> Planks.OAK
+                in 115..119 -> Planks.TEAK
+                in 121..125 -> Planks.MAHOGANY
+                else -> null
+            }
 
         var amount = -1
         val fullIndex =
-            if (plank == Planks.WOOD) 107 else if (plank == Planks.OAK) 113 else if (plank == Planks.TEAK) 119 else 125
+            if (plank == Planks.WOOD) {
+                107
+            } else if (plank == Planks.OAK) {
+                113
+            } else if (plank == Planks.TEAK) {
+                119
+            } else {
+                125
+            }
 
         val difference =
-            if (plank != Planks.WOOD) fullIndex - button
-            else fullIndex - button - if (button != 107) 1 else 0
+            if (plank != Planks.WOOD) {
+                fullIndex - button
+            } else {
+                fullIndex - button - if (button != 107) 1 else 0
+            }
 
         when (difference) {
             0 -> amount = 1
@@ -58,7 +76,11 @@ class SawmillPlankInterface : ComponentPlugin() {
         return true
     }
 
-    private fun createPlank(player: Player, plank: Planks, amount: Int) {
+    private fun createPlank(
+        player: Player,
+        plank: Planks,
+        amount: Int,
+    ) {
         closeInterface(player)
         var amount = amount
         if (amount > amountInInventory(player, plank.log)) {

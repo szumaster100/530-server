@@ -24,10 +24,8 @@ import core.game.world.update.flag.context.Animation
 import core.tools.RandomFunction
 
 class CombatPulse(
-
-    val entity: Entity?
+    val entity: Entity?,
 ) : Pulse(1, entity, null) {
-
     private var victim: Entity? = null
 
     var style = CombatStyle.MELEE
@@ -62,7 +60,9 @@ class CombatPulse(
         if (!interactable()) {
             return if (entity.walkingQueue.isMoving) {
                 false
-            } else combatTimeOut++ > entity.properties.combatTimeOut
+            } else {
+                combatTimeOut++ > entity.properties.combatTimeOut
+            }
         }
         combatTimeOut = 0
         entity.face(victim)
@@ -73,10 +73,12 @@ class CombatPulse(
             if (handler == null) {
                 handler = entity.getSwingHandler(true)
             }
-            if (!v.isAttackable(entity, handler!!.type, true) && entity != getAttribute<RandomEventNPC?>(
+            if (!v.isAttackable(entity, handler!!.type, true) &&
+                entity !=
+                getAttribute<RandomEventNPC?>(
                     v,
                     AntiMacro.EVENT_NPC,
-                    null
+                    null,
                 )
             ) {
                 return true
@@ -91,7 +93,9 @@ class CombatPulse(
             val salamander = handler!! is SalamanderSwingHandler
             if (entity is Player && magic) {
                 speed = 5
-            } else if (entity.properties.attackStyle.style == WeaponInterface.STYLE_RAPID || (salamander && entity.properties.attackStyle.style == WeaponInterface.STYLE_RANGE_ACCURATE)) {
+            } else if (entity.properties.attackStyle.style == WeaponInterface.STYLE_RAPID ||
+                (salamander && entity.properties.attackStyle.style == WeaponInterface.STYLE_RANGE_ACCURATE)
+            ) {
                 speed--
             }
             if (!magic && hasTimerActive<Miasmic>(entity)) {
@@ -172,11 +176,12 @@ class CombatPulse(
                 style = CombatStyle.MAGIC
                 return
             }
-            style = when (p.properties.attackStyle.bonusType) {
-                WeaponInterface.BONUS_MAGIC -> CombatStyle.MAGIC
-                WeaponInterface.BONUS_RANGE -> CombatStyle.RANGE
-                else -> CombatStyle.MELEE
-            }
+            style =
+                when (p.properties.attackStyle.bonusType) {
+                    WeaponInterface.BONUS_MAGIC -> CombatStyle.MAGIC
+                    WeaponInterface.BONUS_RANGE -> CombatStyle.RANGE
+                    else -> CombatStyle.MELEE
+                }
         }
     }
 
@@ -210,23 +215,33 @@ class CombatPulse(
                     victim.transform(1241)
                 }
                 if (mask != null && mask.id >= 8901 && mask.id < 8920 && RandomFunction.random(50) == 0) {
-                    player.packetDispatch.sendMessage("Your black mask startles your enemy, you have " + (if (mask.id == 8919) "no" else ((8920 - mask.id) / 2).toString()) + " charges left.")
+                    player.packetDispatch.sendMessage(
+                        "Your black mask startles your enemy, you have " +
+                            (if (mask.id == 8919) "no" else ((8920 - mask.id) / 2).toString()) +
+                            " charges left.",
+                    )
                     player.equipment.replace(Item(mask.id + 2), EquipmentContainer.SLOT_HAT)
                     var drain = 3 + victim.skills.getLevel(Skills.DEFENCE) / 14
                     if (drain > 10) {
                         drain = 10
                     }
-                    victim.skills.updateLevel(Skills.DEFENCE, -drain, victim.skills.getStaticLevel(Skills.DEFENCE) - drain)
+                    victim.skills.updateLevel(
+                        Skills.DEFENCE,
+                        -drain,
+                        victim.skills.getStaticLevel(Skills.DEFENCE) - drain,
+                    )
                 }
             }
-            if (!victim.locks.isMovementLocked)
+            if (!victim.locks.isMovementLocked) {
                 victim.walkingQueue.reset()
+            }
         }
         setVictim(victim)
         entity.onAttack(victim as Entity?)
 
-        if (!isAttacking)
+        if (!isAttacking) {
             entity.pulseManager.run(this)
+        }
     }
 
     fun setVictim(victim: Node?) {
@@ -255,7 +270,9 @@ class CombatPulse(
         }
         return if (temporaryHandler != null) {
             temporaryHandler!!.canSwing(entity!!, victim!!)
-        } else entity!!.getSwingHandler(false).canSwing(entity, victim!!)
+        } else {
+            entity!!.getSwingHandler(false).canSwing(entity, victim!!)
+        }
     }
 
     override fun start() {
@@ -302,8 +319,11 @@ class CombatPulse(
     }
 
     companion object {
-
-        fun swing(entity: Entity?, victim: Entity?, handler: CombatSwingHandler?): Boolean {
+        fun swing(
+            entity: Entity?,
+            victim: Entity?,
+            handler: CombatSwingHandler?,
+        ): Boolean {
             val state = BattleState(entity, victim)
             val set = handler!!.getArmourSet(entity)
             entity!!.properties.armourSet = set
@@ -327,12 +347,14 @@ class CombatPulse(
             GameWorld.Pulser.submit(
                 object : Pulse(delay - 1, entity, victim) {
                     var impact = false
+
                     override fun pulse(): Boolean {
                         if (DeathTask.isDead(victim) || DeathTask.isDead(entity)) {
                             return true
                         }
-                        if (entity is NPC)
+                        if (entity is NPC) {
                             entity.asNpc().behavior.beforeAttackFinalized(entity, victim, state)
+                        }
                         if (impact || getDelay() == 0) {
                             if (state.estimatedHit != 0 && victim is NPC) {
                                 val n = victim.asNpc()
@@ -352,17 +374,18 @@ class CombatPulse(
                         handler.visualizeImpact(entity, victim, state)
                         return false
                     }
-                }
+                },
             )
             return true
         }
     }
 
     init {
-        movement = object : MovementPulse(entity, null) {
-            override fun pulse(): Boolean {
-                return false
+        movement =
+            object : MovementPulse(entity, null) {
+                override fun pulse(): Boolean {
+                    return false
+                }
             }
-        }
     }
 }

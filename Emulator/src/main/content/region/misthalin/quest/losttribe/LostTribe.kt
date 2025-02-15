@@ -1,9 +1,5 @@
 package content.region.misthalin.quest.losttribe
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.*
 import core.api.quest.isQuestComplete
 import core.game.node.entity.player.Player
@@ -12,11 +8,17 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class LostTribe : Quest(Quests.THE_LOST_TRIBE, 84, 83, 1) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         player ?: return
         var line = 11
@@ -40,7 +42,7 @@ class LostTribe : Quest(Quests.THE_LOST_TRIBE, 84, 83, 1) {
                     player,
                     "I found out that someone had seen a !!goblin-like?? creature in the cellar.",
                     line++,
-                    stage >= 30
+                    stage >= 30,
                 )
                 line(player, "I should go speak to !!The Duke?? about this.", line++, stage >= 30)
             }
@@ -50,7 +52,7 @@ class LostTribe : Quest(Quests.THE_LOST_TRIBE, 84, 83, 1) {
                     player,
                     "I should get down into the !!cellar?? and try to unblock the !!tunnel??.",
                     line++,
-                    stage >= 40
+                    stage >= 40,
                 )
             }
             if (stage >= 40) {
@@ -117,7 +119,10 @@ class LostTribe : Quest(Quests.THE_LOST_TRIBE, 84, 83, 1) {
         setVarp(player, 465, 11)
     }
 
-    override fun getConfig(player: Player?, stage: Int): IntArray {
+    override fun getConfig(
+        player: Player?,
+        stage: Int,
+    ): IntArray {
         player ?: return intArrayOf(Vars.VARP_QUEST_LOST_TRIBE_PROGRESS_465, 0)
         if (stage in 50..99) {
             return intArrayOf(Vars.VARP_QUEST_LOST_TRIBE_PROGRESS_465, 9)

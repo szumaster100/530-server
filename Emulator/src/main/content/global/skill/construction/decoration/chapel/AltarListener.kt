@@ -1,7 +1,5 @@
 package content.global.skill.construction.decoration.chapel
 
-import org.rs.consts.Animations
-import org.rs.consts.Sounds
 import content.global.skill.prayer.Bones
 import core.api.playAudio
 import core.api.sendMessage
@@ -17,9 +15,10 @@ import core.game.system.task.Pulse
 import core.game.world.map.RegionManager
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
+import org.rs.consts.Animations
+import org.rs.consts.Sounds
 
 class AltarListener : InteractionListener {
-
     override fun defineListeners() {
         onUseWith(IntType.SCENERY, BONES, *ALTAR) { player, used, with ->
             var left: core.game.node.scenery.Scenery? = null
@@ -39,7 +38,13 @@ class AltarListener : InteractionListener {
         }
     }
 
-    private fun worship(player: Player, altar: Scenery, left: Scenery?, right: Scenery?, bones: Bones) {
+    private fun worship(
+        player: Player,
+        altar: Scenery,
+        left: Scenery?,
+        right: Scenery?,
+        bones: Bones,
+    ) {
         if (player.ironmanManager.isIronman && !player.houseManager.isInHouse(player)) {
             sendMessage(player, "You cannot do this on someone else's altar.")
             return
@@ -62,20 +67,24 @@ class AltarListener : InteractionListener {
                             player.sendMessage(getMessage(isLit(left), isLit(right)))
                             player.skills.addExperience(
                                 Skills.PRAYER,
-                                bones.experience * getMod(altar, isLit(left), isLit(right))
+                                bones.experience * getMod(altar, isLit(left), isLit(right)),
                             )
                         }
                     }
                     return !(player.location == start || !player.inventory.containsItem(Item(bones.itemId)))
                 }
-            }
+            },
         )
     }
 
     private fun isLit(obj: Scenery?): Boolean {
-        return obj != null && obj.id != org.rs.consts.Scenery.LAMP_SPACE_15271 && SceneryDefinition.forId(obj.id).options != null && !SceneryDefinition.forId(
-            obj.id
-        ).hasAction("light")
+        return obj != null &&
+            obj.id != org.rs.consts.Scenery.LAMP_SPACE_15271 &&
+            SceneryDefinition.forId(obj.id).options != null &&
+            !SceneryDefinition
+                .forId(
+                    obj.id,
+                ).hasAction("light")
     }
 
     private fun getBase(altar: Scenery?): Double {
@@ -83,19 +92,24 @@ class AltarListener : InteractionListener {
         if (altar == null) {
             return base
         }
-        base = when (altar.id) {
-            org.rs.consts.Scenery.ALTAR_13182 -> 110.0
-            org.rs.consts.Scenery.ALTAR_13185 -> 125.0
-            org.rs.consts.Scenery.ALTAR_13188 -> 150.0
-            org.rs.consts.Scenery.ALTAR_13191 -> 175.0
-            org.rs.consts.Scenery.ALTAR_13194 -> 200.0
-            org.rs.consts.Scenery.ALTAR_13197 -> 250.0
-            else -> base
-        }
+        base =
+            when (altar.id) {
+                org.rs.consts.Scenery.ALTAR_13182 -> 110.0
+                org.rs.consts.Scenery.ALTAR_13185 -> 125.0
+                org.rs.consts.Scenery.ALTAR_13188 -> 150.0
+                org.rs.consts.Scenery.ALTAR_13191 -> 175.0
+                org.rs.consts.Scenery.ALTAR_13194 -> 200.0
+                org.rs.consts.Scenery.ALTAR_13197 -> 250.0
+                else -> base
+            }
         return base
     }
 
-    private fun getMod(altar: Scenery, isLeft: Boolean, isRight: Boolean): Double {
+    private fun getMod(
+        altar: Scenery,
+        isLeft: Boolean,
+        isRight: Boolean,
+    ): Double {
         var total = getBase(altar)
         if (isLeft) {
             total += 50.0
@@ -106,7 +120,10 @@ class AltarListener : InteractionListener {
         return total / 100
     }
 
-    private fun getMessage(isLeft: Boolean, isRight: Boolean): String {
+    private fun getMessage(
+        isLeft: Boolean,
+        isRight: Boolean,
+    ): String {
         return when {
             isLeft && isRight -> "The gods are very pleased with your offering."
             isLeft || isRight -> "The gods are pleased with your offering."
@@ -115,7 +132,6 @@ class AltarListener : InteractionListener {
     }
 
     companion object {
-
         private val GFX = Graphics(org.rs.consts.Graphics.BONE_ON_ALTAR_624)
 
         private val ANIM = Animation(Animations.HUMAN_COOKING_RANGE_896)
@@ -128,7 +144,7 @@ class AltarListener : InteractionListener {
                 org.rs.consts.Scenery.ALTAR_13188,
                 org.rs.consts.Scenery.ALTAR_13191,
                 org.rs.consts.Scenery.ALTAR_13194,
-                org.rs.consts.Scenery.ALTAR_13197
+                org.rs.consts.Scenery.ALTAR_13197,
             )
     }
 }

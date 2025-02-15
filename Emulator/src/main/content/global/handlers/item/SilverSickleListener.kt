@@ -1,8 +1,5 @@
 package content.global.handlers.item
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Quests
 import content.region.morytania.quest.druidspirit.NSUtils.castBloom
 import core.api.*
 import core.api.quest.getQuestStage
@@ -10,14 +7,15 @@ import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Quests
 
 class SilverSickleListener : InteractionListener {
-
     private val sickleIDs =
         intArrayOf(Items.SILVER_SICKLEB_2963, Items.ENCHANTED_SICKLE_EMERALDB_13156, Items.SILVER_SICKLE_EMERALDB_13155)
 
     override fun defineListeners() {
-
         on(sickleIDs, IntType.ITEM, "operate", "cast bloom") { player, node ->
             if (getQuestStage(player, Quests.NATURE_SPIRIT) >= 75) {
                 if (!inZone(player, "Mort Myre Swamp")) {
@@ -56,7 +54,7 @@ class SilverSickleListener : InteractionListener {
                 player.dialogueInterpreter.sendItemMessage(
                     Items.SILVER_SICKLE_EMERALDB_13155,
                     "You carefully and skilfully construct an emerald-",
-                    "adorned blessed silver sickle."
+                    "adorned blessed silver sickle.",
                 )
                 rewardXP(player, Skills.CRAFTING, 20.0)
             }

@@ -36,7 +36,9 @@ fun Permadeath(target: Player) {
         target.familiarManager.dismiss()
     }
 
-    val petKeys = target.familiarManager.petDetails.keys.toList()
+    val petKeys =
+        target.familiarManager.petDetails.keys
+            .toList()
     for (key in petKeys) {
         target.familiarManager.removeDetails(key)
     }

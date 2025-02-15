@@ -1,12 +1,12 @@
 package core.game.node.entity.combat.equipment.special
 
+import core.api.EquipmentSlot
 import core.api.getItemFromEquipment
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.BattleState
 import core.game.node.entity.combat.CombatStyle
 import core.game.node.entity.combat.CombatSwingHandler
 import core.game.node.entity.combat.InteractionType
-import core.api.EquipmentSlot
 import core.game.node.entity.combat.equipment.Weapon
 import core.game.node.entity.combat.equipment.WeaponInterface
 import core.game.node.entity.player.Player
@@ -20,9 +20,13 @@ import org.rs.consts.Items
 import kotlin.math.ceil
 import kotlin.math.floor
 
-class SalamanderSwingHandler(private var style: CombatStyle) : CombatSwingHandler(style) {
-
-    override fun canSwing(entity: Entity, victim: Entity): InteractionType? {
+class SalamanderSwingHandler(
+    private var style: CombatStyle,
+) : CombatSwingHandler(style) {
+    override fun canSwing(
+        entity: Entity,
+        victim: Entity,
+    ): InteractionType? {
         checkStyle(entity)
         if (!isProjectileClipped(entity, victim, false)) {
             return InteractionType.NO_INTERACT
@@ -32,10 +36,11 @@ class SalamanderSwingHandler(private var style: CombatStyle) : CombatSwingHandle
             victim.centerLocation.withinDistance(entity.centerLocation, getCombatDistance(entity, victim, distance))
         var type = InteractionType.STILL_INTERACT
         if (victim.walkingQueue.isMoving && !goodRange) {
-            goodRange = victim.centerLocation.withinDistance(
-                entity.centerLocation,
-                getCombatDistance(entity, victim, ++distance)
-            )
+            goodRange =
+                victim.centerLocation.withinDistance(
+                    entity.centerLocation,
+                    getCombatDistance(entity, victim, ++distance),
+                )
             type = InteractionType.MOVE_INTERACT
         }
         if (goodRange && super.canSwing(entity, victim) != InteractionType.NO_INTERACT) {
@@ -47,7 +52,11 @@ class SalamanderSwingHandler(private var style: CombatStyle) : CombatSwingHandle
         return InteractionType.NO_INTERACT
     }
 
-    override fun swing(entity: Entity?, victim: Entity?, state: BattleState?): Int {
+    override fun swing(
+        entity: Entity?,
+        victim: Entity?,
+        state: BattleState?,
+    ): Int {
         state!!.style = style
         if (entity is Player) {
             state.weapon = Weapon(entity.equipment[3])
@@ -71,17 +80,30 @@ class SalamanderSwingHandler(private var style: CombatStyle) : CombatSwingHandle
         return 1
     }
 
-    override fun impact(entity: Entity?, victim: Entity?, state: BattleState?) {
+    override fun impact(
+        entity: Entity?,
+        victim: Entity?,
+        state: BattleState?,
+    ) {
         style.swingHandler.impact(entity, victim, state)
     }
 
-    override fun visualize(entity: Entity, victim: Entity?, state: BattleState?) {
-        entity.visualize(Animation.create(Animations.SALAMANDER_WEAPON_ATTACK_5247),
-            Graphics(org.rs.consts.Graphics.DRAGON_FIRE_BREATH_REGULAR_952, 100)
+    override fun visualize(
+        entity: Entity,
+        victim: Entity?,
+        state: BattleState?,
+    ) {
+        entity.visualize(
+            Animation.create(Animations.SALAMANDER_WEAPON_ATTACK_5247),
+            Graphics(org.rs.consts.Graphics.DRAGON_FIRE_BREATH_REGULAR_952, 100),
         )
     }
 
-    override fun visualizeImpact(entity: Entity?, victim: Entity?, state: BattleState?) {
+    override fun visualizeImpact(
+        entity: Entity?,
+        victim: Entity?,
+        state: BattleState?,
+    ) {
         style.swingHandler.visualizeImpact(entity, victim, state)
     }
 
@@ -91,7 +113,11 @@ class SalamanderSwingHandler(private var style: CombatStyle) : CombatSwingHandle
         return style.swingHandler.calculateAccuracy(entity)
     }
 
-    override fun calculateHit(entity: Entity?, victim: Entity?, modifier: Double): Int {
+    override fun calculateHit(
+        entity: Entity?,
+        victim: Entity?,
+        modifier: Double,
+    ): Int {
         entity ?: return 0
 
         // Checking style is necessary for ::calcmaxhit to function after changing attack style but before attacking
@@ -110,7 +136,11 @@ class SalamanderSwingHandler(private var style: CombatStyle) : CombatSwingHandle
         return style.swingHandler.calculateHit(entity, victim, modifier)
     }
 
-    override fun addExperience(entity: Entity?, victim: Entity?, state: BattleState?) {
+    override fun addExperience(
+        entity: Entity?,
+        victim: Entity?,
+        state: BattleState?,
+    ) {
         entity!!.skills.addExperience(Skills.HITPOINTS, state!!.estimatedHit * 1.33, true)
         if (state.style == CombatStyle.MAGIC) {
             entity.skills.addExperience(Skills.MAGIC, state.estimatedHit * 2.toDouble(), true)
@@ -123,25 +153,31 @@ class SalamanderSwingHandler(private var style: CombatStyle) : CombatSwingHandle
         }
     }
 
-    override fun calculateDefence(victim: Entity?, attacker: Entity?): Int {
+    override fun calculateDefence(
+        victim: Entity?,
+        attacker: Entity?,
+    ): Int {
         return style.swingHandler.calculateDefence(victim, attacker)
     }
 
-    override fun getSetMultiplier(e: Entity?, skillId: Int): Double {
+    override fun getSetMultiplier(
+        e: Entity?,
+        skillId: Int,
+    ): Double {
         return style.swingHandler.getSetMultiplier(e, skillId)
     }
 
     private fun checkStyle(e: Entity?) {
         val index = e!!.properties.attackStyle.style
-        style = when (index) {
-            WeaponInterface.STYLE_DEFENSIVE_CAST -> CombatStyle.MAGIC
-            WeaponInterface.STYLE_RANGE_ACCURATE -> CombatStyle.RANGE
-            else -> CombatStyle.MELEE
-        }
+        style =
+            when (index) {
+                WeaponInterface.STYLE_DEFENSIVE_CAST -> CombatStyle.MAGIC
+                WeaponInterface.STYLE_RANGE_ACCURATE -> CombatStyle.RANGE
+                else -> CombatStyle.MELEE
+            }
     }
 
     companion object {
-
         val INSTANCE = SalamanderSwingHandler(CombatStyle.RANGE)
 
         fun getAmmoId(id: Int): Int {
@@ -192,7 +228,10 @@ class SalamanderSwingHandler(private var style: CombatStyle) : CombatSwingHandle
             }
         }
 
-        fun hasAmmo(e: Entity?, state: BattleState?): Boolean {
+        fun hasAmmo(
+            e: Entity?,
+            state: BattleState?,
+        ): Boolean {
             if (e !is Player) {
                 return true
             }
@@ -208,7 +247,10 @@ class SalamanderSwingHandler(private var style: CombatStyle) : CombatSwingHandle
             return false
         }
 
-        fun useAmmo(e: Entity, state: BattleState) {
+        fun useAmmo(
+            e: Entity,
+            state: BattleState,
+        ) {
             if (e !is Player) {
                 return
             }

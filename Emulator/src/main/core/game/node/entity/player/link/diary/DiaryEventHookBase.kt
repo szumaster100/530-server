@@ -1,16 +1,22 @@
 package core.game.node.entity.player.link.diary
 
 import core.api.*
+import core.api.Event
 import core.game.event.*
 import core.game.node.entity.Entity
 import core.game.node.entity.player.Player
 import core.game.world.map.zone.ZoneBorders
-import core.api.Event
 
-abstract class DiaryEventHookBase(private val diaryType: DiaryType) : MapArea, LoginListener {
+abstract class DiaryEventHookBase(
+    private val diaryType: DiaryType,
+) : MapArea,
+    LoginListener {
     protected companion object {
-
-        private fun <T> forEligibleEntityDo(entity: Entity, event: T, handler: (Player, T) -> Unit) {
+        private fun <T> forEligibleEntityDo(
+            entity: Entity,
+            event: T,
+            handler: (Player, T) -> Unit,
+        ) {
             if (entity !is Player) return
             if (entity.isArtificial) return
 
@@ -20,9 +26,12 @@ abstract class DiaryEventHookBase(private val diaryType: DiaryType) : MapArea, L
 
     class EventHandler<T : core.game.event.Event>(
         private val owner: DiaryEventHookBase,
-        private val handler: (Player, T) -> Unit
+        private val handler: (Player, T) -> Unit,
     ) : EventHook<T> {
-        override fun process(entity: Entity, event: T) {
+        override fun process(
+            entity: Entity,
+            event: T,
+        ) {
             forEligibleEntityDo(entity, event, handler)
         }
     }
@@ -39,7 +48,10 @@ abstract class DiaryEventHookBase(private val diaryType: DiaryType) : MapArea, L
         onAreaVisited(entity)
     }
 
-    final override fun areaLeave(entity: Entity, logout: Boolean) {
+    final override fun areaLeave(
+        entity: Entity,
+        logout: Boolean,
+    ) {
         if (entity !is Player) return
         if (entity.isArtificial) return
 
@@ -74,20 +86,35 @@ abstract class DiaryEventHookBase(private val diaryType: DiaryType) : MapArea, L
         player.hook(Event.PrayerPointsRecharged, EventHandler(this, ::onPrayerPointsRecharged))
     }
 
-    protected fun fulfillTaskRequirement(player: Player, level: DiaryLevel, task: Int, attribute: String) {
+    protected fun fulfillTaskRequirement(
+        player: Player,
+        level: DiaryLevel,
+        task: Int,
+        attribute: String,
+    ) {
         if (getAttribute(player, attribute, false)) return
         player.achievementDiaryManager.updateTask(player, diaryType, findIndexFor(level), task, false)
         setAttribute(player, "/save:$attribute", true)
     }
 
-    protected fun whenTaskRequirementFulfilled(player: Player, attribute: String, then: () -> Unit) {
+    protected fun whenTaskRequirementFulfilled(
+        player: Player,
+        attribute: String,
+        then: () -> Unit,
+    ) {
         if (getAttribute(player, attribute, false)) {
             then()
             removeAttribute(player, attribute)
         }
     }
 
-    protected fun progressIncrementalTask(player: Player, level: DiaryLevel, task: Int, attribute: String, maxProgress: Int) {
+    protected fun progressIncrementalTask(
+        player: Player,
+        level: DiaryLevel,
+        task: Int,
+        attribute: String,
+        maxProgress: Int,
+    ) {
         if (isTaskCompleted(player, level, task)) return
 
         val newValue = getAttribute(player, attribute, 0) + 1
@@ -102,7 +129,14 @@ abstract class DiaryEventHookBase(private val diaryType: DiaryType) : MapArea, L
         }
     }
 
-    protected fun progressFlaggedTask(player: Player, level: DiaryLevel, task: Int, attribute: String, bit: Int, targetValue: Int) {
+    protected fun progressFlaggedTask(
+        player: Player,
+        level: DiaryLevel,
+        task: Int,
+        attribute: String,
+        bit: Int,
+        targetValue: Int,
+    ) {
         if (isTaskCompleted(player, level, task)) {
             return
         }
@@ -122,11 +156,19 @@ abstract class DiaryEventHookBase(private val diaryType: DiaryType) : MapArea, L
         }
     }
 
-    protected fun finishTask(player: Player, level: DiaryLevel, task: Int) {
+    protected fun finishTask(
+        player: Player,
+        level: DiaryLevel,
+        task: Int,
+    ) {
         player.achievementDiaryManager.finishTask(player, diaryType, findIndexFor(level), task)
     }
 
-    private fun isTaskCompleted(player: Player, level: DiaryLevel, task: Int): Boolean {
+    private fun isTaskCompleted(
+        player: Player,
+        level: DiaryLevel,
+        task: Int,
+    ): Boolean {
         return player.achievementDiaryManager.hasCompletedTask(diaryType, findIndexFor(level), task)
     }
 
@@ -152,63 +194,141 @@ abstract class DiaryEventHookBase(private val diaryType: DiaryType) : MapArea, L
     protected open fun onAreaLeft(player: Player) {
     }
 
-    protected open fun onResourceProduced(player: Player, event: ResourceProducedEvent) {
+    protected open fun onResourceProduced(
+        player: Player,
+        event: ResourceProducedEvent,
+    ) {
     }
 
-    protected open fun onNpcKilled(player: Player, event: NPCKillEvent) {
+    protected open fun onNpcKilled(
+        player: Player,
+        event: NPCKillEvent,
+    ) {
     }
 
-    protected open fun onTeleported(player: Player, event: TeleportEvent) {
+    protected open fun onTeleported(
+        player: Player,
+        event: TeleportEvent,
+    ) {
     }
 
-    protected open fun onFireLit(player: Player, event: LitFireEvent) {
+    protected open fun onFireLit(
+        player: Player,
+        event: LitFireEvent,
+    ) {
     }
 
-    protected open fun onLightSourceLit(player: Player, event: LitLightSourceEvent) {
+    protected open fun onLightSourceLit(
+        player: Player,
+        event: LitLightSourceEvent,
+    ) {
     }
 
-    protected open fun onInteracted(player: Player, event: InteractionEvent) {
+    protected open fun onInteracted(
+        player: Player,
+        event: InteractionEvent,
+    ) {
     }
 
-    protected open fun onButtonClicked(player: Player, event: ButtonClickEvent) {
+    protected open fun onButtonClicked(
+        player: Player,
+        event: ButtonClickEvent,
+    ) {
     }
 
-    protected open fun onDialogueOpened(player: Player, event: DialogueOpenEvent) {
+    protected open fun onDialogueOpened(
+        player: Player,
+        event: DialogueOpenEvent,
+    ) {
     }
 
-    protected open fun onDialogueClosed(player: Player, event: DialogueCloseEvent) {}
+    protected open fun onDialogueClosed(
+        player: Player,
+        event: DialogueCloseEvent,
+    ) {}
 
-    protected open fun onDialogueOptionSelected(player: Player, event: DialogueOptionSelectionEvent) {}
+    protected open fun onDialogueOptionSelected(
+        player: Player,
+        event: DialogueOptionSelectionEvent,
+    ) {}
 
-    protected open fun onUsedWith(player: Player, event: UseWithEvent) {}
+    protected open fun onUsedWith(
+        player: Player,
+        event: UseWithEvent,
+    ) {}
 
-    protected open fun onPickedUp(player: Player, event: PickUpEvent) {}
+    protected open fun onPickedUp(
+        player: Player,
+        event: PickUpEvent,
+    ) {}
 
-    protected open fun onInterfaceOpened(player: Player, event: InterfaceOpenEvent) {}
+    protected open fun onInterfaceOpened(
+        player: Player,
+        event: InterfaceOpenEvent,
+    ) {}
 
-    protected open fun onInterfaceClosed(player: Player, event: InterfaceCloseEvent) {}
+    protected open fun onInterfaceClosed(
+        player: Player,
+        event: InterfaceCloseEvent,
+    ) {}
 
-    protected open fun onAttributeSet(player: Player, event: AttributeSetEvent) {}
+    protected open fun onAttributeSet(
+        player: Player,
+        event: AttributeSetEvent,
+    ) {}
 
-    protected open fun onAttributeRemoved(player: Player, event: AttributeRemoveEvent) {}
+    protected open fun onAttributeRemoved(
+        player: Player,
+        event: AttributeRemoveEvent,
+    ) {}
 
-    protected open fun onSpellCast(player: Player, event: SpellCastEvent) {}
+    protected open fun onSpellCast(
+        player: Player,
+        event: SpellCastEvent,
+    ) {}
 
-    protected open fun onItemAlchemized(player: Player, event: ItemAlchemizationEvent) {}
+    protected open fun onItemAlchemized(
+        player: Player,
+        event: ItemAlchemizationEvent,
+    ) {}
 
-    protected open fun onItemEquipped(player: Player, event: ItemEquipEvent) {}
+    protected open fun onItemEquipped(
+        player: Player,
+        event: ItemEquipEvent,
+    ) {}
 
-    protected open fun onItemUnequipped(player: Player, event: ItemUnequipEvent) {}
+    protected open fun onItemUnequipped(
+        player: Player,
+        event: ItemUnequipEvent,
+    ) {}
 
-    protected open fun onItemPurchasedFromShop(player: Player, event: ItemShopPurchaseEvent) {}
+    protected open fun onItemPurchasedFromShop(
+        player: Player,
+        event: ItemShopPurchaseEvent,
+    ) {}
 
-    protected open fun onItemSoldToShop(player: Player, event: ItemShopSellEvent) {}
+    protected open fun onItemSoldToShop(
+        player: Player,
+        event: ItemShopSellEvent,
+    ) {}
 
-    protected open fun onJobAssigned(player: Player, event: JobAssignmentEvent) {}
+    protected open fun onJobAssigned(
+        player: Player,
+        event: JobAssignmentEvent,
+    ) {}
 
-    protected open fun onFairyRingDialed(player: Player, event: FairyRingDialEvent) {}
+    protected open fun onFairyRingDialed(
+        player: Player,
+        event: FairyRingDialEvent,
+    ) {}
 
-    protected open fun onSummoningPointsRecharged(player: Player, event: SummoningPointsRechargeEvent) {}
+    protected open fun onSummoningPointsRecharged(
+        player: Player,
+        event: SummoningPointsRechargeEvent,
+    ) {}
 
-    protected open fun onPrayerPointsRecharged(player: Player, event: PrayerPointsRechargeEvent) {}
+    protected open fun onPrayerPointsRecharged(
+        player: Player,
+        event: PrayerPointsRechargeEvent,
+    ) {}
 }

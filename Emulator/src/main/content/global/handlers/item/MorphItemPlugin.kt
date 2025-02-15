@@ -1,9 +1,5 @@
 package content.global.handlers.item
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Sounds
 import core.api.*
 import core.api.ui.openSingleTab
 import core.cache.def.impl.ItemDefinition
@@ -13,10 +9,14 @@ import core.game.component.ComponentPlugin
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.game.world.GameWorld
+import core.plugin.ClassScanner
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner
 import core.tools.RandomFunction
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Sounds
 
 @Initializable
 class MorphItemPlugin : Plugin<Any> {
@@ -34,7 +34,10 @@ class MorphItemPlugin : Plugin<Any> {
         return this
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any {
         val player = args[0] as Player
         val item = args[1] as Item
         return when (identifier) {
@@ -47,12 +50,16 @@ class MorphItemPlugin : Plugin<Any> {
         }
     }
 
-    private fun morph(player: Player, item: Item) {
-        val morphId = if (item.id == Items.RING_OF_STONE_6583) {
-            NPCs.ROCKS_2626
-        } else {
-            easterEggIds[RandomFunction.random(easterEggIds.size)]
-        }
+    private fun morph(
+        player: Player,
+        item: Item,
+    ) {
+        val morphId =
+            if (item.id == Items.RING_OF_STONE_6583) {
+                NPCs.ROCKS_2626
+            } else {
+                easterEggIds[RandomFunction.random(easterEggIds.size)]
+            }
         playAudio(player, Sounds.EASTER06_HUMAN_INTO_EGG_1520)
         closeInterface(player)
         player.appearance.transformNPC(morphId)
@@ -71,7 +78,6 @@ class MorphItemPlugin : Plugin<Any> {
     }
 
     inner class MorphInterfacePlugin : ComponentPlugin() {
-
         override fun newInstance(arg: Any?): Plugin<Any> {
             ComponentDefinition.forId(Components.UNMORPH_375).plugin = this
             return this
@@ -83,7 +89,7 @@ class MorphItemPlugin : Plugin<Any> {
             opcode: Int,
             button: Int,
             slot: Int,
-            itemId: Int
+            itemId: Int,
         ): Boolean {
             player.interfaceManager.closeSingleTab()
             return true

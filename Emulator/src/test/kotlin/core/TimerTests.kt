@@ -11,17 +11,20 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class TimerTests {
-    init { TestUtils.preTestSetup() }
+    init {
+        TestUtils.preTestSetup()
+    }
 
     @Test fun timerWithNoFlagsShouldNotBeClearedOnDeath() {
         TestUtils.getMockPlayer("noflagnoclear").use { p ->
             var incrementer = 0
-            val timer = object : RSTimer(1) {
-                override fun run(entity: Entity): Boolean {
-                    incrementer++
-                    return true
+            val timer =
+                object : RSTimer(1) {
+                    override fun run(entity: Entity): Boolean {
+                        incrementer++
+                        return true
+                    }
                 }
-            }
 
             registerTimer(p, timer)
             impact(p, p.skills.lifepoints)
@@ -36,12 +39,13 @@ class TimerTests {
     @Test fun timerWithClearOnDeathFlagShouldClearOnDeath() {
         TestUtils.getMockPlayer("clearflagtimer").use { p ->
             var incrementer = 0
-            val timer = object : RSTimer(1, flags = arrayOf(TimerFlag.ClearOnDeath)) {
-                override fun run(entity: Entity): Boolean {
-                    incrementer++
-                    return true
+            val timer =
+                object : RSTimer(1, flags = arrayOf(TimerFlag.ClearOnDeath)) {
+                    override fun run(entity: Entity): Boolean {
+                        incrementer++
+                        return true
+                    }
                 }
-            }
 
             registerTimer(p, timer)
             impact(p, p.skills.lifepoints)
@@ -64,6 +68,7 @@ class TimerTests {
             Assertions.assertEquals(11, getDynLevel(p, Skills.FARMING))
         }
     }
+
     @Test fun skillRestoreTimerShouldSlowlyLowerBoostedStats() {
         TestUtils.getMockPlayer("statrestore-slowdrain").use { p ->
             val timer = SkillRestore()

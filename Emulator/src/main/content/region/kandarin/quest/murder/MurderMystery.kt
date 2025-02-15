@@ -1,9 +1,5 @@
 package content.region.kandarin.quest.murder
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.addItem
 import core.api.removeAttributes
 import core.api.rewardXP
@@ -12,11 +8,17 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class MurderMystery : Quest(Quests.MURDER_MYSTERY, 93, 92, 3, Vars.VARP_QUEST_MURDER_MYSTERY_PROGRESS_192, 0, 1, 2) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 11
         if (stage >= 0) {
@@ -33,7 +35,7 @@ class MurderMystery : Quest(Quests.MURDER_MYSTERY, 93, 92, 3, Vars.VARP_QUEST_MU
                 player,
                 "After careful examination of the crime scene and interrogating all suspects,",
                 line++,
-                stage >= 3
+                stage >= 3,
             )
             line(player, "I worked out who was guilty.", line++, stage >= 3)
             line++
@@ -66,7 +68,7 @@ class MurderMystery : Quest(Quests.MURDER_MYSTERY, 93, 92, 3, Vars.VARP_QUEST_MU
             player,
             MurderMysteryUtils.ATTRIBUTE_ANNA,
             MurderMysteryUtils.ATTRIBUTE_DAVID,
-            MurderMysteryUtils.ATTRIBUTE_ELIZABETH
+            MurderMysteryUtils.ATTRIBUTE_ELIZABETH,
         )
     }
 

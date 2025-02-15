@@ -1,14 +1,15 @@
 package content.region.kandarin.quest.arena.cutscene
 
-import org.rs.consts.NPCs
 import content.region.kandarin.quest.arena.handlers.npc.BouncerNPC
 import core.game.activity.Cutscene
 import core.game.global.action.DoorActionHandler
 import core.game.node.entity.player.Player
 import core.game.world.map.Direction
+import org.rs.consts.NPCs
 
-class BouncerFightCutscene(player: Player) : Cutscene(player) {
-
+class BouncerFightCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(player.location.transform(0, 0, 0))
         if (player.settings.isRunToggled) {
@@ -20,7 +21,6 @@ class BouncerFightCutscene(player: Player) : Cutscene(player) {
 
     override fun runStage(stage: Int) {
         when (stage) {
-
             0 -> {
                 teleport(player, 43, 19)
                 timedUpdate(1)

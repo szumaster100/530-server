@@ -1,7 +1,5 @@
 package content.global.handlers.item
 
-import org.rs.consts.Components
-import org.rs.consts.Items
 import content.data.Lamps
 import core.api.*
 import core.game.component.Component
@@ -11,9 +9,10 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.tools.BLUE
+import org.rs.consts.Components
+import org.rs.consts.Items
 
 class ExperienceLampListener : InteractionListener {
-
     private val xpGainItems = Lamps.values().map { it.item }.toIntArray()
 
     override fun defineListeners() {
@@ -24,7 +23,7 @@ class ExperienceLampListener : InteractionListener {
                 if (getStatLevel(player, skill) < lamp!!.requiredLevel) {
                     sendMessage(
                         player,
-                        "You need at least " + lamp.requiredLevel + " " + Skills.SKILL_NAME[skill] + " to do this."
+                        "You need at least " + lamp.requiredLevel + " " + Skills.SKILL_NAME[skill] + " to do this.",
                     )
                 } else {
                     if (removeItem(player, player.getAttribute<Any>("xp_reward_item") as Item)) {
@@ -32,25 +31,28 @@ class ExperienceLampListener : InteractionListener {
                             rewardXP(player, skill, (getStatLevel(player, skill) * 10).toDouble())
                         } else {
                             rewardXP(player, skill, lamp.experience.toDouble())
-                            if (lamp.item in intArrayOf(
+                            if (lamp.item in
+                                intArrayOf(
                                     Items.TOME_OF_XP_3_9656,
                                     Items.TOME_OF_XP_2_9657,
                                     Items.TOME_OF_XP_1_9658,
                                     Items.TOME_OF_XP_2ND_ED_3_13160,
                                     Items.TOME_OF_XP_2ND_ED_2_13161,
-                                    Items.TOME_OF_XP_2ND_ED_1_13162
+                                    Items.TOME_OF_XP_2ND_ED_1_13162,
                                 )
                             ) {
                                 player.dialogueInterpreter.sendPlainMessage(
                                     false,
                                     BLUE + "You read a fascinating chapter and earn experience!",
-                                    "You have been awarded " + lamp.experience + " " + Skills.SKILL_NAME[skill] + " experience!"
+                                    "You have been awarded " + lamp.experience + " " + Skills.SKILL_NAME[skill] +
+                                        " experience!",
                                 )
                             } else {
                                 player.dialogueInterpreter.sendPlainMessage(
                                     false,
                                     BLUE + "Your wish has been granted!",
-                                    "You have been awarded " + lamp.experience + " " + Skills.SKILL_NAME[skill] + " experience!"
+                                    "You have been awarded " + lamp.experience + " " + Skills.SKILL_NAME[skill] +
+                                        " experience!",
                                 )
                             }
                         }
@@ -63,7 +65,7 @@ class ExperienceLampListener : InteractionListener {
                     removeAttribute(player, "xp_reward_item")
                     unlock(player)
                     return@setCloseEvent true
-                }
+                },
             )
             removeTabs(player, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13)
             return@on true

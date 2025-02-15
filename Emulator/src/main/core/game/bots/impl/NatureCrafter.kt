@@ -9,7 +9,6 @@ import core.game.world.map.Location
 import core.game.world.map.zone.ZoneBorders
 import org.rs.consts.Items
 
-
 @PlayerCompatible
 @ScriptName("Nature Rune Crafter")
 @ScriptDescription("Crafts nat runes. Start in Zanaris w/ dramen staff + Nat tiara.")
@@ -92,8 +91,9 @@ class NatureCrafter : Script() {
 
             State.RUNNING_TO_ALTER -> {
                 val ruins = scriptAPI.getNearestNode(2460, true)
-                if (natureZone.insideBorder(bot))
+                if (natureZone.insideBorder(bot)) {
                     state = State.CRAFTING
+                }
 
                 if (!ruinsZone.insideBorder(bot)) {
                     scriptAPI.walkTo(ruinsZone.randomLoc)
@@ -107,15 +107,17 @@ class NatureCrafter : Script() {
             State.CRAFTING -> {
                 val alter = scriptAPI.getNearestNode(2486, true)
                 scriptAPI.interact(bot, alter, "craft-rune")
-                if (bot.inventory.containsAtLeastOneItem(Item(Items.NATURE_RUNE_561)))
+                if (bot.inventory.containsAtLeastOneItem(Item(Items.NATURE_RUNE_561))) {
                     state = State.LEAVING_ALTER
+                }
             }
 
             State.LEAVING_ALTER -> {
                 var portalOut = scriptAPI.getNearestNode(2473, true)
                 scriptAPI.interact(bot, portalOut, "use")
-                if (ruinsZone.insideBorder(bot))
+                if (ruinsZone.insideBorder(bot)) {
                     state = State.RETURNING_TO_TELE
+                }
             }
 
             State.RETURNING_TO_TELE -> {
@@ -138,9 +140,10 @@ class NatureCrafter : Script() {
         }
     }
 
-
     private fun checkValid(): Boolean {
-        if (!bot.equipment.containsAtLeastOneItem(Items.DRAMEN_STAFF_772) or !bot.equipment.containsAtLeastOneItem(Items.NATURE_TIARA_5541)) {
+        if (!bot.equipment.containsAtLeastOneItem(Items.DRAMEN_STAFF_772) or
+            !bot.equipment.containsAtLeastOneItem(Items.NATURE_TIARA_5541)
+        ) {
             bot.sendMessage("Please equip a dramen staff and nature tiara first.")
             state = State.INVALID
             return false
@@ -162,7 +165,6 @@ class NatureCrafter : Script() {
         LEAVING_ALTER,
         RETURNING_TO_TELE,
         RETURN_WAIT,
-        INVALID
+        INVALID,
     }
-
 }

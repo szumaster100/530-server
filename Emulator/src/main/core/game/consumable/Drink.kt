@@ -7,7 +7,6 @@ import core.game.world.update.flag.context.Animation
 import org.rs.consts.Animations
 
 open class Drink : Consumable {
-
     constructor(ids: IntArray?, effect: ConsumableEffect?, vararg messages: String?) : super(ids, effect, *messages) {
         animation = Animation(Animations.HUMAN_DRINKING_1327)
     }
@@ -16,10 +15,13 @@ open class Drink : Consumable {
         ids,
         effect,
         animation,
-        *messages
+        *messages,
     )
 
-    override fun sendDefaultMessages(player: Player, item: Item) {
+    override fun sendDefaultMessages(
+        player: Player,
+        item: Item,
+    ) {
         player.packetDispatch.sendMessage("You drink the " + getFormattedName(item) + ".")
     }
 

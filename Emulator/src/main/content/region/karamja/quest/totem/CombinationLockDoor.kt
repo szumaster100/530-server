@@ -5,7 +5,6 @@ import core.game.interaction.InterfaceListener
 import core.game.world.map.Location
 
 class CombinationLockDoor : InterfaceListener {
-
     override fun defineInterfaceListeners() {
         val LETTERONEBACK = 17
         val LETTERONEFORWARD = 18
@@ -18,7 +17,35 @@ class CombinationLockDoor : InterfaceListener {
         val ENTER = 27
         val EXIT = 28
         val DOORLOCKINTERFACE = 369
-        val LETTERS = arrayOf("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z")
+        val LETTERS =
+            arrayOf(
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+                "G",
+                "H",
+                "I",
+                "J",
+                "K",
+                "L",
+                "M",
+                "N",
+                "O",
+                "P",
+                "Q",
+                "R",
+                "S",
+                "T",
+                "U",
+                "V",
+                "W",
+                "X",
+                "Y",
+                "Z",
+            )
 
         onOpen(DOORLOCKINTERFACE) { player, _ ->
             setAttribute(player, "tt-letter-one", 0)

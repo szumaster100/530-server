@@ -4,11 +4,11 @@ import core.game.node.entity.player.Player
 import core.game.node.item.Item
 
 enum class SmithingType(
-	@JvmField val required: Int,
-	@JvmField val child: Int,
-	val displayName: Int,
-	val button: IntArray,
-	val productAmount: Int
+    @JvmField val required: Int,
+    @JvmField val child: Int,
+    val displayName: Int,
+    val button: IntArray,
+    val productAmount: Int,
 ) {
     TYPE_DAGGER(1, 18, 19, intArrayOf(24, 23, 22, 21), 1),
     TYPE_AXE(1, 26, 27, intArrayOf(32, 31, 30, 29), 1),
@@ -42,10 +42,16 @@ enum class SmithingType(
     TYPE_PLATE_SKIRT(3, 226, 227, intArrayOf(232, 231, 230, 229), 1),
     TYPE_PLATELEG(3, 234, 235, intArrayOf(240, 239, 238, 237), 1),
     TYPE_PLATEBODY(5, 242, 243, intArrayOf(248, 247, 246, 245), 1),
-    TYPE_PICKAXE(2, 267, 268, intArrayOf(273, 272, 271, 270), 1);
+    TYPE_PICKAXE(2, 267, 268, intArrayOf(273, 272, 271, 270), 1),
+    ;
 
     companion object {
-        fun forButton(player: Player, bar: Bars?, button: Int, item: Int): Int {
+        fun forButton(
+            player: Player,
+            bar: Bars?,
+            button: Int,
+            item: Int,
+        ): Int {
             var count = 0
             if (bar == null) {
                 return -1

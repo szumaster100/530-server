@@ -12,7 +12,10 @@ import core.game.world.map.RegionManager.getObject
 import core.game.world.update.flag.context.Animation
 
 class SpinningBlades : MovementHook {
-    override fun handle(e: Entity, l: Location): Boolean {
+    override fun handle(
+        e: Entity,
+        l: Location,
+    ): Boolean {
         val dir = e.direction
         val player = e as Player
         val start = l.transform(-dir.stepX, -dir.stepY, 0)
@@ -29,23 +32,26 @@ class SpinningBlades : MovementHook {
                     sendObjectAnimation(player, l)
                     if (AgilityHandler.hasFailed(player, 40, 0.15)) {
                         if (player.getSkills().getLevel(Skills.AGILITY) < 40) {
-                            player.packetDispatch.sendMessage("You need an agility of at least 40 to get past this trap!")
+                            player.packetDispatch.sendMessage(
+                                "You need an agility of at least 40 to get past this trap!",
+                            )
                         }
                         var hit = player.getSkills().lifepoints / 12
                         if (hit < 2) {
                             hit = 2
                         }
-                        AgilityHandler.failWalk(
-                            player,
-                            1,
-                            player.location,
-                            start,
-                            start,
-                            Animation.create(1114),
-                            10,
-                            hit,
-                            "You were hit by the spinning blades."
-                        ).direction = dir
+                        AgilityHandler
+                            .failWalk(
+                                player,
+                                1,
+                                player.location,
+                                start,
+                                start,
+                                Animation.create(1114),
+                                10,
+                                hit,
+                                "You were hit by the spinning blades.",
+                            ).direction = dir
                     } else {
                         AgilityHandler.forceWalk(
                             player,
@@ -55,19 +61,22 @@ class SpinningBlades : MovementHook {
                             Animation.create(1115),
                             20,
                             26.0,
-                            null
+                            null,
                         )
                     }
                     player.logoutListeners.remove("spin-blades")
                     return true
                 }
-            }
+            },
         )
         return false
     }
 
     companion object {
-        private fun sendObjectAnimation(player: Player, l: Location) {
+        private fun sendObjectAnimation(
+            player: Player,
+            l: Location,
+        ) {
             var l = l
             if (l == Location.create(2778, 9579, 3)) {
                 l = Location.create(2777, 9580, 3)

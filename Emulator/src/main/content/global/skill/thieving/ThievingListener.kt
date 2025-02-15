@@ -7,9 +7,7 @@ import core.game.interaction.InteractionListener
 import core.game.node.scenery.Scenery
 
 class ThievingListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(IntType.SCENERY, "steal-from", "steal from", "steal") { player, node ->
             submitIndividualPulse(player, StallThiefPulse(player, node as Scenery, Stall.forScenery(node)))
             lockInteractions(player, 6)

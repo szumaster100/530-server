@@ -1,7 +1,7 @@
 package content.minigame.blastfurnace
 
-import org.rs.consts.Scenery
 import core.game.world.map.Location
+import org.rs.consts.Scenery
 
 object BlastUtils {
     val ENTRANCE_LOC = Location(1940, 4958, 0)
@@ -19,7 +19,12 @@ object BlastUtils {
     const val TEMP_GAUGE = Scenery.TEMPERATURE_GAUGE_9089
     const val SINK = Scenery.SINK_9143
     val DISPENSER =
-        intArrayOf(Scenery.BAR_DISPENSER_9093, Scenery.BAR_DISPENSER_9094, Scenery.BAR_DISPENSER_9095, Scenery.BAR_DISPENSER_9096)
+        intArrayOf(
+            Scenery.BAR_DISPENSER_9093,
+            Scenery.BAR_DISPENSER_9094,
+            Scenery.BAR_DISPENSER_9095,
+            Scenery.BAR_DISPENSER_9096,
+        )
     const val SMITH_REQ = 60
     const val ENTRANCE_FEE = 2500
     const val FEE_ENTRANCE_DURATION = 1000

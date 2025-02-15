@@ -1,18 +1,20 @@
 package content.region.asgarnia.quest.death
 
-import org.rs.consts.Items
-import org.rs.consts.Quests
 import core.api.addItemOrDrop
 import core.api.getAttribute
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.Quests
 
 @Initializable
 class DeathPlateau : Quest(Quests.DEATH_PLATEAU, 44, 43, 1, 314, 0, 1, 80) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 12
         var stage = getStage(player)
@@ -58,7 +60,7 @@ class DeathPlateau : Quest(Quests.DEATH_PLATEAU, 44, 43, 1, 314, 0, 1, 80) {
                             player,
                             "!!Toad and Chicken.?? the guard wouldn't talk to me! I bought",
                             line++,
-                            stage > 18
+                            stage > 18,
                         )
                         line(player, "the guard a drink and he seemed more helpful.", line++, stage > 18)
                     }
@@ -69,14 +71,14 @@ class DeathPlateau : Quest(Quests.DEATH_PLATEAU, 44, 43, 1, 314, 0, 1, 80) {
                             player,
                             "!!Toad and Chicken.?? the guard wouldn't talk to me! I bought",
                             line++,
-                            stage > 18
+                            stage > 18,
                         )
                         line(player, "the guard a drink and he seemed more helpful. I gambled", line++, stage > 18)
                         line(
                             player,
                             "with the guard until he ran out of money, he wrote out an !!IOU.??",
                             line++,
-                            stage > 18
+                            stage > 18,
                         )
                         line++
                     }
@@ -95,7 +97,7 @@ class DeathPlateau : Quest(Quests.DEATH_PLATEAU, 44, 43, 1, 314, 0, 1, 80) {
                             player,
                             "combination! I put the stone balls in the right places on the",
                             line++,
-                            stage > 18
+                            stage > 18,
                         )
                         line(player, "stone mechanism and unlocked the door!", line++, stage > 18)
                         line++
@@ -109,7 +111,7 @@ class DeathPlateau : Quest(Quests.DEATH_PLATEAU, 44, 43, 1, 314, 0, 1, 80) {
                             player,
                             "!!Saba?? says that there is a !!sherpa?? living !!nearby?? that may",
                             line++,
-                            false
+                            false,
                         )
                         line(player, "know another way up Death Plateau.", line++, false)
                     }
@@ -121,7 +123,7 @@ class DeathPlateau : Quest(Quests.DEATH_PLATEAU, 44, 43, 1, 314, 0, 1, 80) {
                             player,
                             "!!Tenzing?? will show me a !!secret way?? up Death Plateau if I get",
                             line++,
-                            false
+                            false,
                         )
                         line(player, "him some items:", line++, false)
                         line(player, "Ten loaves of bread.", line++, getAttribute(player, "deathplateau:bread", false))
@@ -132,7 +134,7 @@ class DeathPlateau : Quest(Quests.DEATH_PLATEAU, 44, 43, 1, 314, 0, 1, 80) {
                             player,
                             "!!Tenzing?? gave me his !!climbing boots??, I need to take them to",
                             line++,
-                            false
+                            false,
                         )
                         line(player, "!!Dunstan?? in !!Burthorpe?? for the !!spikes??", line++, false)
                     }
@@ -146,7 +148,7 @@ class DeathPlateau : Quest(Quests.DEATH_PLATEAU, 44, 43, 1, 314, 0, 1, 80) {
                             player,
                             "I need to !!check?? that the !!secret way?? is !!safe?? for the !!Imperial??",
                             line++,
-                            false
+                            false,
                         )
                         line(player, "!!Guard?? to use.", line++, false)
                     }
@@ -160,7 +162,7 @@ class DeathPlateau : Quest(Quests.DEATH_PLATEAU, 44, 43, 1, 314, 0, 1, 80) {
                             player,
                             "I need to !!check?? that the !!secret way?? is !!safe?? for the !!Imperial??",
                             line++,
-                            false
+                            false,
                         )
                         line(player, "!!Guard?? to use.", line++, false)
                     }

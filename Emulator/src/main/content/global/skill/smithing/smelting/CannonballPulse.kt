@@ -1,20 +1,23 @@
 package content.global.skill.smithing.smelting
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Sounds
 import core.api.*
 import core.api.quest.isQuestComplete
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Sounds
 
-class CannonballPulse(player: Player?, val item: Item?, private var amount: Int) :
-    SkillPulse<Item?>(player, null) {
-
+class CannonballPulse(
+    player: Player?,
+    val item: Item?,
+    private var amount: Int,
+) : SkillPulse<Item?>(player, null) {
     private var tick = 0
+
     override fun checkRequirements(): Boolean {
         if (!isQuestComplete(player, Quests.DWARF_CANNON)) {
             sendDialogue(player, "You need to complete the ${Quests.DWARF_CANNON} quest in order to do this.")

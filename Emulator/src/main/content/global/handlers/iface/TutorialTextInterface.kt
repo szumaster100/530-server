@@ -1,12 +1,11 @@
 package content.global.handlers.iface
 
-import org.rs.consts.Components
 import core.api.ui.closeDialogue
 import core.api.ui.repositionChild
 import core.game.interaction.InterfaceListener
+import org.rs.consts.Components
 
 class TutorialInterface : InterfaceListener {
-
     override fun defineInterfaceListeners() {
         onOpen(Components.TUTORIAL_TEXT_372) { player, _ ->
             repositionChild(player, Components.TUTORIAL_TEXT_372, 1, 10, 35)

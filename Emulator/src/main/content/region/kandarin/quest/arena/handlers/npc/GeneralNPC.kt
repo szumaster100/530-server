@@ -1,21 +1,28 @@
 package content.region.kandarin.quest.arena.handlers.npc
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.kandarin.quest.arena.dialogue.JeremyServilDialogueFile
 import content.region.kandarin.quest.arena.handlers.FightArenaListener.Companion.General
-import core.api.quest.getQuestStage
 import core.api.openDialogue
+import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
 import core.game.node.entity.Entity
 import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.player.Player
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class GeneralNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+class GeneralNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return GeneralNPC(id, location)
     }
 

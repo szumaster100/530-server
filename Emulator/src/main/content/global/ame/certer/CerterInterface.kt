@@ -1,6 +1,5 @@
 package content.global.ame.certer
 
-import org.rs.consts.Items
 import content.data.GameAttributes
 import core.api.sendString
 import core.api.setAttribute
@@ -8,37 +7,39 @@ import core.game.interaction.InterfaceListener
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.game.system.timer.impl.AntiMacro
+import org.rs.consts.Items
 
 class CerterInterface : InterfaceListener {
-
     val CERTER_INTERFACE = 184
     val OPTION_A_CHILD = 1
     val OPTION_B_CHILD = 2
     val OPTION_C_CHILD = 3
     val ITEM_CHILD = 7
-    val items = mapOf(
-        Items.BOWL_1923 to "A bowl.",
-        Items.NULL_6189 to "A fish.",
-        Items.NULL_6190 to "A bass.",
-        Items.NULL_6191 to "A sword.",
-        Items.NULL_6192 to "A battleaxe.",
-        Items.NULL_6193 to "A helmet.",
-        Items.NULL_6194 to "A kiteshield.",
-        Items.NULL_6195 to "A pair of shears.",
-        Items.NULL_6196 to "A shovel.",
-        Items.NULL_6197 to "A ring.",
-        Items.NULL_6198 to "A necklace."
-    )
-    val falseOptions = arrayOf(
-        "An axe.",
-        "An arrow.",
-        "A pair of boots.",
-        "A pair of gloves.",
-        "A staff.",
-        "A bow.",
-        "A feather.",
-        "The disenfrachaised youth of 1940's Columbia."
-    )
+    val items =
+        mapOf(
+            Items.BOWL_1923 to "A bowl.",
+            Items.NULL_6189 to "A fish.",
+            Items.NULL_6190 to "A bass.",
+            Items.NULL_6191 to "A sword.",
+            Items.NULL_6192 to "A battleaxe.",
+            Items.NULL_6193 to "A helmet.",
+            Items.NULL_6194 to "A kiteshield.",
+            Items.NULL_6195 to "A pair of shears.",
+            Items.NULL_6196 to "A shovel.",
+            Items.NULL_6197 to "A ring.",
+            Items.NULL_6198 to "A necklace.",
+        )
+    val falseOptions =
+        arrayOf(
+            "An axe.",
+            "An arrow.",
+            "A pair of boots.",
+            "A pair of gloves.",
+            "A staff.",
+            "A bow.",
+            "A feather.",
+            "The disenfrachaised youth of 1940's Columbia.",
+        )
 
     override fun defineInterfaceListeners() {
         on(CERTER_INTERFACE) { player, _, _, buttonID, _, _ ->

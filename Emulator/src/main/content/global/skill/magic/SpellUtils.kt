@@ -1,24 +1,29 @@
 package content.global.skill.magic
 
-import org.rs.consts.Components
 import core.game.node.entity.combat.spell.CombinationRune
 import core.game.node.entity.combat.spell.MagicStaff
 import core.game.node.entity.combat.spell.Runes
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
+import org.rs.consts.Components
 
 object SpellUtils {
-
     @JvmStatic
-    fun usingStaff(player: Player, rune: Int): Boolean {
+    fun usingStaff(
+        player: Player,
+        rune: Int,
+    ): Boolean {
         val weapon = player.equipment[3] ?: return false
         val staff = MagicStaff.forId(rune) ?: return false
         return staff.staves.any { weapon.id == it }
     }
 
     @JvmStatic
-    fun hasRune(player: Player, rune: Item): Boolean {
+    fun hasRune(
+        player: Player,
+        rune: Item,
+    ): Boolean {
         val removeItems = player.getAttribute("spell:runes", ArrayList<Item>())
 
         if (usingStaff(player, rune.id)) return true
@@ -49,7 +54,12 @@ object SpellUtils {
     }
 
     @JvmStatic
-    fun hasRune(player: Player, item: Item, toRemove: MutableList<Item?>, message: Boolean): Boolean {
+    fun hasRune(
+        player: Player,
+        item: Item,
+        toRemove: MutableList<Item?>,
+        message: Boolean,
+    ): Boolean {
         if (!usingStaff(player, item.id)) {
             val hasBaseRune = player.inventory.contains(item.id, item.amount)
             if (!hasBaseRune) {

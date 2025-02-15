@@ -2,19 +2,19 @@ package core.game.bots.impl
 
 import core.game.bots.*
 import core.game.interaction.DestinationFlag
+import core.game.interaction.IntType
+import core.game.interaction.InteractionListeners
 import core.game.interaction.MovementPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.system.task.Pulse
+import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.game.world.map.path.Pathfinder
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
 import core.tools.RandomFunction
 import org.rs.consts.Items
-import core.game.interaction.IntType
-import core.game.interaction.InteractionListeners
-import core.game.world.GameWorld
 import kotlin.random.Random
 
 @PlayerCompatible
@@ -28,14 +28,15 @@ class LobsterCatcher : Script() {
     var myCounter = 0
     private val GRAPHICS = Graphics(308, 100, 50)
 
-    internal enum class Sets(val equipment: List<Item>) {
+    internal enum class Sets(
+        val equipment: List<Item>,
+    ) {
         SET_1(listOf(Item(2643), Item(9470), Item(10756), Item(10394), Item(88), Item(9793))),
         SET_2(listOf(Item(2643), Item(6585), Item(10750), Item(10394), Item(88), Item(9793))),
         SET_3(listOf(Item(9472), Item(9470), Item(10750), Item(10394), Item(88), Item(9786))),
         SET_4(listOf(Item(2639), Item(6585), Item(10752), Item(10394), Item(88), Item(9786))),
         SET_5(listOf(Item(2639), Item(9470), Item(10750), Item(10394), Item(88), Item(9784))),
-        SET_6(listOf(Item(2639), Item(6585), Item(10750), Item(10394), Item(88), Item(9784)));
-
+        SET_6(listOf(Item(2639), Item(6585), Item(10750), Item(10394), Item(88), Item(9784))),
     }
 
     private var bots = 0
@@ -45,9 +46,9 @@ class LobsterCatcher : Script() {
 
     private var state = State.INIT
     private var tick = 0
+
     override fun tick() {
         when (state) {
-
             State.INIT -> {
                 overlay = scriptAPI.getOverlay()
                 overlay!!.init()
@@ -57,13 +58,11 @@ class LobsterCatcher : Script() {
                 state = State.FIND_SPOT
             }
 
-
             State.BANKING -> {
                 fishCounter += bot.inventory.getAmount(Items.RAW_LOBSTER_377)
                 scriptAPI.bankItem(Items.RAW_LOBSTER_377)
                 state = State.IDLE
             }
-
 
             State.FISHING -> {
                 bot.interfaceManager.close()
@@ -101,7 +100,6 @@ class LobsterCatcher : Script() {
                 }
             }
 
-
             State.FIND_BANK -> {
                 val bank = scriptAPI.getNearestGameObject(bot.location, 2213)
 
@@ -125,12 +123,10 @@ class LobsterCatcher : Script() {
                 }
             }
 
-
             State.TELEPORT_GE -> {
                 scriptAPI.teleportToGE()
                 state = State.SELL_GE
             }
-
 
             State.SELL_GE -> {
                 scriptAPI.sellOnGE(Items.RAW_LOBSTER_377)
@@ -143,22 +139,21 @@ class LobsterCatcher : Script() {
                     bot.visualize(ANIMATION, GRAPHICS)
                     bot.impactHandler.disabledTicks = 4
                     val location = Location.create(2819, 3437, 0)
-                    GameWorld.Pulser.submit(object : Pulse(4, bot) {
-                        override fun pulse(): Boolean {
-                            bot.unlock()
-                            bot.properties.teleportLocation = location
-                            bot.animator.reset()
-                            state = State.IDLE
-                            return true
-                        }
-                    })
+                    GameWorld.Pulser.submit(
+                        object : Pulse(4, bot) {
+                            override fun pulse(): Boolean {
+                                bot.unlock()
+                                bot.properties.teleportLocation = location
+                                bot.animator.reset()
+                                state = State.IDLE
+                                return true
+                            }
+                        },
+                    )
                 }
             }
-
-
         }
     }
-
 
     init {
         val setUp = RandomFunction.random(Sets.values().size)
@@ -176,7 +171,7 @@ class LobsterCatcher : Script() {
         SELL_GE,
         TELE_CATH,
         IDLE,
-        INIT
+        INIT,
     }
 
     override fun newInstance(): Script {

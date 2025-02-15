@@ -1,14 +1,13 @@
 package content.global.handlers.item.scroll
 
-import org.rs.consts.Components
-import org.rs.consts.Items
 import core.api.openInterface
 import core.api.sendString
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.Components
+import org.rs.consts.Items
 
 class AccessScroll : InteractionListener {
-
     /*
      * The Scroll is given to the player by King Vargas
      * during Royal Trouble. Granting you access into
@@ -16,13 +15,13 @@ class AccessScroll : InteractionListener {
      */
 
     companion object {
-
         private const val MESSAGE_SCROLL = Components.BLANK_SCROLL_222
 
-        val crumpledScrollContent = arrayOf(
-            "I, King Vargas, proclaim that the bearer of this",
-            "scroll is the Regent of Miscellania.",
-        )
+        val crumpledScrollContent =
+            arrayOf(
+                "I, King Vargas, proclaim that the bearer of this",
+                "scroll is the Regent of Miscellania.",
+            )
     }
 
     override fun defineListeners() {

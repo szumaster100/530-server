@@ -9,8 +9,12 @@ import core.game.node.item.Item
 import org.rs.consts.Items
 import kotlin.math.min
 
-class HeadlessArrowPulse(player: Player?, node: Item?, private val feather: Item?, private var sets: Int) :
-    SkillPulse<Item?>(player, node) {
+class HeadlessArrowPulse(
+    player: Player?,
+    node: Item?,
+    private val feather: Item?,
+    private var sets: Int,
+) : SkillPulse<Item?>(player, node) {
     private val HEADLESS_ARROW = Item(Items.HEADLESS_ARROW_53)
     private val ARROW_SHAFT = Item(Items.ARROW_SHAFT_52)
     private var useSets = false
@@ -24,11 +28,12 @@ class HeadlessArrowPulse(player: Player?, node: Item?, private val feather: Item
             player.dialogueInterpreter.sendDialogue("You don't have any feathers.")
             return false
         }
-        useSets = if (player.inventory.contains(ARROW_SHAFT.id, 15) && player.inventory.contains(feather.id, 15)) {
-            true
-        } else {
-            false
-        }
+        useSets =
+            if (player.inventory.contains(ARROW_SHAFT.id, 15) && player.inventory.contains(feather.id, 15)) {
+                true
+            } else {
+                false
+            }
         if (!hasSpaceFor(player, HEADLESS_ARROW.asItem())) {
             sendDialogue(player, "You do not have enough inventory space.")
             return false
@@ -54,10 +59,11 @@ class HeadlessArrowPulse(player: Player?, node: Item?, private val feather: Item
             feather!!.amount = amount
             ARROW_SHAFT.amount = amount
             player.packetDispatch.sendMessage(
-                if (amount == 1)
+                if (amount == 1) {
                     "You attach a feathers to a shaft."
-                else
+                } else {
                     "You attach feathers to $amount arrow shafts."
+                },
             )
         }
         if (player.inventory.remove(feather, ARROW_SHAFT)) {
@@ -93,13 +99,14 @@ class HeadlessArrowPulse(player: Player?, node: Item?, private val feather: Item
     }
 
     companion object {
-        private val FEATHER = arrayOf<Item>(
-            Item(Items.FEATHER_314),
-            Item(Items.STRIPY_FEATHER_10087),
-            Item(Items.RED_FEATHER_10088),
-            Item(Items.BLUE_FEATHER_10089),
-            Item(Items.YELLOW_FEATHER_10090),
-            Item(Items.ORANGE_FEATHER_10091)
-        )
+        private val FEATHER =
+            arrayOf<Item>(
+                Item(Items.FEATHER_314),
+                Item(Items.STRIPY_FEATHER_10087),
+                Item(Items.RED_FEATHER_10088),
+                Item(Items.BLUE_FEATHER_10089),
+                Item(Items.YELLOW_FEATHER_10090),
+                Item(Items.ORANGE_FEATHER_10091),
+            )
     }
 }

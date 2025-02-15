@@ -1,6 +1,5 @@
 package content.minigame.templetrekking.monsters
 
-import org.rs.consts.NPCs
 import content.minigame.templetrekking.monsters.TentacleNPC.Companion.spawnTentacleNPC
 import core.api.getAttribute
 import core.game.node.entity.Entity
@@ -11,13 +10,20 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Direction
 import core.game.world.map.Location
+import org.rs.consts.NPCs
 
-class HeadNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
+class HeadNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
     val killCounter = "tentacle-kills"
     lateinit var player: Player
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return HeadNPC(id, location)
     }
 
@@ -29,7 +35,6 @@ class HeadNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, locatio
         super.handleTickActions()
         if (getAttribute(player, killCounter, -1) == 4) {
             spawnTentacleNPC(player)
-
         }
     }
 
@@ -49,13 +54,14 @@ class HeadNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, locatio
             GameWorld.Pulser.submit(
                 object : Pulse(0, head) {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         head.init()
                         head.transform(NPCs.HEAD_3619)
                         head.attack(player)
                         return true
                     }
-                }
+                },
             )
         }
     }

@@ -6,13 +6,16 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class SystemConfig {
-
     private val configs: MutableMap<String, Any?> = HashMap()
     val betaUsers: List<String> = ArrayList(20)
 
     fun parse() {}
 
-    private fun parseConfig(key: String, value: String?, dataType: String?) {
+    private fun parseConfig(
+        key: String,
+        value: String?,
+        dataType: String?,
+    ) {
         if (dataType == null) {
             configs[key] = value
             return
@@ -50,14 +53,22 @@ class SystemConfig {
             return date.after(Date())
         }
 
-    fun split(data: String, regex: String): List<String> {
+    fun split(
+        data: String,
+        regex: String,
+    ): List<String> {
         if (!data.contains(regex)) {
             val split: MutableList<String> = ArrayList(20)
             split.add(data)
             return split
         }
         val split: MutableList<String> = ArrayList(20)
-        val tokens = data.trim { it <= ' ' }.split(regex.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val tokens =
+            data
+                .trim { it <= ' ' }
+                .split(regex.toRegex())
+                .dropLastWhile { it.isEmpty() }
+                .toTypedArray()
         for (s in tokens) {
             split.add(s)
         }
@@ -71,14 +82,21 @@ class SystemConfig {
     fun <T> getConfig(key: String): T? {
         return if (!configs.containsKey(key)) {
             null
-        } else configs[key] as T?
+        } else {
+            configs[key] as T?
+        }
     }
 
-    fun <T> getConfig(string: String, fail: T): T {
+    fun <T> getConfig(
+        string: String,
+        fail: T,
+    ): T {
         val `object` = configs[string]
         return if (`object` != null) {
             `object` as T
-        } else fail
+        } else {
+            fail
+        }
     }
 
     fun getConfigs(): Map<String, Any?> {

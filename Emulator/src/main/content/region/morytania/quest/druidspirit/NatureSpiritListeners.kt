@@ -1,13 +1,9 @@
 package content.region.morytania.quest.druidspirit
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
-import org.rs.consts.Quests
 import content.region.morytania.handlers.npc.GhastNPC
 import core.api.*
-import core.api.quest.hasRequirement
 import core.api.quest.getQuestStage
+import core.api.quest.hasRequirement
 import core.api.quest.isQuestComplete
 import core.game.global.action.PickupHandler
 import core.game.interaction.IntType
@@ -17,11 +13,14 @@ import core.game.node.item.GroundItem
 import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
 import core.game.shops.Shops
-import core.tools.Log
 import core.game.world.map.Location
+import core.tools.Log
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
+import org.rs.consts.Scenery
 
 class NatureSpiritListeners : InteractionListener {
-
     val MIRROR_TAKEN = "/save:ns:mirror_taken"
     val GROTTO_SEARCHED = "/save:ns:grotto_searched"
 
@@ -50,15 +49,20 @@ class NatureSpiritListeners : InteractionListener {
     val items = intArrayOf(USED_SPELLCARD, FUNGUS)
 
     override fun defineListeners() {
-
         on(GROTTO_TREE, IntType.SCENERY, "look-at") { player, _ ->
             sendMessage(player, "It looks like a tree on a large rock with roots trailing down to the ground.")
             return@on true
         }
 
         on(GROTTO_TREE, IntType.SCENERY, "search") { player, _ ->
-            if (!getAttribute(player, GROTTO_SEARCHED, false) || !(inInventory(player, JOURNAL) || inBank(player, JOURNAL))) {
-                sendItemDialogue(player, JOURNAL, "You search the strange rock. You find a knot and inside of it you discover a small tome. The words on the front are a bit vague, but you can make out the words 'Tarlock' and 'journal'.")
+            if (!getAttribute(player, GROTTO_SEARCHED, false) ||
+                !(inInventory(player, JOURNAL) || inBank(player, JOURNAL))
+            ) {
+                sendItemDialogue(
+                    player,
+                    JOURNAL,
+                    "You search the strange rock. You find a knot and inside of it you discover a small tome. The words on the front are a bit vague, but you can make out the words 'Tarlock' and 'journal'.",
+                )
                 addItemOrDrop(player, JOURNAL, 1)
                 setAttribute(player, GROTTO_SEARCHED, true)
                 return@on true
@@ -70,7 +74,11 @@ class NatureSpiritListeners : InteractionListener {
             val questStage = player.questRepository.getQuest(Quests.NATURE_SPIRIT).getStage(player)
             sendMessage(player, "You prepare to enter the Druid's grotto.")
             if (questStage < 55) {
-                val npc = core.game.node.entity.npc.NPC.create(NPCs.FILLIMAN_TARLOCK_1050, Location.create(3440, 3336, 0))
+                val npc =
+                    core.game.node.entity.npc.NPC.create(
+                        NPCs.FILLIMAN_TARLOCK_1050,
+                        Location.create(3440, 3336, 0),
+                    )
                 npc.init()
                 sendMessage(player, "The aura of Fillimans camp protects you from the swamp.")
             } else if (questStage < 60) {
@@ -105,16 +113,25 @@ class NatureSpiritListeners : InteractionListener {
                 sendMessage(player, "If you toss in some coins, you can take the items in return.")
                 Shops.openId(player, 241)
             } else {
-                sendMessage(player, "The wishing well is connected to the grotto, so it will not function until the grotto has been completed.")
+                sendMessage(
+                    player,
+                    "The wishing well is connected to the grotto, so it will not function until the grotto has been completed.",
+                )
             }
             return@on true
         }
 
         on(JOURNAL, IntType.ITEM, "read") { player, _ ->
-            sendDialogue(player, "Most of the writing is pretty uninteresting, but something inside refers to a nature spirit. The requirements for which are,")
+            sendDialogue(
+                player,
+                "Most of the writing is pretty uninteresting, but something inside refers to a nature spirit. The requirements for which are,",
+            )
             addDialogueAction(player) { _, button ->
                 if (button > 0) {
-                    sendDialogue(player, "'Something from nature', 'something with faith' and 'something of the spirit-to-become freely given'. It's all pretty vague.")
+                    sendDialogue(
+                        player,
+                        "'Something from nature', 'something with faith' and 'something of the spirit-to-become freely given'. It's all pretty vague.",
+                    )
                 }
             }
             return@on true
@@ -193,17 +210,29 @@ class NatureSpiritListeners : InteractionListener {
         }
 
         on(NATURE_STONE, IntType.SCENERY, "search") { player, _ ->
-            sendDialogueLines(player, "You search the stone and find that it has some sort of nature symbol", "scratched into it.")
+            sendDialogueLines(
+                player,
+                "You search the stone and find that it has some sort of nature symbol",
+                "scratched into it.",
+            )
             return@on true
         }
 
         on(FAITH_STONE, IntType.SCENERY, "search") { player, _ ->
-            sendDialogueLines(player, "You search the stone and find that it has some sort of faith symbol", "scratched into it.")
+            sendDialogueLines(
+                player,
+                "You search the stone and find that it has some sort of faith symbol",
+                "scratched into it.",
+            )
             return@on true
         }
 
         on(FREELY_GIVEN_STONE, IntType.SCENERY, "search") { player, _ ->
-            sendDialogueLines(player, "You search the stone and find it has some sort of spirit symbol", "scratched into it.")
+            sendDialogueLines(
+                player,
+                "You search the stone and find it has some sort of spirit symbol",
+                "scratched into it.",
+            )
             return@on true
         }
 
@@ -216,7 +245,9 @@ class NatureSpiritListeners : InteractionListener {
                             sendMessage(player, "The stone seems to absorb the used spell scroll.")
                             NSUtils.flagCardPlaced(player)
                         }
-                    } else sendMessage(player, "You try to put the item on the stone, but it just moves off.")
+                    } else {
+                        sendMessage(player, "You try to put the item on the stone, but it just moves off.")
+                    }
                 }
 
                 FUNGUS -> {
@@ -226,21 +257,28 @@ class NatureSpiritListeners : InteractionListener {
                             sendMessage(player, "The stone seems to absorb the used fungus.")
                             NSUtils.flagFungusPlaced(player)
                         }
-                    } else sendMessage(player, "You try to put the item on the stone, but it just moves off.")
+                    } else {
+                        sendMessage(player, "You try to put the item on the stone, but it just moves off.")
+                    }
                 }
             }
             return@onUseWith true
         }
 
         onUseWith(IntType.NPC, Items.SECATEURS_5329, NPCs.NATURE_SPIRIT_1051) { player, used, _ ->
-            if (!hasRequirement(player, Quests.FAIRYTALE_I_GROWING_PAINS))
+            if (!hasRequirement(player, Quests.FAIRYTALE_I_GROWING_PAINS)) {
                 return@onUseWith true
+            }
             if (amountInInventory(player, Items.COINS_995) < 40000) {
                 sendDialogue(player, "You need 40,000 coins to do this.")
                 return@onUseWith true
             }
             if (removeItem(player, used) && removeItem(player, Item(Items.COINS_995, 40000))) {
-                sendItemDialogue(player, Items.MAGIC_SECATEURS_7409, "Your secateurs are enchanted into magic secateurs")
+                sendItemDialogue(
+                    player,
+                    Items.MAGIC_SECATEURS_7409,
+                    "Your secateurs are enchanted into magic secateurs",
+                )
                 addItem(player, Items.MAGIC_SECATEURS_7409)
             }
             return@onUseWith true

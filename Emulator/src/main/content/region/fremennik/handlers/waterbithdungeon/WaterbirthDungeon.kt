@@ -1,8 +1,5 @@
 package content.region.fremennik.handlers.waterbithdungeon
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.fremennik.handlers.npc.waterbirth.DagannothKingNPC
 import content.region.fremennik.handlers.npc.waterbirth.SpinolypNPC
 import core.api.quest.isQuestComplete
@@ -37,13 +34,17 @@ import core.game.world.map.zone.ZoneBuilder
 import core.game.world.map.zone.ZoneRestriction
 import core.game.world.repository.Repository.findNPC
 import core.game.world.update.flag.context.Animation
+import core.plugin.ClassScanner.definePlugin
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner.definePlugin
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class WaterbirthDungeon : MapZone("Water birth dungeon", true, ZoneRestriction.RANDOM_EVENTS), Plugin<Any?> {
-
+class WaterbirthDungeon :
+    MapZone("Water birth dungeon", true, ZoneRestriction.RANDOM_EVENTS),
+    Plugin<Any?> {
     init {
         definePlugin(DagannothKingNPC())
         definePlugin(DoorSupportNPC())
@@ -57,11 +58,18 @@ class WaterbirthDungeon : MapZone("Water birth dungeon", true, ZoneRestriction.R
         return this
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 
-    override fun move(e: Entity, from: Location, to: Location): Boolean {
+    override fun move(
+        e: Entity,
+        from: Location,
+        to: Location,
+    ): Boolean {
         for (location in DOOR_SUPPORTS) {
             if (location == to) {
                 val npcs: List<NPC> = getLocalNpcs(location, 0)
@@ -100,6 +108,7 @@ class WaterbirthDungeon : MapZone("Water birth dungeon", true, ZoneRestriction.R
                 Pulser.submit(
                     object : Pulse(1) {
                         var counter = 0
+
                         override fun pulse(): Boolean {
                             when (++counter) {
                                 1 -> for (n in eggs) {
@@ -132,20 +141,24 @@ class WaterbirthDungeon : MapZone("Water birth dungeon", true, ZoneRestriction.R
                                                 }
                                                 return true
                                             }
-                                        }
+                                        },
                                     )
                                 }
                             }
                             return counter == 3
                         }
-                    }
+                    },
                 )
             }
         }
         return super.move(e, from, to)
     }
 
-    override fun interact(e: Entity, target: Node, option: Option): Boolean {
+    override fun interact(
+        e: Entity,
+        target: Node,
+        option: Option,
+    ): Boolean {
         if (e is Player) {
             val player = e
             when (target.id) {
@@ -165,32 +178,36 @@ class WaterbirthDungeon : MapZone("Water birth dungeon", true, ZoneRestriction.R
                             player.dialogueInterpreter.sendOptions("Select an Option", "Climb Up.", "Climb Down.")
                             player.dialogueInterpreter.addAction { player, buttonId ->
                                 when (buttonId) {
-                                    1 -> ClimbActionHandler.climb(
-                                        player,
-                                        ClimbActionHandler.CLIMB_UP,
-                                        Location(2544, 3741, 0)
-                                    )
+                                    1 ->
+                                        ClimbActionHandler.climb(
+                                            player,
+                                            ClimbActionHandler.CLIMB_UP,
+                                            Location(2544, 3741, 0),
+                                        )
 
-                                    2 -> ClimbActionHandler.climb(
-                                        player,
-                                        ClimbActionHandler.CLIMB_DOWN,
-                                        Location(1799, 4406, 3)
-                                    )
+                                    2 ->
+                                        ClimbActionHandler.climb(
+                                            player,
+                                            ClimbActionHandler.CLIMB_DOWN,
+                                            Location(1799, 4406, 3),
+                                        )
                                 }
                             }
                         }
 
-                        "Climb-down" -> ClimbActionHandler.climb(
-                            player,
-                            ClimbActionHandler.CLIMB_DOWN,
-                            Location(1799, 4406, 3)
-                        )
+                        "Climb-down" ->
+                            ClimbActionHandler.climb(
+                                player,
+                                ClimbActionHandler.CLIMB_DOWN,
+                                Location(1799, 4406, 3),
+                            )
 
-                        "Climb-up" -> ClimbActionHandler.climb(
-                            player,
-                            ClimbActionHandler.CLIMB_UP,
-                            Location(2544, 3741, 0)
-                        )
+                        "Climb-up" ->
+                            ClimbActionHandler.climb(
+                                player,
+                                ClimbActionHandler.CLIMB_UP,
+                                Location(2544, 3741, 0),
+                            )
                     }
                     return true
                 }
@@ -241,20 +258,30 @@ class WaterbirthDungeon : MapZone("Water birth dungeon", true, ZoneRestriction.R
             return this
         }
 
-        private fun pressurePadActivated(player: Player, location: Location): Boolean {
+        private fun pressurePadActivated(
+            player: Player,
+            location: Location,
+        ): Boolean {
             return if (getLocalPlayers(location, 0).size > 0) {
                 true
-            } else getRegionPlane(location).getItem(Items.PET_ROCK_3695, location, player) != null
+            } else {
+                getRegionPlane(location).getItem(Items.PET_ROCK_3695, location, player) != null
+            }
         }
 
-        override fun handle(player: Player, node: Node, option: String): Boolean {
+        override fun handle(
+            player: Player,
+            node: Node,
+            option: String,
+        ): Boolean {
             when (node.id) {
                 8958, 8959, 8960 -> {
                     val behind = player.location.x >= 2492
                     if (!behind) {
-                        if (!pressurePadActivated(player, node.location.transform(-1, 0, 0)) || !pressurePadActivated(
+                        if (!pressurePadActivated(player, node.location.transform(-1, 0, 0)) ||
+                            !pressurePadActivated(
                                 player,
-                                node.location.transform(-1, 2, 0)
+                                node.location.transform(-1, 2, 0),
                             )
                         ) {
                             player.sendMessage("You cannot see a way to open this door...")
@@ -272,7 +299,6 @@ class WaterbirthDungeon : MapZone("Water birth dungeon", true, ZoneRestriction.R
                     val y = node.location.y
                     var canAttack = true
                     if (x == 2545 && y == 10145 && player.location.y > y) {
-
                         canAttack = false
                     } else if (x == 2543 && y == 10143 && player.location.x < x) {
                         canAttack = false
@@ -289,7 +315,10 @@ class WaterbirthDungeon : MapZone("Water birth dungeon", true, ZoneRestriction.R
             return true
         }
 
-        override fun getDestination(node: Node, n: Node): Location? {
+        override fun getDestination(
+            node: Node,
+            n: Node,
+        ): Location? {
             if (n.name == "Door-support") {
                 val player = node.asPlayer()
                 if (player.properties.combatPulse.style !== CombatStyle.MELEE) {
@@ -307,7 +336,11 @@ class WaterbirthDungeon : MapZone("Water birth dungeon", true, ZoneRestriction.R
 
         constructor(id: Int, location: Location?) : super(id, location)
 
-        override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+        override fun construct(
+            id: Int,
+            location: Location,
+            vararg objects: Any,
+        ): AbstractNPC {
             return DoorSupportNPC(id, location)
         }
 
@@ -367,7 +400,11 @@ class WaterbirthDungeon : MapZone("Water birth dungeon", true, ZoneRestriction.R
             lock()
         }
 
-        override fun isAttackable(entity: Entity, style: CombatStyle, message: Boolean): Boolean {
+        override fun isAttackable(
+            entity: Entity,
+            style: CombatStyle,
+            message: Boolean,
+        ): Boolean {
             if (id != originalId) {
                 return false
             }

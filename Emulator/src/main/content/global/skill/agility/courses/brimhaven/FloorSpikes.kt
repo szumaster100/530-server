@@ -12,7 +12,10 @@ import core.game.world.map.RegionManager.getObject
 import core.game.world.update.flag.context.Animation
 
 class FloorSpikes : MovementHook {
-    override fun handle(e: Entity, l: Location): Boolean {
+    override fun handle(
+        e: Entity,
+        l: Location,
+    ): Boolean {
         val dir = e.direction
         val player = e as Player
         val start = l.transform(-dir.stepX, -dir.stepY, 0)
@@ -29,23 +32,26 @@ class FloorSpikes : MovementHook {
                     player.packetDispatch.sendSceneryAnimation(getObject(l), Animation.create(1111))
                     if (AgilityHandler.hasFailed(player, 20, 0.25)) {
                         if (player.getSkills().getLevel(Skills.AGILITY) < 20) {
-                            player.packetDispatch.sendMessage("You need an agility of at least 20 to get past this trap!")
+                            player.packetDispatch.sendMessage(
+                                "You need an agility of at least 20 to get past this trap!",
+                            )
                         }
                         var hit = player.getSkills().lifepoints / 12
                         if (hit < 2) {
                             hit = 2
                         }
-                        AgilityHandler.failWalk(
-                            player,
-                            1,
-                            player.location,
-                            start,
-                            start,
-                            Animation.create(1114),
-                            10,
-                            hit,
-                            "You were hit by some floor spikes!"
-                        ).direction = dir
+                        AgilityHandler
+                            .failWalk(
+                                player,
+                                1,
+                                player.location,
+                                start,
+                                start,
+                                Animation.create(1114),
+                                10,
+                                hit,
+                                "You were hit by some floor spikes!",
+                            ).direction = dir
                     } else {
                         AgilityHandler.forceWalk(
                             player,
@@ -55,13 +61,13 @@ class FloorSpikes : MovementHook {
                             Animation.create(1115),
                             20,
                             26.0,
-                            null
+                            null,
                         )
                     }
                     player.logoutListeners.remove("floor-spikes")
                     return true
                 }
-            }
+            },
         )
         return false
     }

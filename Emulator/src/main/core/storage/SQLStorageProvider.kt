@@ -1,8 +1,8 @@
 package core.storage
 
+import core.auth.UserAccountInfo
 import core.game.system.communication.CommunicationInfo
 import core.game.world.repository.Repository
-import core.auth.UserAccountInfo
 import java.lang.Long.max
 import java.sql.*
 
@@ -16,7 +16,12 @@ class SQLStorageProvider : AccountStorageProvider {
         return DriverManager.getConnection(connectionString, connectionUsername, connectionPassword)
     }
 
-    fun configure(host: String, databaseName: String, username: String, password: String) {
+    fun configure(
+        host: String,
+        databaseName: String,
+        username: String,
+        password: String,
+    ) {
         connectionString = "jdbc:mysql://$host/$databaseName?useTimezone=true&serverTimezone=UTC"
         connectionUsername = username
         connectionPassword = password
@@ -192,8 +197,34 @@ class SQLStorageProvider : AccountStorageProvider {
         private const val usernameQuery = "SELECT username FROM members WHERE username = ?;"
         private const val removeInfoQuery = "DELETE FROM members WHERE username = ?;"
         private const val accountsByIPQuery = "SELECT username FROM members WHERE lastGameIp = ?;"
-        private const val accountInfoQuery = "SELECT " + "username," + "password," + "UID," + "rights," + "credits," + "ip," + "lastGameIp," + "muteTime," + "banTime," + "contacts," + "blocked," + "clanName," + "currentClan," + "clanReqs," + "timePlayed," + "lastLogin," + "online," + "joined_date" + " FROM members WHERE username = ?;"
-        private const val insertInfoQuery = "INSERT INTO members (" + "username," + "password," + "rights," + "credits," + "ip," + "lastGameIp," + "muteTime," + "banTime," + "contacts," + "blocked," + "clanName," + "currentClan," + "clanReqs," + "timePlayed," + "lastLogin," + "online," + "joined_date" + ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"
+        private const val accountInfoQuery =
+            "SELECT " + "username," + "password," + "UID," + "rights," + "credits," + "ip," + "lastGameIp," +
+                "muteTime," +
+                "banTime," +
+                "contacts," +
+                "blocked," +
+                "clanName," +
+                "currentClan," +
+                "clanReqs," +
+                "timePlayed," +
+                "lastLogin," +
+                "online," +
+                "joined_date" +
+                " FROM members WHERE username = ?;"
+        private const val insertInfoQuery =
+            "INSERT INTO members (" + "username," + "password," + "rights," + "credits," + "ip," + "lastGameIp," +
+                "muteTime," +
+                "banTime," +
+                "contacts," +
+                "blocked," +
+                "clanName," +
+                "currentClan," +
+                "clanReqs," +
+                "timePlayed," +
+                "lastLogin," +
+                "online," +
+                "joined_date" +
+                ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"
 
         private fun buildUpdateInfoQuery(updatedIndices: ArrayList<Int>): String {
             val sb = StringBuilder("UPDATE members SET ")
@@ -201,30 +232,32 @@ class SQLStorageProvider : AccountStorageProvider {
             for ((index, updatedIndex) in validIndices.withIndex()) {
                 sb.append(UPDATE_QUERY_FIELDS[updatedIndex] ?: continue)
                 sb.append(" = ?")
-                if (index < validIndices.size - 1)
+                if (index < validIndices.size - 1) {
                     sb.append(",")
+                }
             }
             sb.append(" WHERE uid = ?;")
             return sb.toString()
         }
 
-        private val UPDATE_QUERY_FIELDS = mapOf(
-            0 to "username",
-            1 to "password",
-            3 to "rights",
-            4 to "credits",
-            6 to "lastGameIp",
-            7 to "muteTime",
-            8 to "banTime",
-            9 to "contacts",
-            10 to "blocked",
-            11 to "clanName",
-            12 to "currentClan",
-            13 to "clanReqs",
-            14 to "timePlayed",
-            15 to "lastLogin",
-            16 to "online"
-        )
+        private val UPDATE_QUERY_FIELDS =
+            mapOf(
+                0 to "username",
+                1 to "password",
+                3 to "rights",
+                4 to "credits",
+                6 to "lastGameIp",
+                7 to "muteTime",
+                8 to "banTime",
+                9 to "contacts",
+                10 to "blocked",
+                11 to "clanName",
+                12 to "currentClan",
+                13 to "clanReqs",
+                14 to "timePlayed",
+                15 to "lastLogin",
+                16 to "online",
+            )
 
         private val GET_ALL_FRIENDS_QUERY = "SELECT contacts FROM players WHERE username = ?;"
     }

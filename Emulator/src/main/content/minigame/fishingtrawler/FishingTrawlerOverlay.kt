@@ -13,7 +13,13 @@ private const val timeChild = 30
 
 object FishingTrawlerOverlay {
     @JvmStatic
-    fun sendUpdate(player: Player, waterPercent: Int, netRipped: Boolean, fishCaught: Int, timeLeft: Int) {
+    fun sendUpdate(
+        player: Player,
+        waterPercent: Int,
+        netRipped: Boolean,
+        fishCaught: Int,
+        timeLeft: Int,
+    ) {
         setVarp(player, configIndex, waterPercent)
         player.packetDispatch.sendInterfaceConfig(interfaceID, if (netRipped) netRippedChild else netOkayChild, false)
         player.packetDispatch.sendInterfaceConfig(interfaceID, if (netRipped) netOkayChild else netRippedChild, true)

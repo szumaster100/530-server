@@ -2,7 +2,11 @@ package content.global.handlers.iface.warning
 
 import org.rs.consts.Components
 
-enum class Warnings(val varbit: Int, val component: Int, val buttonId: Int) {
+enum class Warnings(
+    val varbit: Int,
+    val component: Int,
+    val buttonId: Int,
+) {
     DAGANNOTH_KINGS_LADDER(varbit = 3851, component = Components.CWS_WARNING_4_579, buttonId = 50),
     LUMBRIDGE_SWAMP_CAVE_ROPE(varbit = 3863, component = Components.CWS_WARNING_17_570, buttonId = 51), // Correct
     STRONGHOLD_OF_SECURITY_LADDERS(varbit = 3854, component = -1, buttonId = 52),
@@ -34,11 +38,13 @@ enum class Warnings(val varbit: Int, val component: Int, val buttonId: Int) {
     CORPOREAL_BEAST_DANGEROUS(varbit = 5366, component = Components.CWS_WARNING_30_650, buttonId = 78),
     CLAN_WARS_FFA_SAFETY(varbit = 5294, component = -1, buttonId = 79),
     CLAN_WARS_FFA_DANGEROUS(varbit = 5295, component = Components.CWS_WARNING_8_576, buttonId = 80),
-    PVP_WORLDS(varbit = 5296, component = -1, buttonId = 81);
+    PVP_WORLDS(varbit = 5296, component = -1, buttonId = 81),
+    ;
 
     companion object {
         @JvmStatic
         val values = enumValues<Warnings>()
+
         @JvmStatic
         val button = values.associateBy { it.varbit }
     }

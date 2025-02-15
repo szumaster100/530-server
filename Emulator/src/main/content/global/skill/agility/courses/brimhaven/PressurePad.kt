@@ -12,7 +12,10 @@ import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
 
 class PressurePad : MovementHook {
-    override fun handle(e: Entity, dest: Location): Boolean {
+    override fun handle(
+        e: Entity,
+        dest: Location,
+    ): Boolean {
         val dir = e.direction
         val player = e as Player
         val start = dest.transform(-dir.stepX, -dir.stepY, 0)
@@ -29,23 +32,26 @@ class PressurePad : MovementHook {
                     Graphics.send(Graphics.create(271), dest)
                     if (AgilityHandler.hasFailed(player, 20, 0.25)) {
                         if (player.getSkills().getLevel(Skills.AGILITY) < 20) {
-                            player.packetDispatch.sendMessage("You need an agility of at least 20 to get past this trap!")
+                            player.packetDispatch.sendMessage(
+                                "You need an agility of at least 20 to get past this trap!",
+                            )
                         }
                         var hit = player.getSkills().lifepoints / 12
                         if (hit < 2) {
                             hit = 2
                         }
-                        AgilityHandler.failWalk(
-                            player,
-                            1,
-                            player.location,
-                            start,
-                            start,
-                            Animation.create(1114),
-                            10,
-                            hit,
-                            "You were hit by some falling rocks!"
-                        ).direction = dir
+                        AgilityHandler
+                            .failWalk(
+                                player,
+                                1,
+                                player.location,
+                                start,
+                                start,
+                                Animation.create(1114),
+                                10,
+                                hit,
+                                "You were hit by some falling rocks!",
+                            ).direction = dir
                     } else {
                         AgilityHandler.forceWalk(
                             player,
@@ -55,13 +61,13 @@ class PressurePad : MovementHook {
                             Animation.create(1115),
                             20,
                             26.0,
-                            null
+                            null,
                         )
                     }
                     player.logoutListeners.remove("pressure-pad")
                     return true
                 }
-            }
+            },
         )
         return false
     }

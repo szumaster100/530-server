@@ -1,6 +1,5 @@
 package content.region.desert.quest.desertrescue
 
-import org.rs.consts.Quests
 import core.game.interaction.Option
 import core.game.node.Node
 import core.game.node.entity.Entity
@@ -13,9 +12,11 @@ import core.game.world.map.zone.MapZone
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.map.zone.ZoneBuilder
 import core.plugin.Plugin
+import org.rs.consts.Quests
 
-class MiningCampZone : MapZone("mining camp", true), Plugin<Any> {
-
+class MiningCampZone :
+    MapZone("mining camp", true),
+    Plugin<Any> {
     override fun newInstance(arg: Any?): Plugin<Any> {
         ZoneBuilder.configure(this)
         return this
@@ -25,7 +26,10 @@ class MiningCampZone : MapZone("mining camp", true), Plugin<Any> {
         return super.enter(entity)
     }
 
-    override fun leave(e: Entity, logout: Boolean): Boolean {
+    override fun leave(
+        e: Entity,
+        logout: Boolean,
+    ): Boolean {
         if (!logout && e is Player) {
             if (checkAnna(e)) {
                 return false
@@ -34,7 +38,11 @@ class MiningCampZone : MapZone("mining camp", true), Plugin<Any> {
         return super.leave(e, logout)
     }
 
-    override fun interact(e: Entity, node: Node, option: Option): Boolean {
+    override fun interact(
+        e: Entity,
+        node: Node,
+        option: Option,
+    ): Boolean {
         when (option.name) {
             "Equip", "Wear" -> {
                 val player = e as Player
@@ -46,14 +54,18 @@ class MiningCampZone : MapZone("mining camp", true), Plugin<Any> {
                             }
                             return true
                         }
-                    }
+                    },
                 )
             }
         }
         return super.interact(e, node, option)
     }
 
-    override fun teleport(entity: Entity, type: Int, node: Node): Boolean {
+    override fun teleport(
+        entity: Entity,
+        type: Int,
+        node: Node,
+    ): Boolean {
         return if (entity is Player && type != -1) {
             !checkAnna(entity)
         } else {
@@ -83,7 +95,10 @@ class MiningCampZone : MapZone("mining camp", true), Plugin<Any> {
         register(ZoneBorders(3260, 9408, 3331, 9472))
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 }

@@ -1,8 +1,5 @@
 package content.region.misthalin.quest.itexam
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.*
 import core.api.quest.finishQuest
 import core.api.quest.getQuestStage
@@ -15,9 +12,11 @@ import core.game.interaction.InteractionListener
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 class ExpertListener : InteractionListener {
-
     val staff = Items.ANCIENT_STAFF_4675
     val unidentifiedLiquid = Items.UNIDENTIFIED_LIQUID_702
     val nitroglycerin = Items.NITROGLYCERIN_703
@@ -44,33 +43,34 @@ class ExpertListener : InteractionListener {
     val teddy = Items.TEDDY_673
     val stoneTablet = Items.STONE_TABLET_699
 
-    val items = intArrayOf(
-        staff,
-        unidentifiedLiquid,
-        nitroglycerin,
-        chemicalPowder,
-        ammoniumNitrate,
-        nuggets,
-        needle,
-        rottenApple,
-        brokenGlass,
-        brokenArrow,
-        panningTray,
-        bones,
-        buttons,
-        crackedSample,
-        oldTooth,
-        rustySword,
-        brokenStaff,
-        brokenArmour,
-        damagedArmour,
-        ceramicRemains,
-        beltBuckle,
-        animalSkull,
-        specialCup,
-        teddy,
-        stoneTablet
-    )
+    val items =
+        intArrayOf(
+            staff,
+            unidentifiedLiquid,
+            nitroglycerin,
+            chemicalPowder,
+            ammoniumNitrate,
+            nuggets,
+            needle,
+            rottenApple,
+            brokenGlass,
+            brokenArrow,
+            panningTray,
+            bones,
+            buttons,
+            crackedSample,
+            oldTooth,
+            rustySword,
+            brokenStaff,
+            brokenArmour,
+            damagedArmour,
+            ceramicRemains,
+            beltBuckle,
+            animalSkull,
+            specialCup,
+            teddy,
+            stoneTablet,
+        )
 
     val archy = NPCs.ARCHAEOLOGICAL_EXPERT_619
 
@@ -82,11 +82,15 @@ class ExpertListener : InteractionListener {
     }
 }
 
-class ArchaeologicalExpertListenerDialogueFile(val it: Int) : DialogueBuilderFile() {
-
+class ArchaeologicalExpertListenerDialogueFile(
+    val it: Int,
+) : DialogueBuilderFile() {
     companion object {
-
-        fun replaceAll(player: Player, originalItem: Int, newItem: Int) {
+        fun replaceAll(
+            player: Player,
+            originalItem: Int,
+            newItem: Int,
+        ) {
             for (a in 0..amountInInventory(player, originalItem)) {
                 if (inInventory(player, originalItem)) {
                     replaceSlot(player, player.inventory.getSlot(Item(originalItem)), Item(newItem))
@@ -96,61 +100,57 @@ class ArchaeologicalExpertListenerDialogueFile(val it: Int) : DialogueBuilderFil
     }
 
     override fun create(b: DialogueBuilder) {
-
-        b.onPredicate { _ -> it == Items.UNIDENTIFIED_LIQUID_702 }
+        b
+            .onPredicate { _ -> it == Items.UNIDENTIFIED_LIQUID_702 }
             .player(FaceAnim.THINKING, "Do you know what this is?")
             .npcl(FaceAnim.WORRIED, "Where did you get this?")
             .player("From one of the barrels at the digsite.")
             .npcl(
                 FaceAnim.WORRIED,
-                "This is a VERY dangerous liquid called nitroglycerin. Be careful how you handle it. Don't drop it or it will explode!"
-            )
-            .endWith { _, player ->
+                "This is a VERY dangerous liquid called nitroglycerin. Be careful how you handle it. Don't drop it or it will explode!",
+            ).endWith { _, player ->
                 replaceAll(player, Items.UNIDENTIFIED_LIQUID_702, Items.NITROGLYCERIN_703)
             }
 
-        b.onPredicate { _ -> it == Items.NITROGLYCERIN_703 }
+        b
+            .onPredicate { _ -> it == Items.NITROGLYCERIN_703 }
             .player(FaceAnim.THINKING, "Can you tell me any more about this?")
             .npcl(
                 FaceAnim.WORRIED,
-                "Nitroglycerin! This is a dangerous substance. This is normally mixed with other chemicals to produce a potent compound."
-            )
-            .npcl(FaceAnim.WORRIED, "Be sure not to drop it! That stuff is highly volatile...")
+                "Nitroglycerin! This is a dangerous substance. This is normally mixed with other chemicals to produce a potent compound.",
+            ).npcl(FaceAnim.WORRIED, "Be sure not to drop it! That stuff is highly volatile...")
             .end()
 
-        b.onPredicate { _ -> it == Items.CHEMICAL_POWDER_700 }
+        b
+            .onPredicate { _ -> it == Items.CHEMICAL_POWDER_700 }
             .player(FaceAnim.THINKING, "Do you know what this powder is?")
             .npcl(
                 FaceAnim.WORRIED,
-                "Really, you do find the most unusual items. I know what this is - it's a strong chemical called ammonium nitrate. Why you want this I'll never know..."
-            )
-            .endWith { _, player ->
+                "Really, you do find the most unusual items. I know what this is - it's a strong chemical called ammonium nitrate. Why you want this I'll never know...",
+            ).endWith { _, player ->
                 replaceAll(player, Items.CHEMICAL_POWDER_700, Items.AMMONIUM_NITRATE_701)
             }
 
-        b.onPredicate { _ -> it == Items.ANCIENT_TALISMAN_681 }
+        b
+            .onPredicate { _ -> it == Items.ANCIENT_TALISMAN_681 }
             .npcl(FaceAnim.FRIENDLY, "Unusual... This object doesn't appear right...")
             .npcl(FaceAnim.FRIENDLY, "Hmmm...")
             .npcl(FaceAnim.FRIENDLY, "I wonder... Let me check my guide... Could it be? Surely not!")
             .npcl(FaceAnim.FRIENDLY, "From the markings on it, it seems to be a ceremonial ornament to a god named...")
             .npcl(
                 FaceAnim.FRIENDLY,
-                "...Zaros? I haven't heard much about him before. This is a great discovery; we know very little of the ancient gods that people worshipped."
-            )
+                "...Zaros? I haven't heard much about him before. This is a great discovery; we know very little of the ancient gods that people worshipped.",
+            ).npcl(
+                FaceAnim.FRIENDLY,
+                "There is some strange writing embossed upon it - it says, 'Zaros will return and wreak his vengeance upon Zamorak the pretender.'",
+            ).npcl(FaceAnim.FRIENDLY, "I wonder what it means by that. Some silly superstition, probably.")
             .npcl(
                 FaceAnim.FRIENDLY,
-                "There is some strange writing embossed upon it - it says, 'Zaros will return and wreak his vengeance upon Zamorak the pretender.'"
-            )
-            .npcl(FaceAnim.FRIENDLY, "I wonder what it means by that. Some silly superstition, probably.")
-            .npcl(
+                "Still, I wonder what this is doing around here. I'll tell you what; as you have found this, I will allow you to use the private dig shafts.",
+            ).npcl(
                 FaceAnim.FRIENDLY,
-                "Still, I wonder what this is doing around here. I'll tell you what; as you have found this, I will allow you to use the private dig shafts."
-            )
-            .npcl(
-                FaceAnim.FRIENDLY,
-                "You obviously have a keen eye. Take this letter and give it to one of the workmen, and they will allow you to use them."
-            )
-            .endWith { _, player ->
+                "You obviously have a keen eye. Take this letter and give it to one of the workmen, and they will allow you to use them.",
+            ).endWith { _, player ->
                 if (removeItem(player, Items.ANCIENT_TALISMAN_681)) {
                     addItemOrDrop(player, Items.INVITATION_LETTER_696)
                 }
@@ -159,14 +159,19 @@ class ArchaeologicalExpertListenerDialogueFile(val it: Int) : DialogueBuilderFil
                 }
             }
 
-        b.onPredicate { _ -> it == Items.STONE_TABLET_699 }
+        b
+            .onPredicate { _ -> it == Items.STONE_TABLET_699 }
             .playerl(FaceAnim.FRIENDLY, "I found this in a hidden cavern beneath the site.")
             .npcl(FaceAnim.FRIENDLY, "Incredible!")
             .playerl(FaceAnim.FRIENDLY, "There is an altar down there. The place is crawling with skeletons!")
-            .npcl(FaceAnim.FRIENDLY, "Yuck! This is an amazing discovery! All this while we were convinced that no other race had lived here.")
-            .npcl("It seems the followers of Saradomin have tried to cover up the evidence of this Zaros altar. This whole city must have been built over it!")
-            .npcl("Thanks for your help; your sharp eyes have spotted what many have missed. Here, take this gold as your reward.")
-            .item(Items.GOLD_BAR_2357, "The expert gives you two gold bars as payment.")
+            .npcl(
+                FaceAnim.FRIENDLY,
+                "Yuck! This is an amazing discovery! All this while we were convinced that no other race had lived here.",
+            ).npcl(
+                "It seems the followers of Saradomin have tried to cover up the evidence of this Zaros altar. This whole city must have been built over it!",
+            ).npcl(
+                "Thanks for your help; your sharp eyes have spotted what many have missed. Here, take this gold as your reward.",
+            ).item(Items.GOLD_BAR_2357, "The expert gives you two gold bars as payment.")
             .endWith { _, player ->
                 if (removeItem(player, Items.STONE_TABLET_699)) {
                     if (getQuestStage(player, Quests.THE_DIG_SITE) == 11) {
@@ -175,7 +180,8 @@ class ArchaeologicalExpertListenerDialogueFile(val it: Int) : DialogueBuilderFil
                 }
             }
 
-        b.onPredicate { _ -> true }
+        b
+            .onPredicate { _ -> true }
             .npcl(FaceAnim.FRIENDLY, "I don't think that has any archaeological significance.")
             .end()
     }

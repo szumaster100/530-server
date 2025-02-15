@@ -1,19 +1,20 @@
 package content.region.fremennik.dialogue
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.fremennik.quest.viking.dialogue.CouncilWorkerDialogue
 import content.region.misthalin.dialogue.CouncilWorkmanDiaryDialogue
-import core.api.quest.getQuestStage
 import core.api.openDialogue
+import core.api.quest.getQuestStage
 import core.game.dialogue.Dialogue
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class CouncilWorkmanDialogue(player: Player? = null) : Dialogue(player) {
-
+class CouncilWorkmanDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         end()
@@ -25,7 +26,10 @@ class CouncilWorkmanDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         return true
     }
 

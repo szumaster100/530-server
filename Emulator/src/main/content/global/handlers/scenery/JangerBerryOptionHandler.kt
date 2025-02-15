@@ -20,13 +20,11 @@ import org.rs.consts.Scenery
 
 @Initializable
 class JangerBerryOptionHandler : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         UseWithHandler.addHandler(
             Scenery.BRANCH_2326,
             UseWithHandler.OBJECT_TYPE,
             object : UseWithHandler(Items.ROPE_954) {
-
                 override fun newInstance(arg: Any?): Plugin<Any> {
                     return this
                 }
@@ -38,14 +36,18 @@ class JangerBerryOptionHandler : OptionHandler() {
                     sendMessage(event.player, "You tie the rope to the tree...")
                     return true
                 }
-            }
+            },
         )
         SceneryDefinition.forId(Scenery.ROPESWING_2325).handlers["option:swing-on"] = this
         SceneryDefinition.forId(Scenery.ROPESWING_2324).handlers["option:swing-on"] = this
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         if (!player.location.withinDistance(node.location, 2)) {
             player.sendMessage("You cannot do that from here.")
             return true
@@ -61,12 +63,15 @@ class JangerBerryOptionHandler : OptionHandler() {
             20,
             22.0,
             "You skillfully swing across.",
-            1
+            1,
         )
         return true
     }
 
-    override fun getDestination(node: Node, n: Node): Location {
+    override fun getDestination(
+        node: Node,
+        n: Node,
+    ): Location {
         return if (n.id == Scenery.ROPESWING_2324) Location(2511, 3092, 0) else Location(2501, 3087, 0)
     }
 }

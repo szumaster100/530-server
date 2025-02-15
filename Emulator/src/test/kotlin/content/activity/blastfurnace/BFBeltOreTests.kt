@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Test
 import org.rs.consts.Items
 
 class BFBeltOreTests {
-    init { TestUtils.preTestSetup() }
+    init {
+        TestUtils.preTestSetup()
+    }
 
     @Test fun oreShouldMoveCloserToPotWhenTicked() {
         TestUtils.getMockPlayer("bf-oremove-test").use { p ->
@@ -33,8 +35,9 @@ class BFBeltOreTests {
             p.location = BFBeltOre.ORE_START_LOC
             val ore = BlastFurnace.addOreToBelt(p, Items.IRON_ORE_440, 5)
 
-            for (i in 0 until 4)
+            for (i in 0 until 4) {
                 if (ore.tick()) BlastFurnace.getPlayerState(p).oresOnBelt.remove(ore)
+            }
 
             val container = BlastFurnace.getOreContainer(p)
             Assertions.assertEquals(5, container.getOreAmount(Items.IRON_ORE_440))

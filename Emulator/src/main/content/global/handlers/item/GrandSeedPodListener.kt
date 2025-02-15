@@ -1,6 +1,5 @@
 package content.global.handlers.item
 
-import org.rs.consts.Items
 import content.global.travel.glider.GliderData
 import core.api.*
 import core.api.ui.setMinimapState
@@ -9,6 +8,7 @@ import core.game.interaction.InteractionListener
 import core.game.interaction.QueueStrength
 import core.game.node.entity.skill.Skills
 import core.game.world.map.Location
+import org.rs.consts.Items
 
 private const val SQUASH_GRAPHICS_BEGIN = 767
 private const val SQUASH_GRAPHICS_END = 769
@@ -18,9 +18,7 @@ private const val LAUNCH_GRAPHICS = 768
 private const val LAUNCH_ANIMATION = 4547
 
 class GrandSeedPodListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(intArrayOf(Items.GRAND_SEED_POD_9469), IntType.ITEM, "squash", "launch") { player, _ ->
             val opt = getUsedOption(player)
             if (!removeItem(player, Items.GRAND_SEED_POD_9469)) return@on false

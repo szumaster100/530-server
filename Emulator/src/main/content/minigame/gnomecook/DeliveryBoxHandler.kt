@@ -11,13 +11,16 @@ import core.plugin.Plugin
 
 @Initializable
 class DeliveryBoxHandler : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         ItemDefinition.forId(9477).handlers["option:check"] = this
         return this
     }
 
-    override fun handle(player: Player?, node: Node?, option: String?): Boolean {
+    override fun handle(
+        player: Player?,
+        node: Node?,
+        option: String?,
+    ): Boolean {
         player ?: return false
         val jobId = player.getAttribute("$GC_BASE_ATTRIBUTE:$GC_JOB_ORDINAL", -1)
         if (jobId == -1) {
@@ -27,7 +30,7 @@ class DeliveryBoxHandler : OptionHandler() {
             val item = player.getAttribute("$GC_BASE_ATTRIBUTE:$GC_NEEDED_ITEM", Item(0))
             player.dialogueInterpreter.sendDialogue(
                 "I need to deliver a ${item.name.lowercase()} to ${NPC(job.npc_id).name.lowercase()},",
-                "who is ${job.tip}"
+                "who is ${job.tip}",
             )
         }
         return true

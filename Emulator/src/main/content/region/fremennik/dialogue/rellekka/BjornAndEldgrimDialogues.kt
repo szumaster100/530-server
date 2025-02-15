@@ -1,7 +1,5 @@
 package content.region.fremennik.dialogue.rellekka
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.getAttribute
 import core.api.quest.isQuestComplete
 import core.game.dialogue.Dialogue
@@ -10,10 +8,13 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class BjornAndEldgrimDialogues(player: Player? = null) : Dialogue(player) {
-
+class BjornAndEldgrimDialogues(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         if (!isQuestComplete(player, Quests.THE_FREMENNIK_TRIALS)) {
@@ -24,11 +25,24 @@ class BjornAndEldgrimDialogues(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
-            0 -> npcl(FaceAnim.DRUNK, "Hey! scheck it out! Itsh an outerlandub! Yer shud go shpeak to the chieftain!").also { stage++ }
+            0 ->
+                npcl(
+                    FaceAnim.DRUNK,
+                    "Hey! scheck it out! Itsh an outerlandub! Yer shud go shpeak to the chieftain!",
+                ).also {
+                    stage++
+                }
             1 -> player(FaceAnim.ASKING, "The who?").also { stage++ }
-            2 -> npcl(FaceAnim.DRUNK, "That guy over there by that stuff! (hic) Yeh, abshoultely! He's da bosh!").also { stage = END_DIALOGUE }
+            2 ->
+                npcl(FaceAnim.DRUNK, "That guy over there by that stuff! (hic) Yeh, abshoultely! He's da bosh!").also {
+                    stage =
+                        END_DIALOGUE
+                }
             10 -> player(FaceAnim.ASKING, "${player.name}?").also { stage++ }
             11 -> npcl(FaceAnim.DRUNK, "Nah nah nah, not them, the other one, whatshyerfashe!").also { stage++ }
             12 -> player(FaceAnim.ASKING, "${getAttribute(player, "fremennikname", "fremmyname")}?").also { stage++ }

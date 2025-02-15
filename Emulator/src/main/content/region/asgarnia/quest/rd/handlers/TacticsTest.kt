@@ -1,6 +1,5 @@
 package content.region.asgarnia.quest.rd.handlers
 
-import org.rs.consts.NPCs
 import content.region.asgarnia.quest.rd.RDUtils.ATTRIBUTE_NPC_SPAWN
 import content.region.asgarnia.quest.rd.RecruitmentDrive
 import core.api.*
@@ -16,9 +15,11 @@ import core.game.node.entity.skill.Skills
 import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
+import org.rs.consts.NPCs
 
-class TacticsTest(private val dialogueNum: Int = 0) : DialogueBuilderFile() {
-
+class TacticsTest(
+    private val dialogueNum: Int = 0,
+) : DialogueBuilderFile() {
     companion object {
         const val spawnSirLeye = "rd:generatedsirleye"
     }
@@ -30,23 +31,20 @@ class TacticsTest(private val dialogueNum: Int = 0) : DialogueBuilderFile() {
                     FaceAnim.HAPPY,
                     "Excellent work, @name!",
                     "Please step through the portal to meet your next",
-                    "challenge."
-                )
-                .end()
+                    "challenge.",
+                ).end()
 
             onPredicate { true }
                 .npc(
                     "Ah, @name, you're finally here.",
                     "Your task for this room is to defeat Sir Leye.",
                     "He has been blessed by Saradomin to be undefeatable",
-                    "by any man, so it should be quite the challenge for you."
-                )
-                .npc(
+                    "by any man, so it should be quite the challenge for you.",
+                ).npc(
                     "If you are having problems, remember",
                     "A true warrior uses his wits as much as his brawn.",
-                    "Fight smarter, not harder."
-                )
-                .endWith { _, player ->
+                    "Fight smarter, not harder.",
+                ).endWith { _, player ->
                     SirLeyeNPC.init(player)
                 }
         }
@@ -54,7 +52,6 @@ class TacticsTest(private val dialogueNum: Int = 0) : DialogueBuilderFile() {
 }
 
 class SirLeyeNPC : NPCBehavior(NPCs.SIR_LEYE_2285) {
-
     private var clearTime = 0
 
     override fun tick(self: NPC): Boolean {
@@ -65,7 +62,11 @@ class SirLeyeNPC : NPCBehavior(NPCs.SIR_LEYE_2285) {
         return true
     }
 
-    override fun beforeDamageReceived(self: NPC, attacker: Entity, state: BattleState) {
+    override fun beforeDamageReceived(
+        self: NPC,
+        attacker: Entity,
+        state: BattleState,
+    ) {
         val lifepoints = self.skills.lifepoints
         if (attacker is Player) {
             if (attacker.isMale) {
@@ -76,7 +77,10 @@ class SirLeyeNPC : NPCBehavior(NPCs.SIR_LEYE_2285) {
         }
     }
 
-    override fun onDeathFinished(self: NPC, killer: Entity) {
+    override fun onDeathFinished(
+        self: NPC,
+        killer: Entity,
+    ) {
         if (killer is Player) {
             clearHintIcon(killer)
             setAttribute(killer, RecruitmentDrive.stagePass, true)
@@ -85,7 +89,10 @@ class SirLeyeNPC : NPCBehavior(NPCs.SIR_LEYE_2285) {
         }
     }
 
-    override fun getXpMultiplier(self: NPC, attacker: Entity): Double = 0.0
+    override fun getXpMultiplier(
+        self: NPC,
+        attacker: Entity,
+    ): Double = 0.0
 
     companion object {
         fun init(player: Player) {
@@ -108,7 +115,7 @@ class SirLeyeNPC : NPCBehavior(NPCs.SIR_LEYE_2285) {
                         setAttribute(player, ATTRIBUTE_NPC_SPAWN, true)
                         return true
                     }
-                }
+                },
             )
         }
     }

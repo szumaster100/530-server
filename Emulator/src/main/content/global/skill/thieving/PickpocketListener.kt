@@ -1,9 +1,5 @@
 package content.global.skill.thieving
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Sounds
 import core.api.*
 import core.api.utils.WeightBasedTable
 import core.game.interaction.IntType
@@ -18,14 +14,22 @@ import core.game.node.item.Item
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.update.flag.context.Animation
 import core.tools.RandomFunction
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Sounds
 
 class PickpocketListener : InteractionListener {
-
     companion object {
         val PICKPOCKET_ANIM = Animation(Animations.HUMAN_PICKPOCKETING_881, Animator.Priority.HIGH)
         val NPC_ANIM = Animation(Animations.PUNCH_422)
 
-        fun pickpocketRoll(player: Player, low: Double, high: Double, table: WeightBasedTable): ArrayList<Item>? {
+        fun pickpocketRoll(
+            player: Player,
+            low: Double,
+            high: Double,
+            table: WeightBasedTable,
+        ): ArrayList<Item>? {
             var successMod = 0.0
             if (inInventory(player, Items.GLOVES_OF_SILENCE_10075, 1)) {
                 successMod += 3
@@ -42,7 +46,6 @@ class PickpocketListener : InteractionListener {
     }
 
     override fun defineListeners() {
-
         on(IntType.NPC, "pickpocket", "pick-pocket") { player, node ->
             val pocketData = Pickpocket.forID(node.id) ?: return@on false
             val npc = node.asNpc()
@@ -94,7 +97,7 @@ class PickpocketListener : InteractionListener {
                 impact(
                     player,
                     RandomFunction.random(pocketData.stunDamageMin, pocketData.stunDamageMax),
-                    ImpactHandler.HitsplatType.NORMAL
+                    ImpactHandler.HitsplatType.NORMAL,
                 )
                 sendMessage(player, "You feel slightly concussed from the blow.")
                 npc.face(null)
@@ -105,19 +108,31 @@ class PickpocketListener : InteractionListener {
                     player.inventory.add(it)
                 }
 
-                if (getStatLevel(player, Skills.THIEVING) >= 40) when {
-                    inBorders(player, ZoneBorders(3201, 3456, 3227, 3468)) && npc.id == NPCs.GUARD_5920
+                if (getStatLevel(player, Skills.THIEVING) >= 40) {
+                    when {
+                        inBorders(player, ZoneBorders(3201, 3456, 3227, 3468)) && npc.id == NPCs.GUARD_5920
                         -> {
-                        finishDiaryTask(player, DiaryType.VARROCK, 1, 12)
-                    }
+                            finishDiaryTask(player, DiaryType.VARROCK, 1, 12)
+                        }
 
-                    inBorders(player, ZoneBorders(2934, 3399, 3399, 3307)) && npc.id in intArrayOf(NPCs.GUARD_9, NPCs.GUARD_3230, NPCs.GUARD_3228, NPCs.GUARD_3229)
+                        inBorders(player, ZoneBorders(2934, 3399, 3399, 3307)) &&
+                            npc.id in intArrayOf(NPCs.GUARD_9, NPCs.GUARD_3230, NPCs.GUARD_3228, NPCs.GUARD_3229)
                         -> {
-                        finishDiaryTask(player, DiaryType.FALADOR, 1, 6)
+                            finishDiaryTask(player, DiaryType.FALADOR, 1, 6)
+                        }
                     }
                 }
 
-                sendMessage(player, if(npc.id == NPCs.CURATOR_HAIG_HALEN_646) "You steal a tiny key." else "You pick the $npcName's pocket.")
+                sendMessage(
+                    player,
+                    if (npc.id ==
+                        NPCs.CURATOR_HAIG_HALEN_646
+                    ) {
+                        "You steal a tiny key."
+                    } else {
+                        "You pick the $npcName's pocket."
+                    },
+                )
                 rewardXP(player, Skills.THIEVING, pocketData.experience)
             }
             return@on true

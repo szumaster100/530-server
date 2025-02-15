@@ -8,8 +8,9 @@ import core.plugin.Initializable
 import core.tools.colorize
 
 @Initializable
-class RPUseWithNPCDialogue(player: Player? = null) : Dialogue(player) {
-
+class RPUseWithNPCDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     var npc: NPC? = null
     val ID = 38575795
 
@@ -23,7 +24,10 @@ class RPUseWithNPCDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         npc ?: return false
         when (buttonId) {
             // remove NPC

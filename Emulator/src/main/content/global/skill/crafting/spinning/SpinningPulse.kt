@@ -1,8 +1,5 @@
 package content.global.skill.crafting.spinning
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import core.api.*
 import core.game.container.impl.EquipmentContainer
 import core.game.node.entity.player.Player
@@ -12,10 +9,15 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 
-class SpinningPulse(player: Player?, node: Item?, var amount: Int, val type: Spinning) :
-    SkillPulse<Item?>(player, node) {
-
+class SpinningPulse(
+    player: Player?,
+    node: Item?,
+    var amount: Int,
+    val type: Spinning,
+) : SkillPulse<Item?>(player, node) {
     var ticks = 0
 
     override fun checkRequirements(): Boolean {
@@ -40,10 +42,15 @@ class SpinningPulse(player: Player?, node: Item?, var amount: Int, val type: Spi
 
     override fun reward(): Boolean {
         var tickThreshold = 4
-        if ((player.achievementDiaryManager.getDiary(DiaryType.SEERS_VILLAGE)!!.isComplete(2) && withinDistance(
-                player,
-                Location(2711, 3471, 1)
-            ) && player.equipment[EquipmentContainer.SLOT_HAT] != null) && player.equipment[EquipmentContainer.SLOT_HAT].id == Items.SEERS_HEADBAND_1_14631
+        if ((
+                player.achievementDiaryManager.getDiary(DiaryType.SEERS_VILLAGE)!!.isComplete(2) &&
+                    withinDistance(
+                        player,
+                        Location(2711, 3471, 1),
+                    ) &&
+                    player.equipment[EquipmentContainer.SLOT_HAT] != null
+            ) &&
+            player.equipment[EquipmentContainer.SLOT_HAT].id == Items.SEERS_HEADBAND_1_14631
         ) {
             tickThreshold = 2
         }
@@ -63,7 +70,7 @@ class SpinningPulse(player: Player?, node: Item?, var amount: Int, val type: Spi
                     setAttribute(
                         player,
                         "/save:diary:seers:bowstrings-spun",
-                        getAttribute(player, "diary:seers:bowstrings-spun", 0) + 1
+                        getAttribute(player, "diary:seers:bowstrings-spun", 0) + 1,
                     )
                 }
             }

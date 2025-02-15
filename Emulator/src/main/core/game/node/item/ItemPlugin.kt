@@ -7,13 +7,14 @@ import core.game.world.map.Location
 import core.plugin.Plugin
 
 abstract class ItemPlugin : Plugin<Any> {
-
     companion object {
         const val DROP = 1
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any?): Any {
-
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any?,
+    ): Any {
         return this
     }
 
@@ -23,19 +24,34 @@ abstract class ItemPlugin : Plugin<Any> {
         }
     }
 
-    open fun remove(player: Player, item: Item, type: Int) {
-
+    open fun remove(
+        player: Player,
+        item: Item,
+        type: Int,
+    ) {
     }
 
-    open fun canPickUp(player: Player, item: GroundItem, type: Int): Boolean {
+    open fun canPickUp(
+        player: Player,
+        item: GroundItem,
+        type: Int,
+    ): Boolean {
         return true
     }
 
-    open fun createDrop(item: Item, player: Player, npc: NPC?, location: Location): Boolean {
+    open fun createDrop(
+        item: Item,
+        player: Player,
+        npc: NPC?,
+        location: Location,
+    ): Boolean {
         return true
     }
 
-    open fun getItem(item: Item, npc: NPC?): Item {
+    open fun getItem(
+        item: Item,
+        npc: NPC?,
+    ): Item {
         return item
     }
 

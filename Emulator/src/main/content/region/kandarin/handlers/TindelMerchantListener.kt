@@ -1,9 +1,5 @@
 package content.region.kandarin.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
-import org.rs.consts.Sounds
 import content.data.items.BrokenItem
 import content.region.kandarin.dialogue.TindelMerchantDialogue
 import core.api.*
@@ -16,11 +12,13 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.world.map.Location
 import core.tools.RandomFunction
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
+import org.rs.consts.Sounds
 
 class TindelMerchantListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(ANTIQUE_SHOP_STALL, IntType.SCENERY, "ring-bell") { player, _ ->
             playGlobalAudio(player.location, BELL_SOUND)
             sendDialogue(player, "You ring for attention.")
@@ -42,7 +40,6 @@ class TindelMerchantListener : InteractionListener {
     }
 
     override fun defineDestinationOverrides() {
-
         setDest(IntType.NPC, intArrayOf(TINDEL), "talk-to", "give-sword") { _, _ ->
             return@setDest Location(2678, 3152, 0)
         }
@@ -62,7 +59,7 @@ class TindelMerchantListener : InteractionListener {
                     player,
                     TINDEL,
                     "Sorry my friend, but you don't seem to have any swords that need to be identified.",
-                    FaceAnim.HALF_GUILTY
+                    FaceAnim.HALF_GUILTY,
                 )
                 return false
             }
@@ -77,7 +74,7 @@ class TindelMerchantListener : InteractionListener {
                 player,
                 sendItem,
                 FAKE_COINS,
-                "You hand Tindel 100 coins plus the ${getItemName(sendItem).lowercase()}."
+                "You hand Tindel 100 coins plus the ${getItemName(sendItem).lowercase()}.",
             )
             addDialogueAction(player) { player, button ->
                 if (button >= 1) {
@@ -96,7 +93,7 @@ class TindelMerchantListener : InteractionListener {
                             player,
                             TINDEL,
                             "Sorry my friend, but you don't seem to have any swords that need to be identified.",
-                            FaceAnim.HALF_GUILTY
+                            FaceAnim.HALF_GUILTY,
                         )
                     }
                     removeItem(player, Item(Items.COINS_995, 100))
@@ -106,7 +103,7 @@ class TindelMerchantListener : InteractionListener {
                             sendItemDialogue(
                                 player,
                                 it.id,
-                                "Tindel gives you a ${getItemName(it.id).lowercase()}."
+                                "Tindel gives you a ${getItemName(it.id).lowercase()}.",
                             )
                         }
                         addItem(player, repairedItem!!.id)
@@ -115,7 +112,7 @@ class TindelMerchantListener : InteractionListener {
                             player,
                             TINDEL,
                             "Sorry my friend, but the item wasn't worth anything. I've disposed of it for you.",
-                            FaceAnim.HALF_GUILTY
+                            FaceAnim.HALF_GUILTY,
                         )
                     }
                 }

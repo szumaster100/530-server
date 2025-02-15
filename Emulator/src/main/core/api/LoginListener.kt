@@ -8,7 +8,6 @@ import core.game.node.entity.player.Player
  * Login listeners are called *before* [PersistPlayer] data is parsed.
  */
 interface LoginListener : ContentInterface {
-
     /**
      * **NOTE**: This should **NOT** reference any non-static class-local variables.
      * If you need to access a player's specific instance, use an attribute.

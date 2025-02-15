@@ -2,7 +2,9 @@ package content.data
 
 import org.rs.consts.Items
 
-enum class God(vararg val validItems: Int) {
+enum class God(
+    vararg val validItems: Int,
+) {
     ARMADYL(
         Items.ARMADYL_CHESTPLATE_11720,
         Items.ARMADYL_GODSWORD_11694,
@@ -118,12 +120,12 @@ enum class God(vararg val validItems: Int) {
         Items.GUTHIX_ROBE_TOP_10788,
         Items.GUTHIX_STAFF_2416,
         Items.GUTHIX_STOLE_10472,
-        Items.GUTHIX_SYMBOL_8057
+        Items.GUTHIX_SYMBOL_8057,
     ),
     ZAROS(
         Items.ANCIENT_STAFF_13406,
         Items.ANCIENT_STAFF_4675,
         Items.ANCIENT_MACE_11061,
         Items.ANCIENT_BOOK_7633,
-    )
+    ),
 }

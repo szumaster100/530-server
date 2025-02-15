@@ -2,7 +2,7 @@ package core.game.bots.impl
 
 import core.game.bots.Script
 
-class Idler : Script(){
+class Idler : Script() {
     override fun tick() {
     }
 

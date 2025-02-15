@@ -1,7 +1,5 @@
 package content.global.ame.drilldemon
 
-import org.rs.consts.Music
-import org.rs.consts.NPCs
 import content.global.ame.RandomEventNPC
 import core.api.*
 import core.api.utils.WeightBasedTable
@@ -9,12 +7,18 @@ import core.game.interaction.QueueStrength
 import core.game.node.entity.npc.NPC
 import core.game.system.timer.impl.AntiMacro
 import core.tools.RED
+import org.rs.consts.Music
+import org.rs.consts.NPCs
 
-class SergeantDamienNPC(override var loot: WeightBasedTable? = null) : RandomEventNPC(NPCs.SERGEANT_DAMIEN_2790) {
-
+class SergeantDamienNPC(
+    override var loot: WeightBasedTable? = null,
+) : RandomEventNPC(NPCs.SERGEANT_DAMIEN_2790) {
     override fun init() {
         super.init()
-        sendChat(player.username.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() } + "! Drop and give me 20!")
+        sendChat(
+            player.username.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() } +
+                "! Drop and give me 20!",
+        )
         queueScript(player, 4, QueueStrength.SOFT) { stage: Int ->
             when (stage) {
                 0 -> {
@@ -29,11 +33,19 @@ class SergeantDamienNPC(override var loot: WeightBasedTable? = null) : RandomEve
                         player.musicPlayer.unlock(Music.CORPORAL_PUNISHMENT_418)
                         addDialogueAction(player) { player, button ->
                             if (button >= 1) {
-                                openDialogue(player, SergeantDamienDialogue(isCorrect = true, eventStart = true), NPCs.SERGEANT_DAMIEN_2790)
+                                openDialogue(
+                                    player,
+                                    SergeantDamienDialogue(isCorrect = true, eventStart = true),
+                                    NPCs.SERGEANT_DAMIEN_2790,
+                                )
                             }
                         }
                     } else {
-                        openDialogue(player, SergeantDamienDialogue(isCorrect = true, eventStart = true), NPCs.SERGEANT_DAMIEN_2790)
+                        openDialogue(
+                            player,
+                            SergeantDamienDialogue(isCorrect = true, eventStart = true),
+                            NPCs.SERGEANT_DAMIEN_2790,
+                        )
                     }
                     return@queueScript stopExecuting(player)
                 }

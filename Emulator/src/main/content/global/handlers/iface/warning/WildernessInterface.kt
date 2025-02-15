@@ -1,8 +1,5 @@
 package content.global.handlers.iface.warning
 
-import org.rs.consts.Animations
-import org.rs.consts.Components
-import org.rs.consts.Sounds
 import core.api.forceMove
 import core.api.playAudio
 import core.cache.def.impl.SceneryDefinition
@@ -18,11 +15,12 @@ import core.game.node.scenery.Scenery
 import core.game.world.map.Location
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Animations
+import org.rs.consts.Components
+import org.rs.consts.Sounds
 
 class WildernessInterface : InterfaceListener {
-
     override fun defineInterfaceListeners() {
-
         on(Components.WILDERNESS_WARNING_382) { player, component, _, buttonID, _, _ ->
             when {
                 buttonID == 18 && player.getAttribute<Scenery>("wildy_ditch") != null -> {
@@ -51,13 +49,20 @@ class WildernessInterface : InterfaceListener {
         val x = player.location.x
         val y = player.location.y
 
-        val (start, end) = if (ditch.rotation % 2 == 0) {
-            if (y <= l.y) Location.create(x, l.y - 1, 0) to Location.create(x, l.y + 2, 0)
-            else Location.create(x, l.y + 2, 0) to Location.create(x, l.y - 1, 0)
-        } else {
-            if (x > l.x) Location.create(l.x + 2, y, 0) to Location.create(l.x - 1, y, 0)
-            else Location.create(l.x - 1, y, 0) to Location.create(l.x + 2, y, 0)
-        }
+        val (start, end) =
+            if (ditch.rotation % 2 == 0) {
+                if (y <= l.y) {
+                    Location.create(x, l.y - 1, 0) to Location.create(x, l.y + 2, 0)
+                } else {
+                    Location.create(x, l.y + 2, 0) to Location.create(x, l.y - 1, 0)
+                }
+            } else {
+                if (x > l.x) {
+                    Location.create(l.x + 2, y, 0) to Location.create(l.x - 1, y, 0)
+                } else {
+                    Location.create(l.x - 1, y, 0) to Location.create(l.x + 2, y, 0)
+                }
+            }
 
         forceMove(player, start, end, 0, 60, null, Animations.JUMP_OVER_OBSTACLE_6132)
         playAudio(player, Sounds.JUMP2_2462, 30)
@@ -72,13 +77,16 @@ class WildernessInterface : InterfaceListener {
 
 @Initializable
 class WildernessDitchPlugin : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         SceneryDefinition.forId(23271).handlers["option:cross"] = this
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         if (player.location.getDistance(node.location) < 3) {
             handleDitch(player, node)
         } else {
@@ -89,19 +97,23 @@ class WildernessDitchPlugin : OptionHandler() {
                         return true
                     }
                 },
-                PulseType.STANDARD
+                PulseType.STANDARD,
             )
         }
         return true
     }
 
-    private fun handleDitch(player: Player, node: Node) {
+    private fun handleDitch(
+        player: Player,
+        node: Node,
+    ) {
         player.faceLocation(node.location)
         val ditch = node as? Scenery ?: return
         player.setAttribute("wildy_ditch", ditch)
 
         if (!player.isArtificial) {
-            val shouldWarn = (ditch.rotation % 2 == 0 && player.location.y <= node.location.y) ||
+            val shouldWarn =
+                (ditch.rotation % 2 == 0 && player.location.y <= node.location.y) ||
                     (ditch.rotation % 2 != 0 && player.location.x > node.location.x)
 
             if (shouldWarn) {

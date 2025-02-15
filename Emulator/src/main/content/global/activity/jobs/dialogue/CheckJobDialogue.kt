@@ -1,6 +1,5 @@
 package content.global.activity.jobs.dialogue
 
-import org.rs.consts.Items
 import content.global.activity.jobs.JobManager
 import content.global.activity.jobs.JobType
 import content.global.activity.jobs.impl.BoneBuryingJobs
@@ -18,6 +17,7 @@ import core.game.node.item.Item
 import core.tools.END_DIALOGUE
 import core.tools.START_DIALOGUE
 import core.tools.StringUtils
+import org.rs.consts.Items
 
 class CheckJobDialogue : DialogueFile() {
     companion object {
@@ -37,23 +37,30 @@ class CheckJobDialogue : DialogueFile() {
         const val GET_NEW_JOB_REACHED_LIMIT = 307
     }
 
-    override fun handle(componentID: Int, buttonID: Int) {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         val playerJobManager: JobManager = JobManager.getInstance(player!!)
         val job = playerJobManager.job ?: return
         val originalAmount = playerJobManager.jobOriginalAmount
 
         when (stage) {
-            START_DIALOGUE -> showTopics(
-                IfTopic(
-                    FaceAnim.HAPPY,
-                    "I have the items you wanted.",
-                    TURN_IN_ITEMS_1,
-                    (job.type == JobType.PRODUCTION && amountInInventory(player!!, (job as ProductionJobs).itemId) > 0)
-                ),
-                Topic(FaceAnim.HALF_ASKING, "Can you remind me what job you gave me?", REMIND_JOB),
-                Topic(FaceAnim.HALF_ASKING, "Can I have a task list to remind me of my job?", GET_TASK_LIST),
-                Topic(FaceAnim.HALF_GUILTY, "I'd like a new job please.", GET_NEW_JOB_1)
-            )
+            START_DIALOGUE ->
+                showTopics(
+                    IfTopic(
+                        FaceAnim.HAPPY,
+                        "I have the items you wanted.",
+                        TURN_IN_ITEMS_1,
+                        (
+                            job.type == JobType.PRODUCTION &&
+                                amountInInventory(player!!, (job as ProductionJobs).itemId) > 0
+                        ),
+                    ),
+                    Topic(FaceAnim.HALF_ASKING, "Can you remind me what job you gave me?", REMIND_JOB),
+                    Topic(FaceAnim.HALF_ASKING, "Can I have a task list to remind me of my job?", GET_TASK_LIST),
+                    Topic(FaceAnim.HALF_GUILTY, "I'd like a new job please.", GET_NEW_JOB_1),
+                )
 
             TURN_IN_ITEMS_1 -> {
                 job as ProductionJobs
@@ -67,7 +74,9 @@ class CheckJobDialogue : DialogueFile() {
                 if (playerJobManager.jobAmount == originalAmount) {
                     npcl("So far, you haven't brought me any, so I'm waiting for ${playerJobManager.jobAmount}.")
                 } else {
-                    npcl("So far, you have brought me ${originalAmount - playerJobManager.jobAmount}, so I'm waiting for ${playerJobManager.jobAmount}.")
+                    npcl(
+                        "So far, you have brought me ${originalAmount - playerJobManager.jobAmount}, so I'm waiting for ${playerJobManager.jobAmount}.",
+                    )
                 }
                 stage = TURN_IN_ITEMS_3
             }
@@ -81,10 +90,11 @@ class CheckJobDialogue : DialogueFile() {
                 stage = TURN_IN_ITEMS_4
             }
 
-            TURN_IN_ITEMS_4 -> showTopics(
-                Topic("Yes, I'll give you what I have.", TURN_IN_ITEMS_5, skipPlayer = true),
-                Topic("No, I'll keep hold of it for now.", END_DIALOGUE, skipPlayer = true)
-            )
+            TURN_IN_ITEMS_4 ->
+                showTopics(
+                    Topic("Yes, I'll give you what I have.", TURN_IN_ITEMS_5, skipPlayer = true),
+                    Topic("No, I'll keep hold of it for now.", END_DIALOGUE, skipPlayer = true),
+                )
 
             TURN_IN_ITEMS_5 -> {
                 playerJobManager.turnInItems()
@@ -113,7 +123,9 @@ class CheckJobDialogue : DialogueFile() {
                         val boneName = Item(job.boneIds.first()).name.lowercase()
                         val boneNamePluralized =
                             if (playerJobManager.jobAmount > 1) StringUtils.plusS(boneName) else boneName
-                        npcl("You still need to bury ${playerJobManager.jobAmount} more $boneNamePluralized in the ${job.buryArea.title}.")
+                        npcl(
+                            "You still need to bury ${playerJobManager.jobAmount} more $boneNamePluralized in the ${job.buryArea.title}.",
+                        )
                     }
 
                     JobType.COMBAT -> {
@@ -140,30 +152,34 @@ class CheckJobDialogue : DialogueFile() {
                 stage = END_DIALOGUE
             }
 
-            GET_NEW_JOB_1 -> npcl("Let me see if I've got any work for you.").also {
-                if (playerJobManager.hasReachedJobLimit()) {
-                    stage = GET_NEW_JOB_REACHED_LIMIT
-                } else {
-                    playerJobManager.generate(npc!!)
-                    stage = if (playerJobManager.hasJob()) GET_NEW_JOB_2 else GET_NEW_JOB_NONE
+            GET_NEW_JOB_1 ->
+                npcl("Let me see if I've got any work for you.").also {
+                    if (playerJobManager.hasReachedJobLimit()) {
+                        stage = GET_NEW_JOB_REACHED_LIMIT
+                    } else {
+                        playerJobManager.generate(npc!!)
+                        stage = if (playerJobManager.hasJob()) GET_NEW_JOB_2 else GET_NEW_JOB_NONE
+                    }
                 }
-            }
 
             GET_NEW_JOB_2 -> npcl(playerJobManager.getAssignmentMessage()).also { stage = GET_NEW_JOB_3 }
 
             GET_NEW_JOB_3 -> playerl("Okay, off I go!").also { stage = GET_NEW_JOB_4 }
-            GET_NEW_JOB_4 -> npcl("There, I've updated your task list to show your new job. Best of luck!").also {
-                stage = GET_NEW_JOB_5
-            }
+            GET_NEW_JOB_4 ->
+                npcl("There, I've updated your task list to show your new job. Best of luck!").also {
+                    stage = GET_NEW_JOB_5
+                }
 
             GET_NEW_JOB_5 -> playerl("Thanks.").also { stage = END_DIALOGUE }
-            GET_NEW_JOB_NONE -> npcl("I'm sorry, I don't currently have any jobs that you're qualified for.").also {
-                stage = END_DIALOGUE
-            }
+            GET_NEW_JOB_NONE ->
+                npcl("I'm sorry, I don't currently have any jobs that you're qualified for.").also {
+                    stage = END_DIALOGUE
+                }
 
-            GET_NEW_JOB_REACHED_LIMIT -> npcl("You've hit your limit for the day. Come back tomorrow!").also {
-                stage = END_DIALOGUE
-            }
+            GET_NEW_JOB_REACHED_LIMIT ->
+                npcl("You've hit your limit for the day. Come back tomorrow!").also {
+                    stage = END_DIALOGUE
+                }
 
             END_DIALOGUE -> end()
         }

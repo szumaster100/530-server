@@ -1,7 +1,5 @@
 package content.region.fremennik.dialogue.jatizso
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.fremennik.handlers.TravelDestination
 import content.region.fremennik.handlers.WaterbirthTravel
 import core.api.quest.requireQuest
@@ -11,10 +9,13 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class MordGunnarsDialogue(player: Player? = null) : Dialogue(player) {
-
+class MordGunnarsDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         if (npc.id == NPCs.MORD_GUNNARS_5481) {
@@ -25,13 +26,17 @@ class MordGunnarsDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> options("Yes, please.", "No, thanks.").also { stage++ }
-            1 -> when (buttonId) {
-                1 -> playerl(FaceAnim.FRIENDLY, "Yes, please!").also { stage++ }
-                2 -> playerl(FaceAnim.FRIENDLY, "No, thank you.").also { stage = END_DIALOGUE }
-            }
+            1 ->
+                when (buttonId) {
+                    1 -> playerl(FaceAnim.FRIENDLY, "Yes, please!").also { stage++ }
+                    2 -> playerl(FaceAnim.FRIENDLY, "No, thank you.").also { stage = END_DIALOGUE }
+                }
 
             2 -> {
                 end()
@@ -40,7 +45,13 @@ class MordGunnarsDialogue(player: Player? = null) : Dialogue(player) {
                 } else {
                     WaterbirthTravel.sail(
                         player,
-                        if (npc.id == NPCs.MORD_GUNNARS_5481) TravelDestination.RELLEKKA_TO_JATIZSO else TravelDestination.JATIZSO_TO_RELLEKKA
+                        if (npc.id ==
+                            NPCs.MORD_GUNNARS_5481
+                        ) {
+                            TravelDestination.RELLEKKA_TO_JATIZSO
+                        } else {
+                            TravelDestination.JATIZSO_TO_RELLEKKA
+                        },
                     )
                 }
             }

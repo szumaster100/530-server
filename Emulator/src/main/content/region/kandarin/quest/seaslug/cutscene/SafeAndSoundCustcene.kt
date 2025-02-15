@@ -1,17 +1,18 @@
 package content.region.kandarin.quest.seaslug.cutscene
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.animate
 import core.api.interaction.transformNpc
-import core.api.sendDialogue
 import core.api.quest.setQuestStage
+import core.api.sendDialogue
 import core.game.activity.Cutscene
 import core.game.node.entity.player.Player
 import core.game.world.map.Direction
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
-class SafeAndSoundCustcene(player: Player) : Cutscene(player) {
-
+class SafeAndSoundCustcene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(player.location.transform(0, 0, 0))
         if (player.settings.isRunToggled) {

@@ -20,22 +20,34 @@ import org.rs.consts.Items
 import org.rs.consts.Sounds
 
 @Initializable
-class ClobberSpecialHandler : MeleeSwingHandler(), Plugin<Any> {
-
+class ClobberSpecialHandler :
+    MeleeSwingHandler(),
+    Plugin<Any> {
     override fun newInstance(arg: Any?): Plugin<Any> {
         CombatStyle.MELEE.swingHandler.register(ITEM.id, this)
         return this
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any {
         return Unit
     }
 
-    override fun visualize(entity: Entity, victim: Entity?, state: BattleState?) {
+    override fun visualize(
+        entity: Entity,
+        victim: Entity?,
+        state: BattleState?,
+    ) {
         entity.visualize(ANIMATION, Graphics)
     }
 
-    override fun swing(entity: Entity?, victim: Entity?, state: BattleState?): Int {
+    override fun swing(
+        entity: Entity?,
+        victim: Entity?,
+        state: BattleState?,
+    ): Int {
         val player = entity as? Player ?: return -1
         if (victim == null) return -1
         if (state == null) return -1

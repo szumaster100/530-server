@@ -1,6 +1,5 @@
 package content.minigame.pestcontrol.dialogue
 
-import org.rs.consts.NPCs
 import core.game.dialogue.Dialogue
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
@@ -8,10 +7,12 @@ import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
 import core.game.world.GameWorld.settings
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
-class VoidKnightDialogue(player: Player? = null) : Dialogue(player) {
-
+class VoidKnightDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     var reward: Item = Item()
 
     override fun open(vararg args: Any): Boolean {
@@ -21,35 +22,39 @@ class VoidKnightDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 options("Who are you?", "What is this place?", "I'm fine thanks.")
                 stage = 1
             }
 
-            1 -> when (buttonId) {
-                1 -> {
-                    player("Who are you?")
-                    stage = 10
-                }
+            1 ->
+                when (buttonId) {
+                    1 -> {
+                        player("Who are you?")
+                        stage = 10
+                    }
 
-                2 -> {
-                    player("What is this place?")
-                    stage = 20
-                }
+                    2 -> {
+                        player("What is this place?")
+                        stage = 20
+                    }
 
-                3 -> {
-                    player("I'm fine thanks.")
-                    stage = 30
+                    3 -> {
+                        player("I'm fine thanks.")
+                        stage = 30
+                    }
                 }
-            }
 
             10 -> {
                 npc(
                     "I'm a Void Knight, one of the order of Guthix. We are",
                     "warriors of balance who do Guthix's work here in",
-                    "Gielinor."
+                    "Gielinor.",
                 )
                 stage = 11
             }
@@ -59,27 +64,28 @@ class VoidKnightDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 12
             }
 
-            12 -> when (buttonId) {
-                1 -> {
-                    player("Wow, can I join?")
-                    stage = 180
-                }
+            12 ->
+                when (buttonId) {
+                    1 -> {
+                        player("Wow, can I join?")
+                        stage = 180
+                    }
 
-                2 -> {
-                    player("What kind of work?")
-                    stage = 17
-                }
+                    2 -> {
+                        player("What kind of work?")
+                        stage = 17
+                    }
 
-                3 -> {
-                    player("What's 'RuneScape'?")
-                    stage = 15
-                }
+                    3 -> {
+                        player("What's 'RuneScape'?")
+                        stage = 15
+                    }
 
-                4 -> {
-                    player("Uh huh, sure.")
-                    stage = 14
+                    4 -> {
+                        player("Uh huh, sure.")
+                        stage = 14
+                    }
                 }
-            }
 
             14 -> end()
             15 -> {
@@ -93,7 +99,7 @@ class VoidKnightDialogue(player: Player? = null) : Dialogue(player) {
                     "Ah well you see we try to keep " + settings!!.name + " as Guthix",
                     "intended, it's very challenging. Actually we've been",
                     "having some problems recently, maybe you could help",
-                    "us?"
+                    "us?",
                 )
                 stage = 18
             }
@@ -103,22 +109,23 @@ class VoidKnightDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 19
             }
 
-            19 -> when (buttonId) {
-                1 -> {
-                    player("Yeah ok, what's the problem?")
-                    stage = 191
-                }
+            19 ->
+                when (buttonId) {
+                    1 -> {
+                        player("Yeah ok, what's the problem?")
+                        stage = 191
+                    }
 
-                2 -> {
-                    player("What's 'RuneScape'?")
-                    stage = 15
-                }
+                    2 -> {
+                        player("What's 'RuneScape'?")
+                        stage = 15
+                    }
 
-                3 -> {
-                    player("I'd rather not sorry.")
-                    stage = 190
+                    3 -> {
+                        player("I'd rather not sorry.")
+                        stage = 190
+                    }
                 }
-            }
 
             180 -> {
                 npc("Entry is strictly invite only, however we do need help", "continuing Guthix's work.")
@@ -136,7 +143,7 @@ class VoidKnightDialogue(player: Player? = null) : Dialogue(player) {
                     "Well the order has become quite diminished over the",
                     "years, it's a very long process to learn the skills of a",
                     "Void Knight. Recently there have been breaches into",
-                    "our realm from somewhere else, and strange creatures"
+                    "our realm from somewhere else, and strange creatures",
                 )
                 stage = 192
             }
@@ -144,7 +151,7 @@ class VoidKnightDialogue(player: Player? = null) : Dialogue(player) {
             192 -> {
                 npc(
                     "have been pouring through. We can't let that happen,",
-                    "and we'd be very grateful if you'd help us."
+                    "and we'd be very grateful if you'd help us.",
                 )
                 stage = 193
             }
@@ -154,23 +161,24 @@ class VoidKnightDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 194
             }
 
-            194 -> when (buttonId) {
-                1 -> {
-                    player("How can I help?")
-                    stage = 195
-                }
+            194 ->
+                when (buttonId) {
+                    1 -> {
+                        player("How can I help?")
+                        stage = 195
+                    }
 
-                2 -> {
-                    player("Sorry, but I can't.")
-                    stage = 190
+                    2 -> {
+                        player("Sorry, but I can't.")
+                        stage = 190
+                    }
                 }
-            }
 
             195 -> {
                 npc(
                     "We send launchers from our outpost to the nearby",
                     "islands. If you go and wait in the lander there that'd",
-                    "really help."
+                    "really help.",
                 )
                 stage = 196
             }
@@ -179,7 +187,7 @@ class VoidKnightDialogue(player: Player? = null) : Dialogue(player) {
             20 -> {
                 npc(
                     "This is our outpost. From here we send launchers out to",
-                    "the nearby islands to beat back the invaders."
+                    "the nearby islands to beat back the invaders.",
                 )
                 stage = 21
             }
@@ -189,22 +197,23 @@ class VoidKnightDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 22
             }
 
-            22 -> when (buttonId) {
-                1 -> {
-                    player("What invaders?")
-                    stage = 24
-                }
+            22 ->
+                when (buttonId) {
+                    1 -> {
+                        player("What invaders?")
+                        stage = 24
+                    }
 
-                2 -> {
-                    player("How can I help?")
-                    stage = 195
-                }
+                    2 -> {
+                        player("How can I help?")
+                        stage = 195
+                    }
 
-                3 -> {
-                    player("Good luck with that.")
-                    stage = 23
+                    3 -> {
+                        player("Good luck with that.")
+                        stage = 23
+                    }
                 }
-            }
 
             23 -> end()
             24 -> {
@@ -212,7 +221,7 @@ class VoidKnightDialogue(player: Player? = null) : Dialogue(player) {
                     "Recently there have been breaches into our realm from",
                     "somewhere else, and strange creatures have been",
                     "pouring through. We can't let that happen, and we'd be",
-                    "very grateful if you'd help us."
+                    "very grateful if you'd help us.",
                 )
                 stage = 193
             }
@@ -246,7 +255,6 @@ class VoidKnightDialogue(player: Player? = null) : Dialogue(player) {
     }
 
     companion object {
-
         val IDS: IntArray =
             intArrayOf(NPCs.VOID_KNIGHT_3786, NPCs.VOID_KNIGHT_3788, NPCs.VOID_KNIGHT_3789, NPCs.VOID_KNIGHT_5956)
     }

@@ -4,7 +4,6 @@ import core.api.getAttribute
 import core.game.node.entity.player.Player
 
 object WomTask {
-
     val TASK = "womt-task"
 
     val TASK_START = "womt-start"

@@ -1,21 +1,25 @@
 package content.global.skill.crafting.casting.gold
 
-import org.rs.consts.Animations
-import org.rs.consts.Sounds
 import core.api.*
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import org.rs.consts.Animations
+import org.rs.consts.Sounds
 
-class JewelleryCraftingPulse(player: Player?, node: Item?, val type: Jewellery.JewelleryItem, var amount: Int) :
-    SkillPulse<Item?>(player, node) {
-
+class JewelleryCraftingPulse(
+    player: Player?,
+    node: Item?,
+    val type: Jewellery.JewelleryItem,
+    var amount: Int,
+) : SkillPulse<Item?>(player, node) {
     companion object {
         private const val ANIMATION = Animations.HUMAN_FURNACE_SMELT_3243
     }
 
     var ticks = 0
+
     override fun checkRequirements(): Boolean {
         return getStatLevel(player, Skills.CRAFTING) >= type.level
     }

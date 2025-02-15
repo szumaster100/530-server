@@ -24,7 +24,10 @@ fun getQuestPoints(player: Player): Int {
  * @param quest The name of the quest.
  * @return The stage of the quest, or 0 if the quest is not started.
  */
-fun getQuestStage(player: Player, quest: String): Int {
+fun getQuestStage(
+    player: Player,
+    quest: String,
+): Int {
     return player.questRepository.getStage(quest)
 }
 
@@ -35,7 +38,11 @@ fun getQuestStage(player: Player, quest: String): Int {
  * @param quest The name of the quest.
  * @param stage The new stage to set for the quest.
  */
-fun setQuestStage(player: Player, quest: String, stage: Int) {
+fun setQuestStage(
+    player: Player,
+    quest: String,
+    stage: Int,
+) {
     player.questRepository.setStage(QuestRepository.getQuests()[quest]!!, stage)
     player.questRepository.syncronizeTab(player)
 }
@@ -58,7 +65,12 @@ fun updateQuestTab(player: Player) {
  * @param endStage The ending stage of the quest to check.
  * @return True if the player's quest is within the specified range, otherwise false.
  */
-fun isQuestInProgress(player: Player, quest: String, startStage: Int, endStage: Int): Boolean {
+fun isQuestInProgress(
+    player: Player,
+    quest: String,
+    startStage: Int,
+    endStage: Int,
+): Boolean {
     return player.questRepository.getStage(quest) in startStage..endStage
 }
 
@@ -69,7 +81,10 @@ fun isQuestInProgress(player: Player, quest: String, startStage: Int, endStage: 
  * @param quest The name of the quest.
  * @return True if the quest is complete, otherwise false.
  */
-fun isQuestComplete(player: Player, quest: String): Boolean {
+fun isQuestComplete(
+    player: Player,
+    quest: String,
+): Boolean {
     return player.questRepository.getStage(quest) == 100
 }
 
@@ -80,7 +95,10 @@ fun isQuestComplete(player: Player, quest: String): Boolean {
  * @param quest The name of the quest.
  * @return The Quest object representing the quest for the player.
  */
-fun getQuest(player: Player, quest: String): Quest {
+fun getQuest(
+    player: Player,
+    quest: String,
+): Quest {
     return player.questRepository.getQuest(quest)
 }
 
@@ -91,7 +109,10 @@ fun getQuest(player: Player, quest: String): Quest {
  * @param quest The name of the quest to start.
  * @return True if the quest was successfully started, false if the player doesn't meet the requirements.
  */
-fun startQuest(player: Player, quest: String): Boolean {
+fun startQuest(
+    player: Player,
+    quest: String,
+): Boolean {
     val quest = player.questRepository.getQuest(quest)
     val canStart = quest.hasRequirements(player)
     if (!canStart) return false
@@ -105,7 +126,10 @@ fun startQuest(player: Player, quest: String): Boolean {
  * @param player The player who is finishing the quest.
  * @param quest The name of the quest to finish.
  */
-fun finishQuest(player: Player, quest: String) {
+fun finishQuest(
+    player: Player,
+    quest: String,
+) {
     player.questRepository.getQuest(quest).finish(player)
 }
 
@@ -118,7 +142,11 @@ fun finishQuest(player: Player, quest: String) {
  * @param message The message to send to the player if they have not completed the required quest.
  * @return True if the player has completed the required quest, otherwise false.
  */
-fun requireQuest(player: Player, questName: String, message: String): Boolean {
+fun requireQuest(
+    player: Player,
+    questName: String,
+    message: String,
+): Boolean {
     if (!isQuestComplete(player, questName)) {
         sendMessage(player, "You must have completed the $questName quest. $message")
         return false
@@ -135,7 +163,11 @@ fun requireQuest(player: Player, questName: String, message: String): Boolean {
  * @return True if the player meets the requirements for the quest, otherwise false.
  */
 @JvmOverloads
-fun hasRequirement (player: Player, quest: String, message: Boolean = true) : Boolean {
+fun hasRequirement(
+    player: Player,
+    quest: String,
+    message: Boolean = true,
+): Boolean {
     val questReq = QuestRequirements.values().filter { it.questName.equals(quest, true) }.firstOrNull() ?: return false
     return core.api.hasRequirement(player, QuestReq(questReq), message)
 }

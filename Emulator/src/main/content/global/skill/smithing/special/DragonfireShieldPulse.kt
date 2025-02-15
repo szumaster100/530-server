@@ -1,15 +1,17 @@
 package content.global.skill.smithing.special
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
 import core.api.*
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import org.rs.consts.Animations
+import org.rs.consts.Items
 
-class DragonfireShieldPulse(player: Player?, val item: Item) : SkillPulse<Item>(player, null) {
-
+class DragonfireShieldPulse(
+    player: Player?,
+    val item: Item,
+) : SkillPulse<Item>(player, null) {
     private var tick = 0
 
     override fun checkRequirements(): Boolean {
@@ -51,13 +53,14 @@ class DragonfireShieldPulse(player: Player?, val item: Item) : SkillPulse<Item>(
                     "Even for an experienced armourer it is not an easy task, but",
                     "eventually it is ready. You have crafted the",
                     "draconic visage and anti-dragonbreath shield into a",
-                    "dragonfire shield."
+                    "dragonfire shield.",
                 )
                 addDialogueAction(player) { player, button ->
                     if (button >= 2) {
-                        if (removeItem(player, Items.ANTI_DRAGON_SHIELD_1540) && removeItem(
+                        if (removeItem(player, Items.ANTI_DRAGON_SHIELD_1540) &&
+                            removeItem(
                                 player,
-                                Items.DRACONIC_VISAGE_11286
+                                Items.DRACONIC_VISAGE_11286,
                             )
                         ) {
                             addItem(player, Items.DRAGONFIRE_SHIELD_11284, 1)

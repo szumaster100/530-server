@@ -1,11 +1,8 @@
 package content.global.ame.drilldemon
 
-import org.rs.consts.Components
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
-import org.rs.consts.Sounds
 import content.data.GameAttributes
 import core.api.*
+import core.api.MapArea
 import core.game.dialogue.FaceAnim
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
@@ -13,23 +10,36 @@ import core.game.interaction.QueueStrength
 import core.game.node.entity.Entity
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
-import core.api.MapArea
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.map.zone.ZoneRestriction
 import core.tools.secondsToTicks
+import org.rs.consts.Components
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
+import org.rs.consts.Sounds
 
-class DrillDemonListener : InteractionListener, MapArea {
-
+class DrillDemonListener :
+    InteractionListener,
+    MapArea {
     val MATS =
-        intArrayOf(Scenery.EXERCISE_MAT_10076, Scenery.EXERCISE_MAT_10077, Scenery.EXERCISE_MAT_10078, Scenery.EXERCISE_MAT_10079)
+        intArrayOf(
+            Scenery.EXERCISE_MAT_10076,
+            Scenery.EXERCISE_MAT_10077,
+            Scenery.EXERCISE_MAT_10078,
+            Scenery.EXERCISE_MAT_10079,
+        )
 
     override fun defineListeners() {
-
         on(DrillDemonUtils.DD_NPC, IntType.NPC, "talk-to") { player, _ ->
             if (inBorders(player, DrillDemonUtils.DD_AREA)) {
                 openDialogue(player, SergeantDamienDialogue(isCorrect = true), DrillDemonUtils.DD_NPC)
             } else {
-                sendNPCDialogue(player, NPCs.SERGEANT_DAMIEN_2790, "I Haven't given you the order yet, worm!", FaceAnim.OLD_DEFAULT)
+                sendNPCDialogue(
+                    player,
+                    NPCs.SERGEANT_DAMIEN_2790,
+                    "I Haven't given you the order yet, worm!",
+                    FaceAnim.OLD_DEFAULT,
+                )
             }
             return@on true
         }
@@ -59,10 +69,10 @@ class DrillDemonListener : InteractionListener, MapArea {
                     1 -> {
                         animate(player, DrillDemonUtils.animationForTask(task))
                         when (task) {
-                            DrillDemonUtils.DD_SIGN_RUN     -> playAudio(player, Sounds.RUNONSPOT_2484, 0, 5)
-                            DrillDemonUtils.DD_SIGN_SITUP   -> playAudio(player, Sounds.SITUPS_2486, 40, 5)
-                            DrillDemonUtils.DD_SIGN_PUSHUP  -> playAudio(player, Sounds.PRESSUPS_2481, 25, 5)
-                            DrillDemonUtils.DD_SIGN_JUMP    -> playAudio(player, Sounds.STAR_JUMP_2492, 0, 5)
+                            DrillDemonUtils.DD_SIGN_RUN -> playAudio(player, Sounds.RUNONSPOT_2484, 0, 5)
+                            DrillDemonUtils.DD_SIGN_SITUP -> playAudio(player, Sounds.SITUPS_2486, 40, 5)
+                            DrillDemonUtils.DD_SIGN_PUSHUP -> playAudio(player, Sounds.PRESSUPS_2481, 25, 5)
+                            DrillDemonUtils.DD_SIGN_JUMP -> playAudio(player, Sounds.STAR_JUMP_2492, 0, 5)
                         }
                         return@queueScript delayScript(player, anim.duration + 2)
                     }

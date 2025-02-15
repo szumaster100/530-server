@@ -107,6 +107,6 @@ class ChickenKiller : Script() {
         CONFIG,
         LOOT_FEATHER,
         LOOT_BONES,
-        BURY_BONES
+        BURY_BONES,
     }
 }

@@ -6,13 +6,15 @@ import core.game.node.entity.player.Player
 import core.game.system.task.Pulse
 import core.game.world.map.Location
 
-class KolodionSession(val player: Player) {
-
-    private val kolodion = KolodionNPC(
-        KolodionNPC.KolodionType.values()[player.getSavedData().activityData.kolodionBoss].npcId,
-        Location(3106, 3934, 0),
-        this
-    )
+class KolodionSession(
+    val player: Player,
+) {
+    private val kolodion =
+        KolodionNPC(
+            KolodionNPC.KolodionType.values()[player.getSavedData().activityData.kolodionBoss].npcId,
+            Location(3106, 3934, 0),
+            this,
+        )
 
     init {
         if (player.getExtension<Any?>(KolodionSession::class.java) != null) {
@@ -34,6 +36,7 @@ class KolodionSession(val player: Player) {
             player,
             object : Pulse(1, player) {
                 var count: Int = 0
+
                 override fun pulse(): Boolean {
                     when (++count) {
                         3 -> resetAnimator(player)
@@ -48,7 +51,7 @@ class KolodionSession(val player: Player) {
                     }
                     return false
                 }
-            }
+            },
         )
     }
 
@@ -58,7 +61,6 @@ class KolodionSession(val player: Player) {
     }
 
     companion object {
-
         fun create(player: Player): KolodionSession {
             return KolodionSession(player)
         }

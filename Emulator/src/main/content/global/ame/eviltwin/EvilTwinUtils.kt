@@ -1,7 +1,5 @@
 package content.global.ame.eviltwin
 
-import org.rs.consts.Components
-import org.rs.consts.Items
 import content.data.GameAttributes
 import content.data.RandomEvent
 import core.api.*
@@ -23,15 +21,17 @@ import core.net.packet.PacketRepository
 import core.net.packet.context.CameraContext
 import core.net.packet.out.CameraViewPacket
 import core.tools.RandomFunction
+import org.rs.consts.Components
+import org.rs.consts.Items
 
 object EvilTwinUtils {
-
-    val rewards = arrayOf(
-        Item(Items.UNCUT_DIAMOND_1618, 2),
-        Item(Items.UNCUT_RUBY_1620, 3),
-        Item(Items.UNCUT_EMERALD_1622, 3),
-        Item(Items.UNCUT_SAPPHIRE_1624, 4)
-    )
+    val rewards =
+        arrayOf(
+            Item(Items.UNCUT_DIAMOND_1618, 2),
+            Item(Items.UNCUT_RUBY_1620, 3),
+            Item(Items.UNCUT_EMERALD_1622, 3),
+            Item(Items.UNCUT_SAPPHIRE_1624, 4),
+        )
 
     val region: DynamicRegion = DynamicRegion.create(7504)
 
@@ -68,7 +68,11 @@ object EvilTwinUtils {
         return true
     }
 
-    fun teleport(player: Player, npc: NPC, hash: Int) {
+    fun teleport(
+        player: Player,
+        npc: NPC,
+        hash: Int,
+    ) {
         setMinimapState(player, 2)
         npc.properties.teleportLocation = region.baseLocation.transform(4, 15, 0)
         npc.direction = Direction.NORTH
@@ -93,7 +97,7 @@ object EvilTwinUtils {
             GameAttributes.RE_TWIN_START,
             RandomEvent.save(),
             GameAttributes.RE_TWIN_OBJ_LOC_X,
-            GameAttributes.RE_TWIN_OBJ_LOC_Y
+            GameAttributes.RE_TWIN_OBJ_LOC_Y,
         )
         clearLogoutListener(player, RandomEvent.logout())
     }
@@ -108,16 +112,20 @@ object EvilTwinUtils {
         }
     }
 
-    fun locationUpdate(player: Player, entity: Entity, last: Location?) {
+    fun locationUpdate(
+        player: Player,
+        entity: Entity,
+        last: Location?,
+    ) {
         if (entity == craneNPC && entity.walkingQueue.queue.size > 1 && player.interfaceManager.singleTab != null) {
             val l: Location = entity.location
             PacketRepository.send(
                 CameraViewPacket::class.java,
-                CameraContext(player, CameraContext.CameraType.POSITION, l.x + 2, l.y + 3, 520, 1, 5)
+                CameraContext(player, CameraContext.CameraType.POSITION, l.x + 2, l.y + 3, 520, 1, 5),
             )
             PacketRepository.send(
                 CameraViewPacket::class.java,
-                CameraContext(player, CameraContext.CameraType.ROTATION, l.x - 3, l.y - 3, 420, 1, 5)
+                CameraContext(player, CameraContext.CameraType.ROTATION, l.x - 3, l.y - 3, 420, 1, 5),
             )
         } else if (entity == player) {
             if (mollyNPC!!.isHidden(player) && entity.location.localX < 9) {
@@ -129,24 +137,31 @@ object EvilTwinUtils {
         return locationUpdate(player, entity, last)
     }
 
-    fun updateCraneCam(player: Player, x: Int, y: Int) {
+    fun updateCraneCam(
+        player: Player,
+        x: Int,
+        y: Int,
+    ) {
         if (player.interfaceManager.singleTab != null) {
             var loc = region.baseLocation.transform(14, 20, 0)
             PacketRepository.send(
                 CameraViewPacket::class.java,
-                CameraContext(player, CameraContext.CameraType.POSITION, loc.x, loc.y, 520, 1, 100)
+                CameraContext(player, CameraContext.CameraType.POSITION, loc.x, loc.y, 520, 1, 100),
             )
             loc = region.baseLocation.transform(x, 4 + y - (if (x < 14 || x > 14) (y / 4) else 0), 0)
             PacketRepository.send(
                 CameraViewPacket::class.java,
-                CameraContext(player, CameraContext.CameraType.ROTATION, loc.x, loc.y, 420, 1, 100)
+                CameraContext(player, CameraContext.CameraType.ROTATION, loc.x, loc.y, 420, 1, 100),
             )
         }
         setAttribute(player, GameAttributes.RE_TWIN_OBJ_LOC_X, x)
         setAttribute(player, GameAttributes.RE_TWIN_OBJ_LOC_Y, y)
     }
 
-    fun moveCrane(player: Player, direction: Direction) {
+    fun moveCrane(
+        player: Player,
+        direction: Direction,
+    ) {
         submitWorldPulse(
             object : Pulse(1, player) {
                 override fun pulse(): Boolean {
@@ -158,23 +173,24 @@ object EvilTwinUtils {
                     updateCraneCam(player, craneX, craneY)
                     removeScenery(currentCrane!!)
                     addScenery(Scenery(66, currentCrane!!.location, 22, 0))
-                    currentCrane = currentCrane!!.transform(
-                        currentCrane!!.id,
-                        currentCrane!!.rotation,
-                        region.baseLocation.transform(craneX, craneY, 0)
-                    )
+                    currentCrane =
+                        currentCrane!!.transform(
+                            currentCrane!!.id,
+                            currentCrane!!.rotation,
+                            region.baseLocation.transform(craneX, craneY, 0),
+                        )
                     addScenery(
                         Scenery(
                             14977,
                             currentCrane!!.location,
                             22,
-                            0
-                        )
+                            0,
+                        ),
                     )
                     addScenery(currentCrane!!)
                     return true
                 }
-            }
+            },
         )
     }
 
@@ -188,7 +204,10 @@ object EvilTwinUtils {
         }
     }
 
-    fun isEvilTwin(npc: NPC, hash: Int): Boolean {
+    fun isEvilTwin(
+        npc: NPC,
+        hash: Int,
+    ): Boolean {
         val npcId = npc.id - 3852
         val type: Int = npcId / EvilTwinColors.values().size
         val color: Int = npcId - (type * EvilTwinColors.values().size)

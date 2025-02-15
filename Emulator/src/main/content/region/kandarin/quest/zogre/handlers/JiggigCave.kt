@@ -1,22 +1,25 @@
 package content.region.kandarin.quest.zogre.handlers
 
 import core.api.*
+import core.api.MapArea
+import core.api.ui.closeDialogue
 import core.api.utils.PlayerCamera
 import core.game.node.entity.Entity
 import core.game.node.entity.player.Player
 import core.game.system.task.Pulse
 import core.game.world.map.Location
-import core.api.MapArea
-import core.api.ui.closeDialogue
 import core.game.world.map.zone.ZoneBorders
 
 class JiggigCave : MapArea {
-
     override fun defineAreaBorders(): Array<ZoneBorders> {
         return arrayOf(ZoneBorders(2445, 9458, 2447, 9467))
     }
 
-    override fun entityStep(entity: Entity, location: Location, lastLocation: Location) {
+    override fun entityStep(
+        entity: Entity,
+        location: Location,
+        lastLocation: Location,
+    ) {
         super.entityStep(entity, location, lastLocation)
         if (entity is Player) {
             val player = entity.asPlayer()
@@ -31,17 +34,18 @@ class JiggigCave : MapArea {
                 submitWorldPulse(
                     object : Pulse() {
                         var counter = 0
+
                         override fun pulse(): Boolean {
                             when (counter++) {
                                 0 -> {
                                     entity.dialogueInterpreter.sendPlainMessage(
                                         true,
                                         "You enter this blackened, charred area -",
-                                        "it looks like some sort of explosion has taken place."
+                                        "it looks like some sort of explosion has taken place.",
                                     )
                                     sendMessage(
                                         entity,
-                                        "You enter this blackened, charred area - it looks like there's been an explosion!"
+                                        "You enter this blackened, charred area - it looks like there's been an explosion!",
                                     )
                                 }
 
@@ -64,7 +68,7 @@ class JiggigCave : MapArea {
                             }
                             return false
                         }
-                    }
+                    },
                 )
             }
         }

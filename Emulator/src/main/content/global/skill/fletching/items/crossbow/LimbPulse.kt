@@ -6,17 +6,24 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.world.update.flag.context.Animation
 
-class LimbPulse(player: Player?, node: Item, private val limb: Limb, private var amount: Int) : SkillPulse<Item?>(player, node) {
+class LimbPulse(
+    player: Player?,
+    node: Item,
+    private val limb: Limb,
+    private var amount: Int,
+) : SkillPulse<Item?>(player, node) {
     override fun checkRequirements(): Boolean {
         if (player.skills.getLevel(Skills.FLETCHING) < limb.level) {
-            player.dialogueInterpreter.sendDialogue("You need a fletching level of " + limb.level + " to attach these limbs.")
+            player.dialogueInterpreter.sendDialogue(
+                "You need a fletching level of " + limb.level + " to attach these limbs.",
+            )
             return false
         }
         if (!player.inventory.containsItem(Item(limb.limb))) {
             player.dialogueInterpreter.sendDialogue("That's not the correct limb to attach.")
             return false
         }
-        if(!player.inventory.containsItem(Item(limb.stock))){
+        if (!player.inventory.containsItem(Item(limb.stock))) {
             player.dialogueInterpreter.sendDialogue("That's not the correct stock for that limb.")
             return false
         }

@@ -19,9 +19,13 @@ import org.rs.consts.NPCs
  * Represents the Emerald benedict dialogue.
  */
 @Initializable
-class EmeraldBenedictDialogue(player: Player? = null) : Dialogue(player) {
-
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+class EmeraldBenedictDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             START_DIALOGUE ->
                 if (hasIronmanRestriction(player, IronmanMode.ULTIMATE)) {
@@ -35,13 +39,18 @@ class EmeraldBenedictDialogue(player: Player? = null) : Dialogue(player) {
                         }
                     }
                 }
-            1 -> npcl(FaceAnim.SUSPICIOUS, "By the way, a little bird told me you got some stuff waiting for you " + "on the Grand Exchange.").also { stage++ }
-            2 -> showTopics(
-                Topic(FaceAnim.ASKING, "Yes, actually. Can you help?", 3),
-                Topic(FaceAnim.ASKING, "Yes, but can you show me my PIN settings?", 5),
-                Topic(FaceAnim.ASKING, "Yes, but can you show me my collection box?", 6),
-                Topic(FaceAnim.ANNOYED, "Yes, thanks. And I'll keep hold of it too.", END_DIALOGUE)
-            )
+            1 ->
+                npcl(
+                    FaceAnim.SUSPICIOUS,
+                    "By the way, a little bird told me you got some stuff waiting for you " + "on the Grand Exchange.",
+                ).also { stage++ }
+            2 ->
+                showTopics(
+                    Topic(FaceAnim.ASKING, "Yes, actually. Can you help?", 3),
+                    Topic(FaceAnim.ASKING, "Yes, but can you show me my PIN settings?", 5),
+                    Topic(FaceAnim.ASKING, "Yes, but can you show me my collection box?", 6),
+                    Topic(FaceAnim.ANNOYED, "Yes, thanks. And I'll keep hold of it too.", END_DIALOGUE),
+                )
             3 -> {
                 openBankAccount(player)
                 end()

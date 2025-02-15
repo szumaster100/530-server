@@ -1,7 +1,5 @@
 package content.global.skill.magic.items
 
-import org.rs.consts.Components
-import org.rs.consts.Items
 import core.game.component.Component
 import core.game.node.Node
 import core.game.node.entity.Entity
@@ -13,15 +11,19 @@ import core.plugin.Initializable
 import core.plugin.Plugin
 import it.unimi.dsi.fastutil.ints.Int2IntMap
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
+import org.rs.consts.Components
+import org.rs.consts.Items
 
 @Initializable
 class EnchantCrossbowSpell : MagicSpell(SpellBook.MODERN, 4, 0.0, null, null, null, null) {
-
     init {
         SpellBook.MODERN.register(3, this)
     }
 
-    override fun cast(entity: Entity, target: Node): Boolean {
+    override fun cast(
+        entity: Entity,
+        target: Node,
+    ): Boolean {
         val player = entity as Player
         player.interfaceManager.open(Component(Components.XBOWS_ENCHANT_BOLT_432))
 
@@ -38,7 +40,13 @@ class EnchantCrossbowSpell : MagicSpell(SpellBook.MODERN, 4, 0.0, null, null, nu
         boltData[46] = Items.ONYX_BOLTS_9342
 
         for (entry in boltData.int2IntEntrySet()) {
-            player.packetDispatch.sendItemZoomOnInterface(entry.value, 10, 270, Components.XBOWS_ENCHANT_BOLT_432, entry.key)
+            player.packetDispatch.sendItemZoomOnInterface(
+                entry.value,
+                10,
+                270,
+                Components.XBOWS_ENCHANT_BOLT_432,
+                entry.key,
+            )
         }
 
         return true

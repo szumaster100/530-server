@@ -11,7 +11,6 @@ import core.tools.minutesToTicks
 import org.rs.consts.NPCs
 
 class SantaHolidayRandomNPC : HolidayRandomEventNPC(NPCs.SANTA_CLAUS_8540) {
-
     override fun init() {
         spawnLocation = getPathableRandomLocalCoordinate(this, 1, player.location)
         super.init()
@@ -21,8 +20,9 @@ class SantaHolidayRandomNPC : HolidayRandomEventNPC(NPCs.SANTA_CLAUS_8540) {
     }
 
     override fun tick() {
-        if (RandomFunction.roll(10))
+        if (RandomFunction.roll(10)) {
             sendChat(this, "Ho Ho Ho! Merry Christmas, ${player.username}!")
+        }
         super.tick()
     }
 

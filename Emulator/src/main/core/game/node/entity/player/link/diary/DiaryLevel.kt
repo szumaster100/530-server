@@ -4,5 +4,5 @@ enum class DiaryLevel {
     BEGINNER,
     EASY,
     MEDIUM,
-    HARD
+    HARD,
 }

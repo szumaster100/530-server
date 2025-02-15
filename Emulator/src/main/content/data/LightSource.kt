@@ -1,24 +1,23 @@
 package content.data
 
-import org.rs.consts.Components
-import org.rs.consts.Items
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
+import org.rs.consts.Components
+import org.rs.consts.Items
 
 enum class LightSource(
     val level: Int,
     val raw: Item,
     val product: Item,
     val open: Boolean,
-    val interfaceId: Int
+    val interfaceId: Int,
 ) {
-
     CANDLE(
         level = 1,
         raw = Item(Items.CANDLE_36, 1),
         product = Item(Items.LIT_CANDLE_33, 1),
         open = true,
-        interfaceId = Components.DARKNESS_MEDIUM_98
+        interfaceId = Components.DARKNESS_MEDIUM_98,
     ),
 
     BLACK_CANDLE(
@@ -26,7 +25,7 @@ enum class LightSource(
         raw = Item(Items.BLACK_CANDLE_38, 1),
         product = Item(Items.LIT_BLACK_CANDLE_32, 1),
         open = true,
-        interfaceId = Components.DARKNESS_MEDIUM_98
+        interfaceId = Components.DARKNESS_MEDIUM_98,
     ),
 
     TORCH(
@@ -34,7 +33,7 @@ enum class LightSource(
         raw = Item(Items.UNLIT_TORCH_596, 1),
         product = Item(Items.LIT_TORCH_594, 1),
         open = true,
-        interfaceId = Components.DARKNESS_MEDIUM_98
+        interfaceId = Components.DARKNESS_MEDIUM_98,
     ),
 
     WHITE_CANDLE_LANTERN(
@@ -42,7 +41,7 @@ enum class LightSource(
         raw = Item(Items.CANDLE_LANTERN_4527, 1),
         product = Item(Items.CANDLE_LANTERN_4531, 1),
         open = false,
-        interfaceId = Components.DARKNESS_MEDIUM_98
+        interfaceId = Components.DARKNESS_MEDIUM_98,
     ),
 
     BLACK_CANDLE_LANTERN(
@@ -50,7 +49,7 @@ enum class LightSource(
         raw = Item(Items.CANDLE_LANTERN_4527, 1),
         product = Item(Items.CANDLE_LANTERN_4532, 1),
         open = false,
-        interfaceId = Components.DARKNESS_MEDIUM_98
+        interfaceId = Components.DARKNESS_MEDIUM_98,
     ),
 
     OIL_LAMP(
@@ -58,7 +57,7 @@ enum class LightSource(
         raw = Item(Items.OIL_LAMP_4522, 1),
         product = Item(Items.OIL_LAMP_4524, 1),
         open = true,
-        interfaceId = Components.DARKNESS_LIGHT_97
+        interfaceId = Components.DARKNESS_LIGHT_97,
     ),
 
     OIL_LANTERN(
@@ -66,7 +65,7 @@ enum class LightSource(
         raw = Item(Items.OIL_LANTERN_4535, 1),
         product = Item(Items.OIL_LANTERN_4539, 1),
         open = false,
-        interfaceId = Components.DARKNESS_LIGHT_97
+        interfaceId = Components.DARKNESS_LIGHT_97,
     ),
 
     BUG_LANTERN(
@@ -74,7 +73,7 @@ enum class LightSource(
         raw = Item(Items.UNLIT_BUG_LANTERN_7051, 1),
         product = Item(Items.LIT_BUG_LANTERN_7053, 1),
         open = false,
-        interfaceId = -1
+        interfaceId = -1,
     ),
 
     BULLSEYE_LANTERN(
@@ -82,7 +81,7 @@ enum class LightSource(
         raw = Item(Items.BULLSEYE_LANTERN_4548, 1),
         product = Item(Items.BULLSEYE_LANTERN_4550, 1),
         open = false,
-        interfaceId = -1
+        interfaceId = -1,
     ),
 
     SAPPHIRE_LANTERN(
@@ -90,7 +89,7 @@ enum class LightSource(
         raw = Item(Items.SAPPHIRE_LANTERN_4701, 1),
         product = Item(Items.SAPPHIRE_LANTERN_4702, 1),
         open = false,
-        interfaceId = -1
+        interfaceId = -1,
     ),
 
     EMERALD_LANTERN(
@@ -98,7 +97,7 @@ enum class LightSource(
         raw = Item(Items.EMERALD_LANTERN_9064, 1),
         product = Item(Items.EMERALD_LANTERN_9065, 1),
         open = false,
-        interfaceId = -1
+        interfaceId = -1,
     ),
 
     MINING_HELMET(
@@ -106,7 +105,7 @@ enum class LightSource(
         raw = Item(Items.MINING_HELMET_5014, 1),
         product = Item(Items.MINING_HELMET_5013, 1),
         open = false,
-        interfaceId = Components.DARKNESS_LIGHT_97
+        interfaceId = Components.DARKNESS_LIGHT_97,
     ),
 
     SEERS_HEADBAND(
@@ -114,8 +113,9 @@ enum class LightSource(
         raw = Item(Items.SEERS_HEADBAND_1_14631, 1),
         product = Item(Items.SEERS_HEADBAND_1_14631, 1),
         open = false,
-        interfaceId = -1
-    );
+        interfaceId = -1,
+    ),
+    ;
 
     fun getStrength(): Int {
         return when (interfaceId) {
@@ -131,7 +131,6 @@ enum class LightSource(
     }
 
     companion object {
-
         @JvmStatic
         fun hasActiveLightSource(player: Player): Boolean {
             return getActiveLightSource(player) != null

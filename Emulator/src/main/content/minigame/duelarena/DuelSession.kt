@@ -1,8 +1,8 @@
 package content.minigame.duelarena
 
 import core.api.*
-import core.api.event.isPoisoned
 import core.api.event.curePoison
+import core.api.event.isPoisoned
 import core.game.component.Component
 import core.game.component.ComponentDefinition
 import core.game.component.ComponentPlugin
@@ -20,8 +20,11 @@ import core.tools.RandomFunction
 import java.text.DecimalFormat
 import java.util.*
 
-class DuelSession(val player: Player? = null, val other: Player? = null, val staked: Boolean) : ComponentPlugin() {
-
+class DuelSession(
+    val player: Player? = null,
+    val other: Player? = null,
+    val staked: Boolean,
+) : ComponentPlugin() {
     val rules = arrayOfNulls<DuelRule>(DuelRule.values().size)
     var playerContainer: StakeContainer? = null
     var targetContainer: StakeContainer? = null
@@ -74,7 +77,10 @@ class DuelSession(val player: Player? = null, val other: Player? = null, val sta
         openRules(other, player)
     }
 
-    private fun openRules(player: Player, opponent: Player) {
+    private fun openRules(
+        player: Player,
+        opponent: Player,
+    ) {
         setVarp(player, 286, 0)
         if (staked) {
             val container = StakeContainer(player, this)
@@ -97,7 +103,10 @@ class DuelSession(val player: Player? = null, val other: Player? = null, val sta
         setVarp(player, 286, 0)
     }
 
-    fun leave(p: Player, type: Int) {
+    fun leave(
+        p: Player,
+        type: Int,
+    ) {
         if (fightState == 2) {
             return
         }
@@ -132,7 +141,7 @@ class DuelSession(val player: Player? = null, val other: Player? = null, val sta
         player.packetDispatch.sendString(
             Integer.toString(getOpposite(player).properties.currentCombatLevel),
             component.id,
-            if (staked) 22 else 21
+            if (staked) 22 else 21,
         )
         if (staked) {
             getContainer(player)!!.release()
@@ -204,45 +213,59 @@ class DuelSession(val player: Player? = null, val other: Player? = null, val sta
                     }
                 }
                 val interfaceId = if (session.staked) 626 else 639
-                val childs = if (staked) intArrayOf(
-                    28,
-                    29,
-                    30,
-                    31,
-                    34,
-                    35,
-                    36,
-                    37,
-                    38,
-                    39,
-                    40,
-                    41,
-                    42,
-                    43,
-                    44,
-                    45
-                ) else intArrayOf(16, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32)
+                val childs =
+                    if (staked) {
+                        intArrayOf(
+                            28,
+                            29,
+                            30,
+                            31,
+                            34,
+                            35,
+                            36,
+                            37,
+                            38,
+                            39,
+                            40,
+                            41,
+                            42,
+                            43,
+                            44,
+                            45,
+                        )
+                    } else {
+                        intArrayOf(16, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32)
+                    }
                 clearChilds(session.player, interfaceId, *childs)
                 clearChilds(session.other, interfaceId, *childs)
-                var tokens: Array<String?> = before.toString().split("<br>".toRegex()).dropLastWhile { it.isEmpty() }
-                    .toTypedArray()
+                var tokens: Array<String?> =
+                    before
+                        .toString()
+                        .split("<br>".toRegex())
+                        .dropLastWhile { it.isEmpty() }
+                        .toTypedArray()
                 run {
                     var i = 0
                     while (i < tokens.size) {
                         session.player.packetDispatch.sendString(
                             tokens[i],
                             interfaceId,
-                            if (this.staked) 28 + i else 16 + i
+                            if (this.staked) 28 + i else 16 + i,
                         )
                         session.other.packetDispatch.sendString(
                             tokens[i],
                             interfaceId,
-                            if (this.staked) 28 + i else 16 + i
+                            if (this.staked) 28 + i else 16 + i,
                         )
                         i++
                     }
                 }
-                tokens = during.toString().split("<br>".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                tokens =
+                    during
+                        .toString()
+                        .split("<br>".toRegex())
+                        .dropLastWhile { it.isEmpty() }
+                        .toTypedArray()
                 var i = 0
                 while (i < tokens.size) {
                     session.player.packetDispatch.sendString(tokens[i], interfaceId, if (staked) 34 + i else 22 + i)
@@ -251,40 +274,64 @@ class DuelSession(val player: Player? = null, val other: Player? = null, val sta
                 }
                 if (staked) {
                     session.player.packetDispatch.sendString(
-                        if (session.getContainer(player)!!.isEmpty) "Absolutely nothing!" else getDisplayMessage(
-                            session.getContainer(
-                                player
-                            )!!.toArray()
-                        ),
+                        if (session.getContainer(player)!!.isEmpty) {
+                            "Absolutely nothing!"
+                        } else {
+                            getDisplayMessage(
+                                session
+                                    .getContainer(
+                                        player,
+                                    )!!
+                                    .toArray(),
+                            )
+                        },
                         626,
-                        25
+                        25,
                     )
                     session.player.packetDispatch.sendString(
-                        if (session.getOppositeContainer(player)!!.isEmpty) "Absolutely nothing!" else getDisplayMessage(
-                            session.getOppositeContainer(
-                                player
-                            )!!.toArray()
-                        ),
+                        if (session.getOppositeContainer(player)!!.isEmpty) {
+                            "Absolutely nothing!"
+                        } else {
+                            getDisplayMessage(
+                                session
+                                    .getOppositeContainer(
+                                        player,
+                                    )!!
+                                    .toArray(),
+                            )
+                        },
                         626,
-                        26
+                        26,
                     )
                     session.other.packetDispatch.sendString(
-                        if (session.getOppositeContainer(player)!!.isEmpty) "Absolutely nothing!" else getDisplayMessage(
-                            session.getOppositeContainer(
-                                player
-                            )!!.toArray()
-                        ),
+                        if (session.getOppositeContainer(player)!!.isEmpty) {
+                            "Absolutely nothing!"
+                        } else {
+                            getDisplayMessage(
+                                session
+                                    .getOppositeContainer(
+                                        player,
+                                    )!!
+                                    .toArray(),
+                            )
+                        },
                         626,
-                        25
+                        25,
                     )
                     session.other.packetDispatch.sendString(
-                        if (session.getOppositeContainer(other!!)!!.isEmpty) "Absolutely nothing!" else getDisplayMessage(
-                            session.getOppositeContainer(
-                                other
-                            )!!.toArray()
-                        ),
+                        if (session.getOppositeContainer(other!!)!!.isEmpty) {
+                            "Absolutely nothing!"
+                        } else {
+                            getDisplayMessage(
+                                session
+                                    .getOppositeContainer(
+                                        other,
+                                    )!!
+                                    .toArray(),
+                            )
+                        },
                         626,
-                        26
+                        26,
                     )
                 }
                 session.updateToolTip(player, "")
@@ -328,7 +375,10 @@ class DuelSession(val player: Player? = null, val other: Player? = null, val sta
         }
     }
 
-    private fun toggleRule(p: Player, index: Int) {
+    private fun toggleRule(
+        p: Player,
+        index: Int,
+    ) {
         val session = player!!.getExtension<DuelSession>(DuelSession::class.java) ?: return
         session.resetAccept()
         if (rules[index] != null) {
@@ -344,15 +394,25 @@ class DuelSession(val player: Player? = null, val other: Player? = null, val sta
                 if (count == 2) {
                     session.updateToolTip(
                         player,
-                        "You can't have No Ranged, No Melee AND No Magic, how would you fight?"
+                        "You can't have No Ranged, No Melee AND No Magic, how would you fight?",
                     )
-                    p.packetDispatch.sendMessage("You can't have No Ranged, No Melee AND No Magic, how would you fight?")
+                    p.packetDispatch.sendMessage(
+                        "You can't have No Ranged, No Melee AND No Magic, how would you fight?",
+                    )
                     return
                 }
             } else if (index == 8 && rules[9] != null || index == 9 && rules[8] != null) {
                 rules[9] = null
                 rules[8] = rules[9]
-                p.packetDispatch.sendMessage(if (index == 8) "You can't have obstacles if you want No Movement." else "You can't have No Movement in an area with obstacles.")
+                p.packetDispatch.sendMessage(
+                    if (index ==
+                        8
+                    ) {
+                        "You can't have obstacles if you want No Movement."
+                    } else {
+                        "You can't have No Movement in an area with obstacles."
+                    },
+                )
             }
             if (index == 15 || index == 16) {
                 player.sendMessage("Beware: You won't be able to use two-handed weapons such as bows.")
@@ -380,7 +440,7 @@ class DuelSession(val player: Player? = null, val other: Player? = null, val sta
             updateToolTip(player, "Fun Weapons is selected but you don't have a 'fun weapon'.")
             updateToolTip(
                 getOpposite(player),
-                "Fun Weapons is selected but your opponent does not have a 'fun weapon'."
+                "Fun Weapons is selected but your opponent does not have a 'fun weapon'.",
             )
             return false
         }
@@ -392,7 +452,7 @@ class DuelSession(val player: Player? = null, val other: Player? = null, val sta
             updateToolTip(player, "You do not have enough space for the items removed and/or the stake.")
             updateToolTip(
                 getOpposite(player),
-                "Your opponent does not have enough space for the items removed and/or the stake."
+                "Your opponent does not have enough space for the items removed and/or the stake.",
             )
             return false
         }
@@ -405,18 +465,20 @@ class DuelSession(val player: Player? = null, val other: Player? = null, val sta
         opcode: Int,
         button: Int,
         slot: Int,
-        itemId: Int
+        itemId: Int,
     ): Boolean {
         var button = button
         val session = player.getExtension<DuelSession>(DuelSession::class.java) ?: return false
         when (component.id) {
-            626 -> if (button == 53) {
-                requestAccept(player, component)
-            }
+            626 ->
+                if (button == 53) {
+                    requestAccept(player, component)
+                }
 
-            639 -> if (button == 35) {
-                requestAccept(player, component)
-            }
+            639 ->
+                if (button == 35) {
+                    requestAccept(player, component)
+                }
 
             631 -> {
                 if (button == 107) {
@@ -432,9 +494,10 @@ class DuelSession(val player: Player? = null, val other: Player? = null, val sta
                         196 -> amount = 5
                         124 -> amount = 10
                         199 -> amount = c!!.getAmount(c[slot])
-                        234 -> sendInputDialogue(player, true, "Enter the amount:") { value: Any ->
-                            c!!.withdraw(slot, value as Int)
-                        }
+                        234 ->
+                            sendInputDialogue(player, true, "Enter the amount:") { value: Any ->
+                                c!!.withdraw(slot, value as Int)
+                            }
                     }
                     c!!.withdraw(slot, amount)
                 } else if (button == 104) {
@@ -512,9 +575,10 @@ class DuelSession(val player: Player? = null, val other: Player? = null, val sta
                     196 -> c1!!.offer(slot, 5)
                     124 -> c1!!.offer(slot, 10)
                     199 -> c1!!.offer(slot, player.inventory.getAmount(player.inventory[slot].id))
-                    234 -> sendInputDialogue(player, true, "Enter the amount:") { value: Any ->
-                        c1!!.offer(slot, value as Int)
-                    }
+                    234 ->
+                        sendInputDialogue(player, true, "Enter the amount:") { value: Any ->
+                            c1!!.offer(slot, value as Int)
+                        }
 
                     9 -> player.packetDispatch.sendMessage(player.inventory[slot].definition.examine)
                 }
@@ -533,10 +597,15 @@ class DuelSession(val player: Player? = null, val other: Player? = null, val sta
         return this
     }
 
-    fun requestAccept(player: Player, component: Component?) {
+    fun requestAccept(
+        player: Player,
+        component: Component?,
+    ) {
         val session = player.getExtension<DuelSession>(DuelSession::class.java) ?: return
 
-        if (session.acceptState == (if (session.acceptState < 3) 1 else 5) && session.getOpposite(player)
+        if (session.acceptState == (if (session.acceptState < 3) 1 else 5) &&
+            session
+                .getOpposite(player)
                 .getAttribute("duel:accepted", false)
         ) {
             session.acceptState = if (session.acceptState == 1) 2 else 6
@@ -557,13 +626,20 @@ class DuelSession(val player: Player? = null, val other: Player? = null, val sta
         removeAttribute(other!!, "duel:accepted")
     }
 
-    fun clearChilds(player: Player, interfaceId: Int, vararg childs: Int) {
+    fun clearChilds(
+        player: Player,
+        interfaceId: Int,
+        vararg childs: Int,
+    ) {
         for (i in childs) {
             player.packetDispatch.sendString("", interfaceId, i)
         }
     }
 
-    private fun updateToolTip(player: Player, message: String) {
+    private fun updateToolTip(
+        player: Player,
+        message: String,
+    ) {
         val session = player.getExtension<DuelSession>(DuelSession::class.java) ?: return
         var interfaceId = 631
         var child = 28
@@ -681,27 +757,32 @@ class DuelSession(val player: Player? = null, val other: Player? = null, val sta
     }
 
     companion object {
-        private val FRIENDLY_INTER = Component(637).setCloseEvent { player, c ->
-            decline(player)
-            true
-        }
-        private val STAKED_INTER = Component(631).setCloseEvent { player, c ->
-            decline(player)
-            true
-        }
-        private val FRIENDLY_RULE_INTER = Component(639).setCloseEvent { player, c ->
-            decline(player)
-            true
-        }
-        private val STAKED_RULE_INTER = Component(626).setCloseEvent { player, c ->
-            decline(player)
-            true
-        }
+        private val FRIENDLY_INTER =
+            Component(637).setCloseEvent { player, c ->
+                decline(player)
+                true
+            }
+        private val STAKED_INTER =
+            Component(631).setCloseEvent { player, c ->
+                decline(player)
+                true
+            }
+        private val FRIENDLY_RULE_INTER =
+            Component(639).setCloseEvent { player, c ->
+                decline(player)
+                true
+            }
+        private val STAKED_RULE_INTER =
+            Component(626).setCloseEvent { player, c ->
+                decline(player)
+                true
+            }
         private val FRIENDLY_VICTORY = Component(633)
-        private val STAKE_VICTORY = Component(634).setCloseEvent { player, c ->
-            reward(player)
-            true
-        }
+        private val STAKE_VICTORY =
+            Component(634).setCloseEvent { player, c ->
+                reward(player)
+                true
+            }
 
         fun decline(player: Player) {
             val session = player.getExtension<DuelSession>(DuelSession::class.java) ?: return
@@ -717,9 +798,13 @@ class DuelSession(val player: Player? = null, val other: Player? = null, val sta
             session.other!!.removeExtension(DuelSession::class.java)
             session.end()
             if (player === session.other) {
-                session.player.packetDispatch.sendMessage("Other player declined " + (if (session.staked) "stake and " else "") + "duel options.")
+                session.player.packetDispatch.sendMessage(
+                    "Other player declined " + (if (session.staked) "stake and " else "") + "duel options.",
+                )
             } else {
-                session.other.packetDispatch.sendMessage("Other player declined " + (if (session.staked) "stake and " else "") + "duel options.")
+                session.other.packetDispatch.sendMessage(
+                    "Other player declined " + (if (session.staked) "stake and " else "") + "duel options.",
+                )
             }
         }
 

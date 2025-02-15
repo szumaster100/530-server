@@ -2,14 +2,15 @@ package core.game.worldevents
 
 import core.ServerStore
 import core.api.ContentInterface
-import core.tools.Log
-import core.plugin.Plugin
 import core.plugin.ClassScanner
+import core.plugin.Plugin
+import core.tools.Log
 import org.json.simple.JSONObject
 import java.util.*
 
-abstract class WorldEvent(var name: String) : ContentInterface {
-
+abstract class WorldEvent(
+    var name: String,
+) : ContentInterface {
     var plugins = PluginSet()
 
     open fun checkActive(cal: Calendar): Boolean {
@@ -25,8 +26,9 @@ abstract class WorldEvent(var name: String) : ContentInterface {
     }
 }
 
-class PluginSet(vararg val plugins: Plugin<*>) {
-
+class PluginSet(
+    vararg val plugins: Plugin<*>,
+) {
     val set = ArrayList(plugins.asList())
 
     fun initialize() {
@@ -39,7 +41,6 @@ class PluginSet(vararg val plugins: Plugin<*>) {
 }
 
 object WorldEvents {
-
     private var events = hashMapOf<String, WorldEvent>()
 
     @JvmStatic

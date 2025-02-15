@@ -1,8 +1,9 @@
 package content.global.travel.balloon
 
-import org.rs.consts.*
 import core.api.*
+import core.api.quest.hasRequirement
 import core.api.quest.isQuestComplete
+import core.api.ui.setMinimapState
 import core.cache.def.impl.ItemDefinition
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
@@ -12,39 +13,47 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.diary.DiaryType
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
-import core.api.quest.hasRequirement
-import core.api.ui.setMinimapState
 import core.game.system.task.Pulse
 import core.game.world.map.Location
+import org.rs.consts.*
 
-class HotAirBalloonListener : InterfaceListener, InteractionListener {
-
+class HotAirBalloonListener :
+    InterfaceListener,
+    InteractionListener {
     companion object {
-        private val assistants = mapOf(
-            NPCs.AUGUSTE_5050 to Location.create(2938, 3424, 0),
-            NPCs.ASSISTANT_SERF_5053 to Location.create(3298, 3484, 0),
-            NPCs.ASSISTANT_LE_SMITH_5056 to Location.create(2480, 3458, 0),
-            NPCs.ASSISTANT_STAN_5057 to Location.create(2938, 3424, 0)
-        )
+        private val assistants =
+            mapOf(
+                NPCs.AUGUSTE_5050 to Location.create(2938, 3424, 0),
+                NPCs.ASSISTANT_SERF_5053 to Location.create(3298, 3484, 0),
+                NPCs.ASSISTANT_LE_SMITH_5056 to Location.create(2480, 3458, 0),
+                NPCs.ASSISTANT_STAN_5057 to Location.create(2938, 3424, 0),
+            )
         private val allAssistants = (5049..5057).toIntArray()
         private val balloonIds = intArrayOf(19128, 19129, 19133, 19135, 19143, 19141, 19137, 19139)
 
-        fun showBalloonLocation(player: Player, npc: NPC) {
-            val componentId = when (npc.id) {
-                5049 -> 12
-                5050 -> 22
-                5053 -> 21
-                5054, 5065 -> 20
-                5055, 5063 -> 24
-                5056 -> 23
-                5057 -> 22
-                else -> return
-            }
+        fun showBalloonLocation(
+            player: Player,
+            npc: NPC,
+        ) {
+            val componentId =
+                when (npc.id) {
+                    5049 -> 12
+                    5050 -> 22
+                    5053 -> 21
+                    5054, 5065 -> 20
+                    5055, 5063 -> 24
+                    5056 -> 23
+                    5057 -> 22
+                    else -> return
+                }
             setComponentVisibility(player, Components.ZEP_BALLOON_MAP_469, componentId, false)
         }
 
         @JvmStatic
-        fun handleFlight(player: Player, flight: FlightDestination) {
+        fun handleFlight(
+            player: Player,
+            flight: FlightDestination,
+        ) {
             lock(player, 4)
             lockInteractions(player, 4)
 
@@ -55,42 +64,43 @@ class HotAirBalloonListener : InterfaceListener, InteractionListener {
             animateInterface(player, Components.ZEP_BALLOON_MAP_469, flight.button, flight.flyAnim)
             sendMessage(player, "You board the balloon and fly to ${flight.areaName}.")
 
-            submitWorldPulse(object : Pulse(1) {
-                private var count = 0
+            submitWorldPulse(
+                object : Pulse(1) {
+                    private var count = 0
 
-                override fun pulse(): Boolean {
-                    when (count++) {
-                        0 -> {
-                            closeInterface(player)
-                            openInterface(player, Components.FADE_TO_BLACK_120)
+                    override fun pulse(): Boolean {
+                        when (count++) {
+                            0 -> {
+                                closeInterface(player)
+                                openInterface(player, Components.FADE_TO_BLACK_120)
+                            }
+
+                            3 -> {
+                                setMinimapState(player, 2)
+                                openInterface(player, Components.ZEP_BALLOON_MAP_469)
+                            }
+
+                            4 -> {
+                                teleport(player, flight.flightDestination)
+                            }
+
+                            6 -> {
+                                closeInterface(player)
+                                setMinimapState(player, 0)
+                                openOverlay(player, Components.FADE_FROM_BLACK_170)
+                            }
+
+                            9 -> {
+                                closeAllInterfaces(player)
+                                sendPlainDialogue(player, false, "You arrive safely in ${flight.areaName}.")
+                                unlock(player)
+                                return true
+                            }
                         }
-
-                        3 -> {
-                            setMinimapState(player, 2)
-                            openInterface(player, Components.ZEP_BALLOON_MAP_469)
-                        }
-
-                        4 -> {
-                            teleport(player, flight.flightDestination)
-
-                        }
-
-                        6 -> {
-                            closeInterface(player)
-                            setMinimapState(player, 0)
-                            openOverlay(player, Components.FADE_FROM_BLACK_170)
-                        }
-
-                        9 -> {
-                            closeAllInterfaces(player)
-                            sendPlainDialogue(player, false, "You arrive safely in ${flight.areaName}.")
-                            unlock(player)
-                            return true
-                        }
+                        return false
                     }
-                    return false
-                }
-            })
+                },
+            )
         }
 
         enum class FlightDestination(
@@ -100,7 +110,7 @@ class HotAirBalloonListener : InterfaceListener, InteractionListener {
             val button: Int,
             val logId: Int,
             val varbitId: Int,
-            val requiredLevel: Int
+            val requiredLevel: Int,
         ) {
             CASTLE_WARS(
                 "Castle Wars",
@@ -109,7 +119,7 @@ class HotAirBalloonListener : InterfaceListener, InteractionListener {
                 14,
                 Items.YEW_LOGS_1515,
                 Vars.VARBIT_QUEST_ENLIGHTENED_JOURNEY_CASTLE_WARS_BALLOON_2869,
-                50
+                50,
             ),
             GRAND_TREE(
                 "Grand Tree",
@@ -118,7 +128,7 @@ class HotAirBalloonListener : InterfaceListener, InteractionListener {
                 15,
                 Items.MAGIC_LOGS_1513,
                 Vars.VARBIT_QUEST_ENLIGHTENED_JOURNEY_GRAND_TREE_BALLOON_2870,
-                60
+                60,
             ),
             CRAFT_GUILD(
                 "Crafting Guild",
@@ -127,7 +137,7 @@ class HotAirBalloonListener : InterfaceListener, InteractionListener {
                 16,
                 Items.OAK_LOGS_1521,
                 Vars.VARBIT_QUEST_ENLIGHTENED_JOURNEY_CRAFTING_GUILD_BALLOON_2871,
-                30
+                30,
             ),
             VARROCK(
                 "Varrock",
@@ -136,7 +146,7 @@ class HotAirBalloonListener : InterfaceListener, InteractionListener {
                 19,
                 Items.WILLOW_LOGS_1519,
                 Vars.VARBIT_QUEST_ENLIGHTENED_JOURNEY_VARROCK_BALLOON_2872,
-                40
+                40,
             ),
             ENTRANA(
                 "Entrana",
@@ -145,7 +155,7 @@ class HotAirBalloonListener : InterfaceListener, InteractionListener {
                 17,
                 Items.LOGS_1511,
                 Vars.VARBIT_QUEST_ENLIGHTENED_JOURNEY_ENTRANA_BALLOON_2867,
-                20
+                20,
             ),
             TAVERLEY(
                 "Taverley",
@@ -154,8 +164,9 @@ class HotAirBalloonListener : InterfaceListener, InteractionListener {
                 18,
                 Items.LOGS_1511,
                 Vars.VARBIT_QUEST_ENLIGHTENED_JOURNEY_TAVERLEY_BALLOON_2868,
-                20
-            );
+                20,
+            ),
+            ;
 
             companion object {
                 val flightMap = values().associateBy { it.button }
@@ -179,7 +190,7 @@ class HotAirBalloonListener : InterfaceListener, InteractionListener {
             if (!hasLevelStat(player, Skills.FIREMAKING, button.requiredLevel)) {
                 sendDialogue(
                     player,
-                    "You require a Firemaking level of ${button.requiredLevel} to travel to ${button.areaName}."
+                    "You require a Firemaking level of ${button.requiredLevel} to travel to ${button.areaName}.",
                 )
                 return@on true
             }
@@ -187,7 +198,7 @@ class HotAirBalloonListener : InterfaceListener, InteractionListener {
             if (!inInventory(player, button.logId, 1)) {
                 sendDialogue(
                     player,
-                    "You need at least one ${getItemName(button.logId).lowercase().replace("s", "").trim()}."
+                    "You need at least one ${getItemName(button.logId).lowercase().replace("s", "").trim()}.",
                 )
                 return@on true
             }
@@ -216,15 +227,16 @@ class HotAirBalloonListener : InterfaceListener, InteractionListener {
                 else -> {
                     if (!hasRequirement(player, Quests.ENLIGHTENED_JOURNEY)) return@on true
                     openInterface(player, Components.ZEP_BALLOON_MAP_469)
-                    val componentId = when (node.asScenery().getWrapper().id) {
-                        19128, 19133 -> 12
-                        19135 -> 22
-                        19137 -> 24
-                        19139 -> 23
-                        19141 -> 20
-                        19143 -> 21
-                        else -> return@on false
-                    }
+                    val componentId =
+                        when (node.asScenery().getWrapper().id) {
+                            19128, 19133 -> 12
+                            19135 -> 22
+                            19137 -> 24
+                            19139 -> 23
+                            19141 -> 20
+                            19143 -> 21
+                            else -> return@on false
+                        }
                     setComponentVisibility(player, Components.ZEP_BALLOON_MAP_469, componentId, false)
                 }
             }

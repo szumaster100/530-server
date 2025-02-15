@@ -12,8 +12,9 @@ import org.rs.consts.NPCs
  * Professor Imblewyn dialogue.
  */
 @Initializable
-class ProfessorImblewynDialogue(player: Player? = null) : Dialogue(player) {
-
+class ProfessorImblewynDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     /*
      * Info: Gnome wizard found in the Magic Guild.
      */
@@ -24,7 +25,10 @@ class ProfessorImblewynDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> npc(FaceAnim.OLD_NORMAL, "Gnomes are interested in everything, lad.").also { stage++ }
             1 -> player("Of course.").also { stage = END_DIALOGUE }

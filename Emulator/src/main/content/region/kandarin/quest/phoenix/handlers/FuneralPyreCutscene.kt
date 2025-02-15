@@ -10,8 +10,9 @@ import core.game.world.map.Location
 import org.rs.consts.NPCs
 import org.rs.consts.Vars
 
-class FuneralPyreCutscene(player: Player) : Cutscene(player) {
-
+class FuneralPyreCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(Location.create(3533, 5204, 0))
         loadRegion(REGION)
@@ -40,7 +41,7 @@ class FuneralPyreCutscene(player: Player) : Cutscene(player) {
             }
 
             3 -> {
-                rotateCamera(14,15, 300, 1)
+                rotateCamera(14, 15, 300, 1)
                 teleport(getNPC(PHOENIX)!!, 15, 14)
                 // Inside
                 getNPC(PHOENIX)!!.transform(NPCs.PHOENIX_8548)
@@ -64,5 +65,4 @@ class FuneralPyreCutscene(player: Player) : Cutscene(player) {
         private const val PHOENIX = NPCs.WOUNDED_PHOENIX_8547
         private const val REGION = 14161
     }
-
 }

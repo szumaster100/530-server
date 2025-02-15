@@ -1,22 +1,28 @@
 package content.region.misthalin.quest.fluffs.handlers
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.player.Player
 import core.game.world.GameWorld.ticks
 import core.game.world.map.Location
 import core.plugin.Initializable
 import core.tools.RandomFunction
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class LumberKittenNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
+class LumberKittenNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
     private var hidden = true
     private var nextSpeak = 0
     private var hideDelay = 0
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return LumberKittenNPC(id, location)
     }
 

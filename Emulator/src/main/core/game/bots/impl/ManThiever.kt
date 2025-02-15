@@ -11,7 +11,6 @@ import core.game.world.map.zone.ZoneBorders
 import org.rs.consts.Items
 
 class ManThiever : Script() {
-
     private var state = State.INIT
     private val zone = ZoneBorders(3240, 3195, 3227, 3227)
 
@@ -20,8 +19,8 @@ class ManThiever : Script() {
             listOf(
                 Item(Items.BRONZE_CHAINBODY_1103),
                 Item(Items.IRON_WARHAMMER_1335),
-                Item(Items.WOODEN_SHIELD_1171)
-            )
+                Item(Items.WOODEN_SHIELD_1171),
+            ),
         )
     }
 
@@ -39,9 +38,11 @@ class ManThiever : Script() {
         }
 
         val man = scriptAPI?.getNearestNode("Man", false) ?: return
-        val destinationReached = bot?.destinationFlag
-            ?.getDestination(bot, man)
-            ?.withinDistance(man.location) == true
+        val destinationReached =
+            bot
+                ?.destinationFlag
+                ?.getDestination(bot, man)
+                ?.withinDistance(man.location) == true
 
         if (bot?.skills?.lifepoints ?: 0 <= 0) {
             bot?.startDeath(man.asNpc())
@@ -58,7 +59,7 @@ class ManThiever : Script() {
                         InteractionListeners.run(man.id, IntType.NPC, "Pickpocket", bot!!, man)
                         return true
                     }
-                }
+                },
             )
         } else {
             InteractionListeners.run(man.id, IntType.NPC, "Pickpocket", bot!!, man)
@@ -75,6 +76,6 @@ class ManThiever : Script() {
 
     enum class State {
         INIT,
-        RESPAWN
+        RESPAWN,
     }
 }

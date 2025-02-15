@@ -1,13 +1,5 @@
 package content.minigame.gnomeball
 
-import core.api.LogoutListener
-import core.api.location
-import core.api.setAttribute
-import core.api.teleport
-import core.game.node.entity.player.Player
-import core.api.MapArea
-import core.game.world.map.zone.ZoneBorders
-
 /*class GnomeBallSession : LogoutListener, MapArea {
     var players: ArrayList<Player> = ArrayList()
 

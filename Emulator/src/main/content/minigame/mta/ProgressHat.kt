@@ -1,9 +1,9 @@
 package content.minigame.mta
 
-import org.rs.consts.Items
 import core.api.addItem
 import core.api.removeItem
 import core.game.node.entity.player.Player
+import org.rs.consts.Items
 
 object ProgressHat {
     val hats = intArrayOf(Items.PROGRESS_HAT_6885, Items.PROGRESS_HAT_6886, Items.PROGRESS_HAT_6887)

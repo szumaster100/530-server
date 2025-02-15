@@ -10,20 +10,29 @@ import core.game.node.entity.skill.Skills
 import core.tools.RandomFunction
 import kotlin.math.floor
 
-open class MagicSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandler(CombatStyle.MAGIC, *flags) {
-
-    override fun canSwing(entity: Entity, victim: Entity): InteractionType? {
+open class MagicSwingHandler(
+    vararg flags: SwingHandlerFlag,
+) : CombatSwingHandler(CombatStyle.MAGIC, *flags) {
+    override fun canSwing(
+        entity: Entity,
+        victim: Entity,
+    ): InteractionType? {
         if (!isProjectileClipped(entity, victim, false)) {
             return InteractionType.NO_INTERACT
         }
         var distance = 10
         var type = InteractionType.STILL_INTERACT
-        var goodRange = victim.centerLocation.withinDistance(entity.centerLocation, getCombatDistance(entity, victim, distance))
-        if (victim.walkingQueue.isMoving && !goodRange) {
-            goodRange = victim.centerLocation.withinDistance(
+        var goodRange =
+            victim.centerLocation.withinDistance(
                 entity.centerLocation,
-                getCombatDistance(entity, victim, ++distance)
+                getCombatDistance(entity, victim, distance),
             )
+        if (victim.walkingQueue.isMoving && !goodRange) {
+            goodRange =
+                victim.centerLocation.withinDistance(
+                    entity.centerLocation,
+                    getCombatDistance(entity, victim, ++distance),
+                )
             type = InteractionType.MOVE_INTERACT
         }
         if (goodRange && isAttackable(entity, victim) != InteractionType.NO_INTERACT) {
@@ -35,7 +44,11 @@ open class MagicSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandle
         return InteractionType.NO_INTERACT
     }
 
-    override fun swing(entity: Entity?, victim: Entity?, state: BattleState?): Int {
+    override fun swing(
+        entity: Entity?,
+        victim: Entity?,
+        state: BattleState?,
+    ): Int {
         var spell = entity!!.properties.spell
 
         if (spell == null) {
@@ -78,11 +91,20 @@ open class MagicSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandle
             ticks++
         }
         if (state.estimatedHit > victim.skills.lifepoints) state.estimatedHit = victim.skills.lifepoints
-        if (state.estimatedHit + state.secondaryHit > victim.skills.lifepoints) state.secondaryHit -= ((state.estimatedHit + state.secondaryHit) - victim.skills.lifepoints)
+        if (state.estimatedHit + state.secondaryHit >
+            victim.skills.lifepoints
+        ) {
+            state.secondaryHit -=
+                ((state.estimatedHit + state.secondaryHit) - victim.skills.lifepoints)
+        }
         return ticks
     }
 
-    override fun adjustBattleState(entity: Entity, victim: Entity, state: BattleState) {
+    override fun adjustBattleState(
+        entity: Entity,
+        victim: Entity,
+        state: BattleState,
+    ) {
         if (state.targets == null) {
             super.adjustBattleState(entity, victim, state)
             if (state.spell != null) {
@@ -100,11 +122,19 @@ open class MagicSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandle
         }
     }
 
-    override fun visualize(entity: Entity, victim: Entity?, state: BattleState?) {
+    override fun visualize(
+        entity: Entity,
+        victim: Entity?,
+        state: BattleState?,
+    ) {
         state!!.spell.visualize(entity, victim!!)
     }
 
-    override fun impact(entity: Entity?, victim: Entity?, state: BattleState?) {
+    override fun impact(
+        entity: Entity?,
+        victim: Entity?,
+        state: BattleState?,
+    ) {
         if (state!!.targets == null) {
             if (state.estimatedHit > -1) {
                 victim!!.impactHandler.handleImpact(entity, state.estimatedHit, CombatStyle.MAGIC, state) // Handle impact for the victim
@@ -120,7 +150,11 @@ open class MagicSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandle
         }
     }
 
-    override fun visualizeImpact(entity: Entity?, victim: Entity?, state: BattleState?) {
+    override fun visualizeImpact(
+        entity: Entity?,
+        victim: Entity?,
+        state: BattleState?,
+    ) {
         if (state!!.targets == null) {
             if (state.spell != null) {
                 state.spell.visualizeImpact(entity, victim, state)
@@ -155,11 +189,23 @@ open class MagicSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandle
         }
         val additional = getSetMultiplier(entity, Skills.MAGIC)
         val effective = floor(level * prayer * additional + spellBonus)
-        val bonus = if (!flags.contains(SwingHandlerFlag.IGNORE_STAT_BOOSTS_ACCURACY)) entity.properties.bonuses[WeaponInterface.BONUS_MAGIC] else 0
+        val bonus =
+            if (!flags.contains(
+                    SwingHandlerFlag.IGNORE_STAT_BOOSTS_ACCURACY,
+                )
+            ) {
+                entity.properties.bonuses[WeaponInterface.BONUS_MAGIC]
+            } else {
+                0
+            }
         return floor((effective + 8) * (bonus + 64) / 10).toInt()
     }
 
-    override fun calculateHit(entity: Entity?, victim: Entity?, modifier: Double): Int {
+    override fun calculateHit(
+        entity: Entity?,
+        victim: Entity?,
+        modifier: Double,
+    ): Int {
         var baseDamage = modifier
         if (baseDamage < 2.0 || entity is NPC) {
             if (baseDamage > 2.0) {
@@ -168,7 +214,9 @@ open class MagicSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandle
             val level = entity!!.skills.getLevel(Skills.MAGIC, true)
             val bonus = entity.properties.bonuses[if (entity is Player) 14 else 13]
             val cumulativeStr = level.toDouble()
-            return 1 + ((14 + cumulativeStr + bonus.toDouble() / 8 + cumulativeStr * bonus * 0.016865) * baseDamage).toInt() / 10
+            return 1 +
+                ((14 + cumulativeStr + bonus.toDouble() / 8 + cumulativeStr * bonus * 0.016865) * baseDamage).toInt() /
+                10
         }
         var levelMod = 1.0
         val entityMod = entity!!.getLevelMod(entity, victim)
@@ -178,7 +226,10 @@ open class MagicSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandle
         return (baseDamage * levelMod).toInt() + 1
     }
 
-    override fun calculateDefence(victim: Entity?, attacker: Entity?): Int {
+    override fun calculateDefence(
+        victim: Entity?,
+        attacker: Entity?,
+    ): Int {
         val level = victim!!.skills.getLevel(Skills.DEFENCE, true)
         var prayer = 1.0
         if (victim is Player) {
@@ -189,7 +240,10 @@ open class MagicSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandle
         return floor((effective + 8) * (equipment + 64) / 10).toInt()
     }
 
-    override fun getSetMultiplier(e: Entity?, skillId: Int): Double {
+    override fun getSetMultiplier(
+        e: Entity?,
+        skillId: Int,
+    ): Double {
         if (skillId == Skills.MAGIC) {
             if (e is Player && e.isWearingVoid(CombatStyle.MAGIC)) {
                 return 1.3
@@ -198,7 +252,11 @@ open class MagicSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandle
         return 1.0
     }
 
-    override fun addExperience(entity: Entity?, victim: Entity?, state: BattleState?) {
+    override fun addExperience(
+        entity: Entity?,
+        victim: Entity?,
+        state: BattleState?,
+    ) {
         if (state?.spell != null && entity is Player) {
             state.spell.addExperience(entity, state.totalDamage)
             return
@@ -210,6 +268,8 @@ open class MagicSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandle
     override fun getArmourSet(e: Entity?): ArmourSet? {
         return if (ArmourSet.AHRIM.isUsing(e)) {
             ArmourSet.AHRIM
-        } else super.getArmourSet(e)
+        } else {
+            super.getArmourSet(e)
+        }
     }
 }

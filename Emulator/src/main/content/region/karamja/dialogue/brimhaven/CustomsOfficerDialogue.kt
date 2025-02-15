@@ -1,8 +1,5 @@
 package content.region.karamja.dialogue.brimhaven
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.global.travel.charter.Charter
 import core.api.*
 import core.game.dialogue.Dialogue
@@ -14,10 +11,14 @@ import core.game.node.item.Item
 import core.game.world.map.Location
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class CustomsOfficerDialogue(player: Player? = null) : Dialogue(player) {
-
+class CustomsOfficerDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         if (args.size > 1) {
@@ -26,7 +27,14 @@ class CustomsOfficerDialogue(player: Player? = null) : Dialogue(player) {
                     npc("Aha, trying to smuggle rum are we?").also { stage = 900 }
                     return true
                 }
-                npc(FaceAnim.HALF_GUILTY, "Well you've got some odd stuff, but it's all legal. Now", "you need to pay a boarding charge of 30 coins.").also { stage = 121 }
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "Well you've got some odd stuff, but it's all legal. Now",
+                    "you need to pay a boarding charge of 30 coins.",
+                ).also {
+                    stage =
+                        121
+                }
                 return true
             }
         }
@@ -34,49 +42,81 @@ class CustomsOfficerDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
-
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         var amount = if (isDiaryComplete(player!!, DiaryType.KARAMJA, 0)) 15 else 30
         when (stage) {
             0 -> options("Can I journey on this ship?", "Does Karamja have unusual customs then?").also { stage++ }
-            1 -> when (buttonId) {
-                1 -> player(FaceAnim.HALF_GUILTY, "Can I journey on this ship?").also { stage = 10 }
-                2 -> player(FaceAnim.HALF_GUILTY, "Does Karamja have unusual customs then?").also { stage = 20 }
-            }
+            1 ->
+                when (buttonId) {
+                    1 -> player(FaceAnim.HALF_GUILTY, "Can I journey on this ship?").also { stage = 10 }
+                    2 -> player(FaceAnim.HALF_GUILTY, "Does Karamja have unusual customs then?").also { stage = 20 }
+                }
 
             10 -> npc(FaceAnim.HALF_GUILTY, "You need to be searched before you can board?").also { stage++ }
-            11 -> options("Why?", "Search away, I have nothing to hide.", "You're not putting your hands on my things!").also { stage++ }
+            11 ->
+                options(
+                    "Why?",
+                    "Search away, I have nothing to hide.",
+                    "You're not putting your hands on my things!",
+                ).also {
+                    stage++
+                }
 
-            12 -> when (buttonId) {
-                1 -> player(FaceAnim.HALF_GUILTY, "Why?").also { stage = 110 }
-                2 -> player(FaceAnim.HALF_GUILTY, "Search away, I have nothing to hide.").also { stage = 120 }
-                3 -> player(FaceAnim.HALF_GUILTY, "You're not putting your hands on my things!").also { stage = 130 }
-            }
+            12 ->
+                when (buttonId) {
+                    1 -> player(FaceAnim.HALF_GUILTY, "Why?").also { stage = 110 }
+                    2 -> player(FaceAnim.HALF_GUILTY, "Search away, I have nothing to hide.").also { stage = 120 }
+                    3 ->
+                        player(
+                            FaceAnim.HALF_GUILTY,
+                            "You're not putting your hands on my things!",
+                        ).also { stage = 130 }
+                }
 
             20 -> npc(FaceAnim.HALF_GUILTY, "I'm not that sort of customs officer.").also { stage = END_DIALOGUE }
-            110 -> npc(FaceAnim.HALF_GUILTY, "Because Asgarnia has banned the import of intoxicating", "spirits.").also { stage = END_DIALOGUE }
+            110 ->
+                npc(FaceAnim.HALF_GUILTY, "Because Asgarnia has banned the import of intoxicating", "spirits.").also {
+                    stage =
+                        END_DIALOGUE
+                }
 
             120 -> {
                 if (inInventory(player, Items.KARAMJAN_RUM_431)) {
                     npc("Aha, trying to smuggle rum are we?").also { stage = 900 }
                     return true
                 }
-                npc(FaceAnim.HALF_GUILTY, "Well you've got some odd stuff, but it's all legal. Now", "you need to pay a boarding charge of 30 coins.").also { stage++ }
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "Well you've got some odd stuff, but it's all legal. Now",
+                    "you need to pay a boarding charge of 30 coins.",
+                ).also {
+                    stage++
+                }
             }
 
             121 ->
                 if (isDiaryComplete(player!!, DiaryType.KARAMJA, 0)) {
-                    sendNPCDialogue(player, NPCs.CUSTOMS_OFFICER_380, "Hang on a sec, didn't you earn Karamja gloves? I thought I'd seen you helping around the island. You can go on half price, mate.").also { stage++ }
+                    sendNPCDialogue(
+                        player,
+                        NPCs.CUSTOMS_OFFICER_380,
+                        "Hang on a sec, didn't you earn Karamja gloves? I thought I'd seen you helping around the island. You can go on half price, mate.",
+                    ).also {
+                        stage++
+                    }
                 } else {
                     options("Ok.", "Oh, I'll not bother then.").also { stage = 123 }
                 }
 
             122 -> options("Ok.", "Oh, I'll not bother then.").also { stage++ }
 
-            123 -> when (buttonId) {
-                1 -> player(FaceAnim.HALF_GUILTY, "Ok.").also { stage = 210 }
-                2 -> player(FaceAnim.HALF_GUILTY, "Oh, I'll not bother then.").also { stage = END_DIALOGUE }
-            }
+            123 ->
+                when (buttonId) {
+                    1 -> player(FaceAnim.HALF_GUILTY, "Ok.").also { stage = 210 }
+                    2 -> player(FaceAnim.HALF_GUILTY, "Oh, I'll not bother then.").also { stage = END_DIALOGUE }
+                }
 
             130 -> npc(FaceAnim.HALF_GUILTY, "You're not getting on this ship then.").also { stage = END_DIALOGUE }
 

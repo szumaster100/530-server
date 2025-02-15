@@ -1,8 +1,5 @@
 package content.global.travel.charter
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.*
 import core.api.quest.isQuestComplete
 import core.game.container.impl.EquipmentContainer
@@ -13,14 +10,20 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.diary.DiaryType
 import core.game.node.item.Item
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class SeamanDialogue(player: Player? = null) : Dialogue(player) {
-
+class SeamanDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         if (args.size > 1 && isQuestComplete(player, Quests.PIRATES_TREASURE)) {
-            if (player.equipment[EquipmentContainer.SLOT_RING] != null && player.equipment[EquipmentContainer.SLOT_RING].id == Items.RING_OF_CHAROSA_6465) {
+            if (player.equipment[EquipmentContainer.SLOT_RING] != null &&
+                player.equipment[EquipmentContainer.SLOT_RING].id == Items.RING_OF_CHAROSA_6465
+            ) {
                 travel()
             } else if (isDiaryComplete(player, DiaryType.KARAMJA, 0)) {
                 pay(15)
@@ -36,7 +39,10 @@ class SeamanDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> npc(FaceAnim.HALF_GUILTY, "The trip will cost you 30 coins.").also { stage++ }
             1 -> {
@@ -52,19 +58,21 @@ class SeamanDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 2
             }
 
-            2 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "Yes, please.")
-                    stage = if (isDiaryComplete(player, DiaryType.KARAMJA, 0)) {
-                        9
-                    } else {
-                        11
+            2 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_GUILTY, "Yes, please.")
+                        stage =
+                            if (isDiaryComplete(player, DiaryType.KARAMJA, 0)) {
+                                9
+                            } else {
+                                11
+                            }
                     }
-                }
 
-                2 -> player(FaceAnim.HALF_GUILTY, "No, thank you.").also { stage = 20 }
-                3 -> player(FaceAnim.HALF_GUILTY, "Or I could pay you nothing at all...").also { stage = 5 }
-            }
+                    2 -> player(FaceAnim.HALF_GUILTY, "No, thank you.").also { stage = 20 }
+                    3 -> player(FaceAnim.HALF_GUILTY, "Or I could pay you nothing at all...").also { stage = 5 }
+                }
 
             5 -> npc(FaceAnim.HALF_GUILTY, "Mmmm ... Nothing at all you say ...").also { stage++ }
 
@@ -76,7 +84,15 @@ class SeamanDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 30
             }
 
-            9 -> npc(FaceAnim.HALF_GUILTY, "Wait a minute... Aren't those Karamja gloves?", "Thought I'd seen you helping around the island.", "You can go on half price - 15 coins.").also { stage++ }
+            9 ->
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "Wait a minute... Aren't those Karamja gloves?",
+                    "Thought I'd seen you helping around the island.",
+                    "You can go on half price - 15 coins.",
+                ).also {
+                    stage++
+                }
 
             10 -> pay(15)
             11 -> pay(30)

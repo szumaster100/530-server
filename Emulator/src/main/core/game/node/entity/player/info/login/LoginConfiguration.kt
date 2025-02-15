@@ -33,8 +33,22 @@ object LoginConfiguration {
     private val lobbyInterface = Component(Components.WELCOME_SCREEN_378)
     private val lobbyComponents =
         intArrayOf(
-            Components.MESSAGE_OF_THE_WEEK_17, Components.MESSAGE_OF_THE_WEEK_18, Components.MESSAGE_OF_THE_WEEK_19, Components.MESSAGE_OF_THE_WEEK_20,
-            Components.BANNER_PADLOCK_KEYS_15, Components.BANNER_ANTI_VIRUS_16, Components.BANNER_SCAMMING_21, Components.BANNER_SECURITY_22, Components.BANNER_XMAS_23, Components.BANNER_POH_405, Components.BANNER_CHATHEADS_447, Components.BANNER_GROUP_622, Components.BANNER_GROUP_ASSIST_623, Components.BANNER_SUMMONING_679, Components.BANNER_EASTER08_715, Components.BANNER_HALLOWEEN_800
+            Components.MESSAGE_OF_THE_WEEK_17,
+            Components.MESSAGE_OF_THE_WEEK_18,
+            Components.MESSAGE_OF_THE_WEEK_19,
+            Components.MESSAGE_OF_THE_WEEK_20,
+            Components.BANNER_PADLOCK_KEYS_15,
+            Components.BANNER_ANTI_VIRUS_16,
+            Components.BANNER_SCAMMING_21,
+            Components.BANNER_SECURITY_22,
+            Components.BANNER_XMAS_23,
+            Components.BANNER_POH_405,
+            Components.BANNER_CHATHEADS_447,
+            Components.BANNER_GROUP_622,
+            Components.BANNER_GROUP_ASSIST_623,
+            Components.BANNER_SUMMONING_679,
+            Components.BANNER_EASTER08_715,
+            Components.BANNER_HALLOWEEN_800,
         )
 
     @JvmStatic
@@ -62,13 +76,13 @@ object LoginConfiguration {
         PacketRepository.send(Interface::class.java, InterfaceContext(player, lobbyPane.id, 2, 378, true))
         PacketRepository.send(
             Interface::class.java,
-            InterfaceContext(player, lobbyPane.id, 3, selectedMessageModel, true)
+            InterfaceContext(player, lobbyPane.id, 3, selectedMessageModel, true),
         )
         sendString(
             player,
             GameWorld.settings?.message_string ?: "",
             selectedMessageModel,
-            getMessageChild(selectedMessageModel)
+            getMessageChild(selectedMessageModel),
         )
         player.details.lastLogin = System.currentTimeMillis()
     }
@@ -147,8 +161,18 @@ object LoginConfiguration {
         player.packetDispatch.sendRunEnergy()
         player.familiarManager.login()
 
-        sendString(player, "Friends List - ${ServerConfig.SERVER_NAME} ${GameWorld.settings?.worldId}", Components.FRIENDS2_550, 3)
-        sendString(player, "When you have finished playing ${ServerConfig.SERVER_NAME}, always use the button below to logout safely.", Components.LOGOUT_182, 0)
+        sendString(
+            player,
+            "Friends List - ${ServerConfig.SERVER_NAME} ${GameWorld.settings?.worldId}",
+            Components.FRIENDS2_550,
+            3,
+        )
+        sendString(
+            player,
+            "When you have finished playing ${ServerConfig.SERVER_NAME}, always use the button below to logout safely.",
+            Components.LOGOUT_182,
+            0,
+        )
 
         player.questRepository.syncronizeTab(player)
         player.interfaceManager.close()
@@ -164,7 +188,8 @@ object LoginConfiguration {
             Components.BANNER_GROUP_622 -> 8
             Components.BANNER_ANTI_VIRUS_16 -> 6
             Components.MESSAGE_OF_THE_WEEK_20,
-            Components.BANNER_GROUP_ASSIST_623 -> 5
+            Components.BANNER_GROUP_ASSIST_623,
+            -> 5
 
             Components.BANNER_PADLOCK_KEYS_15,
             Components.MESSAGE_OF_THE_WEEK_18,
@@ -172,10 +197,12 @@ object LoginConfiguration {
             Components.BANNER_SCAMMING_21,
             Components.BANNER_SECURITY_22,
             Components.BANNER_CHATHEADS_447,
-            Components.BANNER_POH_405 -> 4
+            Components.BANNER_POH_405,
+            -> 4
 
             Components.MESSAGE_OF_THE_WEEK_17,
-            Components.BANNER_XMAS_23, Components.BANNER_HALLOWEEN_800 -> 3
+            Components.BANNER_XMAS_23, Components.BANNER_HALLOWEEN_800,
+            -> 3
 
             Components.BANNER_EASTER08_715 -> 2
             Components.BANNER_SUMMONING_679 -> 1
@@ -193,7 +220,9 @@ object LoginConfiguration {
 
     @JvmStatic
     fun getLastLogin(player: Player): String {
-        var lastIp = player.details.accountInfo.lastUsedIp.ifEmpty { player.details.ipAddress }
+        var lastIp =
+            player.details.accountInfo.lastUsedIp
+                .ifEmpty { player.details.ipAddress }
         player.details.accountInfo.lastUsedIp = player.details.ipAddress
         val timeAgo = calculateTimeAgo(player.details.lastLogin)
         return "You last logged in $timeAgo from: $lastIp"
@@ -229,8 +258,14 @@ object LoginConfiguration {
         player.equipment.toArray().forEach { item ->
             if (item != null) {
                 player.equipment.remove(item)
-                if (!InteractionListeners.run(item.id, player, item, true) || !player.equipment.add(item, true, false)) {
-                    player.sendMessage(colorize("%RYou had items equipped in the wrong slots. They were moved out into your inventory."))
+                if (!InteractionListeners.run(item.id, player, item, true) ||
+                    !player.equipment.add(item, true, false)
+                ) {
+                    player.sendMessage(
+                        colorize(
+                            "%RYou had items equipped in the wrong slots. They were moved out into your inventory.",
+                        ),
+                    )
                     addItemOrBank(player, item.id, item.amount)
                 }
             }
@@ -242,8 +277,9 @@ object LoginConfiguration {
         if (currentSpellBook == SpellBookManager.SpellBook.ANCIENT && !hasRequirement(player, Quests.DESERT_TREASURE)) {
             player.sendMessage(colorize("%RAs you can no longer use Ancient Magic, you have been set back to Modern."))
             player.spellBookManager.spellBook = 0
-        }
-        else if (currentSpellBook == SpellBookManager.SpellBook.LUNAR && !hasRequirement(player, Quests.LUNAR_DIPLOMACY)) {
+        } else if (currentSpellBook == SpellBookManager.SpellBook.LUNAR &&
+            !hasRequirement(player, Quests.LUNAR_DIPLOMACY)
+        ) {
             player.sendMessage(colorize("%RAs you can no longer use Lunar Magic, you have been set back to Modern."))
             player.spellBookManager.spellBook = 0
         }

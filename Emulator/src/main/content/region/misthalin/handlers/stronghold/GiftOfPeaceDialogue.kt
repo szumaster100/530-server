@@ -12,15 +12,19 @@ import org.rs.consts.Items
 /**
  * Represents the Gift of peace dialogue.
  */
-class GiftOfPeaceDialogue(player: Player? = null) : Dialogue(player) {
-
+class GiftOfPeaceDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any?): Boolean {
         interpreter.sendDialogue("The box hinges creak and appear to be forming audible words....")
         stage = 0
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 if (!addItem(player, Items.COINS_995, 2000, Container.INVENTORY)) {
@@ -30,7 +34,7 @@ class GiftOfPeaceDialogue(player: Player? = null) : Dialogue(player) {
                 sendDialogueLines(
                     player,
                     "...congratulations adventurer, you have been deemed worthy of this",
-                    "reward. You have also unlocked the Flap emote!"
+                    "reward. You have also unlocked the Flap emote!",
                 )
                 stage = 1
                 player.emoteManager.unlock(Emotes.FLAP)

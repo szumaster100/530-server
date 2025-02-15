@@ -1,16 +1,19 @@
 package content.global.skill.crafting.glassblowing
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import core.api.*
 import core.game.event.ResourceProducedEvent
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.game.system.task.Pulse
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 
-class GlassblowingPulse(private val player: Player, private val product: Glass, private var amount: Int) : Pulse() {
-
+class GlassblowingPulse(
+    private val player: Player,
+    private val product: Glass,
+    private var amount: Int,
+) : Pulse() {
     override fun pulse(): Boolean {
         if (amount < 1) {
             return true

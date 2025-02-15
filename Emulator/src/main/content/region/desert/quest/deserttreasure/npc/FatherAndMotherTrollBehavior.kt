@@ -1,6 +1,5 @@
 package content.region.desert.quest.deserttreasure.npc
 
-import org.rs.consts.NPCs
 import content.region.desert.quest.deserttreasure.DesertTreasure
 import content.region.desert.quest.deserttreasure.dialogue.ChatFatherAndMotherTrollDialogueFile
 import core.api.*
@@ -12,17 +11,26 @@ import core.game.node.entity.combat.CombatStyle
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.npc.NPCBehavior
 import core.game.node.entity.player.Player
+import org.rs.consts.NPCs
 
-class FatherTrollBehavior : NPCBehavior(
-    NPCs.ICE_TROLL_1943
-
-) {
-
-    override fun canBeAttackedBy(self: NPC, attacker: Entity, style: CombatStyle, shouldSendMessage: Boolean): Boolean {
+class FatherTrollBehavior :
+    NPCBehavior(
+        NPCs.ICE_TROLL_1943,
+    ) {
+    override fun canBeAttackedBy(
+        self: NPC,
+        attacker: Entity,
+        style: CombatStyle,
+        shouldSendMessage: Boolean,
+    ): Boolean {
         return attacker is Player
     }
 
-    override fun beforeDamageReceived(self: NPC, attacker: Entity, state: BattleState) {
+    override fun beforeDamageReceived(
+        self: NPC,
+        attacker: Entity,
+        state: BattleState,
+    ) {
         if (attacker is Player) {
             self.properties.combatPulse.stop()
             attacker.properties.combatPulse.stop()
@@ -44,7 +52,7 @@ class FatherTrollBehavior : NPCBehavior(
                             attacker,
                             NPCs.TROLL_FATHER_1948,
                             "Oh thank you! It was really cold in there! But please, you must free my wife as well! Our son is depending on us!",
-                            FaceAnim.OLD_CALM_TALK2
+                            FaceAnim.OLD_CALM_TALK2,
                         )
                         return@queueScript stopExecuting(self)
                     }
@@ -55,11 +63,20 @@ class FatherTrollBehavior : NPCBehavior(
 }
 
 class MotherTrollBehavior : NPCBehavior(NPCs.ICE_BLOCK_1945) {
-    override fun canBeAttackedBy(self: NPC, attacker: Entity, style: CombatStyle, shouldSendMessage: Boolean): Boolean {
+    override fun canBeAttackedBy(
+        self: NPC,
+        attacker: Entity,
+        style: CombatStyle,
+        shouldSendMessage: Boolean,
+    ): Boolean {
         return attacker is Player
     }
 
-    override fun beforeDamageReceived(self: NPC, attacker: Entity, state: BattleState) {
+    override fun beforeDamageReceived(
+        self: NPC,
+        attacker: Entity,
+        state: BattleState,
+    ) {
         if (attacker is Player) {
             self.properties.combatPulse.stop()
             attacker.properties.combatPulse.stop()
@@ -81,7 +98,7 @@ class MotherTrollBehavior : NPCBehavior(NPCs.ICE_BLOCK_1945) {
                             attacker,
                             NPCs.TROLL_MOTHER_1950,
                             "Wow, thanks for breaking me out of that ice! But please, my husband is still trapped in there!",
-                            FaceAnim.OLD_CALM_TALK2
+                            FaceAnim.OLD_CALM_TALK2,
                         )
                         return@queueScript stopExecuting(self)
                     }

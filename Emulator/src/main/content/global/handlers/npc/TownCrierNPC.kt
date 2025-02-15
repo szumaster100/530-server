@@ -1,19 +1,24 @@
 package content.global.handlers.npc
 
-import org.rs.consts.Animations
-import org.rs.consts.NPCs
 import core.api.animate
 import core.api.sendChat
 import core.api.stopWalk
-import core.api.toIntArray
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.npc.NPCBehavior
 import core.tools.RandomFunction
+import org.rs.consts.Animations
+import org.rs.consts.NPCs
 
-private val IDS = intArrayOf(NPCs.TOWN_CRIER_6135, NPCs.TOWN_CRIER_6136, NPCs.TOWN_CRIER_6137, NPCs.TOWN_CRIER_6138, NPCs.TOWN_CRIER_6139)
+private val IDS =
+    intArrayOf(
+        NPCs.TOWN_CRIER_6135,
+        NPCs.TOWN_CRIER_6136,
+        NPCs.TOWN_CRIER_6137,
+        NPCs.TOWN_CRIER_6138,
+        NPCs.TOWN_CRIER_6139,
+    )
 
 class TownCrierNPC : NPCBehavior(*IDS) {
-
     override fun tick(self: NPC): Boolean {
         when {
             RandomFunction.random(100) < 5 -> {

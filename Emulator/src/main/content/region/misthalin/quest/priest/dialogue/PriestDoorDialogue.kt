@@ -1,6 +1,5 @@
 package content.region.misthalin.quest.priest.dialogue
 
-import org.rs.consts.Quests
 import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
 import core.game.dialogue.Dialogue
@@ -9,10 +8,12 @@ import core.game.global.action.DoorActionHandler
 import core.game.node.entity.player.Player
 import core.game.node.scenery.Scenery
 import core.plugin.Initializable
+import org.rs.consts.Quests
 
 @Initializable
-class PriestDoorDialogue(player: Player? = null) : Dialogue(player) {
-
+class PriestDoorDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     private var door: Scenery? = null
 
     override fun open(vararg args: Any): Boolean {
@@ -20,7 +21,7 @@ class PriestDoorDialogue(player: Player? = null) : Dialogue(player) {
         if (getQuestStage(player, Quests.PRIEST_IN_PERIL) == 10) {
             sendDialogue(
                 "You knock at the door...You hear a voice from inside.",
-                "${BLUE}Who are you, and what do you want?"
+                "${BLUE}Who are you, and what do you want?",
             )
             stage = 0
         }
@@ -28,7 +29,7 @@ class PriestDoorDialogue(player: Player? = null) : Dialogue(player) {
             sendDialogue(
                 "You knock at the door...You hear a voice from inside.",
                 "${BLUE}You again?",
-                "${BLUE}What do you want now?"
+                "${BLUE}What do you want now?",
             )
             stage = 11
         }
@@ -39,7 +40,10 @@ class PriestDoorDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 player(FaceAnim.HALF_GUILTY, "Ummmm.....")
@@ -56,7 +60,7 @@ class PriestDoorDialogue(player: Player? = null) : Dialogue(player) {
                     "$BLUE(Psst... Hey... Who's Roald? Who's Drezel?)$RED(Uh... isn't Drezel that",
                     "${RED}dude upstairs? Oh, wait, Roald's the King of Varrock right?)$BLUE(He is???",
                     "${BLUE}Aw man... Hey, you deal with this okay?) He's just coming! Wait a",
-                    "${BLUE}second!${RED}Hello, my name is Drevil. $BLUE(Drezel!)$RED I mean Drezel."
+                    "${BLUE}second!${RED}Hello, my name is Drevil. $BLUE(Drezel!)$RED I mean Drezel.",
                 )
                 stage = 3
             }
@@ -65,7 +69,7 @@ class PriestDoorDialogue(player: Player? = null) : Dialogue(player) {
                 player(
                     FaceAnim.HALF_GUILTY,
                     "Well, as I say, the King sent me to make sure",
-                    "everything's okay with you."
+                    "everything's okay with you.",
                 )
                 stage = 4
             }
@@ -83,7 +87,7 @@ class PriestDoorDialogue(player: Player? = null) : Dialogue(player) {
             6 -> {
                 interpreter.sendDialogue(
                     "${RED}Ah, good, well, I don't think... $BLUE(Psst... hey... the dog!)$RED OH! Yes, of",
-                    "course! Will you do me a favour adventurer?"
+                    "course! Will you do me a favour adventurer?",
                 )
                 stage = 7
             }
@@ -98,7 +102,7 @@ class PriestDoorDialogue(player: Player? = null) : Dialogue(player) {
                     "${RED}HAHAHAHA! Really? Thanks buddy! You see that mausoleum out",
                     "${RED}there? There's a horrible big dog underneath it that I'd like you to",
                     "${RED}kill for me! It's been really bugging me! Barking all the time and",
-                    "${RED}stuff! Please kill it for me buddy!"
+                    "${RED}stuff! Please kill it for me buddy!",
                 )
                 stage = 9
             }
@@ -121,7 +125,7 @@ class PriestDoorDialogue(player: Player? = null) : Dialogue(player) {
             12 -> {
                 interpreter.sendDialogue(
                     "${BLUE}HAHAHAHAHA! Really? Hey, that's great!${RED}Yeah thanks a lot buddy!",
-                    "${RED}HAHAHAHAHAHA"
+                    "${RED}HAHAHAHAHAHA",
                 )
                 stage = 13
             }
@@ -135,7 +139,7 @@ class PriestDoorDialogue(player: Player? = null) : Dialogue(player) {
                 interpreter.sendDialogue(
                     "${BLUE}HAHAHAHA nothing buddy! We're just so grateful to you!",
                     "${BLUE}HAHAHA$RED Yeah, maybe you should go tell the King what a great job",
-                    "${RED}you did buddy! HAHAHA"
+                    "${RED}you did buddy! HAHAHA",
                 )
                 stage = 15
             }

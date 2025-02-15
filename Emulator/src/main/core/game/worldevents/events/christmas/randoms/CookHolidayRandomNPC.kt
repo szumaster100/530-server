@@ -9,7 +9,8 @@ import core.tools.minutesToTicks
 import org.rs.consts.NPCs
 
 class CookHolidayRandomNPC : HolidayRandomEventNPC(NPCs.COOK_4239) {
-    private val cookLines = listOf("@name, are you there?", "Would you like a fresh baked cake, @name?", "Happy Holidays, @name!")
+    private val cookLines =
+        listOf("@name, are you there?", "Would you like a fresh baked cake, @name?", "Happy Holidays, @name!")
     private var hasTalkedWith = false
 
     override fun init() {
@@ -19,8 +20,9 @@ class CookHolidayRandomNPC : HolidayRandomEventNPC(NPCs.COOK_4239) {
     }
 
     override fun tick() {
-        if (RandomFunction.roll(15) && !hasTalkedWith)
+        if (RandomFunction.roll(15) && !hasTalkedWith) {
             sendChat(this, cookLines.random().replace("@name", player.username))
+        }
 
         super.tick()
     }

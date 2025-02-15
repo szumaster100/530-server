@@ -64,7 +64,10 @@ open class WeightBasedTable : ArrayList<WeightedItem>() {
      * @param times The number of times to roll.
      * @return A list of items rolled.
      */
-    open fun roll(receiver: Entity? = null, times: Int = 1): ArrayList<Item> {
+    open fun roll(
+        receiver: Entity? = null,
+        times: Int = 1,
+    ): ArrayList<Item> {
         val items = ArrayList<WeightedItem>((guaranteedItems.size + 1) * times)
 
         for (i in 0 until times) {
@@ -94,43 +97,48 @@ open class WeightBasedTable : ArrayList<WeightedItem>() {
      * @param receiver The entity that will receive the items.
      * @return A list of items corresponding to the weighted items.
      */
-    fun convertWeightedItems(weightedItems: ArrayList<WeightedItem>, receiver: Entity?): ArrayList<Item> {
+    fun convertWeightedItems(
+        weightedItems: ArrayList<WeightedItem>,
+        receiver: Entity?,
+    ): ArrayList<Item> {
         val safeItems = ArrayList<Item>()
         for (e in weightedItems) {
-            val safeItem = when (e.id) {
-                SLOT_CLUE_EASY -> ClueScrollPlugin.getClue(ClueLevel.EASY)
-                SLOT_CLUE_MEDIUM -> ClueScrollPlugin.getClue(ClueLevel.MEDIUM)
-                SLOT_CLUE_HARD -> ClueScrollPlugin.getClue(ClueLevel.HARD)
-                SLOT_RDT -> RareDropTable.retrieve(receiver)
-                SLOT_CELEDT -> CELEMinorTable.retrieve(receiver)
-                SLOT_USDT -> UncommonSeedDropTable.retrieve(receiver)
-                SLOT_HDT -> {
-                    if (RandomFunction.nextBool() && receiver is Player) {
-                        if (inEquipment(receiver, Items.IRIT_GLOVES_12856)) {
-                            FOGGlovesListener.updateCharges(receiver)
-                            Item(Items.GRIMY_IRIT_209)
-                        } else if (inEquipment(receiver, Items.AVANTOE_GLOVES_12857)) {
-                            FOGGlovesListener.updateCharges(receiver)
-                            Item(Items.GRIMY_AVANTOE_211)
-                        } else if (inEquipment(receiver, Items.KWUARM_GLOVES_12858)) {
-                            FOGGlovesListener.updateCharges(receiver)
-                            Item(Items.GRIMY_KWUARM_213)
-                        } else if (inEquipment(receiver, Items.CADANTINE_GLOVES_12859)) {
-                            FOGGlovesListener.updateCharges(receiver)
-                            Item(Items.GRIMY_CADANTINE_215)
-                        } else
+            val safeItem =
+                when (e.id) {
+                    SLOT_CLUE_EASY -> ClueScrollPlugin.getClue(ClueLevel.EASY)
+                    SLOT_CLUE_MEDIUM -> ClueScrollPlugin.getClue(ClueLevel.MEDIUM)
+                    SLOT_CLUE_HARD -> ClueScrollPlugin.getClue(ClueLevel.HARD)
+                    SLOT_RDT -> RareDropTable.retrieve(receiver)
+                    SLOT_CELEDT -> CELEMinorTable.retrieve(receiver)
+                    SLOT_USDT -> UncommonSeedDropTable.retrieve(receiver)
+                    SLOT_HDT -> {
+                        if (RandomFunction.nextBool() && receiver is Player) {
+                            if (inEquipment(receiver, Items.IRIT_GLOVES_12856)) {
+                                FOGGlovesListener.updateCharges(receiver)
+                                Item(Items.GRIMY_IRIT_209)
+                            } else if (inEquipment(receiver, Items.AVANTOE_GLOVES_12857)) {
+                                FOGGlovesListener.updateCharges(receiver)
+                                Item(Items.GRIMY_AVANTOE_211)
+                            } else if (inEquipment(receiver, Items.KWUARM_GLOVES_12858)) {
+                                FOGGlovesListener.updateCharges(receiver)
+                                Item(Items.GRIMY_KWUARM_213)
+                            } else if (inEquipment(receiver, Items.CADANTINE_GLOVES_12859)) {
+                                FOGGlovesListener.updateCharges(receiver)
+                                Item(Items.GRIMY_CADANTINE_215)
+                            } else {
+                                HerbDropTable.retrieve(receiver)
+                            }
+                        } else {
                             HerbDropTable.retrieve(receiver)
-                    } else {
-                        HerbDropTable.retrieve(receiver)
+                        }
                     }
-                }
 
-                SLOT_GDT -> GemDropTable.retrieve(receiver)
-                SLOT_RSDT -> RareSeedDropTable.retrieve(receiver)
-                SLOT_ASDT -> AllotmentSeedDropTable.retrieve(receiver)
-                Items.DWARF_REMAINS_0 -> continue
-                else -> e.getItem()
-            }
+                    SLOT_GDT -> GemDropTable.retrieve(receiver)
+                    SLOT_RSDT -> RareSeedDropTable.retrieve(receiver)
+                    SLOT_ASDT -> AllotmentSeedDropTable.retrieve(receiver)
+                    Items.DWARF_REMAINS_0 -> continue
+                    else -> e.getItem()
+                }
             safeItems.add(safeItem ?: continue)
         }
         return safeItems
@@ -272,7 +280,11 @@ open class WeightBasedTable : ArrayList<WeightedItem>() {
     override fun toString(): String {
         val builder = StringBuilder()
         for (item in this) {
-            builder.append("${ItemDefinition.forId(item.id).name} || Weight: ${item.weight} || MinAmt: ${item.minAmt} || maxAmt: ${item.maxAmt}")
+            builder.append(
+                "${ItemDefinition.forId(
+                    item.id,
+                ).name} || Weight: ${item.weight} || MinAmt: ${item.minAmt} || maxAmt: ${item.maxAmt}",
+            )
             builder.appendLine()
         }
         return builder.toString()

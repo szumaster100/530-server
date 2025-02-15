@@ -9,8 +9,9 @@ import core.game.node.entity.player.Player
 import core.plugin.Initializable
 
 @Initializable
-class MorrisDialogue(player: Player? = null) : Dialogue(player) {
-
+class MorrisDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         player(FaceAnim.HALF_GUILTY, "What are you sitting around here for?")
@@ -18,10 +19,17 @@ class MorrisDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
-                npc(FaceAnim.HALF_GUILTY, "I'm making sure only those with a competition pass enter", "the fishing contest.")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "I'm making sure only those with a competition pass enter",
+                    "the fishing contest.",
+                )
                 stage++
             }
 

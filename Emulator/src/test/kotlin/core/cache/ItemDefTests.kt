@@ -8,6 +8,7 @@ import java.io.File
 
 class ItemDefTests {
     val knownGood = HashMap<Int, Int>()
+
     init {
         TestUtils.preTestSetup()
     }
@@ -21,7 +22,11 @@ class ItemDefTests {
         }
         for ((id, expectedValue) in knownGood) {
             val def = itemDefinition(id)
-            Assertions.assertEquals(expectedValue, def.value, "Value of ${def.name} (${def.isUnnoted}) does not match known good values!")
+            Assertions.assertEquals(
+                expectedValue,
+                def.value,
+                "Value of ${def.name} (${def.isUnnoted}) does not match known good values!",
+            )
         }
     }
 }

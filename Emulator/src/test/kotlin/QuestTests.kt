@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test
 
 class QuestTests {
     lateinit var testPlayer: MockPlayer
+
     init {
         TestUtils.preTestSetup()
         testPlayer = TestUtils.getMockPlayer("test")
@@ -15,6 +16,7 @@ class QuestTests {
             return this
         }
     }
+
     val testQuest = TestQuest()
 
     @Test fun getIndexShouldNotThrowException() {
@@ -59,7 +61,7 @@ class QuestTests {
                 repo.getQuest("Test Quest").finish(testPlayer)
                 repo.getQuest("Test Quest").finish(testPlayer)
             },
-            "Quest completed twice without throwing an exception or threw wrong exception!"
+            "Quest completed twice without throwing an exception or threw wrong exception!",
         )
     }
 }

@@ -1,7 +1,5 @@
 package content.global.skill.agility.shortcuts
 
-import org.rs.consts.Animations
-import org.rs.consts.Sounds
 import content.global.skill.agility.AgilityHandler
 import content.global.skill.agility.AgilityShortcut
 import core.api.lock
@@ -14,16 +12,17 @@ import core.game.world.GameWorld
 import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Animations
+import org.rs.consts.Sounds
 
 @Initializable
 class PipeShortcut : AgilityShortcut {
-
     constructor() : super(intArrayOf(), 0, 0.0, "")
     constructor(ids: IntArray?, level: Int, experience: Double, vararg options: String?) : super(
         ids,
         level,
         experience,
-        *options
+        *options,
     )
 
     override fun newInstance(arg: Any?): Plugin<Any> {
@@ -36,7 +35,12 @@ class PipeShortcut : AgilityShortcut {
         return this
     }
 
-    override fun run(player: Player, obj: Scenery, option: String, failed: Boolean) {
+    override fun run(
+        player: Player,
+        obj: Scenery,
+        option: String,
+        failed: Boolean,
+    ) {
         GameWorld.Pulser.submit(
             object : Pulse(1, player) {
                 override fun pulse(): Boolean {
@@ -51,7 +55,7 @@ class PipeShortcut : AgilityShortcut {
                                 Animation.create(10580),
                                 10,
                                 0.0,
-                                null
+                                null,
                             )
                             player.animate(Animation(Animations.CRAWL_844), 3)
                             player.animate(Animation(Animations.CLIMB_OUT_OF_OBSTACLE_10579), 5)
@@ -69,7 +73,7 @@ class PipeShortcut : AgilityShortcut {
                                 Animation.create(10580),
                                 10,
                                 0.0,
-                                null
+                                null,
                             )
                             player.animate(Animation(Animations.CRAWL_844), 4)
                             player.animate(Animation(Animations.CLIMB_OUT_OF_OBSTACLE_10579), 6)
@@ -91,7 +95,7 @@ class PipeShortcut : AgilityShortcut {
                                 Animation.create(10580),
                                 15,
                                 0.0,
-                                null
+                                null,
                             )
                             return true
                         }
@@ -110,7 +114,7 @@ class PipeShortcut : AgilityShortcut {
                                 Animation.create(10580),
                                 10,
                                 0.0,
-                                null
+                                null,
                             )
                             player.animate(Animation(Animations.CRAWL_844), 3)
                             player.animate(Animation(Animations.CLIMB_OUT_OF_OBSTACLE_10579), 5)
@@ -120,7 +124,7 @@ class PipeShortcut : AgilityShortcut {
                     }
                     return false
                 }
-            }
+            },
         )
     }
 

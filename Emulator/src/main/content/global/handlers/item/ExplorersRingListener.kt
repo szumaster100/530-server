@@ -1,7 +1,5 @@
 package content.global.handlers.item
 
-import org.rs.consts.Graphics
-import org.rs.consts.Items
 import content.global.skill.magic.spells.modern.AlchemySpell
 import core.ServerStore
 import core.ServerStore.Companion.getInt
@@ -13,11 +11,11 @@ import core.game.node.entity.player.link.TeleportManager.TeleportType
 import core.game.node.entity.skill.Skills
 import core.game.world.map.Location
 import org.json.simple.JSONObject
+import org.rs.consts.Graphics
+import org.rs.consts.Items
 
 class ExplorersRingListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(RINGS, IntType.ITEM, "operate", "rub") { player, node ->
             if (getRingLevel(node.id) < 3) {
                 sendMessage(player, "This item can not be operated.")

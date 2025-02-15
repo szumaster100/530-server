@@ -1,8 +1,5 @@
 package content.region.misthalin.quest.firedup
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
 import content.minigame.allfiredup.AFUBeacon
 import core.api.*
 import core.api.quest.isQuestComplete
@@ -11,11 +8,16 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
 
 @Initializable
 class AllFiredUp : Quest(Quests.ALL_FIRED_UP, 157, 156, 1) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 11
         player ?: return
@@ -29,13 +31,13 @@ class AllFiredUp : Quest(Quests.ALL_FIRED_UP, 157, 156, 1) {
                 player,
                 "I need level !!43 Firemaking?? to start the quest.",
                 line++,
-                getStatLevel(player, Skills.FIREMAKING) >= 43
+                getStatLevel(player, Skills.FIREMAKING) >= 43,
             )
             line(
                 player,
                 "I need to have completed !!${Quests.PRIEST_IN_PERIL}??.",
                 line++,
-                isQuestComplete(player, Quests.PRIEST_IN_PERIL)
+                isQuestComplete(player, Quests.PRIEST_IN_PERIL),
             )
         } else {
             line(player, "I have agreed to help King Roald test the beacon network", line++, true)
@@ -159,10 +161,16 @@ class AllFiredUp : Quest(Quests.ALL_FIRED_UP, 157, 156, 1) {
         updateQuestTab(player)
     }
 
-    override fun getConfig(player: Player?, stage: Int): IntArray {
+    override fun getConfig(
+        player: Player?,
+        stage: Int,
+    ): IntArray {
         if (stage == 100) return intArrayOf(1282, 90)
-        if (stage > 0) return intArrayOf(1282, 1)
-        else return intArrayOf(1282, 0)
+        if (stage > 0) {
+            return intArrayOf(1282, 1)
+        } else {
+            return intArrayOf(1282, 0)
+        }
     }
 
     override fun newInstance(`object`: Any?): Quest {

@@ -1,6 +1,5 @@
 package content.minigame.pestcontrol.npc
 
-import org.rs.consts.NPCs
 import content.minigame.pestcontrol.PestControlSession
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.*
@@ -17,6 +16,7 @@ import core.game.world.map.MapDistance
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
 import core.plugin.Plugin
+import org.rs.consts.NPCs
 
 class PCTorcherNPC : AbstractNPC {
     private var session: PestControlSession? = null
@@ -46,7 +46,10 @@ class PCTorcherNPC : AbstractNPC {
         return mover is NPC
     }
 
-    override fun onImpact(entity: Entity, state: BattleState) {
+    override fun onImpact(
+        entity: Entity,
+        state: BattleState,
+    ) {
         super.onImpact(entity, state)
         if (session != null && entity is Player) {
             var total = 0
@@ -60,7 +63,11 @@ class PCTorcherNPC : AbstractNPC {
         return SWING_HANDLER
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return PCTorcherNPC(id, location)
     }
 
@@ -75,45 +82,55 @@ class PCTorcherNPC : AbstractNPC {
             NPCs.TORCHER_3758,
             NPCs.TORCHER_3759,
             NPCs.TORCHER_3760,
-            NPCs.TORCHER_3761
+            NPCs.TORCHER_3761,
         )
     }
 
     companion object {
         private val SPELL = TorcherSpell()
-        private val SWING_HANDLER: CombatSwingHandler = object : MagicSwingHandler() {
-            override fun canSwing(entity: Entity, victim: Entity): InteractionType? {
-                if (!isProjectileClipped(entity, victim, false)) {
+        private val SWING_HANDLER: CombatSwingHandler =
+            object : MagicSwingHandler() {
+                override fun canSwing(
+                    entity: Entity,
+                    victim: Entity,
+                ): InteractionType? {
+                    if (!isProjectileClipped(entity, victim, false)) {
+                        return InteractionType.NO_INTERACT
+                    }
+                    if (victim.centerLocation.withinDistance(entity.centerLocation, 8) &&
+                        isAttackable(
+                            entity,
+                            victim,
+                        ) !== InteractionType.NO_INTERACT
+                    ) {
+                        if (victim.location.withinDistance(entity.location, MapDistance.RENDERING.distance / 2)) {
+                            entity.walkingQueue.reset()
+                        }
+                        return InteractionType.STILL_INTERACT
+                    }
                     return InteractionType.NO_INTERACT
                 }
-                if (victim.centerLocation.withinDistance(entity.centerLocation, 8) && isAttackable(
-                        entity,
-                        victim
-                    ) !== InteractionType.NO_INTERACT
-                ) {
-                    if (victim.location.withinDistance(entity.location, MapDistance.RENDERING.distance / 2)) {
-                        entity.walkingQueue.reset()
-                    }
-                    return InteractionType.STILL_INTERACT
-                }
-                return InteractionType.NO_INTERACT
             }
-        }
     }
 
-    internal class TorcherSpell : CombatSpell(
-        SpellType.STRIKE,
-        SpellBook.MODERN,
-        0,
-        0.0,
-        -1,
-        -1,
-        Animation(3882, Priority.HIGH),
-        Graphics.create(org.rs.consts.Graphics.ORANGE_BALL_CHARGE_646),
-        Projectile.create(null as Entity?, null, org.rs.consts.Graphics.ORANGE_BALL_647, 40, 36, 52, 75, 15, 11),
-        Graphics(org.rs.consts.Graphics.RED_SPELL_648, 96)
-    ) {
-        override fun getMaximumImpact(entity: Entity, victim: Entity, state: BattleState): Int {
+    internal class TorcherSpell :
+        CombatSpell(
+            SpellType.STRIKE,
+            SpellBook.MODERN,
+            0,
+            0.0,
+            -1,
+            -1,
+            Animation(3882, Priority.HIGH),
+            Graphics.create(org.rs.consts.Graphics.ORANGE_BALL_CHARGE_646),
+            Projectile.create(null as Entity?, null, org.rs.consts.Graphics.ORANGE_BALL_647, 40, 36, 52, 75, 15, 11),
+            Graphics(org.rs.consts.Graphics.RED_SPELL_648, 96),
+        ) {
+        override fun getMaximumImpact(
+            entity: Entity,
+            victim: Entity,
+            state: BattleState,
+        ): Int {
             return entity.properties.currentCombatLevel / 7
         }
 

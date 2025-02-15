@@ -7,7 +7,7 @@ import core.game.world.map.build.DynamicRegion
 
 class RegionSpecification(
     val regionContract: RegionSpecContract = EmptyRegionContract(),
-    vararg val chunkContracts: ChunkSpecContract = arrayOf(EmptyChunkContract())
+    vararg val chunkContracts: ChunkSpecContract = arrayOf(EmptyChunkContract()),
 ) {
     constructor(vararg chunkContracts: ChunkSpecContract) : this(EmptyRegionContract(), *chunkContracts)
 

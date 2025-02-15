@@ -14,13 +14,12 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.node.scenery.Scenery
 import core.game.world.map.Location
+import core.plugin.ClassScanner.definePlugin
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner.definePlugin
 
 @Initializable
 class WarriorsGuildOption : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         SceneryDefinition.forId(15653).handlers["option:open"] = this
         SceneryDefinition.forId(1530).handlers["option:open"] = this
@@ -30,7 +29,11 @@ class WarriorsGuildOption : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         when (node.id) {
             15653, 1530 -> {
                 if (node.id == 1530 && node.location != Location(2837, 3549, 0)) {
@@ -45,16 +48,20 @@ class WarriorsGuildOption : OptionHandler() {
                 }
             }
 
-            else -> when (option) {
-                "claim-shield" -> player.dialogueInterpreter.open(4287, node, true)
-                "claim-tokens" -> player.dialogueInterpreter.open("wg:claim-tokens", node.id)
-            }
+            else ->
+                when (option) {
+                    "claim-shield" -> player.dialogueInterpreter.open(4287, node, true)
+                    "claim-tokens" -> player.dialogueInterpreter.open("wg:claim-tokens", node.id)
+                }
         }
         return true
     }
 
     private fun canEnter(player: Player): Boolean {
-        return player.getSkills().getStaticLevel(Skills.ATTACK) + player.getSkills().getStaticLevel(Skills.STRENGTH) >= 130 || player.getSkills().getStaticLevel(Skills.ATTACK) == 99 || player.getSkills().getStaticLevel(Skills.STRENGTH) == 99
+        return player.getSkills().getStaticLevel(Skills.ATTACK) + player.getSkills().getStaticLevel(Skills.STRENGTH) >=
+            130 ||
+            player.getSkills().getStaticLevel(Skills.ATTACK) == 99 ||
+            player.getSkills().getStaticLevel(Skills.STRENGTH) == 99
     }
 
     class ClaimTokenDialogue : Dialogue {
@@ -74,14 +81,17 @@ class WarriorsGuildOption : OptionHandler() {
             return true
         }
 
-        override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+        override fun handle(
+            interfaceId: Int,
+            buttonId: Int,
+        ): Boolean {
             val tokens = player.getSavedData().activityData.warriorGuildTokens
             when (stage) {
                 0 ->
                     if (tokens < 1) {
                         npc(
                             "I'm afraid you have not earned any tokens yet. Try",
-                            "some of the activities around the guild to earn some."
+                            "some of the activities around the guild to earn some.",
                         )
                         stage = 3
                     } else {

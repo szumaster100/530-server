@@ -1,6 +1,5 @@
 package content.global.ame.pillory
 
-import org.rs.consts.NPCs
 import content.data.GameAttributes
 import content.data.RandomEvent
 import content.global.ame.RandomEventNPC
@@ -10,9 +9,11 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.link.TeleportManager
 import core.game.system.task.Pulse
 import core.game.system.timer.impl.AntiMacro
+import org.rs.consts.NPCs
 
-class PilloryNPC(override var loot: WeightBasedTable? = null) : RandomEventNPC(NPCs.PILLORY_GUARD_2791) {
-
+class PilloryNPC(
+    override var loot: WeightBasedTable? = null,
+) : RandomEventNPC(NPCs.PILLORY_GUARD_2791) {
     override fun init() {
         super.init()
         lock(player, 4)
@@ -21,6 +22,7 @@ class PilloryNPC(override var loot: WeightBasedTable? = null) : RandomEventNPC(N
             player,
             object : Pulse(1) {
                 var counter = 0
+
                 override fun pulse(): Boolean {
                     when (counter++) {
                         0 -> {
@@ -37,14 +39,19 @@ class PilloryNPC(override var loot: WeightBasedTable? = null) : RandomEventNPC(N
                             setAttribute(player, GameAttributes.RE_PILLORY_SCORE, 0)
                             setAttribute(player, GameAttributes.RE_PILLORY_TARGET, true)
                             removeTabs(player, 0, 1, 2, 3, 4, 5, 6, 12)
-                            sendPlainDialogue(player, true, "", "Solve the pillory puzzle to be returned to where you came from.")
+                            sendPlainDialogue(
+                                player,
+                                true,
+                                "",
+                                "Solve the pillory puzzle to be returned to where you came from.",
+                            )
                             AntiMacro.terminateEventNpc(player)
                             return true
                         }
                     }
                     return false
                 }
-            }
+            },
         )
     }
 

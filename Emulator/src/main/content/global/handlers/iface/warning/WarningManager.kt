@@ -8,7 +8,6 @@ import core.game.node.entity.player.Player
 import org.rs.consts.Components
 
 object WarningManager {
-
     private val warningStates = mutableMapOf<Warnings, Boolean>()
 
     init {
@@ -18,14 +17,20 @@ object WarningManager {
     }
 
     @JvmStatic
-    fun turn(player: Player, component: Int): Boolean {
+    fun turn(
+        player: Player,
+        component: Int,
+    ): Boolean {
         val warning = Warnings.values.find { it.component == component } ?: return false
         val currentVarbit = getVarbit(player, warning.varbit)
         return currentVarbit == 7
     }
 
     @JvmStatic
-    fun toggle(player: Player, component: Int) {
+    fun toggle(
+        player: Player,
+        component: Int,
+    ) {
         val warning = Warnings.values.find { it.component == component } ?: return
         val currentState = warningStates[warning] ?: false
         val newState = !currentState
@@ -34,7 +39,8 @@ object WarningManager {
         setVarbit(player, warning.varbit, varbitId, true)
         sendMessage(
             player,
-            "You have toggled this warning screen " + (if (newState) "off" else "on") + ". You will " + (if (!newState) "see this interface again." else "no longer see this warning screen.")
+            "You have toggled this warning screen " + (if (newState) "off" else "on") + ". You will " +
+                (if (!newState) "see this interface again." else "no longer see this warning screen."),
         )
     }
 
@@ -45,7 +51,10 @@ object WarningManager {
     }
 
     @JvmStatic
-    fun increment(player: Player, warningId: Int) {
+    fun increment(
+        player: Player,
+        warningId: Int,
+    ) {
         val warning = Warnings.values.find { it.component == warningId } ?: return
         val tries = getVarbit(player, warning.varbit)
         if (tries >= 6) {
@@ -53,7 +62,6 @@ object WarningManager {
                 Components.WILDERNESS_WARNING_382 -> sendInterfaceConfig(player, warning.component, 26, false)
                 else -> sendInterfaceConfig(player, warning.component, 21, false)
             }
-
         }
 
         if (tries < 6) {

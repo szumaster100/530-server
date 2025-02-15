@@ -1,12 +1,8 @@
 package content.region.misthalin.handlers
 
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
-import org.rs.consts.Quests
-import org.rs.consts.Sounds
-import core.api.quest.hasRequirement
 import content.global.travel.EssenceTeleport
 import core.api.*
+import core.api.quest.hasRequirement
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.impl.Projectile
@@ -16,11 +12,13 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Graphics
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
+import org.rs.consts.Scenery
+import org.rs.consts.Sounds
 
 class WizardTowerListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(intArrayOf(WIZARDS_TOWER_BOOKCASE_1, WIZARDS_TOWER_BOOKCASE_2), IntType.SCENERY, "search") { player, _ ->
             openDialogue(player, "wizard-tower-dialogue")
             return@on true
@@ -48,7 +46,11 @@ class WizardTowerListener : InteractionListener {
             return@on true
         }
 
-        on(intArrayOf(WIZARDS_TOWER_PORTAL, DARK_WIZARDS_TOWER_PORTAL, THORMAC_SORC_HOUSE_PORTAL), IntType.SCENERY, "enter") { player, node ->
+        on(
+            intArrayOf(WIZARDS_TOWER_PORTAL, DARK_WIZARDS_TOWER_PORTAL, THORMAC_SORC_HOUSE_PORTAL),
+            IntType.SCENERY,
+            "enter",
+        ) { player, node ->
             when (node.id) {
                 WIZARDS_TOWER_PORTAL -> {
                     teleport(player, Location.create(3109, 3159, 0))
@@ -96,6 +98,7 @@ class WizardTowerListener : InteractionListener {
             GameWorld.Pulser.submit(
                 object : Pulse(1) {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             0 -> {
@@ -112,7 +115,7 @@ class WizardTowerListener : InteractionListener {
                         }
                         return false
                     }
-                }
+                },
             )
             return@on true
         }

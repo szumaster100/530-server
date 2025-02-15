@@ -6,23 +6,22 @@ import core.game.node.entity.player.Player
 import org.rs.consts.Components
 
 class PlayerSafetyInterface : InterfaceListener {
-
     companion object {
-
         /*
          * List of test questions for the player safety exam.
          */
 
-        private val testQuestions = listOf(
-            TestQuestion(Components.PLAYER_SAFETY_EXAM_697, 26, mapOf(4 to 37, 3 to 40, 5 to 43), 4),
-            TestQuestion(Components.PLAYER_SAFETY_EXAM_699, 20, mapOf(4 to 31, 3 to 34), 4),
-            TestQuestion(Components.PLAYER_SAFETY_EXAM_707, 20, mapOf(3 to 31, 4 to 35), 3),
-            TestQuestion(Components.PLAYER_SAFETY_EXAM_710, 20, mapOf(9 to 31, 10 to 34), 9),
-            TestQuestion(Components.PLAYER_SAFETY_EXAM_704, 26, mapOf(10 to 37, 12 to 43, 11 to 40), 10),
-            TestQuestion(Components.PLAYER_SAFETY_EXAM_708, 29, mapOf(12 to 40, 13 to 43), 12),
-            TestQuestion(Components.PLAYER_SAFETY_EXAM_696, 20, mapOf(4 to 31, 3 to 34), 4),
-            TestQuestion(Components.PLAYER_SAFETY_EXAM_705, 26, mapOf(10 to 37, 12 to 43, 11 to 40), 10)
-        )
+        private val testQuestions =
+            listOf(
+                TestQuestion(Components.PLAYER_SAFETY_EXAM_697, 26, mapOf(4 to 37, 3 to 40, 5 to 43), 4),
+                TestQuestion(Components.PLAYER_SAFETY_EXAM_699, 20, mapOf(4 to 31, 3 to 34), 4),
+                TestQuestion(Components.PLAYER_SAFETY_EXAM_707, 20, mapOf(3 to 31, 4 to 35), 3),
+                TestQuestion(Components.PLAYER_SAFETY_EXAM_710, 20, mapOf(9 to 31, 10 to 34), 9),
+                TestQuestion(Components.PLAYER_SAFETY_EXAM_704, 26, mapOf(10 to 37, 12 to 43, 11 to 40), 10),
+                TestQuestion(Components.PLAYER_SAFETY_EXAM_708, 29, mapOf(12 to 40, 13 to 43), 12),
+                TestQuestion(Components.PLAYER_SAFETY_EXAM_696, 20, mapOf(4 to 31, 3 to 34), 4),
+                TestQuestion(Components.PLAYER_SAFETY_EXAM_705, 26, mapOf(10 to 37, 12 to 43, 11 to 40), 10),
+            )
     }
 
     /*
@@ -31,13 +30,20 @@ class PlayerSafetyInterface : InterfaceListener {
 
     private var testQuestionNumber = 0
 
-    class TestQuestion(val interfaceId: Int, val baseChild: Int, val answers: Map<Int, Int>, val correctOption: Int) {
-
+    class TestQuestion(
+        val interfaceId: Int,
+        val baseChild: Int,
+        val answers: Map<Int, Int>,
+        val correctOption: Int,
+    ) {
         /*
          * Displays the answer to the player based on the button clicked.
          */
 
-        fun showAnswer(player: Player, button: Int) {
+        fun showAnswer(
+            player: Player,
+            button: Int,
+        ) {
             setComponentVisibility(player, interfaceId, baseChild, false)
             answers[button]?.let { setComponentVisibility(player, interfaceId, it, false) }
         }
@@ -47,7 +53,10 @@ class PlayerSafetyInterface : InterfaceListener {
      * Checks the player's answer and updates the next question.
      */
 
-    private fun checkAnswer(player: Player, button: Int) {
+    private fun checkAnswer(
+        player: Player,
+        button: Int,
+    ) {
         val question = testQuestions.getOrNull(testQuestionNumber) ?: return
         question.showAnswer(player, button)
         if (button == question.correctOption) testQuestionNumber++
@@ -61,7 +70,11 @@ class PlayerSafetyInterface : InterfaceListener {
         closeInterface(player)
         player.savedData.globalData.setTestStage(2)
         sendMessage(player, "Well done! You completed the exam.")
-        sendDialogueLines(player, "Congratulations! The test has been completed. Hand the paper in to", "Professor Henry for marking.")
+        sendDialogueLines(
+            player,
+            "Congratulations! The test has been completed. Hand the paper in to",
+            "Professor Henry for marking.",
+        )
     }
 
     /*
@@ -76,7 +89,6 @@ class PlayerSafetyInterface : InterfaceListener {
     }
 
     override fun defineInterfaceListeners() {
-
         /*
          * Handles reset the question number.
          */
@@ -109,5 +121,4 @@ class PlayerSafetyInterface : InterfaceListener {
             }
         }
     }
-
 }

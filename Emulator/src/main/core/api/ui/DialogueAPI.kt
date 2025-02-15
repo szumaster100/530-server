@@ -20,9 +20,13 @@ fun closeDialogue(player: Player) {
  * @param player The player to whom the tutorial dialogue is sent.
  * @param message The set of messages to display as the tutorial dialogue.
  */
-fun sendTutorialDialogue(player: Player, vararg message: String) {
-    Component.setUnclosable(player,
-        player.dialogueInterpreter.sendDialogues(*message)
+fun sendTutorialDialogue(
+    player: Player,
+    vararg message: String,
+) {
+    Component.setUnclosable(
+        player,
+        player.dialogueInterpreter.sendDialogues(*message),
     )
 }
 
@@ -33,7 +37,11 @@ fun sendTutorialDialogue(player: Player, vararg message: String) {
  * @param message The dialogue message to display.
  * @param ticks The number of game ticks to wait before displaying the dialogue message.
  */
-fun sendDialogueWithDelay(player: Player, message: String, ticks: Int) {
+fun sendDialogueWithDelay(
+    player: Player,
+    message: String,
+    ticks: Int,
+) {
     player.dialogueInterpreter.sendDialogue(ticks, *splitLines(message))
 }
 

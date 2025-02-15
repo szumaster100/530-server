@@ -9,7 +9,9 @@ import core.game.node.entity.player.Player
 import core.game.world.GameWorld
 import core.game.world.map.Direction
 
-class DagannothBossCutscene(player: Player) : Cutscene(player) {
+class DagannothBossCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(player.location.transform(0, 0, 0))
         if (player.settings.isRunToggled) {

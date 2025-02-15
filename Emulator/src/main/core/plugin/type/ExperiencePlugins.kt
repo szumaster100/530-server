@@ -4,7 +4,6 @@ import core.game.node.entity.player.Player
 import core.plugin.Plugin
 
 object ExperiencePlugins {
-
     @JvmStatic
     private val plugins = ArrayList<ExperiencePlugin>()
 
@@ -14,7 +13,11 @@ object ExperiencePlugins {
     }
 
     @JvmStatic
-    fun run(player: Player, skill: Int, amount: Double) {
+    fun run(
+        player: Player,
+        skill: Int,
+        amount: Double,
+    ) {
         if (player.isArtificial) return
         plugins.forEach {
             it.run(player, skill, amount)
@@ -28,5 +31,9 @@ abstract class ExperiencePlugin : Plugin<Any> {
         return this
     }
 
-    abstract fun run(player: Player, skill: Int, amount: Double)
+    abstract fun run(
+        player: Player,
+        skill: Int,
+        amount: Double,
+    )
 }

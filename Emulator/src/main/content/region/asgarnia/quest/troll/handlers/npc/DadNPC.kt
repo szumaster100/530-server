@@ -1,7 +1,5 @@
 package content.region.asgarnia.quest.troll.handlers.npc
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.asgarnia.quest.troll.dialogue.DadDialogueFile
 import core.api.*
 import core.api.quest.getQuestStage
@@ -13,10 +11,19 @@ import core.game.node.entity.npc.AbstractNPC
 import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class DadNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+class DadNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return DadNPC(id, location)
     }
 
@@ -24,7 +31,11 @@ class DadNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location
         return intArrayOf(NPCs.DAD_1125)
     }
 
-    override fun isAttackable(entity: Entity, style: CombatStyle, message: Boolean): Boolean {
+    override fun isAttackable(
+        entity: Entity,
+        style: CombatStyle,
+        message: Boolean,
+    ): Boolean {
         val attackable = super.isAttackable(entity, style, message)
         val player = entity.asPlayer()
 
@@ -53,6 +64,7 @@ class DadNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location
             submitWorldPulse(
                 object : Pulse() {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             1 -> {
@@ -62,13 +74,12 @@ class DadNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location
                         }
                         return false
                     }
-                }
+                },
             )
         }
     }
 
     override fun finalizeDeath(killer: Entity?) {
-
         super.finalizeDeath(killer)
         if (getQuestStage(killer!!.asPlayer(), Quests.TROLL_STRONGHOLD) == 4) {
             setQuestStage(killer.asPlayer(), Quests.TROLL_STRONGHOLD, 5)

@@ -1,6 +1,5 @@
 package content.global.skill.runecrafting.scenery
 
-import org.rs.consts.Animations
 import content.global.skill.runecrafting.items.Staves
 import content.global.skill.runecrafting.items.Talisman
 import content.global.skill.runecrafting.items.Tiara
@@ -14,15 +13,30 @@ import core.game.node.entity.player.link.quest.QuestReq
 import core.game.node.entity.player.link.quest.QuestRequirements
 import core.game.node.item.Item
 import core.game.system.task.Pulse
+import org.rs.consts.Animations
 
 class MysteriousRuinsListener : InteractionListener {
-
     private val sceneryIDs = allRuins()
     private val stavesIDs = Staves.values().map { it.item }.toIntArray()
-    private val talismanIDs = arrayOf(1438, 1448, 1444, 1440, 1442, 5516, 1446, 1454, 1452, 1462, 1458, 1456, 1450, 1460).toIntArray()
+    private val talismanIDs =
+        arrayOf(
+            1438,
+            1448,
+            1444,
+            1440,
+            1442,
+            5516,
+            1446,
+            1454,
+            1452,
+            1462,
+            1458,
+            1456,
+            1450,
+            1460,
+        ).toIntArray()
 
     override fun defineListeners() {
-
         onUseWith(IntType.SCENERY, talismanIDs, *sceneryIDs) { player, used, with ->
             return@onUseWith handleTalisman(player, used, with)
         }
@@ -44,7 +58,11 @@ class MysteriousRuinsListener : InteractionListener {
             .toIntArray()
     }
 
-    private fun handleTalisman(player: Player, used: Node, with: Node): Boolean {
+    private fun handleTalisman(
+        player: Player,
+        used: Node,
+        with: Node,
+    ): Boolean {
         val ruin =
             MysteriousRuins.forObject(with.asScenery())
         if (!checkQuestCompletion(player, ruin!!)) {
@@ -56,7 +74,14 @@ class MysteriousRuinsListener : InteractionListener {
             sendMessage(player, "Nothing interesting happens.")
             return false
         }
-        if (talisman == Talisman.ELEMENTAL && (ruin.talisman != Talisman.AIR && ruin.talisman != Talisman.WATER && ruin.talisman != Talisman.FIRE && ruin.talisman != Talisman.EARTH)) {
+        if (talisman == Talisman.ELEMENTAL &&
+            (
+                ruin.talisman != Talisman.AIR &&
+                    ruin.talisman != Talisman.WATER &&
+                    ruin.talisman != Talisman.FIRE &&
+                    ruin.talisman != Talisman.EARTH
+            )
+        ) {
             sendMessage(player, "Nothing interesting happens.")
             return false
         }
@@ -65,7 +90,10 @@ class MysteriousRuinsListener : InteractionListener {
         return true
     }
 
-    private fun handleStaff(player: Player, node: Node): Boolean {
+    private fun handleStaff(
+        player: Player,
+        node: Node,
+    ): Boolean {
         val ruin =
             MysteriousRuins.forObject(node.asScenery())
 
@@ -77,7 +105,10 @@ class MysteriousRuinsListener : InteractionListener {
         return true
     }
 
-    private fun handleTiara(player: Player, node: Node): Boolean {
+    private fun handleTiara(
+        player: Player,
+        node: Node,
+    ): Boolean {
         val ruin = MysteriousRuins.forObject(node.asScenery())
 
         if (!checkQuestCompletion(player, ruin!!)) {
@@ -94,7 +125,10 @@ class MysteriousRuinsListener : InteractionListener {
         return true
     }
 
-    private fun checkQuestCompletion(player: Player, ruin: MysteriousRuins): Boolean {
+    private fun checkQuestCompletion(
+        player: Player,
+        ruin: MysteriousRuins,
+    ): Boolean {
         return when (ruin) {
             MysteriousRuins.DEATH -> hasRequirement(player, QuestReq(QuestRequirements.MEP_2), true)
             MysteriousRuins.BLOOD -> hasRequirement(player, QuestReq(QuestRequirements.SEERGAZE), true)
@@ -102,14 +136,22 @@ class MysteriousRuinsListener : InteractionListener {
         }
     }
 
-    private fun teleportToRuinTalisman(player: Player, talisman: Item, ruin: MysteriousRuins) {
+    private fun teleportToRuinTalisman(
+        player: Player,
+        talisman: Item,
+        ruin: MysteriousRuins,
+    ) {
         lock(player, 4)
         animate(player, Animations.MULTI_BEND_OVER_827)
         sendMessage(player, "You hold the ${talisman.name} towards the mysterious ruins.")
         submitTeleportPulse(player, ruin, 3)
     }
 
-    private fun submitTeleportPulse(player: Player, ruin: MysteriousRuins, delay: Int) {
+    private fun submitTeleportPulse(
+        player: Player,
+        ruin: MysteriousRuins,
+        delay: Int,
+    ) {
         sendMessage(player, "You feel a powerful force take hold of you.")
         submitWorldPulse(
             object : Pulse(delay, player) {
@@ -117,7 +159,7 @@ class MysteriousRuinsListener : InteractionListener {
                     teleport(player, ruin.end)
                     return true
                 }
-            }
+            },
         )
     }
 }

@@ -1,6 +1,5 @@
 package content.minigame.gnomecook.bowls
 
-import org.rs.consts.Items
 import core.cache.def.impl.ItemDefinition
 import core.game.component.Component
 import core.game.interaction.OptionHandler
@@ -8,6 +7,7 @@ import core.game.node.Node
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Items
 
 @Initializable
 class GnomeBowlPrepareHandler : OptionHandler() {
@@ -16,7 +16,11 @@ class GnomeBowlPrepareHandler : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player?, node: Node?, option: String?): Boolean {
+    override fun handle(
+        player: Player?,
+        node: Node?,
+        option: String?,
+    ): Boolean {
         player ?: return false
         player.interfaceManager.open(Component(435))
         return true

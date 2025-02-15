@@ -1,31 +1,40 @@
 package content.minigame.blastfurnace
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.global.skill.smithing.smelting.Bar
 import core.api.*
+import core.api.MapArea
 import core.game.node.entity.Entity
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
-import core.api.MapArea
 import core.game.world.map.zone.ZoneBorders
 import core.tools.RandomFunction
 import org.json.simple.JSONObject
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
-class BlastFurnace : MapArea, PersistPlayer, TickListener {
+class BlastFurnace :
+    MapArea,
+    PersistPlayer,
+    TickListener {
     override fun defineAreaBorders(): Array<ZoneBorders> {
         return arrayOf(bfArea)
     }
 
-    override fun savePlayer(player: Player, save: JSONObject) {
+    override fun savePlayer(
+        player: Player,
+        save: JSONObject,
+    ) {
         val state = playerStates[player.details.uid]
         if (state != null) {
             save["bf-state"] = state.toJson()
         }
     }
 
-    override fun parsePlayer(player: Player, data: JSONObject) {
+    override fun parsePlayer(
+        player: Player,
+        data: JSONObject,
+    ) {
         playerStates.remove(player.details.uid)
         if (data.containsKey("bf-state")) {
             val stateObj = data["bf-state"] as JSONObject
@@ -41,7 +50,10 @@ class BlastFurnace : MapArea, PersistPlayer, TickListener {
         }
     }
 
-    override fun areaLeave(entity: Entity, logout: Boolean) {
+    override fun areaLeave(
+        entity: Entity,
+        logout: Boolean,
+    ) {
         if (entity is Player) {
             playersInArea.remove(entity)
             val state = getPlayerState(entity)
@@ -103,7 +115,7 @@ class BlastFurnace : MapArea, PersistPlayer, TickListener {
             state.potPipeBroken,
             state.pumpPipeBroken,
             state.beltBroken,
-            state.cogBroken
+            state.cogBroken,
         )
         sceneryController.updateAnimations(pedaler != null, state.beltBroken, state.cogBroken)
     }
@@ -131,7 +143,11 @@ class BlastFurnace : MapArea, PersistPlayer, TickListener {
             return bfArea.insideBorder(player.location)
         }
 
-        fun placeAllOre(p: Player, id: Int = -1, accountForSkill: Boolean = false) {
+        fun placeAllOre(
+            p: Player,
+            id: Int = -1,
+            accountForSkill: Boolean = false,
+        ) {
             val oreCounts = HashMap<Int, Int>()
             val oreContainer = getOreContainer(p)
             val level = if (accountForSkill) getStatLevel(p, Skills.SMITHING) else 99
@@ -150,15 +166,21 @@ class BlastFurnace : MapArea, PersistPlayer, TickListener {
             for ((oreId, amount) in oreCounts) {
                 var maxAmt = oreContainer.getAvailableSpace(oreId, level)
 
-                if (oreId == Items.COPPER_ORE_436 || oreId == Items.TIN_ORE_438) maxAmt += (
-                        BlastUtils.ORE_LIMIT - getAmountOnBelt(
-                            p,
-                            oreId
-                        )
-                        )
+                if (oreId == Items.COPPER_ORE_436 || oreId == Items.TIN_ORE_438) {
+                    maxAmt += (
+                        BlastUtils.ORE_LIMIT -
+                            getAmountOnBelt(
+                                p,
+                                oreId,
+                            )
+                    )
+                }
 
-                if (oreId == Items.COAL_453) maxAmt -= getAmountOnBelt(p, oreId)
-                else maxAmt -= getTotalOreOnBelt(p)
+                if (oreId == Items.COAL_453) {
+                    maxAmt -= getAmountOnBelt(p, oreId)
+                } else {
+                    maxAmt -= getTotalOreOnBelt(p)
+                }
 
                 maxAmt = maxAmt.coerceAtMost(amount).coerceAtLeast(0)
                 if (maxAmt == 0) continue
@@ -178,14 +200,21 @@ class BlastFurnace : MapArea, PersistPlayer, TickListener {
             return getPlayerState(p).container
         }
 
-        fun addOreToBelt(p: Player, id: Int, amount: Int): BFBeltOre {
+        fun addOreToBelt(
+            p: Player,
+            id: Int,
+            amount: Int,
+        ): BFBeltOre {
             val beltOre = BFBeltOre(p, id, amount, BFBeltOre.ORE_START_LOC)
             beltOre.createNpc()
             getPlayerState(p).oresOnBelt.add(beltOre)
             return beltOre
         }
 
-        fun getAmountOnBelt(p: Player, id: Int): Int {
+        fun getAmountOnBelt(
+            p: Player,
+            id: Int,
+        ): Int {
             var total = 0
             for (ore in getPlayerState(p).oresOnBelt) {
                 if (ore.id == id) total += ore.amount
@@ -214,7 +243,11 @@ class BlastFurnace : MapArea, PersistPlayer, TickListener {
             return coalAmount
         }
 
-        fun getBarForOreId(id: Int, coalAmount: Int, level: Int): Bar? {
+        fun getBarForOreId(
+            id: Int,
+            coalAmount: Int,
+            level: Int,
+        ): Bar? {
             return when (id) {
                 Items.COPPER_ORE_436, Items.TIN_ORE_438 -> Bar.BRONZE
                 Items.IRON_ORE_440 -> if (coalAmount >= 1 && level >= Bar.STEEL.level) Bar.STEEL else Bar.IRON
@@ -237,12 +270,18 @@ class BlastFurnace : MapArea, PersistPlayer, TickListener {
             }
         }
 
-        fun getEntranceFee(hasCharos: Boolean, smithLevel: Int): Int {
+        fun getEntranceFee(
+            hasCharos: Boolean,
+            smithLevel: Int,
+        ): Int {
             if (smithLevel >= BlastUtils.SMITH_REQ) return 0
             return if (hasCharos) BlastUtils.ENTRANCE_FEE / 2 else BlastUtils.ENTRANCE_FEE
         }
 
-        fun enter(player: Player, feePaid: Boolean) {
+        fun enter(
+            player: Player,
+            feePaid: Boolean,
+        ) {
             if (feePaid && !hasTimerActive<BFTempEntranceTimer>(player)) registerTimer(player, BFTempEntranceTimer())
             teleport(player, BlastUtils.ENTRANCE_LOC)
         }

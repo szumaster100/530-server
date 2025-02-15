@@ -1,6 +1,5 @@
 package content.region.kandarin.dialogue.seers
 
-import org.rs.consts.NPCs
 import content.region.kandarin.handlers.seers.IgnatiusVulcanNPC
 import core.game.dialogue.Dialogue
 import core.game.global.Skillcape.isMaster
@@ -9,17 +8,22 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
-class IgnatiusVulcanDialogue(player: Player? = null) : Dialogue(player) {
-
+class IgnatiusVulcanDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         npc("Can I help you at all?")
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 ->
                 if (isMaster(player, Skills.FIREMAKING)) {
@@ -30,22 +34,23 @@ class IgnatiusVulcanDialogue(player: Player? = null) : Dialogue(player) {
                     stage = 1
                 }
 
-            100 -> when (buttonId) {
-                1 -> {
-                    player("Who are you?")
-                    stage = 10
-                }
+            100 ->
+                when (buttonId) {
+                    1 -> {
+                        player("Who are you?")
+                        stage = 10
+                    }
 
-                2 -> {
-                    player("Could I buy a Skillcape of Firemaking?")
-                    stage = 101
-                }
+                    2 -> {
+                        player("Could I buy a Skillcape of Firemaking?")
+                        stage = 101
+                    }
 
-                3 -> {
-                    player("No, thanks.")
-                    stage = 30
+                    3 -> {
+                        player("No, thanks.")
+                        stage = 30
+                    }
                 }
-            }
 
             101 -> {
                 npc("Certainly! Right when you give me 99000 coins.")
@@ -57,14 +62,15 @@ class IgnatiusVulcanDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 103
             }
 
-            103 -> when (buttonId) {
-                1 -> {
-                    player("Okay, here you go.")
-                    stage = 104
-                }
+            103 ->
+                when (buttonId) {
+                    1 -> {
+                        player("Okay, here you go.")
+                        stage = 104
+                    }
 
-                2 -> end()
-            }
+                    2 -> end()
+                }
 
             104 -> {
                 if (purchase(player, Skills.FIREMAKING)) {
@@ -74,28 +80,29 @@ class IgnatiusVulcanDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             105 -> end()
-            1 -> when (buttonId) {
-                1 -> {
-                    player("Who are you?")
-                    stage = 10
-                }
+            1 ->
+                when (buttonId) {
+                    1 -> {
+                        player("Who are you?")
+                        stage = 10
+                    }
 
-                2 -> {
-                    player("What is that cape you're wearing?")
-                    stage = 20
-                }
+                    2 -> {
+                        player("What is that cape you're wearing?")
+                        stage = 20
+                    }
 
-                3 -> {
-                    player("No, thanks.")
-                    stage = 30
+                    3 -> {
+                        player("No, thanks.")
+                        stage = 30
+                    }
                 }
-            }
 
             10 -> {
                 npc(
                     "My name is Ignatius Vulcan. Once I was - like you -",
                     "an adventurer, but that was before I realised the",
-                    "beauty and power of flame! Just look at this..."
+                    "beauty and power of flame! Just look at this...",
                 )
                 stage = 11
             }
@@ -108,7 +115,7 @@ class IgnatiusVulcanDialogue(player: Player? = null) : Dialogue(player) {
                     "Stare into the flame and witness the purity and power",
                     "of fire! As my attraction to flame grew, so did my skills",
                     "at firelighting. I began to neglect my combat skills, my",
-                    "Mining skills and my questing. Who needs such"
+                    "Mining skills and my questing. Who needs such",
                 )
                 stage = 12
             }
@@ -117,7 +124,7 @@ class IgnatiusVulcanDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "mundane skills when one can harness the power of fire?",
                     "After years of practice I am now the acknowledged",
-                    "master of Flame! Everything must be purified by fire!"
+                    "master of Flame! Everything must be purified by fire!",
                 )
                 stage = 13
             }
@@ -132,7 +139,7 @@ class IgnatiusVulcanDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "This is a Skillcape of Firemaking. I was given it in",
                     "recognition of my skill as the greatest firemaker in the",
-                    "lands! I AM the Master of Flame!"
+                    "lands! I AM the Master of Flame!",
                 )
                 stage = 21
             }

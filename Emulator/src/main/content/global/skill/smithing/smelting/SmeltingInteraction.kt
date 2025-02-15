@@ -18,13 +18,14 @@ import core.game.world.update.flag.context.Animation
 import org.rs.consts.*
 
 class SmeltingInteraction : InteractionListener {
-
     override fun defineListeners() {
-
         onUseWith(IntType.SCENERY, Items.STEEL_BAR_2353, *furnaceIDs) { player, used, _ ->
             val handler: SkillDialogueHandler =
                 object : SkillDialogueHandler(player, SkillDialogue.ONE_OPTION, used.asItem()) {
-                    override fun create(amount: Int, index: Int) {
+                    override fun create(
+                        amount: Int,
+                        index: Int,
+                    ) {
                         submitIndividualPulse(player, CannonballPulse(player, used.asItem(), amount))
                     }
 
@@ -49,7 +50,7 @@ class SmeltingInteraction : InteractionListener {
                                 player,
                                 NPCs.JEFFERY_6298,
                                 "No one can use my furnace! Only I can use my furnace!",
-                                FaceAnim.ANNOYED
+                                FaceAnim.ANNOYED,
                             )
                         }
                     }
@@ -65,11 +66,11 @@ class SmeltingInteraction : InteractionListener {
             if (inBorders(player, getRegionBorders(12436))) {
                 if (!anyInInventory(player, *tutorialOres)) {
                     player.dialogueInterpreter.sendPlainMessage(
-                            false,
-                            "This is a furnace for smelting metal. To use it simply click on the",
-                            "ore you wish to smelt then click on the furnace you would like to",
-                            "use."
-                        )
+                        false,
+                        "This is a furnace for smelting metal. To use it simply click on the",
+                        "ore you wish to smelt then click on the furnace you would like to",
+                        "use.",
+                    )
                     TutorialStage.rollback(player)
                     return@on true
                 }
@@ -78,16 +79,16 @@ class SmeltingInteraction : InteractionListener {
                         false,
                         "",
                         "You do not have the required ores to make this bar.",
-                        ""
+                        "",
                     )
                     TutorialStage.rollback(player)
                 } else {
                     player.dialogueInterpreter.sendPlainMessage(
-                            false,
-                            "This is a furnace for smelting metal. To use it simply click on the",
-                            "ore you wish to smelt then click on the furnace you would like to",
-                            "use."
-                        )
+                        false,
+                        "This is a furnace for smelting metal. To use it simply click on the",
+                        "ore you wish to smelt then click on the furnace you would like to",
+                        "use.",
+                    )
                     TutorialStage.rollback(player)
                 }
             } else if (!isDiaryComplete(player, DiaryType.VARROCK, 0)) {
@@ -110,7 +111,7 @@ class SmeltingInteraction : InteractionListener {
                                 player,
                                 NPCs.JEFFERY_6298,
                                 "No one can use my furnace! Only I can use my furnace!",
-                                FaceAnim.ANNOYED
+                                FaceAnim.ANNOYED,
                             )
                         }
                     }
@@ -124,11 +125,11 @@ class SmeltingInteraction : InteractionListener {
         onUseWith(IntType.SCENERY, tutorialOres, Scenery.FURNACE_3044) { player, used, _ ->
             if (!inInventory(player, Items.TIN_ORE_438) || !inInventory(player, Items.COPPER_ORE_436)) {
                 player.dialogueInterpreter.sendPlainMessage(
-                        false,
-                        "",
-                        "You do not have the required ores to make this bar.",
-                        ""
-                    )
+                    false,
+                    "",
+                    "You do not have the required ores to make this bar.",
+                    "",
+                )
                 TutorialStage.rollback(player)
                 return@onUseWith false
             }
@@ -144,8 +145,8 @@ class SmeltingInteraction : InteractionListener {
                             Bar.BRONZE.product.id,
                             1,
                             used.asItem(),
-                            original = if (used.id != Items.TIN_ORE_438) Items.COPPER_ORE_436 else Items.TIN_ORE_438
-                        )
+                            original = if (used.id != Items.TIN_ORE_438) Items.COPPER_ORE_436 else Items.TIN_ORE_438,
+                        ),
                     )
                     sendTutorialMessage(player, "You retrieve a bar of bronze.")
                     return@queueScript stopExecuting(player)
@@ -160,20 +161,21 @@ class SmeltingInteraction : InteractionListener {
         private const val soundEffect = Sounds.FURNACE_2725
         private val tutorialOres = intArrayOf(Items.TIN_ORE_438, Items.COPPER_ORE_436)
         private val specialFurnace = intArrayOf(Scenery.CLAY_FORGE_21303, Scenery.FURNACE_3044)
-        val furnaceIDs = intArrayOf(
-            Scenery.FURNACE_4304,
-            Scenery.FURNACE_6189,
-            Scenery.FURNACE_11010,
-            Scenery.FURNACE_11666,
-            Scenery.FURNACE_12100,
-            Scenery.FURNACE_12809,
-            Scenery.FURNACE_18497,
-            Scenery.FURNACE_26814,
-            Scenery.FURNACE_30021,
-            Scenery.FURNACE_30510,
-            Scenery.FURNACE_36956,
-            Scenery.FURNACE_37651
-        )
+        val furnaceIDs =
+            intArrayOf(
+                Scenery.FURNACE_4304,
+                Scenery.FURNACE_6189,
+                Scenery.FURNACE_11010,
+                Scenery.FURNACE_11666,
+                Scenery.FURNACE_12100,
+                Scenery.FURNACE_12809,
+                Scenery.FURNACE_18497,
+                Scenery.FURNACE_26814,
+                Scenery.FURNACE_30021,
+                Scenery.FURNACE_30510,
+                Scenery.FURNACE_36956,
+                Scenery.FURNACE_37651,
+            )
         private const val rejectMessage =
             "You need to have completed the easy tasks in the Varrock Diary in order to use this."
 

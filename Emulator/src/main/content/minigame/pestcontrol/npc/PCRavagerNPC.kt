@@ -1,6 +1,5 @@
 package content.minigame.pestcontrol.npc
 
-import org.rs.consts.NPCs
 import content.minigame.pestcontrol.PestControlSession
 import core.game.interaction.MovementPulse
 import core.game.node.Node
@@ -20,9 +19,9 @@ import core.game.world.map.MapDistance
 import core.game.world.map.path.Pathfinder
 import core.game.world.map.zone.ZoneBorders
 import core.tools.RandomFunction
+import org.rs.consts.NPCs
 
 class PCRavagerNPC : AbstractNPC {
-
     private var session: PestControlSession? = null
     private var target: Scenery? = null
 
@@ -34,7 +33,11 @@ class PCRavagerNPC : AbstractNPC {
 
     constructor(id: Int, location: Location?) : super(id, location)
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return PCRavagerNPC(id, location)
     }
 
@@ -85,7 +88,7 @@ class PCRavagerNPC : AbstractNPC {
                                 }
                                 return true
                             }
-                        }
+                        },
                     )
                     target = newTarget
                     if (destroyed) {
@@ -115,7 +118,7 @@ class PCRavagerNPC : AbstractNPC {
                     return true
                 }
             },
-            PulseType.STANDARD
+            PulseType.STANDARD,
         )
     }
 
@@ -123,7 +126,10 @@ class PCRavagerNPC : AbstractNPC {
         return mover is NPC
     }
 
-    override fun onImpact(entity: Entity, state: BattleState) {
+    override fun onImpact(
+        entity: Entity,
+        state: BattleState,
+    ) {
         super.onImpact(entity, state)
         if (session != null && state != null && entity is Player) {
             var total = 0

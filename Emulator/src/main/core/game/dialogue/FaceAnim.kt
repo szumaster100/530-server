@@ -1,6 +1,8 @@
 package core.game.dialogue
 
-enum class FaceAnim(val animationId: Int) {
+enum class FaceAnim(
+    val animationId: Int,
+) {
     OLD_NEUTRAL(570),
     OLD_HAPPY(588),
     OLD_CALM_TALK1(589),
@@ -94,5 +96,5 @@ enum class FaceAnim(val animationId: Int) {
     CALM_TALK(9810),
     MAD(9789),
     CALM(9805),
-    CHEER_YES(9864);
+    CHEER_YES(9864),
 }

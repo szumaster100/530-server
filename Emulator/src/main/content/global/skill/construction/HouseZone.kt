@@ -9,8 +9,9 @@ import core.game.world.map.RegionManager.removeRegion
 import core.game.world.map.zone.MapZone
 import core.game.world.map.zone.ZoneRestriction
 
-class HouseZone
-(private val house: HouseManager) : MapZone("poh-zone$house", true, ZoneRestriction.RANDOM_EVENTS) {
+class HouseZone(
+    private val house: HouseManager,
+) : MapZone("poh-zone$house", true, ZoneRestriction.RANDOM_EVENTS) {
     private var previousRegion = -1
     private var previousDungeon = -1
     private val restrictedItems = (7668..7737)
@@ -46,7 +47,10 @@ class HouseZone
         return super.enter(e)
     }
 
-    override fun death(e: Entity, killer: Entity): Boolean {
+    override fun death(
+        e: Entity,
+        killer: Entity,
+    ): Boolean {
         if (e is Player) {
             val player = e.asPlayer()
             HouseManager.leave(player)
@@ -54,14 +58,17 @@ class HouseZone
         return true
     }
 
-    override fun leave(e: Entity, logout: Boolean): Boolean {
+    override fun leave(
+        e: Entity,
+        logout: Boolean,
+    ): Boolean {
         if (e is Player) {
             val player = e.asPlayer()
             if (house == player.houseManager) {
-
                 val items = restrictedItems.toIntArray()
-                if (anyInInventory(player, *items))
+                if (anyInInventory(player, *items)) {
                     player.inventory.removeAll(items)
+                }
 
                 house.expelGuests(player)
                 val toRemove = previousRegion
@@ -82,7 +89,7 @@ class HouseZone
                             }
                             return true
                         }
-                    }
+                    },
                 )
             }
             return true

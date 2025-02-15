@@ -1,6 +1,5 @@
 package content.region.asgarnia.handlers.partyroom
 
-import org.rs.consts.Animations
 import core.api.animate
 import core.api.replaceScenery
 import core.api.sendInputDialogue
@@ -15,13 +14,13 @@ import core.game.interaction.OptionHandler
 import core.game.node.Node
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
+import core.plugin.ClassScanner.definePlugin
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner.definePlugin
+import org.rs.consts.Animations
 
 @Initializable
 class PartyRoomOptionHandler : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         SceneryDefinition.forId(CLOSED_CHEST).handlers["option:open"] = this
         SceneryDefinition.forId(OPEN_CHEST).handlers["option:deposit"] = this
@@ -32,20 +31,25 @@ class PartyRoomOptionHandler : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         when (node.id) {
             CLOSED_CHEST -> {
                 animate(player, Animations.OPEN_CHEST_536)
                 replaceScenery(node.asScenery(), OPEN_CHEST, -1)
             }
 
-            OPEN_CHEST -> when (option) {
-                "deposit" -> deposit(player)
-                "shut" -> {
-                    animate(player, 537)
-                    replaceScenery(node.asScenery(), CLOSED_CHEST, -1)
+            OPEN_CHEST ->
+                when (option) {
+                    "deposit" -> deposit(player)
+                    "shut" -> {
+                        animate(player, 537)
+                        replaceScenery(node.asScenery(), CLOSED_CHEST, -1)
+                    }
                 }
-            }
 
             LEVER -> PartyRoomUtils.handleLever(player, node.asScenery())
         }
@@ -61,14 +65,20 @@ class PartyRoomOptionHandler : OptionHandler() {
     }
 
     class DepositInterfaceHandler : ComponentPlugin() {
-
         override fun newInstance(arg: Any?): Plugin<Any> {
             ComponentDefinition.put(647, this)
             ComponentDefinition.put(648, this)
             return this
         }
 
-        override fun handle(player: Player, component: Component, opcode: Int, button: Int, slot: Int, itemId: Int): Boolean {
+        override fun handle(
+            player: Player,
+            component: Component,
+            opcode: Int,
+            button: Int,
+            slot: Int,
+            itemId: Int,
+        ): Boolean {
             var itemId = itemId
             val viewer = player.getExtension<ChestViewer>(ChestViewer::class.java)
             if (viewer == null || viewer.container == null) {
@@ -120,9 +130,10 @@ class PartyRoomOptionHandler : OptionHandler() {
                             viewer.container.takeItem(slot, ammount)
                         }
 
-                        234 -> sendInputDialogue(player, true, "Enter the amount:") { value: Any ->
-                            viewer.container.takeItem(slot, value as Int)
-                        }
+                        234 ->
+                            sendInputDialogue(player, true, "Enter the amount:") { value: Any ->
+                                viewer.container.takeItem(slot, value as Int)
+                            }
                     }
                 }
             }
@@ -147,7 +158,10 @@ class PartyRoomOptionHandler : OptionHandler() {
         var isDancing = false
 
         @JvmStatic
-        fun update(type: Int, event: ContainerEvent?) {
+        fun update(
+            type: Int,
+            event: ContainerEvent?,
+        ) {
             for (viewer in viewers.values) {
                 viewer.update(type, event)
             }

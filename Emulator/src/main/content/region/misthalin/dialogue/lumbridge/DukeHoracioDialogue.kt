@@ -1,7 +1,5 @@
 package content.region.misthalin.dialogue.lumbridge
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.misthalin.quest.dragon.DragonSlayer
 import content.region.misthalin.quest.dragon.dialogue.DukeDragonSlayerDialogue
 import content.region.misthalin.quest.losttribe.DukeHoracioLostTribeDialogue
@@ -14,16 +12,36 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.tools.DIALOGUE_INITIAL_OPTIONS_HANDLE
 import core.tools.END_DIALOGUE
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
-class DukeHoracioDialogue(player: Player? = null) : Dialogue(player) {
-
+class DukeHoracioDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
-        if ((getQuestStage(player, Quests.DRAGON_SLAYER) == 100 && !player.inventory.containsItem(DragonSlayer.SHIELD) && !player.bank.containsItem(DragonSlayer.SHIELD)) || (player.questRepository.getQuest(Quests.DRAGON_SLAYER).isStarted(player) && !isQuestComplete(player, Quests.DRAGON_SLAYER))) {
-            addOption(Quests.DRAGON_SLAYER, DukeDragonSlayerDialogue(player.questRepository.getStage(Quests.DRAGON_SLAYER)))
+        if ((
+                getQuestStage(player, Quests.DRAGON_SLAYER) == 100 &&
+                    !player.inventory.containsItem(DragonSlayer.SHIELD) &&
+                    !player.bank.containsItem(DragonSlayer.SHIELD)
+            ) ||
+            (
+                player.questRepository.getQuest(Quests.DRAGON_SLAYER).isStarted(player) &&
+                    !isQuestComplete(player, Quests.DRAGON_SLAYER)
+            )
+        ) {
+            addOption(
+                Quests.DRAGON_SLAYER,
+                DukeDragonSlayerDialogue(player.questRepository.getStage(Quests.DRAGON_SLAYER)),
+            )
         }
-        if (!isQuestComplete(player, Quests.THE_LOST_TRIBE) && player.questRepository.getQuest(Quests.THE_LOST_TRIBE).isStarted(player)) {
-            addOption(Quests.THE_LOST_TRIBE, DukeHoracioLostTribeDialogue(player.questRepository.getStage(Quests.THE_LOST_TRIBE)))
+        if (!isQuestComplete(player, Quests.THE_LOST_TRIBE) &&
+            player.questRepository.getQuest(Quests.THE_LOST_TRIBE).isStarted(player)
+        ) {
+            addOption(
+                Quests.THE_LOST_TRIBE,
+                DukeHoracioLostTribeDialogue(player.questRepository.getStage(Quests.THE_LOST_TRIBE)),
+            )
         }
         if (!sendChoices()) {
             interpreter.sendDialogues(npc, FaceAnim.HALF_GUILTY, "Greetings. Welcome to my castle.")
@@ -31,7 +49,10 @@ class DukeHoracioDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             DIALOGUE_INITIAL_OPTIONS_HANDLE -> {
                 npc("Greetings. Welcome to my castle.")
@@ -43,17 +64,23 @@ class DukeHoracioDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 1
             }
 
-            1 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "Have any quests for me?")
-                    stage = 20
-                }
+            1 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_GUILTY, "Have any quests for me?")
+                        stage = 20
+                    }
 
-                2 -> {
-                    npc(FaceAnim.HALF_GUILTY, "I hear many of the local people earn money by learning a", "skill. Many people get by in life by becoming accomplished", "smiths, cooks, miners and woodcutters.")
-                    stage = END_DIALOGUE
+                    2 -> {
+                        npc(
+                            FaceAnim.HALF_GUILTY,
+                            "I hear many of the local people earn money by learning a",
+                            "skill. Many people get by in life by becoming accomplished",
+                            "smiths, cooks, miners and woodcutters.",
+                        )
+                        stage = END_DIALOGUE
+                    }
                 }
-            }
 
             20 -> {
                 npc("Let me see...")

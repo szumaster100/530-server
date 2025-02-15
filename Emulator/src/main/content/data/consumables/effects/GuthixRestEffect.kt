@@ -9,7 +9,6 @@ import core.game.node.entity.skill.Skills
 import core.tools.RandomFunction
 
 class GuthixRestEffect : ConsumableEffect() {
-
     override fun activate(player: Player) {
         val energyRestore = RandomFunction.random(5, 15)
 

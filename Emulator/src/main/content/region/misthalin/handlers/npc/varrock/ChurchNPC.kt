@@ -1,13 +1,12 @@
 package content.region.misthalin.handlers.npc.varrock
 
-import org.rs.consts.NPCs
 import core.api.visualize
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.npc.NPCBehavior
 import core.tools.RandomFunction
+import org.rs.consts.NPCs
 
 class ChurchNPC : NPCBehavior(*sleepyNPC) {
-
     companion object {
         private val sleepyNPC = intArrayOf(NPCs.MARTINA_SCORSBY_3326, NPCs.JEREMY_CLERKSIN_3327)
     }

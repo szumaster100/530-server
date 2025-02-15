@@ -12,7 +12,7 @@ enum class HousingStyle(
     val doorId: Int,
     val secondDoorId: Int,
     val wallId: Int,
-    val window: Decoration
+    val window: Decoration,
 ) {
     BASIC_WOOD(
         levelRequirement = 1,
@@ -22,7 +22,7 @@ enum class HousingStyle(
         doorId = 13100,
         secondDoorId = 13101,
         wallId = 13098,
-        window = Decoration.BASIC_WOOD_WINDOW
+        window = Decoration.BASIC_WOOD_WINDOW,
     ),
     BASIC_STONE(
         levelRequirement = 10,
@@ -32,7 +32,7 @@ enum class HousingStyle(
         doorId = 13094,
         secondDoorId = 13096,
         wallId = 1902,
-        window = Decoration.BASIC_STONE_WINDOW
+        window = Decoration.BASIC_STONE_WINDOW,
     ),
     WHITEWASHED_STONE(
         levelRequirement = 20,
@@ -42,7 +42,7 @@ enum class HousingStyle(
         doorId = 13006,
         secondDoorId = 13007,
         wallId = 1415,
-        window = Decoration.WHITEWASHED_STONE_WINDOW
+        window = Decoration.WHITEWASHED_STONE_WINDOW,
     ),
     FREMENNIK_STYLE_WOOD(
         levelRequirement = 30,
@@ -52,7 +52,7 @@ enum class HousingStyle(
         doorId = 13109,
         secondDoorId = 13107,
         wallId = 13111,
-        window = Decoration.FREMENNIK_WINDOW
+        window = Decoration.FREMENNIK_WINDOW,
     ),
     TROPICAL_WOOD(
         levelRequirement = 40,
@@ -62,7 +62,7 @@ enum class HousingStyle(
         doorId = 13016,
         secondDoorId = 13015,
         wallId = 13011,
-        window = Decoration.TROPICAL_WOOD_WINDOW
+        window = Decoration.TROPICAL_WOOD_WINDOW,
     ),
     FANCY_STONE(
         levelRequirement = 50,
@@ -72,8 +72,9 @@ enum class HousingStyle(
         doorId = 13119,
         secondDoorId = 13118,
         wallId = 13116,
-        window = Decoration.FANCY_STONE_WINDOW
-    );
+        window = Decoration.FANCY_STONE_WINDOW,
+    ),
+    ;
 
     fun hasLevel(player: Player): Boolean = getStatLevel(player, Skills.CONSTRUCTION) >= levelRequirement
 }

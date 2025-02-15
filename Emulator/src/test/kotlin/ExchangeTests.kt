@@ -1,6 +1,6 @@
 import content.global.handlers.iface.ge.StockMarket
-import core.game.ge.GrandExchange
 import core.game.ge.GEDatabase
+import core.game.ge.GrandExchange
 import core.game.ge.GrandExchangeOffer
 import core.game.ge.OfferState
 import core.game.ge.PriceIndex
@@ -12,15 +12,24 @@ import org.junit.jupiter.api.*
 import org.rs.consts.Items
 import java.io.File
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS) class ExchangeTests {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class ExchangeTests {
     companion object {
         private const val TEST_DB_PATH = "ge_test.db"
+
         init {
             TestUtils.preTestSetup()
             GEDatabase.init(TEST_DB_PATH)
         }
 
-        fun generateOffer(itemId: Int, amount: Int, price: Int, sale: Boolean, username: String = "test ${System.currentTimeMillis()}", offerState: OfferState = OfferState.REGISTERED): GrandExchangeOffer {
+        fun generateOffer(
+            itemId: Int,
+            amount: Int,
+            price: Int,
+            sale: Boolean,
+            username: String = "test ${System.currentTimeMillis()}",
+            offerState: OfferState = OfferState.REGISTERED,
+        ): GrandExchangeOffer {
             val offer = GrandExchangeOffer()
             val uid = username.hashCode() // normally this would be the account's uid but in the test we don't have an account
             offer.offerState = offerState
@@ -36,7 +45,14 @@ import java.io.File
             return offer
         }
 
-        fun generateUnsentOffer(itemId: Int, amount: Int, price: Int, sale: Boolean, username: String, offerState: OfferState = OfferState.PENDING): GrandExchangeOffer {
+        fun generateUnsentOffer(
+            itemId: Int,
+            amount: Int,
+            price: Int,
+            sale: Boolean,
+            username: String,
+            offerState: OfferState = OfferState.PENDING,
+        ): GrandExchangeOffer {
             val offer = GrandExchangeOffer()
             val uid = username.hashCode() // normally this would be the account's uid but in the test we don't have an account
             offer.offerState = offerState
@@ -52,7 +68,8 @@ import java.io.File
             return offer
         }
 
-        @AfterAll @JvmStatic fun cleanup() {
+        @AfterAll @JvmStatic
+        fun cleanup() {
             File(TEST_DB_PATH).delete()
         }
     }
@@ -102,7 +119,11 @@ import java.io.File
 
         val newPrice = GrandExchange.getRecommendedPrice(4151)
 
-        Assertions.assertEquals(true, newPrice > defaultPrice, "Price was not influenced in the expected way! New Price: $newPrice, default: $defaultPrice")
+        Assertions.assertEquals(
+            true,
+            newPrice > defaultPrice,
+            "Price was not influenced in the expected way! New Price: $newPrice, default: $defaultPrice",
+        )
     }
 
     @Test fun playerTradingWithThemselvesShouldNotBeAbleToInfluencePrices() {
@@ -120,16 +141,20 @@ import java.io.File
 
     @Test fun concurrentlySubmittedOffersShouldNotThrowExceptions() {
         runBlocking {
-            val a = GlobalScope.launch {
-                for (i in 0 until 5) {
-                    PriceIndex.allowItem(i); GrandExchange.addBotOffer(i, 1)
+            val a =
+                GlobalScope.launch {
+                    for (i in 0 until 5) {
+                        PriceIndex.allowItem(i)
+                        GrandExchange.addBotOffer(i, 1)
+                    }
                 }
-            }
-            val b = GlobalScope.launch {
-                for (i in 0 until 5) {
-                    PriceIndex.allowItem(i); GrandExchange.addBotOffer(i, 1)
+            val b =
+                GlobalScope.launch {
+                    for (i in 0 until 5) {
+                        PriceIndex.allowItem(i)
+                        GrandExchange.addBotOffer(i, 1)
+                    }
                 }
-            }
             a.join()
             b.join()
             Assertions.assertEquals(false, a.isCancelled)

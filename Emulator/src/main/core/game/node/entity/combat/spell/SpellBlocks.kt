@@ -5,17 +5,16 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.function.Consumer
 
 object SpellBlocks {
-
     private val blocks = HashMap<Int, MutableList<Node>?>()
 
     @JvmStatic
-    fun register(spellId: Int, toBlock: Node) {
-
+    fun register(
+        spellId: Int,
+        toBlock: Node,
+    ) {
         if (blocks[spellId] != null) {
-
             blocks[spellId]!!.add(toBlock)
         } else {
-
             val blockslist: MutableList<Node> = ArrayList(20)
             blockslist.add(toBlock)
             blocks[spellId] = blockslist
@@ -23,7 +22,10 @@ object SpellBlocks {
     }
 
     @JvmStatic
-    fun isBlocked(spellId: Int, node: Node): Boolean {
+    fun isBlocked(
+        spellId: Int,
+        node: Node,
+    ): Boolean {
         val blocked = AtomicBoolean(false)
 
         if (blocks[spellId] == null) {
@@ -36,7 +38,7 @@ object SpellBlocks {
                 if (node.name == n.name) {
                     blocked.set(true)
                 }
-            }
+            },
         )
 
         return blocked.get()

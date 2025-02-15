@@ -1,7 +1,5 @@
 package content.global.skill.farming
 
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import core.api.*
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
@@ -9,9 +7,14 @@ import core.game.node.item.Item
 import core.tools.RandomFunction
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 import java.util.concurrent.TimeUnit
 
-class CompostBin(val player: Player, val bin: CompostBins) {
+class CompostBin(
+    val player: Player,
+    val bin: CompostBins,
+) {
     private var items = ArrayList<Int>()
     var isSuperCompost = true
     var isTomatoes = true
@@ -64,8 +67,11 @@ class CompostBin(val player: Player, val bin: CompostBins) {
         }
         playAudio(player, Sounds.FARMING_SCOOP_2443)
         updateBit()
-        if (isSuperCompost) rewardXP(player, Skills.FARMING, 8.5)
-        else rewardXP(player, Skills.FARMING, 4.5)
+        if (isSuperCompost) {
+            rewardXP(player, Skills.FARMING, 8.5)
+        } else {
+            rewardXP(player, Skills.FARMING, 4.5)
+        }
         return Item(item)
     }
 
@@ -108,7 +114,8 @@ class CompostBin(val player: Player, val bin: CompostBins) {
             Items.GRIMY_DWARF_WEED_217,
             Items.GRIMY_LANTADYME_2485,
             Items.GRIMY_SNAPDRAGON_3051,
-            Items.GRIMY_CADANTINE_215 -> true
+            Items.GRIMY_CADANTINE_215,
+            -> true
 
             else -> false
         }
@@ -127,11 +134,13 @@ class CompostBin(val player: Player, val bin: CompostBins) {
 
     fun addItem(item: Item) {
         val remaining = 15 - items.size
-        val amount = if (item.amount > remaining) {
-            remaining
-        } else item.amount
+        val amount =
+            if (item.amount > remaining) {
+                remaining
+            } else {
+                item.amount
+            }
         for (i in 0 until amount) {
-
             playAudio(player, Sounds.FARMING_PUTIN_2441)
             addItem(item.id)
         }
@@ -143,15 +152,20 @@ class CompostBin(val player: Player, val bin: CompostBins) {
                 setVarbit(player, bin.varbit, 0x40)
             } else if (isFinished) {
                 var finalValue = if (items.size == 15) 15 else 14
-                if (isTomatoes) finalValue += 0x80
-                else if (isSuperCompost) finalValue += 0x20
+                if (isTomatoes) {
+                    finalValue += 0x80
+                } else if (isSuperCompost) {
+                    finalValue += 0x20
+                }
                 setVarbit(player, bin.varbit, finalValue)
             } else {
                 var finalValue = items.size
                 if (isTomatoes) finalValue += 0x80
                 setVarbit(player, bin.varbit, finalValue)
             }
-        } else setVarbit(player, bin.varbit, 0)
+        } else {
+            setVarbit(player, bin.varbit, 0)
+        }
     }
 
     fun save(root: JSONObject) {
@@ -184,9 +198,13 @@ class CompostBin(val player: Player, val bin: CompostBins) {
     }
 
     fun finish() {
-        if (isTomatoes) items = items.map { Items.ROTTEN_TOMATO_2518 } as ArrayList<Int>
-        else if (isSuperCompost) items = items.map { Items.SUPERCOMPOST_6034 } as ArrayList<Int>
-        else items = items.map { Items.COMPOST_6032 } as ArrayList<Int>
+        if (isTomatoes) {
+            items = items.map { Items.ROTTEN_TOMATO_2518 } as ArrayList<Int>
+        } else if (isSuperCompost) {
+            items = items.map { Items.SUPERCOMPOST_6034 } as ArrayList<Int>
+        } else {
+            items = items.map { Items.COMPOST_6032 } as ArrayList<Int>
+        }
         isFinished = true
     }
 

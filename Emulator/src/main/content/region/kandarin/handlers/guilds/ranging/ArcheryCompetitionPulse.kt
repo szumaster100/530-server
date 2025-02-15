@@ -22,9 +22,16 @@ import kotlin.math.max
  *
  *  - The dark bow should fire 1 arrow in the Archery Competition, but sound of 2 arrows firing.
  */
-class ArcheryCompetitionPulse(private val player: Player, private val sceneryId: Scenery) : Pulse(1, player, sceneryId) {
-
-    private fun showInterface(points: Int, arrowsLeft: Int, target: Int, msg: String) {
+class ArcheryCompetitionPulse(
+    private val player: Player,
+    private val sceneryId: Scenery,
+) : Pulse(1, player, sceneryId) {
+    private fun showInterface(
+        points: Int,
+        arrowsLeft: Int,
+        target: Int,
+        msg: String,
+    ) {
         openInterface(player, Components.TARGET_325)
         setVarp(player, 156, 11 - arrowsLeft)
         setVarp(player, 157, points)

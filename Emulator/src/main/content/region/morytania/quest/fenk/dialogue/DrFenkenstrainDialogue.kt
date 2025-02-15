@@ -1,9 +1,5 @@
 package content.region.morytania.quest.fenk.dialogue
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import content.region.morytania.quest.fenk.CreatureOfFenkenstrain
 import core.api.*
 import core.api.quest.getQuestStage
@@ -15,11 +11,19 @@ import core.game.dialogue.FaceAnim
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
-class DrFenkenstrainDialogue(player: Player? = null) : Dialogue(player) {
-
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+class DrFenkenstrainDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         openDialogue(player, DrFenkenstrainDialogueFile(), npc)
         return true
     }
@@ -34,99 +38,109 @@ class DrFenkenstrainDialogue(player: Player? = null) : Dialogue(player) {
 }
 
 class DrFenkenstrainDialogueFile : DialogueBuilderFile() {
-
     companion object {
         private fun allPartsSubmitted(player: Player): Boolean {
             return getAttribute(player, CreatureOfFenkenstrain.attributeArms, false) &&
-                    getAttribute(player, CreatureOfFenkenstrain.attributeLegs, false) &&
-                    getAttribute(player, CreatureOfFenkenstrain.attributeTorso, false) &&
-                    getAttribute(player, CreatureOfFenkenstrain.attributeHead, false)
+                getAttribute(player, CreatureOfFenkenstrain.attributeLegs, false) &&
+                getAttribute(player, CreatureOfFenkenstrain.attributeTorso, false) &&
+                getAttribute(player, CreatureOfFenkenstrain.attributeHead, false)
         }
 
         private fun reqArms(player: Player): Boolean {
-            return !getAttribute(player, CreatureOfFenkenstrain.attributeArms, false) && inInventory(
-                player,
-                Items.ARMS_4195
-            )
+            return !getAttribute(player, CreatureOfFenkenstrain.attributeArms, false) &&
+                inInventory(
+                    player,
+                    Items.ARMS_4195,
+                )
         }
 
         private fun reqLegs(player: Player): Boolean {
-            return !getAttribute(player, CreatureOfFenkenstrain.attributeLegs, false) && inInventory(
-                player,
-                Items.LEGS_4196
-            )
+            return !getAttribute(player, CreatureOfFenkenstrain.attributeLegs, false) &&
+                inInventory(
+                    player,
+                    Items.LEGS_4196,
+                )
         }
 
         private fun reqTorso(player: Player): Boolean {
-            return !getAttribute(player, CreatureOfFenkenstrain.attributeTorso, false) && inInventory(
-                player,
-                Items.TORSO_4194
-            )
+            return !getAttribute(player, CreatureOfFenkenstrain.attributeTorso, false) &&
+                inInventory(
+                    player,
+                    Items.TORSO_4194,
+                )
         }
 
         private fun reqHead(player: Player): Boolean {
-            return !getAttribute(player, CreatureOfFenkenstrain.attributeHead, false) && inInventory(
-                player,
-                Items.DECAPITATED_HEAD_4198
-            )
+            return !getAttribute(player, CreatureOfFenkenstrain.attributeHead, false) &&
+                inInventory(
+                    player,
+                    Items.DECAPITATED_HEAD_4198,
+                )
         }
 
         private fun hasPart(
             b: DialogueBuilder,
             item: Item,
             attributeToSet: String,
-            successMsg: String
+            successMsg: String,
         ): DialogueBuilder {
-            return b.branch { player ->
-                return@branch if (!getAttribute(player, attributeToSet, false) && inInventory(
-                        player,
-                        item.id,
-                        item.amount
-                    )
-                ) {
-                    1
-                } else {
-                    0
-                }
-            }.let { branch ->
-                val returnJoin = b.placeholder()
-                branch.onValue(0)
-                    .goto(returnJoin)
-                branch.onValue(1)
-                    .betweenStage { _, player, _, _ ->
-                        setAttribute(player, attributeToSet, true)
-                        removeItem(player, item)
+            return b
+                .branch { player ->
+                    return@branch if (!getAttribute(player, attributeToSet, false) &&
+                        inInventory(
+                            player,
+                            item.id,
+                            item.amount,
+                        )
+                    ) {
+                        1
+                    } else {
+                        0
                     }
-                    .npcl(successMsg)
-                    .goto(returnJoin)
-                return@let returnJoin.builder()
-            }
+                }.let { branch ->
+                    val returnJoin = b.placeholder()
+                    branch
+                        .onValue(0)
+                        .goto(returnJoin)
+                    branch
+                        .onValue(1)
+                        .betweenStage { _, player, _, _ ->
+                            setAttribute(player, attributeToSet, true)
+                            removeItem(player, item)
+                        }.npcl(successMsg)
+                        .goto(returnJoin)
+                    return@let returnJoin.builder()
+                }
         }
     }
 
     override fun create(b: DialogueBuilder) {
-
-        b.onQuestStages(Quests.CREATURE_OF_FENKENSTRAIN, 0)
+        b
+            .onQuestStages(Quests.CREATURE_OF_FENKENSTRAIN, 0)
             .npcl("Have you come to apply for the job?")
             .playerl(FaceAnim.THINKING, "What job?")
             .npcl("I've posted a note on the signpost in Canifis about it. Go take a look at it first.")
             .end()
 
-        b.onQuestStages(Quests.CREATURE_OF_FENKENSTRAIN, 1)
+        b
+            .onQuestStages(Quests.CREATURE_OF_FENKENSTRAIN, 1)
             .npcl("Have you come to apply for the job?")
-            .options().let { optionBuilder ->
+            .options()
+            .let { optionBuilder ->
                 val continuePath = b.placeholder()
-                optionBuilder.option("Yes")
+                optionBuilder
+                    .option("Yes")
                     .playerl("Yes, if it pays well.")
                     .goto(continuePath)
-                optionBuilder.option_playerl("No.")
+                optionBuilder
+                    .option_playerl("No.")
                     .end()
                 return@let continuePath.builder()
-            }
-            .npcl("I'll have to ask you some questions first.")
+            }.npcl("I'll have to ask you some questions first.")
             .playerl("Okay...")
             .npcl("How would you describe yourself in one word?")
-            .options().let { optionBuilder ->
+            .options()
+            .let { optionBuilder ->
                 val continuePath = b.placeholder()
                 optionBuilder.recordAttribute("creature-of-fenkenstrain:first-question")
                 optionBuilder.option_playerl("Stunning.").goto(continuePath)
@@ -134,10 +148,10 @@ class DrFenkenstrainDialogueFile : DialogueBuilderFile() {
                 optionBuilder.option_playerl("Breathtaking.").goto(continuePath)
                 optionBuilder.option_playerl("Braindead.").goto(continuePath)
                 return@let continuePath.builder()
-            }
-            .npcl("Mmmm, I see.")
+            }.npcl("Mmmm, I see.")
             .npcl("Just one more question. What would you say is your greatest skill?")
-            .options().let { optionBuilder ->
+            .options()
+            .let { optionBuilder ->
                 val continuePath = b.placeholder()
                 optionBuilder.recordAttribute("creature-of-fenkenstrain:second-question")
                 optionBuilder.option_playerl("Combat.").goto(continuePath)
@@ -145,23 +159,23 @@ class DrFenkenstrainDialogueFile : DialogueBuilderFile() {
                 optionBuilder.option_playerl("Cooking.").goto(continuePath)
                 optionBuilder.option_playerl("Grave-digging.").goto(continuePath)
                 return@let continuePath.builder()
-            }
-            .npcl("Mmmm, I see.")
+            }.npcl("Mmmm, I see.")
             .branch { player ->
-                if (getAttribute(player, "creature-of-fenkenstrain:first-question", -1) == 3 && getAttribute(
+                if (getAttribute(player, "creature-of-fenkenstrain:first-question", -1) == 3 &&
+                    getAttribute(
                         player,
                         "creature-of-fenkenstrain:second-question",
-                        -1
+                        -1,
                     ) == 3
                 ) {
                     1
                 } else {
                     0
                 }
-            }
-            .let { branch ->
+            }.let { branch ->
 
-                branch.onValue(0)
+                branch
+                    .onValue(0)
                     .npcl("Looks like you're not the @g[man,woman] for the job.")
                     .end()
                 return@let branch
@@ -176,93 +190,104 @@ class DrFenkenstrainDialogueFile : DialogueBuilderFile() {
             .playerl("What kind of stuff?")
             .npcl("Well...dead stuff.")
             .playerl("Go on...")
-            .npcl("I need you to get me enough dead body parts for me to stitch together a complete body, which I plan to bring to life.")
-            .playerl("Right...okay...if you insist.")
+            .npcl(
+                "I need you to get me enough dead body parts for me to stitch together a complete body, which I plan to bring to life.",
+            ).playerl("Right...okay...if you insist.")
             .endWith { _, player ->
                 if (getQuestStage(player, Quests.CREATURE_OF_FENKENSTRAIN) == 1) {
                     setQuestStage(player, Quests.CREATURE_OF_FENKENSTRAIN, 2)
                 }
             }
 
-        b.onQuestStages(Quests.CREATURE_OF_FENKENSTRAIN, 2)
-            .options().let { optionBuilder ->
+        b
+            .onQuestStages(Quests.CREATURE_OF_FENKENSTRAIN, 2)
+            .options()
+            .let { optionBuilder ->
                 val continuePath = b.placeholder()
 
-                optionBuilder.optionIf("I have some body parts for you.") { player ->
-                    return@optionIf allPartsSubmitted(
-                        player
-                    ) || reqArms(player) || reqLegs(player) || reqTorso(player) || reqHead(player)
-                }
-                    .playerl("I have some body parts for you.")
+                optionBuilder
+                    .optionIf("I have some body parts for you.") { player ->
+                        return@optionIf allPartsSubmitted(
+                            player,
+                        ) ||
+                            reqArms(player) ||
+                            reqLegs(player) ||
+                            reqTorso(player) ||
+                            reqHead(player)
+                    }.playerl("I have some body parts for you.")
                     .goto(continuePath)
-                optionBuilder.optionIf("Do you know where I could find body parts?") { player ->
-                    return@optionIf !(
+                optionBuilder
+                    .optionIf("Do you know where I could find body parts?") { player ->
+                        return@optionIf !(
                             allPartsSubmitted(
-                                player
-                            ) || reqArms(player) || reqLegs(player) || reqTorso(player) || reqHead(player)
-                            )
-                }
-                    .playerl("Do you know where I could find body parts?")
-                    .npcl("The soil of Morytania is unique in its ability to preserve the bodies of the dead, which is one reason why I have chosen to carry out my experiments here.")
-                    .npcl("I recommend digging up some graves in the local area. To the south-east you will find the Haunted Woods; I believe there are many graves there.")
-                    .npcl("There is also a mausoleum on an island west of this castle. I expect the bodies that are buried there to be extremely well preserved, as they were wealthy in life.")
+                                player,
+                            ) ||
+                                reqArms(player) ||
+                                reqLegs(player) ||
+                                reqTorso(player) ||
+                                reqHead(player)
+                        )
+                    }.playerl("Do you know where I could find body parts?")
+                    .npcl(
+                        "The soil of Morytania is unique in its ability to preserve the bodies of the dead, which is one reason why I have chosen to carry out my experiments here.",
+                    ).npcl(
+                        "I recommend digging up some graves in the local area. To the south-east you will find the Haunted Woods; I believe there are many graves there.",
+                    ).npcl(
+                        "There is also a mausoleum on an island west of this castle. I expect the bodies that are buried there to be extremely well preserved, as they were wealthy in life.",
+                    ).end()
+                optionBuilder
+                    .option_playerl("Remind me what you want me to do.")
+                    .npcl(
+                        "I need you to get me enough dead body parts for me to stitch together a complete body, which I plan to bring to life.",
+                    ).playerl("Right...okay...if you insist.")
                     .end()
-                optionBuilder.option_playerl("Remind me what you want me to do.")
-                    .npcl("I need you to get me enough dead body parts for me to stitch together a complete body, which I plan to bring to life.")
-                    .playerl("Right...okay...if you insist.")
-                    .end()
-                optionBuilder.option_playerl("Why are you trying to make this creature?")
-                    .npcl("I came to the land of Morytania many years ago, to find a safe sanctuary for my experiments. This abandoned castle suited my purposes exactly.")
-                    .playerl("What were you experimenting in?")
+                optionBuilder
+                    .option_playerl("Why are you trying to make this creature?")
+                    .npcl(
+                        "I came to the land of Morytania many years ago, to find a safe sanctuary for my experiments. This abandoned castle suited my purposes exactly.",
+                    ).playerl("What were you experimenting in?")
                     .npcl("Oh, perfectly innocent experiments - for the good of mankind.")
                     .playerl("Then why did you need to come to Morytania?")
                     .npcl("Enough questions, now. Get back to your work.")
                     .end()
-                optionBuilder.option_playerl("Will this creature put me out of a job?")
+                optionBuilder
+                    .option_playerl("Will this creature put me out of a job?")
                     .npcl("No, my friend. I have a very special purpose in mind for this creature.")
                     .end()
-                optionBuilder.option_playerl("I must get back to work, sir.")
+                optionBuilder
+                    .option_playerl("I must get back to work, sir.")
                     .end()
 
                 return@let continuePath.builder()
-            }
-
-            .let { builder ->
+            }.let { builder ->
                 return@let hasPart(
                     builder,
                     Item(Items.ARMS_4195, 1),
                     CreatureOfFenkenstrain.attributeArms,
-                    "Great, you've brought me some arms."
+                    "Great, you've brought me some arms.",
                 )
-            }
-
-            .let { builder ->
+            }.let { builder ->
                 return@let hasPart(
                     builder,
                     Item(Items.LEGS_4196, 1),
                     CreatureOfFenkenstrain.attributeLegs,
-                    "Excellent, you've brought me some legs."
+                    "Excellent, you've brought me some legs.",
                 )
-            }
-
-            .let { builder ->
+            }.let { builder ->
                 return@let hasPart(
                     builder,
                     Item(Items.TORSO_4194, 1),
                     CreatureOfFenkenstrain.attributeTorso,
-                    "Splendid, you've brought me a torso."
+                    "Splendid, you've brought me a torso.",
                 )
-            }
-
-            .let { builder ->
+            }.let { builder ->
                 return@let hasPart(
                     builder,
                     Item(Items.DECAPITATED_HEAD_4198, 1),
                     CreatureOfFenkenstrain.attributeHead,
-                    "Fantastic, you've brought me a head."
+                    "Fantastic, you've brought me a head.",
                 )
-            }
-            .branch { player ->
+            }.branch { player ->
                 return@branch if (allPartsSubmitted(player)) {
                     1
                 } else {
@@ -270,7 +295,8 @@ class DrFenkenstrainDialogueFile : DialogueBuilderFile() {
                 }
             }.let { branch ->
 
-                branch.onValue(0)
+                branch
+                    .onValue(0)
                     .end()
                 return@let branch
             }.onValue(1)
@@ -283,32 +309,29 @@ class DrFenkenstrainDialogueFile : DialogueBuilderFile() {
                 }
             }
 
-        b.onQuestStages(Quests.CREATURE_OF_FENKENSTRAIN, 3)
+        b
+            .onQuestStages(Quests.CREATURE_OF_FENKENSTRAIN, 3)
             .npcl("Where are my needle and thread, @name?")
-
             .let { builder ->
                 return@let hasPart(
                     builder,
                     Item(Items.NEEDLE_1733, 1),
                     CreatureOfFenkenstrain.attributeNeedle,
-                    "Ah, a needle. Wonderful."
+                    "Ah, a needle. Wonderful.",
                 )
-            }
-
-            .let { builder ->
+            }.let { builder ->
                 return@let hasPart(
                     builder,
                     Item(Items.THREAD_1734, 5),
                     CreatureOfFenkenstrain.attributeThread,
-                    "Some thread. Excellent."
+                    "Some thread. Excellent.",
                 )
-            }
-
-            .branch { player ->
-                return@branch if (getAttribute(player, CreatureOfFenkenstrain.attributeNeedle, false) && getAttribute(
+            }.branch { player ->
+                return@branch if (getAttribute(player, CreatureOfFenkenstrain.attributeNeedle, false) &&
+                    getAttribute(
                         player,
                         CreatureOfFenkenstrain.attributeThread,
-                        false
+                        false,
                     )
                 ) {
                     1
@@ -317,39 +340,44 @@ class DrFenkenstrainDialogueFile : DialogueBuilderFile() {
                 }
             }.let { branch ->
 
-                branch.onValue(0)
+                branch
+                    .onValue(0)
                     .end()
                 return@let branch
             }.onValue(1)
             .betweenStage { _, player, _, _ ->
                 setVarp(player, Vars.VARP_QUEST_CREATURE_OF_FENKENSTRAIN_PROGRESS_399, 3, true)
-            }
-            .line(
+            }.line(
                 "Fenkenstrain uses the needle and thread to sew the body parts",
-                "together. Soon, a hideous creature lies inanimate on the ritual table."
-            )
-            .npcl("Perfect. But I need one more thing from you - flesh and bones by themselves do not make life.")
+                "together. Soon, a hideous creature lies inanimate on the ritual table.",
+            ).npcl("Perfect. But I need one more thing from you - flesh and bones by themselves do not make life.")
             .playerl("Really?")
-            .npcl("I have honed to perfection an ancient ritual that will give life to this creature, but for this I must harness the very power of Nature.")
-            .playerl("And what power is this?")
+            .npcl(
+                "I have honed to perfection an ancient ritual that will give life to this creature, but for this I must harness the very power of Nature.",
+            ).playerl("And what power is this?")
             .npcl("The power of lightning.")
             .playerl("Sorry, can't make lightning, you've got the wrong @g[man,woman]-")
-            .npcl("Silence your insolent tongue! The storm that brews overhead will create the lightning. What I need you to do is to repair the lightning conductor on the balcony above.")
-            .playerl("Repair the lightning conductor, right. Can I have a break, soon? By law I'm entitled to 15 minutes every-")
-            .npcl("Repair the conductor and BEGONE!!")
+            .npcl(
+                "Silence your insolent tongue! The storm that brews overhead will create the lightning. What I need you to do is to repair the lightning conductor on the balcony above.",
+            ).playerl(
+                "Repair the lightning conductor, right. Can I have a break, soon? By law I'm entitled to 15 minutes every-",
+            ).npcl("Repair the conductor and BEGONE!!")
             .endWith { _, player ->
                 if (getQuestStage(player, Quests.CREATURE_OF_FENKENSTRAIN) == 3) {
                     setQuestStage(player, Quests.CREATURE_OF_FENKENSTRAIN, 4)
                 }
             }
 
-        b.onQuestStages(Quests.CREATURE_OF_FENKENSTRAIN, 4)
+        b
+            .onQuestStages(Quests.CREATURE_OF_FENKENSTRAIN, 4)
             .playerl(FaceAnim.THINKING, "How do I repair the lighting conductor?")
-            .npcl("Oh, it would be easier to do it myself! If you find a conductor mould you should be able to cast a new one.")
-            .npcl("Remember this, @name, my experiment will only work with a conductor made from silver.")
+            .npcl(
+                "Oh, it would be easier to do it myself! If you find a conductor mould you should be able to cast a new one.",
+            ).npcl("Remember this, @name, my experiment will only work with a conductor made from silver.")
             .end()
 
-        b.onQuestStages(Quests.CREATURE_OF_FENKENSTRAIN, 5)
+        b
+            .onQuestStages(Quests.CREATURE_OF_FENKENSTRAIN, 5)
             .playerl("So did it work, then?")
             .npcl("Yes, I'm afraid it did, @name - all too well.")
             .playerl(FaceAnim.SUSPICIOUS, "I can't see it anywhere.")
@@ -368,25 +396,30 @@ class DrFenkenstrainDialogueFile : DialogueBuilderFile() {
                 addItemOrDrop(player, Items.TOWER_KEY_4185)
             }
 
-        b.onQuestStages(Quests.CREATURE_OF_FENKENSTRAIN, 6)
+        b
+            .onQuestStages(Quests.CREATURE_OF_FENKENSTRAIN, 6)
             .npcl("So have you destroyed it?!!?")
             .playerl("Not yet.")
             .npcl("Please, hurry - save me!!!!")
             .end()
 
-        b.onQuestStages(Quests.CREATURE_OF_FENKENSTRAIN, 7)
+        b
+            .onQuestStages(Quests.CREATURE_OF_FENKENSTRAIN, 7)
             .npcl("So have you destroyed it?!!?")
             .playerl("Never, now that he has told me the truth!")
             .npcl("Oh my, oh my, this is exactly what I feared!")
             .npcl("Why did you have to pick Rologarth's brain of all brains?!?")
             .playerl("I'm through working for you.")
-            .npcl("No! I refuse to release you! You must help me build another creature to destroy this dreadful mistake!!")
-            .end()
+            .npcl(
+                "No! I refuse to release you! You must help me build another creature to destroy this dreadful mistake!!",
+            ).end()
 
-        b.onQuestStages(Quests.CREATURE_OF_FENKENSTRAIN, 8, 100)
+        b
+            .onQuestStages(Quests.CREATURE_OF_FENKENSTRAIN, 8, 100)
             .npcl("theyrecomingtogetme theyrecomingtogetme...")
-            .playerl("It is all you deserve. Lord Rologarth is master of this castle once more. Let him protect you - if he wants to.")
-            .npcl("theyrecomingtogetme theyrecomingtogetme...")
+            .playerl(
+                "It is all you deserve. Lord Rologarth is master of this castle once more. Let him protect you - if he wants to.",
+            ).npcl("theyrecomingtogetme theyrecomingtogetme...")
             .end()
     }
 }

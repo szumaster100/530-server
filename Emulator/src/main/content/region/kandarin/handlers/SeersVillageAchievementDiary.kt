@@ -1,9 +1,5 @@
 package content.region.kandarin.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
-import org.rs.consts.Quests
 import content.global.handlers.iface.FairyRing
 import content.global.handlers.item.withnpc.ChaliceOnKingArthurListener
 import content.region.kandarin.quest.grail.dialogue.GalahadHGDialogue
@@ -23,6 +19,10 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.world.map.Location
 import core.game.world.map.zone.ZoneBorders
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
+import org.rs.consts.Scenery
 
 class SeersVillageAchievementDiary : DiaryEventHookBase(DiaryType.SEERS_VILLAGE) {
     companion object {
@@ -41,32 +41,35 @@ class SeersVillageAchievementDiary : DiaryEventHookBase(DiaryType.SEERS_VILLAGE)
         private val SEERS_COURTHOUSE_AREA = ZoneBorders(2732, 3467, 2739, 3471)
         private val RANGING_GUILD_LOCATION = Location(2657, 3439)
 
-        private val COMBAT_BRACELETS = arrayOf(
-            Items.COMBAT_BRACELET_11126,
-            Items.COMBAT_BRACELET4_11118,
-            Items.COMBAT_BRACELET3_11120,
-            Items.COMBAT_BRACELET2_11122,
-            Items.COMBAT_BRACELET1_11124
-        )
+        private val COMBAT_BRACELETS =
+            arrayOf(
+                Items.COMBAT_BRACELET_11126,
+                Items.COMBAT_BRACELET4_11118,
+                Items.COMBAT_BRACELET3_11120,
+                Items.COMBAT_BRACELET2_11122,
+                Items.COMBAT_BRACELET1_11124,
+            )
 
         private val RANGING_GUILD_ARCHERS =
             arrayOf(NPCs.TOWER_ARCHER_688, NPCs.TOWER_ARCHER_689, NPCs.TOWER_ARCHER_690, NPCs.TOWER_ARCHER_691)
-        private val WORKSHOP_ELEMENTALS = arrayOf(
-            NPCs.FIRE_ELEMENTAL_1019,
-            NPCs.EARTH_ELEMENTAL_1020,
-            NPCs.AIR_ELEMENTAL_1021,
-            NPCs.WATER_ELEMENTAL_1022
-        )
+        private val WORKSHOP_ELEMENTALS =
+            arrayOf(
+                NPCs.FIRE_ELEMENTAL_1019,
+                NPCs.EARTH_ELEMENTAL_1020,
+                NPCs.AIR_ELEMENTAL_1021,
+                NPCs.WATER_ELEMENTAL_1022,
+            )
 
         private val CHURN_PRODUCT = arrayOf(Items.CHEESE_1985, Items.POT_OF_CREAM_2130, Items.PAT_OF_BUTTER_6697)
-        private val RANGING_GUILD_STOCK = arrayOf(
-            Items.BARB_BOLTTIPS_47,
-            Items.RUNE_ARROW_892,
-            Items.GREEN_DHIDE_BODY_1135,
-            Items.ADAMANT_JAVELIN_829,
-            Items.STUDDED_BODY_1133,
-            Items.COIF_1169
-        )
+        private val RANGING_GUILD_STOCK =
+            arrayOf(
+                Items.BARB_BOLTTIPS_47,
+                Items.RUNE_ARROW_892,
+                Items.GREEN_DHIDE_BODY_1135,
+                Items.ADAMANT_JAVELIN_829,
+                Items.STUDDED_BODY_1133,
+                Items.COIF_1169,
+            )
 
         object EasyTasks {
             const val PICK_5_FLAX = 0
@@ -118,157 +121,179 @@ class SeersVillageAchievementDiary : DiaryEventHookBase(DiaryType.SEERS_VILLAGE)
             finishTask(
                 player,
                 DiaryLevel.HARD,
-                HardTasks.ENTER_SEERS_COURTHOUSE_WITH_PIETY
+                HardTasks.ENTER_SEERS_COURTHOUSE_WITH_PIETY,
             )
         }
     }
 
-    override fun onResourceProduced(player: Player, event: ResourceProducedEvent) {
+    override fun onResourceProduced(
+        player: Player,
+        event: ResourceProducedEvent,
+    ) {
         if (event.source.id == Scenery.OBELISK_OF_WATER_2151 && event.amount >= 5) {
             finishTask(
                 player,
                 DiaryLevel.HARD,
-                HardTasks.CHARGE_5_WATER_ORBS_AT_ONCE
+                HardTasks.CHARGE_5_WATER_ORBS_AT_ONCE,
             )
         }
 
         when (player.viewport.region.id) {
-            10805 -> if (event.itemId == Items.FLAX_1779) {
-                progressIncrementalTask(
-                    player,
-                    DiaryLevel.EASY,
-                    EasyTasks.PICK_5_FLAX,
-                    ATTRIBUTE_FLAX_PICKED,
-                    5
-                )
-            }
-
-            10806 -> if (event.itemId == Items.YEW_LOGS_1515) {
-                progressIncrementalTask(
-                    player,
-                    DiaryLevel.HARD,
-                    HardTasks.CUT_5_YEW_LOGS,
-                    ATTRIBUTE_CUT_YEW_COUNT,
-                    5
-                )
-            }
-
-            10807 -> if (event.itemId in CHURN_PRODUCT) {
-                finishTask(
-                    player,
-                    DiaryLevel.EASY,
-                    EasyTasks.SINCLAIR_MANSION_USE_CHURN
-                )
-            }
-
-            11317 -> when (event.itemId) {
-                Items.RAW_MACKEREL_353 -> {
-                    finishTask(
+            10805 ->
+                if (event.itemId == Items.FLAX_1779) {
+                    progressIncrementalTask(
                         player,
                         DiaryLevel.EASY,
-                        EasyTasks.CATCH_MACKEREL
+                        EasyTasks.PICK_5_FLAX,
+                        ATTRIBUTE_FLAX_PICKED,
+                        5,
                     )
                 }
 
-                Items.RAW_BASS_363 -> {
-                    fulfillTaskRequirement(
-                        player,
-                        DiaryLevel.MEDIUM,
-                        MediumTasks.CATHERBY_CATCH_AND_COOK_BASS,
-                        ATTRIBUTE_BASS_CAUGHT
-                    )
-                }
-
-                Items.BASS_365 -> {
-                    whenTaskRequirementFulfilled(player, ATTRIBUTE_BASS_CAUGHT) {
-                        finishTask(
-                            player,
-                            DiaryLevel.MEDIUM,
-                            MediumTasks.CATHERBY_CATCH_AND_COOK_BASS
-                        )
-                    }
-                }
-
-                Items.RAW_SHARK_383 -> {
+            10806 ->
+                if (event.itemId == Items.YEW_LOGS_1515) {
                     progressIncrementalTask(
                         player,
                         DiaryLevel.HARD,
-                        HardTasks.CATHERBY_CATCH_5_SHARKS,
-                        ATTRIBUTE_SHARK_CAUGHT_COUNT,
-                        5
+                        HardTasks.CUT_5_YEW_LOGS,
+                        ATTRIBUTE_CUT_YEW_COUNT,
+                        5,
                     )
                 }
 
-                Items.SHARK_385 -> {
-                    if (inEquipment(player, Items.COOKING_GAUNTLETS_775)) {
+            10807 ->
+                if (event.itemId in CHURN_PRODUCT) {
+                    finishTask(
+                        player,
+                        DiaryLevel.EASY,
+                        EasyTasks.SINCLAIR_MANSION_USE_CHURN,
+                    )
+                }
+
+            11317 ->
+                when (event.itemId) {
+                    Items.RAW_MACKEREL_353 -> {
+                        finishTask(
+                            player,
+                            DiaryLevel.EASY,
+                            EasyTasks.CATCH_MACKEREL,
+                        )
+                    }
+
+                    Items.RAW_BASS_363 -> {
+                        fulfillTaskRequirement(
+                            player,
+                            DiaryLevel.MEDIUM,
+                            MediumTasks.CATHERBY_CATCH_AND_COOK_BASS,
+                            ATTRIBUTE_BASS_CAUGHT,
+                        )
+                    }
+
+                    Items.BASS_365 -> {
+                        whenTaskRequirementFulfilled(player, ATTRIBUTE_BASS_CAUGHT) {
+                            finishTask(
+                                player,
+                                DiaryLevel.MEDIUM,
+                                MediumTasks.CATHERBY_CATCH_AND_COOK_BASS,
+                            )
+                        }
+                    }
+
+                    Items.RAW_SHARK_383 -> {
                         progressIncrementalTask(
                             player,
                             DiaryLevel.HARD,
-                            HardTasks.CATHERBY_COOK_5_SHARKS_WITH_COOKING_GAUNTLETS,
-                            ATTRIBUTE_SHARK_COOKED_COUNT,
-                            5
+                            HardTasks.CATHERBY_CATCH_5_SHARKS,
+                            ATTRIBUTE_SHARK_CAUGHT_COUNT,
+                            5,
+                        )
+                    }
+
+                    Items.SHARK_385 -> {
+                        if (inEquipment(player, Items.COOKING_GAUNTLETS_775)) {
+                            progressIncrementalTask(
+                                player,
+                                DiaryLevel.HARD,
+                                HardTasks.CATHERBY_COOK_5_SHARKS_WITH_COOKING_GAUNTLETS,
+                                ATTRIBUTE_SHARK_COOKED_COUNT,
+                                5,
+                            )
+                        }
+                    }
+                }
+        }
+    }
+
+    override fun onNpcKilled(
+        player: Player,
+        event: NPCKillEvent,
+    ) {
+        when (player.viewport.region.id) {
+            10906 ->
+                if (event.npc.id in WORKSHOP_ELEMENTALS) {
+                    progressFlaggedTask(
+                        player,
+                        DiaryLevel.MEDIUM,
+                        MediumTasks.DEFEAT_EACH_ELEMENTAL_TYPE,
+                        ATTRIBUTE_ELEMENTAL_KILL_FLAGS,
+                        1 shl (event.npc.id - NPCs.FIRE_ELEMENTAL_1019),
+                        0xF,
+                    )
+                }
+
+            10549 ->
+                if (event.npc.id in RANGING_GUILD_ARCHERS) {
+                    progressFlaggedTask(
+                        player,
+                        DiaryLevel.MEDIUM,
+                        MediumTasks.RANGING_GUILD_KILL_EACH_TOWER_GUARD,
+                        ATTRIBUTE_ARCHER_KILL_FLAGS,
+                        1 shl (event.npc.id - NPCs.TOWER_ARCHER_688),
+                        0xF,
+                    )
+                }
+        }
+    }
+
+    override fun onTeleported(
+        player: Player,
+        event: TeleportEvent,
+    ) {
+        when (event.source) {
+            is Item ->
+                if (event.source.id in COMBAT_BRACELETS) {
+                    if (event.location == RANGING_GUILD_LOCATION) {
+                        finishTask(
+                            player,
+                            DiaryLevel.HARD,
+                            HardTasks.RANGING_GUILD_TELEPORT,
                         )
                     }
                 }
-            }
         }
     }
 
-    override fun onNpcKilled(player: Player, event: NPCKillEvent) {
-        when (player.viewport.region.id) {
-            10906 -> if (event.npc.id in WORKSHOP_ELEMENTALS) {
-                progressFlaggedTask(
-                    player,
-                    DiaryLevel.MEDIUM,
-                    MediumTasks.DEFEAT_EACH_ELEMENTAL_TYPE,
-                    ATTRIBUTE_ELEMENTAL_KILL_FLAGS,
-                    1 shl (event.npc.id - NPCs.FIRE_ELEMENTAL_1019),
-                    0xF
-                )
-            }
-
-            10549 -> if (event.npc.id in RANGING_GUILD_ARCHERS) {
-                progressFlaggedTask(
-                    player,
-                    DiaryLevel.MEDIUM,
-                    MediumTasks.RANGING_GUILD_KILL_EACH_TOWER_GUARD,
-                    ATTRIBUTE_ARCHER_KILL_FLAGS,
-                    1 shl (event.npc.id - NPCs.TOWER_ARCHER_688),
-                    0xF
-                )
-            }
-        }
-    }
-
-    override fun onTeleported(player: Player, event: TeleportEvent) {
-        when (event.source) {
-            is Item -> if (event.source.id in COMBAT_BRACELETS) {
-                if (event.location == RANGING_GUILD_LOCATION) {
-                    finishTask(
-                        player,
-                        DiaryLevel.HARD,
-                        HardTasks.RANGING_GUILD_TELEPORT
-                    )
-                }
-            }
-        }
-    }
-
-    override fun onFireLit(player: Player, event: LitFireEvent) {
+    override fun onFireLit(
+        player: Player,
+        event: LitFireEvent,
+    ) {
         when {
             inBorders(player, SEERS_VILLAGE_AREA) -> {
                 if (event.logId == Items.MAGIC_LOGS_1513) {
                     finishTask(
                         player,
                         DiaryLevel.HARD,
-                        HardTasks.LIGHT_MAGIC_LOG
+                        HardTasks.LIGHT_MAGIC_LOG,
                     )
                 }
             }
         }
     }
 
-    override fun onInteracted(player: Player, event: InteractionEvent) {
+    override fun onInteracted(
+        player: Player,
+        event: InteractionEvent,
+    ) {
         when {
             inBorders(player, SEERS_COAL_TRUCKS_AREA) -> {
                 whenTaskRequirementFulfilled(player, ATTRIBUTE_COAL_TRUCK_FULL) {
@@ -276,7 +301,7 @@ class SeersVillageAchievementDiary : DiaryEventHookBase(DiaryType.SEERS_VILLAGE)
                         finishTask(
                             player,
                             DiaryLevel.MEDIUM,
-                            MediumTasks.TRANSPORT_FULL_LOAD_OF_COAL
+                            MediumTasks.TRANSPORT_FULL_LOAD_OF_COAL,
                         )
                     }
                 }
@@ -284,14 +309,17 @@ class SeersVillageAchievementDiary : DiaryEventHookBase(DiaryType.SEERS_VILLAGE)
         }
     }
 
-    override fun onDialogueOptionSelected(player: Player, event: DialogueOptionSelectionEvent) {
+    override fun onDialogueOptionSelected(
+        player: Player,
+        event: DialogueOptionSelectionEvent,
+    ) {
         when (event.dialogue) {
             is ChaliceOnKingArthurListener.PoisonChaliceOnKingArthurDialogue -> {
                 if (event.currentStage == 4) {
                     finishTask(
                         player,
                         DiaryLevel.EASY,
-                        EasyTasks.TAKE_POISON_TO_KING_ARTHUR
+                        EasyTasks.TAKE_POISON_TO_KING_ARTHUR,
                     )
                 }
             }
@@ -301,7 +329,7 @@ class SeersVillageAchievementDiary : DiaryEventHookBase(DiaryType.SEERS_VILLAGE)
                     finishTask(
                         player,
                         DiaryLevel.MEDIUM,
-                        MediumTasks.THORMAC_SORCERER_TALK_ABOUT_MYSTIC_STAVES
+                        MediumTasks.THORMAC_SORCERER_TALK_ABOUT_MYSTIC_STAVES,
                     )
                 }
             }
@@ -311,14 +339,17 @@ class SeersVillageAchievementDiary : DiaryEventHookBase(DiaryType.SEERS_VILLAGE)
                     finishTask(
                         player,
                         DiaryLevel.EASY,
-                        EasyTasks.SIR_GALAHAD_MAKE_TEA
+                        EasyTasks.SIR_GALAHAD_MAKE_TEA,
                     )
                 }
             }
         }
     }
 
-    override fun onAttributeSet(player: Player, event: AttributeSetEvent) {
+    override fun onAttributeSet(
+        player: Player,
+        event: AttributeSetEvent,
+    ) {
         when (event.attribute) {
             "/save:coal-truck-inventory" -> {
                 if (event.value !is Int) return
@@ -327,41 +358,50 @@ class SeersVillageAchievementDiary : DiaryEventHookBase(DiaryType.SEERS_VILLAGE)
                         player,
                         DiaryLevel.MEDIUM,
                         MediumTasks.TRANSPORT_FULL_LOAD_OF_COAL,
-                        ATTRIBUTE_COAL_TRUCK_FULL
+                        ATTRIBUTE_COAL_TRUCK_FULL,
                     )
                 }
             }
         }
     }
 
-    override fun onItemAlchemized(player: Player, event: ItemAlchemizationEvent) {
+    override fun onItemAlchemized(
+        player: Player,
+        event: ItemAlchemizationEvent,
+    ) {
         if (inBorders(player, SEERS_BANK_AREA)) {
             if (event.itemId == Items.MAGIC_SHORTBOW_861 && event.isHigh) {
                 finishTask(
                     player,
                     DiaryLevel.HARD,
-                    HardTasks.HIGH_ALCH_MAGIC_SHORTBOW_INSIDE_BANK
+                    HardTasks.HIGH_ALCH_MAGIC_SHORTBOW_INSIDE_BANK,
                 )
             }
         }
     }
 
-    override fun onFairyRingDialed(player: Player, event: FairyRingDialEvent) {
+    override fun onFairyRingDialed(
+        player: Player,
+        event: FairyRingDialEvent,
+    ) {
         if (event.fairyRing == FairyRing.ALS) {
             finishTask(
                 player,
                 DiaryLevel.HARD,
-                HardTasks.DIAL_FAIRY_RING_MCGRUBORS_WOOD
+                HardTasks.DIAL_FAIRY_RING_MCGRUBORS_WOOD,
             )
         }
     }
 
-    override fun onItemPurchasedFromShop(player: Player, event: ItemShopPurchaseEvent) {
+    override fun onItemPurchasedFromShop(
+        player: Player,
+        event: ItemShopPurchaseEvent,
+    ) {
         if (event.itemId == Items.CANDLE_36 && player.viewport.region.id == 11061) {
             finishTask(
                 player,
                 DiaryLevel.EASY,
-                EasyTasks.BUY_CANDLE
+                EasyTasks.BUY_CANDLE,
             )
         }
 
@@ -369,34 +409,42 @@ class SeersVillageAchievementDiary : DiaryEventHookBase(DiaryType.SEERS_VILLAGE)
             finishTask(
                 player,
                 DiaryLevel.MEDIUM,
-                MediumTasks.RANGING_GUILD_BUY_SOMETHING_FOR_TICKETS
+                MediumTasks.RANGING_GUILD_BUY_SOMETHING_FOR_TICKETS,
             )
         }
     }
 
-    override fun onPrayerPointsRecharged(player: Player, event: PrayerPointsRechargeEvent) {
+    override fun onPrayerPointsRecharged(
+        player: Player,
+        event: PrayerPointsRechargeEvent,
+    ) {
         if (player.viewport.region.id == 10806) {
             if (event.altar.id == Scenery.ALTAR_409 || event.altar.id == Scenery.ALTAR_19145) {
                 finishTask(
                     player,
                     DiaryLevel.EASY,
-                    EasyTasks.PRAY_AT_ALTAR
+                    EasyTasks.PRAY_AT_ALTAR,
                 )
             }
         }
     }
 
-    override fun onSpellCast(player: Player, event: SpellCastEvent) {
-        if (event.spellBook == SpellBookManager.SpellBook.MODERN && event.spellId == 26 && hasLevelDyn(
+    override fun onSpellCast(
+        player: Player,
+        event: SpellCastEvent,
+    ) {
+        if (event.spellBook == SpellBookManager.SpellBook.MODERN &&
+            event.spellId == 26 &&
+            hasLevelDyn(
                 player,
                 Skills.MAGIC,
-                45
+                45,
             )
         ) {
             finishTask(
                 player,
                 DiaryLevel.MEDIUM,
-                MediumTasks.TELEPORT_TO_CAMELOT
+                MediumTasks.TELEPORT_TO_CAMELOT,
             )
         }
     }

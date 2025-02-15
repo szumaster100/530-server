@@ -5,9 +5,15 @@ import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.plugin.Plugin
 
-abstract class DegradableEquipment(val slot: Int, vararg val itemIds: Int) : Plugin<Any?> {
-
-    abstract fun degrade(player: Player?, entity: Entity?, item: Item?)
+abstract class DegradableEquipment(
+    val slot: Int,
+    vararg val itemIds: Int,
+) : Plugin<Any?> {
+    abstract fun degrade(
+        player: Player?,
+        entity: Entity?,
+        item: Item?,
+    )
 
     abstract fun getDropItem(itemId: Int): Int
 
@@ -21,20 +27,30 @@ abstract class DegradableEquipment(val slot: Int, vararg val itemIds: Int) : Plu
         return this
     }
 
-    override fun fireEvent(key: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        key: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 
     companion object {
-
         @JvmStatic private val EQUIPMENT: Array<ArrayList<DegradableEquipment>?> =
             arrayOfNulls(14)
 
-        @JvmStatic fun degrade(player: Player?, entity: Entity?, attack: Boolean) {
+        @JvmStatic fun degrade(
+            player: Player?,
+            entity: Entity?,
+            attack: Boolean,
+        ) {
             // TODO
         }
 
-        @JvmStatic fun checkDegrade(player: Player?, entity: Entity?, slot: Int) {
+        @JvmStatic fun checkDegrade(
+            player: Player?,
+            entity: Entity?,
+            slot: Int,
+        ) {
             // TODO
         }
 

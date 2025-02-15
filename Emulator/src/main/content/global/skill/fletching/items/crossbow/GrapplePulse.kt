@@ -7,8 +7,11 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import org.rs.consts.Items
 
-class GrapplePulse(player: Player?, node: Item?, private var amount: Int) : SkillPulse<Item?>(player, node) {
-
+class GrapplePulse(
+    player: Player?,
+    node: Item?,
+    private var amount: Int,
+) : SkillPulse<Item?>(player, node) {
     override fun checkRequirements(): Boolean {
         val inventoryAmount = amountInInventory(player, Items.MITH_GRAPPLE_TIP_9416)
         if (amount > inventoryAmount) {

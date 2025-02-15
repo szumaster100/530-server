@@ -29,10 +29,15 @@ class CocktailCooker : UseWithHandler(UNCOOKED_CHOC_SAT, UNCOOKED_DRUN_DRA) {
         return true
     }
 
-    private fun cook(drink: CookedDrinks, player: Player, raw: Item) {
+    private fun cook(
+        drink: CookedDrinks,
+        player: Player,
+        raw: Item,
+    ) {
         GameWorld.Pulser.submit(
             object : Pulse() {
                 var counter = 0
+
                 override fun pulse(): Boolean {
                     when (counter++) {
                         0 -> player.lock().also { player.animator.animate(Animation(883)) }
@@ -47,12 +52,14 @@ class CocktailCooker : UseWithHandler(UNCOOKED_CHOC_SAT, UNCOOKED_DRUN_DRA) {
                     }
                     return false
                 }
-            }
+            },
         )
     }
 
-    internal enum class CookedDrinks(val product: Int) {
+    internal enum class CookedDrinks(
+        val product: Int,
+    ) {
         COOKED_CHOC_SAT(9573),
-        COOKED_DRUN_DRA(2092)
+        COOKED_DRUN_DRA(2092),
     }
 }

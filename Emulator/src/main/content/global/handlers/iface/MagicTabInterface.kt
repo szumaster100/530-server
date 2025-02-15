@@ -9,7 +9,6 @@ import core.game.node.entity.player.link.SpellBookManager.SpellBook
 import core.game.world.GameWorld
 
 class MagicTabInterface : InterfaceListener {
-
     override fun defineInterfaceListeners() {
         SpellBook.values().forEach {
             on(it.interfaceId) { player, _, _, buttonID, _, _ ->

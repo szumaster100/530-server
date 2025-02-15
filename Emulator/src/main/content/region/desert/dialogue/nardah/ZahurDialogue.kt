@@ -1,26 +1,30 @@
 package content.region.desert.dialogue.nardah
 
 import core.api.interaction.decantContainer
-import org.rs.consts.NPCs
 import core.game.dialogue.Dialogue
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
-class ZahurDialogue(player: Player? = null) : Dialogue(player) {
-
+class ZahurDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         npc(
             "I can combine your potion vials to try and make",
             "the potions fit into fewer vials. This service is free.",
-            "Would you like to do this?"
+            "Would you like to do this?",
         )
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> options("Yes", "No").also { stage++ }
             1 ->

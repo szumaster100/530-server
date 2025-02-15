@@ -1,8 +1,8 @@
 package content.global.skill.slayer
 
-import org.rs.consts.NPCs
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
+import org.rs.consts.NPCs
 import java.util.*
 
 enum class SlayerMaster(
@@ -11,11 +11,12 @@ enum class SlayerMaster(
     var requirements: Int,
     var assigmentCount: IntArray,
     var taskPoints: IntArray,
-    vararg tasks: Task
+    vararg tasks: Task,
 ) {
-
     TURAEL(
-        NPCs.TURAEL_8273, 0, 0,
+        NPCs.TURAEL_8273,
+        0,
+        0,
         intArrayOf(15, 50),
         intArrayOf(0, 0, 0),
         Task(Tasks.BANSHEE, 8),
@@ -41,11 +42,13 @@ enum class SlayerMaster(
         Task(Tasks.SKELETONS, 7),
         Task(Tasks.SPIDERS, 6),
         Task(Tasks.WOLVES, 7),
-        Task(Tasks.ZOMBIES, 7)
+        Task(Tasks.ZOMBIES, 7),
     ),
 
     MAZCHNA(
-        NPCs.MAZCHNA_8274, 20, 0,
+        NPCs.MAZCHNA_8274,
+        20,
+        0,
         intArrayOf(30, 70),
         intArrayOf(2, 5, 15),
         Task(Tasks.BANSHEE, 8),
@@ -75,11 +78,13 @@ enum class SlayerMaster(
         Task(Tasks.SKELETONS, 7),
         Task(Tasks.VAMPIRES, 6),
         Task(Tasks.WOLVES, 7),
-        Task(Tasks.ZOMBIES, 7)
+        Task(Tasks.ZOMBIES, 7),
     ),
 
     VANNAKA(
-        NPCs.VANNAKA_1597, 40, 0,
+        NPCs.VANNAKA_1597,
+        40,
+        0,
         intArrayOf(30, 80),
         intArrayOf(4, 20, 60),
         Task(Tasks.ABERRANT_SPECTRES, 8),
@@ -133,11 +138,13 @@ enum class SlayerMaster(
         Task(Tasks.TROLLS, 7),
         Task(Tasks.TUROTHS, 8),
         Task(Tasks.VAMPIRES, 7),
-        Task(Tasks.WEREWOLFS, 7)
+        Task(Tasks.WEREWOLFS, 7),
     ),
 
     CHAELDAR(
-        NPCs.CHAELDAR_1598, 70, 0,
+        NPCs.CHAELDAR_1598,
+        70,
+        0,
         intArrayOf(110, 170),
         intArrayOf(10, 50, 150),
         Task(Tasks.ABERRANT_SPECTRES, 8),
@@ -184,7 +191,9 @@ enum class SlayerMaster(
     ),
 
     SUMONA(
-        NPCs.SUMONA_7780, 90, 35,
+        NPCs.SUMONA_7780,
+        90,
+        35,
         intArrayOf(50, 185),
         intArrayOf(12, 60, 180),
         Task(Tasks.ABERRANT_SPECTRES, 15),
@@ -215,11 +224,13 @@ enum class SlayerMaster(
         Task(Tasks.SPIRTUAL_WARRIORS, 10),
         Task(Tasks.TROLLS, 10),
         Task(Tasks.TUROTHS, 15),
-        Task(Tasks.VAMPIRES, 10)
+        Task(Tasks.VAMPIRES, 10),
     ),
 
     DURADEL(
-        NPCs.DURADEL_8275, 100, 50,
+        NPCs.DURADEL_8275,
+        100,
+        50,
         intArrayOf(50, 199),
         intArrayOf(15, 75, 225),
         Task(Tasks.ABERRANT_SPECTRES, 7),
@@ -253,19 +264,20 @@ enum class SlayerMaster(
         Task(Tasks.TROLLS, 6),
         Task(Tasks.TZHAAR, 10),
         Task(Tasks.VAMPIRES, 8),
-        Task(Tasks.WATERFIENDS, 2)
-    );
+        Task(Tasks.WATERFIENDS, 2),
+    ),
+    ;
 
     var tasks: List<Task> = ArrayList(arrayListOf(*tasks))
 
     fun hasRequirements(player: Player): Boolean {
         return player.properties.currentCombatLevel >= this.requiredCombat &&
-                player.getSkills().getLevel(Skills.SLAYER) >= this.requirements
+            player.getSkills().getLevel(Skills.SLAYER) >= this.requirements
     }
 
     class Task internal constructor(
         var task: Tasks,
-        var weight: Int
+        var weight: Int,
     )
 
     companion object {
@@ -283,10 +295,15 @@ enum class SlayerMaster(
         }
 
         @JvmStatic
-        fun hasSameTask(master: SlayerMaster, player: Player): Boolean {
-            return master.tasks.stream().filter { task: Task ->
-                task.task == SlayerManager.getInstance(player).task
-            }.count() != 0L
+        fun hasSameTask(
+            master: SlayerMaster,
+            player: Player,
+        ): Boolean {
+            return master.tasks
+                .stream()
+                .filter { task: Task ->
+                    task.task == SlayerManager.getInstance(player).task
+                }.count() != 0L
         }
     }
 }

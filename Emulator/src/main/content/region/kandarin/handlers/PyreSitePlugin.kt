@@ -1,7 +1,5 @@
 package content.region.kandarin.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.data.items.SkillingTool
 import content.global.skill.firemaking.Log
 import core.cache.def.impl.SceneryDefinition
@@ -22,14 +20,15 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import core.plugin.ClassScanner
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner
 import core.tools.RandomFunction
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
 class PyreSitePlugin : OptionHandler() {
-
     @Throws(Throwable::class)
     override fun newInstance(arg: Any?): Plugin<Any> {
         SceneryDefinition.forId(25286).handlers["option:construct"] = this
@@ -37,7 +36,11 @@ class PyreSitePlugin : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         for (location in USED_LOCATIONS) {
             if (location.withinDistance(node.location, 3)) {
                 player.sendMessage("This pyre site is in use currently.")
@@ -61,10 +64,11 @@ class PyreSitePlugin : OptionHandler() {
             return true
         }
 
-        val type = LogType.getType(player) ?: run {
-            player.sendMessage("You don't have any logs.")
-            return true
-        }
+        val type =
+            LogType.getType(player) ?: run {
+                player.sendMessage("You don't have any logs.")
+                return true
+            }
 
         if (player.getAttribute("barb", null) != null && (player.getAttribute("barb") as NPC).isActive) {
             player.sendMessage("You must defeat the barbarian spirit first.")
@@ -76,20 +80,30 @@ class PyreSitePlugin : OptionHandler() {
         return true
     }
 
-    private fun ritual(player: Player, scenery: Scenery) {
+    private fun ritual(
+        player: Player,
+        scenery: Scenery,
+    ) {
         player.lock()
         USED_LOCATIONS.add(scenery.location)
         player.faceLocation(scenery.location)
         GameWorld.Pulser.submit(getPulse(player, scenery))
     }
 
-    private fun getPulse(player: Player, scenery: Scenery): Pulse {
+    private fun getPulse(
+        player: Player,
+        scenery: Scenery,
+    ): Pulse {
         val logType = player.getAttribute("logType", LogType.NORMAL)
         val tool = SkillingTool.getHatchet(player)
         val bones =
-            if (player.inventory.containsItem(CHEWED_BONES)) player.inventory.getItem(CHEWED_BONES) else player.inventory.getItem(
-                MANGLED_BONES
-            )
+            if (player.inventory.containsItem(CHEWED_BONES)) {
+                player.inventory.getItem(CHEWED_BONES)
+            } else {
+                player.inventory.getItem(
+                    MANGLED_BONES,
+                )
+            }
 
         return object : Pulse(1, player) {
             var count = 0
@@ -112,7 +126,7 @@ class PyreSitePlugin : OptionHandler() {
                                 player.sendMessages(
                                     "The ancient barbarian is laid to rest. Your future prayer training is blessed,",
                                     "as his spirit ascends to a glorious afterlife. Spirits drop an object into your",
-                                    "pack."
+                                    "pack.",
                                 )
                             } else {
                                 val barb = NPC.create(752, scenery.location.transform(scenery.direction, 1))
@@ -144,17 +158,25 @@ class PyreSitePlugin : OptionHandler() {
         }
     }
 
-    private fun replace(newId: Int, ship: Scenery, player: Player) {
-        val newShip = Scenery(
-            newId,
-            getLocation(newId, ship),
-            10,
-            if (ship.location.x == 2503) 4 else 1
-        )
+    private fun replace(
+        newId: Int,
+        ship: Scenery,
+        player: Player,
+    ) {
+        val newShip =
+            Scenery(
+                newId,
+                getLocation(newId, ship),
+                10,
+                if (ship.location.x == 2503) 4 else 1,
+            )
         SceneryBuilder.add(newShip)
     }
 
-    private fun getLocation(newId: Int, ship: Scenery): Location {
+    private fun getLocation(
+        newId: Int,
+        ship: Scenery,
+    ): Location {
         var location = ship.location.transform(ship.direction, -2)
         when {
             ship.location.x == 2507 || ship.location.x == 2519 -> location = location.transform(-1, 0, 0)
@@ -165,16 +187,20 @@ class PyreSitePlugin : OptionHandler() {
 
     private fun getRandomItem(player: Player): Item {
         if (RandomFunction.random(250) == 10) {
-
             return DFH
         }
         return RandomFunction.getChanceItem(REWARDS)
     }
 
-    override fun getDestination(node: Node, n: Node): Location? {
+    override fun getDestination(
+        node: Node,
+        n: Node,
+    ): Location? {
         return if (n is Scenery) {
             n.location.transform(n.direction, 1)
-        } else null
+        } else {
+            null
+        }
     }
 
     fun getAnimation(tool: SkillingTool?): Animation? {
@@ -191,7 +217,12 @@ class PyreSitePlugin : OptionHandler() {
         }
     }
 
-    enum class LogType(val log: Log, val level: Int, val experiences: DoubleArray, val enhancedExp: Int) {
+    enum class LogType(
+        val log: Log,
+        val level: Int,
+        val experiences: DoubleArray,
+        val enhancedExp: Int,
+    ) {
         NORMAL(Log.NORMAL, 11, doubleArrayOf(10.0, 40.0), 1),
         ACHEY(Log.ACHEY, 11, doubleArrayOf(10.0, 40.0), 1),
         OAK(Log.OAK, 25, doubleArrayOf(15.0, 60.0), 2),
@@ -202,7 +233,8 @@ class PyreSitePlugin : OptionHandler() {
         MAHOGANY(Log.MAHOGANY, 60, doubleArrayOf(39.5, 158.0), 4),
         EUCALYPTUS(Log.EUCALYPTUS, 65, doubleArrayOf(43.7, 175.0), 4),
         YEW(Log.YEW, 70, doubleArrayOf(48.7, 195.0), 5),
-        MAGIC(Log.MAGIC, 85, doubleArrayOf(60.0, 250.0), 5);
+        MAGIC(Log.MAGIC, 85, doubleArrayOf(60.0, 250.0), 5),
+        ;
 
         companion object {
             fun getType(player: Player): LogType? {
@@ -216,67 +248,80 @@ class PyreSitePlugin : OptionHandler() {
         }
     }
 
-    inner class FerociousBarbarianNPC @JvmOverloads constructor(id: Int = -1, location: Location? = null) :
-        AbstractNPC(id, location) {
-        var target: Player? = null
+    inner class FerociousBarbarianNPC
+        @JvmOverloads
+        constructor(
+            id: Int = -1,
+            location: Location? = null,
+        ) : AbstractNPC(id, location) {
+            var target: Player? = null
 
-        init {
-            this.isRespawn = false
-            this.isAggressive = true
-        }
+            init {
+                this.isRespawn = false
+                this.isAggressive = true
+            }
 
-        override fun handleTickActions() {
-            if (target == null) {
-                return
-            }
-            if (!target!!.isActive || !target!!.location.withinDistance(getLocation())) {
-                clear()
-            }
-            if (!properties.combatPulse.isAttacking) {
-                properties.combatPulse.attack(target)
-            }
-        }
-
-        override fun isAttackable(entity: Entity, style: CombatStyle, message: Boolean): Boolean {
-            if (entity is Player && entity !== target) {
-                if (message) {
-                    entity.packetDispatch.sendMessage("It's not after you.")
+            override fun handleTickActions() {
+                if (target == null) {
+                    return
                 }
-                return false
+                if (!target!!.isActive || !target!!.location.withinDistance(getLocation())) {
+                    clear()
+                }
+                if (!properties.combatPulse.isAttacking) {
+                    properties.combatPulse.attack(target)
+                }
             }
-            return super.isAttackable(entity, style, message)
-        }
 
-        override fun finalizeDeath(killer: Entity) {
-            super.finalizeDeath(killer)
-            if (killer is Player && killer == target) {
-                target!!.removeAttribute("barb")
+            override fun isAttackable(
+                entity: Entity,
+                style: CombatStyle,
+                message: Boolean,
+            ): Boolean {
+                if (entity is Player && entity !== target) {
+                    if (message) {
+                        entity.packetDispatch.sendMessage("It's not after you.")
+                    }
+                    return false
+                }
+                return super.isAttackable(entity, style, message)
+            }
+
+            override fun finalizeDeath(killer: Entity) {
+                super.finalizeDeath(killer)
+                if (killer is Player && killer == target) {
+                    target!!.removeAttribute("barb")
+                }
+            }
+
+            override fun construct(
+                id: Int,
+                location: Location,
+                vararg objects: Any,
+            ): AbstractNPC {
+                return FerociousBarbarianNPC(id, location)
+            }
+
+            override fun getIds(): IntArray {
+                return intArrayOf(NPCs.FEROCIOUS_BARBARIAN_SPIRIT_752)
             }
         }
-
-        override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
-            return FerociousBarbarianNPC(id, location)
-        }
-
-        override fun getIds(): IntArray {
-            return intArrayOf(NPCs.FEROCIOUS_BARBARIAN_SPIRIT_752)
-        }
-    }
 
     companion object {
-        private val REWARDS = arrayOf(
-            ChanceItem(560, 8, 15, DropFrequency.COMMON),
-            ChanceItem(565, 4, 7, DropFrequency.COMMON),
-            ChanceItem(1601, 2, 2, DropFrequency.UNCOMMON),
-            ChanceItem(532, 10, 10, DropFrequency.RARE),
-            ChanceItem(100, 2, 2, DropFrequency.COMMON),
-            ChanceItem(9145, 5, 5, DropFrequency.COMMON),
-            ChanceItem(9144, 10, 10, DropFrequency.UNCOMMON),
-            ChanceItem(892, 10, 10, DropFrequency.COMMON),
-            ChanceItem(867, 20, 20, DropFrequency.UNCOMMON),
-            ChanceItem(816, 20, 20, DropFrequency.COMMON),
-            ChanceItem(9419, 1, 1, DropFrequency.COMMON)
-        )
+        private val REWARDS =
+            arrayOf(
+                ChanceItem(560, 8, 15, DropFrequency.COMMON),
+                ChanceItem(565, 4, 7, DropFrequency.COMMON),
+                ChanceItem(1601, 2, 2, DropFrequency.UNCOMMON),
+                ChanceItem(532, 10, 10, DropFrequency.RARE),
+                ChanceItem(100, 2, 2, DropFrequency.COMMON),
+                ChanceItem(9145, 5, 5, DropFrequency.COMMON),
+                ChanceItem(9144, 10, 10, DropFrequency.UNCOMMON),
+                ChanceItem(892, 10, 10, DropFrequency.COMMON),
+                ChanceItem(867, 20, 20, DropFrequency.UNCOMMON),
+                ChanceItem(816, 20, 20, DropFrequency.COMMON),
+                ChanceItem(9419, 1, 1, DropFrequency.COMMON),
+            )
         private val CHEWED_BONES = Item(Items.CHEWED_BONES_11338)
         private val MANGLED_BONES = Item(Items.MANGLED_BONES_11337)
         private val DFH = Item(Items.DRAGON_FULL_HELM_11335)

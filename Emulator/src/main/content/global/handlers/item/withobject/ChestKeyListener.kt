@@ -1,14 +1,13 @@
 package content.global.handlers.item.withobject
 
-import org.rs.consts.Items
-import org.rs.consts.Scenery
-import org.rs.consts.Sounds
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.Items
+import org.rs.consts.Scenery
+import org.rs.consts.Sounds
 
 class ChestKeyListener : InteractionListener {
-
     override fun defineListeners() {
         onUseWith(IntType.SCENERY, Items.CHEST_KEY_432, Scenery.CHEST_2079) { player, used, with ->
             if (!removeItem(player, used)) {

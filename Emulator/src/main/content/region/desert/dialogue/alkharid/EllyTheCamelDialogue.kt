@@ -1,7 +1,5 @@
 package content.region.desert.dialogue.alkharid
 
-import org.rs.consts.NPCs
-import org.rs.consts.Sounds
 import core.api.playAudio
 import core.api.sendMessage
 import core.game.dialogue.Dialogue
@@ -10,21 +8,31 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.tools.RandomFunction
+import org.rs.consts.NPCs
+import org.rs.consts.Sounds
 
 @Initializable
-class EllyTheCamelDialogue(player: Player? = null) : Dialogue(player) {
-
+class EllyTheCamelDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         val rand = RandomFunction.random(0, 2)
         when (rand) {
-            0 -> player(FaceAnim.HALF_GUILTY, "If I go near that camel, it'll probably", "bite my hand off.").also { stage = 0 }
+            0 ->
+                player(FaceAnim.HALF_GUILTY, "If I go near that camel, it'll probably", "bite my hand off.").also {
+                    stage =
+                        0
+                }
             1, 2 -> player(FaceAnim.HALF_THINKING, "I wonder if that camel has fleas...").also { stage = 0 }
         }
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 end()

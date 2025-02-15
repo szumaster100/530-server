@@ -7,10 +7,9 @@ import core.game.node.item.Item
 import org.rs.consts.Items
 
 class TempleKnightSets : InteractionListener {
-
     override fun defineListeners() {
         on(Items.INITIATE_HARNESS_M_9668, IntType.ITEM, "unpack") { player, node ->
-            if(freeSlots(player) < 2) {
+            if (freeSlots(player) < 2) {
                 sendMessage(player, "You don't have enough inventory space for the component parts.")
                 return@on true
             }
@@ -21,7 +20,7 @@ class TempleKnightSets : InteractionListener {
         }
 
         on(Items.PROSYTE_HARNESS_M_9666, IntType.ITEM, "unpack") { player, node ->
-            if(freeSlots(player) < 2) {
+            if (freeSlots(player) < 2) {
                 sendMessage(player, "You don't have enough inventory space for the component parts.")
                 return@on true
             }
@@ -32,7 +31,7 @@ class TempleKnightSets : InteractionListener {
         }
 
         on(Items.PROSYTE_HARNESS_F_9670, IntType.ITEM, "unpack") { player, node ->
-            if(freeSlots(player) < 2) {
+            if (freeSlots(player) < 2) {
                 sendMessage(player, "You don't have enough inventory space for the component parts.")
                 return@on true
             }

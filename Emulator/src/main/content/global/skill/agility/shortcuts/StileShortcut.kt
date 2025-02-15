@@ -1,6 +1,5 @@
 package content.global.skill.agility.shortcuts
 
-import org.rs.consts.Animations
 import core.api.animationCycles
 import core.api.forceMove
 import core.api.queueScript
@@ -13,9 +12,9 @@ import core.game.interaction.QueueStrength
 import core.game.node.entity.player.Player
 import core.game.world.map.Direction
 import core.game.world.map.Location
+import org.rs.consts.Animations
 
 class StileShortcut : InteractionListener {
-
     val ids = intArrayOf(993, 3730, 7527, 12982, 19222, 22302, 29460, 33842, 34776, 39508, 39509, 39510)
     private val FALCONRY_STILE = 19222
 
@@ -35,15 +34,16 @@ class StileShortcut : InteractionListener {
                 0,
                 animationCycles(Animations.WALK_OVER_STILE_10980),
                 direction,
-                Animations.WALK_OVER_STILE_10980
+                Animations.WALK_OVER_STILE_10980,
             )
             queueScript(p, 5, QueueStrength.SOFT) { _ ->
                 val end = endLoc.transform(direction, 1)
                 p.walkingQueue.reset()
                 p.walkingQueue.addPath(end.x, end.y)
 
-                if (n.id == FALCONRY_STILE)
+                if (n.id == FALCONRY_STILE) {
                     handleFalconry(p, endLoc)
+                }
                 return@queueScript stopExecuting(p)
             }
             return@on true
@@ -55,16 +55,26 @@ class StileShortcut : InteractionListener {
     }
 
     companion object {
-        fun getInteractLocation(pLoc: Location, sLoc: Location, orientation: Orientation): Location {
+        fun getInteractLocation(
+            pLoc: Location,
+            sLoc: Location,
+            orientation: Orientation,
+        ): Location {
             return when (orientation) {
                 Orientation.HORIZONTAL -> {
-                    if (pLoc.x <= sLoc.x) sLoc.transform(-1, 0, 0)
-                    else sLoc.transform(2, 0, 0)
+                    if (pLoc.x <= sLoc.x) {
+                        sLoc.transform(-1, 0, 0)
+                    } else {
+                        sLoc.transform(2, 0, 0)
+                    }
                 }
 
                 Orientation.VERTICAL -> {
-                    if (pLoc.y <= sLoc.y) sLoc.transform(0, -1, 0)
-                    else sLoc.transform(0, 2, 0)
+                    if (pLoc.y <= sLoc.y) {
+                        sLoc.transform(0, -1, 0)
+                    } else {
+                        sLoc.transform(0, 2, 0)
+                    }
                 }
             }
         }
@@ -76,16 +86,20 @@ class StileShortcut : InteractionListener {
             }
         }
 
-        fun handleFalconry(p: Player, endLoc: Location) {
-            if (endLoc.y == 3619)
+        fun handleFalconry(
+            p: Player,
+            endLoc: Location,
+        ) {
+            if (endLoc.y == 3619) {
                 ActivityManager.start(p, "falconry", false)
-            else
+            } else {
                 ActivityManager.getActivity("falconry").leave(p, false)
+            }
         }
     }
 
     enum class Orientation {
         HORIZONTAL,
-        VERTICAL
+        VERTICAL,
     }
 }

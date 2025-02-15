@@ -1,24 +1,28 @@
 package content.region.kandarin.dialogue.ardougne
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.inEquipment
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
-class BonesDialogue(player: Player? = null) : Dialogue(player) {
-
+class BonesDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         player("Who's a cute little kitty?")
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 end()

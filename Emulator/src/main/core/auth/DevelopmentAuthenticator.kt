@@ -9,7 +9,10 @@ class DevelopmentAuthenticator : AuthProvider<AccountStorageProvider>() {
         storageProvider = provider
     }
 
-    override fun checkLogin(username: String, password: String): Pair<AuthResponse, UserAccountInfo?> {
+    override fun checkLogin(
+        username: String,
+        password: String,
+    ): Pair<AuthResponse, UserAccountInfo?> {
         val info: UserAccountInfo
         if (!storageProvider.checkUsernameTaken(username.lowercase())) {
             info = UserAccountInfo.createDefault()
@@ -28,11 +31,17 @@ class DevelopmentAuthenticator : AuthProvider<AccountStorageProvider>() {
         return true
     }
 
-    override fun checkPassword(player: Player, password: String): Boolean {
+    override fun checkPassword(
+        player: Player,
+        password: String,
+    ): Boolean {
         return password == player.details.password
     }
 
-    override fun updatePassword(username: String, newPassword: String) {
+    override fun updatePassword(
+        username: String,
+        newPassword: String,
+    ) {
         val info = storageProvider.getAccountInfo(username)
         info.password = newPassword
         storageProvider.update(info)

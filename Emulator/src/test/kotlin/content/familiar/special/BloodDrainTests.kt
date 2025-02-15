@@ -18,6 +18,7 @@ class BloodDrainTests {
     init {
         TestUtils.preTestSetup()
     }
+
     @Test fun bloodDrainShouldNotRestorePrayer() {
         TestUtils.getMockPlayer("bloodDrainPrayer").use { p ->
             p.skills.setStaticLevel(Skills.PRAYER, 99)

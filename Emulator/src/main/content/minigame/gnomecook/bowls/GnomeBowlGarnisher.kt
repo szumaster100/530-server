@@ -1,15 +1,14 @@
 package content.minigame.gnomecook.bowls
 
-import org.rs.consts.Items
 import core.game.interaction.NodeUsageEvent
 import core.game.interaction.UseWithHandler
 import core.game.node.item.Item
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Items
 
 @Initializable
 class GnomeBowlGarnisher : UseWithHandler(9560, 9562, 9564) {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         addHandler(Items.EQUA_LEAVES_2128, ITEM_TYPE, this)
         addHandler(Items.POT_OF_CREAM_2130, ITEM_TYPE, this)

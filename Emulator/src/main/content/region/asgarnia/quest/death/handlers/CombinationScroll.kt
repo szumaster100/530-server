@@ -1,15 +1,14 @@
 package content.region.asgarnia.quest.death.handlers
 
-import org.rs.consts.Components
-import org.rs.consts.Items
 import core.api.openInterface
 import core.api.sendString
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.player.Player
+import org.rs.consts.Components
+import org.rs.consts.Items
 
 class CombinationScroll : InteractionListener {
-
     companion object {
         fun CombinationScroll(player: Player) {
             val combinationScroll =

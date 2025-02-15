@@ -1,25 +1,30 @@
 package content.region.asgarnia.quest.zep
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.*
 import core.api.quest.getQuestPoints
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class EnlightenedJourney :
     Quest(Quests.ENLIGHTENED_JOURNEY, 55, 54, 1, Vars.VARBIT_QUEST_ENLIGHTENED_JOURNEY_PROGRESS_2866, 0, 1, 200) {
-
-    class SkillRequirement(val skill: Int?, val level: Int?)
+    class SkillRequirement(
+        val skill: Int?,
+        val level: Int?,
+    )
 
     val requirements = arrayListOf<SkillRequirement>()
 
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 11
         player ?: return
@@ -27,9 +32,39 @@ class EnlightenedJourney :
             line(player, "I can start this quest by speaking to !!Auguste?? on", line++, stage >= 1)
             line(player, "!!Entrana??.", line++, stage >= 1)
             line(player, "Minimum Requirements:", line++, stage >= 1)
-            line(player, if (getStatLevel(player, Skills.CRAFTING) >= 36) "---Level 36 Crafting/--" else "!!Level 36 Crafting??", line++)
-            line(player, if (getStatLevel(player, Skills.FARMING) >= 30) "---Level 30 Farming/--" else "!!Level 30 Farming??", line++)
-            line(player, if (getStatLevel(player, Skills.FIREMAKING) >= 20) "---Level 20 Firemaking/--" else "!!Level 20 Firemaking??", line++)
+            line(
+                player,
+                if (getStatLevel(player, Skills.CRAFTING) >=
+                    36
+                ) {
+                    "---Level 36 Crafting/--"
+                } else {
+                    "!!Level 36 Crafting??"
+                },
+                line++,
+            )
+            line(
+                player,
+                if (getStatLevel(player, Skills.FARMING) >=
+                    30
+                ) {
+                    "---Level 30 Farming/--"
+                } else {
+                    "!!Level 30 Farming??"
+                },
+                line++,
+            )
+            line(
+                player,
+                if (getStatLevel(player, Skills.FIREMAKING) >=
+                    20
+                ) {
+                    "---Level 20 Firemaking/--"
+                } else {
+                    "!!Level 20 Firemaking??"
+                },
+                line++,
+            )
             line(player, if (getQuestPoints(player) >= 21) "---21 Quest Points/--" else "!!21 Quest Points??", line++)
             line++
         }
@@ -43,7 +78,12 @@ class EnlightenedJourney :
             line++
         }
 
-        if (stage >= 2 && inInventory(player, Items.PAPYRUS_970) && inInventory(player, Items.BALL_OF_WOOL_1759) && inInventory(player, Items.POTATOES10_5438) && inInventory(player, Items.CANDLE_36)) {
+        if (stage >= 2 &&
+            inInventory(player, Items.PAPYRUS_970) &&
+            inInventory(player, Items.BALL_OF_WOOL_1759) &&
+            inInventory(player, Items.POTATOES10_5438) &&
+            inInventory(player, Items.CANDLE_36)
+        ) {
             line(player, "I gathered all the materials Auguste required:", line++, stage >= 3)
             line(player, "three sheets of papyrus, a ball of wool,", line++, stage >= 3)
             line(player, "a full sack of potatoes and one unlit candle.", line++, stage >= 3)
@@ -121,7 +161,6 @@ class EnlightenedJourney :
         setVarbit(player, Vars.VARBIT_QUEST_ENLIGHTENED_JOURNEY_GRAND_TREE_BALLOON_2870, 1, true)
         setVarbit(player, Vars.VARBIT_QUEST_ENLIGHTENED_JOURNEY_CRAFTING_GUILD_BALLOON_2871, 1, true)
         setVarbit(player, Vars.VARBIT_QUEST_ENLIGHTENED_JOURNEY_VARROCK_BALLOON_2872, 1, true)
-
     }
 
     override fun newInstance(`object`: Any?): Quest {

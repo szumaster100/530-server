@@ -44,12 +44,13 @@ class RegionSpecificationTests {
         val base = RegionManager.forId(12850)
         Region.load(base)
         val chunk = base.planes[0].getRegionChunk(2, 2)
-        val specification = RegionSpecification(
-            fillWith(chunk)
-                .from(base)
-                .onPlanes(0)
-                .onCondition { destChunkX, destChunkY, _ -> destChunkX == 0 && destChunkY == 0 }
-        )
+        val specification =
+            RegionSpecification(
+                fillWith(chunk)
+                    .from(base)
+                    .onPlanes(0)
+                    .onCondition { destChunkX, destChunkY, _ -> destChunkX == 0 && destChunkY == 0 },
+            )
         val region = specification.build()
         Assertions.assertEquals(36782, RegionManager.getObject(region.baseLocation.transform(7, 1, 0))?.id)
         Assertions.assertNull(RegionManager.getObject(region.baseLocation.transform(15, 9, 0)))
@@ -60,15 +61,16 @@ class RegionSpecificationTests {
         val base = RegionManager.forId(12850)
         Region.load(base)
         val chunk = base.planes[0].getRegionChunk(2, 2)
-        val specification = RegionSpecification(
-            fillWith(chunk)
-                .from(base)
-                .onPlanes(0)
-                .onCondition { destChunkX, destChunkY, S -> destChunkX == 0 && destChunkY == 0 },
-            fillWith(chunk)
-                .from(base)
-                .onPlanes(1, 2, 3)
-        )
+        val specification =
+            RegionSpecification(
+                fillWith(chunk)
+                    .from(base)
+                    .onPlanes(0)
+                    .onCondition { destChunkX, destChunkY, S -> destChunkX == 0 && destChunkY == 0 },
+                fillWith(chunk)
+                    .from(base)
+                    .onPlanes(1, 2, 3),
+            )
         val region = specification.build()
         Assertions.assertEquals(36782, RegionManager.getObject(region.baseLocation.transform(7, 1, 0))?.id)
         Assertions.assertEquals(36782, RegionManager.getObject(region.baseLocation.transform(7, 1, 1))?.id)
@@ -96,20 +98,30 @@ class RegionSpecificationTests {
         Region.load(base)
         val chunk = base.planes[0].getRegionChunk(2, 2)
         val dyn = DynamicRegion.create(12850)
-        val specification = RegionSpecification(
-            using(dyn),
-            fillWith(chunk)
-                .from(base)
-                .onPlanes(0)
-        )
+        val specification =
+            RegionSpecification(
+                using(dyn),
+                fillWith(chunk)
+                    .from(base)
+                    .onPlanes(0),
+            )
         specification.build()
         Assertions.assertEquals(36782, RegionManager.getObject(dyn.baseLocation.transform(7, 1, 0))?.id)
     }
 
     @Test fun fillChunkContractShouldAllowChunkSetCallback() {
-        class TemporaryFillContract(chunk: RegionChunk) : FillChunkContract(chunk) {
+        class TemporaryFillContract(
+            chunk: RegionChunk,
+        ) : FillChunkContract(chunk) {
             var callBackRan = false
-            override fun afterSetting(chunk: BuildRegionChunk?, x: Int, y: Int, plane: Int, dyn: DynamicRegion) {
+
+            override fun afterSetting(
+                chunk: BuildRegionChunk?,
+                x: Int,
+                y: Int,
+                plane: Int,
+                dyn: DynamicRegion,
+            ) {
                 callBackRan = true
             }
         }
@@ -118,12 +130,13 @@ class RegionSpecificationTests {
         val chunk = base.planes[0].getRegionChunk(2, 2)
         val dyn = DynamicRegion.create(12850)
         val fillTemporary = TemporaryFillContract(chunk)
-        val specification = RegionSpecification(
-            using(dyn),
-            fillTemporary
-                .from(base)
-                .onPlanes(0)
-        )
+        val specification =
+            RegionSpecification(
+                using(dyn),
+                fillTemporary
+                    .from(base)
+                    .onPlanes(0),
+            )
         specification.build()
         Assertions.assertEquals(true, fillTemporary.callBackRan)
     }

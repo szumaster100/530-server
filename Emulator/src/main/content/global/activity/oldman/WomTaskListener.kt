@@ -1,8 +1,5 @@
 package content.global.activity.oldman
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.global.handlers.iface.ScrollInterface
 import core.api.getAttribute
 import core.api.openInterface
@@ -10,18 +7,19 @@ import core.api.sendNPCDialogue
 import core.game.dialogue.FaceAnim
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 class WomTaskListener : InteractionListener {
-
     override fun defineListeners() {
-
         onUseWith(IntType.NPC, 0, WISE_OLD_MAN) { player, used, _ ->
             if (used.id != 0) {
                 sendNPCDialogue(
                     player,
                     WISE_OLD_MAN,
                     "Humph! You could at least say hello before waving your items in my face.",
-                    FaceAnim.HALF_GUILTY
+                    FaceAnim.HALF_GUILTY,
                 )
             }
             return@onUseWith true
@@ -34,7 +32,7 @@ class WomTaskListener : InteractionListener {
                 ScrollInterface.scrollSetup(
                     player,
                     Components.MESSAGESCROLL_220,
-                    WomDeliveryLetter.THE_ORACLE_LETTER_CONTENT
+                    WomDeliveryLetter.THE_ORACLE_LETTER_CONTENT,
                 )
             }
 

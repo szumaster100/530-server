@@ -15,7 +15,9 @@ import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
 
-class GlobalKillCounter : StartupListener, ShutdownListener {
+class GlobalKillCounter :
+    StartupListener,
+    ShutdownListener {
     override fun startup() {
         logStartup("Parsing Global Kill Counts")
         val file = File(ServerConfig.DATA_PATH + File.separator + "global_kill_stats.json")
@@ -43,7 +45,11 @@ class GlobalKillCounter : StartupListener, ShutdownListener {
         data["kills"] = saveField(kills)
         data["rare_drops"] = saveField(rare_drops)
         val file = File(ServerConfig.DATA_PATH + File.separator + "global_kill_stats.json")
-        FileWriter(file).use { it.write(data.toJSONString()); it.flush(); it.close() }
+        FileWriter(file).use {
+            it.write(data.toJSONString())
+            it.flush()
+            it.close()
+        }
     }
 
     companion object {
@@ -51,7 +57,10 @@ class GlobalKillCounter : StartupListener, ShutdownListener {
         val rare_drops: HashMap<String, HashMap<Long, Long>> = HashMap()
 
         @JvmStatic
-        fun populate(field: HashMap<String, HashMap<Long, Long>>, obj: Any?) {
+        fun populate(
+            field: HashMap<String, HashMap<Long, Long>>,
+            obj: Any?,
+        ) {
             if (obj != null && obj is JSONObject) {
                 for ((player, tmp_kc) in obj.asIterable()) {
                     if (player is String) {
@@ -83,26 +92,38 @@ class GlobalKillCounter : StartupListener, ShutdownListener {
         }
 
         @JvmStatic
-        fun incrementKills(player: Player, npc_id: Int) {
+        fun incrementKills(
+            player: Player,
+            npc_id: Int,
+        ) {
             val player_kills = kills.getOrPut(player.username, { HashMap() })
             val old_amount = player_kills.getOrElse(npc_id.toLong(), { 0 })
             player_kills[npc_id.toLong()] = 1 + old_amount
         }
 
         @JvmStatic
-        fun incrementRareDrop(player: Player, item: Item) {
+        fun incrementRareDrop(
+            player: Player,
+            item: Item,
+        ) {
             val player_drops = rare_drops.getOrPut(player.username, { HashMap() })
             val old_amount = player_drops.getOrElse(item.id.toLong(), { 0 })
             player_drops[item.id.toLong()] = item.amount + old_amount
         }
 
         @JvmStatic
-        fun getKills(player: Player, npc_id: Int): Long {
+        fun getKills(
+            player: Player,
+            npc_id: Int,
+        ): Long {
             return kills.getOrElse(player.username, { HashMap() }).getOrElse(npc_id.toLong(), { 0 })
         }
 
         @JvmStatic
-        fun getKills(player: Player, npc_ids: IntArray): Long {
+        fun getKills(
+            player: Player,
+            npc_ids: IntArray,
+        ): Long {
             var sum: Long = 0
             for (npc_id in npc_ids) {
                 sum += getKills(player, npc_id)
@@ -111,7 +132,10 @@ class GlobalKillCounter : StartupListener, ShutdownListener {
         }
 
         @JvmStatic
-        fun getRareDrops(player: Player, item_id: Int): Long {
+        fun getRareDrops(
+            player: Player,
+            item_id: Int,
+        ): Long {
             return rare_drops.getOrElse(player.username, { HashMap() }).getOrElse(item_id.toLong(), { 0 })
         }
     }

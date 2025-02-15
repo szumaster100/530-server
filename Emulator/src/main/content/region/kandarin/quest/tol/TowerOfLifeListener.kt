@@ -1,6 +1,5 @@
 package content.region.kandarin.quest.tol
 
-import org.rs.consts.*
 import content.global.skill.thieving.PickpocketListener
 import core.api.*
 import core.api.quest.hasRequirement
@@ -14,15 +13,22 @@ import core.game.interaction.QueueStrength
 import core.game.node.entity.skill.Skills
 import core.game.world.update.flag.context.Animation
 import core.tools.RandomFunction
+import org.rs.consts.*
 
 class TowerOfLifeListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(TOWER_DOORS, IntType.SCENERY, "open") { player, node ->
             if (!hasRequirement(player, Quests.TOWER_OF_LIFE)) return@on true
             DoorActionHandler.handleAutowalkDoor(player, node.asScenery())
-            if (player.location.y == 3225) sendPlayerDialogue(player, "Wow, this place looks special. Best I look around for something to fix.", FaceAnim.AMAZED)
+            if (player.location.y ==
+                3225
+            ) {
+                sendPlayerDialogue(
+                    player,
+                    "Wow, this place looks special. Best I look around for something to fix.",
+                    FaceAnim.AMAZED,
+                )
+            }
             return@on true
         }
 
@@ -45,7 +51,13 @@ class TowerOfLifeListener : InteractionListener {
         }
 
         on(npcIDs, IntType.NPC, "pickpocket") { player, node ->
-            val lootTable = PickpocketListener.pickpocketRoll(player, 50.0, 240.0, WeightBasedTable.create(WeightedItem(Items.TRIANGLE_SANDWICH_6962, 1, 1, 1.0, true)))
+            val lootTable =
+                PickpocketListener.pickpocketRoll(
+                    player,
+                    50.0,
+                    240.0,
+                    WeightBasedTable.create(WeightedItem(Items.TRIANGLE_SANDWICH_6962, 1, 1, 1.0, true)),
+                )
             val roll = RandomFunction.roll(25)
             if (freeSlots(player) == 0) {
                 sendMessage(player, "You don't have enough inventory space to do that.")

@@ -1,9 +1,5 @@
 package content.global.activity.champion.npc
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Vars
 import content.global.activity.champion.ChallengeListener
 import core.api.*
 import core.game.container.impl.EquipmentContainer
@@ -17,13 +13,23 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Vars
 
 @Initializable
-class LesserDemonChampionNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
+class LesserDemonChampionNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
     var clearTime = 0
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return LesserDemonChampionNPC(id, location)
     }
 
@@ -57,7 +63,7 @@ class LesserDemonChampionNPC(id: Int = 0, location: Location? = null) : Abstract
                         champion.attack(player)
                         return true
                     }
-                }
+                },
             )
         }
     }
@@ -90,7 +96,12 @@ class LesserDemonChampionNPC(id: Int = 0, location: Location? = null) : Abstract
             lock(killer, 2)
             runTask(killer, 1) {
                 openInterface(killer, Components.CHAMPIONS_SCROLL_63)
-                sendString(killer, "Well done, you defeated the Lesser Demon Champion!", Components.CHAMPIONS_SCROLL_63, 2)
+                sendString(
+                    killer,
+                    "Well done, you defeated the Lesser Demon Champion!",
+                    Components.CHAMPIONS_SCROLL_63,
+                    2,
+                )
                 sendItemZoomOnInterface(killer, Components.CHAMPIONS_SCROLL_63, 3, Items.CHAMPION_SCROLL_6805, 260)
                 sendString(killer, "592 Slayer Xp", Components.CHAMPIONS_SCROLL_63, 6)
                 sendString(killer, "592 Hitpoint Xp", Components.CHAMPIONS_SCROLL_63, 7)

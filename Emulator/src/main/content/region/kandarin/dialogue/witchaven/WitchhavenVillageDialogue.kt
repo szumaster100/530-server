@@ -1,23 +1,27 @@
 package content.region.kandarin.dialogue.witchaven
 
-import org.rs.consts.NPCs
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.NPCs
 
 @Initializable
-class WitchhavenVillageDialogue(player: Player? = null) : Dialogue(player) {
-
+class WitchhavenVillageDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         player(FaceAnim.FRIENDLY, "Hello there.").also { stage = conversations.random() }
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> sendDialogue("Their eyes are staring vacantly into space.").also { stage++ }
             1 -> npc(FaceAnim.NEUTRAL, "Ye mariners all, as ye pass by,").also { stage++ }
@@ -68,7 +72,7 @@ class WitchhavenVillageDialogue(player: Player? = null) : Dialogue(player) {
             NPCs.WITCHAVEN_VILLAGER_4885,
             NPCs.WITCHAVEN_VILLAGER_4886,
             NPCs.WITCHAVEN_VILLAGER_4887,
-            NPCs.WITCHAVEN_VILLAGER_4888
+            NPCs.WITCHAVEN_VILLAGER_4888,
         )
     }
 

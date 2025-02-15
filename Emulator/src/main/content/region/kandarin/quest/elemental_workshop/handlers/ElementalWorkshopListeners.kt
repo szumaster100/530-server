@@ -1,6 +1,5 @@
 package content.region.kandarin.quest.elemental_workshop.handlers
 
-import org.rs.consts.*
 import content.region.kandarin.quest.elemental_workshop.handlers.EWUtils.BELLOWS_STATE
 import content.region.kandarin.quest.elemental_workshop.handlers.EWUtils.FURNACE_STATE
 import content.region.kandarin.quest.elemental_workshop.handlers.EWUtils.LEFT_WATER_CONTROL_STATE
@@ -17,13 +16,13 @@ import core.game.interaction.InteractionListener
 import core.game.interaction.QueueStrength
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
-import core.tools.Log
 import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import core.tools.Log
+import org.rs.consts.*
 
 class ElementalWorkshopListeners : InteractionListener {
-
     private val batteredBook = Item(Items.BATTERED_BOOK_2886)
     private val batteredKey = Item(Items.BATTERED_KEY_2887)
     private val slashedBook = Item(Items.SLASHED_BOOK_9715)
@@ -33,10 +32,18 @@ class ElementalWorkshopListeners : InteractionListener {
     private val elementalMetal = Item(Items.ELEMENTAL_METAL_2893)
     private val elementalShield = Item(Items.ELEMENTAL_SHIELD_2890)
     private val bellowFixReqItems = intArrayOf(Items.NEEDLE_1733, Items.THREAD_1734, Items.LEATHER_1741)
-    private val elementalShieldReqItems = intArrayOf(Items.SLASHED_BOOK_9715, Items.HAMMER_2347, Items.ELEMENTAL_METAL_2893)
+    private val elementalShieldReqItems =
+        intArrayOf(Items.SLASHED_BOOK_9715, Items.HAMMER_2347, Items.ELEMENTAL_METAL_2893)
 
     private val bookcase = Scenery.BOOKCASE_26113
-    private val lavaTrough = intArrayOf(Scenery.LAVA_TROUGH_18519, Scenery.LAVA_TROUGH_18520, Scenery.LAVA_TROUGH_18521, Scenery.LAVA_TROUGH_18522, Scenery.LAVA_TROUGH_18523)
+    private val lavaTrough =
+        intArrayOf(
+            Scenery.LAVA_TROUGH_18519,
+            Scenery.LAVA_TROUGH_18520,
+            Scenery.LAVA_TROUGH_18521,
+            Scenery.LAVA_TROUGH_18522,
+            Scenery.LAVA_TROUGH_18523,
+        )
     private val waterControls = intArrayOf(Scenery.WATER_CONTROLS_18509, Scenery.WATER_CONTROLS_18510)
 
     private val turnWaterControlAnimation = Animation(Animations.HUMAN_TURN_LARGE_VALVE_4861)
@@ -57,29 +64,42 @@ class ElementalWorkshopListeners : InteractionListener {
     private val leftWaterControlsLocation = Location.create(2713, 9907, 0)
     private val rightWaterControlsLocation = Location.create(2726, 9907, 0)
 
-    private val furnaceIDS = intArrayOf(4304, 6189, 11010, 11666, 12100, 12809, 14921, 18497, 26814, 30021, 30510, 36956, 37651)
+    private val furnaceIDS =
+        intArrayOf(4304, 6189, 11010, 11666, 12100, 12809, 14921, 18497, 26814, 30021, 30510, 36956, 37651)
     private val DISABLED = 0
     private val ENABLED = 1
 
     override fun defineListeners() {
-
         on(Scenery.BOOKCASE_26113, IntType.SCENERY, "search") { player, _ ->
             val stage = currentStage(player)
 
             if (stage < 3) {
-
                 if (player.inventory.containsItem(batteredBook)) {
-                    sendItemDialogue(player, Item(Items.BATTERED_BOOK_2886), "There is a book here titled 'The Elemental Shield'. " + "It can stay here, as you have a copy in your backpack.")
+                    sendItemDialogue(
+                        player,
+                        Item(Items.BATTERED_BOOK_2886),
+                        "There is a book here titled 'The Elemental Shield'. " +
+                            "It can stay here, as you have a copy in your backpack.",
+                    )
                     return@on true
                 }
 
-                sendItemDialogue(player, Item(Items.BATTERED_BOOK_2886), "You find a book titled 'The Elemental Shield'.")
+                sendItemDialogue(
+                    player,
+                    Item(Items.BATTERED_BOOK_2886),
+                    "You find a book titled 'The Elemental Shield'.",
+                )
                 addItem(player, batteredBook.id)
                 return@on true
             }
 
             if (player.inventory.containsItem(slashedBook)) {
-                sendItemDialogue(player, Item(Items.SLASHED_BOOK_9715), "There is a book here titled 'The Elemental Shield'. " + "It can stay here, as you have a copy in your backpack.")
+                sendItemDialogue(
+                    player,
+                    Item(Items.SLASHED_BOOK_9715),
+                    "There is a book here titled 'The Elemental Shield'. " +
+                        "It can stay here, as you have a copy in your backpack.",
+                )
                 if (player.inventory.addIfDoesntHave(batteredKey)) {
                     sendItemDialogue(player, Item(Items.BATTERED_KEY_2887), "You also find a key.")
                 }
@@ -120,7 +140,7 @@ class ElementalWorkshopListeners : InteractionListener {
         on(
             intArrayOf(Scenery.ODD_LOOKING_WALL_26114, Scenery.ODD_LOOKING_WALL_26115),
             IntType.SCENERY,
-            "open"
+            "open",
         ) { player, wall ->
 
             if (currentStage(player) < 1) {
@@ -128,7 +148,9 @@ class ElementalWorkshopListeners : InteractionListener {
                 return@on true
             }
 
-            if (player.location == Location.create(2710, 3496, 0) || player.location == Location.create(2709, 3496, 0)) {
+            if (player.location == Location.create(2710, 3496, 0) ||
+                player.location == Location.create(2709, 3496, 0)
+            ) {
                 DoorActionHandler.handleAutowalkDoor(player, wall.asScenery())
                 return@on true
             }
@@ -161,7 +183,7 @@ class ElementalWorkshopListeners : InteractionListener {
                 sendPlayerDialogue(
                     player,
                     "Now to explore this area thoroughly, to find what " + "forgotten secrets it contains.",
-                    FaceAnim.NEUTRAL
+                    FaceAnim.NEUTRAL,
                 )
                 setQuestStage(player, Quests.ELEMENTAL_WORKSHOP_I, 7)
             }
@@ -220,8 +242,8 @@ class ElementalWorkshopListeners : InteractionListener {
             if (!player.inventory.containsAtLeastOneItem(
                     intArrayOf(
                         Items.SLASHED_BOOK_9715,
-                        Items.BATTERED_BOOK_2886
-                    )
+                        Items.BATTERED_BOOK_2886,
+                    ),
                 )
             ) {
                 sendDialogue(player, "This workbench is too complicated. You need instructions to follow.")
@@ -237,7 +259,7 @@ class ElementalWorkshopListeners : InteractionListener {
                 log(
                     this::class.java,
                     Log.ERR,
-                    "${player.username} tried to forge an elemental shield without all the required items."
+                    "${player.username} tried to forge an elemental shield without all the required items.",
                 )
                 return@onUseWith false
             }
@@ -282,6 +304,7 @@ class ElementalWorkshopListeners : InteractionListener {
                 player,
                 object : Pulse() {
                     var count = 0
+
                     override fun pulse(): Boolean {
                         when (count) {
                             0 -> {
@@ -299,7 +322,7 @@ class ElementalWorkshopListeners : InteractionListener {
                         count++
                         return false
                     }
-                }
+                },
             )
             return@onUseWith true
         }
@@ -339,6 +362,7 @@ class ElementalWorkshopListeners : InteractionListener {
                 player,
                 object : Pulse() {
                     var count = 0
+
                     override fun pulse(): Boolean {
                         when (count) {
                             0 -> {
@@ -347,7 +371,7 @@ class ElementalWorkshopListeners : InteractionListener {
                                 animate(player, Animations.HUMAN_FURNACE_SMELT_3243)
                                 sendMessage(
                                     player,
-                                    "You place the elemental ore and four heaps of coal into the furnace."
+                                    "You place the elemental ore and four heaps of coal into the furnace.",
                                 )
                             }
 
@@ -361,7 +385,7 @@ class ElementalWorkshopListeners : InteractionListener {
                         count++
                         return false
                     }
-                }
+                },
             )
             return@onUseWith true
         }
@@ -386,7 +410,6 @@ class ElementalWorkshopListeners : InteractionListener {
 
             val enabled: Int
             when (player.location) {
-
                 leftWaterControlsLocation -> {
                     offset = LEFT_WATER_CONTROL_STATE
                     enabled = EWUtils.leftWaterControlBit(player) xor 0x1
@@ -407,7 +430,7 @@ class ElementalWorkshopListeners : InteractionListener {
                     log(
                         this::class.java,
                         Log.ERR,
-                        "Unhandled location when determining enabled water controls! ${player.location}"
+                        "Unhandled location when determining enabled water controls! ${player.location}",
                     )
                     return@on false
                 }
@@ -418,6 +441,7 @@ class ElementalWorkshopListeners : InteractionListener {
                 player,
                 object : Pulse() {
                     var count = 0
+
                     override fun pulse(): Boolean {
                         when (count) {
                             0 -> {
@@ -434,7 +458,7 @@ class ElementalWorkshopListeners : InteractionListener {
                         count++
                         return false
                     }
-                }
+                },
             )
             return@on true
         }
@@ -482,12 +506,13 @@ class ElementalWorkshopListeners : InteractionListener {
 
             bellowFixReqItems.forEach { reqItem ->
                 if (!inInventory(player, reqItem, 1)) {
-                    val missingItemMsg = when (reqItem) {
-                        Items.NEEDLE_1733 -> "a needle"
-                        Items.THREAD_1734 -> "some thread"
-                        Items.LEATHER_1741 -> "a piece of leather"
-                        else -> "NULL"
-                    }
+                    val missingItemMsg =
+                        when (reqItem) {
+                            Items.NEEDLE_1733 -> "a needle"
+                            Items.THREAD_1734 -> "some thread"
+                            Items.LEATHER_1741 -> "a piece of leather"
+                            else -> "NULL"
+                        }
                     sendMessage(player, "You need $missingItemMsg to fix the bellows.")
                     return@on true
                 }

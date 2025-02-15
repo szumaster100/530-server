@@ -1,6 +1,5 @@
 package content.region.misthalin.quest.demon.handlers
 
-import org.rs.consts.Quests
 import core.api.setAttribute
 import core.api.setVarp
 import core.game.interaction.NodeUsageEvent
@@ -11,9 +10,9 @@ import core.game.node.item.Item
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.plugin.Plugin
+import org.rs.consts.Quests
 
 class DemonSlayerDrainPlugin : UseWithHandler(1929) {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         addHandler(17424, OBJECT_TYPE, this)
         return this
@@ -35,12 +34,15 @@ class DemonSlayerDrainPlugin : UseWithHandler(1929) {
             if (!player.hasItem(DemonSlayerUtils.FIRST_KEY)) {
                 player.getSavedData().questData.demonSlayer[0] = false
             }
-            if (quest.getStage(player) == 20 && !player.hasItem(DemonSlayerUtils.FIRST_KEY) && !player.getSavedData().questData.demonSlayer[0]) {
+            if (quest.getStage(player) == 20 &&
+                !player.hasItem(DemonSlayerUtils.FIRST_KEY) &&
+                !player.getSavedData().questData.demonSlayer[0]
+            ) {
                 player.dialogueInterpreter.sendDialogues(
                     player,
                     null,
                     "OK, I think I've washed the key down into the sewer.",
-                    "I'd better go down and get it!"
+                    "I'd better go down and get it!",
                 )
                 player.getSavedData().questData.demonSlayer[0] = true
                 setVarp(player, 222, 2660610, true)
@@ -51,7 +53,10 @@ class DemonSlayerDrainPlugin : UseWithHandler(1929) {
         return true
     }
 
-    override fun getDestination(player: Player, with: Node): Location {
+    override fun getDestination(
+        player: Player,
+        with: Node,
+    ): Location {
         return Location(3225, 3495)
     }
 

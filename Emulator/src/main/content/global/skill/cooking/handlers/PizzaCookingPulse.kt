@@ -11,9 +11,8 @@ class PizzaCookingPulse(
     override var scenery: Scenery,
     initial: Int,
     product: Int,
-    amount: Int
+    amount: Int,
 ) : CookingPulse(player, scenery, initial, product, amount) {
-
     override fun checkRequirements(): Boolean {
         if (!scenery.name.lowercase().contains("range")) {
             sendMessage(player, "This can only be cooked on a range.")
@@ -22,7 +21,11 @@ class PizzaCookingPulse(
         return super.checkRequirements()
     }
 
-    override fun getMessage(food: Item, product: Item, burned: Boolean): String {
+    override fun getMessage(
+        food: Item,
+        product: Item,
+        burned: Boolean,
+    ): String {
         return if (burned) {
             "You accidentally burn the pizza."
         } else {

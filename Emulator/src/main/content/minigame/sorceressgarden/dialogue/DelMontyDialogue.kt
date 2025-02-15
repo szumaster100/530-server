@@ -1,24 +1,28 @@
 package content.minigame.sorceressgarden.dialogue
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.game.container.impl.EquipmentContainer
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
-class DelMontyDialogue(player: Player? = null) : Dialogue(player) {
-
+class DelMontyDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         player("Hey kitty!")
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 npc(FaceAnim.CHILD_NORMAL, "Meow.")

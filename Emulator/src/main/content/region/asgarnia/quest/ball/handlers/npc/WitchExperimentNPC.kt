@@ -12,7 +12,6 @@ import core.plugin.Initializable
 
 @Initializable
 class WitchExperimentNPC : AbstractNPC {
-
     var type: ExperimentType? = null
     private var commenced = false
 
@@ -46,7 +45,11 @@ class WitchExperimentNPC : AbstractNPC {
         super.startDeath(killer)
     }
 
-    override fun isAttackable(entity: Entity, style: CombatStyle, message: Boolean): Boolean {
+    override fun isAttackable(
+        entity: Entity,
+        style: CombatStyle,
+        message: Boolean,
+    ): Boolean {
         return p == entity
     }
 
@@ -57,7 +60,11 @@ class WitchExperimentNPC : AbstractNPC {
         return true
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return WitchExperimentNPC(id, location, null)
     }
 
@@ -70,11 +77,9 @@ class WitchExperimentNPC : AbstractNPC {
     }
 
     enum class ExperimentType(
-
         val id: Int,
-        vararg message: String
+        vararg message: String,
     ) {
-
         FIRST(897, ""),
 
         SECOND(898, "The shapeshifter's body begins to deform!", "The shapeshifter turns into a spider!"),
@@ -83,11 +88,15 @@ class WitchExperimentNPC : AbstractNPC {
 
         FOURTH(900, "The shapeshifter's body pulses!", "The shapeshifter turns into a wolf!"),
 
-        END(-1, "You finally kill the shapeshifter once and for all.");
+        END(-1, "You finally kill the shapeshifter once and for all."),
+        ;
 
         private val message: Array<String>
 
-        fun transform(npc: WitchExperimentNPC, player: Player?) {
+        fun transform(
+            npc: WitchExperimentNPC,
+            player: Player?,
+        ) {
             val newType = next()
             npc.lock()
             npc.pulseManager.clear()
@@ -96,6 +105,7 @@ class WitchExperimentNPC : AbstractNPC {
             Pulser.submit(
                 object : Pulse(1, npc, player) {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (++counter) {
                             1 -> {
@@ -123,7 +133,7 @@ class WitchExperimentNPC : AbstractNPC {
                         }
                         return false
                     }
-                }
+                },
             )
         }
 
@@ -140,7 +150,6 @@ class WitchExperimentNPC : AbstractNPC {
         }
 
         companion object {
-
             fun forId(id: Int): ExperimentType? {
                 for (type in values()) {
                     if (type.id == id) {

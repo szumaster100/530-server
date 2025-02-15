@@ -1,6 +1,5 @@
 package content.region.misthalin.dialogue.lumbridge
 
-import org.rs.consts.Quests
 import core.api.quest.getQuestStage
 import core.api.setAttribute
 import core.game.dialogue.Dialogue
@@ -9,10 +8,12 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.Quests
 
 @Initializable
-class SigmundDialogue(player: Player? = null) : Dialogue(player) {
-
+class SigmundDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     var TLTNPCS = intArrayOf(278, 0, 519, 2244, 3777)
 
     override fun open(vararg args: Any): Boolean {
@@ -27,20 +28,24 @@ class SigmundDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> options("Do you have any quests for me?", "Who are you?").also { stage++ }
-            1 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "Do you have any quests for me?")
-                    stage = 10
-                }
+            1 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_GUILTY, "Do you have any quests for me?")
+                        stage = 10
+                    }
 
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "Who are you?")
-                    stage = 20
+                    2 -> {
+                        player(FaceAnim.HALF_GUILTY, "Who are you?")
+                        stage = 20
+                    }
                 }
-            }
 
             20 -> {
                 npc(FaceAnim.HALF_GUILTY, "I'm the Duke's advisor.")
@@ -53,26 +58,42 @@ class SigmundDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             22 -> {
-                npc(FaceAnim.HALF_GUILTY, "I only advise the Duke. But if you want to make", "yourself useful, there are evil goblins to slay on the", "other side of the river.")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "I only advise the Duke. But if you want to make",
+                    "yourself useful, there are evil goblins to slay on the",
+                    "other side of the river.",
+                )
                 stage = 23
             }
 
             23 -> end()
             10 -> {
-                if (player.getQuestRepository().hasStarted(Quests.THE_LOST_TRIBE) && !player.getQuestRepository()
+                if (player.getQuestRepository().hasStarted(Quests.THE_LOST_TRIBE) &&
+                    !player
+                        .getQuestRepository()
                         .isComplete(Quests.THE_LOST_TRIBE)
                 ) {
                     npc("No, not right now.")
                     stage = 12
                 }
-                if (player.getQuestRepository().isComplete(Quests.GOBLIN_DIPLOMACY) && player.getQuestRepository()
-                        .isComplete(Quests.RUNE_MYSTERIES) && !player.getQuestRepository()
+                if (player.getQuestRepository().isComplete(Quests.GOBLIN_DIPLOMACY) &&
+                    player
+                        .getQuestRepository()
+                        .isComplete(Quests.RUNE_MYSTERIES) &&
+                    !player
+                        .getQuestRepository()
                         .hasStarted(Quests.THE_LOST_TRIBE)
                 ) {
                     npc("There was recently some damage to the castle cellar.", "Part of the wall has collapsed.")
                     stage = 30
                 }
-                npc(FaceAnim.HALF_GUILTY, "I hear the Duke has a task for an adventurer.", "Otherwise, if you want to make yourself useful, there", "are always evil monsters to slay.")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "I hear the Duke has a task for an adventurer.",
+                    "Otherwise, if you want to make yourself useful, there",
+                    "are always evil monsters to slay.",
+                )
                 stage = 11
             }
 

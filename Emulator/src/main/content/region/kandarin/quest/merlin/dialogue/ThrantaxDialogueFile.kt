@@ -1,14 +1,11 @@
 package content.region.kandarin.quest.merlin.dialogue
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.kandarin.quest.merlin.handlers.MerlinUtils
 import content.region.kandarin.quest.merlin.handlers.ThrantaxNPC
+import core.api.quest.setQuestStage
 import core.api.sendDialogue
 import core.api.sendDialogueOptions
 import core.api.setAttribute
-import core.api.quest.setQuestStage
 import core.game.dialogue.DialogueFile
 import core.game.dialogue.FaceAnim
 import core.game.node.entity.npc.NPC
@@ -17,15 +14,20 @@ import core.game.node.item.Item
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Graphics
 import core.tools.END_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 class ThrantaxDialogueFile : DialogueFile() {
-
     val options = arrayOf("Snarthanto Candon Termtrick", "Snarthtrick Candanto Termon", "Snarthon Candtrick Termanto")
     var correct = options[2]
     var shuffled = emptyArray<String>()
     var incantation = ""
 
-    override fun handle(componentID: Int, buttonID: Int) {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         npc = NPC(NPCs.THRANTAX_THE_MIGHTY_238)
 
         when (stage) {
@@ -44,7 +46,7 @@ class ThrantaxDialogueFile : DialogueFile() {
                     "Select an Option",
                     shuffled[0],
                     shuffled[1],
-                    shuffled[2]
+                    shuffled[2],
                 )
                 stage++
             }
@@ -87,7 +89,7 @@ class ThrantaxDialogueFile : DialogueFile() {
                     npc(
                         FaceAnim.OLD_HAPPY,
                         "Thou hast me in thine control. So that I mayst",
-                        "return from whence I came, I must grant thee a boon."
+                        "return from whence I came, I must grant thee a boon.",
                     ).also { stage++ }
                 }
             }
@@ -96,17 +98,19 @@ class ThrantaxDialogueFile : DialogueFile() {
             9 -> playerl(FaceAnim.SCARED, "I wish to free Merlin from his giant crystal!").also { stage++ }
             10 -> npcl(FaceAnim.OLD_HAPPY, "GRAAAAAARGH!").also { stage++ }
             11 -> npcl(FaceAnim.OLD_HAPPY, "the deed is done.").also { stage++ }
-            12 -> npc(
-                FaceAnim.OLD_HAPPY,
-                "Thou mayst now shatter Merlins' crystal with",
-                "excalibur, "
-            ).also { stage++ }
+            12 ->
+                npc(
+                    FaceAnim.OLD_HAPPY,
+                    "Thou mayst now shatter Merlins' crystal with",
+                    "excalibur, ",
+                ).also { stage++ }
 
-            13 -> npc(
-                FaceAnim.OLD_HAPPY,
-                "and I can once more rest. Begone! And leave me once",
-                "more in peace."
-            ).also { stage++ }
+            13 ->
+                npc(
+                    FaceAnim.OLD_HAPPY,
+                    "and I can once more rest. Begone! And leave me once",
+                    "more in peace.",
+                ).also { stage++ }
 
             14 -> {
                 setQuestStage(player!!, Quests.MERLINS_CRYSTAL, 50)
@@ -133,7 +137,10 @@ class ThrantaxDialogueFile : DialogueFile() {
         }
     }
 
-    fun initThrantax(player: Player, checkMissing: Boolean) {
+    fun initThrantax(
+        player: Player,
+        checkMissing: Boolean,
+    ) {
         if (checkMissing) {
             val thrantax = player.getAttribute<NPC>(MerlinUtils.TEMP_ATTR_THRANTAX, null)
 

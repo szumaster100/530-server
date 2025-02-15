@@ -1,6 +1,5 @@
 package content.region.kandarin.handlers.npc.necro
 
-import org.rs.consts.NPCs
 import core.api.getAttribute
 import core.api.getPathableRandomLocalCoordinate
 import core.api.withinDistance
@@ -11,13 +10,20 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
-class SummonedZombiesNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
+class SummonedZombiesNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
     var clearTime = 0
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return SummonedZombiesNPC(id, location)
     }
 
@@ -61,7 +67,7 @@ class SummonedZombiesNPC(id: Int = 0, location: Location? = null) : AbstractNPC(
                         summonedZombie.attack(player)
                         return true
                     }
-                }
+                },
             )
         }
     }

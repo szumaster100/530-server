@@ -1,12 +1,11 @@
 package content.minigame.templetrekking
 
-import org.rs.consts.Quests
 import core.api.quest.hasRequirement
 import core.api.quest.isQuestComplete
 import core.game.node.entity.player.Player
+import org.rs.consts.Quests
 
 object TempleTrekking {
-
     fun hasRequirements(player: Player?): Boolean {
         if (player != null) {
             if (!isQuestComplete(player, Quests.PRIEST_IN_PERIL)) return false

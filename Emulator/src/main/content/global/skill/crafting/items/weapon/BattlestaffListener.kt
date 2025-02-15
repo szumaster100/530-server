@@ -1,16 +1,15 @@
 package content.global.skill.crafting.items.weapon
 
-import org.rs.consts.Items
 import core.api.*
 import core.api.skill.sendSkillDialogue
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.player.link.diary.DiaryType
 import core.game.node.entity.skill.Skills
+import org.rs.consts.Items
 import kotlin.math.min
 
 class BattlestaffListener : InteractionListener {
-
     private val BATTLESTAFF_ID = Items.BATTLESTAFF_1391
     private val ORB_ID = Battlestaff.values().map { it.required }.toIntArray()
 
@@ -44,7 +43,9 @@ class BattlestaffListener : InteractionListener {
 
                         if (product.productId == Items.AIR_BATTLESTAFF_1397) {
                             finishDiaryTask(player, DiaryType.VARROCK, 2, 6)
-                        } else return@runTask
+                        } else {
+                            return@runTask
+                        }
                     }
                 }
 

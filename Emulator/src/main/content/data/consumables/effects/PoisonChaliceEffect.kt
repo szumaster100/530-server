@@ -14,24 +14,26 @@ class PoisonChaliceEffect : ConsumableEffect() {
         when (RandomFunction.nextInt(7)) {
             1 -> {
                 val randomValueBoost = RandomFunction.random(1.0, 4.0)
-                val effect = MultiEffect(
-                    SkillEffect(Skills.ATTACK, -randomValueBoost, 0.0),
-                    SkillEffect(Skills.STRENGTH, -randomValueBoost, 0.0),
-                    SkillEffect(Skills.DEFENCE, -randomValueBoost, 0.0),
-                    SkillEffect(Skills.CRAFTING, 1.0, 0.0)
-                )
+                val effect =
+                    MultiEffect(
+                        SkillEffect(Skills.ATTACK, -randomValueBoost, 0.0),
+                        SkillEffect(Skills.STRENGTH, -randomValueBoost, 0.0),
+                        SkillEffect(Skills.DEFENCE, -randomValueBoost, 0.0),
+                        SkillEffect(Skills.CRAFTING, 1.0, 0.0),
+                    )
                 effect.activate(player)
                 sendMessageWithDelay(player, "You feel a little better.", 1)
                 return
             }
 
             2 -> {
-                val effect = MultiEffect(
-                    SkillEffect(Skills.ATTACK, -1.0, 0.0),
-                    SkillEffect(Skills.STRENGTH, -1.0, 0.0),
-                    SkillEffect(Skills.DEFENCE, -1.0, 0.0),
-                    SkillEffect(Skills.THIEVING, 1.0, 0.0)
-                )
+                val effect =
+                    MultiEffect(
+                        SkillEffect(Skills.ATTACK, -1.0, 0.0),
+                        SkillEffect(Skills.STRENGTH, -1.0, 0.0),
+                        SkillEffect(Skills.DEFENCE, -1.0, 0.0),
+                        SkillEffect(Skills.THIEVING, 1.0, 0.0),
+                    )
                 effect.activate(player)
                 sendMessageWithDelay(player, "You feel a little strange.", 1)
             }
@@ -45,22 +47,24 @@ class PoisonChaliceEffect : ConsumableEffect() {
             }
 
             4 -> {
-                val effect = MultiEffect(
-                    HealingEffect(getHealthEffectValue(player)),
-                    SkillEffect(Skills.THIEVING, 1.0, 0.0)
-                )
+                val effect =
+                    MultiEffect(
+                        HealingEffect(getHealthEffectValue(player)),
+                        SkillEffect(Skills.THIEVING, 1.0, 0.0),
+                    )
                 effect.activate(player)
                 sendMessageWithDelay(player, "You feel a lot better.", 1)
                 return
             }
 
             5 -> {
-                val effect = MultiEffect(
-                    SkillEffect(Skills.ATTACK, 4.0, 0.0),
-                    SkillEffect(Skills.STRENGTH, 4.0, 0.0),
-                    SkillEffect(Skills.DEFENCE, 4.0, 0.0),
-                    SkillEffect(Skills.THIEVING, 1.0, 0.0)
-                )
+                val effect =
+                    MultiEffect(
+                        SkillEffect(Skills.ATTACK, 4.0, 0.0),
+                        SkillEffect(Skills.STRENGTH, 4.0, 0.0),
+                        SkillEffect(Skills.DEFENCE, 4.0, 0.0),
+                        SkillEffect(Skills.THIEVING, 1.0, 0.0),
+                    )
                 effect.activate(player)
                 sendMessageWithDelay(player, "Wow! That was amazing! You feel really invigorated.", 1)
                 return
@@ -68,11 +72,12 @@ class PoisonChaliceEffect : ConsumableEffect() {
 
             6 -> {
                 val randomValueBoost = RandomFunction.random(1.0, 2.0)
-                val effect = MultiEffect(
-                    SkillEffect(Skills.ATTACK, randomValueBoost, 0.0),
-                    SkillEffect(Skills.STRENGTH, randomValueBoost, 0.0),
-                    SkillEffect(Skills.DEFENCE, randomValueBoost, 0.0),
-                )
+                val effect =
+                    MultiEffect(
+                        SkillEffect(Skills.ATTACK, randomValueBoost, 0.0),
+                        SkillEffect(Skills.STRENGTH, randomValueBoost, 0.0),
+                        SkillEffect(Skills.DEFENCE, randomValueBoost, 0.0),
+                    )
                 effect.activate(player)
                 sendMessage(player, "That tasted a bit dodgy. You feel a bit ill.")
                 impact(player, hitValue, ImpactHandler.HitsplatType.NORMAL)

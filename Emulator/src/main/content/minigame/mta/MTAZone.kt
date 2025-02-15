@@ -13,9 +13,10 @@ import core.game.world.map.zone.MapZone
 import core.game.world.map.zone.ZoneRestriction
 import core.game.world.map.zone.ZoneType
 
-open class MTAZone(name: String?, val items: Array<Item>) :
-    MapZone(name, false, ZoneRestriction.RANDOM_EVENTS, ZoneRestriction.FOLLOWERS) {
-
+open class MTAZone(
+    name: String?,
+    val items: Array<Item>,
+) : MapZone(name, false, ZoneRestriction.RANDOM_EVENTS, ZoneRestriction.FOLLOWERS) {
     var type: MTAType? = null
 
     init {
@@ -37,12 +38,20 @@ open class MTAZone(name: String?, val items: Array<Item>) :
         return super.enter(entity)
     }
 
-    override fun canRequest(type: RequestType, player: Player, target: Player): Boolean {
+    override fun canRequest(
+        type: RequestType,
+        player: Player,
+        target: Player,
+    ): Boolean {
         sendDialogue(player, "You can't do that right now.")
         return false
     }
 
-    override fun interact(e: Entity, target: Node, option: Option): Boolean {
+    override fun interact(
+        e: Entity,
+        target: Node,
+        option: Option,
+    ): Boolean {
         if (e is Player) {
             if (target.id == 10782) {
                 type!!.exit(e.asPlayer())
@@ -52,7 +61,11 @@ open class MTAZone(name: String?, val items: Array<Item>) :
         return super.interact(e, target, option)
     }
 
-    override fun teleport(e: Entity, type: Int, node: Node): Boolean {
+    override fun teleport(
+        e: Entity,
+        type: Int,
+        node: Node,
+    ): Boolean {
         if (e is Player) {
             if (type != -1) {
                 e.asPlayer().sendMessage("You can't teleport out of the training arena!")
@@ -63,7 +76,10 @@ open class MTAZone(name: String?, val items: Array<Item>) :
     }
 
     @Suppress("deprecation")
-    override fun leave(entity: Entity, logout: Boolean): Boolean {
+    override fun leave(
+        entity: Entity,
+        logout: Boolean,
+    ): Boolean {
         if (entity is Player) {
             val player = entity.asPlayer()
             if (logout) {
@@ -86,7 +102,11 @@ open class MTAZone(name: String?, val items: Array<Item>) :
         }
     }
 
-    fun incrementPoints(player: Player, index: Int, amount: Int) {
+    fun incrementPoints(
+        player: Player,
+        index: Int,
+        amount: Int,
+    ) {
         player.getSavedData().activityData.incrementPizazz(index, amount)
         update(player)
     }
@@ -98,9 +118,13 @@ open class MTAZone(name: String?, val items: Array<Item>) :
         type?.let {
             sendString(
                 player!!,
-                player.getSavedData().activityData.getPizazzPoints(it.ordinal).toString(),
+                player
+                    .getSavedData()
+                    .activityData
+                    .getPizazzPoints(it.ordinal)
+                    .toString(),
                 it.overlay.id,
-                9
+                9,
             )
         }
     }

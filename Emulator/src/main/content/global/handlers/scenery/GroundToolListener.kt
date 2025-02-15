@@ -1,7 +1,5 @@
 package content.global.handlers.scenery
 
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.api.addItem
 import core.api.hasSpaceFor
 import core.api.replaceScenery
@@ -9,11 +7,11 @@ import core.api.sendMessage
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.item.Item
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class GroundToolListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(BANDIT_CAMP_QUARRY, IntType.SCENERY, "take-axe") { player, node ->
             if (!hasSpaceFor(player, Item(Items.BRONZE_PICKAXE_1265))) {
                 sendMessage(player, "Not enough inventory space.")

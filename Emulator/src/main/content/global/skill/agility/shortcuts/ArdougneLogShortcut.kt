@@ -1,8 +1,5 @@
 package content.global.skill.agility.shortcuts
 
-import org.rs.consts.Animations
-import org.rs.consts.Scenery
-import org.rs.consts.Sounds
 import content.global.skill.agility.AgilityHandler
 import core.api.*
 import core.game.interaction.IntType
@@ -14,10 +11,12 @@ import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
+import org.rs.consts.Animations
+import org.rs.consts.Scenery
+import org.rs.consts.Sounds
 import kotlin.random.Random
 
 class ArdougneLogShortcut : InteractionListener {
-
     private val ardougneLog = intArrayOf(Scenery.LOG_BALANCE_35997, Scenery.LOG_BALANCE_35999)
     private val logBalanceAnimation = Animation(Animations.BALANCE_WALK_ACROSS_LOG_9908)
     private val swimmingAnimation = Animation(Animations.SWIMMING_6988)
@@ -64,25 +63,27 @@ class ArdougneLogShortcut : InteractionListener {
         start: Location,
         failLand: Location,
         failAnim: Animation,
-        fromWest: Boolean
+        fromWest: Boolean,
     ) {
         AgilityHandler.forceWalk(player, -1, start, failLocation, failAnim, 10, 0.0, null, 0)
-        AgilityHandler.forceWalk(
-            player,
-            -1,
-            failLocation,
-            failLand,
-            swimmingLoopAnimation,
-            15,
-            0.0,
-            null,
-            1
-        ).endAnimation = Animation.RESET
+        AgilityHandler
+            .forceWalk(
+                player,
+                -1,
+                failLocation,
+                failLand,
+                swimmingLoopAnimation,
+                15,
+                0.0,
+                null,
+                1,
+            ).endAnimation = Animation.RESET
 
         submitIndividualPulse(
             player,
             object : Pulse(2) {
                 private var counter = 0
+
                 override fun pulse(): Boolean {
                     return when (counter++) {
                         0 -> {
@@ -100,7 +101,7 @@ class ArdougneLogShortcut : InteractionListener {
                                 failLand,
                                 swimmingAnimation,
                                 Random.nextInt(1, 7),
-                                null
+                                null,
                             )
                             player.logoutListeners.remove("balance-log")
                             true
@@ -109,7 +110,7 @@ class ArdougneLogShortcut : InteractionListener {
                         else -> false
                     }
                 }
-            }
+            },
         )
     }
 }

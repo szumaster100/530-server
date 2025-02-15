@@ -1,6 +1,5 @@
 package content.region.kandarin.quest.hazeelcult.handlers
 
-import org.rs.consts.*
 import core.api.*
 import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
@@ -10,9 +9,9 @@ import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.player.Player
 import core.game.world.map.Location
+import org.rs.consts.*
 
 class HazeelCultListener : InteractionListener {
-
     init {
         ALOMONE.init()
         ALOMONE.isWalks = true
@@ -20,7 +19,6 @@ class HazeelCultListener : InteractionListener {
     }
 
     override fun defineListeners() {
-
         on(CLIVET_STAIRS, IntType.SCENERY, "climb-up") { player, _ ->
             teleport(player, location(2586, 3237, 0))
             sendMessage(player, "You climb up the stairs.")
@@ -39,14 +37,19 @@ class HazeelCultListener : InteractionListener {
                 teleport(player, location(2606, 9692, 0))
                 sendDialogue(
                     player,
-                    "The raft washes up the sewer, past the islands until it reaches the end of the sewer passage."
+                    "The raft washes up the sewer, past the islands until it reaches the end of the sewer passage.",
                 )
             } else if (inBorders(player, 2604, 9688, 2611, 9694)) {
                 setAttribute(player, RAFT_UNLOCK, 1)
                 teleport(player, location(2567, 9680, 0))
                 sendDialogue(player, "The raft flows back to the cave entrance.")
             } else {
-                sendNPCDialogue(player, CLIVET_NPC, "Hey! I don't remember saying you could use that raft!", FaceAnim.ANNOYED)
+                sendNPCDialogue(
+                    player,
+                    CLIVET_NPC,
+                    "Hey! I don't remember saying you could use that raft!",
+                    FaceAnim.ANNOYED,
+                )
             }
             return@on true
         }
@@ -58,7 +61,7 @@ class HazeelCultListener : InteractionListener {
                 animate(player, TURN_VALVE_ANIMATION)
                 player.dialogueInterpreter.sendDialogue(
                     "Turn the large metal valve to the left. Beneath your feet you",
-                    "can heat the sudden sound of rushing water from the sewer."
+                    "can heat the sudden sound of rushing water from the sewer.",
                 )
             }
             return@on true
@@ -74,53 +77,70 @@ class HazeelCultListener : InteractionListener {
             if (!player.location.withinDistance(node.asScenery().location, 2)) return@on true
             lock(player, 4)
             animate(player, TURN_VALVE_ANIMATION)
-            player.dialogueInterpreter.sendDialogue("Turn the large metal valve to the left. Beneath your feet you", "can heat the sudden sound of rushing water from the sewer.")
+            player.dialogueInterpreter.sendDialogue(
+                "Turn the large metal valve to the left. Beneath your feet you",
+                "can heat the sudden sound of rushing water from the sewer.",
+            )
             return@on true
         }
 
         on(SEWER_1, IntType.SCENERY, "turn-right") { player, _ ->
             lock(player, 4)
             animate(player, TURN_VALVE_ANIMATION)
-            player.dialogueInterpreter.sendDialogue("Turn the large metal valve to the right. Beneath your feet you", "can heat the sudden sound of rushing water from the sewer.")
+            player.dialogueInterpreter.sendDialogue(
+                "Turn the large metal valve to the right. Beneath your feet you",
+                "can heat the sudden sound of rushing water from the sewer.",
+            )
             return@on true
         }
 
         on(SEWERS, IntType.SCENERY, "turn-right") { player, node ->
             if (!player.location.withinDistance(node.asScenery().location, 2)) return@on true
             if (getQuestStage(player, Quests.HAZEEL_CULT) >= 1) {
-                for (i in SEWERS) when (i) {
-                    SEWER_2 -> if (getAttribute(player, SEWER_LEFT, 0) == 1) {
-                        setAttribute(player, SEWER_RIGHT_1, 1)
-                    }
+                for (i in SEWERS) {
+                    when (i) {
+                        SEWER_2 ->
+                            if (getAttribute(player, SEWER_LEFT, 0) == 1) {
+                                setAttribute(player, SEWER_RIGHT_1, 1)
+                            }
 
-                    SEWER_3 -> if (getAttribute(player, SEWER_RIGHT_1, 0) == 1) {
-                        setAttribute(player, SEWER_RIGHT_2, 1)
-                    }
+                        SEWER_3 ->
+                            if (getAttribute(player, SEWER_RIGHT_1, 0) == 1) {
+                                setAttribute(player, SEWER_RIGHT_2, 1)
+                            }
 
-                    SEWER_4 -> if (getAttribute(player, SEWER_RIGHT_2, 0) == 1) {
-                        setAttribute(player, SEWER_RIGHT_3, 1)
-                    }
+                        SEWER_4 ->
+                            if (getAttribute(player, SEWER_RIGHT_2, 0) == 1) {
+                                setAttribute(player, SEWER_RIGHT_3, 1)
+                            }
 
-                    SEWER_5 -> if (getAttribute(player, SEWER_RIGHT_3, 0) == 1) {
-                        setAttribute(player, RAFT_UNLOCK, 1)
-                        removeAttributes(player, SEWER_RIGHT_1, SEWER_RIGHT_2, SEWER_RIGHT_3, SEWER_LEFT)
+                        SEWER_5 ->
+                            if (getAttribute(player, SEWER_RIGHT_3, 0) == 1) {
+                                setAttribute(player, RAFT_UNLOCK, 1)
+                                removeAttributes(player, SEWER_RIGHT_1, SEWER_RIGHT_2, SEWER_RIGHT_3, SEWER_LEFT)
+                            }
                     }
                 }
             } else if (getQuestStage(player, Quests.HAZEEL_CULT) == 10) {
                 if (!player.location.withinDistance(node.asScenery().location, 2)) return@on true
-                for (i in SEWERS) when (i) {
-                    SEWER_4 -> setAttribute(player, SEWER_RIGHT_1, 1)
-                    SEWER_5 -> if (getAttribute(player, SEWER_RIGHT_1, 0) == 1) {
-                        setAttribute(player, SEWER_RIGHT_2, 1)
-                    }
+                for (i in SEWERS) {
+                    when (i) {
+                        SEWER_4 -> setAttribute(player, SEWER_RIGHT_1, 1)
+                        SEWER_5 ->
+                            if (getAttribute(player, SEWER_RIGHT_1, 0) == 1) {
+                                setAttribute(player, SEWER_RIGHT_2, 1)
+                            }
 
-                    SEWER_2 -> if (getAttribute(player, SEWER_RIGHT_3, 0) == 1) {
-                        setAttribute(player, SEWER_LEFT, 1)
-                    }
+                        SEWER_2 ->
+                            if (getAttribute(player, SEWER_RIGHT_3, 0) == 1) {
+                                setAttribute(player, SEWER_LEFT, 1)
+                            }
 
-                    SEWER_3 -> if (getAttribute(player, SEWER_LEFT, 0) == 1) {
-                        setAttribute(player, RAFT_UNLOCK, 1)
-                        removeAttributes(player, SEWER_RIGHT_1, SEWER_RIGHT_2, SEWER_RIGHT_3, SEWER_LEFT)
+                        SEWER_3 ->
+                            if (getAttribute(player, SEWER_LEFT, 0) == 1) {
+                                setAttribute(player, RAFT_UNLOCK, 1)
+                                removeAttributes(player, SEWER_RIGHT_1, SEWER_RIGHT_2, SEWER_RIGHT_3, SEWER_LEFT)
+                            }
                     }
                 }
             }
@@ -128,7 +148,7 @@ class HazeelCultListener : InteractionListener {
             animate(player, TURN_VALVE_ANIMATION)
             player.dialogueInterpreter.sendDialogue(
                 "Turn the large metal valve to the right. Beneth your feet you",
-                "can heat the sudden sound of rushing water from the sewer."
+                "can heat the sudden sound of rushing water from the sewer.",
             )
             return@on true
         }
@@ -140,20 +160,34 @@ class HazeelCultListener : InteractionListener {
 
         onUseWith(IntType.SCENERY, POISON, COOKING_RANGE) { player, _, _ ->
             if (getAttribute(player, MAHJARRAT, true) && removeItem(player, POISON)) {
-                player.dialogueInterpreter.sendDialogue("You pour the poison into the hot pot.", "The poison dissolves into the soup.")
+                player.dialogueInterpreter.sendDialogue(
+                    "You pour the poison into the hot pot.",
+                    "The poison dissolves into the soup.",
+                )
                 setQuestStage(player, Quests.HAZEEL_CULT, 3)
             } else {
-                sendNPCDialogue(player, NPCs.CLAUS_THE_CHEF_886, "Oi - I don't want people messing around with my range!")
+                sendNPCDialogue(
+                    player,
+                    NPCs.CLAUS_THE_CHEF_886,
+                    "Oi - I don't want people messing around with my range!",
+                )
             }
             return@onUseWith true
         }
 
         on(CRATE, IntType.SCENERY, "search") { player, _ ->
-            if (getQuestStage(player, Quests.HAZEEL_CULT) >= 1 && getAttribute(player, MAHJARRAT, true) && !getAttribute(player, CARNILLEAN, true) && freeSlots(player) > 1) {
+            if (getQuestStage(player, Quests.HAZEEL_CULT) >= 1 &&
+                getAttribute(player, MAHJARRAT, true) &&
+                !getAttribute(player, CARNILLEAN, true) &&
+                freeSlots(player) > 1
+            ) {
                 sendMessage(player, "You search the crate and find an old key hidden at the bottom.")
                 addItem(player, CHEST_KEY, 1)
             } else if (freeSlots(player) < 1) {
-                sendMessage(player, "You search the crate and find an old key hidden at the bottom, but you don't have enough room to take it.")
+                sendMessage(
+                    player,
+                    "You search the crate and find an old key hidden at the bottom, but you don't have enough room to take it.",
+                )
             } else {
                 sendMessage(player, "You search the crate but find nothing of interest.")
             }
@@ -175,7 +209,10 @@ class HazeelCultListener : InteractionListener {
         onUseWith(IntType.SCENERY, CHEST_KEY, Scenery.CHEST_2856) { player, _, _ ->
             animate(player, 536)
             addScenery(Scenery.CHEST_2857, Location(2565, 3272, 2), 2, 10)
-            removeScenery(core.game.node.scenery.Scenery(Scenery.CHEST_2856, Location(2565, 3272, 2)))
+            removeScenery(
+                core.game.node.scenery
+                    .Scenery(Scenery.CHEST_2856, Location(2565, 3272, 2)),
+            )
             return@onUseWith true
         }
 
@@ -184,8 +221,8 @@ class HazeelCultListener : InteractionListener {
             removeScenery(
                 core.game.node.scenery.Scenery(
                     Scenery.CHEST_2857,
-                    Location(2565, 3272, 2)
-                )
+                    Location(2565, 3272, 2),
+                ),
             )
             return@on true
         }
@@ -196,7 +233,11 @@ class HazeelCultListener : InteractionListener {
                 addItem(player, HAZEEL_SCROLL, 1)
                 sendItemDialogue(player, HAZEEL_SCROLL, "You unlock the chest and find a scroll inside.")
             } else if (!hasScroll && freeSlots(player) < 1) {
-                player.dialogueInterpreter.sendItemMessage(HAZEEL_SCROLL, "You unlock the chest and find a scroll inside", "but you don't have enough room to take it.")
+                player.dialogueInterpreter.sendItemMessage(
+                    HAZEEL_SCROLL,
+                    "You unlock the chest and find a scroll inside",
+                    "but you don't have enough room to take it.",
+                )
             } else if (hasScroll && freeSlots(player) > 1) {
                 sendDialogue(player, "You already have the scroll from this chest.")
             }
@@ -204,21 +245,22 @@ class HazeelCultListener : InteractionListener {
         }
 
         fun hazeelScroll(player: Player) {
-            val scroll = arrayOf(
-                "Sentente sillaberi junque dithmento! Ia! Ia!",
-                "",
-                "dextrimon encanto! termando... imcando...",
-                "",
-                "solly enty rando... sentente! Ia! Ia!",
-                "",
-                "Indenti zaggarati g'thxa! Dintenta! Sententa!",
-                "",
-                "Retenta! Q'exjta! Ia! Sottottott!",
-                "",
-                "Ia! Dysmenta junque fammatio svelken!",
-                "",
-                "Sottey! Sentey! SOLOMENT!"
-            )
+            val scroll =
+                arrayOf(
+                    "Sentente sillaberi junque dithmento! Ia! Ia!",
+                    "",
+                    "dextrimon encanto! termando... imcando...",
+                    "",
+                    "solly enty rando... sentente! Ia! Ia!",
+                    "",
+                    "Indenti zaggarati g'thxa! Dintenta! Sententa!",
+                    "",
+                    "Retenta! Q'exjta! Ia! Sottottott!",
+                    "",
+                    "Ia! Dysmenta junque fammatio svelken!",
+                    "",
+                    "Sottey! Sentey! SOLOMENT!",
+                )
             sendString(player, scroll.joinToString("<br>"), Components.BLANK_SCROLL_222, 2)
         }
 
@@ -285,6 +327,5 @@ class HazeelCultListener : InteractionListener {
         val ALOMONE = AlomoneNPC(NPCs.ALOMONE_891, Location.create(2607, 9671, 0))
 
         const val SECRET_PASSAGE = Scenery.WALL_26940
-
     }
 }

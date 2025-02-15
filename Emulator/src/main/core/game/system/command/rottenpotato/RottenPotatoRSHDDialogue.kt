@@ -14,8 +14,9 @@ import core.plugin.Initializable
 import core.tools.colorize
 
 @Initializable
-class RottenPotatoRSHDDialogue(player: Player? = null) : Dialogue(player) {
-
+class RottenPotatoRSHDDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     val ID = 38575793
 
     override fun newInstance(player: Player?): Dialogue {
@@ -27,7 +28,10 @@ class RottenPotatoRSHDDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 when (buttonId) {
@@ -59,9 +63,10 @@ class RottenPotatoRSHDDialogue(player: Player? = null) : Dialogue(player) {
                     4 -> {
                         end()
                         sendInputDialogue(player, InputType.STRING_SHORT, "Enter player name:") { value ->
-                            val other = Repository.getPlayerByName(
-                                value.toString().lowercase().replace(" ", "_")
-                            )
+                            val other =
+                                Repository.getPlayerByName(
+                                    value.toString().lowercase().replace(" ", "_"),
+                                )
                             if (other == null) {
                                 sendMessage(player, colorize("%RInvalid player name."))
                                 return@sendInputDialogue
@@ -73,9 +78,10 @@ class RottenPotatoRSHDDialogue(player: Player? = null) : Dialogue(player) {
                     5 -> {
                         end()
                         sendInputDialogue(player, InputType.STRING_SHORT, "Enter player name:") { value ->
-                            val other = Repository.getPlayerByName(
-                                value.toString().lowercase().replace(" ", "_")
-                            )
+                            val other =
+                                Repository.getPlayerByName(
+                                    value.toString().lowercase().replace(" ", "_"),
+                                )
                             if (other == null) {
                                 sendMessage(player, colorize("%RInvalid player name."))
                                 return@sendInputDialogue

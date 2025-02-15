@@ -17,9 +17,7 @@ import org.rs.consts.Items
 import kotlin.math.min
 
 class FletchingListener : InteractionListener {
-
     override fun defineListeners() {
-
         /*
          * Handles attaching a string to an unstrung bow.
          */
@@ -35,7 +33,7 @@ class FletchingListener : InteractionListener {
                 create { _, amount ->
                     submitIndividualPulse(
                         entity = player,
-                        pulse = StringPulse(player, Item(string.id), enum, amount)
+                        pulse = StringPulse(player, Item(string.id), enum, amount),
                     )
                 }
                 calculateMaxAmount {
@@ -55,7 +53,7 @@ class FletchingListener : InteractionListener {
                 create { _, amount ->
                     submitIndividualPulse(
                         entity = player,
-                        pulse = HeadlessArrowPulse(player, Item(shaft.id), Item(feather.id), amount)
+                        pulse = HeadlessArrowPulse(player, Item(shaft.id), Item(feather.id), amount),
                     )
                 }
                 calculateMaxAmount {
@@ -76,7 +74,7 @@ class FletchingListener : InteractionListener {
                 create { _, amount ->
                     submitIndividualPulse(
                         entity = player,
-                        pulse = ArrowHeadPulse(player, Item(shaft.id), arrowHead, amount)
+                        pulse = ArrowHeadPulse(player, Item(shaft.id), arrowHead, amount),
                     )
                 }
                 calculateMaxAmount {
@@ -100,9 +98,10 @@ class FletchingListener : InteractionListener {
 
             fun process() {
                 val amountThisIter = min(6, getMaxAmount())
-                if (removeItem(player, Item(used.id, amountThisIter)) && removeItem(
+                if (removeItem(player, Item(used.id, amountThisIter)) &&
+                    removeItem(
                         player,
-                        Item(with.id, amountThisIter)
+                        Item(with.id, amountThisIter),
                     )
                 ) {
                     addItem(player, Items.OGRE_ARROW_2866, amountThisIter)
@@ -173,7 +172,7 @@ class FletchingListener : InteractionListener {
                 create { _, amount ->
                     submitIndividualPulse(
                         entity = player,
-                        pulse = LimbPulse(player, Item(stock.id), limbEnum, amount)
+                        pulse = LimbPulse(player, Item(stock.id), limbEnum, amount),
                     )
                 }
                 calculateMaxAmount {
@@ -194,7 +193,7 @@ class FletchingListener : InteractionListener {
                 create { _, amount ->
                     submitIndividualPulse(
                         entity = player,
-                        pulse = GemBoltCutPulse(player, Item(used.id), gem, amount)
+                        pulse = GemBoltCutPulse(player, Item(used.id), gem, amount),
                     )
                 }
             }
@@ -210,8 +209,13 @@ class FletchingListener : InteractionListener {
             if (used.id != bolt.base || with.id != bolt.tip) return@onUseWith true
             val handler: SkillDialogueHandler =
                 object : SkillDialogueHandler(player, SkillDialogue.MAKE_SET_ONE_OPTION, Item(bolt.product)) {
-                    override fun create(amount: Int, index: Int) {
-                        player.pulseManager.run(GemBoltPulse(player, GemBolt.forId(used.id)?.base?.asItem(), bolt, amount))
+                    override fun create(
+                        amount: Int,
+                        index: Int,
+                    ) {
+                        player.pulseManager.run(
+                            GemBoltPulse(player, GemBolt.forId(used.id)?.base?.asItem(), bolt, amount),
+                        )
                     }
 
                     override fun getAll(index: Int): Int {
@@ -226,14 +230,13 @@ class FletchingListener : InteractionListener {
          * Handles attaching kebbit spikes to create kebbit bolts.
          */
 
-        onUseWith(IntType.ITEM, Items.CHISEL_1755, *Fletching.kebbitSpikeIds)
-        { player, _, base ->
+        onUseWith(IntType.ITEM, Items.CHISEL_1755, *Fletching.kebbitSpikeIds) { player, _, base ->
             sendSkillDialogue(player) {
                 withItems(base.id)
                 create { _, amount ->
                     submitIndividualPulse(
                         entity = player,
-                        pulse = KebbitBoltPulse(player, Item(base.id), KebbitBolt.forId(base.asItem())!!, amount)
+                        pulse = KebbitBoltPulse(player, Item(base.id), KebbitBolt.forId(base.asItem())!!, amount),
                     )
                 }
                 calculateMaxAmount {
@@ -244,11 +247,10 @@ class FletchingListener : InteractionListener {
         }
 
         /*
-          * Handles attaching the barb bolt tips with bronze bolts to create barbed bolts.
+         * Handles attaching the barb bolt tips with bronze bolts to create barbed bolts.
          */
 
-        onUseWith(IntType.ITEM, Items.BARB_BOLTTIPS_47, Items.BRONZE_BOLTS_877)
-        { player, used, with ->
+        onUseWith(IntType.ITEM, Items.BARB_BOLTTIPS_47, Items.BRONZE_BOLTS_877) { player, used, with ->
             if (getStatLevel(player, Skills.FLETCHING) < 51) {
                 sendMessage(player, "You need a fletching level of 51 to do this.")
                 return@onUseWith true
@@ -291,8 +293,7 @@ class FletchingListener : InteractionListener {
          * Handles attaching the ogre arrow shafts and feathers to create flighted ogre arrows.
          */
 
-        onUseWith(IntType.ITEM, Items.OGRE_ARROW_SHAFT_2864, *Fletching.featherIds)
-        { player, used, with ->
+        onUseWith(IntType.ITEM, Items.OGRE_ARROW_SHAFT_2864, *Fletching.featherIds) { player, used, with ->
             if (getStatLevel(player, Skills.FLETCHING) < 5) {
                 sendDialogue(player, "You need a fletching level of 5 to do this.")
                 return@onUseWith true
@@ -331,15 +332,14 @@ class FletchingListener : InteractionListener {
          * Handles attaching nails to arrow shafts to create brutal arrows.
          */
 
-        onUseWith(IntType.ITEM, Fletching.fligtedOgreArrowId, *Fletching.nailIds)
-        { player, used, with ->
+        onUseWith(IntType.ITEM, Fletching.fligtedOgreArrowId, *Fletching.nailIds) { player, used, with ->
             val brutalArrow = BrutalArrow.product[with.id] ?: return@onUseWith false
             sendSkillDialogue(player) {
                 withItems(brutalArrow.product)
                 create { _, amount ->
                     submitIndividualPulse(
                         entity = player,
-                        pulse = BrutalArrowPulse(player, Item(used.id), brutalArrow, amount)
+                        pulse = BrutalArrowPulse(player, Item(used.id), brutalArrow, amount),
                     )
                 }
                 calculateMaxAmount {
@@ -349,5 +349,4 @@ class FletchingListener : InteractionListener {
             return@onUseWith true
         }
     }
-
 }

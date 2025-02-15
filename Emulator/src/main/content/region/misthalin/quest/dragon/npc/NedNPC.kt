@@ -1,19 +1,22 @@
 package content.region.misthalin.quest.dragon.npc
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.quest.getQuestStage
 import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.player.Player
 import core.game.world.map.Location
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 class NedNPC : AbstractNPC {
-
     constructor() : super(0, null)
 
     private constructor(id: Int, location: Location) : super(id, location)
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return NedNPC(id, location)
     }
 

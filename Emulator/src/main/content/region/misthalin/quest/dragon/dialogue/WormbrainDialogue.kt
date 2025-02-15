@@ -1,7 +1,5 @@
 package content.region.misthalin.quest.dragon.dialogue
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.misthalin.quest.dragon.DragonSlayer
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
@@ -10,29 +8,38 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
-class WormbrainDialogue(player: Player? = null) : Dialogue(player) {
-
+class WormbrainDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     private var quest: Quest? = null
 
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         quest = player.getQuestRepository().getQuest(Quests.DRAGON_SLAYER)
-        stage = when (quest!!.getStage(player)) {
-            else -> {
-                npc(FaceAnim.OLD_DEFAULT, "Whut you want?")
-                -1
+        stage =
+            when (quest!!.getStage(player)) {
+                else -> {
+                    npc(FaceAnim.OLD_DEFAULT, "Whut you want?")
+                    -1
+                }
             }
-        }
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (quest!!.getStage(player)) {
             20 -> {
                 when (stage) {
                     -1 ->
-                        if (!player.inventory.containsItem(DragonSlayer.WORMBRAIN_PIECE) && !player.bank.containsItem(DragonSlayer.WORMBRAIN_PIECE)) {
+                        if (!player.inventory.containsItem(DragonSlayer.WORMBRAIN_PIECE) &&
+                            !player.bank.containsItem(DragonSlayer.WORMBRAIN_PIECE)
+                        ) {
                             player("I believe you've got a piece of a map that I need.")
                             stage = 500
                         } else {
@@ -59,17 +66,18 @@ class WormbrainDialogue(player: Player? = null) : Dialogue(player) {
                         stage = 504
                     }
 
-                    504 -> when (buttonId) {
-                        1 -> {
-                            player("You must be joking! Forget it.")
-                            stage = 505
-                        }
+                    504 ->
+                        when (buttonId) {
+                            1 -> {
+                                player("You must be joking! Forget it.")
+                                stage = 505
+                            }
 
-                        2 -> {
-                            player("Alright, then, 10,000 it is.")
-                            stage = 506
+                            2 -> {
+                                player("Alright, then, 10,000 it is.")
+                                stage = 506
+                            }
                         }
-                    }
 
                     505 -> end()
                     506 ->
@@ -79,7 +87,7 @@ class WormbrainDialogue(player: Player? = null) : Dialogue(player) {
                             }
                             interpreter.sendItemMessage(
                                 DragonSlayer.WORMBRAIN_PIECE.id,
-                                "You buy the map piece from Wormbrain."
+                                "You buy the map piece from Wormbrain.",
                             )
                             stage = 507
                         } else {
@@ -113,17 +121,18 @@ class WormbrainDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 0
             }
 
-            0 -> when (buttonId) {
-                1 -> {
-                    player("What are you in for?")
-                    stage = 10
-                }
+            0 ->
+                when (buttonId) {
+                    1 -> {
+                        player("What are you in for?")
+                        stage = 10
+                    }
 
-                2 -> {
-                    player("Sorry, thought this was a zoo.")
-                    stage = 15
+                    2 -> {
+                        player("Sorry, thought this was a zoo.")
+                        stage = 15
+                    }
                 }
-            }
 
             10 -> {
                 npc(FaceAnim.OLD_DEFAULT, "Me not sure. Me pick some stuff up and take it away.")

@@ -1,23 +1,27 @@
 package content.region.fremennik.dialogue.miscellania
 
-import org.rs.consts.NPCs
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.NPCs
 
 @Initializable
-class MiscCitizenGoodDayDialogue(player: Player? = null) : Dialogue(player) {
-
+class MiscCitizenGoodDayDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         player(FaceAnim.FRIENDLY, "Hello.")
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> npc(FaceAnim.FRIENDLY, "Good day, Your Royal Highness.").also { stage = END_DIALOGUE }
         }
@@ -42,7 +46,7 @@ class MiscCitizenGoodDayDialogue(player: Player? = null) : Dialogue(player) {
             NPCs.THORA_1387,
             NPCs.THORHILD_1382,
             NPCs.VALGERD_1388,
-            NPCs.TJORVI_3925
+            NPCs.TJORVI_3925,
         )
     }
 }

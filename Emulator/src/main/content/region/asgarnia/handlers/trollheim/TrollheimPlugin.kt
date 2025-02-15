@@ -1,7 +1,5 @@
 package content.region.asgarnia.handlers.trollheim
 
-import org.rs.consts.Components
-import org.rs.consts.Scenery
 import core.api.*
 import core.cache.def.impl.NPCDefinition
 import core.cache.def.impl.SceneryDefinition
@@ -31,14 +29,29 @@ import core.game.world.update.flag.context.Animation
 import core.net.packet.PacketRepository
 import core.net.packet.context.CameraContext
 import core.net.packet.out.CameraViewPacket
+import core.plugin.ClassScanner.definePlugin
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner.definePlugin
+import org.rs.consts.Components
+import org.rs.consts.Scenery
 
 @Initializable
 class TrollheimPlugin : OptionHandler() {
-
-    private val rockScenery = intArrayOf(Scenery.ROCKS_3748, Scenery.ROCKS_3723, Scenery.ROCKS_3722, Scenery.ROCKS_3804, Scenery.ROCKS_3803, Scenery.ROCKS_3791, Scenery.ROCKS_3790, Scenery.ROCKS_9327, Scenery.ROCKS_9306, Scenery.ROCKS_9305, Scenery.ROCKS_9304, Scenery.ROCKS_9303)
+    private val rockScenery =
+        intArrayOf(
+            Scenery.ROCKS_3748,
+            Scenery.ROCKS_3723,
+            Scenery.ROCKS_3722,
+            Scenery.ROCKS_3804,
+            Scenery.ROCKS_3803,
+            Scenery.ROCKS_3791,
+            Scenery.ROCKS_3790,
+            Scenery.ROCKS_9327,
+            Scenery.ROCKS_9306,
+            Scenery.ROCKS_9305,
+            Scenery.ROCKS_9304,
+            Scenery.ROCKS_9303,
+        )
     private val arenaScenery = intArrayOf(3786, 3785, 3783, 3782)
 
     override fun newInstance(arg: Any?): Plugin<Any?> {
@@ -76,52 +89,77 @@ class TrollheimPlugin : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val id = if (node is core.game.node.scenery.Scenery) node.id else (node as NPC).id
         val loc = node.location
         var xOffset = 0
         val yOffset = 0
         when (option) {
-            "enter" -> when (id) {
-                3735 -> player.properties.teleportLocation = LOCATIONS[0]
-                4499 -> player.properties.teleportLocation = LOCATIONS[2]
-                4500 -> player.properties.teleportLocation = LOCATIONS[3]
-                3723 -> player.properties.teleportLocation = LOCATIONS[4]
-                3757 -> player.properties.teleportLocation = if (loc == Location(2907, 3652, 0)) LOCATIONS[7] else LOCATIONS[4]
-                3771 -> player.teleport(Location(2837, 10090, 2))
-            }
-
-            "leave" -> player.teleport(Location(2840, 3690))
-            "exit" -> when (id) {
-                3758 ->
-                    player.properties.teleportLocation =
-                        if (loc == Location(2906, 10036, 0)) LOCATIONS[6] else LOCATIONS[5]
-            }
-
-            "talk-to" -> when (id) {
-                1069 -> player.dialogueInterpreter.open(id, node)
-            }
-
-            "read" -> when (id) {
-                3742 -> ActivityManager.start(player, "trollheim-warning", false)
-            }
-
-            "open" -> when (id) {
-                3785, 3786, 3782, 3783 -> {
-                    DoorActionHandler.handleAutowalkDoor(player, node.asScenery())
-                    return true
+            "enter" ->
+                when (id) {
+                    3735 -> player.properties.teleportLocation = LOCATIONS[0]
+                    4499 -> player.properties.teleportLocation = LOCATIONS[2]
+                    4500 -> player.properties.teleportLocation = LOCATIONS[3]
+                    3723 -> player.properties.teleportLocation = LOCATIONS[4]
+                    3757 ->
+                        player.properties.teleportLocation =
+                            if (loc == Location(2907, 3652, 0)) LOCATIONS[7] else LOCATIONS[4]
+                    3771 -> player.teleport(Location(2837, 10090, 2))
                 }
 
-                3672 -> sendMessage(player, "You don't know how to open the secret door.")
-            }
+            "leave" -> player.teleport(Location(2840, 3690))
+            "exit" ->
+                when (id) {
+                    3758 ->
+                        player.properties.teleportLocation =
+                            if (loc == Location(2906, 10036, 0)) LOCATIONS[6] else LOCATIONS[5]
+                }
 
-            "climb-up" -> when (id) {
-                18834 -> ClimbActionHandler.climb(player, ClimbActionHandler.CLIMB_UP, Location(2828, 3678), "You clamber onto the windswept roof of the Troll Stronghold.")
-            }
+            "talk-to" ->
+                when (id) {
+                    1069 -> player.dialogueInterpreter.open(id, node)
+                }
 
-            "climb-down" -> when (id) {
-                18833 -> ClimbActionHandler.climb(player, ClimbActionHandler.CLIMB_DOWN, Location(2831, 10076, 2), "You clamber back inside the Troll Stronghold.")
-            }
+            "read" ->
+                when (id) {
+                    3742 -> ActivityManager.start(player, "trollheim-warning", false)
+                }
+
+            "open" ->
+                when (id) {
+                    3785, 3786, 3782, 3783 -> {
+                        DoorActionHandler.handleAutowalkDoor(player, node.asScenery())
+                        return true
+                    }
+
+                    3672 -> sendMessage(player, "You don't know how to open the secret door.")
+                }
+
+            "climb-up" ->
+                when (id) {
+                    18834 ->
+                        ClimbActionHandler.climb(
+                            player,
+                            ClimbActionHandler.CLIMB_UP,
+                            Location(2828, 3678),
+                            "You clamber onto the windswept roof of the Troll Stronghold.",
+                        )
+                }
+
+            "climb-down" ->
+                when (id) {
+                    18833 ->
+                        ClimbActionHandler.climb(
+                            player,
+                            ClimbActionHandler.CLIMB_DOWN,
+                            Location(2831, 10076, 2),
+                            "You clamber back inside the Troll Stronghold.",
+                        )
+                }
 
             "climb" -> {
                 if (!player.equipment.containsItem(CLIMBING_BOOTS)) {
@@ -135,20 +173,82 @@ class TrollheimPlugin : OptionHandler() {
                 xOffset = if (player.location.x < loc.x) 2 else -2
                 val scenery = (node as core.game.node.scenery.Scenery)
                 when (id) {
-                    3722 -> ForceMovement.run(player, player.location, Location.create(2880, 3592, 0), Animation.create(CLIMB_DOWN), Animation.create(CLIMB_DOWN), Direction.NORTH, 13).endAnimation = Animation.RESET
+                    3722 ->
+                        ForceMovement
+                            .run(
+                                player,
+                                player.location,
+                                Location.create(2880, 3592, 0),
+                                Animation.create(CLIMB_DOWN),
+                                Animation.create(CLIMB_DOWN),
+                                Direction.NORTH,
+                                13,
+                            ).endAnimation =
+                            Animation.RESET
 
-                    3723 -> ForceMovement.run(player, player.location, Location.create(2881, 3596, 0), Animation.create(CLIMB_UP), Animation.create(CLIMB_UP), Direction.NORTH, 13).endAnimation = Animation.RESET
+                    3723 ->
+                        ForceMovement
+                            .run(
+                                player,
+                                player.location,
+                                Location.create(2881, 3596, 0),
+                                Animation.create(CLIMB_UP),
+                                Animation.create(CLIMB_UP),
+                                Direction.NORTH,
+                                13,
+                            ).endAnimation =
+                            Animation.RESET
 
                     3790 -> {
                         if (player.location.x > 2877) {
-                            ForceMovement.run(player, player.location.transform(xOffset, yOffset, 0), scenery.location.transform(xOffset, yOffset, 0), Animation.create(CLIMB_DOWN), Animation.create(CLIMB_DOWN), Direction.EAST, 13).endAnimation = Animation.RESET
+                            ForceMovement
+                                .run(
+                                    player,
+                                    player.location.transform(xOffset, yOffset, 0),
+                                    scenery.location.transform(xOffset, yOffset, 0),
+                                    Animation.create(CLIMB_DOWN),
+                                    Animation.create(CLIMB_DOWN),
+                                    Direction.EAST,
+                                    13,
+                                ).endAnimation =
+                                Animation.RESET
                         } else {
-                            ForceMovement.run(player, player.location.transform(xOffset, yOffset, 0), scenery.location.transform(xOffset, yOffset, 0), Animation.create(CLIMB_UP), Animation.create(CLIMB_UP), Direction.WEST, 13).endAnimation = Animation.RESET
+                            ForceMovement
+                                .run(
+                                    player,
+                                    player.location.transform(xOffset, yOffset, 0),
+                                    scenery.location.transform(xOffset, yOffset, 0),
+                                    Animation.create(CLIMB_UP),
+                                    Animation.create(CLIMB_UP),
+                                    Direction.WEST,
+                                    13,
+                                ).endAnimation =
+                                Animation.RESET
                         }
                         if (player.location.x < 2877 || player.location.equals(2878, 3622, 0)) {
-                            ForceMovement.run(player, player.location.transform(xOffset, yOffset, 0), scenery.location.transform(xOffset, yOffset, 0), Animation.create(CLIMB_DOWN), Animation.create(CLIMB_DOWN), Direction.WEST, 13).endAnimation = Animation.RESET
+                            ForceMovement
+                                .run(
+                                    player,
+                                    player.location.transform(xOffset, yOffset, 0),
+                                    scenery.location.transform(xOffset, yOffset, 0),
+                                    Animation.create(CLIMB_DOWN),
+                                    Animation.create(CLIMB_DOWN),
+                                    Direction.WEST,
+                                    13,
+                                ).endAnimation =
+                                Animation.RESET
                         } else {
-                            ForceMovement.run(player, player.location.transform(xOffset, yOffset, 0), scenery.location.transform(xOffset, yOffset, 0), Animation.create(CLIMB_UP), Animation.create(CLIMB_UP), Direction.EAST, 13).endAnimation = Animation.RESET
+                            ForceMovement
+                                .run(
+                                    player,
+                                    player.location.transform(xOffset, yOffset, 0),
+                                    scenery.location.transform(xOffset, yOffset, 0),
+                                    Animation.create(CLIMB_UP),
+                                    Animation.create(CLIMB_UP),
+                                    Direction.EAST,
+                                    13,
+                                ).endAnimation =
+                                Animation.RESET
                         }
                     }
 
@@ -157,29 +257,119 @@ class TrollheimPlugin : OptionHandler() {
                         lockInteractions(player, 3)
                         xOffset = if (player.location.x < loc.x) 2 else -2
                         if (player.location.x < 2877 || player.location.equals(2878, 3622, 0)) {
-                            ForceMovement.run(player, player.location.transform(xOffset, yOffset, 0), scenery.location.transform(xOffset, yOffset, 0), Animation.create(CLIMB_DOWN), Animation.create(CLIMB_DOWN), Direction.WEST, 13).endAnimation = Animation.RESET
+                            ForceMovement
+                                .run(
+                                    player,
+                                    player.location.transform(xOffset, yOffset, 0),
+                                    scenery.location.transform(xOffset, yOffset, 0),
+                                    Animation.create(CLIMB_DOWN),
+                                    Animation.create(CLIMB_DOWN),
+                                    Direction.WEST,
+                                    13,
+                                ).endAnimation =
+                                Animation.RESET
                         } else {
-                            ForceMovement.run(player, player.location.transform(xOffset, yOffset, 0), scenery.location.transform(xOffset, yOffset, 0), Animation.create(CLIMB_UP), Animation.create(CLIMB_UP), Direction.EAST, 13).endAnimation = Animation.RESET
+                            ForceMovement
+                                .run(
+                                    player,
+                                    player.location.transform(xOffset, yOffset, 0),
+                                    scenery.location.transform(xOffset, yOffset, 0),
+                                    Animation.create(CLIMB_UP),
+                                    Animation.create(CLIMB_UP),
+                                    Direction.EAST,
+                                    13,
+                                ).endAnimation =
+                                Animation.RESET
                         }
                     }
 
                     3748 -> {
                         when (loc) {
-                            Location(2821, 3635, 0) -> ForceMovement.run(player, player.location, loc.transform(if (player.location.x > loc.x) -1 else 1, 0, 0), JUMP)
+                            Location(2821, 3635, 0) ->
+                                ForceMovement.run(
+                                    player,
+                                    player.location,
+                                    loc.transform(
+                                        if (player.location.x >
+                                            loc.x
+                                        ) {
+                                            -1
+                                        } else {
+                                            1
+                                        },
+                                        0,
+                                        0,
+                                    ),
+                                    JUMP,
+                                )
                             Location(2910, 3687, 0), Location(2910, 3686, 0) -> {
                                 if (getStatLevel(player, Skills.AGILITY) < 43) {
-                                    sendMessage(player, "You need an agility level of 43 in order to climb this mountain side.")
+                                    sendMessage(
+                                        player,
+                                        "You need an agility level of 43 in order to climb this mountain side.",
+                                    )
                                     return true
                                 }
                                 when (player.location) {
-                                    Location.create(2911, 3687, 0) -> ForceMovement.run(player, player.location, Location.create(2909, 3687, 0), JUMP)
-                                    Location(2909, 3687, 0) -> ForceMovement.run(player, player.location, Location.create(2911, 3687, 0), JUMP)
-                                    Location.create(2911, 3686, 0) -> ForceMovement.run(player, player.location, Location.create(2909, 3686, 0), JUMP)
-                                    else -> ForceMovement.run(player, player.location, Location.create(2911, 3686, 0), JUMP)
+                                    Location.create(
+                                        2911,
+                                        3687,
+                                        0,
+                                    ),
+                                    ->
+                                        ForceMovement.run(
+                                            player,
+                                            player.location,
+                                            Location.create(2909, 3687, 0),
+                                            JUMP,
+                                        )
+                                    Location(
+                                        2909,
+                                        3687,
+                                        0,
+                                    ),
+                                    ->
+                                        ForceMovement.run(
+                                            player,
+                                            player.location,
+                                            Location.create(2911, 3687, 0),
+                                            JUMP,
+                                        )
+                                    Location.create(
+                                        2911,
+                                        3686,
+                                        0,
+                                    ),
+                                    ->
+                                        ForceMovement.run(
+                                            player,
+                                            player.location,
+                                            Location.create(2909, 3686, 0),
+                                            JUMP,
+                                        )
+                                    else ->
+                                        ForceMovement.run(
+                                            player,
+                                            player.location,
+                                            Location.create(2911, 3686, 0),
+                                            JUMP,
+                                        )
                                 }
                             }
 
-                            else -> ForceMovement.run(player, player.location, if (player.location.y < scenery.location.y) player.location.transform(0, 2, 0) else player.location.transform(0, -2, 0), JUMP)
+                            else ->
+                                ForceMovement.run(
+                                    player,
+                                    player.location,
+                                    if (player.location.y <
+                                        scenery.location.y
+                                    ) {
+                                        player.location.transform(0, 2, 0)
+                                    } else {
+                                        player.location.transform(0, -2, 0)
+                                    },
+                                    JUMP,
+                                )
                         }
                     }
 
@@ -193,14 +383,82 @@ class TrollheimPlugin : OptionHandler() {
                         sendMessage(player, "You climb onto the rock...")
                         sendMessageWithDelay(player, "...and step down the other side.", 3)
                         when (player.location) {
-                            Location.create(2884, 3684, 0) -> ForceMovement.run(player, player.location, Location.create(2886, 3684, 0), Animation.create(CLIMB_UP), Animation.create(CLIMB_UP), Direction.WEST, 13).endAnimation = Animation.RESET
-                            Location.create(2884, 3683, 0) -> ForceMovement.run(player, player.location, Location.create(2886, 3683, 0), Animation.create(CLIMB_UP), Animation.create(CLIMB_UP), Direction.EAST, 13).endAnimation = Animation.RESET
-                            Location.create(2886, 3683, 0) -> ForceMovement.run(player, player.location, Location.create(2884, 3683, 0), Animation.create(CLIMB_DOWN), Animation.create(CLIMB_DOWN), Direction.EAST, 13).endAnimation = Animation.RESET
+                            Location.create(2884, 3684, 0) ->
+                                ForceMovement
+                                    .run(
+                                        player,
+                                        player.location,
+                                        Location.create(2886, 3684, 0),
+                                        Animation.create(CLIMB_UP),
+                                        Animation.create(CLIMB_UP),
+                                        Direction.WEST,
+                                        13,
+                                    ).endAnimation =
+                                    Animation.RESET
+                            Location.create(2884, 3683, 0) ->
+                                ForceMovement
+                                    .run(
+                                        player,
+                                        player.location,
+                                        Location.create(2886, 3683, 0),
+                                        Animation.create(CLIMB_UP),
+                                        Animation.create(CLIMB_UP),
+                                        Direction.EAST,
+                                        13,
+                                    ).endAnimation =
+                                    Animation.RESET
+                            Location.create(2886, 3683, 0) ->
+                                ForceMovement
+                                    .run(
+                                        player,
+                                        player.location,
+                                        Location.create(2884, 3683, 0),
+                                        Animation.create(CLIMB_DOWN),
+                                        Animation.create(CLIMB_DOWN),
+                                        Direction.EAST,
+                                        13,
+                                    ).endAnimation =
+                                    Animation.RESET
                             Location.create(2888, 3660, 0),
-                            Location.create(2887, 3660, 0) -> ForceMovement.run(player, player.location, player.location.transform(0, 2, 0), Animation.create(CLIMB_UP), Animation.create(CLIMB_UP), Direction.EAST, 13).endAnimation = Animation.RESET
+                            Location.create(2887, 3660, 0),
+                            ->
+                                ForceMovement
+                                    .run(
+                                        player,
+                                        player.location,
+                                        player.location.transform(0, 2, 0),
+                                        Animation.create(CLIMB_UP),
+                                        Animation.create(CLIMB_UP),
+                                        Direction.EAST,
+                                        13,
+                                    ).endAnimation =
+                                    Animation.RESET
                             Location.create(2888, 3662, 0),
-                            Location.create(2887, 3662, 0) -> ForceMovement.run(player, player.location, player.location.transform(0, -2, 0), Animation.create(CLIMB_DOWN), Animation.create(CLIMB_DOWN), Direction.EAST, 13).endAnimation = Animation.RESET
-                            else -> ForceMovement.run(player, player.location, Location.create(2884, 3684, 0), Animation.create(CLIMB_DOWN), Animation.create(CLIMB_DOWN), Direction.EAST, 13).endAnimation = Animation.RESET
+                            Location.create(2887, 3662, 0),
+                            ->
+                                ForceMovement
+                                    .run(
+                                        player,
+                                        player.location,
+                                        player.location.transform(0, -2, 0),
+                                        Animation.create(CLIMB_DOWN),
+                                        Animation.create(CLIMB_DOWN),
+                                        Direction.EAST,
+                                        13,
+                                    ).endAnimation =
+                                    Animation.RESET
+                            else ->
+                                ForceMovement
+                                    .run(
+                                        player,
+                                        player.location,
+                                        Location.create(2884, 3684, 0),
+                                        Animation.create(CLIMB_DOWN),
+                                        Animation.create(CLIMB_DOWN),
+                                        Direction.EAST,
+                                        13,
+                                    ).endAnimation =
+                                    Animation.RESET
                         }
                     }
 
@@ -212,9 +470,29 @@ class TrollheimPlugin : OptionHandler() {
                         lock(player, 3)
                         lockInteractions(player, 3)
                         if (player.location == Location.create(2903, 3680, 0)) {
-                            ForceMovement.run(player, player.location, Location.create(2900, 3680, 0), Animation.create(CLIMB_UP), Animation.create(CLIMB_UP), Direction.WEST, 13).endAnimation = Animation.RESET
+                            ForceMovement
+                                .run(
+                                    player,
+                                    player.location,
+                                    Location.create(2900, 3680, 0),
+                                    Animation.create(CLIMB_UP),
+                                    Animation.create(CLIMB_UP),
+                                    Direction.WEST,
+                                    13,
+                                ).endAnimation =
+                                Animation.RESET
                         } else {
-                            ForceMovement.run(player, player.location, Location.create(2903, 3680, 0), Animation.create(CLIMB_DOWN), Animation.create(CLIMB_DOWN), Direction.WEST, 13).endAnimation = Animation.RESET
+                            ForceMovement
+                                .run(
+                                    player,
+                                    player.location,
+                                    Location.create(2903, 3680, 0),
+                                    Animation.create(CLIMB_DOWN),
+                                    Animation.create(CLIMB_DOWN),
+                                    Direction.WEST,
+                                    13,
+                                ).endAnimation =
+                                Animation.RESET
                         }
                     }
 
@@ -226,9 +504,29 @@ class TrollheimPlugin : OptionHandler() {
                         lock(player, 3)
                         lockInteractions(player, 3)
                         if (player.location.x > loc.x) {
-                            ForceMovement.run(player, player.location, scenery.location.transform(-2, 0, 0), Animation.create(CLIMB_DOWN), Animation.create(CLIMB_DOWN), Direction.EAST, 13).endAnimation = Animation.RESET
+                            ForceMovement
+                                .run(
+                                    player,
+                                    player.location,
+                                    scenery.location.transform(-2, 0, 0),
+                                    Animation.create(CLIMB_DOWN),
+                                    Animation.create(CLIMB_DOWN),
+                                    Direction.EAST,
+                                    13,
+                                ).endAnimation =
+                                Animation.RESET
                         } else {
-                            ForceMovement.run(player, player.location, scenery.location.transform(2, 0, 0), Animation.create(CLIMB_UP), Animation.create(CLIMB_UP), Direction.EAST, 13).endAnimation = Animation.RESET
+                            ForceMovement
+                                .run(
+                                    player,
+                                    player.location,
+                                    scenery.location.transform(2, 0, 0),
+                                    Animation.create(CLIMB_UP),
+                                    Animation.create(CLIMB_UP),
+                                    Direction.EAST,
+                                    13,
+                                ).endAnimation =
+                                Animation.RESET
                         }
                     }
 
@@ -240,9 +538,29 @@ class TrollheimPlugin : OptionHandler() {
                         lock(player, 3)
                         lockInteractions(player, 3)
                         if (player.location == Location.create(2878, 3665, 0)) {
-                            ForceMovement.run(player, player.location, Location.create(2878, 3668, 0), Animation.create(CLIMB_UP), Animation.create(CLIMB_UP), Direction.NORTH, 13).endAnimation = Animation.RESET
+                            ForceMovement
+                                .run(
+                                    player,
+                                    player.location,
+                                    Location.create(2878, 3668, 0),
+                                    Animation.create(CLIMB_UP),
+                                    Animation.create(CLIMB_UP),
+                                    Direction.NORTH,
+                                    13,
+                                ).endAnimation =
+                                Animation.RESET
                         } else {
-                            ForceMovement.run(player, player.location, Location.create(2878, 3665, 0), Animation.create(CLIMB_DOWN), Animation.create(CLIMB_DOWN), Direction.NORTH, 13).endAnimation = Animation.RESET
+                            ForceMovement
+                                .run(
+                                    player,
+                                    player.location,
+                                    Location.create(2878, 3665, 0),
+                                    Animation.create(CLIMB_DOWN),
+                                    Animation.create(CLIMB_DOWN),
+                                    Direction.NORTH,
+                                    13,
+                                ).endAnimation =
+                                Animation.RESET
                         }
                     }
 
@@ -254,9 +572,29 @@ class TrollheimPlugin : OptionHandler() {
                         lock(player, 3)
                         lockInteractions(player, 3)
                         if (player.location == Location(2909, 3684, 0)) {
-                            ForceMovement.run(player, player.location, Location.create(2907, 3682, 0), Animation.create(CLIMB_UP), Animation.create(CLIMB_UP), Direction.SOUTH, 13).endAnimation = Animation.RESET
+                            ForceMovement
+                                .run(
+                                    player,
+                                    player.location,
+                                    Location.create(2907, 3682, 0),
+                                    Animation.create(CLIMB_UP),
+                                    Animation.create(CLIMB_UP),
+                                    Direction.SOUTH,
+                                    13,
+                                ).endAnimation =
+                                Animation.RESET
                         } else {
-                            ForceMovement.run(player, player.location, Location.create(2909, 3684, 0), Animation.create(CLIMB_DOWN), Animation.create(CLIMB_DOWN), Direction.SOUTH, 13).endAnimation = Animation.RESET
+                            ForceMovement
+                                .run(
+                                    player,
+                                    player.location,
+                                    Location.create(2909, 3684, 0),
+                                    Animation.create(CLIMB_DOWN),
+                                    Animation.create(CLIMB_DOWN),
+                                    Direction.SOUTH,
+                                    13,
+                                ).endAnimation =
+                                Animation.RESET
                         }
                     }
 
@@ -270,12 +608,78 @@ class TrollheimPlugin : OptionHandler() {
                         sendMessage(player, "You climb onto the rock...")
                         sendMessageWithDelay(player, "...and step down the other side.", 3)
                         when (scenery.location) {
-                            Location(2916, 3672, 0) -> ForceMovement.run(player, player.location, Location.create(2918, 3672, 0), Animation.create(CLIMB_UP), Animation.create(CLIMB_UP), Direction.EAST, 13).endAnimation = Animation.RESET
-                            Location(2917, 3672, 0) -> ForceMovement.run(player, player.location, Location.create(2915, 3672, 0), Animation.create(CLIMB_DOWN), Animation.create(CLIMB_DOWN), Direction.EAST, 13).endAnimation = Animation.RESET
-                            Location(2923, 3673, 0) -> ForceMovement.run(player, player.location, Location.create(2921, 3672, 0), Animation.create(CLIMB_UP), Animation.create(CLIMB_UP), Direction.WEST, 13).endAnimation = Animation.RESET
-                            Location(2922, 3672, 0) -> ForceMovement.run(player, player.location, Location.create(2924, 3673, 0), Animation.create(CLIMB_DOWN), Animation.create(CLIMB_DOWN), Direction.WEST, 13).endAnimation = Animation.RESET
-                            Location(2947, 3678, 0) -> ForceMovement.run(player, player.location, Location.create(2950, 3681, 0), Animation.create(CLIMB_DOWN), Animation.create(CLIMB_DOWN), Direction.WEST, 13).endAnimation = Animation.RESET
-                            Location(2949, 3680, 0) -> ForceMovement.run(player, player.location, Location.create(2946, 3678, 0), Animation.create(CLIMB_UP), Animation.create(CLIMB_UP), Direction.WEST, 13).endAnimation = Animation.RESET
+                            Location(2916, 3672, 0) ->
+                                ForceMovement
+                                    .run(
+                                        player,
+                                        player.location,
+                                        Location.create(2918, 3672, 0),
+                                        Animation.create(CLIMB_UP),
+                                        Animation.create(CLIMB_UP),
+                                        Direction.EAST,
+                                        13,
+                                    ).endAnimation =
+                                    Animation.RESET
+                            Location(2917, 3672, 0) ->
+                                ForceMovement
+                                    .run(
+                                        player,
+                                        player.location,
+                                        Location.create(2915, 3672, 0),
+                                        Animation.create(CLIMB_DOWN),
+                                        Animation.create(CLIMB_DOWN),
+                                        Direction.EAST,
+                                        13,
+                                    ).endAnimation =
+                                    Animation.RESET
+                            Location(2923, 3673, 0) ->
+                                ForceMovement
+                                    .run(
+                                        player,
+                                        player.location,
+                                        Location.create(2921, 3672, 0),
+                                        Animation.create(CLIMB_UP),
+                                        Animation.create(CLIMB_UP),
+                                        Direction.WEST,
+                                        13,
+                                    ).endAnimation =
+                                    Animation.RESET
+                            Location(2922, 3672, 0) ->
+                                ForceMovement
+                                    .run(
+                                        player,
+                                        player.location,
+                                        Location.create(2924, 3673, 0),
+                                        Animation.create(CLIMB_DOWN),
+                                        Animation.create(CLIMB_DOWN),
+                                        Direction.WEST,
+                                        13,
+                                    ).endAnimation =
+                                    Animation.RESET
+                            Location(2947, 3678, 0) ->
+                                ForceMovement
+                                    .run(
+                                        player,
+                                        player.location,
+                                        Location.create(2950, 3681, 0),
+                                        Animation.create(CLIMB_DOWN),
+                                        Animation.create(CLIMB_DOWN),
+                                        Direction.WEST,
+                                        13,
+                                    ).endAnimation =
+                                    Animation.RESET
+                            Location(2949, 3680, 0) ->
+                                ForceMovement
+                                    .run(
+                                        player,
+                                        player.location,
+                                        Location.create(2946, 3678, 0),
+                                        Animation.create(CLIMB_UP),
+                                        Animation.create(CLIMB_UP),
+                                        Direction.WEST,
+                                        13,
+                                    ).endAnimation =
+                                    Animation.RESET
                         }
                     }
                 }
@@ -284,7 +688,10 @@ class TrollheimPlugin : OptionHandler() {
         return true
     }
 
-    override fun getDestination(node: Node, n: Node): Location? {
+    override fun getDestination(
+        node: Node,
+        n: Node,
+    ): Location? {
         if (n is core.game.node.scenery.Scenery) {
             if (n.id == 3782) {
                 if (node.location.x >= 2897) {
@@ -314,10 +721,15 @@ class TrollheimPlugin : OptionHandler() {
         return null
     }
 
-    class WarningZone : MapZone("trollheim-warning", true), Plugin<Any?> {
+    class WarningZone :
+        MapZone("trollheim-warning", true),
+        Plugin<Any?> {
         override fun enter(entity: Entity): Boolean {
             if (entity is Player) {
-                if (entity.asPlayer().walkingQueue.footPrint.y < 3592) {
+                if (entity
+                        .asPlayer()
+                        .walkingQueue.footPrint.y < 3592
+                ) {
                     entity.asPlayer().walkingQueue.reset()
                     entity.asPlayer().pulseManager.clear()
                     entity.asPlayer().interfaceManager.open(COMPONENT)
@@ -335,7 +747,10 @@ class TrollheimPlugin : OptionHandler() {
             return this
         }
 
-        override fun fireEvent(identifier: String, vararg args: Any?): Any? {
+        override fun fireEvent(
+            identifier: String,
+            vararg args: Any?,
+        ): Any? {
             return null
         }
 
@@ -357,28 +772,54 @@ class TrollheimPlugin : OptionHandler() {
         override fun open() {
             val npc = findNPC(TROLL_LOCATION)
             val loc = Location.create(2849, 3597, 0)
-            PacketRepository.send(CameraViewPacket::class.java, CameraContext(player, CameraContext.CameraType.POSITION, loc.x - 2, loc.y, 1300, 1, 30))
-            PacketRepository.send(CameraViewPacket::class.java, CameraContext(player, CameraContext.CameraType.ROTATION, loc.x + 22, loc.y + 10, 1300, 1, 30))
+            PacketRepository.send(
+                CameraViewPacket::class.java,
+                CameraContext(
+                    player,
+                    CameraContext.CameraType.POSITION,
+                    loc.x - 2,
+                    loc.y,
+                    1300,
+                    1,
+                    30,
+                ),
+            )
+            PacketRepository.send(
+                CameraViewPacket::class.java,
+                CameraContext(
+                    player,
+                    CameraContext.CameraType.ROTATION,
+                    loc.x + 22,
+                    loc.y + 10,
+                    1300,
+                    1,
+                    30,
+                ),
+            )
             Pulser.submit(
                 object : Pulse(1, player) {
                     var count: Int = 0
 
                     override fun pulse(): Boolean {
                         when (count++) {
-                            4 -> if (npc != null) {
-                                npc.faceTemporary(player, 3)
-                                npc.animate(THROW)
-                            }
+                            4 ->
+                                if (npc != null) {
+                                    npc.faceTemporary(player, 3)
+                                    npc.animate(THROW)
+                                }
 
                             6 -> {
                                 this@WarningCutscene.stop(false)
-                                PacketRepository.send(CameraViewPacket::class.java, CameraContext(player, CameraContext.CameraType.RESET, 0, 0, 1300, 1, 30))
+                                PacketRepository.send(
+                                    CameraViewPacket::class.java,
+                                    CameraContext(player, CameraContext.CameraType.RESET, 0, 0, 1300, 1, 30),
+                                )
                                 return true
                             }
                         }
                         return false
                     }
-                }
+                },
             )
         }
 
@@ -401,7 +842,19 @@ class TrollheimPlugin : OptionHandler() {
     }
 
     companion object {
-        private val LOCATIONS = arrayOf(Location(2269, 4752, 0), Location(2858, 3577, 0), Location.create(2808, 10002, 0), Location.create(2796, 3615, 0), Location.create(2907, 10019, 0), Location.create(2904, 3643, 0), Location(2908, 3654, 0), Location.create(2907, 10035, 0), Location(2893, 10074, 0), Location(2893, 3671, 0))
+        private val LOCATIONS =
+            arrayOf(
+                Location(2269, 4752, 0),
+                Location(2858, 3577, 0),
+                Location.create(2808, 10002, 0),
+                Location.create(2796, 3615, 0),
+                Location.create(2907, 10019, 0),
+                Location.create(2904, 3643, 0),
+                Location(2908, 3654, 0),
+                Location.create(2907, 10035, 0),
+                Location(2893, 10074, 0),
+                Location(2893, 3671, 0),
+            )
         private val CLIMBING_BOOTS = Item(3105)
         private val CLIMB_DOWN = 1148
         private val CLIMB_UP = 740

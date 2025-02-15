@@ -1,33 +1,23 @@
 package content.region.misthalin.handlers.lumbridge
 
-import org.rs.consts.Animations
-import org.rs.consts.NPCs
-import core.api.quest.hasRequirement
 import core.cache.def.impl.SceneryDefinition
-import core.game.interaction.NodeUsageEvent
 import core.game.interaction.OptionHandler
-import core.game.interaction.UseWithHandler
 import core.game.node.Node
 import core.game.node.entity.impl.ForceMovement
-import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.player.Player
 import core.game.node.scenery.Scenery
 import core.game.node.scenery.SceneryBuilder
 import core.game.system.task.Pulse
 import core.game.world.GameWorld.Pulser
-import core.game.world.GameWorld.ticks
 import core.game.world.map.Direction
 import core.game.world.map.Location
-import core.game.world.map.path.Pathfinder
 import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner.definePlugins
-import core.tools.RandomFunction
+import org.rs.consts.Animations
 
 @Initializable
 class LumbridgeBasementPlugin : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         SceneryDefinition.forId(6899).handlers["option:squeeze-through"] = this
         SceneryDefinition.forId(6898).handlers["option:squeeze-through"] = this
@@ -41,32 +31,46 @@ class LumbridgeBasementPlugin : OptionHandler() {
         SceneryDefinition.forId(40849).handlers["option:jump-down"] = this
         SceneryDefinition.forId(40260).handlers["option:climb-through"] = this
         SceneryDefinition.forId(41077).handlers["option:crawl-through"] = this
-        //definePlugins(LightCreatureNPC(), LightCreatureHandler())
+        // definePlugins(LightCreatureNPC(), LightCreatureHandler())
         SceneryBuilder.add(Scenery(40260, Location.create(2526, 5828, 2), 2))
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         when (option) {
             "squeeze-through" -> {
                 var dir: Direction? = null
                 var to: Location? = null
                 when (node.id) {
                     6912 -> {
-                        to = if (node.location.y == 9603) Location.create(3224, 9601, 0) else Location.create(
-                            3224,
-                            9603,
-                            0
-                        )
+                        to =
+                            if (node.location.y == 9603) {
+                                Location.create(3224, 9601, 0)
+                            } else {
+                                Location.create(
+                                    3224,
+                                    9603,
+                                    0,
+                                )
+                            }
                         dir = if (node.location.y == 9603) Direction.SOUTH else Direction.NORTH
                     }
 
                     else -> {
-                        to = if (player.location.x >= 3221) Location.create(3219, 9618, 0) else Location.create(
-                            3222,
-                            9618,
-                            0
-                        )
+                        to =
+                            if (player.location.x >= 3221) {
+                                Location.create(3219, 9618, 0)
+                            } else {
+                                Location.create(
+                                    3222,
+                                    9618,
+                                    0,
+                                )
+                            }
                         dir = if (player.location.x >= 3221) Direction.WEST else Direction.EAST
                     }
                 }
@@ -82,11 +86,16 @@ class LumbridgeBasementPlugin : OptionHandler() {
                 when (node.id) {
                     5949 -> {
                         f = Location.create(3221, 9554, 0)
-                        s = if (player.location.y >= 9556) Location.create(3221, 9552, 0) else Location.create(
-                            3221,
-                            9556,
-                            0
-                        )
+                        s =
+                            if (player.location.y >= 9556) {
+                                Location.create(3221, 9552, 0)
+                            } else {
+                                Location.create(
+                                    3221,
+                                    9556,
+                                    0,
+                                )
+                            }
                     }
                 }
                 val first = f
@@ -108,41 +117,49 @@ class LumbridgeBasementPlugin : OptionHandler() {
                             counter++
                             return false
                         }
-                    }
+                    },
                 )
             }
 
-            "enter" -> when (node.id) {
-                32944 ->
+            "enter" ->
+                when (node.id) {
+                    32944 ->
 
-                    player.teleport(Location.create(3219, 9532, 2))
+                        player.teleport(Location.create(3219, 9532, 2))
 
-                6658 ->
+                    6658 ->
 
-                    player.teleport(Location.create(3226, 9542, 0))
-            }
+                        player.teleport(Location.create(3226, 9542, 0))
+                }
 
-            "climb-up" -> when (node.id) {
-                40261 -> player.teleport(player.location.transform(0, -1, 1))
-                40262 -> player.teleport(player.location.transform(0, -1, 1))
-            }
+            "climb-up" ->
+                when (node.id) {
+                    40261 -> player.teleport(player.location.transform(0, -1, 1))
+                    40262 -> player.teleport(player.location.transform(0, -1, 1))
+                }
 
-            "jump-down" -> when (node.id) {
-                40849 -> player.teleport(player.location.transform(0, 1, -1))
-            }
+            "jump-down" ->
+                when (node.id) {
+                    40849 -> player.teleport(player.location.transform(0, 1, -1))
+                }
 
-            "climb-through" -> when (node.id) {
-                40260 -> player.teleport(Location.create(2525, 5810, 0))
-            }
+            "climb-through" ->
+                when (node.id) {
+                    40260 -> player.teleport(Location.create(2525, 5810, 0))
+                }
 
-            "crawl-through" -> when (node.id) {
-                41077 -> player.teleport(Location.create(2527, 5830, 2))
-            }
+            "crawl-through" ->
+                when (node.id) {
+                    41077 -> player.teleport(Location.create(2527, 5830, 2))
+                }
         }
         return true
     }
 
-    override fun getDestination(node: Node, n: Node): Location? {
+    override fun getDestination(
+        node: Node,
+        n: Node,
+    ): Location? {
         if (n is Scenery) {
             if (n.getId() == 5949) {
                 return if (node.location.y >= 9555) Location.create(3221, 9556, 0) else Location.create(3221, 9552, 0)
@@ -211,11 +228,9 @@ class LumbridgeBasementPlugin : OptionHandler() {
             return intArrayOf(NPCs.LIGHT_CREATURE_2021)
         }
     }
-    */
+     */
     companion object {
         private val ANIMATION = Animation(Animations.DUCK_UNDER_2240)
         private val JUMP_ANIMATION = Animation(Animations.HUMAN_JUMP_SHORT_GAP_741)
     }
-
-
 }

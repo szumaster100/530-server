@@ -1,13 +1,12 @@
 package content.global.handlers.item
 
-import org.rs.consts.Items
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.item.Item
+import org.rs.consts.Items
 
 class CapAndGogglesListener : InteractionListener {
-
     private val capAndGoggles = Items.CAP_AND_GOGGLES_9946
     private val bomberCap = Items.BOMBER_CAP_9945
     private val gnomeGoggles = Items.GNOME_GOGGLES_9472
@@ -24,7 +23,7 @@ class CapAndGogglesListener : InteractionListener {
                 player,
                 slot = node.index,
                 item = Item(bomberCap, 1),
-                container = Container.INVENTORY
+                container = Container.INVENTORY,
             )
             addItem(player, gnomeGoggles, 1)
             return@on true

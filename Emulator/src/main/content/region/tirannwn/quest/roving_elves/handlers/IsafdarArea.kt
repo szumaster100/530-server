@@ -13,8 +13,9 @@ import core.plugin.Initializable
 import core.plugin.Plugin
 
 @Initializable
-class IsafdarArea : MapZone("Isafdar", true), Plugin<Any?> {
-
+class IsafdarArea :
+    MapZone("Isafdar", true),
+    Plugin<Any?> {
     private val leafTrapPit = Location(2336, 9656, 0)
     private val wireTraps = arrayOf(Location(2215, 3154, 0), Location(2220, 3153, 0), Location(2285, 3188, 0))
     private val leafTraps = arrayOf(Location(2274, 3174, 0))
@@ -24,7 +25,10 @@ class IsafdarArea : MapZone("Isafdar", true), Plugin<Any?> {
         register(ZoneBorders(2178, 3150, 2304, 3196))
     }
 
-    override fun locationUpdate(e: Entity, last: Location) {
+    override fun locationUpdate(
+        e: Entity,
+        last: Location,
+    ) {
         if (e is Player) {
             val player = e
             if (leafTraps.contains(player.location)) {
@@ -46,7 +50,10 @@ class IsafdarArea : MapZone("Isafdar", true), Plugin<Any?> {
         return this
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 }

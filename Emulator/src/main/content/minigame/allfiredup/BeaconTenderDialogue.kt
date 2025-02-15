@@ -1,7 +1,5 @@
 package content.minigame.allfiredup
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.getStatLevel
 import core.api.sendDialogueOptions
 import core.api.sendMessage
@@ -14,29 +12,34 @@ import core.game.node.item.Item
 import core.game.world.GameWorld
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
-private val VALID_LOGS = arrayOf(
-    Items.LOGS_1511,
-    Items.OAK_LOGS_1521,
-    Items.WILLOW_LOGS_1519,
-    Items.MAPLE_LOGS_1517,
-    Items.YEW_LOGS_1515,
-    Items.MAGIC_LOGS_1513
-)
+private val VALID_LOGS =
+    arrayOf(
+        Items.LOGS_1511,
+        Items.OAK_LOGS_1521,
+        Items.WILLOW_LOGS_1519,
+        Items.MAPLE_LOGS_1517,
+        Items.YEW_LOGS_1515,
+        Items.MAGIC_LOGS_1513,
+    )
 
 @Initializable
-class BeaconTenderDialogue(player: Player? = null) : Dialogue(player) {
-
+class BeaconTenderDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     var index = 0
 
     override fun open(vararg args: Any?): Boolean {
         npc = (args[0] as NPC).getShownNPC(player)
         index = getIndexOf((args[0] as NPC).originalId)
-        val faceExpression = when (npc.id) {
-            NPCs.STUBTHUMB_8054, NPCs.CRATE_8059, NPCs.NANUQ_8063 -> FaceAnim.OLD_NORMAL
-            NPCs.DORONBOL_8057 -> FaceAnim.CHILD_NORMAL
-            else -> FaceAnim.FRIENDLY
-        }
+        val faceExpression =
+            when (npc.id) {
+                NPCs.STUBTHUMB_8054, NPCs.CRATE_8059, NPCs.NANUQ_8063 -> FaceAnim.OLD_NORMAL
+                NPCs.DORONBOL_8057 -> FaceAnim.CHILD_NORMAL
+                else -> FaceAnim.FRIENDLY
+            }
         if (index == AFUBeacon.GWD.ordinal && getStatLevel(player, Skills.SUMMONING) < 81) {
             npc(faceExpression, "Awwf uurrrhur", "(You need 81 Summoning to communicate with Nanuq.)").also {
                 stage = 15
@@ -48,7 +51,7 @@ class BeaconTenderDialogue(player: Player? = null) : Dialogue(player) {
                 faceExpression,
                 "I will aid you when your devotion is",
                 "strong enough.",
-                "(You need 53 Prayer for him to assist you.)"
+                "(You need 53 Prayer for him to assist you.)",
             ).also { stage = 15 }
             return true
         }
@@ -56,16 +59,25 @@ class BeaconTenderDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         val beacon = AFUBeacon.values()[index]
         val logs = getLogs(player, 5)
         val session: AFUSession? = player.getAttribute("afu-session", null)
-        val faceExpression = if (npc.id in intArrayOf(
-                NPCs.STUBTHUMB_8054,
-                NPCs.CRATE_8059,
-                NPCs.NANUQ_8063
-            )
-        ) FaceAnim.OLD_NORMAL else FaceAnim.HALF_GUILTY
+        val faceExpression =
+            if (npc.id in
+                intArrayOf(
+                    NPCs.STUBTHUMB_8054,
+                    NPCs.CRATE_8059,
+                    NPCs.NANUQ_8063,
+                )
+            ) {
+                FaceAnim.OLD_NORMAL
+            } else {
+                FaceAnim.HALF_GUILTY
+            }
         when (stage) {
             0 ->
                 if (!GameWorld.settings!!.isMembers) {
@@ -83,42 +95,46 @@ class BeaconTenderDialogue(player: Player? = null) : Dialogue(player) {
                 }
 
             2 -> options("Could you look after this beacon for me?", "Nevermind.").also { stage = 10 }
-            10 -> when (buttonId) {
-                1 -> player("Can you watch this beacon for me?").also { stage++ }
-                2 -> player("Nevermind.").also { stage = END_DIALOGUE }
-            }
-
-            11 -> npcl(faceExpression, "Certainly, adventurer. Do you have logs for me?").also { stage++ }
-            12 -> sendDialogueOptions(
-                player,
-                "Do you want to give five logs to the fire tender?",
-                "Yes.",
-                "No."
-            ).also { stage++ }
-
-            13 -> when (buttonId) {
-                1 -> {
-                    if (logs.id != 0) {
-                        player("Here are five logs for you.").also {
-                            player.inventory.remove(logs)
-                            session?.setWatcher(index, logs)
-                            stage++
-                        }
-                    } else {
-                        npc(
-                            faceExpression,
-                            "How you expect me to tend fire for you? You not have enough good logs for me to use!"
-                        ).also { stage = END_DIALOGUE }
-                    }
+            10 ->
+                when (buttonId) {
+                    1 -> player("Can you watch this beacon for me?").also { stage++ }
+                    2 -> player("Nevermind.").also { stage = END_DIALOGUE }
                 }
 
-                2 -> end()
-            }
+            11 -> npcl(faceExpression, "Certainly, adventurer. Do you have logs for me?").also { stage++ }
+            12 ->
+                sendDialogueOptions(
+                    player,
+                    "Do you want to give five logs to the fire tender?",
+                    "Yes.",
+                    "No.",
+                ).also { stage++ }
 
-            14 -> npcl(
-                faceExpression,
-                "Thanks. I use these five logs to keep beacon burning whilst you away."
-            ).also { stage = END_DIALOGUE }
+            13 ->
+                when (buttonId) {
+                    1 -> {
+                        if (logs.id != 0) {
+                            player("Here are five logs for you.").also {
+                                player.inventory.remove(logs)
+                                session?.setWatcher(index, logs)
+                                stage++
+                            }
+                        } else {
+                            npc(
+                                faceExpression,
+                                "How you expect me to tend fire for you? You not have enough good logs for me to use!",
+                            ).also { stage = END_DIALOGUE }
+                        }
+                    }
+
+                    2 -> end()
+                }
+
+            14 ->
+                npcl(
+                    faceExpression,
+                    "Thanks. I use these five logs to keep beacon burning whilst you away.",
+                ).also { stage = END_DIALOGUE }
 
             15 -> player("You don't look busy to me.").also { stage++ }
             16 -> npc(faceExpression, "How little you understand.").also { stage++ }
@@ -147,10 +163,16 @@ class BeaconTenderDialogue(player: Player? = null) : Dialogue(player) {
         return -1
     }
 
-    fun getLogs(player: Player, amount: Int): Item {
+    fun getLogs(
+        player: Player,
+        amount: Int,
+    ): Item {
         var logId = 0
-        for (log in VALID_LOGS) if (player.inventory.getAmount(log) >= amount) {
-            logId = log; break
+        for (log in VALID_LOGS) {
+            if (player.inventory.getAmount(log) >= amount) {
+                logId = log
+                break
+            }
         }
         return Item(logId, amount)
     }
@@ -166,7 +188,7 @@ class BeaconTenderDialogue(player: Player? = null) : Dialogue(player) {
             NPCs.NANUQ_8073,
             NPCs.NANUQ_8074,
             NPCs.NANUQ_8075,
-            NPCs.NANUQ_8076
+            NPCs.NANUQ_8076,
         )
     }
 }

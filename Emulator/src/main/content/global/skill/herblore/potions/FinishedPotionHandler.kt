@@ -9,7 +9,6 @@ import core.plugin.Plugin
 
 @Initializable
 class FinishedPotionHandler : UseWithHandler(*unfinishedItems) {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         for (potion in FinishedPotion.values()) {
             addHandler(potion.ingredient.id, ITEM_TYPE, this)
@@ -18,15 +17,19 @@ class FinishedPotionHandler : UseWithHandler(*unfinishedItems) {
     }
 
     override fun handle(event: NodeUsageEvent): Boolean {
-        val finished: FinishedPotion = FinishedPotion.getPotion(
-            if (event.usedItem.name.contains("(unf)")) event.usedItem else event.baseItem,
-            if (event.usedItem.name.contains("(unf)")) event.baseItem else event.usedItem
-        ) ?: return false
+        val finished: FinishedPotion =
+            FinishedPotion.getPotion(
+                if (event.usedItem.name.contains("(unf)")) event.usedItem else event.baseItem,
+                if (event.usedItem.name.contains("(unf)")) event.baseItem else event.usedItem,
+            ) ?: return false
         val potion: GenericPotion = GenericPotion.transform(finished)
         val player = event.player
         val handler: SkillDialogueHandler =
             object : SkillDialogueHandler(player, SkillDialogue.ONE_OPTION, potion.product!!) {
-                override fun create(amount: Int, index: Int) {
+                override fun create(
+                    amount: Int,
+                    index: Int,
+                ) {
                     player.pulseManager.run(HerblorePulse(player, potion.base, amount, potion))
                 }
 
@@ -43,7 +46,6 @@ class FinishedPotionHandler : UseWithHandler(*unfinishedItems) {
     }
 
     companion object {
-
         val unfinishedItems: IntArray
             get() {
                 val ids = IntArray(UnfinishedPotion.values().size)

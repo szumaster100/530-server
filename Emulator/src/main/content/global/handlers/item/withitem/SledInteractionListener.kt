@@ -1,17 +1,15 @@
 package content.global.handlers.item.withitem
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.item.Item
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 
 class SledInteractionListener : InteractionListener {
-
     override fun defineListeners() {
-
         onUseWith(IntType.ITEM, Items.SWAMP_TAR_1939, Items.BUCKET_OF_WAX_30) { player, used, with ->
             val itemSlot = with.asItem().slot
             if (!inInventory(player, Items.CAKE_TIN_1887)) {

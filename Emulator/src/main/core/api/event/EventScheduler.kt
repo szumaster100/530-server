@@ -14,7 +14,11 @@ import core.game.system.timer.RSTimer
  * @param args The additional arguments to pass when creating the timer, if needed.
  * @return The existing timer if one exists, or the newly created timer if no existing timer is found.
  */
-fun getOrStartTimer(entity: Entity, identifier: String, vararg args: Any): RSTimer? {
+fun getOrStartTimer(
+    entity: Entity,
+    identifier: String,
+    vararg args: Any,
+): RSTimer? {
     val existing = getTimer(entity, identifier)
     if (existing != null) return existing
     return spawnTimer(identifier, *args).also { registerTimer(entity, it) }

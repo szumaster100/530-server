@@ -1,9 +1,5 @@
 package content.region.fremennik.quest.viking.handlers
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Sounds
 import core.api.*
 import core.game.dialogue.DialogueFile
 import core.game.global.action.ClimbActionHandler
@@ -17,9 +13,12 @@ import core.game.node.scenery.SceneryBuilder
 import core.game.world.map.Location
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Sounds
 
 class SeersHouseListener : InteractionListener {
-
     private val WESTDOOR = 4165
     private val EASTDOOR = 4166
     private val WESTLADDER = 4163
@@ -73,26 +72,27 @@ class SeersHouseListener : InteractionListener {
     private val FULLJUG = Items.FULL_JUG_3729
     private val FROZENJUG = Items.FROZEN_JUG_3733
 
-    private val JUGS = intArrayOf(
-        Items.EMPTY_JUG_3732,
-        Items.ONE_THIRDRDS_FULL_JUG_3731,
-        Items.TWO_THIRDSRDS_FULL_JUG_3730,
-        Items.FULL_JUG_3729
-    )
-    private val BUCKETS = intArrayOf(
-        Items.EMPTY_BUCKET_3727,
-        Items.ONE_5THS_FULL_BUCKET_3726,
-        Items.TWO_5THS_FULL_BUCKET_3725,
-        Items.THREE_5THS_FULL_BUCKET_3724,
-        Items.FOUR_5THS_FULL_BUCKET_3723,
-        Items.FULL_BUCKET_3722
-    )
+    private val JUGS =
+        intArrayOf(
+            Items.EMPTY_JUG_3732,
+            Items.ONE_THIRDRDS_FULL_JUG_3731,
+            Items.TWO_THIRDSRDS_FULL_JUG_3730,
+            Items.FULL_JUG_3729,
+        )
+    private val BUCKETS =
+        intArrayOf(
+            Items.EMPTY_BUCKET_3727,
+            Items.ONE_5THS_FULL_BUCKET_3726,
+            Items.TWO_5THS_FULL_BUCKET_3725,
+            Items.THREE_5THS_FULL_BUCKET_3724,
+            Items.FOUR_5THS_FULL_BUCKET_3723,
+            Items.FULL_BUCKET_3722,
+        )
     private val DISKS = intArrayOf(Items.OLD_RED_DISK_9947, Items.RED_DISK_3743)
     private val EASTZONE = ZoneBorders(2635, 3662, 2637, 3664, 2)
     private val WESTZONE = ZoneBorders(2630, 3662, 2632, 3664, 2)
 
     override fun defineListeners() {
-
         on(WESTDOOR, IntType.SCENERY, "open") { player, node ->
             if (!getAttribute(player, "PeerStarted", false)) {
                 sendDialogue(player, "You should probably talk to the owner of this home.")
@@ -103,7 +103,7 @@ class SeersHouseListener : InteractionListener {
             } else if (getAttribute(player, "PeerRiddle", 5) < 5) {
                 player.dialogueInterpreter.open(
                     DoorRiddleDialogue(player),
-                    Scenery(WESTDOOR, node.location)
+                    Scenery(WESTDOOR, node.location),
                 )
             } else if (getAttribute(player, "riddlesolved", false)) {
                 val insideHouse = (player.location == Location.create(2631, 3666, 0))
@@ -224,7 +224,7 @@ class SeersHouseListener : InteractionListener {
         on(BALANCECHEST, IntType.SCENERY, "Open") { player, _ ->
             sendDialogue(
                 player,
-                "This chest is securely locked shut. There is some kind of balance attached to the lock, and a number four is painted just above it."
+                "This chest is securely locked shut. There is some kind of balance attached to the lock, and a number four is painted just above it.",
             )
             return@on true
         }
@@ -374,7 +374,7 @@ class SeersHouseListener : InteractionListener {
             addItem(player, REDGOOP)
             sendDialogue(
                 player,
-                "As you cook the herring on the stove, the colouring on it peels off separately as a red sticky goop..."
+                "As you cook the herring on the stove, the colouring on it peels off separately as a red sticky goop...",
             )
             return@onUseWith true
         }
@@ -544,7 +544,7 @@ class SeersHouseListener : InteractionListener {
                         addItem(player, VASELID)
                         sendDialogue(
                             player,
-                            "You put the red disk into the empty hole on the mural. It is a perfect fit! The centre of the mural appears to have become loose."
+                            "You put the red disk into the empty hole on the mural. It is a perfect fit! The centre of the mural appears to have become loose.",
                         )
                     } else if (getAttribute(player, "reddiskplaced", false)) {
                         sendMessage(player, "You already have a disk in that spot.")
@@ -562,7 +562,7 @@ class SeersHouseListener : InteractionListener {
                         addItem(player, VASELID)
                         sendDialogue(
                             player,
-                            "You put the red disk into the empty hole on the mural. It is a perfect fit! The centre of the mural appears to have become loose."
+                            "You put the red disk into the empty hole on the mural. It is a perfect fit! The centre of the mural appears to have become loose.",
                         )
                     } else if (getAttribute(player, "olddiskplaced", false)) {
                         sendMessage(player, "You already have a disk in that spot.")
@@ -976,7 +976,7 @@ class SeersHouseListener : InteractionListener {
         on(VASE, IntType.ITEM, "Shake") { player, _ ->
             sendDialogue(
                 player,
-                "You shake the strangely shaped Vase. From the sound of it there is something metallic inside, but the neck of th vase is too narrow for it to come out."
+                "You shake the strangely shaped Vase. From the sound of it there is something metallic inside, but the neck of th vase is too narrow for it to come out.",
             )
             return@on true
         }
@@ -1011,7 +1011,7 @@ class SeersHouseListener : InteractionListener {
         on(FULLVASE, IntType.ITEM, "Shake") { player, _ ->
             sendDialogue(
                 player,
-                "You shake the strangely shaped vase. The water inside it sloshes a little. Some spills out of the neck of the vase."
+                "You shake the strangely shaped vase. The water inside it sloshes a little. Some spills out of the neck of the vase.",
             )
             return@on true
         }
@@ -1111,27 +1111,37 @@ class SeersHouseListener : InteractionListener {
                 sendNPCDialogue(
                     player,
                     1288,
-                    "Incredible! To have solved my puzzle so quickly! I have no choice but to vote in your favour!"
+                    "Incredible! To have solved my puzzle so quickly! I have no choice but to vote in your favour!",
                 )
-            } else sendMessage(player, "This door is locked tightly shut.")
+            } else {
+                sendMessage(player, "This door is locked tightly shut.")
+            }
             return@on true
         }
     }
 }
 
 class BullHeadDialogue : DialogueFile() {
-
-    override fun handle(componentID: Int, buttonID: Int) {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         when (stage) {
-            0 -> player!!.dialogueInterpreter.sendDialogue(
-                "You notice there is something unusual about the right eye of this",
-                "bulls' head..."
-            ).also { stage++ }
+            0 ->
+                player!!
+                    .dialogueInterpreter
+                    .sendDialogue(
+                        "You notice there is something unusual about the right eye of this",
+                        "bulls' head...",
+                    ).also { stage++ }
 
-            1 -> player!!.dialogueInterpreter.sendDialogue(
-                "It is not an eye at all, but some kind of disk made of wood. You",
-                "take it from the head."
-            ).also { stage++ }
+            1 ->
+                player!!
+                    .dialogueInterpreter
+                    .sendDialogue(
+                        "It is not an eye at all, but some kind of disk made of wood. You",
+                        "take it from the head.",
+                    ).also { stage++ }
 
             2 -> {
                 end()
@@ -1142,18 +1152,26 @@ class BullHeadDialogue : DialogueFile() {
 }
 
 class UnicornHeadDialogue : DialogueFile() {
-
-    override fun handle(componentID: Int, buttonID: Int) {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         when (stage) {
-            0 -> player!!.dialogueInterpreter.sendDialogue(
-                "You notice there is something unusual about the left eye of this",
-                "unicorn head..."
-            ).also { stage++ }
+            0 ->
+                player!!
+                    .dialogueInterpreter
+                    .sendDialogue(
+                        "You notice there is something unusual about the left eye of this",
+                        "unicorn head...",
+                    ).also { stage++ }
 
-            1 -> player!!.dialogueInterpreter.sendDialogue(
-                "It is not an eye at all, but some kind of red coloured disk. You take it",
-                "from the head."
-            ).also { stage++ }
+            1 ->
+                player!!
+                    .dialogueInterpreter
+                    .sendDialogue(
+                        "It is not an eye at all, but some kind of red coloured disk. You take it",
+                        "from the head.",
+                    ).also { stage++ }
 
             2 -> {
                 end()
@@ -1163,75 +1181,87 @@ class UnicornHeadDialogue : DialogueFile() {
     }
 }
 
-class DoorRiddleDialogue(player: Player) : DialogueFile() {
-    private val RIDDLEONE = arrayOf(
-        "My first is in the well, but not at sea.",
-        "My second in 'I', but not in 'me'.",
-        "My third is in flies, but insects not found.",
-        "My last is in earth, but not in the ground.",
-        "My whole when stolen from you, caused you death.",
-        "What am I?"
-    )
-    private val RIDDLETWO = arrayOf(
-        "My first is in mage, but not in wizard.",
-        "My second in goblin, and also in lizard.",
-        "My third is in night, but not in the day.",
-        "My last is in fields, but not in the hay.",
-        "My whole is the most powerful tool you will ever possess.",
-        "What am I?"
-    )
-    private val RIDDLETHREE = arrayOf(
-        "My first is in water, and also in tea.",
-        "My second in fish, but not in the sea.",
-        "My third in mountains, but not underground.",
-        "My last is in strike, but not in pound.",
-        "My whole crushes mountains, drains rivers, and destroys civilisations.",
-        "All that live fear my passing.",
-        "What am I?"
-    )
-    private val RIDDLEFOUR = arrayOf(
-        "My first is in wizard, but not in a mage.",
-        "My second in jail, but not in a cage.",
-        "My third is in anger, but not in a rage.",
-        "My last in a drawing, but not on a page.",
-        "My whole helps to make bread, let birds fly and boats sail.",
-        "What am I?"
-    )
+class DoorRiddleDialogue(
+    player: Player,
+) : DialogueFile() {
+    private val RIDDLEONE =
+        arrayOf(
+            "My first is in the well, but not at sea.",
+            "My second in 'I', but not in 'me'.",
+            "My third is in flies, but insects not found.",
+            "My last is in earth, but not in the ground.",
+            "My whole when stolen from you, caused you death.",
+            "What am I?",
+        )
+    private val RIDDLETWO =
+        arrayOf(
+            "My first is in mage, but not in wizard.",
+            "My second in goblin, and also in lizard.",
+            "My third is in night, but not in the day.",
+            "My last is in fields, but not in the hay.",
+            "My whole is the most powerful tool you will ever possess.",
+            "What am I?",
+        )
+    private val RIDDLETHREE =
+        arrayOf(
+            "My first is in water, and also in tea.",
+            "My second in fish, but not in the sea.",
+            "My third in mountains, but not underground.",
+            "My last is in strike, but not in pound.",
+            "My whole crushes mountains, drains rivers, and destroys civilisations.",
+            "All that live fear my passing.",
+            "What am I?",
+        )
+    private val RIDDLEFOUR =
+        arrayOf(
+            "My first is in wizard, but not in a mage.",
+            "My second in jail, but not in a cage.",
+            "My third is in anger, but not in a rage.",
+            "My last in a drawing, but not on a page.",
+            "My whole helps to make bread, let birds fly and boats sail.",
+            "What am I?",
+        )
     private val RIDDLEANSWER = arrayOf("LIFE", "MIND", "TIME", "WIND")
 
     val p = player
 
-    val riddle = when (getAttribute(player, "PeerRiddle", 0)) {
-        0 -> RIDDLEONE
-        1 -> RIDDLETWO
-        2 -> RIDDLETHREE
-        3 -> RIDDLEFOUR
-        else -> RIDDLEONE
-    }
+    val riddle =
+        when (getAttribute(player, "PeerRiddle", 0)) {
+            0 -> RIDDLEONE
+            1 -> RIDDLETWO
+            2 -> RIDDLETHREE
+            3 -> RIDDLEFOUR
+            else -> RIDDLEONE
+        }
 
     var init = true
 
-    override fun handle(componentID: Int, buttonID: Int) {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         if (init) {
             stage = 1
             init = false
         }
         when (stage) {
-            1 -> sendDialogue(
-                player!!,
-                "There is a combination lock on this door. Above the lock you can see that there is a metal plaque with a riddle on it."
-            ).also { stage = 5 }
+            1 ->
+                sendDialogue(
+                    player!!,
+                    "There is a combination lock on this door. Above the lock you can see that there is a metal plaque with a riddle on it.",
+                ).also { stage = 5 }
 
             5 -> options("Read the riddle", "Solve the riddle", "Forget it").also { stage = 10 }
-            10 -> when (buttonID) {
-                1 -> dialogue(riddle[0], riddle[1], riddle[2], riddle[3]).also { stage = 20 }
-                2 -> {
-                    openInterface(p, 298)
-                    end()
-                }
+            10 ->
+                when (buttonID) {
+                    1 -> dialogue(riddle[0], riddle[1], riddle[2], riddle[3]).also { stage = 20 }
+                    2 -> {
+                        openInterface(p, 298)
+                        end()
+                    }
 
-                3 -> end()
-            }
+                    3 -> end()
+                }
 
             15 -> {
                 dialogue(riddle[0], riddle[1], riddle[2], riddle[3])

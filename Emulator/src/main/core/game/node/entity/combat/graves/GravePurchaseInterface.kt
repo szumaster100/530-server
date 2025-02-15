@@ -17,7 +17,6 @@ class GravePurchaseInterface : InterfaceListener {
     val CURRENT_GRAVE_VARBIT = Vars.VARBIT_CURRENT_GRAVE_4190
 
     override fun defineInterfaceListeners() {
-
         onOpen(Components.GRAVESTONE_SHOP_652) { player, _ ->
             if (isQuestComplete(player, Quests.THE_RESTLESS_GHOST)) {
                 sendMessage(player, "You must complete The Restless Ghost in order to purchase gravestones.")

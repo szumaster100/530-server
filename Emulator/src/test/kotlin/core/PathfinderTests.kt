@@ -11,16 +11,24 @@ import core.game.node.entity.impl.PulseType
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.scenery.Scenery
-import core.tools.Log
 import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.game.world.map.RegionManager
 import core.plugin.Plugin
+import core.tools.Log
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class PathfinderTests {
-    companion object { init { TestUtils.preTestSetup(); GatheringListener().defineListeners(); WoodcuttingListener().defineListeners() }; val NPC_TEST_LOC = ServerConfig.HOME_LOCATION!!.transform(2, 10, 0) }
+    companion object {
+        init {
+            TestUtils.preTestSetup()
+            GatheringListener().defineListeners()
+            WoodcuttingListener().defineListeners()
+        }
+
+        val NPC_TEST_LOC = ServerConfig.HOME_LOCATION!!.transform(2, 10, 0)
+    }
 
     @Test fun getOccupiedTilesShouldReturnCorrectSetOfTilesThatAnObjectOccupiesAtAllRotations() {
         // clay fireplace - 13609 - sizex: 1, sizey: 2
@@ -67,22 +75,28 @@ class PathfinderTests {
             method = { player: Player, node: Node ->
                 intListenerRan = true
                 return@add true
-            }
+            },
         )
 
         var pluginRan = false
         val option = Option("testoption", 4)
         val option2 = Option("testoptlistener", 0)
-        val testHandler = object : OptionHandler() {
-            override fun newInstance(arg: Any?): Plugin<Any> {
-                NPCDefinition.forId(0).handlers["option:testoption"] = this
-                return this
+        val testHandler =
+            object : OptionHandler() {
+                override fun newInstance(arg: Any?): Plugin<Any> {
+                    NPCDefinition.forId(0).handlers["option:testoption"] = this
+                    return this
+                }
+
+                override fun handle(
+                    player: Player?,
+                    node: Node?,
+                    option: String?,
+                ): Boolean {
+                    pluginRan = true
+                    return true
+                }
             }
-            override fun handle(player: Player?, node: Node?, option: String?): Boolean {
-                pluginRan = true
-                return true
-            }
-        }
         testHandler.newInstance(null)
         npc.interaction.set(option)
         npc.interaction.set(option2)
@@ -112,7 +126,7 @@ class PathfinderTests {
                     override fun pulse(): Boolean {
                         return true
                     }
-                }
+                },
             )
             TestUtils.advanceTicks(10, false)
             Assertions.assertNotEquals(startLoc, p.location)
@@ -130,7 +144,7 @@ class PathfinderTests {
                     override fun pulse(): Boolean {
                         return true
                     }
-                }
+                },
             )
             TestUtils.advanceTicks(10, false)
             Assertions.assertNotEquals(p.location, npc.location)
@@ -149,7 +163,7 @@ class PathfinderTests {
                     override fun pulse(): Boolean {
                         return true
                     }
-                }
+                },
             )
             TestUtils.advanceTicks(10, false)
             Assertions.assertNotEquals(p.location, npc.location)
@@ -168,7 +182,7 @@ class PathfinderTests {
                     override fun pulse(): Boolean {
                         return true
                     }
-                }
+                },
             )
             p.pulseManager.run(
                 object : MovementPulse(p, npc) {
@@ -176,7 +190,7 @@ class PathfinderTests {
                         return true
                     }
                 },
-                PulseType.STANDARD
+                PulseType.STANDARD,
             )
             TestUtils.advanceTicks(10, false)
             Assertions.assertNotEquals(ServerConfig.HOME_LOCATION, p.location)
@@ -186,16 +200,22 @@ class PathfinderTests {
     }
 
     @Test fun simulatedInteractionPacketWithMovementFromPluginShouldNotEndOnSameTile() {
-        val testHandler = object : OptionHandler() {
-            override fun newInstance(arg: Any?): Plugin<Any> {
-                NPCDefinition.forId(0).handlers["option:testoption"] = this
-                return this
+        val testHandler =
+            object : OptionHandler() {
+                override fun newInstance(arg: Any?): Plugin<Any> {
+                    NPCDefinition.forId(0).handlers["option:testoption"] = this
+                    return this
+                }
+
+                override fun handle(
+                    player: Player?,
+                    node: Node?,
+                    option: String?,
+                ): Boolean {
+                    log(this::class.java, Log.ERR, "Interaction triggered")
+                    return true
+                }
             }
-            override fun handle(player: Player?, node: Node?, option: String?): Boolean {
-                log(this::class.java, Log.ERR, "Interaction triggered")
-                return true
-            }
-        }
         testHandler.newInstance(null)
         val npc = NPC.create(0, NPC_TEST_LOC)
         val option = Option("testoption", 4)
@@ -225,7 +245,7 @@ class PathfinderTests {
             arrayOf("testoptlistener2"),
             method = { player: Player, node: Node ->
                 return@add true
-            }
+            },
         )
         val opt = Option("testoptlistener2", 1)
         npc.interaction.set(opt)

@@ -6,8 +6,8 @@ import core.api.log
 import core.cache.def.impl.NPCDefinition
 import core.game.node.entity.combat.CombatStyle
 import core.game.node.entity.impl.Animator
-import core.tools.Log
 import core.game.world.update.flag.context.Animation
+import core.tools.Log
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
@@ -71,12 +71,14 @@ class NPCConfigParser {
                         "range_animation",
                         "magic_animation",
                         "death_animation",
-                        "defence_animation" ->
+                        "defence_animation",
+                        ->
                             configs[it.key.toString()] =
                                 Animation(it.value.toString().toInt(), Animator.Priority.HIGH)
 
                         "combat_style",
-                        "protect_style" ->
+                        "protect_style",
+                        ->
                             configs[it.key.toString()] =
                                 CombatStyle.values()[it.value.toString().toInt()]
 
@@ -84,7 +86,11 @@ class NPCConfigParser {
                         "name", "examine" -> configs[it.key.toString()] = it.value.toString()
                         "combat_audio", "bonuses" ->
                             configs[it.key.toString()] =
-                                it.value.toString().split(",").map { v -> v.toInt() }.toIntArray()
+                                it.value
+                                    .toString()
+                                    .split(",")
+                                    .map { v -> v.toInt() }
+                                    .toIntArray()
 
                         "force_talk" -> configs[it.key.toString()] = it.value.toString()
 
@@ -110,7 +116,8 @@ class NPCConfigParser {
                         "end_height",
                         "spell_id",
                         "death_gfx",
-                        "magic_level" ->
+                        "magic_level",
+                        ->
                             configs[it.key.toString()] =
                                 if (it.value.toString().isEmpty()) Unit else it.value.toString().toInt()
 
@@ -122,7 +129,8 @@ class NPCConfigParser {
                         "poison_immune",
                         "facing_booth",
                         "can_tolerate",
-                        "water_npc" -> configs[it.key.toString()] = it.value.toString().toBoolean()
+                        "water_npc",
+                        -> configs[it.key.toString()] = it.value.toString().toBoolean()
 
                         else -> log(this::class.java, Log.WARN, "Unhandled key for npc config: ${it.key}")
                     }

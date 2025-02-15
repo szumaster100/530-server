@@ -1,6 +1,5 @@
 package content.region.misc.dialogue.keldagrim
 
-import org.rs.consts.NPCs
 import core.api.sendMessage
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
@@ -8,11 +7,16 @@ import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
 import core.tools.START_DIALOGUE
+import org.rs.consts.NPCs
 
 @Initializable
-class BlackGuardDialogue(player: Player? = null) : Dialogue(player) {
-
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+class BlackGuardDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             START_DIALOGUE -> {
                 var random = arrayOf(1, 2, 3, 4, 5).random()
@@ -43,7 +47,7 @@ class BlackGuardDialogue(player: Player? = null) : Dialogue(player) {
             NPCs.BLACK_GUARD_2133,
             NPCs.BLACK_GUARD_BERSERKER_2134,
             NPCs.BLACK_GUARD_BERSERKER_2135,
-            NPCs.BLACK_GUARD_BERSERKER_2136
+            NPCs.BLACK_GUARD_BERSERKER_2136,
         )
     }
 }

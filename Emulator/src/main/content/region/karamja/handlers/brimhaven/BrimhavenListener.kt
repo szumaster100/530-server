@@ -1,9 +1,5 @@
 package content.region.karamja.handlers.brimhaven
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import content.region.karamja.dialogue.brimhaven.CapnIzzyDialogue
 import content.region.karamja.dialogue.brimhaven.PirateJackieDialogue
 import core.api.*
@@ -16,12 +12,14 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.tools.RandomFunction
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 import kotlin.math.ceil
 
 class BrimhavenListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(AGILITY_ARENA_EXIT_LADDER, IntType.SCENERY, "climb-up") { player, _ ->
             ClimbActionHandler.climb(player, ClimbActionHandler.CLIMB_UP, AGILITY_ARENA_HUT)
             return@on true
@@ -69,7 +67,10 @@ class BrimhavenListener : InteractionListener {
             return@on true
         }
 
-        fun success(player: Player, skill: Int): Boolean {
+        fun success(
+            player: Player,
+            skill: Int,
+        ): Boolean {
             val level = player.getSkills().getLevel(skill).toDouble()
             val req = 40.0
             val successChance = ceil((level * 50 - req) / req / 3 * 4)
@@ -85,7 +86,7 @@ class BrimhavenListener : InteractionListener {
                     player.impactHandler.manualHit(
                         player,
                         (getDynLevel(player, Skills.HITPOINTS) * 0.50).toInt(),
-                        ImpactHandler.HitsplatType.NORMAL
+                        ImpactHandler.HitsplatType.NORMAL,
                     )
                 } else {
                     sendMessage(player, "You successfully opened the diary.")

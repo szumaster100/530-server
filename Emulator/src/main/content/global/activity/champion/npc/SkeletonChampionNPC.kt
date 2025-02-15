@@ -1,9 +1,5 @@
 package content.global.activity.champion.npc
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Vars
 import content.global.activity.champion.ChallengeListener
 import core.api.*
 import core.game.node.entity.Entity
@@ -17,13 +13,23 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Vars
 
 @Initializable
-class SkeletonChampionNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
+class SkeletonChampionNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
     var clearTime = 0
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return SkeletonChampionNPC(id, location)
     }
 
@@ -58,7 +64,7 @@ class SkeletonChampionNPC(id: Int = 0, location: Location? = null) : AbstractNPC
                         champion.attack(player)
                         return true
                     }
-                }
+                },
             )
         }
     }
@@ -67,7 +73,10 @@ class SkeletonChampionNPC(id: Int = 0, location: Location? = null) : AbstractNPC
         super.checkImpact(state)
         val player = state.attacker
         if (player is Player) {
-            if (state.style == CombatStyle.RANGE && state.weapon.type == Weapon.WeaponType.DEGRADING && state.weapon.type == Weapon.WeaponType.DOUBLE_SHOT) {
+            if (state.style == CombatStyle.RANGE &&
+                state.weapon.type == Weapon.WeaponType.DEGRADING &&
+                state.weapon.type == Weapon.WeaponType.DOUBLE_SHOT
+            ) {
                 state.neutralizeHits()
                 state.estimatedHit = state.maximumHit
             }

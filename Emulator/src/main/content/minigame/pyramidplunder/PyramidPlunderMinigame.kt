@@ -1,10 +1,7 @@
 package content.minigame.pyramidplunder
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import core.api.*
+import core.api.MapArea
 import core.api.event.applyPoison
 import core.game.dialogue.DialogueFile
 import core.game.interaction.IntType
@@ -15,13 +12,20 @@ import core.game.node.entity.skill.Skills
 import core.game.system.task.Pulse
 import core.game.world.map.Direction
 import core.game.world.map.Location
-import core.api.MapArea
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.map.zone.ZoneRestriction
 import core.game.world.update.flag.context.Animation
 import core.tools.RandomFunction
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
-class PyramidPlunderMinigame : InteractionListener, TickListener, LogoutListener, MapArea {
+class PyramidPlunderMinigame :
+    InteractionListener,
+    TickListener,
+    LogoutListener,
+    MapArea {
     override fun tick() {
         val playersToExpel = PlunderUtils.decrementTimeRemaining()
         playersToExpel.forEach { player -> PlunderUtils.expel(player, false) }
@@ -67,7 +71,10 @@ class PyramidPlunderMinigame : InteractionListener, TickListener, LogoutListener
             val spearDir = PlunderUtils.getRoom(player)!!.spearDirection
 
             val pastSpears =
-                (spearDir == Direction.NORTH && player.location.y > node.location.y) || (spearDir == Direction.SOUTH && player.location.y < node.location.y) || (spearDir == Direction.EAST && player.location.x > node.location.x) || (spearDir == Direction.WEST && player.location.x < node.location.x)
+                (spearDir == Direction.NORTH && player.location.y > node.location.y) ||
+                    (spearDir == Direction.SOUTH && player.location.y < node.location.y) ||
+                    (spearDir == Direction.EAST && player.location.x > node.location.x) ||
+                    (spearDir == Direction.WEST && player.location.x < node.location.x)
 
             if (pastSpears) {
                 sendDialogue(player, "I have no reason to do that.")
@@ -98,7 +105,7 @@ class PyramidPlunderMinigame : InteractionListener, TickListener, LogoutListener
                         animate(player, anim)
                         return false
                     }
-                }
+                },
             )
             return@on true
         }
@@ -206,10 +213,11 @@ class PyramidPlunderMinigame : InteractionListener, TickListener, LogoutListener
                             setVarbit(player, node.asScenery().definition.varbitID, 1)
                             rewardXP(player, Skills.STRENGTH, PlunderUtils.getSarcophagusXp(player))
                             if (RandomFunction.roll(25)) {
-                                val mummy = PyramidPlunderMummyNPC(
-                                    player.location,
-                                    player
-                                )
+                                val mummy =
+                                    PyramidPlunderMummyNPC(
+                                        player.location,
+                                        player,
+                                    )
                                 mummy.isRespawn = false
                                 mummy.init()
                                 mummy.attack(player)
@@ -219,7 +227,7 @@ class PyramidPlunderMinigame : InteractionListener, TickListener, LogoutListener
                         }
                         return true
                     }
-                }
+                },
             )
             return@on true
         }
@@ -232,10 +240,11 @@ class PyramidPlunderMinigame : InteractionListener, TickListener, LogoutListener
             animate(player, Animations.HUMAN_OPEN_CHEST_536)
             runTask(player) {
                 if (RandomFunction.roll(25)) {
-                    val swarm = PyramidPlunderSwarmNPC(
-                        player.location,
-                        player
-                    )
+                    val swarm =
+                        PyramidPlunderSwarmNPC(
+                            player.location,
+                            player,
+                        )
                     swarm.isRespawn = false
                     swarm.init()
                     swarm.attack(player)
@@ -260,29 +269,34 @@ class PyramidPlunderMinigame : InteractionListener, TickListener, LogoutListener
 
             animate(player, anim)
             lock(player, duration)
-            val rate = if (inInventory(player, Items.LOCKPICK_1523)) {
-                sendMessage(player, "You use your lockpick and attempt to open the door.")
-                2
-            } else {
-                sendMessage(player, "You attempt to open the door. Lockpicks would make it easier...")
-                3
-            }
+            val rate =
+                if (inInventory(player, Items.LOCKPICK_1523)) {
+                    sendMessage(player, "You use your lockpick and attempt to open the door.")
+                    2
+                } else {
+                    sendMessage(player, "You attempt to open the door. Lockpicks would make it easier...")
+                    3
+                }
             runTask(player, duration) {
                 if (RandomFunction.roll(rate)) {
                     val varbitId = node.asScenery().definition.varbitID
                     val door = PlunderUtils.getDoor(player)
 
-                    if (door == -1) PlunderUtils.expel(player, false)
-                    else rewardXP(player, Skills.THIEVING, PlunderUtils.getDoorXp(player, rate == 3))
+                    if (door == -1) {
+                        PlunderUtils.expel(player, false)
+                    } else {
+                        rewardXP(player, Skills.THIEVING, PlunderUtils.getDoorXp(player, rate == 3))
+                    }
 
                     if (door == varbitId) {
                         PlunderUtils.loadNextRoom(player)
                         PlunderUtils.resetObjectVarbits(player)
                     } else {
                         when (getVarbit(player, varbitId)) {
-                            0 -> sendMessage(player, "The door leads to a dead end.").also {
-                                setVarbit(player, varbitId, 1)
-                            }
+                            0 ->
+                                sendMessage(player, "The door leads to a dead end.").also {
+                                    setVarbit(player, varbitId, 1)
+                                }
 
                             else -> sendMessage(player, "You've already opened this door and it leads to a dead end.")
                         }
@@ -298,23 +312,27 @@ class PyramidPlunderMinigame : InteractionListener, TickListener, LogoutListener
             openDialogue(
                 player,
                 object : DialogueFile() {
-                    override fun handle(componentID: Int, buttonID: Int) {
+                    override fun handle(
+                        componentID: Int,
+                        buttonID: Int,
+                    ) {
                         when (stage) {
                             0 -> options("Yes, I'm sure I want to leave.", "No, never mind.").also { stage++ }
-                            1 -> when (buttonID) {
-                                1 -> {
-                                    end()
-                                    teleport(player, Location.create(3288, 2802, 0))
-                                    PlunderUtils.unregisterPlayer(player)
-                                    PlunderUtils.resetOverlay(player)
-                                    PlunderUtils.resetObjectVarbits(player)
-                                }
+                            1 ->
+                                when (buttonID) {
+                                    1 -> {
+                                        end()
+                                        teleport(player, Location.create(3288, 2802, 0))
+                                        PlunderUtils.unregisterPlayer(player)
+                                        PlunderUtils.resetOverlay(player)
+                                        PlunderUtils.resetObjectVarbits(player)
+                                    }
 
-                                2 -> end()
-                            }
+                                    2 -> end()
+                                }
                         }
                     }
-                }
+                },
             )
             return@on true
         }
@@ -323,7 +341,7 @@ class PyramidPlunderMinigame : InteractionListener, TickListener, LogoutListener
             if (!getAttribute(player, "tarik-spoken-to", false)) {
                 sendDialogue(
                     player,
-                    "I should probably try to find out more about this place before I try to break in."
+                    "I should probably try to find out more about this place before I try to break in.",
                 )
                 return@on true
             }
@@ -341,14 +359,16 @@ class PyramidPlunderMinigame : InteractionListener, TickListener, LogoutListener
                             if (PlunderUtils.checkEntrance(door)) {
                                 teleport(player, GUARDIAN_ROOM)
                                 rewardXP(player, Skills.THIEVING, 20.0)
-                            } else teleport(player, EMPTY_ROOM)
+                            } else {
+                                teleport(player, EMPTY_ROOM)
+                            }
 
                             return true
                         }
                         animate(player, anim)
                         return false
                     }
-                }
+                },
             )
             return@on true
         }
@@ -397,7 +417,7 @@ class PyramidPlunderMinigame : InteractionListener, TickListener, LogoutListener
             ZoneRestriction.TELEPORT,
             ZoneRestriction.RANDOM_EVENTS,
             ZoneRestriction.CANNON,
-            ZoneRestriction.FIRES
+            ZoneRestriction.FIRES,
         )
     }
 }

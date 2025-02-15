@@ -12,41 +12,46 @@ import org.rs.consts.NPCs
  * Represents the Burthorpe Soldiers dialogue.
  */
 @Initializable
-class BurthorpeSoldierDialogue(player: Player? = null) : Dialogue(player) {
-
+class BurthorpeSoldierDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     companion object {
-        val latinInsults = arrayOf(
-            "Mihi ignosce. Cum homine de cane debeo congredi.",
-            "Errare humanum est.",
-            "Die dulci freure.",
-            "Carpe Diem!",
-            "Te audire non possum. Musa sapientum fixa est in aure.",
-            "Furnulum pani nolo.",
-            "Fac ut gaudeam.",
-            "Utinam barbari spatium proprium tuum invadant!",
-            "Quantum materiae materietur marmota monax si marmota monax materiam possit materiari?",
-            "Sona si Latine loqueris.",
-            "Raptus Regaliter",
-            "Nemo dat quod non habet.",
-            "Ne auderis delere orbem rigidum meum!",
-            "Da mihi sis bubulae frustum assae, solana tuberosa in modo gallico fricta, ac quassum lactatum coagulatum crassum.",
-            "Cogito ergo sum.",
-            "Vacca foeda.",
-            "Di! Ecce hora! Uxor mea me necabit!",
-            "Latine loqui coactus sum.",
-            "Cave ne ante ullas catapultas ambules.",
-            "Fac ut vivas!",
-            "Noli me vocare, ego te vocabo.",
-            "Meliora cogito.",
-            "Braccae tuae aperiuntur.",
-            "Vescere bracis meis.",
-            "Corripe cervisiam!",
-        )
+        val latinInsults =
+            arrayOf(
+                "Mihi ignosce. Cum homine de cane debeo congredi.",
+                "Errare humanum est.",
+                "Die dulci freure.",
+                "Carpe Diem!",
+                "Te audire non possum. Musa sapientum fixa est in aure.",
+                "Furnulum pani nolo.",
+                "Fac ut gaudeam.",
+                "Utinam barbari spatium proprium tuum invadant!",
+                "Quantum materiae materietur marmota monax si marmota monax materiam possit materiari?",
+                "Sona si Latine loqueris.",
+                "Raptus Regaliter",
+                "Nemo dat quod non habet.",
+                "Ne auderis delere orbem rigidum meum!",
+                "Da mihi sis bubulae frustum assae, solana tuberosa in modo gallico fricta, ac quassum lactatum coagulatum crassum.",
+                "Cogito ergo sum.",
+                "Vacca foeda.",
+                "Di! Ecce hora! Uxor mea me necabit!",
+                "Latine loqui coactus sum.",
+                "Cave ne ante ullas catapultas ambules.",
+                "Fac ut vivas!",
+                "Noli me vocare, ego te vocabo.",
+                "Meliora cogito.",
+                "Braccae tuae aperiuntur.",
+                "Vescere bracis meis.",
+                "Corripe cervisiam!",
+            )
 
         val randomStages = arrayOf(10, 20, 30, 40, 50)
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             START_DIALOGUE -> playerl(FaceAnim.FRIENDLY, "Hello!").also { stage++ }
             1 -> npcl(FaceAnim.ANGRY, latinInsults.random()).also { stage = randomStages.random() }

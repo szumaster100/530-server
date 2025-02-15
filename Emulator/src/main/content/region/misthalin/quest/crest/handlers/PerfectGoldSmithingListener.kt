@@ -1,16 +1,15 @@
 package content.region.misthalin.quest.crest.handlers
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
 import content.global.skill.smithing.smelting.SmeltingInteraction
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.interaction.QueueStrength
 import core.game.node.entity.skill.Skills
+import org.rs.consts.Animations
+import org.rs.consts.Items
 
 class PerfectGoldSmithingListener : InteractionListener {
-
     private val furnaceIDs: IntArray = SmeltingInteraction.furnaceIDs
 
     override fun defineListeners() {

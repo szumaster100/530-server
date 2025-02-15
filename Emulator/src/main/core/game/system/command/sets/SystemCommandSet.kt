@@ -1,12 +1,12 @@
 package core.game.system.command.sets
 
 import content.data.items.ChargedItem
+import core.api.EquipmentSlot
 import core.api.runTask
 import core.api.sendDialogue
 import core.api.sendInputDialogue
 import core.cache.def.impl.ItemDefinition
 import core.game.dialogue.InputType
-import core.api.EquipmentSlot
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.game.system.SystemManager
@@ -21,7 +21,6 @@ import kotlin.system.exitProcess
 @Initializable
 class SystemCommandSet : CommandSet(Privilege.ADMIN) {
     override fun defineCommands() {
-
         define(name = "update", Privilege.ADMIN) { _, args ->
             if (args.size > 1) {
                 SystemManager.updater.setCountdown(args[1].toInt())
@@ -33,7 +32,12 @@ class SystemCommandSet : CommandSet(Privilege.ADMIN) {
             SystemManager.updater.cancel()
         }
 
-        define(name = "resetpassword", privilege = Privilege.MODERATOR, usage = "", description = "WARNING: Case insensitive due to dialogue limitations.") { player, _ ->
+        define(
+            name = "resetpassword",
+            privilege = Privilege.MODERATOR,
+            usage = "",
+            description = "WARNING: Case insensitive due to dialogue limitations.",
+        ) { player, _ ->
             sendInputDialogue(player, InputType.STRING_SHORT, "Enter Current Password:") { value ->
                 val pass = value.toString()
                 runTask(player) {
@@ -58,20 +62,24 @@ class SystemCommandSet : CommandSet(Privilege.ADMIN) {
             }
         }
 
-        define(name = "setpasswordother", privilege = Privilege.ADMIN, usage = "::resetpasswordother <lt>USERNAME<gt> <lt>NEW<gt>", description = "Gives the username password NEW.") { player, args ->
+        define(
+            name = "setpasswordother",
+            privilege = Privilege.ADMIN,
+            usage = "::resetpasswordother <lt>USERNAME<gt> <lt>NEW<gt>",
+            description = "Gives the username password NEW.",
+        ) { player, args ->
             if (args.size != 3) {
                 reject(
                     player,
                     "Usage: ::resetpasswordother user new",
                     "WARNING: THIS IS PERMANENT.",
-                    "WARNING: PASSWORD CAN NOT CONTAIN SPACES."
+                    "WARNING: PASSWORD CAN NOT CONTAIN SPACES.",
                 )
             }
             val otherUser = args[1]
             val newPass = args[2]
 
             if (GameWorld.accountStorage.checkUsernameTaken(otherUser)) {
-
                 if (newPass.length < 5 || newPass.length > 20) {
                     reject(player, "NEW PASSWORD MUST BE BETWEEN 5 AND 20 CHARACTERS")
                 }
@@ -87,7 +95,12 @@ class SystemCommandSet : CommandSet(Privilege.ADMIN) {
             }
         }
 
-        define(name = "giveitem", privilege = Privilege.ADMIN, usage = "::giveitem <lt>USERNAME<gt> <lt>ITEM ID<gt> <lt>AMOUNT<gt>", description = "Gives the user the amount of the given item.") { player, args ->
+        define(
+            name = "giveitem",
+            privilege = Privilege.ADMIN,
+            usage = "::giveitem <lt>USERNAME<gt> <lt>ITEM ID<gt> <lt>AMOUNT<gt>",
+            description = "Gives the user the amount of the given item.",
+        ) { player, args ->
             if (args.size == 3 || args.size == 4) {
                 val victim = Repository.getPlayerByName(args[1])
                 val itemID = args[2].toIntOrNull()
@@ -117,18 +130,23 @@ class SystemCommandSet : CommandSet(Privilege.ADMIN) {
 
                 notify(
                     player,
-                    "Successfully gave ${victim.username} $amount ${item.name}. ${if (invFull) "The $syntax were sent to their bank." else ""}"
+                    "Successfully gave ${victim.username} $amount ${item.name}. ${if (invFull) "The $syntax were sent to their bank." else ""}",
                 )
                 notify(
                     victim,
-                    "You received $amount ${item.name} from ${player.username}. ${if (invFull) "The $syntax were placed in your bank." else ""}"
+                    "You received $amount ${item.name} from ${player.username}. ${if (invFull) "The $syntax were placed in your bank." else ""}",
                 )
             } else {
                 reject(player, "WRONG USAGE. USE giveitem target itemID || giveitem target itemID amt")
             }
         }
 
-        define(name = "removeitem", privilege = Privilege.ADMIN, usage = "::removeitem <lt>LOC<gt> <lt>USERNAME<gt> <lt>ITEM ID<gt> <lt>AMOUNT<gt>", description = "LOC = bank,inventory,equipment") { player, args ->
+        define(
+            name = "removeitem",
+            privilege = Privilege.ADMIN,
+            usage = "::removeitem <lt>LOC<gt> <lt>USERNAME<gt> <lt>ITEM ID<gt> <lt>AMOUNT<gt>",
+            description = "LOC = bank,inventory,equipment",
+        ) { player, args ->
             if (args.size == 4 || args.size == 5) {
                 val itemLoc = args[1].lowercase()
                 val victim = Repository.getPlayerByName(args[2])
@@ -166,11 +184,12 @@ class SystemCommandSet : CommandSet(Privilege.ADMIN) {
                         victim.equipment.remove(item)
                     }
 
-                    else -> reject(
-                        player,
-                        "INVALID ITEM LOCATION ENTERED. USE: ",
-                        "i, inv, inventory | b, bk, bank | e, equip, equipment"
-                    )
+                    else ->
+                        reject(
+                            player,
+                            "INVALID ITEM LOCATION ENTERED. USE: ",
+                            "i, inv, inventory | b, bk, bank | e, equip, equipment",
+                        )
                 }
 
                 if (amount > totalItemAmount) {
@@ -183,12 +202,17 @@ class SystemCommandSet : CommandSet(Privilege.ADMIN) {
                 reject(
                     player,
                     "WRONG USAGE. USE removeitem itemLoc target itemID || removeitem itemLoc target itemID amt",
-                    "ItemLoc: inv = inventory | equip = equipment | bank |"
+                    "ItemLoc: inv = inventory | equip = equipment | bank |",
                 )
             }
         }
 
-        define(name = "removeitemall", privilege = Privilege.ADMIN, usage = "::removeitemall <lt>USERNAME<gt> <lt>ITEM ID<gt>", description = "Removes ALL of a given item from the player.") { player, args ->
+        define(
+            name = "removeitemall",
+            privilege = Privilege.ADMIN,
+            usage = "::removeitemall <lt>USERNAME<gt> <lt>ITEM ID<gt>",
+            description = "Removes ALL of a given item from the player.",
+        ) { player, args ->
             if (args.size == 3) {
                 val victim = Repository.getPlayerByName(args[1])
                 val itemID = args[2].toIntOrNull()
@@ -205,14 +229,16 @@ class SystemCommandSet : CommandSet(Privilege.ADMIN) {
                 val itemNote = Item(itemInv.noteChange)
 
                 val untotal =
-                    victim!!.inventory.getAmount(itemID) + victim.bank.getAmount(itemID) + victim.equipment.getAmount(
-                        itemID
-                    )
+                    victim!!.inventory.getAmount(itemID) + victim.bank.getAmount(itemID) +
+                        victim.equipment.getAmount(
+                            itemID,
+                        )
 
                 val nototal =
-                    victim.inventory.getAmount(itemNote) + victim.bank.getAmount(itemNote) + victim.equipment.getAmount(
-                        itemNote
-                    )
+                    victim.inventory.getAmount(itemNote) + victim.bank.getAmount(itemNote) +
+                        victim.equipment.getAmount(
+                            itemNote,
+                        )
 
                 val eqtotal = victim.equipment.getAmount(itemID) + victim.equipment.getAmount(itemNote)
 
@@ -237,7 +263,12 @@ class SystemCommandSet : CommandSet(Privilege.ADMIN) {
             }
         }
 
-        define(name = "potato", privilege = Privilege.ADMIN, usage = "", description = "Gives you a rotten potato.") { player, _ ->
+        define(
+            name = "potato",
+            privilege = Privilege.ADMIN,
+            usage = "",
+            description = "Gives you a rotten potato.",
+        ) { player, _ ->
             player.inventory.add(Item(Items.ROTTEN_POTATO_5733))
         }
 
@@ -245,22 +276,34 @@ class SystemCommandSet : CommandSet(Privilege.ADMIN) {
             exitProcess(0)
         }
 
-        define(name = "charge", privilege = Privilege.ADMIN, usage = "::charge <lt>equipment slot name | item id<gt> [sd] [<lt>charge<gt>]", description = "Get/set the charge of an item. Flags: s = set, d = distinct(#).") { player, args ->
-            if (args.size < 2) reject(
-                player,
-                "Usage: ::charge <lt>equipment slot name | item id<gt> [sd] [<lt>charge<gt>]",
-                "Get internal: ::charge 4718",
-                "Get distinct: ::charge ring d",
-                "Set internal: ::charge head s 500",
-                "Set distinct: ::charge 1704 sd 4"
-            )
+        define(
+            name = "charge",
+            privilege = Privilege.ADMIN,
+            usage = "::charge <lt>equipment slot name | item id<gt> [sd] [<lt>charge<gt>]",
+            description = "Get/set the charge of an item. Flags: s = set, d = distinct(#).",
+        ) { player, args ->
+            if (args.size < 2) {
+                reject(
+                    player,
+                    "Usage: ::charge <lt>equipment slot name | item id<gt> [sd] [<lt>charge<gt>]",
+                    "Get internal: ::charge 4718",
+                    "Get distinct: ::charge ring d",
+                    "Set internal: ::charge head s 500",
+                    "Set distinct: ::charge 1704 sd 4",
+                )
+            }
 
-            @Suppress("UNCHECKED_CAST") val itemInfo = (
-                args[1].toIntOrNull()?.let {
-                    getItemAndContainer(player, it) ?: reject(player, "Item not found: $it.")
-                } ?: EquipmentSlot.slotByName(args[1])?.ordinal?.let {
-                    Pair(player.equipment.get(it) ?: reject(player, "No item equipped at slot: ${args[1]}."), player.equipment)
-                } ?: reject(player, "No slot: ${args[1]}.")
+            @Suppress("UNCHECKED_CAST")
+            val itemInfo =
+                (
+                    args[1].toIntOrNull()?.let {
+                        getItemAndContainer(player, it) ?: reject(player, "Item not found: $it.")
+                    } ?: EquipmentSlot.slotByName(args[1])?.ordinal?.let {
+                        Pair(
+                            player.equipment.get(it) ?: reject(player, "No item equipped at slot: ${args[1]}."),
+                            player.equipment,
+                        )
+                    } ?: reject(player, "No slot: ${args[1]}.")
                 ) as Pair<Item, core.game.container.Container>
 
             val item = itemInfo.first
@@ -298,7 +341,10 @@ class SystemCommandSet : CommandSet(Privilege.ADMIN) {
         }
     }
 
-    private fun getItemAndContainer(player: Player, id: Int): Pair<Item, core.game.container.Container>? {
+    private fun getItemAndContainer(
+        player: Player,
+        id: Int,
+    ): Pair<Item, core.game.container.Container>? {
         if (id !in 0 until ItemDefinition.getDefinitions().size) return null
         arrayOf(player.inventory, player.equipment, player.bankPrimary, player.bankSecondary).forEach { container ->
             container.toArray().firstOrNull { it?.id == id }?.let { return Pair(it, container) }

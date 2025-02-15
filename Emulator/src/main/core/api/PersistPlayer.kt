@@ -10,14 +10,16 @@ import org.json.simple.JSONObject
  * - **Saving** occurs *after* [LogoutListener] is executed.
  */
 interface PersistPlayer : ContentInterface {
-
     /**
      * **NOTE**: This should **NOT** reference nonstatic class-local variables.
      * You need to fetch a player's specific instance of the data and save from that.
      *
      * @see [content.global.skill.slayer.SlayerManager]
      */
-    fun savePlayer(player: Player, save: JSONObject)
+    fun savePlayer(
+        player: Player,
+        save: JSONObject,
+    )
 
     /**
      * **NOTE**: This should **NOT** reference nonstatic class-local variables.
@@ -25,5 +27,8 @@ interface PersistPlayer : ContentInterface {
      *
      * @see [content.global.skill.slayer.SlayerManager]
      */
-    fun parsePlayer(player: Player, data: JSONObject)
+    fun parsePlayer(
+        player: Player,
+        data: JSONObject,
+    )
 }

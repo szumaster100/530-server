@@ -9,7 +9,6 @@ import core.plugin.Plugin
 
 @Initializable
 class CrestCombiningHandler : UseWithHandler(779, 780, 781) {
-
     val CREST_AVAN: Item = Item(779)
     val CREST_CALEB: Item = Item(780)
     val CREST_JOHNATHON: Item = Item(781)
@@ -33,7 +32,10 @@ class CrestCombiningHandler : UseWithHandler(779, 780, 781) {
         }
     }
 
-    private fun CraftCrest(player: Player, event: NodeUsageEvent): Boolean {
+    private fun CraftCrest(
+        player: Player,
+        event: NodeUsageEvent,
+    ): Boolean {
         return when (event.usedWith.id) {
             779, 780, 781 -> {
                 if (player.inventory.containItems(779, 780, 781)) {

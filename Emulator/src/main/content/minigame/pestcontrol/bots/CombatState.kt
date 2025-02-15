@@ -12,7 +12,9 @@ import core.game.world.map.path.Pathfinder
 import core.tools.RandomFunction
 import java.util.*
 
-class CombatState(val bot: PestControlNoviceBot) {
+class CombatState(
+    val bot: PestControlNoviceBot,
+) {
     private val Random = Random()
     val randomtype = Random().nextInt(100)
 
@@ -61,9 +63,11 @@ class CombatState(val bot: PestControlNoviceBot) {
             if (bot.location.withinDistance(portal.location, 10) && portal.isActive) {
                 val spinners = ArrayList<NPC>()
                 RegionManager.getLocalNpcs(bot).forEach {
-                    if (it.name.lowercase() == "spinner" && it.location.withinDistance(bot.location, 10)) spinners.add(
-                        it
-                    )
+                    if (it.name.lowercase() == "spinner" && it.location.withinDistance(bot.location, 10)) {
+                        spinners.add(
+                            it,
+                        )
+                    }
                 }
                 if (spinners.isNotEmpty()) {
                     bot.attack(spinners.random())
@@ -91,12 +95,16 @@ class CombatState(val bot: PestControlNoviceBot) {
         }
     }
 
-    fun randomWalkTo(loc: Location, radius: Int) {
-        var newloc = loc.transform(
-            RandomFunction.random(radius, -radius),
-            RandomFunction.random(radius, -radius),
-            0
-        )
+    fun randomWalkTo(
+        loc: Location,
+        radius: Int,
+    ) {
+        var newloc =
+            loc.transform(
+                RandomFunction.random(radius, -radius),
+                RandomFunction.random(radius, -radius),
+                0,
+            )
         if (!bot.walkingQueue.isMoving) {
             walkToIterator(newloc)
         }
@@ -111,7 +119,7 @@ class CombatState(val bot: PestControlNoviceBot) {
                 override fun pulse(): Boolean {
                     return true
                 }
-            }
+            },
         )
     }
 }

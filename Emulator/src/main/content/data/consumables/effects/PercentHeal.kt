@@ -5,7 +5,10 @@ import core.game.node.entity.player.Player
 import kotlin.math.floor
 import kotlin.math.min
 
-class PercentHeal(base: Int, percent: Double) : ConsumableEffect() {
+class PercentHeal(
+    base: Int,
+    percent: Double,
+) : ConsumableEffect() {
     var base: Int = 0
     var percent: Double = 0.0
 
@@ -18,12 +21,14 @@ class PercentHeal(base: Int, percent: Double) : ConsumableEffect() {
         val maxHp = player.getSkills().maximumLifepoints
         val curHp = player.getSkills().lifepoints
         var amount = floor(maxHp * percent).toInt()
-        amount = (
-                base + min(
-                    amount.toDouble(),
-                    ((1.0 + percent) * maxHp.toDouble() - curHp.toDouble()).toInt().toDouble()
-                )
-                ).toInt()
+        amount =
+            (
+                base +
+                    min(
+                        amount.toDouble(),
+                        ((1.0 + percent) * maxHp.toDouble() - curHp.toDouble()).toInt().toDouble(),
+                    )
+            ).toInt()
         player.getSkills().healNoRestrictions(amount)
     }
 }

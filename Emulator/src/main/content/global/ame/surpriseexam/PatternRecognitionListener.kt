@@ -1,7 +1,5 @@
 package content.global.ame.surpriseexam
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.data.GameAttributes
 import content.global.handlers.iface.ExperienceInterface
 import core.api.*
@@ -10,14 +8,14 @@ import core.game.interaction.InteractionListener
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.game.world.map.Location
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 class PatternRecognitionListener : InteractionListener {
-
     val MORDAUT = NPCs.MR_MORDAUT_6117
     val BOOK_OF_KNOWLEDGE = Items.BOOK_OF_KNOWLEDGE_11640
 
     override fun defineListeners() {
-
         on(MORDAUT, IntType.NPC, "talk-to") { player, node ->
             face(player, Location.create(1886, 5024, 0))
             val examComplete = getAttribute(player, GameAttributes.RE_PATTERN_CORRECT, 0) == 3

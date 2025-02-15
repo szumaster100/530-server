@@ -16,18 +16,22 @@ class CreationSkillPulse(
     val animation: Animation,
     var itemUsed: Item,
     val baseId: Int,
-    val sceneryIndex: Int
+    val sceneryIndex: Int,
 ) : Pulse(1, player, node) {
-
     private lateinit var definitions: CreationScenery
     private val skillId = Skills.HUNTER
 
-    enum class CreationScenery(val baseTime: Int, val randomLife: Int, val randomTime: Int, val level: Int) {
+    enum class CreationScenery(
+        val baseTime: Int,
+        val randomLife: Int,
+        val randomTime: Int,
+        val level: Int,
+    ) {
         CLASS_1(10, -1, 1, 1),
         CLASS_2(20, 200, 6, 20),
         CLASS_3(25, 300, 12, 40),
         CLASS_4(30, 400, 16, 60),
-        CLASS_5(35, 500, 20, 80);
+        CLASS_5(35, 500, 20, 80),
     }
 
     fun animate() {
@@ -44,7 +48,10 @@ class CreationSkillPulse(
         return
     }
 
-    fun checkReward(player: Player, skillId: Int): Int {
+    fun checkReward(
+        player: Player,
+        skillId: Int,
+    ): Int {
         val playerLevel = player.getSkills().getLevel(Skills.FISHING)
         val fishLevel = definitions.level
         val modifier: Int = skillId

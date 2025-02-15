@@ -1,7 +1,5 @@
 package content.region.kandarin.handlers.barbtraining.fishing
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.region.kandarin.handlers.barbtraining.BarbarianTraining
 import core.api.*
 import core.game.node.entity.npc.NPC
@@ -10,10 +8,21 @@ import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.tools.RandomFunction
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
-class BarbFishingPulse(player: Player) : SkillPulse<NPC>(player, NPC(NPCs.FISHING_SPOT_1176)) {
-
-    private val fishingBait = anyInInventory(player, Items.FISHING_BAIT_313, Items.FEATHER_314, Items.ROE_11324, Items.FISH_OFFCUTS_11334, Items.CAVIAR_11326)
+class BarbFishingPulse(
+    player: Player,
+) : SkillPulse<NPC>(player, NPC(NPCs.FISHING_SPOT_1176)) {
+    private val fishingBait =
+        anyInInventory(
+            player,
+            Items.FISHING_BAIT_313,
+            Items.FEATHER_314,
+            Items.ROE_11324,
+            Items.FISH_OFFCUTS_11334,
+            Items.CAVIAR_11326,
+        )
 
     override fun checkRequirements(): Boolean {
         if (getStatLevel(player, Skills.FISHING) < 48) {
@@ -23,12 +32,19 @@ class BarbFishingPulse(player: Player) : SkillPulse<NPC>(player, NPC(NPCs.FISHIN
         if (getStatLevel(player, Skills.AGILITY) < 15 || getStatLevel(player, Skills.STRENGTH) < 15) {
             player.sendMessages(
                 "You need a ",
-                if (getStatLevel(player, Skills.AGILITY) < 15 && getStatLevel(
+                if (getStatLevel(player, Skills.AGILITY) < 15 &&
+                    getStatLevel(
                         player,
-                        Skills.STRENGTH
+                        Skills.STRENGTH,
                     ) < 15
-                ) "agility and strength" else if (getStatLevel(player, Skills.AGILITY) < 15) "agility" else "strength",
-                " level of at least 15 to fish here."
+                ) {
+                    "agility and strength"
+                } else if (getStatLevel(player, Skills.AGILITY) < 15) {
+                    "agility"
+                } else {
+                    "strength"
+                },
+                " level of at least 15 to fish here.",
             )
             return false
         }
@@ -57,22 +73,23 @@ class BarbFishingPulse(player: Player) : SkillPulse<NPC>(player, NPC(NPCs.FISHIN
         val stragiXP = arrayOf(5, 6, 7)
         val fishXP = arrayOf(50, 70, 80)
         val reward = getRandomFish()
-        val success = rollSuccess(
+        val success =
+            rollSuccess(
+                when (reward.id) {
+                    Items.LEAPING_TROUT_11328 -> 48
+                    Items.LEAPING_SALMON_11330 -> 58
+                    Items.LEAPING_STURGEON_11332 -> 70
+                    else -> 99
+                },
+            )
+        val index = (
             when (reward.id) {
-                Items.LEAPING_TROUT_11328 -> 48
-                Items.LEAPING_SALMON_11330 -> 58
-                Items.LEAPING_STURGEON_11332 -> 70
-                else -> 99
+                Items.LEAPING_TROUT_11328 -> 0
+                Items.LEAPING_SALMON_11330 -> 1
+                Items.LEAPING_STURGEON_11332 -> 2
+                else -> 0
             }
         )
-        val index = (
-                when (reward.id) {
-                    Items.LEAPING_TROUT_11328 -> 0
-                    Items.LEAPING_SALMON_11330 -> 1
-                    Items.LEAPING_STURGEON_11332 -> 2
-                    else -> 0
-                }
-                )
         sendMessage(player, "You attempt to catch fish.")
         if (success) {
             if (!removeItem(player, Items.FISH_OFFCUTS_11334)) {
@@ -90,7 +107,7 @@ class BarbFishingPulse(player: Player) : SkillPulse<NPC>(player, NPC(NPCs.FISHIN
                 sendDialogueLines(
                     player,
                     "You feel you have learned more of barbarian ways. Otto might wish",
-                    "to talk to you more."
+                    "to talk to you more.",
                 )
             }
         }
@@ -99,7 +116,6 @@ class BarbFishingPulse(player: Player) : SkillPulse<NPC>(player, NPC(NPCs.FISHIN
     }
 
     fun rollSuccess(fish: Int): Boolean {
-
         val level = 1 + player.skills.getLevel(Skills.FISHING) + player.familiarManager.getBoost(Skills.FISHING)
 
         val hostRatio: Double = Math.random() * fish
@@ -110,7 +126,6 @@ class BarbFishingPulse(player: Player) : SkillPulse<NPC>(player, NPC(NPCs.FISHIN
     }
 
     fun getRandomFish(): Item {
-
         val fish = arrayOf(Items.LEAPING_TROUT_11328, Items.LEAPING_SALMON_11330, Items.LEAPING_STURGEON_11332)
 
         val fishing = player.skills.getLevel(Skills.FISHING)

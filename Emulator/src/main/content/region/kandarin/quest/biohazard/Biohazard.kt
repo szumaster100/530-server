@@ -1,9 +1,5 @@
 package content.region.kandarin.quest.biohazard
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.quest.isQuestComplete
 import core.api.removeAttributes
 import core.api.rewardXP
@@ -12,11 +8,17 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class Biohazard : Quest(Quests.BIOHAZARD, 36, 35, 3, Vars.VARP_QUEST_BIOHAZARD_PROGRESS_68, 0, 1, 16) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 11
         player ?: return
@@ -30,7 +32,7 @@ class Biohazard : Quest(Quests.BIOHAZARD, 36, 35, 3, Vars.VARP_QUEST_BIOHAZARD_P
                 player,
                 "!!I need to complete ${Quests.PLAGUE_CITY} before I can attempt this??",
                 line++,
-                isQuestComplete(player, Quests.PLAGUE_CITY)
+                isQuestComplete(player, Quests.PLAGUE_CITY),
             )
             line(player, "!!Quest??.", line++, isQuestComplete(player, Quests.PLAGUE_CITY))
             line++

@@ -1,7 +1,5 @@
 package content.region.misthalin.quest.dragon.npc
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.region.misthalin.quest.dragon.DragonSlayer
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.*
@@ -16,6 +14,8 @@ import core.game.node.item.Item
 import core.game.world.map.Location
 import core.game.world.map.RegionManager.isTeleportPermitted
 import core.tools.RandomFunction
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 class MelzarTheMadNPC : AbstractNPC {
     private val combatHandler = MelzarSwingHandler()
@@ -24,7 +24,11 @@ class MelzarTheMadNPC : AbstractNPC {
 
     private constructor(id: Int, location: Location) : super(id, location)
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return MelzarTheMadNPC(id, location)
     }
 
@@ -60,29 +64,44 @@ class MelzarTheMadNPC : AbstractNPC {
         private var style = CombatStyle.MAGIC
         private val SPELL_IDS = intArrayOf(8, 2, 7, 11)
 
-        override fun canSwing(entity: Entity, victim: Entity): InteractionType? {
+        override fun canSwing(
+            entity: Entity,
+            victim: Entity,
+        ): InteractionType? {
             return type!!.swingHandler.canSwing(entity, victim)
         }
 
-        override fun swing(entity: Entity?, victim: Entity?, state: BattleState?): Int {
-            style = if (RandomFunction.random(5) == 3) {
-                CombatStyle.MELEE
-            } else {
-                CombatStyle.MAGIC
-            }
+        override fun swing(
+            entity: Entity?,
+            victim: Entity?,
+            state: BattleState?,
+        ): Int {
+            style =
+                if (RandomFunction.random(5) == 3) {
+                    CombatStyle.MELEE
+                } else {
+                    CombatStyle.MAGIC
+                }
             return 2
         }
 
-        override fun visualize(entity: Entity, victim: Entity?, state: BattleState?) {
+        override fun visualize(
+            entity: Entity,
+            victim: Entity?,
+            state: BattleState?,
+        ) {
             if (style == CombatStyle.MAGIC) {
                 state!!.spell = combatSpell
                 for (i in 0..1) {
                     val l = getLocation().transform(RandomFunction.random(1, 5), RandomFunction.random(1, 5), 0)
-                    if (isTeleportPermitted(l) && GroundItemManager.get(
+                    if (isTeleportPermitted(l) &&
+                        GroundItemManager.get(
                             CABBAGE.id,
                             l,
-                            null
-                        ) == null && l.y <= 9651 && l.y >= 9644
+                            null,
+                        ) == null &&
+                        l.y <= 9651 &&
+                        l.y >= 9644
                     ) {
                         if (victim is Player) victim.packetDispatch.sendPositionedGraphic(86, 1, 0, l)
                         GroundItemManager.create(CABBAGE, l, (victim as Player?))
@@ -92,11 +111,19 @@ class MelzarTheMadNPC : AbstractNPC {
             style.swingHandler.visualize(entity, victim, state)
         }
 
-        override fun visualizeImpact(entity: Entity?, victim: Entity?, state: BattleState?) {
+        override fun visualizeImpact(
+            entity: Entity?,
+            victim: Entity?,
+            state: BattleState?,
+        ) {
             style.swingHandler.visualizeImpact(entity, victim, state)
         }
 
-        override fun adjustBattleState(entity: Entity, victim: Entity, state: BattleState) {
+        override fun adjustBattleState(
+            entity: Entity,
+            victim: Entity,
+            state: BattleState,
+        ) {
             style.swingHandler.adjustBattleState(entity, victim, state)
         }
 
@@ -104,15 +131,26 @@ class MelzarTheMadNPC : AbstractNPC {
             return style.swingHandler.calculateAccuracy(entity)
         }
 
-        override fun calculateDefence(victim: Entity?, attacker: Entity?): Int {
+        override fun calculateDefence(
+            victim: Entity?,
+            attacker: Entity?,
+        ): Int {
             return style.swingHandler.calculateDefence(victim, attacker)
         }
 
-        override fun calculateHit(entity: Entity?, victim: Entity?, modifier: Double): Int {
+        override fun calculateHit(
+            entity: Entity?,
+            victim: Entity?,
+            modifier: Double,
+        ): Int {
             return style.swingHandler.calculateHit(entity, victim, modifier)
         }
 
-        override fun impact(entity: Entity?, victim: Entity?, state: BattleState?) {
+        override fun impact(
+            entity: Entity?,
+            victim: Entity?,
+            state: BattleState?,
+        ) {
             style.swingHandler.impact(entity, victim, state)
         }
 
@@ -120,21 +158,29 @@ class MelzarTheMadNPC : AbstractNPC {
             return style.swingHandler.getArmourSet(e)
         }
 
-        override fun getSetMultiplier(e: Entity?, skillId: Int): Double {
+        override fun getSetMultiplier(
+            e: Entity?,
+            skillId: Int,
+        ): Double {
             return style.swingHandler.getSetMultiplier(e, skillId)
         }
 
         val combatSpell: CombatSpell?
-            get() = (SpellBookManager.SpellBook.MODERN.getSpell(SPELL_IDS[RandomFunction.random(SPELL_IDS.size)]) as CombatSpell?)
+            get() = (
+                SpellBookManager.SpellBook.MODERN.getSpell(
+                    SPELL_IDS[RandomFunction.random(SPELL_IDS.size)],
+                ) as CombatSpell?
+            )
     }
 
     companion object {
         val CABBAGE: Item = Item(Items.CABBAGE_1965)
-        val MESSAGES = arrayOf(
-            "Feel the wrath of my feet!",
-            "By the power of custard!",
-            "Let me drink my tea in peace.",
-            "Leave me alone, I need to feed my pet rock."
-        )
+        val MESSAGES =
+            arrayOf(
+                "Feel the wrath of my feet!",
+                "By the power of custard!",
+                "Let me drink my tea in peace.",
+                "Leave me alone, I need to feed my pet rock.",
+            )
     }
 }

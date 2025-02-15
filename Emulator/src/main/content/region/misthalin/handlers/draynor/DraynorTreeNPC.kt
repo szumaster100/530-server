@@ -1,6 +1,5 @@
 package content.region.misthalin.handlers.draynor
 
-import org.rs.consts.NPCs
 import core.game.node.entity.combat.ImpactHandler.HitsplatType
 import core.game.node.entity.impl.Animator.Priority
 import core.game.node.entity.npc.AbstractNPC
@@ -10,17 +9,21 @@ import core.game.world.map.RegionManager.getLocalPlayers
 import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
 import core.tools.RandomFunction
+import org.rs.consts.NPCs
 
 @Initializable
 class DraynorTreeNPC : AbstractNPC {
-
     private var attackDelay = 0
 
     constructor() : super(0, null, false)
 
     private constructor(id: Int, location: Location) : super(id, location, false)
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return DraynorTreeNPC(id, location)
     }
 

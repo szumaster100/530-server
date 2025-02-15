@@ -2,7 +2,9 @@ package core.game.global.report
 
 import core.game.node.entity.player.Player
 
-enum class Rule(val rule: Int) {
+enum class Rule(
+    val rule: Int,
+) {
     OFFENSIVE_LANGUAGE(0),
     ITEM_SCAMMING(1),
     PASSWORD_SCAMMING(2),
@@ -15,10 +17,10 @@ enum class Rule(val rule: Int) {
     MISUSE_OF_CUSTOMER_SUPPORT(9),
     ADVERTISING(10),
     REAL_WORLD_ITEM_TRADING(11),
-    ASKING_PERSONAL_DETAILS(12);
+    ASKING_PERSONAL_DETAILS(12),
+    ;
 
     companion object {
-
         @JvmStatic
         fun canRequest(target: Player?): Boolean {
             return target?.let {

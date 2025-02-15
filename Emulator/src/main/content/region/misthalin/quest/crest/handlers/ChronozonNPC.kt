@@ -1,23 +1,29 @@
 package content.region.misthalin.quest.crest.handlers
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.BattleState
 import core.game.node.entity.combat.CombatStyle
 import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.player.Player
 import core.game.world.map.Location
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
-class ChronozonNPC(id: Int, location: Location?) : AbstractNPC(NPCs.CHRONOZON_667, Location(3086, 9936, 0)) {
-
+class ChronozonNPC(
+    id: Int,
+    location: Location?,
+) : AbstractNPC(NPCs.CHRONOZON_667, Location(3086, 9936, 0)) {
     private lateinit var targetplayer: Player
     private var amountOfFireDamageTaken: Int = 0
     private var amountOfAirDamageTaken: Int = 0
     private var amountOfWaterDamageTaken: Int = 0
     private var amountOfEarthDamageTaken: Int = 0
 
-    override fun construct(id: Int, location: Location?, vararg objects: Any?): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location?,
+        vararg objects: Any?,
+    ): AbstractNPC {
         return ChronozonNPC(id, location)
     }
 
@@ -27,8 +33,10 @@ class ChronozonNPC(id: Int, location: Location?) : AbstractNPC(NPCs.CHRONOZON_66
 
     override fun checkImpact(state: BattleState?) {
         if (state != null) {
-            if (amountOfAirDamageTaken == 0 || amountOfWaterDamageTaken == 0 ||
-                amountOfEarthDamageTaken == 0 || amountOfFireDamageTaken == 0
+            if (amountOfAirDamageTaken == 0 ||
+                amountOfWaterDamageTaken == 0 ||
+                amountOfEarthDamageTaken == 0 ||
+                amountOfFireDamageTaken == 0
             ) {
                 if (state.style != CombatStyle.MAGIC || state.totalDamage >= skills.lifepoints) {
                     state.neutralizeHits()

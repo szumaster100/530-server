@@ -5,7 +5,9 @@ import core.net.packet.PacketRepository
 import core.net.packet.context.CameraContext
 import core.net.packet.out.CameraViewPacket
 
-class PlayerCamera(val player: Player?) {
+class PlayerCamera(
+    val player: Player?,
+) {
     var ctx: CameraContext? = null
 
     /**
@@ -15,7 +17,11 @@ class PlayerCamera(val player: Player?) {
      * @param y The y-coordinate
      * @param height The height
      */
-    fun setPosition(x: Int, y: Int, height: Int) {
+    fun setPosition(
+        x: Int,
+        y: Int,
+        height: Int,
+    ) {
         player ?: return
         ctx = CameraContext(player, CameraContext.CameraType.SET, x, y, height, 0, 0)
         PacketRepository.send(CameraViewPacket::class.java, ctx!!)
@@ -29,7 +35,12 @@ class PlayerCamera(val player: Player?) {
      * @param height The height
      * @param speed The rotation speed
      */
-    fun rotateTo(x: Int, y: Int, height: Int, speed: Int) {
+    fun rotateTo(
+        x: Int,
+        y: Int,
+        height: Int,
+        speed: Int,
+    ) {
         player ?: return
         ctx = CameraContext(player, CameraContext.CameraType.ROTATION, x, y, height, speed, 1)
         PacketRepository.send(CameraViewPacket::class.java, ctx!!)
@@ -43,10 +54,24 @@ class PlayerCamera(val player: Player?) {
      * @param diffHeight The difference in height
      * @param speed The rotation speed
      */
-    fun rotateBy(diffX: Int, diffY: Int, diffHeight: Int, speed: Int) {
+    fun rotateBy(
+        diffX: Int,
+        diffY: Int,
+        diffHeight: Int,
+        speed: Int,
+    ) {
         player ?: return
         ctx ?: return
-        ctx = CameraContext(player, CameraContext.CameraType.ROTATION, ctx!!.x + diffX, ctx!!.y + diffY, ctx!!.height + diffHeight, speed, 1)
+        ctx =
+            CameraContext(
+                player,
+                CameraContext.CameraType.ROTATION,
+                ctx!!.x + diffX,
+                ctx!!.y + diffY,
+                ctx!!.height + diffHeight,
+                speed,
+                1,
+            )
         PacketRepository.send(CameraViewPacket::class.java, ctx!!)
     }
 
@@ -58,7 +83,12 @@ class PlayerCamera(val player: Player?) {
      * @param height The height
      * @param speed The movement speed
      */
-    fun panTo(x: Int, y: Int, height: Int, speed: Int) {
+    fun panTo(
+        x: Int,
+        y: Int,
+        height: Int,
+        speed: Int,
+    ) {
         player ?: return
         ctx = CameraContext(player, CameraContext.CameraType.POSITION, x, y, height, speed, 1)
         PacketRepository.send(CameraViewPacket::class.java, ctx!!)
@@ -73,7 +103,13 @@ class PlayerCamera(val player: Player?) {
      * @param frequency The frequency value
      * @param speed The shake speed
      */
-    fun shake(cameraType: Int, jitter: Int, amplitude: Int, frequency: Int, speed: Int) {
+    fun shake(
+        cameraType: Int,
+        jitter: Int,
+        amplitude: Int,
+        frequency: Int,
+        speed: Int,
+    ) {
         player ?: return
         ctx = CameraContext(player, CameraContext.CameraType.SHAKE, cameraType, jitter, amplitude, frequency, speed)
         PacketRepository.send(CameraViewPacket::class.java, ctx!!)
@@ -88,8 +124,23 @@ class PlayerCamera(val player: Player?) {
      * @param frequency The frequency value
      * @param speed The shake speed
      */
-    fun shake(cameraType: CameraShakeType, jitter: Int, amplitude: Int, frequency: Int, speed: Int) {
-        val ctx = CameraContext(player, CameraContext.CameraType.SHAKE, cameraType.ordinal, jitter, amplitude, frequency, speed)
+    fun shake(
+        cameraType: CameraShakeType,
+        jitter: Int,
+        amplitude: Int,
+        frequency: Int,
+        speed: Int,
+    ) {
+        val ctx =
+            CameraContext(
+                player,
+                CameraContext.CameraType.SHAKE,
+                cameraType.ordinal,
+                jitter,
+                amplitude,
+                frequency,
+                speed,
+            )
         PacketRepository.send(CameraViewPacket::class.java, ctx)
     }
 

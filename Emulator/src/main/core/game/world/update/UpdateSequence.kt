@@ -12,7 +12,6 @@ import core.net.packet.out.ClearMinimapFlag
 import core.tools.integration.grafana.Grafana
 
 class UpdateSequence {
-
     // List of players in the lobby.
     var lobbyList: List<Player>? = null
 
@@ -65,7 +64,6 @@ class UpdateSequence {
     }
 
     companion object {
-
         @JvmStatic
         val rendererPlayers = InitializingNodeList<Player>()
     }

@@ -1,16 +1,14 @@
 package content.region.asgarnia.handlers
 
-import org.rs.consts.Scenery
 import content.data.items.SkillingTool
 import core.api.*
 import core.game.interaction.InteractionListener
 import core.game.interaction.QueueStrength
 import core.game.node.entity.skill.Skills
+import org.rs.consts.Scenery
 
 class WhiteWolfMountainListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(Scenery.ROCK_SLIDE_2634, SCENERY, "mine", "investigate") { player, node ->
             val option = getUsedOption(player)
             val pickaxe = SkillingTool.getPickaxe(player)

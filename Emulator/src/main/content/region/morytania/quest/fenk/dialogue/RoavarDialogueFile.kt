@@ -1,6 +1,5 @@
 package content.region.morytania.quest.fenk.dialogue
 
-import org.rs.consts.Items
 import core.api.addItemOrDrop
 import core.api.amountInInventory
 import core.api.removeItem
@@ -11,10 +10,15 @@ import core.game.dialogue.Topic
 import core.game.node.item.Item
 import core.tools.END_DIALOGUE
 import core.tools.START_DIALOGUE
+import org.rs.consts.Items
 
-class RoavarDialogueFile(private val dialogueNum: Int = 0) : DialogueFile() {
-
-    override fun handle(componentID: Int, buttonID: Int) {
+class RoavarDialogueFile(
+    private val dialogueNum: Int = 0,
+) : DialogueFile() {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         when (stage) {
             START_DIALOGUE -> {
                 when (dialogueNum) {
@@ -29,7 +33,9 @@ class RoavarDialogueFile(private val dialogueNum: Int = 0) : DialogueFile() {
                     }
 
                     3 -> {
-                        npcl("You can leave that alone, my friend. I've already sold you one of your own - eat that. I can't afford to give away freebies in this business!")
+                        npcl(
+                            "You can leave that alone, my friend. I've already sold you one of your own - eat that. I can't afford to give away freebies in this business!",
+                        )
                         stage = END_DIALOGUE
                     }
 
@@ -44,18 +50,24 @@ class RoavarDialogueFile(private val dialogueNum: Int = 0) : DialogueFile() {
             2 -> playerl("What exactly is in the jar?").also { stage = 3 }
             3 -> npcl("Pickled brain, my friend. Only 50 gold to you.").also { stage++ }
             4 -> playerl("Err... pickled brain from what animal?").also { stage++ }
-            5 -> npcl("Animal? Don't be disgusting, man! No, this a human brain - only the best for my customers.").also { stage++ }
-            6 -> showTopics(
-                Topic(FaceAnim.HALF_GUILTY, "I'll buy one.", 10, true),
-                Topic(FaceAnim.HALF_GUILTY, "I'm not hungry.", 20, true),
-            )
+            5 ->
+                npcl(
+                    "Animal? Don't be disgusting, man! No, this a human brain - only the best for my customers.",
+                ).also { stage++ }
+            6 ->
+                showTopics(
+                    Topic(FaceAnim.HALF_GUILTY, "I'll buy one.", 10, true),
+                    Topic(FaceAnim.HALF_GUILTY, "I'm not hungry.", 20, true),
+                )
 
             10 -> playerl("I'll buy one, please.").also { stage++ }
             11 -> {
                 if (amountInInventory(player!!, Items.COINS_995) >= 50) {
                     if (removeItem(player!!, Item(Items.COINS_995, 50))) {
                         addItemOrDrop(player!!, Items.PICKLED_BRAIN_4199, 1)
-                        npcl("A very wise choice. Don't eat it all at once, savour every morsel - that's my advice to you.")
+                        npcl(
+                            "A very wise choice. Don't eat it all at once, savour every morsel - that's my advice to you.",
+                        )
                     }
                 } else {
                     sendDialogue(player!!, "You do not have enough coins.")

@@ -1,13 +1,12 @@
 package content.global.handlers.iface
 
-import org.rs.consts.Components
 import core.api.closeInterface
 import core.api.runTask
 import core.game.interaction.InterfaceListener
 import core.game.node.entity.player.info.login.LoginConfiguration
+import org.rs.consts.Components
 
 class LoginInterface : InterfaceListener {
-
     override fun defineInterfaceListeners() {
         on(Components.WELCOME_SCREEN_378) { player, _, _, buttonID, _, _ ->
             val playButton = 140

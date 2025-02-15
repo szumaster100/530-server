@@ -4,17 +4,18 @@ import core.api.logWithStack
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.ImpactHandler
 import core.game.node.entity.player.Player
-import core.tools.Log
 import core.game.world.update.flag.EFlagProvider
 import core.game.world.update.flag.EFlagType
 import core.game.world.update.flag.EntityFlag
 import core.game.world.update.flag.EntityFlags
 import core.game.world.update.flag.context.HitMark
 import core.net.packet.IoBuffer
+import core.tools.Log
 import java.util.concurrent.atomic.AtomicBoolean
 
-class UpdateMasks(val owner: Entity) {
-
+class UpdateMasks(
+    val owner: Entity,
+) {
     var appearanceStamp: Long = 0
 
     private val type = EFlagType.of(owner) // The flag type of the entity
@@ -25,15 +26,27 @@ class UpdateMasks(val owner: Entity) {
     private val syncedElements = arrayOfNulls<MaskElement?>(SIZE) // Array holding synced update elements
 
     // Data class for storing the encoder and context of each flag element
-    private data class MaskElement(val encoder: EFlagProvider, val context: Any?)
+    private data class MaskElement(
+        val encoder: EFlagProvider,
+        val context: Any?,
+    )
 
     @JvmOverloads
-    fun register(flag: EntityFlag, context: Any?, sync: Boolean = false): Boolean {
+    fun register(
+        flag: EntityFlag,
+        context: Any?,
+        sync: Boolean = false,
+    ): Boolean {
         var synced = sync
-        val provider = EntityFlags.getFlagFor(type, flag) ?: run {
-            logWithStack(this::class.java, Log.ERR, "Tried to use flag ${flag.name} which is not available for ${type.name} in this revision.")
-            return false
-        }
+        val provider =
+            EntityFlags.getFlagFor(type, flag) ?: run {
+                logWithStack(
+                    this::class.java,
+                    Log.ERR,
+                    "Tried to use flag ${flag.name} which is not available for ${type.name} in this revision.",
+                )
+                return false
+            }
 
         if (updating.get()) return false
 
@@ -65,7 +78,11 @@ class UpdateMasks(val owner: Entity) {
         return false
     }
 
-    fun write(p: Player?, e: Entity?, buffer: IoBuffer) {
+    fun write(
+        p: Player?,
+        e: Entity?,
+        buffer: IoBuffer,
+    ) {
         var maskData = presenceFlags
         if (maskData >= 0x100) {
             maskData = maskData or if (e is Player) 0x10 else 0x8
@@ -80,7 +97,12 @@ class UpdateMasks(val owner: Entity) {
         }
     }
 
-    fun writeSynced(p: Player?, e: Entity?, buffer: IoBuffer, appearance: Boolean) {
+    fun writeSynced(
+        p: Player?,
+        e: Entity?,
+        buffer: IoBuffer,
+        appearance: Boolean,
+    ) {
         var maskData = presenceFlags
         var synced = syncedPresenceFlags
         var appearanceFlag = EntityFlags.getPresenceFlag(type, EntityFlag.Appearance)
@@ -118,7 +140,11 @@ class UpdateMasks(val owner: Entity) {
         updating.set(true)
     }
 
-    private fun registerHitUpdate(e: Entity, impact: ImpactHandler.Impact, secondary: Boolean): HitMark {
+    private fun registerHitUpdate(
+        e: Entity,
+        impact: ImpactHandler.Impact,
+        secondary: Boolean,
+    ): HitMark {
         val mark = HitMark(impact.amount, impact.type.ordinal, e)
         register(if (secondary) EntityFlag.SecondaryHit else EntityFlag.PrimaryHit, mark)
         return mark
@@ -144,7 +170,6 @@ class UpdateMasks(val owner: Entity) {
     }
 
     companion object {
-
         const val SIZE = 11
     }
 }

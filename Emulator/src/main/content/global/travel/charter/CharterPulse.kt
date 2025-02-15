@@ -1,28 +1,32 @@
 package content.global.travel.charter
 
-import org.rs.consts.Components
 import core.api.*
 import core.api.ui.setMinimapState
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.diary.DiaryType
 import core.game.system.task.Pulse
 import core.tools.StringUtils
+import org.rs.consts.Components
 
-class CharterPulse(private val player: Player, private val charter: Charter) : Pulse(1) {
-
+class CharterPulse(
+    private val player: Player,
+    private val charter: Charter,
+) : Pulse(1) {
     private var counter = 0
 
     override fun pulse(): Boolean {
         when (counter++) {
             0 -> prepare()
-            1 -> if (charter != Charter.PORT_SARIM_TO_CRANDOR) {
-                player.properties.teleportLocation = charter.location
-            }
+            1 ->
+                if (charter != Charter.PORT_SARIM_TO_CRANDOR) {
+                    player.properties.teleportLocation = charter.location
+                }
 
-            else -> if (counter == charter.delay) {
-                arrive()
-                return true
-            }
+            else ->
+                if (counter == charter.delay) {
+                    arrive()
+                    return true
+                }
         }
         return false
     }

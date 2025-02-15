@@ -1,6 +1,5 @@
 package content.region.asgarnia.quest.hunt.handlers
 
-import org.rs.consts.NPCs
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.CombatStyle
 import core.game.node.entity.npc.AbstractNPC
@@ -9,15 +8,19 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld.Pulser
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
 class GardenerNPC : AbstractNPC {
-
     constructor() : super(0, null, true)
 
     private constructor(id: Int, location: Location) : super(id, location, true)
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return GardenerNPC(id, location)
     }
 
@@ -36,13 +39,17 @@ class GardenerNPC : AbstractNPC {
                             clear()
                             return true
                         }
-                    }
+                    },
                 )
             }
         }
     }
 
-    override fun isAttackable(entity: Entity, style: CombatStyle, message: Boolean): Boolean {
+    override fun isAttackable(
+        entity: Entity,
+        style: CombatStyle,
+        message: Boolean,
+    ): Boolean {
         val target = getAttribute<Player>("target", null)
         if (target !== entity) {
             return false

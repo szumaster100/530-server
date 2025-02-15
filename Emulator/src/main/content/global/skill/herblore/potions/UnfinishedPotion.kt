@@ -6,7 +6,12 @@ import core.game.node.item.Item
 import org.rs.consts.Items
 import java.util.*
 
-enum class UnfinishedPotion(val base: Item, val ingredient: Item, val level: Int, val potion: Item) {
+enum class UnfinishedPotion(
+    val base: Item,
+    val ingredient: Item,
+    val level: Int,
+    val potion: Item,
+) {
     GUAM(HerblorePulse.VIAL_OF_WATER, Herbs.GUAM.product, 3, Item(Items.GUAM_POTIONUNF_91)),
     ROGUE_PURSE(HerblorePulse.VIAL_OF_WATER, Herbs.ROGUES_PUSE.product, 3, Item(Items.ROGUES_PURSE_POTIONUNF_4840)),
     MARRENTILL(HerblorePulse.VIAL_OF_WATER, Herbs.MARRENTILL.product, 5, Item(Items.MARRENTILL_POTIONUNF_93)),
@@ -23,19 +28,38 @@ enum class UnfinishedPotion(val base: Item, val ingredient: Item, val level: Int
     LANTADYME(HerblorePulse.VIAL_OF_WATER, Herbs.LANTADYME.product, 69, Item(Items.LANTADYME_POTIONUNF_2483)),
     DWARF_WEED(HerblorePulse.VIAL_OF_WATER, Herbs.DWARF_WEED.product, 72, Item(Items.DWARF_WEED_POTIONUNF_109)),
     TORSTOL(HerblorePulse.VIAL_OF_WATER, Herbs.TORSTOL.product, 75, Item(Items.TORSTOL_POTIONUNF_111)),
-    STRONG_WEAPON_POISON(HerblorePulse.COCONUT_MILK, Item(Items.CACTUS_SPINE_6016), 73, Item(Items.WEAPON_POISON_PLUSUNF_5936)),
-    SUPER_STRONG_WEAPON_POISON(HerblorePulse.COCONUT_MILK, Item(Items.CAVE_NIGHTSHADE_2398), 82, Item(Items.WEAPON_POISON_PLUS_PLUSUNF_5939)),
+    STRONG_WEAPON_POISON(
+        HerblorePulse.COCONUT_MILK,
+        Item(Items.CACTUS_SPINE_6016),
+        73,
+        Item(Items.WEAPON_POISON_PLUSUNF_5936),
+    ),
+    SUPER_STRONG_WEAPON_POISON(
+        HerblorePulse.COCONUT_MILK,
+        Item(Items.CAVE_NIGHTSHADE_2398),
+        82,
+        Item(Items.WEAPON_POISON_PLUS_PLUSUNF_5939),
+    ),
     STRONG_ANTIPOISON(HerblorePulse.COCONUT_MILK, Herbs.TOADFLAX.product, 68, Item(Items.ANTIPOISON_PLUSUNF_5942)),
-    SUPER_STRONG_ANTIPOISON(HerblorePulse.COCONUT_MILK, Herbs.IRIT.product, 79, Item(Items.ANTIPOISON_PLUS_PLUSUNF_5951));
+    SUPER_STRONG_ANTIPOISON(
+        HerblorePulse.COCONUT_MILK,
+        Herbs.IRIT.product,
+        79,
+        Item(Items.ANTIPOISON_PLUS_PLUSUNF_5951),
+    ),
+    ;
 
     companion object {
-        fun forItem(item: Item, base: Item): UnfinishedPotion? {
-            return Arrays.stream(values())
+        fun forItem(
+            item: Item,
+            base: Item,
+        ): UnfinishedPotion? {
+            return Arrays
+                .stream(values())
                 .filter { potion: UnfinishedPotion? ->
                     (potion!!.ingredient.id == item.id || potion.ingredient.id == base.id) &&
-                            (item.id == potion.base.id || base.id == potion.base.id)
-                }
-                .findFirst()
+                        (item.id == potion.base.id || base.id == potion.base.id)
+                }.findFirst()
                 .orElse(null)
         }
     }

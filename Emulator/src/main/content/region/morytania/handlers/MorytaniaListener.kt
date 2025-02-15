@@ -1,23 +1,21 @@
 package content.region.morytania.handlers
 
-import org.rs.consts.*
 import core.api.*
+import core.api.quest.hasRequirement
+import core.api.ui.setMinimapState
 import core.game.global.action.ClimbActionHandler
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.interaction.QueueStrength
 import core.game.system.task.Pulse
-import core.api.quest.hasRequirement
-import core.api.ui.setMinimapState
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
+import org.rs.consts.*
 import kotlin.random.Random
 
 class MorytaniaListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(SWAMP_BOAT, IntType.SCENERY, "board", "Board ( Pay 10 )") { player, node ->
             if (!hasRequirement(player, Quests.NATURE_SPIRIT)) return@on true
             lock(player, 13)
@@ -61,10 +59,34 @@ class MorytaniaListener : InteractionListener {
                 failAnim = Animation(771)
                 failLand = Location(3438, 3328)
             }
-            if (content.global.skill.agility.AgilityHandler.hasFailed(player, 1, 0.1)) {
+            if (content.global.skill.agility.AgilityHandler
+                    .hasFailed(player, 1, 0.1)
+            ) {
                 val end = if (fromGrotto) FAIL_LOCATION else start
-                content.global.skill.agility.AgilityHandler.forceWalk(player, -1, start, end, failAnim, 15, 0.0, null, 0).endAnimation = SWIMMING_ANIMATION
-                content.global.skill.agility.AgilityHandler.forceWalk(player, -1, FAIL_LOCATION, failLand, SWIMMING_ANIMATION, 15, 2.0, null, 3)
+                content.global.skill.agility.AgilityHandler
+                    .forceWalk(
+                        player,
+                        -1,
+                        start,
+                        end,
+                        failAnim,
+                        15,
+                        0.0,
+                        null,
+                        0,
+                    ).endAnimation =
+                    SWIMMING_ANIMATION
+                content.global.skill.agility.AgilityHandler.forceWalk(
+                    player,
+                    -1,
+                    FAIL_LOCATION,
+                    failLand,
+                    SWIMMING_ANIMATION,
+                    15,
+                    2.0,
+                    null,
+                    3,
+                )
                 submitIndividualPulse(
                     player,
                     object : Pulse(2) {
@@ -78,15 +100,25 @@ class MorytaniaListener : InteractionListener {
                                 failLand,
                                 SWIMMING_ANIMATION,
                                 Random.nextInt(1, 7),
-                                "You nearly drown in the disgusting swamp."
+                                "You nearly drown in the disgusting swamp.",
                             )
                             return true
                         }
-                    }
+                    },
                 )
             } else {
                 val end = if (fromGrotto) start.transform(0, -3, 0) else start.transform(0, 3, 0)
-                content.global.skill.agility.AgilityHandler.forceWalk(player, -1, start, end, JUMP_ANIMATION, 15, 15.0, null, 0)
+                content.global.skill.agility.AgilityHandler.forceWalk(
+                    player,
+                    -1,
+                    start,
+                    end,
+                    JUMP_ANIMATION,
+                    15,
+                    15.0,
+                    null,
+                    0,
+                )
             }
             return@on true
         }
@@ -95,12 +127,22 @@ class MorytaniaListener : InteractionListener {
             if (node.location == Location(3502, 3431)) {
                 when (getUsedOption(player)) {
                     "climb up" -> ClimbActionHandler.climb(player, ClimbActionHandler.CLIMB_UP, Location(3502, 3430, 0))
-                    "climb down" -> ClimbActionHandler.climb(player, ClimbActionHandler.CLIMB_DOWN, Location(3503, 3431, 0))
+                    "climb down" ->
+                        ClimbActionHandler.climb(
+                            player,
+                            ClimbActionHandler.CLIMB_DOWN,
+                            Location(3503, 3431, 0),
+                        )
                 }
             } else {
                 when (getUsedOption(player)) {
                     "climb up" -> ClimbActionHandler.climb(player, ClimbActionHandler.CLIMB_UP, Location(3502, 3427, 0))
-                    "climb down" -> ClimbActionHandler.climb(player, ClimbActionHandler.CLIMB_DOWN, Location(3502, 3425, 0))
+                    "climb down" ->
+                        ClimbActionHandler.climb(
+                            player,
+                            ClimbActionHandler.CLIMB_DOWN,
+                            Location(3502, 3425, 0),
+                        )
                 }
             }
             return@on true

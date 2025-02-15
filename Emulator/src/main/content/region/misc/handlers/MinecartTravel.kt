@@ -1,41 +1,50 @@
 package content.region.misc.handlers
 
-import org.rs.consts.Components
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.*
+import core.api.quest.hasRequirement
+import core.api.ui.setMinimapState
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.system.task.Pulse
 import core.game.world.map.Direction
 import core.game.world.map.Location
-import core.api.quest.hasRequirement
-import core.api.ui.setMinimapState
+import org.rs.consts.Components
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 object MinecartTravel {
-
     @JvmStatic
     fun goToKeldagrim(player: Player) {
-        if (!hasRequirement(player, Quests.THE_GIANT_DWARF))
+        if (!hasRequirement(player, Quests.THE_GIANT_DWARF)) {
             return
+        }
         submitWorldPulse(TravelToKeldagrimPulse(player))
     }
 
     @JvmStatic
-    fun leaveKeldagrimTo(player: Player, dest: Location) {
-        if (!hasRequirement(player, Quests.THE_GIANT_DWARF))
+    fun leaveKeldagrimTo(
+        player: Player,
+        dest: Location,
+    ) {
+        if (!hasRequirement(player, Quests.THE_GIANT_DWARF)) {
             return
+        }
         submitWorldPulse(TravelFromKeldagrimPulse(player, dest))
     }
 
-    class TravelFromKeldagrimPulse(val player: Player, val dest: Location) : Pulse() {
+    class TravelFromKeldagrimPulse(
+        val player: Player,
+        val dest: Location,
+    ) : Pulse() {
         var counter = 0
+
         override fun pulse(): Boolean {
             when (counter++) {
-                0 -> lock(player, 25).also {
-                    openInterface(player, Components.FADE_TO_BLACK_120)
-                    setMinimapState(player, 2)
-                }
+                0 ->
+                    lock(player, 25).also {
+                        openInterface(player, Components.FADE_TO_BLACK_120)
+                        setMinimapState(player, 2)
+                    }
 
                 4 -> {
                     player.properties.teleportLocation = Location.create(2911, 10171, 0)
@@ -76,15 +85,19 @@ object MinecartTravel {
         }
     }
 
-    class TravelToKeldagrimPulse(val player: Player) : Pulse() {
+    class TravelToKeldagrimPulse(
+        val player: Player,
+    ) : Pulse() {
         var counter = 0
         private var cartNPC = NPC(NPCs.MINE_CART_1544)
+
         override fun pulse(): Boolean {
             when (counter++) {
-                0 -> lock(player, 20).also {
-                    openInterface(player, Components.FADE_TO_BLACK_115)
-                    setMinimapState(player, 2)
-                }
+                0 ->
+                    lock(player, 20).also {
+                        openInterface(player, Components.FADE_TO_BLACK_115)
+                        setMinimapState(player, 2)
+                    }
 
                 3 ->
                     player.properties.teleportLocation =

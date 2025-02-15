@@ -1,7 +1,5 @@
 package content.region.morytania.dialogue.phasmatys
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.inEquipment
 import core.api.sendDialogue
 import core.game.dialogue.Dialogue
@@ -10,10 +8,13 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
-class GhostSailorDialogue(player: Player? = null) : Dialogue(player) {
-
+class GhostSailorDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         if (!inEquipment(player, Items.GHOSTSPEAK_AMULET_552)) {
@@ -21,20 +22,24 @@ class GhostSailorDialogue(player: Player? = null) : Dialogue(player) {
         } else {
             player(
                 "Hi there. Why do you still bother having ships here? I",
-                "mean - you're dead, what use are they to you?"
+                "mean - you're dead, what use are they to you?",
             )
         }
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
-            0 -> npc(
-                "We keep ships because we still need trade in",
-                "Phasmatys. Every trader that comes to Phastmatys is",
-                "made to worship the Ectofuntus, so that the Ectopower",
-                "doesn't run out."
-            ).also { stage++ }
+            0 ->
+                npc(
+                    "We keep ships because we still need trade in",
+                    "Phasmatys. Every trader that comes to Phastmatys is",
+                    "made to worship the Ectofuntus, so that the Ectopower",
+                    "doesn't run out.",
+                ).also { stage++ }
 
             1 -> player("So, without traders to worship in the Temple you're", "history right?").also { stage++ }
             2 -> npc("Aye, matey.").also { stage = END_DIALOGUE }

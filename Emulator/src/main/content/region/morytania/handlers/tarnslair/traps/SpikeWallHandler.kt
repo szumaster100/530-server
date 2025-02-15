@@ -1,6 +1,5 @@
 package content.region.morytania.handlers.tarnslair.traps
 
-import org.rs.consts.Animations
 import core.api.*
 import core.cache.def.impl.SceneryDefinition
 import core.game.interaction.OptionHandler
@@ -11,17 +10,21 @@ import core.game.system.task.Pulse
 import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Animations
 import kotlin.random.Random
 
 @Initializable
 class SpikeWallHandler : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         SceneryDefinition.forId(20920).handlers["option:search"] = this
         return this
     }
 
-    override fun handle(player: Player?, node: Node?, option: String?): Boolean {
+    override fun handle(
+        player: Player?,
+        node: Node?,
+        option: String?,
+    ): Boolean {
         if (player == null || node !is Scenery || option != "search") return false
         val animId = Animations.PICK_POCKET_881
         val animDuration = animationDuration(Animation(animId))
@@ -55,7 +58,7 @@ class SpikeWallHandler : OptionHandler() {
                     animate(player, Animation(animId))
                     return false
                 }
-            }
+            },
         )
 
         return true

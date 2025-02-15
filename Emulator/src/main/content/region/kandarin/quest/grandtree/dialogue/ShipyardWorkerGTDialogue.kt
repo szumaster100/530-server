@@ -1,6 +1,5 @@
 package content.region.kandarin.quest.grandtree.dialogue
 
-import org.rs.consts.Quests
 import core.api.face
 import core.api.getAttribute
 import core.api.quest.getQuestStage
@@ -11,10 +10,13 @@ import core.game.global.action.DoorActionHandler
 import core.game.node.scenery.Scenery
 import core.game.world.map.Location
 import core.tools.END_DIALOGUE
+import org.rs.consts.Quests
 
 class ShipyardWorkerGTDialogue : DialogueFile() {
-
-    override fun handle(componentID: Int, buttonID: Int) {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         when (stage) {
             0 -> {
                 face(npc!!, player!!, 1)
@@ -30,17 +32,19 @@ class ShipyardWorkerGTDialogue : DialogueFile() {
 
             1 -> player("I'm trying to open the gate!").also { stage++ }
             2 -> npcl("I can see that! Why?").also { stage++ }
-            3 -> options(
-                "I'm from the Ministry of Health and Safety.",
-                "Glough sent me.",
-                "I'm just looking around."
-            ).also { stage++ }
+            3 ->
+                options(
+                    "I'm from the Ministry of Health and Safety.",
+                    "Glough sent me.",
+                    "I'm just looking around.",
+                ).also { stage++ }
 
-            4 -> when (buttonID) {
-                1 -> player("I'm from the Ministry of Health and Safety.").also { stage = 40 }
-                2 -> player("Glough sent me.").also { stage = 50 }
-                3 -> player("I'm just looking around.").also { stage = 11 }
-            }
+            4 ->
+                when (buttonID) {
+                    1 -> player("I'm from the Ministry of Health and Safety.").also { stage = 40 }
+                    2 -> player("Glough sent me.").also { stage = 50 }
+                    3 -> player("I'm just looking around.").also { stage = 11 }
+                }
 
             11 -> npc("This ain't a museum! Leave now!").also { stage++ }
             12 -> player("I'll leave when I choose!").also { stage++ }
@@ -63,9 +67,10 @@ class ShipyardWorkerGTDialogue : DialogueFile() {
             29 -> player("Alright you win. I'll find another way in.").also { stage++ }
             30 -> npc("No you won't.").also { stage++ }
             31 -> player("Yes I will.").also { stage++ }
-            32 -> npc("I'm not starting that again. Maybe if", "I ignore you you'll go away...").also {
-                stage = END_DIALOGUE
-            }
+            32 ->
+                npc("I'm not starting that again. Maybe if", "I ignore you you'll go away...").also {
+                    stage = END_DIALOGUE
+                }
 
             40 -> npc("Never 'erd of 'em.").also { stage++ }
             41 -> player("You will respect my authority!").also { stage++ }
@@ -74,44 +79,52 @@ class ShipyardWorkerGTDialogue : DialogueFile() {
             51 -> player("You're wasting my time! Take me to your superior!").also { stage++ }
             52 -> npc("OK. Password.").also { stage++ }
             53 -> options("Ka.", "Ko.", "Ke.").also { stage++ }
-            54 -> when (buttonID) {
-                1 -> player("Ka.").also {
-                    setAttribute(player!!, "/save:grandtree:opt1", true)
-                    stage++
-                }
+            54 ->
+                when (buttonID) {
+                    1 ->
+                        player("Ka.").also {
+                            setAttribute(player!!, "/save:grandtree:opt1", true)
+                            stage++
+                        }
 
-                2 -> player("Ko.").also { stage++ }
-                3 -> player("Ke.").also { stage++ }
-            }
+                    2 -> player("Ko.").also { stage++ }
+                    3 -> player("Ke.").also { stage++ }
+                }
 
             55 -> options("Lo.", "Lu.", "Le.").also { stage++ }
-            56 -> when (buttonID) {
-                1 -> player("Lo.").also { stage++ }
-                2 -> player("Lu.").also {
-                    setAttribute(player!!, "/save:grandtree:opt2", true)
-                    stage++
-                }
+            56 ->
+                when (buttonID) {
+                    1 -> player("Lo.").also { stage++ }
+                    2 ->
+                        player("Lu.").also {
+                            setAttribute(player!!, "/save:grandtree:opt2", true)
+                            stage++
+                        }
 
-                3 -> playerl("Le.").also { stage++ }
-            }
+                    3 -> playerl("Le.").also { stage++ }
+                }
 
             57 -> options("Mon.", "Min.", "Men.").also { stage++ }
-            58 -> when (buttonID) {
-                1 -> player("Mon.").also { stage++ }
-                2 -> player("Min.").also {
-                    setAttribute(player!!, "/save:grandtree:opt3", true)
-                    stage++
+            58 ->
+                when (buttonID) {
+                    1 -> player("Mon.").also { stage++ }
+                    2 ->
+                        player("Min.").also {
+                            setAttribute(player!!, "/save:grandtree:opt3", true)
+                            stage++
+                        }
+
+                    3 -> playerl("Men.").also { stage++ }
                 }
 
-                3 -> playerl("Men.").also { stage++ }
-            }
-
             59 -> {
-                if (getAttribute(player!!, "/save:grandtree:opt1", false) && getAttribute(
+                if (getAttribute(player!!, "/save:grandtree:opt1", false) &&
+                    getAttribute(
                         player!!,
                         "/save:grandtree:opt2",
-                        false
-                    ) && getAttribute(player!!, "/save:grandtree:opt3", false)
+                        false,
+                    ) &&
+                    getAttribute(player!!, "/save:grandtree:opt3", false)
                 ) {
                     npc("Sorry to have kept you.").also { stage = 60 }
                 } else {
@@ -123,7 +136,9 @@ class ShipyardWorkerGTDialogue : DialogueFile() {
                 end()
                 DoorActionHandler.autowalkFence(
                     player!!,
-                    Scenery(2438, Location(2945, 3041, 0)), 2432, 2439
+                    Scenery(2438, Location(2945, 3041, 0)),
+                    2432,
+                    2439,
                 )
             }
         }

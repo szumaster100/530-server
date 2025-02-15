@@ -1,12 +1,12 @@
 package content.minigame.fishingtrawler
 
+import core.api.MapArea
 import core.game.activity.ActivityManager
 import core.game.activity.ActivityPlugin
 import core.game.node.entity.player.Player
 import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
-import core.api.MapArea
 import core.game.world.map.build.DynamicRegion
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.map.zone.ZoneRestriction
@@ -22,18 +22,18 @@ private var nextStart = GameWorld.ticks + WAIT_TIME
 private val ftWaitingArea = arrayOf(ZoneBorders(2668, 3165, 2675, 3184))
 
 @Initializable
-class FishingTrawlerActivity : ActivityPlugin(
-    "fishing trawler",
-    false,
-    false,
-    true,
-    ZoneRestriction.CANNON,
-    ZoneRestriction.FIRES,
-    ZoneRestriction.FOLLOWERS,
-    ZoneRestriction.RANDOM_EVENTS
-),
+class FishingTrawlerActivity :
+    ActivityPlugin(
+        "fishing trawler",
+        false,
+        false,
+        true,
+        ZoneRestriction.CANNON,
+        ZoneRestriction.FIRES,
+        ZoneRestriction.FOLLOWERS,
+        ZoneRestriction.RANDOM_EVENTS,
+    ),
     MapArea {
-
     init {
         activity = this
     }
@@ -42,10 +42,13 @@ class FishingTrawlerActivity : ActivityPlugin(
         GameWorld.Pulser.submit(
             object : Pulse(1) {
                 override fun pulse(): Boolean {
-
                     if ((nextStart - GameWorld.ticks) % 100 == 0) {
                         for (player in waitingPlayers) {
-                            player.sendMessage(colorize("%R${ticksToSeconds(nextStart - GameWorld.ticks) / 60} minutes until next game."))
+                            player.sendMessage(
+                                colorize(
+                                    "%R${ticksToSeconds(nextStart - GameWorld.ticks) / 60} minutes until next game.",
+                                ),
+                            )
                         }
                     }
 
@@ -70,11 +73,15 @@ class FishingTrawlerActivity : ActivityPlugin(
                     }
                     return false
                 }
-            }
+            },
         )
     }
 
-    override fun start(player: Player?, login: Boolean, vararg args: Any?): Boolean {
+    override fun start(
+        player: Player?,
+        login: Boolean,
+        vararg args: Any?,
+    ): Boolean {
         player ?: return false
         waitingPlayers.add(player)
         return true
@@ -85,7 +92,7 @@ class FishingTrawlerActivity : ActivityPlugin(
             nextStart = GameWorld.ticks + WAIT_TIME
             player.dialogueInterpreter.sendDialogue(
                 "Trawler will leave in 2 minutes.",
-                "If you have a team get them on board now!"
+                "If you have a team get them on board now!",
             )
         }
         waitingPlayers.add(player)

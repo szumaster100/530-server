@@ -1,6 +1,5 @@
 package content.global.skill.agility.shortcuts
 
-import org.rs.consts.Animations
 import core.api.sendMessage
 import core.cache.def.impl.SceneryDefinition
 import core.game.interaction.OptionHandler
@@ -15,10 +14,10 @@ import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Animations
 
 @Initializable
 class DesertWallShortcut : OptionHandler() {
-
     companion object {
         const val REQUIRED_AGILITY_LEVEL = 21
         const val SCENERY_ID = 6620
@@ -34,7 +33,11 @@ class DesertWallShortcut : OptionHandler() {
         return null
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         if (player.skills.getLevel(Skills.AGILITY) < REQUIRED_AGILITY_LEVEL) {
             sendMessage(player, "You need an agility level of at least $REQUIRED_AGILITY_LEVEL to do this.")
             return true
@@ -48,7 +51,10 @@ class DesertWallShortcut : OptionHandler() {
         return true
     }
 
-    private fun executeShortcut(player: Player, scenery: Scenery) {
+    private fun executeShortcut(
+        player: Player,
+        scenery: Scenery,
+    ) {
         ForceMovement.run(player, START_LOCATION, scenery.location, CLIMB_DOWN)
         GameWorld.Pulser.submit(
             object : Pulse(1, player) {
@@ -70,7 +76,7 @@ class DesertWallShortcut : OptionHandler() {
                         else -> false
                     }
                 }
-            }
+            },
         )
     }
 }

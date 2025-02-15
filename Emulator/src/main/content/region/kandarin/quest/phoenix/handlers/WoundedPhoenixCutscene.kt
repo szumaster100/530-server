@@ -1,6 +1,5 @@
 package content.region.kandarin.quest.phoenix.handlers
 
-import core.api.faceLocation
 import core.api.setVarbit
 import core.game.activity.Cutscene
 import core.game.node.entity.player.Player
@@ -10,8 +9,9 @@ import core.game.world.map.Location
 import org.rs.consts.NPCs
 import org.rs.consts.Vars
 
-class WoundedPhoenixCutscene(player: Player) : Cutscene(player) {
-
+class WoundedPhoenixCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(Location.create(3533, 5204, 0))
         loadRegion(REGION)
@@ -47,7 +47,10 @@ class WoundedPhoenixCutscene(player: Player) : Cutscene(player) {
             4 -> {
                 teleport(getNPC(PHOENIX)!!, 14, 19) // Inside
                 // Outside
-                PhoenixLairListener.woundedPhoenix.teleporter.send(Location.create(3534, 5203, 0), TeleportManager.TeleportType.INSTANT)
+                PhoenixLairListener.woundedPhoenix.teleporter.send(
+                    Location.create(3534, 5203, 0),
+                    TeleportManager.TeleportType.INSTANT,
+                )
                 rotateCamera(20, 25, 300, 2)
                 timedUpdate(3)
             }
@@ -65,5 +68,4 @@ class WoundedPhoenixCutscene(player: Player) : Cutscene(player) {
         private const val PHOENIX = NPCs.WOUNDED_PHOENIX_8547
         private const val REGION = 14161
     }
-
 }

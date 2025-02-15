@@ -9,11 +9,15 @@ import core.game.node.entity.npc.NPCBehavior
 import core.game.node.entity.player.Player
 
 class TurothNPC : NPCBehavior(*Tasks.TUROTHS.npcs) {
-
-    override fun beforeDamageReceived(self: NPC, attacker: Entity, state: BattleState) {
+    override fun beforeDamageReceived(
+        self: NPC,
+        attacker: Entity,
+        state: BattleState,
+    ) {
         if (attacker is Player) {
-            if (!SlayerUtils.hasBroadWeaponEquipped(attacker, state))
+            if (!SlayerUtils.hasBroadWeaponEquipped(attacker, state)) {
                 state.neutralizeHits()
+            }
         }
     }
 }

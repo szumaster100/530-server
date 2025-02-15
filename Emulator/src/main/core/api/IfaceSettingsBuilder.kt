@@ -8,7 +8,6 @@ package core.api
  * @author Ceikry
  */
 class IfaceSettingsBuilder {
-
     /**
      * The value that will be sent in the access mask packet.
      * This value is incrementally updated as various settings are applied.
@@ -98,7 +97,7 @@ class IfaceSettingsBuilder {
         objects: Boolean,
         otherPlayer: Boolean,
         selfPlayer: Boolean,
-        component: Boolean
+        component: Boolean,
     ): IfaceSettingsBuilder {
         var useFlag = 0
         if (groundItems) {

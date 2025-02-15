@@ -6,7 +6,6 @@ import core.game.node.item.Item
 import java.util.*
 
 object DemonSlayerUtils {
-
     @JvmField
     val SILVERLIGHT = Item(2402)
     val INCANTATIONS = arrayOf("Carlem", "Aber", "Purchai", "Camerinthum", "Gabindo")

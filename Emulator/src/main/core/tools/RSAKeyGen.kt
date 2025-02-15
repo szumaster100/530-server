@@ -9,7 +9,6 @@ import java.security.spec.RSAPrivateKeySpec
 import java.security.spec.RSAPublicKeySpec
 
 object RSAKeyGen {
-
     @JvmStatic
     fun main(args: Array<String>) {
         try {
@@ -30,7 +29,11 @@ object RSAKeyGen {
         }
     }
 
-    fun writeKey(file: String?, modulus: BigInteger, exponent: BigInteger) {
+    fun writeKey(
+        file: String?,
+        modulus: BigInteger,
+        exponent: BigInteger,
+    ) {
         try {
             val writer = BufferedWriter(FileWriter(file))
             writer.write("private static final BigInteger RSA_MODULUS = new BigInteger(\"$modulus\");")

@@ -19,28 +19,54 @@ import org.rs.consts.Quests
 
 @Initializable
 class QuestCommandSet : CommandSet(Privilege.ADMIN) {
-
     override fun defineCommands() {
-        define(name = "phoenix", privilege = Privilege.ADMIN, usage = "::phoenix", description = "In Pyre Need - Wounded Phoenix (Cutscene)") { player, _ ->
+        define(
+            name = "phoenix",
+            privilege = Privilege.ADMIN,
+            usage = "::phoenix",
+            description = "In Pyre Need - Wounded Phoenix (Cutscene)",
+        ) { player, _ ->
             WoundedPhoenixCutscene(player).start()
         }
 
-        define(name = "twigs", privilege = Privilege.ADMIN, usage = "::twigs", description = "In Pyre Need - Twig items") { player, _ ->
-            for (i in allTwigs)
+        define(
+            name = "twigs",
+            privilege = Privilege.ADMIN,
+            usage = "::twigs",
+            description = "In Pyre Need - Twig items",
+        ) { player, _ ->
+            for (i in allTwigs) {
                 addItem(player, i, 1, Container.INVENTORY)
+            }
         }
 
-        define(name = "ribbons", privilege = Privilege.ADMIN, usage = "::ribbons", description = "In Pyre Need - Ribbon items") { player, _ ->
-            for (i in weavingRibbons)
+        define(
+            name = "ribbons",
+            privilege = Privilege.ADMIN,
+            usage = "::ribbons",
+            description = "In Pyre Need - Ribbon items",
+        ) { player, _ ->
+            for (i in weavingRibbons) {
                 addItem(player, i, 1, Container.INVENTORY)
+            }
         }
 
-        define(name = "dscut", privilege = Privilege.ADMIN, usage = "::dscut", description = "Starts the Dragon slayer cutscene.") { player, _ ->
+        define(
+            name = "dscut",
+            privilege = Privilege.ADMIN,
+            usage = "::dscut",
+            description = "Starts the Dragon slayer cutscene.",
+        ) { player, _ ->
             setQuestStage(player, Quests.DRAGON_SLAYER, 30)
             ActivityManager.start(player, Quests.DRAGON_SLAYER, false, player.location)
         }
 
-        define(name = "balloon", privilege = Privilege.ADMIN, usage = "", description = "Toggle balloon travel.") { player, _ ->
+        define(
+            name = "balloon",
+            privilege = Privilege.ADMIN,
+            usage = "",
+            description = "Toggle balloon travel.",
+        ) { player, _ ->
             finishQuest(player, Quests.ENLIGHTENED_JOURNEY)
         }
 
@@ -52,14 +78,15 @@ class QuestCommandSet : CommandSet(Privilege.ADMIN) {
 
         define(name = "quest", Privilege.ADMIN) { player, args ->
             if (args.size < 3) {
-                val lookupP = if (args.size == 1) {
-                    player
-                } else if (Repository.getPlayerByName(args[1]) != null) {
-                    Repository.getPlayerByName(args[1]) ?: return@define
-                } else {
-                    reject(player, "ERROR: Username not found. Usage: ::quest <username>")
-                    return@define
-                }
+                val lookupP =
+                    if (args.size == 1) {
+                        player
+                    } else if (Repository.getPlayerByName(args[1]) != null) {
+                        Repository.getPlayerByName(args[1]) ?: return@define
+                    } else {
+                        reject(player, "ERROR: Username not found. Usage: ::quest <username>")
+                        return@define
+                    }
                 sendQuestsDebug(player, lookupP)
             } else {
                 reject(player, "Usage: ::quest || ::quest <username>")
@@ -103,12 +130,15 @@ class QuestCommandSet : CommandSet(Privilege.ADMIN) {
                 player,
                 "<col=ecf0f1>" + (if (q.isCompleted(player)) "<str> " else "") + q.name + " ",
                 275,
-                lineId++
+                lineId++,
             )
         }
     }
 
-    private fun sendQuestsDebug(admin: Player?, lookupUser: Player?) {
+    private fun sendQuestsDebug(
+        admin: Player?,
+        lookupUser: Player?,
+    ) {
         admin!!.interfaceManager.open(Component(275))
         for (i in 0..310) {
             sendString(admin, "", 275, i)
@@ -118,11 +148,12 @@ class QuestCommandSet : CommandSet(Privilege.ADMIN) {
         for (q in QuestRepository.getQuests().values) {
             // Add a space to beginning and end of string for the strikethrough
             val stage = lookupUser.questRepository.getStage(q)
-            val statusColor = when {
-                stage >= 100 -> "80ff00"
-                stage in 1..99 -> "ff8400"
-                else -> "ff0000"
-            }
+            val statusColor =
+                when {
+                    stage >= 100 -> "80ff00"
+                    stage in 1..99 -> "ff8400"
+                    else -> "ff0000"
+                }
             sendString(admin, "<col=ecf0f1>${q.name}</col>", 275, lineId++)
             sendString(
                 admin,
@@ -130,7 +161,7 @@ class QuestCommandSet : CommandSet(Privilege.ADMIN) {
                     lookupUser.questRepository.getStage(q)
                 }</shad></col>",
                 275,
-                lineId++
+                lineId++,
             )
             sendString(admin, "<str>          ", 275, lineId++)
         }

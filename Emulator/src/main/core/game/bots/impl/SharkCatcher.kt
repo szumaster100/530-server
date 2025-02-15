@@ -2,14 +2,14 @@ package core.game.bots.impl
 
 import core.game.bots.*
 import core.game.interaction.DestinationFlag
+import core.game.interaction.IntType
+import core.game.interaction.InteractionListeners
 import core.game.interaction.MovementPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.world.map.Location
 import core.tools.RandomFunction
 import org.rs.consts.Items
-import core.game.interaction.IntType
-import core.game.interaction.InteractionListeners
 import kotlin.random.Random
 
 @PlayerCompatible
@@ -21,14 +21,15 @@ class SharkCatcher : Script() {
     val limit = 5000
     var myCounter = 0
 
-    internal enum class Sets(val equipment: List<Item>) {
+    internal enum class Sets(
+        val equipment: List<Item>,
+    ) {
         SET_1(listOf(Item(10721), Item(8283), Item(10412), Item(10414), Item(88), Item(1007))),
         SET_2(listOf(Item(10721), Item(8283), Item(10412), Item(10414), Item(88), Item(1007))),
         SET_3(listOf(Item(10721), Item(8283), Item(10412), Item(10414), Item(88), Item(1019))),
         SET_4(listOf(Item(10721), Item(8283), Item(10412), Item(10414), Item(88), Item(1019))),
         SET_5(listOf(Item(10721), Item(8283), Item(10412), Item(10414), Item(88), Item(3765))),
-        SET_6(listOf(Item(10721), Item(8283), Item(10412), Item(10414), Item(88), Item(3765)));
-
+        SET_6(listOf(Item(10721), Item(8283), Item(10412), Item(10414), Item(88), Item(3765))),
     }
 
     private var state = State.INIT
@@ -44,7 +45,6 @@ class SharkCatcher : Script() {
             return
         }
         when (state) {
-
             State.INIT -> {
                 overlay = scriptAPI.getOverlay()
                 overlay!!.init()
@@ -73,7 +73,6 @@ class SharkCatcher : Script() {
                     State.TELE_FISH
                 }
                 return
-
             }
 
             State.IDLE -> {
@@ -163,11 +162,8 @@ class SharkCatcher : Script() {
                 scriptAPI.teleport(fishguild)
                 state = State.FIND_SPOT
             }
-
-
         }
     }
-
 
     init {
         val setUp = RandomFunction.random(Sets.values().size)
@@ -186,7 +182,7 @@ class SharkCatcher : Script() {
         TELE_FISH,
         IDLE,
         STOP,
-        INIT
+        INIT,
     }
 
     override fun newInstance(): Script {

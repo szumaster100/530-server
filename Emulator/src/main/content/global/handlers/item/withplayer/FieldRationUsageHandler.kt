@@ -9,7 +9,6 @@ import core.plugin.Plugin
 
 @Initializable
 class FieldRationUsageHandler : UseWithHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any?> {
         addHandler(7934, PLAYER_TYPE, this)
         return this

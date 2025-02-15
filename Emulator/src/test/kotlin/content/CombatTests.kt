@@ -1,12 +1,12 @@
 package content
 
 import TestUtils
-import core.game.node.entity.combat.equipment.special.ChinchompaSwingHandler
 import core.game.node.entity.combat.MagicSwingHandler
 import core.game.node.entity.combat.MeleeSwingHandler
 import core.game.node.entity.combat.RangeSwingHandler
 import core.game.node.entity.combat.SwingHandlerFlag
 import core.game.node.entity.combat.equipment.WeaponInterface
+import core.game.node.entity.combat.equipment.special.ChinchompaSwingHandler
 import core.game.node.entity.player.link.prayer.PrayerType
 import core.game.node.entity.skill.Skills
 import org.junit.jupiter.api.Assertions

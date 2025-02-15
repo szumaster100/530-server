@@ -12,18 +12,17 @@ import org.rs.consts.NPCs
 import org.rs.consts.Scenery
 
 class LunarIsleListener : InteractionListener {
-
     companion object {
         private const val CLOSED_DOOR = Scenery.DOOR_16774
         private const val OPENED_DOOR = Scenery.DOOR_16777
         private const val HOUSE = NPCs.HOUSE_4512
         private const val LADDER_UP = Scenery.LADDER_16640
         private const val LADDER_DOWN = Scenery.LADDER_36306
-        private val CYRISUS = intArrayOf(NPCs.CYRISUS_5893, NPCs.CYRISUS_5894, NPCs.CYRISUS_5895, NPCs.CYRISUS_5896, NPCs.CYRISUS_5897)
+        private val CYRISUS =
+            intArrayOf(NPCs.CYRISUS_5893, NPCs.CYRISUS_5894, NPCs.CYRISUS_5895, NPCs.CYRISUS_5896, NPCs.CYRISUS_5897)
     }
 
     override fun defineListeners() {
-
         on(CLOSED_DOOR, IntType.SCENERY, "open") { player, _ ->
             teleport(player, location(2101, 3926, 0), TeleportType.INSTANT)
             resetCamera(player)

@@ -1,16 +1,17 @@
 package content.global.skill.agility.courses.barbarian
 
-import org.rs.consts.NPCs
 import content.region.kandarin.miniquest.barcrawl.BarcrawlManager
 import core.api.sendDialogue
 import core.game.dialogue.Dialogue
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.NPCs
 
 @Initializable
-class BarbarianGuardDialogue(player: Player? = null) : Dialogue(player) {
-
+class BarbarianGuardDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         if (!BarcrawlManager.getInstance(player).isStarted()) {
             npc("O, waddya want?")
@@ -22,13 +23,17 @@ class BarbarianGuardDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> options("I want to come through this gate.", "I want some money.").also { stage++ }
-            1 -> when (buttonId) {
-                1 -> player("I want to come through this gate.").also { stage = 4 }
-                2 -> player("I want some money.").also { stage++ }
-            }
+            1 ->
+                when (buttonId) {
+                    1 -> player("I want to come through this gate.").also { stage = 4 }
+                    2 -> player("I want some money.").also { stage++ }
+                }
 
             3 -> npc("Do I look like a bank to you?").also { stage = END_DIALOGUE }
             4 ->
@@ -41,25 +46,28 @@ class BarbarianGuardDialogue(player: Player? = null) : Dialogue(player) {
             5 -> {
                 options(
                     "Hmm, yep you've got me there.",
-                    "Looks can be deceiving, I am in fact a barbarian."
+                    "Looks can be deceiving, I am in fact a barbarian.",
                 ).also { stage++ }
             }
 
-            6 -> when (buttonId) {
-                1 -> player("Hmm, yep you've got me there.").also { stage = END_DIALOGUE }
-                2 -> player("Looks can be deceiving, I am in fact a barbarian.").also { stage++ }
-            }
+            6 ->
+                when (buttonId) {
+                    1 -> player("Hmm, yep you've got me there.").also { stage = END_DIALOGUE }
+                    2 -> player("Looks can be deceiving, I am in fact a barbarian.").also { stage++ }
+                }
 
-            7 -> npc(
-                "If you're a barbarian you need to be able to drink like",
-                "one. We barbarians like a good drink."
-            ).also { stage++ }
+            7 ->
+                npc(
+                    "If you're a barbarian you need to be able to drink like",
+                    "one. We barbarians like a good drink.",
+                ).also { stage++ }
 
-            8 -> npc(
-                "I have the perfect challenge for you... the Alfred",
-                "Grimhand Barcrawl! First completed by Alfred",
-                "Grimhand."
-            ).also { stage++ }
+            8 ->
+                npc(
+                    "I have the perfect challenge for you... the Alfred",
+                    "Grimhand Barcrawl! First completed by Alfred",
+                    "Grimhand.",
+                ).also { stage++ }
 
             9 -> {
                 BarcrawlManager.getInstance(player).reset()
@@ -69,17 +77,19 @@ class BarbarianGuardDialogue(player: Player? = null) : Dialogue(player) {
                 stage++
             }
 
-            10 -> npc(
-                "Take that card to each of the bards named on it. The",
-                "bartenders will know what it means. We're kinda well",
-                "known."
-            ).also { stage++ }
+            10 ->
+                npc(
+                    "Take that card to each of the bards named on it. The",
+                    "bartenders will know what it means. We're kinda well",
+                    "known.",
+                ).also { stage++ }
 
-            11 -> npc(
-                "They'll give you their strongest drink and sign your",
-                "card. When you've done all that, we'll be happy to let",
-                "you in."
-            ).also { stage = END_DIALOGUE }
+            11 ->
+                npc(
+                    "They'll give you their strongest drink and sign your",
+                    "card. When you've done all that, we'll be happy to let",
+                    "you in.",
+                ).also { stage = END_DIALOGUE }
 
             12 ->
                 if (!BarcrawlManager.getInstance(player).hasCard()) {
@@ -102,10 +112,11 @@ class BarbarianGuardDialogue(player: Player? = null) : Dialogue(player) {
                 sendDialogue(player, "You give the card to the barbarian.").also { stage++ }
             }
 
-            16 -> npc(
-                "Yep that seems fine, you can come in now. I never",
-                "learned to read, but you look like you've drunk plenty."
-            ).also { stage = END_DIALOGUE }
+            16 ->
+                npc(
+                    "Yep that seems fine, you can come in now. I never",
+                    "learned to read, but you look like you've drunk plenty.",
+                ).also { stage = END_DIALOGUE }
         }
         return true
     }

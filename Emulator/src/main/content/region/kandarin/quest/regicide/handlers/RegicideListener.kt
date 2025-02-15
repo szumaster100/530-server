@@ -1,34 +1,33 @@
 package content.region.kandarin.quest.regicide.handlers
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.api.*
 import core.game.container.impl.EquipmentContainer
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.item.Item
 import core.game.system.task.Pulse
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class RegicideListener : InteractionListener {
-
-    private val FURNACES = intArrayOf(
-        Scenery.FURNACE_4304,
-        Scenery.FURNACE_6189,
-        Scenery.FURNACE_11010,
-        Scenery.FURNACE_11666,
-        Scenery.FURNACE_12100,
-        Scenery.FURNACE_12809,
-        Scenery.FURNACE_18497,
-        Scenery.FURNACE_26814,
-        Scenery.FURNACE_30021,
-        Scenery.FURNACE_30510,
-        Scenery.FURNACE_36956,
-        Scenery.FURNACE_37651
-    )
+    private val FURNACES =
+        intArrayOf(
+            Scenery.FURNACE_4304,
+            Scenery.FURNACE_6189,
+            Scenery.FURNACE_11010,
+            Scenery.FURNACE_11666,
+            Scenery.FURNACE_12100,
+            Scenery.FURNACE_12809,
+            Scenery.FURNACE_18497,
+            Scenery.FURNACE_26814,
+            Scenery.FURNACE_30021,
+            Scenery.FURNACE_30510,
+            Scenery.FURNACE_36956,
+            Scenery.FURNACE_37651,
+        )
 
     override fun defineListeners() {
-
         onUseWith(IntType.SCENERY, Items.LIMESTONE_3211, *FURNACES) { player, used, _ ->
 
             val hasGloves = player.equipment.get(EquipmentContainer.SLOT_HANDS) != null
@@ -40,6 +39,7 @@ class RegicideListener : InteractionListener {
                     player,
                     object : Pulse(1) {
                         var counter = 0
+
                         override fun pulse(): Boolean {
                             when (counter++) {
                                 0 -> sendMessage(player, "You put the lime stone in the furnace.")
@@ -51,7 +51,7 @@ class RegicideListener : InteractionListener {
                             }
                             return false
                         }
-                    }
+                    },
                 )
             }
             return@onUseWith true

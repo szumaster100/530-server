@@ -1,7 +1,5 @@
 package content.region.kandarin.quest.merlin.dialogue
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.region.kandarin.quest.merlin.handlers.BeggarNPC
 import content.region.kandarin.quest.merlin.handlers.MerlinUtils
 import core.api.sendDialogue
@@ -15,10 +13,16 @@ import core.game.node.item.Item
 import core.game.node.scenery.Scenery
 import core.game.world.map.Location
 import core.tools.END_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
-class BeggarDialogueFile(val door: Scenery?) : DialogueFile() {
-
-    override fun handle(componentID: Int, buttonID: Int) {
+class BeggarDialogueFile(
+    val door: Scenery?,
+) : DialogueFile() {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         npc = NPC(NPCs.BEGGAR_252)
 
         when (stage) {
@@ -31,15 +35,17 @@ class BeggarDialogueFile(val door: Scenery?) : DialogueFile() {
                 }
             }
 
-            1 -> npcl(
-                FaceAnim.SAD,
-                "Could you find it in your heart to spare me a simple loaf of bread?"
-            ).also { stage++ }
+            1 ->
+                npcl(
+                    FaceAnim.SAD,
+                    "Could you find it in your heart to spare me a simple loaf of bread?",
+                ).also { stage++ }
 
-            2 -> showTopics(
-                Topic(FaceAnim.NEUTRAL, "Yes certainly.", 3),
-                Topic(FaceAnim.NEUTRAL, "No I don't have any bread with me.", 20)
-            )
+            2 ->
+                showTopics(
+                    Topic(FaceAnim.NEUTRAL, "Yes certainly.", 3),
+                    Topic(FaceAnim.NEUTRAL, "No I don't have any bread with me.", 20),
+                )
 
             3 -> {
                 player!!.setAttribute(MerlinUtils.ATTR_STATE_TALK_BEGGAR, true)
@@ -100,7 +106,7 @@ class BeggarDialogueFile(val door: Scenery?) : DialogueFile() {
             30 -> {
                 showTopics(
                     Topic(FaceAnim.NEUTRAL, "Yes, here you go.", 4),
-                    Topic(FaceAnim.NEUTRAL, "No, I still have none.", END_DIALOGUE)
+                    Topic(FaceAnim.NEUTRAL, "No, I still have none.", END_DIALOGUE),
                 )
             }
         }

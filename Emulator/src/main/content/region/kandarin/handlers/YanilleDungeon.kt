@@ -1,7 +1,5 @@
 package content.region.kandarin.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import content.global.skill.agility.AgilityHandler
 import core.api.*
 import core.api.event.applyPoison
@@ -21,24 +19,27 @@ import core.game.world.map.zone.ZoneBorders
 import core.game.world.map.zone.ZoneBuilder
 import core.game.world.update.flag.context.Animation
 import core.tools.RandomFunction
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
-class YanilleDungeon : InteractionListener, MapZone("Yanille agility", true) {
-
-    private val sinisterChestContent = arrayOf(
-        Item(Items.GRIMY_HARRALANDER_205, 2),
-        Item(Items.GRIMY_RANARR_207, 3),
-        Item(Items.GRIMY_IRIT_209),
-        Item(Items.GRIMY_AVANTOE_211),
-        Item(Items.GRIMY_KWUARM_213),
-        Item(Items.GRIMY_TORSTOL_219)
-    )
+class YanilleDungeon :
+    MapZone("Yanille agility", true),
+    InteractionListener {
+    private val sinisterChestContent =
+        arrayOf(
+            Item(Items.GRIMY_HARRALANDER_205, 2),
+            Item(Items.GRIMY_RANARR_207, 3),
+            Item(Items.GRIMY_IRIT_209),
+            Item(Items.GRIMY_AVANTOE_211),
+            Item(Items.GRIMY_KWUARM_213),
+            Item(Items.GRIMY_TORSTOL_219),
+        )
 
     override fun configure() {
         register(ZoneBorders(2544, 9481, 2631, 9587))
     }
 
     override fun defineListeners() {
-
         ZoneBuilder.configure(this)
 
         on(Scenery.STAIRCASE_1728, IntType.SCENERY, "climb-down") { player, _ ->
@@ -60,7 +61,7 @@ class YanilleDungeon : InteractionListener, MapZone("Yanille agility", true) {
             intArrayOf(Scenery.PILE_OF_RUBBLE_2318, Scenery.PILE_OF_RUBBLE_2317),
             IntType.SCENERY,
             "climb-up",
-            "climb-down"
+            "climb-down",
         ) { player, target ->
             if (getStatLevel(player, Skills.AGILITY) < 67) {
                 sendMessage(player, "You need an agility level of at least 67 in order to do this.")
@@ -70,18 +71,22 @@ class YanilleDungeon : InteractionListener, MapZone("Yanille agility", true) {
             queueScript(player, 1, QueueStrength.SOFT) {
                 val loc = if (target.id == 2317) Location(2614, 9504, 0) else Location(2617, 9571, 0)
                 ClimbActionHandler.climb(
-                    player, if (target.id == 2317) {
+                    player,
+                    if (target.id == 2317) {
                         ClimbActionHandler.CLIMB_UP
                     } else {
                         ClimbActionHandler.CLIMB_DOWN
-                    }, loc
+                    },
+                    loc,
                 )
                 sendMessage(
-                    player, "You climb " + if (target.id == 2317) {
-                        "up"
-                    } else {
-                        "down"
-                    } + " the pile of rubble..."
+                    player,
+                    "You climb " +
+                        if (target.id == 2317) {
+                            "up"
+                        } else {
+                            "down"
+                        } + " the pile of rubble...",
                 )
                 rewardXP(player, Skills.AGILITY, 5.5)
                 return@queueScript stopExecuting(player)
@@ -92,7 +97,7 @@ class YanilleDungeon : InteractionListener, MapZone("Yanille agility", true) {
         on(
             intArrayOf(Scenery.BALANCING_LEDGE_35969, Scenery.BALANCING_LEDGE_2303),
             IntType.SCENERY,
-            "walk-across"
+            "walk-across",
         ) { player, node ->
             val target = node as core.game.node.scenery.Scenery
             if (getStatLevel(player, Skills.AGILITY) < 40) {
@@ -100,11 +105,12 @@ class YanilleDungeon : InteractionListener, MapZone("Yanille agility", true) {
                 return@on true
             }
             val dir = Direction.getLogicalDirection(player.location, target.location)
-            val diff = if (player.location.y == 9512) {
-                0
-            } else {
-                1
-            }
+            val diff =
+                if (player.location.y == 9512) {
+                    0
+                } else {
+                    1
+                }
             var end = target.location
             var xp = 0.0
             if (AgilityHandler.hasFailed(player, 40, 0.01)) {
@@ -118,14 +124,14 @@ class YanilleDungeon : InteractionListener, MapZone("Yanille agility", true) {
                                 Location(2572, 9570, 0),
                                 Animation.create(761 - diff),
                                 RandomFunction.random(1, 3),
-                                "You lost your balance!"
+                                "You lost your balance!",
                             )
                             runTask(player, 2) {
                                 animate(player, 5056, true)
                             }
                             return true
                         }
-                    }
+                    },
                 )
             } else {
                 xp = 22.5

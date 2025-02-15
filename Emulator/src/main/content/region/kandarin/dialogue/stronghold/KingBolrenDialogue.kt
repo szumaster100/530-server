@@ -1,23 +1,24 @@
 package content.region.kandarin.dialogue.stronghold
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.kandarin.quest.tree.dialogue.KingBolrenDialogueFile
 import core.api.addItemOrDrop
 import core.api.hasAnItem
-import core.api.quest.isQuestComplete
 import core.api.openDialogue
+import core.api.quest.isQuestComplete
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class KingBolrenDialogue(player: Player? = null) : Dialogue(player) {
-
+class KingBolrenDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any?): Boolean {
         npc = args[0] as NPC
         if (isQuestComplete(player, Quests.TREE_GNOME_VILLAGE)) {
@@ -29,7 +30,10 @@ class KingBolrenDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(componentID: Int, buttonID: Int): Boolean {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ): Boolean {
         var hasAnGnomeAmulet = hasAnItem(player, Items.GNOME_AMULET_589).container != null
         when (stage) {
             0 ->
@@ -40,11 +44,12 @@ class KingBolrenDialogue(player: Player? = null) : Dialogue(player) {
                 }
 
             1 -> player(FaceAnim.SAD, "I've lost my amulet.").also { stage++ }
-            2 -> npc(
-                FaceAnim.OLD_NORMAL,
-                "Oh dear. Here, take another. We are truly indebted",
-                "to you."
-            ).also { stage++ }
+            2 ->
+                npc(
+                    FaceAnim.OLD_NORMAL,
+                    "Oh dear. Here, take another. We are truly indebted",
+                    "to you.",
+                ).also { stage++ }
 
             3 -> {
                 end()

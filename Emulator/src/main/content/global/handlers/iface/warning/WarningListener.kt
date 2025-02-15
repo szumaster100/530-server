@@ -1,6 +1,5 @@
 package content.global.handlers.iface.warning
 
-import org.rs.consts.*
 import core.api.*
 import core.api.quest.getQuestStage
 import core.game.global.action.ClimbActionHandler.climb
@@ -13,11 +12,10 @@ import core.game.world.map.RegionManager.getLocalNpcs
 import core.game.world.update.flag.context.Animation
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.rs.consts.*
 
 class WarningListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(NPCs.DOOMSAYER_3777, IntType.NPC, "toggle-warnings") { player, _ ->
             openInterface(player, Components.CWS_DOOMSAYER_583)
             return@on true
@@ -54,7 +52,7 @@ class WarningListener : InteractionListener {
             intArrayOf(Scenery.CLIMBING_ROPE_5946, Scenery.DARK_HOLE_5947),
             IntType.SCENERY,
             "climb-down",
-            "climb"
+            "climb",
         ) { player, _ ->
             val option = getUsedOption(player)
             when (option) {
@@ -71,7 +69,7 @@ class WarningListener : InteractionListener {
                     climb(
                         player,
                         Animation(Animations.MULTI_BEND_OVER_827),
-                        Location.create(3168, 9572, 0)
+                        Location.create(3168, 9572, 0),
                     )
                 }
             }
@@ -90,11 +88,12 @@ class WarningListener : InteractionListener {
                     if (!WarningManager.check(Components.CWS_WARNING_20_580)) {
                         openInterface(player, Components.CWS_WARNING_20_580)
                     } else {
-                        val targetScenery = if (player.location.x > 3443) {
-                            getScenery(3444, 3458, 0)!!
-                        } else {
-                            getScenery(3443, 3458, 0)!!
-                        }
+                        val targetScenery =
+                            if (player.location.x > 3443) {
+                                getScenery(3444, 3458, 0)!!
+                            } else {
+                                getScenery(3443, 3458, 0)!!
+                            }
                         DoorActionHandler.handleAutowalkDoor(player, targetScenery)
                         sendMessageWithDelay(player, "You walk into the gloomy atmosphere of Mort Myre.", 3)
                     }
@@ -102,7 +101,7 @@ class WarningListener : InteractionListener {
                     sendNPCDialogue(
                         player,
                         NPCs.ULIZIUS_1054,
-                        "I'm sorry, but I'm afraid it's too dangerous to let you through this gate right now."
+                        "I'm sorry, but I'm afraid it's too dangerous to let you through this gate right now.",
                     )
                 }
             }
@@ -113,7 +112,7 @@ class WarningListener : InteractionListener {
             intArrayOf(Scenery.TOWER_LADDER_2511, Scenery.TOWER_LADDER_2512),
             IntType.SCENERY,
             "climb-up",
-            "climb-down"
+            "climb-down",
         ) { player, _ ->
             val option = getUsedOption(player)
             when (option) {
@@ -124,14 +123,16 @@ class WarningListener : InteractionListener {
                         climb(player, Animation(Animations.USE_LADDER_828), Location(2668, 3427, 2))
                         val npc = getLocalNpcs(Location.create(2668, 3427, 2))
                         var dir = ""
-                        for (n in npc) if (n.id >= NPCs.TOWER_ADVISOR_684 && n.id <= NPCs.TOWER_ADVISOR_687) {
-                            when (n.id) {
-                                NPCs.TOWER_ADVISOR_684 -> dir = "north"
-                                NPCs.TOWER_ADVISOR_685 -> dir = "east"
-                                NPCs.TOWER_ADVISOR_686 -> dir = "south"
-                                NPCs.TOWER_ADVISOR_687 -> dir = "west"
+                        for (n in npc) {
+                            if (n.id >= NPCs.TOWER_ADVISOR_684 && n.id <= NPCs.TOWER_ADVISOR_687) {
+                                when (n.id) {
+                                    NPCs.TOWER_ADVISOR_684 -> dir = "north"
+                                    NPCs.TOWER_ADVISOR_685 -> dir = "east"
+                                    NPCs.TOWER_ADVISOR_686 -> dir = "south"
+                                    NPCs.TOWER_ADVISOR_687 -> dir = "west"
+                                }
+                                sendChat(n, "The $dir tower is occupied, get them!")
                             }
-                            sendChat(n, "The $dir tower is occupied, get them!")
                         }
                     }
                 }

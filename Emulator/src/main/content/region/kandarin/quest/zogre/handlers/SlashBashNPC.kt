@@ -1,14 +1,11 @@
 package content.region.kandarin.quest.zogre.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Vars
 import core.api.*
+import core.api.EquipmentSlot
+import core.api.item.produceGroundItem
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.BattleState
 import core.game.node.entity.combat.CombatStyle
-import core.api.EquipmentSlot
-import core.api.item.produceGroundItem
 import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.npc.NPCBehavior
@@ -22,14 +19,23 @@ import core.game.world.update.flag.context.Graphics
 import core.plugin.Initializable
 import core.tools.RandomFunction
 import core.tools.minutesToTicks
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Vars
 
 @Initializable
-class SlashBashNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
+class SlashBashNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
     var despawnTime = 0
     private val player: Player? = null
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return SlashBashNPC(id, location)
     }
 
@@ -48,15 +54,16 @@ class SlashBashNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, lo
     }
 
     companion object {
-        val brutalArrows = intArrayOf(
-            Items.BRONZE_BRUTAL_4773,
-            Items.IRON_BRUTAL_4778,
-            Items.STEEL_BRUTAL_4783,
-            Items.BLACK_BRUTAL_4788,
-            Items.MITHRIL_BRUTAL_4793,
-            Items.ADAMANT_BRUTAL_4798,
-            Items.RUNE_BRUTAL_4803
-        )
+        val brutalArrows =
+            intArrayOf(
+                Items.BRONZE_BRUTAL_4773,
+                Items.IRON_BRUTAL_4778,
+                Items.STEEL_BRUTAL_4783,
+                Items.BLACK_BRUTAL_4788,
+                Items.MITHRIL_BRUTAL_4793,
+                Items.ADAMANT_BRUTAL_4798,
+                Items.RUNE_BRUTAL_4803,
+            )
         val questItem = Items.OGRE_ARTEFACT_4818
 
         fun spawnZogreBoss(player: Player) {
@@ -84,7 +91,7 @@ class SlashBashNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, lo
                         boss.attack(player)
                         return true
                     }
-                }
+                },
             )
         }
     }
@@ -98,8 +105,9 @@ class SlashBashNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, lo
             val crumbleUndead = 22
             if (checkWeapon.definition.getConfiguration(
                     ItemConfigParser.TWO_HANDED,
-                    false
-                ) == true && state.style == CombatStyle.RANGE
+                    false,
+                ) == true &&
+                state.style == CombatStyle.RANGE
             ) {
                 if (state.estimatedHit > -1) {
                     state.estimatedHit = 0
@@ -133,10 +141,14 @@ class SlashBashNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, lo
 }
 
 class SlashBashBehavior : NPCBehavior(NPCs.SLASH_BASH_2060) {
-
-    override fun beforeAttackFinalized(self: NPC, victim: Entity, state: BattleState) {
+    override fun beforeAttackFinalized(
+        self: NPC,
+        victim: Entity,
+        state: BattleState,
+    ) {
         super.beforeAttackFinalized(self, victim, state)
-        if (RandomFunction.roll(10))
+        if (RandomFunction.roll(10)) {
             registerTimer(victim, spawnTimer("disease", minutesToTicks(22.5)))
+        }
     }
 }

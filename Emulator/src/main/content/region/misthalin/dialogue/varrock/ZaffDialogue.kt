@@ -1,8 +1,5 @@
 package content.region.misthalin.dialogue.varrock
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.ServerStore
 import core.ServerStore.Companion.getInt
 import core.api.*
@@ -21,10 +18,12 @@ import core.game.node.item.Item
 import core.plugin.Initializable
 import core.plugin.Plugin
 import org.json.simple.JSONObject
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
 class ZaffDialogue : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any?> {
         NPCDefinition.setOptionHandler("buy-battlestaves", this)
         ZaffQuestDialogue().init()
@@ -32,7 +31,11 @@ class ZaffDialogue : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         player.dialogueInterpreter.open(9679)
         return true
     }
@@ -50,12 +53,19 @@ class ZaffDialogue : OptionHandler() {
         override fun open(vararg args: Any): Boolean {
             npc = args[0] as NPC
             quest = player.questRepository.getQuest(Quests.WHAT_LIES_BELOW)
-            npc(FaceAnim.HALF_GUILTY, "Would you like to buy or sell some staves or is there", "something else you need?")
+            npc(
+                FaceAnim.HALF_GUILTY,
+                "Would you like to buy or sell some staves or is there",
+                "something else you need?",
+            )
             stage = 0
             return true
         }
 
-        override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+        override fun handle(
+            interfaceId: Int,
+            buttonId: Int,
+        ): Boolean {
             when (stage) {
                 0 -> {
                     if (quest!!.getStage(player) == 60) {
@@ -64,7 +74,7 @@ class ZaffDialogue : OptionHandler() {
                             "Select an Option",
                             "Yes, please.",
                             "No, thank you.",
-                            "Rat Burgiss sent me."
+                            "Rat Burgiss sent me.",
                         )
                         stage = 1
                     } else if (quest!!.getStage(player) == 80) {
@@ -73,7 +83,7 @@ class ZaffDialogue : OptionHandler() {
                             "Select an Option",
                             "Yes, please.",
                             "No, thank you.",
-                            "We did it! We beat Surok!"
+                            "We did it! We beat Surok!",
                         )
                         stage = 1
                     } else if (quest!!.getStage(player) >= 70) {
@@ -82,7 +92,7 @@ class ZaffDialogue : OptionHandler() {
                             "Select an Option",
                             "Yes, please.",
                             "No, thank you.",
-                            "Can I have another ring?"
+                            "Can I have another ring?",
                         )
                         stage = 1
                     } else {
@@ -91,33 +101,38 @@ class ZaffDialogue : OptionHandler() {
                     }
                 }
 
-                1 -> when (buttonId) {
-                    1 -> {
-                        sendPlayerDialogue(player, "Yes, please.", FaceAnim.HALF_GUILTY)
-                        stage = 10
-                    }
+                1 ->
+                    when (buttonId) {
+                        1 -> {
+                            sendPlayerDialogue(player, "Yes, please.", FaceAnim.HALF_GUILTY)
+                            stage = 10
+                        }
 
-                    2 -> {
-                        sendPlayerDialogue(player, "No, thank you.", FaceAnim.HALF_GUILTY)
-                        stage = 20
-                    }
+                        2 -> {
+                            sendPlayerDialogue(player, "No, thank you.", FaceAnim.HALF_GUILTY)
+                            stage = 20
+                        }
 
-                    3 -> {
-                        if (quest!!.getStage(player) == 60) {
-                            player("Rat Burgiss sent me!")
-                            stage = 70
-                        } else if (quest!!.getStage(player) == 80) {
-                            player("We did it! We beat Surok!")
-                            stage = 200
-                        } else {
-                            sendPlayerDialogue(player, "Can I have another ring?", FaceAnim.HALF_GUILTY)
-                            stage = 50
+                        3 -> {
+                            if (quest!!.getStage(player) == 60) {
+                                player("Rat Burgiss sent me!")
+                                stage = 70
+                            } else if (quest!!.getStage(player) == 80) {
+                                player("We did it! We beat Surok!")
+                                stage = 200
+                            } else {
+                                sendPlayerDialogue(player, "Can I have another ring?", FaceAnim.HALF_GUILTY)
+                                stage = 50
+                            }
                         }
                     }
-                }
 
                 10 -> {
-                    if (player.achievementDiaryManager.getDiary(DiaryType.VARROCK)!!.levelRewarded.contains(true)) {
+                    if (player.achievementDiaryManager
+                            .getDiary(DiaryType.VARROCK)!!
+                            .levelRewarded
+                            .contains(true)
+                    ) {
                         npcl(FaceAnim.FRIENDLY, "Would you like to hear about my battlestaves?")
                         stage = 1000
                     } else {
@@ -138,16 +153,16 @@ class ZaffDialogue : OptionHandler() {
 
                 22 -> end()
                 50 -> {
-                    if (inInventory(player, 11014, 1))
+                    if (inInventory(player, 11014, 1)) {
                         npc(
                             FaceAnim.HALF_GUILTY,
-                            "Go and get the one that's in your inventory " + player.username + "!"
+                            "Go and get the one that's in your inventory " + player.username + "!",
                         )
-                    else if (player.bank.contains(11014, 1))
+                    } else if (player.bank.contains(11014, 1)) {
                         npc(FaceAnim.HALF_GUILTY, "Go and get the one that's in your bank" + player.username + "!")
-                    else if (inEquipment(player, 11014, 1))
+                    } else if (inEquipment(player, 11014, 1)) {
                         npc(FaceAnim.HALF_GUILTY, "Go and get the one that's on your finger " + player.username + "!")
-                    else {
+                    } else {
                         npc(FaceAnim.HALF_GUILTY, "Of course you can! Here you go " + player.username + "!")
                         player.inventory.add(BEACON_RING)
                         addItemOrDrop(player, Items.ZAFFS_INSTRUCTIONS_11011)
@@ -160,7 +175,7 @@ class ZaffDialogue : OptionHandler() {
                     npc(
                         "Ah, yes; You must be " + player.username + "! Rat sent word that you",
                         "would be coming. Everything is prepared. I have created",
-                        "a spell that will remove the mind control spell."
+                        "a spell that will remove the mind control spell.",
                     )
                     stage++
                 }
@@ -174,7 +189,7 @@ class ZaffDialogue : OptionHandler() {
                     npc(
                         "Listen carefully. For the spell to succeed, the king must",
                         "be made very weak, if his mind is controlled, you will",
-                        "need to fight him until he is all but dead."
+                        "need to fight him until he is all but dead.",
                     )
                     stage++
                 }
@@ -183,7 +198,7 @@ class ZaffDialogue : OptionHandler() {
                     npc(
                         "Then and ONLY then, use your ring to summon me.",
                         "I will teleport to you and cast the spell that will",
-                        "cure the king."
+                        "cure the king.",
                     )
                     stage++
                 }
@@ -197,7 +212,7 @@ class ZaffDialogue : OptionHandler() {
                     npc(
                         "I cannot. I must look after my shop here and",
                         "I have lots to do. Rest assured, I will come when you",
-                        "summon me."
+                        "summon me.",
                     )
                     stage++
                 }
@@ -237,7 +252,7 @@ class ZaffDialogue : OptionHandler() {
                         "I very much expect so. It may turn nasty, so be on your",
                         "guard. I hope we can stop him before he can cast his",
                         "spell!",
-                        "Make sure you have that ring I gave you."
+                        "Make sure you have that ring I gave you.",
                     )
                     stage++
                 }
@@ -273,7 +288,7 @@ class ZaffDialogue : OptionHandler() {
                     npc(
                         "Well, when I disrupted Surok's spell, he will have been",
                         "sealed in the library, but we still need to keep an",
-                        "eye on him, just in case."
+                        "eye on him, just in case.",
                     )
                     stage++
                 }
@@ -294,17 +309,18 @@ class ZaffDialogue : OptionHandler() {
                 }
 
                 1000 -> options("Yes, please.", "No, thanks.").also { stage++ }
-                1001 -> when (buttonId) {
-                    1 -> {
-                        end()
-                        openDialogue(player, 9679, npc)
-                    }
+                1001 ->
+                    when (buttonId) {
+                        1 -> {
+                            end()
+                            openDialogue(player, 9679, npc)
+                        }
 
-                    2 -> {
-                        end()
-                        openNpcShop(player, NPCs.ZAFF_546)
+                        2 -> {
+                            end()
+                            openNpcShop(player, NPCs.ZAFF_546)
+                        }
                     }
-                }
             }
             return true
         }
@@ -319,7 +335,6 @@ class ZaffDialogue : OptionHandler() {
     }
 
     inner class ZaffBattlestaffsDialogue : Dialogue {
-
         private var ammount = 0
 
         constructor()
@@ -336,7 +351,10 @@ class ZaffDialogue : OptionHandler() {
             return true
         }
 
-        override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+        override fun handle(
+            interfaceId: Int,
+            buttonId: Int,
+        ): Boolean {
             when (stage) {
                 0 -> {
                     if (ammount >= maxStaffs) {
@@ -344,7 +362,7 @@ class ZaffDialogue : OptionHandler() {
                             player,
                             NPCs.ZAFF_546,
                             "I'm very sorry! I seem to be out of battlestaves at the moment! I expect I'll get some more in by tomorrow, though.",
-                            FaceAnim.HALF_GUILTY
+                            FaceAnim.HALF_GUILTY,
                         )
                         stage = 2
                         return true
@@ -355,32 +373,33 @@ class ZaffDialogue : OptionHandler() {
                         FaceAnim.HAPPY,
                         false,
                         "Battlestaves cost 7,000 gold pieces each. I have ${maxStaffs - ammount} left.",
-                        "How many would you like to buy?"
+                        "How many would you like to buy?",
                     )
                     stage = 1
                 }
 
-                1 -> end().also {
-                    sendInputDialogue(player, InputType.AMOUNT, "Enter an amount:") { value ->
-                        ammount = getStoreFile().getInt(player.username.lowercase())
-                        var amt = value as Int
-                        if (amt > maxStaffs - ammount) amt = maxStaffs - ammount
-                        val coinage = amt * 7000
-                        if (!inInventory(player, Items.COINS_995, coinage)) {
-                            sendDialogue(player, "You can't afford that many.")
-                            return@sendInputDialogue
-                        }
+                1 ->
+                    end().also {
+                        sendInputDialogue(player, InputType.AMOUNT, "Enter an amount:") { value ->
+                            ammount = getStoreFile().getInt(player.username.lowercase())
+                            var amt = value as Int
+                            if (amt > maxStaffs - ammount) amt = maxStaffs - ammount
+                            val coinage = amt * 7000
+                            if (!inInventory(player, Items.COINS_995, coinage)) {
+                                sendDialogue(player, "You can't afford that many.")
+                                return@sendInputDialogue
+                            }
 
-                        if (amt == 0) {
-                            return@sendInputDialogue
-                        }
+                            if (amt == 0) {
+                                return@sendInputDialogue
+                            }
 
-                        if (removeItem(player, Item(Items.COINS_995, coinage), Container.INVENTORY)) {
-                            addItem(player, Items.BATTLESTAFF_1392, amt)
-                            getStoreFile()[player.username.lowercase()] = amt + ammount
+                            if (removeItem(player, Item(Items.COINS_995, coinage), Container.INVENTORY)) {
+                                addItem(player, Items.BATTLESTAFF_1392, amt)
+                                getStoreFile()[player.username.lowercase()] = amt + ammount
+                            }
                         }
                     }
-                }
 
                 2 -> player(FaceAnim.HALF_GUILTY, "Oh, okay then. I'll try again another time.").also { stage++ }
 
@@ -406,7 +425,6 @@ class ZaffDialogue : OptionHandler() {
     }
 
     companion object {
-
         val BEACON_RING = Item(Items.BEACON_RING_11014)
 
         fun getStoreFile(): JSONObject {

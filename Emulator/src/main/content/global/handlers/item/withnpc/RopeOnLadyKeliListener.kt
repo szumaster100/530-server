@@ -1,16 +1,15 @@
 package content.global.handlers.item.withnpc
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.*
 import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 class RopeOnLadyKeliListener : InteractionListener {
-
     override fun defineListeners() {
         onUseWith(IntType.NPC, Items.ROPE_954, NPCs.LADY_KELI_919) { player, used, _ ->
             if (getQuestStage(player, Quests.PRINCE_ALI_RESCUE) in 40..50 && getAttribute(player, "guard-drunk", false)

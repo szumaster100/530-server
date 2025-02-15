@@ -1,7 +1,5 @@
 package content.region.desert.handlers
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
 import core.api.*
 import core.cache.def.impl.SceneryDefinition
 import core.game.interaction.NodeUsageEvent
@@ -14,27 +12,29 @@ import core.game.node.scenery.Scenery
 import core.game.world.map.Location
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Animations
+import org.rs.consts.Items
 
 @Initializable
 class KalphiteEntranceHandler : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
-        val handler = object : UseWithHandler(Items.ROPE_954) {
-            override fun handle(event: NodeUsageEvent): Boolean {
-                val node = event.usedWith as Scenery
-                if (node.id == 3827 || node.id == 23609) {
-                    if (removeItem(event.player, event.usedItem)) {
-                        replaceScenery(node, node.id + 1, 500)
-                        return true
+        val handler =
+            object : UseWithHandler(Items.ROPE_954) {
+                override fun handle(event: NodeUsageEvent): Boolean {
+                    val node = event.usedWith as Scenery
+                    if (node.id == 3827 || node.id == 23609) {
+                        if (removeItem(event.player, event.usedItem)) {
+                            replaceScenery(node, node.id + 1, 500)
+                            return true
+                        }
                     }
+                    return false
                 }
-                return false
-            }
 
-            override fun newInstance(arg: Any?): Plugin<Any> {
-                return this
+                override fun newInstance(arg: Any?): Plugin<Any> {
+                    return this
+                }
             }
-        }
 
         UseWithHandler.addHandler(3827, UseWithHandler.OBJECT_TYPE, handler)
         UseWithHandler.addHandler(23609, UseWithHandler.OBJECT_TYPE, handler)
@@ -47,7 +47,11 @@ class KalphiteEntranceHandler : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val node = node as Scenery
         var destination: Location? = null
         when (node.id) {

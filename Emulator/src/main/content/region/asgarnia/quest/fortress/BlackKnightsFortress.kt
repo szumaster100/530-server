@@ -1,23 +1,25 @@
 package content.region.asgarnia.quest.fortress
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import content.region.asgarnia.quest.fortress.dialogue.SirAmikVarzeDialogue
 import content.region.asgarnia.quest.fortress.handlers.BlackKnightsFortressPlugin
 import core.api.quest.getQuestPoints
 import core.api.sendItemZoomOnInterface
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
-import core.plugin.Initializable
 import core.plugin.ClassScanner.definePlugins
+import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class BlackKnightsFortress :
     Quest(Quests.BLACK_KNIGHTS_FORTRESS, 14, 13, 3, Vars.VARP_QUEST_BLACK_KNIGHTS_FORTRESS_PROGRESS_130, 0, 1, 4) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 11
 
@@ -27,9 +29,15 @@ class BlackKnightsFortress :
                 line(player, "!!White Knight's Castle?? in !!Falador??.", line++)
                 line(
                     player,
-                    if (getQuestPoints(player) < 12) "!!" else "<str>" + "I must have a total of at least 12 Quest Points",
+                    if (getQuestPoints(player) <
+                        12
+                    ) {
+                        "!!"
+                    } else {
+                        "<str>" + "I must have a total of at least 12 Quest Points"
+                    },
                     line++,
-                    true
+                    true,
                 )
                 line(player, "I would have an advantage if I could fight !!Level 33 Knights??", line++)
                 line(player, "and if I had a smithing level of !!26??.", line++)

@@ -14,8 +14,10 @@ class GemBoltCutPulse
  * @param player the player.
  * @param node the node.
  * @param amount the amount.
- */(
-    player: Player?, node: Item?,
+ */
+(
+    player: Player?,
+    node: Item?,
     /**
      * Represents the gem we're cutting.
      */
@@ -23,7 +25,7 @@ class GemBoltCutPulse
     /**
      * Represents the amount to make.
      */
-    private var amount: Int
+    private var amount: Int,
 ) : SkillPulse<Item?>(player, node) {
     /**
      * Represents the ticks passed.
@@ -32,7 +34,9 @@ class GemBoltCutPulse
 
     override fun checkRequirements(): Boolean {
         if (player.skills.getLevel(Skills.FLETCHING) < gem.level) {
-            player.dialogueInterpreter.sendDialogue("You need a fletching level of " + gem.level + " or above to do that.")
+            player.dialogueInterpreter.sendDialogue(
+                "You need a fletching level of " + gem.level + " or above to do that.",
+            )
             return false
         }
         return player.inventory.containsItem(Item(gem.gem))

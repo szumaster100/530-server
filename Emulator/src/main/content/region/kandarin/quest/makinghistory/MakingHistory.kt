@@ -1,9 +1,5 @@
 package content.region.kandarin.quest.makinghistory
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import content.global.activity.enchkey.EnchKeyTreasure
 import content.region.kandarin.quest.makinghistory.handlers.MakingHistoryUtils
 import core.api.*
@@ -13,11 +9,17 @@ import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.game.world.GameWorld
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class MakingHistory : Quest(Quests.MAKING_HISTORY, 86, 85, 3, Vars.VARBIT_QUEST_MAKING_HISTORY_PROGRESS_1383, 0, 1, 4) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 11
 
@@ -26,7 +28,12 @@ class MakingHistory : Quest(Quests.MAKING_HISTORY, 86, 85, 3, Vars.VARBIT_QUEST_
             line(player, "!!North West of West Ardougne??.", line++, false)
             line += 1
             line(player, "Minimum requirements:", line++, false)
-            line(player, "!!I must have completed the ${Quests.PRIEST_IN_PERIL} Quest??", line++, isQuestComplete(player, Quests.PRIEST_IN_PERIL))
+            line(
+                player,
+                "!!I must have completed the ${Quests.PRIEST_IN_PERIL} Quest??",
+                line++,
+                isQuestComplete(player, Quests.PRIEST_IN_PERIL),
+            )
             line(player, "It will be easier with", line++, false)
             line(player, "!!Crafting lvl 24??", line++, getStatLevel(player, Skills.CRAFTING) >= 24)
             line(player, "!!Smithing lvl 40??", line++, getStatLevel(player, Skills.SMITHING) >= 40)
@@ -55,7 +62,12 @@ class MakingHistory : Quest(Quests.MAKING_HISTORY, 86, 85, 3, Vars.VARBIT_QUEST_
             line(player, "<col=FF0000>QUEST COMPLETE!", line, false)
             line++
             if (getAttribute(player, EnchKeyTreasure.ENCHANTED_KEY_ATTR, -1) >= 0) {
-                line(player, "I Should see what else I can find with the help of the key.", line, getAttribute(player, EnchKeyTreasure.ENCHANTED_KEY_ATTR, -1) >= 10)
+                line(
+                    player,
+                    "I Should see what else I can find with the help of the key.",
+                    line,
+                    getAttribute(player, EnchKeyTreasure.ENCHANTED_KEY_ATTR, -1) >= 10,
+                )
             }
         }
     }
@@ -77,7 +89,7 @@ class MakingHistory : Quest(Quests.MAKING_HISTORY, 86, 85, 3, Vars.VARBIT_QUEST_
             player,
             MakingHistoryUtils.ATTRIBUTE_ERIN_PROGRESS,
             MakingHistoryUtils.ATTRIBUTE_DROALAK_PROGRESS,
-            MakingHistoryUtils.ATTRIBUTE_DRON_PROGRESS
+            MakingHistoryUtils.ATTRIBUTE_DRON_PROGRESS,
         )
     }
 

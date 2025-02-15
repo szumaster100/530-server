@@ -1,6 +1,5 @@
 package content.global.handlers.iface
 
-import org.rs.consts.Quests
 import core.api.*
 import core.api.quest.requireQuest
 import core.api.ui.openSingleTab
@@ -13,6 +12,7 @@ import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.game.world.map.RegionManager
 import core.tools.RandomFunction
+import org.rs.consts.Quests
 
 class FairyRingInterface : InterfaceListener {
     companion object {
@@ -29,7 +29,6 @@ class FairyRingInterface : InterfaceListener {
     }
 
     override fun defineInterfaceListeners() {
-
         onOpen(RINGS_IFACE) { player, _ ->
             openSingleTab(player, LOG_IFACE_ID)
             saveVarp(player, VARP_F_RING)
@@ -84,29 +83,45 @@ class FairyRingInterface : InterfaceListener {
         drawLog(player)
     }
 
-    fun increment(player: Player, ring: Int) {
-        val vbit = when (ring) {
-            1 -> VB_RING_1
-            2 -> VB_RING_2
-            3 -> VB_RING_3
-            else -> return
-        }
+    fun increment(
+        player: Player,
+        ring: Int,
+    ) {
+        val vbit =
+            when (ring) {
+                1 -> VB_RING_1
+                2 -> VB_RING_2
+                3 -> VB_RING_3
+                else -> return
+            }
         val curIndex = getVarbit(player, vbit)
-        val nextIndex: Int = if (curIndex == 3) 0
-        else curIndex + 1
+        val nextIndex: Int =
+            if (curIndex == 3) {
+                0
+            } else {
+                curIndex + 1
+            }
         setVarbit(player, vbit, nextIndex)
     }
 
-    fun decrement(player: Player, ring: Int) {
-        val vbit = when (ring) {
-            1 -> VB_RING_1
-            2 -> VB_RING_2
-            3 -> VB_RING_3
-            else -> return
-        }
+    fun decrement(
+        player: Player,
+        ring: Int,
+    ) {
+        val vbit =
+            when (ring) {
+                1 -> VB_RING_1
+                2 -> VB_RING_2
+                3 -> VB_RING_3
+                else -> return
+            }
         val curIndex = getVarbit(player, vbit)
-        val nextIndex: Int = if (curIndex == 0) 3
-        else curIndex - 1
+        val nextIndex: Int =
+            if (curIndex == 0) {
+                3
+            } else {
+                curIndex - 1
+            }
         setVarbit(player, vbit, nextIndex)
     }
 
@@ -115,11 +130,12 @@ class FairyRingInterface : InterfaceListener {
         val ring2index = getVarbit(player, VB_RING_2)
         val ring3index = getVarbit(player, VB_RING_3)
         val code = "${RING_1[ring1index]}${RING_2[ring2index]}${RING_3[ring3index]}"
-        val ring: FairyRing? = try {
-            FairyRing.valueOf(code.uppercase())
-        } catch (e: Exception) {
-            null
-        }
+        val ring: FairyRing? =
+            try {
+                FairyRing.valueOf(code.uppercase())
+            } catch (e: Exception) {
+                null
+            }
 
         var tile = ring?.tile
         if (ring?.checkAccess(player) != true) {
@@ -127,11 +143,12 @@ class FairyRingInterface : InterfaceListener {
         }
         if (ring == null || tile == null) {
             val center = Location(2412, 4434, 0)
-            tile = if (RandomFunction.random(2) == 1) {
-                center.transform(RandomFunction.random(2, 6), RandomFunction.random(2, 6), 0)
-            } else {
-                center.transform(RandomFunction.random(-2, -6), RandomFunction.random(-2, -6), 0)
-            }
+            tile =
+                if (RandomFunction.random(2) == 1) {
+                    center.transform(RandomFunction.random(2, 6), RandomFunction.random(2, 6), 0)
+                } else {
+                    center.transform(RandomFunction.random(-2, -6), RandomFunction.random(-2, -6), 0)
+                }
             if (!RegionManager.isTeleportPermitted(tile) || RegionManager.getObject(tile) != null) {
                 tile = Location.create(2412, 4431, 0)
             }
@@ -141,11 +158,11 @@ class FairyRingInterface : InterfaceListener {
                         sendPlayerDialogue(
                             player,
                             "Wow, fairy magic sure is useful, I hardly moved at all!",
-                            core.game.dialogue.FaceAnim.AMAZED
+                            core.game.dialogue.FaceAnim.AMAZED,
                         )
                         return true
                     }
-                }
+                },
             )
         } else {
             if (!player.savedData.globalData.hasTravelLog(ring.ordinal)) {
@@ -165,7 +182,11 @@ class FairyRingInterface : InterfaceListener {
     }
 }
 
-enum class FairyRing(val tile: Location?, val tip: String = "", val childId: Int = -1) {
+enum class FairyRing(
+    val tile: Location?,
+    val tip: String = "",
+    val childId: Int = -1,
+) {
     AIQ(Location.create(2996, 3114, 0), "Asgarnia: Mudskipper Point", 15),
     AIR(Location.create(2700, 3247, 0), "Islands: South of Witchaven", 16),
     AJQ(Location.create(2735, 5221, 0), "Dungeons: Dark cave south of Dorgesh-Kaann", 19),
@@ -219,8 +240,11 @@ enum class FairyRing(val tile: Location?, val tip: String = "", val childId: Int
     DKS(Location.create(2744, 3719, 0), "Kandarin: Snowy Hunter area", 73),
     DLQ(Location.create(3423, 3016, 0), "Kharidian Desert: North of Nardah", 75),
     DLR(Location.create(2213, 3099, 0), "Islands: Poison Waste south of Isafdar", 76),
-    AIS(null), AIP(null), AKP(null),
-    FAIRY_HOME(Location.create(2412, 4434, 0));
+    AIS(null),
+    AIP(null),
+    AKP(null),
+    FAIRY_HOME(Location.create(2412, 4434, 0)),
+    ;
 
     open fun checkAccess(player: Player): Boolean {
         return true

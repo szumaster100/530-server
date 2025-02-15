@@ -1,9 +1,5 @@
 package content.global.handlers.iface
 
-import org.rs.consts.Animations
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import content.global.skill.magic.SpellUtils
 import core.api.*
 import core.game.interaction.InterfaceListener
@@ -11,11 +7,13 @@ import core.game.interaction.QueueStrength
 import core.game.node.entity.combat.spell.Runes
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import org.rs.consts.Animations
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 
 class BoltEnchantInterface : InterfaceListener {
-
     override fun defineInterfaceListeners() {
-
         on(Components.XBOWS_ENCHANT_BOLT_432) { player, _, _, buttonID, _, itemID ->
             val bolts = Bolts.boltMap[buttonID] ?: return@on true
             val staff = SpellUtils.usingStaff(player, itemID)
@@ -76,7 +74,7 @@ class BoltEnchantInterface : InterfaceListener {
         val level: Int,
         val runes: Array<Item>,
         val exp: Double,
-        val enchanted: Int
+        val enchanted: Int,
     ) {
         OPAL(
             button = 14,
@@ -84,7 +82,7 @@ class BoltEnchantInterface : InterfaceListener {
             level = 4,
             runes = arrayOf(Item(Runes.COSMIC_RUNE.id, 1), Item(Runes.AIR_RUNE.id, 2)),
             exp = 9.0,
-            enchanted = Items.OPAL_BOLTS_E_9236
+            enchanted = Items.OPAL_BOLTS_E_9236,
         ),
         SAPPHIRE(
             button = 29,
@@ -92,7 +90,7 @@ class BoltEnchantInterface : InterfaceListener {
             level = 7,
             runes = arrayOf(Item(Runes.COSMIC_RUNE.id, 1), Item(Runes.MIND_RUNE.id, 1), Item(Runes.WATER_RUNE.id, 1)),
             exp = 17.0,
-            enchanted = Items.SAPPHIRE_BOLTS_E_9240
+            enchanted = Items.SAPPHIRE_BOLTS_E_9240,
         ),
         JADE(
             button = 18,
@@ -100,7 +98,7 @@ class BoltEnchantInterface : InterfaceListener {
             level = 14,
             runes = arrayOf(Item(Runes.COSMIC_RUNE.id, 1), Item(Runes.EARTH_RUNE.id, 2)),
             exp = 19.0,
-            enchanted = Items.JADE_BOLTS_E_9237
+            enchanted = Items.JADE_BOLTS_E_9237,
         ),
         PEARL(
             button = 22,
@@ -108,7 +106,7 @@ class BoltEnchantInterface : InterfaceListener {
             level = 24,
             runes = arrayOf(Item(Runes.COSMIC_RUNE.id, 1), Item(Runes.WATER_RUNE.id, 2)),
             exp = 29.0,
-            enchanted = Items.PEARL_BOLTS_E_9238
+            enchanted = Items.PEARL_BOLTS_E_9238,
         ),
         EMERALD(
             button = 32,
@@ -116,7 +114,7 @@ class BoltEnchantInterface : InterfaceListener {
             level = 27,
             runes = arrayOf(Item(Runes.NATURE_RUNE.id, 1), Item(Runes.COSMIC_RUNE.id, 1), Item(Runes.AIR_RUNE.id, 3)),
             exp = 37.0,
-            enchanted = Items.EMERALD_BOLTS_E_9241
+            enchanted = Items.EMERALD_BOLTS_E_9241,
         ),
         RED_TOPAZ(
             button = 26,
@@ -124,7 +122,7 @@ class BoltEnchantInterface : InterfaceListener {
             level = 29,
             runes = arrayOf(Item(Runes.COSMIC_RUNE.id, 1), Item(Runes.FIRE_RUNE.id, 2)),
             exp = 33.0,
-            enchanted = Items.TOPAZ_BOLTS_E_9239
+            enchanted = Items.TOPAZ_BOLTS_E_9239,
         ),
         RUBY(
             button = 35,
@@ -132,7 +130,7 @@ class BoltEnchantInterface : InterfaceListener {
             level = 49,
             runes = arrayOf(Item(Runes.BLOOD_RUNE.id, 1), Item(Runes.COSMIC_RUNE.id, 1), Item(Runes.FIRE_RUNE.id, 5)),
             exp = 59.0,
-            enchanted = Items.RUBY_BOLTS_E_9242
+            enchanted = Items.RUBY_BOLTS_E_9242,
         ),
         DIAMOND(
             button = 38,
@@ -140,7 +138,7 @@ class BoltEnchantInterface : InterfaceListener {
             level = 57,
             runes = arrayOf(Item(Runes.LAW_RUNE.id, 2), Item(Runes.COSMIC_RUNE.id, 1), Item(Runes.EARTH_RUNE.id, 10)),
             exp = 67.0,
-            enchanted = Items.DIAMOND_BOLTS_E_9243
+            enchanted = Items.DIAMOND_BOLTS_E_9243,
         ),
         DRAGONSTONE(
             button = 41,
@@ -148,7 +146,7 @@ class BoltEnchantInterface : InterfaceListener {
             level = 68,
             runes = arrayOf(Item(Runes.SOUL_RUNE.id, 1), Item(Runes.COSMIC_RUNE.id, 1), Item(Runes.EARTH_RUNE.id, 15)),
             exp = 78.0,
-            enchanted = Items.DRAGON_BOLTS_E_9244
+            enchanted = Items.DRAGON_BOLTS_E_9244,
         ),
         ONYX(
             button = 44,
@@ -156,11 +154,11 @@ class BoltEnchantInterface : InterfaceListener {
             level = 87,
             runes = arrayOf(Item(Runes.DEATH_RUNE.id, 1), Item(Runes.COSMIC_RUNE.id, 1), Item(Runes.FIRE_RUNE.id, 20)),
             exp = 97.0,
-            enchanted = Items.ONYX_BOLTS_E_9245
-        );
+            enchanted = Items.ONYX_BOLTS_E_9245,
+        ),
+        ;
 
         companion object {
-
             val boltMap = HashMap<Int, Bolts>()
 
             init {

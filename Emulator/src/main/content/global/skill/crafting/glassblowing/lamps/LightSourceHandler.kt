@@ -1,7 +1,6 @@
 package content.global.skill.crafting.glassblowing.lamps
 
 import core.api.*
-import org.rs.consts.Items
 import core.game.container.Container
 import core.game.event.LitLightSourceEvent
 import core.game.interaction.NodeUsageEvent
@@ -11,10 +10,10 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Items
 
 @Initializable
 class LightSourceHandler : UseWithHandler(Items.TINDERBOX_590, Items.CANDLE_36, Items.BLACK_CANDLE_38) {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         addHandler(Items.TINDERBOX_590, ITEM_TYPE, this)
         addHandler(Items.UNLIT_TORCH_596, ITEM_TYPE, this)
@@ -39,27 +38,34 @@ class LightSourceHandler : UseWithHandler(Items.TINDERBOX_590, Items.CANDLE_36, 
         if (!light(event.player, used, lightSources)) {
             sendMessage(
                 event.player,
-                "You need a Firemaking level of at least ${lightSources.levelRequired} to light this."
+                "You need a Firemaking level of at least ${lightSources.levelRequired} to light this.",
             )
         }
 
         return true
     }
 
-    fun Container.replace(item: Item, with: Item) {
+    fun Container.replace(
+        item: Item,
+        with: Item,
+    ) {
         if (remove(item)) {
             add(with)
         }
     }
 
-    fun light(player: Player, item: Item, lightSources: LightSources): Boolean {
+    fun light(
+        player: Player,
+        item: Item,
+        lightSources: LightSources,
+    ): Boolean {
         val requiredLevel = lightSources.levelRequired
         val playerLevel = getStatLevel(player, Skills.FIREMAKING)
 
         if (playerLevel < requiredLevel) return false
 
         // Making sure that a lit source cannot be ignited again.
-        if(item.id != lightSources.litId) {
+        if (item.id != lightSources.litId) {
             playAudio(player, lightSources.sfxId)
             player.inventory.replace(item, Item(lightSources.litId))
             player.dispatch(LitLightSourceEvent(lightSources.litId))

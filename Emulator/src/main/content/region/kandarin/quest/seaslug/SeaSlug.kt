@@ -1,23 +1,25 @@
 package content.region.kandarin.quest.seaslug
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.*
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class SeaSlug : Quest(Quests.SEA_SLUG, 109, 108, 1, Vars.VARP_QUEST_SEA_SLUG_PROGRESS_159, 0, 1, 13) {
-
     companion object {
         const val ATTRIBUTE_TALK_WITH_KENT = "seaslug:kent-dialogue"
     }
 
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 11
         player ?: return
@@ -31,10 +33,14 @@ class SeaSlug : Quest(Quests.SEA_SLUG, 109, 108, 1, Vars.VARP_QUEST_SEA_SLUG_PRO
                 if (hasLevelStat(
                         player,
                         Skills.FIREMAKING,
-                        30
+                        30,
                     )
-                ) "--- You'll need level 30 Firemaking/--" else "You'll need level !!30 Firemaking??",
-                line++
+                ) {
+                    "--- You'll need level 30 Firemaking/--"
+                } else {
+                    "You'll need level !!30 Firemaking??"
+                },
+                line++,
             )
             line++
         }

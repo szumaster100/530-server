@@ -23,9 +23,7 @@ import org.rs.consts.Sounds
 
 @Suppress("unused")
 class CastleWarsListeners : InteractionListener {
-
     override fun defineListeners() {
-
         on(NPCs.LANTHUS_1526, IntType.NPC, "trade-with") { player, _ ->
             openNpcShop(player, NPCs.LANTHUS_1526)
             return@on true
@@ -63,7 +61,9 @@ class CastleWarsListeners : InteractionListener {
 
             if (CastleWarsWaitingArea.waitingSaradominPlayers.size < CastleWarsWaitingArea.waitingZamorakPlayers.size) {
                 player.properties.teleportLocation = CastleWarsWaitingArea.saradominWaitingRoom.randomWalkableLoc
-            } else if (CastleWarsWaitingArea.waitingSaradominPlayers.size > CastleWarsWaitingArea.waitingZamorakPlayers.size) {
+            } else if (CastleWarsWaitingArea.waitingSaradominPlayers.size >
+                CastleWarsWaitingArea.waitingZamorakPlayers.size
+            ) {
                 player.properties.teleportLocation = CastleWarsWaitingArea.zamorakWaitingRoom.randomWalkableLoc
             } else {
                 if (Math.random() < 0.5) {
@@ -81,10 +81,10 @@ class CastleWarsListeners : InteractionListener {
 
             if (addItem(player, rewardItem)) {
                 playAudio(player, Sounds.PICK2_2582)
-
             } else {
                 val formattedItemName =
-                    (ItemDefinition.forId(rewardItem).name.lowercase() + "s.").replace("pes.", "pe.")
+                    (ItemDefinition.forId(rewardItem).name.lowercase() + "s.")
+                        .replace("pes.", "pe.")
                         .replace("bronze ", "")
                 if (rewardItem == Items.TOOLKIT_4051) {
                     sendDialogue(player, "Your inventory is too full to hold a toolkit.")
@@ -98,13 +98,13 @@ class CastleWarsListeners : InteractionListener {
         onUseWith(
             SCENERY,
             CastleWars.cwClimbingRope,
-            *CastleWars.cwCastleBattlementsMap.keys.toIntArray()
+            *CastleWars.cwCastleBattlementsMap.keys.toIntArray(),
         ) { player, rope, wall ->
             removeItem(player, rope)
             replaceScenery(
                 wall.asScenery(),
                 CastleWars.cwCastleBattlementsMap.getValue(wall.id),
-                CastleWars.ropeAliveTicks
+                CastleWars.ropeAliveTicks,
             )
             val toAdd = Scenery(CastleWars.cwCastleClimbingRope, wall.location, 4, wall.direction.toInteger())
             SceneryBuilder.add(toAdd, CastleWars.ropeAliveTicks)
@@ -117,7 +117,7 @@ class CastleWarsListeners : InteractionListener {
             teleport(
                 player,
                 Location(dir.stepY + player.location.x, -dir.stepX + player.location.y),
-                TeleportManager.TeleportType.INSTANT
+                TeleportManager.TeleportType.INSTANT,
             )
             return@on true
         }
@@ -142,8 +142,9 @@ class CastleWarsListeners : InteractionListener {
 
     private fun hasNonCombatItems(container: Container): Boolean {
         for (item in container.toArray()) {
-            if (item?.id != null && (item.id == Items.COINS_995 || item.definition?.noteId == item.id))
+            if (item?.id != null && (item.id == Items.COINS_995 || item.definition?.noteId == item.id)) {
                 return true
+            }
         }
         return false
     }
@@ -163,7 +164,6 @@ class CastleWarsListeners : InteractionListener {
     }
 
     private fun familiarCheck(player: Player): String? {
-
         val familiar: BurdenBeast = player.familiarManager.familiar as? BurdenBeast ?: return null
 
         if (hasNonCombatItems(familiar.container)) return "Your familiar can't take non-combat items into the arena."

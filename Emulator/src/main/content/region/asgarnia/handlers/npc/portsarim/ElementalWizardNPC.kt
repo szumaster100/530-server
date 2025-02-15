@@ -1,6 +1,5 @@
 package content.region.asgarnia.handlers.npc.portsarim
 
-import org.rs.consts.NPCs
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.BattleState
 import core.game.node.entity.combat.CombatStyle
@@ -14,31 +13,45 @@ import core.game.node.entity.skill.Skills
 import core.game.world.map.Location
 import core.plugin.Initializable
 import core.tools.RandomFunction
+import org.rs.consts.NPCs
 
 @Initializable
 class ElementalWizardNPC : AbstractNPC {
-
     constructor(id: Int, location: Location?) : super(id, location, true) {
         properties.combatPulse.style = CombatStyle.MAGIC
     }
 
     constructor() : super(0, null)
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return ElementalWizardNPC(id, location)
     }
 
-    override fun onImpact(entity: Entity, state: BattleState) {
+    override fun onImpact(
+        entity: Entity,
+        state: BattleState,
+    ) {
         if (state.spell != null && isSpellType(state.spell)) {
             state.estimatedHit = 0
             state.maximumHit = 0
             sendChat("Gratias tibi ago")
             getSkills().heal(getSkills().getStaticLevel(Skills.HITPOINTS))
             val attacker = state.attacker
-            if (attacker is Player && !attacker.asPlayer().achievementDiaryManager.getDiary(DiaryType.FALADOR)!!
+            if (attacker is Player &&
+                !attacker
+                    .asPlayer()
+                    .achievementDiaryManager
+                    .getDiary(DiaryType.FALADOR)!!
                     .isComplete(0, 8)
             ) {
-                attacker.asPlayer()!!.achievementDiaryManager.getDiary(DiaryType.FALADOR)!!
+                attacker
+                    .asPlayer()!!
+                    .achievementDiaryManager
+                    .getDiary(DiaryType.FALADOR)!!
                     .updateTask(attacker.asPlayer(), 0, 8, true)
             }
         }

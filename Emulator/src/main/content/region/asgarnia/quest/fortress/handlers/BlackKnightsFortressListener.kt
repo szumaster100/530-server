@@ -1,8 +1,5 @@
 package content.region.asgarnia.quest.fortress.handlers
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Quests
 import core.api.*
 import core.api.movement.finishedMoving
 import core.api.quest.getQuestStage
@@ -15,31 +12,40 @@ import core.game.interaction.QueueStrength
 import core.game.node.scenery.Scenery
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Quests
 
 class BlackKnightsFortressListener : InteractionListener {
     companion object {
-        private fun determineDestination(scenery: Scenery?, id: Int): Location? {
+        private fun determineDestination(
+            scenery: Scenery?,
+            id: Int,
+        ): Location? {
             return when (id) {
-                17160 -> when (scenery?.location) {
-                    Location(3022, 3518, 1) -> Location.create(3022, 3517, 0)
-                    else -> null
-                }
+                17160 ->
+                    when (scenery?.location) {
+                        Location(3022, 3518, 1) -> Location.create(3022, 3517, 0)
+                        else -> null
+                    }
 
-                17149 -> when (scenery?.location) {
-                    Location(3023, 3513, 2) -> Location.create(3023, 3514, 1)
-                    Location(3025, 3513, 2) -> Location.create(3025, 3514, 1)
-                    Location(3016, 3519, 2) -> Location.create(3016, 3518, 1)
-                    Location(3015, 3519, 1) -> Location.create(3015, 3518, 0)
-                    Location(3017, 3516, 2) -> Location.create(3017, 3515, 1)
-                    else -> null
-                }
+                17149 ->
+                    when (scenery?.location) {
+                        Location(3023, 3513, 2) -> Location.create(3023, 3514, 1)
+                        Location(3025, 3513, 2) -> Location.create(3025, 3514, 1)
+                        Location(3016, 3519, 2) -> Location.create(3016, 3518, 1)
+                        Location(3015, 3519, 1) -> Location.create(3015, 3518, 0)
+                        Location(3017, 3516, 2) -> Location.create(3017, 3515, 1)
+                        else -> null
+                    }
 
-                17148 -> when (scenery?.location) {
-                    Location(3021, 3510, 0) -> Location.create(3022, 3510, 1)
-                    Location(3015, 3519, 0) -> Location.create(3015, 3518, 1)
-                    Location(3016, 3519, 0) -> Location.create(3016, 3518, 2)
-                    else -> null
-                }
+                17148 ->
+                    when (scenery?.location) {
+                        Location(3021, 3510, 0) -> Location.create(3022, 3510, 1)
+                        Location(3015, 3519, 0) -> Location.create(3015, 3518, 1)
+                        Location(3016, 3519, 0) -> Location.create(3016, 3518, 2)
+                        else -> null
+                    }
 
                 else -> null
             }
@@ -47,7 +53,6 @@ class BlackKnightsFortressListener : InteractionListener {
     }
 
     override fun defineListeners() {
-
         onUseWith(IntType.SCENERY, intArrayOf(Items.CABBAGE_1965, Items.CABBAGE_1967), 2336) { player, used, _ ->
             if (getQuestStage(player, Quests.BLACK_KNIGHTS_FORTRESS) >= 20) {
                 if (used.id == Items.CABBAGE_1967) {
@@ -85,7 +90,7 @@ class BlackKnightsFortressListener : InteractionListener {
                             sendDialogueLines(
                                 player,
                                 "Infiltrate fortress... sabotage secret weapon... self",
-                                "destruct in 3...2...ARG!"
+                                "destruct in 3...2...ARG!",
                             )
                             return@queueScript delayScript(player, animationCycles(Animations.BURN_NOTE_4551))
                         }
@@ -103,11 +108,16 @@ class BlackKnightsFortressListener : InteractionListener {
             return@on true
         }
 
-        on(intArrayOf(
+        on(
+            intArrayOf(
                 org.rs.consts.Scenery.LADDER_17160,
                 org.rs.consts.Scenery.LADDER_17149,
-                org.rs.consts.Scenery.LADDER_17148
-            ), IntType.SCENERY, "climb-up", "climb-down") { player, node ->
+                org.rs.consts.Scenery.LADDER_17148,
+            ),
+            IntType.SCENERY,
+            "climb-up",
+            "climb-down",
+        ) { player, node ->
             val dest: Location? = determineDestination(node.asScenery(), node.id)
             val option = getUsedOption(player)
             if (dest != null) {

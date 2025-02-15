@@ -1,7 +1,5 @@
 package content.global.handlers.scenery
 
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import content.global.handlers.npc.BankerNPC
 import core.ServerConfig
 import core.api.*
@@ -17,9 +15,10 @@ import core.game.node.item.Item
 import core.game.world.map.Direction
 import core.game.world.map.Location
 import core.game.world.repository.Repository
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 class BankBoothListener : InteractionListener {
-
     private fun locateAdjacentBankerLinear(node: Node): NPC? {
         for (dir in arrayOf(Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST)) {
             Repository.findNPC(node.location.transform(dir))?.let { return it as? BankerNPC }
@@ -27,7 +26,10 @@ class BankBoothListener : InteractionListener {
         return null
     }
 
-    private fun locateAdjacentBankerSquare(node: Node, size: Int = 1): NPC? {
+    private fun locateAdjacentBankerSquare(
+        node: Node,
+        size: Int = 1,
+    ): NPC? {
         for (y in (node.location.y - size)..(node.location.y + size)) {
             for (x in (node.location.x - size)..(node.location.x + size)) {
                 Repository.findNPC(Location(x, y))?.let { return it as? BankerNPC }
@@ -36,9 +38,14 @@ class BankBoothListener : InteractionListener {
         return null
     }
 
-    private fun tryInvokeBankerDialogue(player: Player, node: Node) {
+    private fun tryInvokeBankerDialogue(
+        player: Player,
+        node: Node,
+    ) {
         (locateAdjacentBankerLinear(node) ?: locateAdjacentBankerSquare(node, 2))?.let {
-            if (core.game.dialogue.DialogueInterpreter.contains(it.id)) {
+            if (core.game.dialogue.DialogueInterpreter
+                    .contains(it.id)
+            ) {
                 it.faceLocation(node.location)
                 openDialogue(player, it.id, NPC(it.id, it.location))
             } else {
@@ -47,7 +54,11 @@ class BankBoothListener : InteractionListener {
         }
     }
 
-    private fun quickBankBoothUse(player: Player, node: Node, state: Int): Boolean {
+    private fun quickBankBoothUse(
+        player: Player,
+        node: Node,
+        state: Int,
+    ): Boolean {
         if (player.ironmanManager.checkRestriction(IronmanMode.ULTIMATE)) {
             return true
         }
@@ -60,7 +71,11 @@ class BankBoothListener : InteractionListener {
         return true
     }
 
-    private fun regularBankBoothUse(player: Player, node: Node, state: Int): Boolean {
+    private fun regularBankBoothUse(
+        player: Player,
+        node: Node,
+        state: Int,
+    ): Boolean {
         if (player.ironmanManager.checkRestriction(IronmanMode.ULTIMATE)) {
             return true
         }
@@ -73,7 +88,11 @@ class BankBoothListener : InteractionListener {
         return true
     }
 
-    private fun collectBankBoothUse(player: Player, node: Node, state: Int): Boolean {
+    private fun collectBankBoothUse(
+        player: Player,
+        node: Node,
+        state: Int,
+    ): Boolean {
         if (BankerNPC.checkLunarIsleRestriction(player, node)) {
             tryInvokeBankerDialogue(player, node)
             return true
@@ -83,7 +102,11 @@ class BankBoothListener : InteractionListener {
         return true
     }
 
-    private fun attemptToConvertItems(player: Player, used: Node, with: Node): Boolean {
+    private fun attemptToConvertItems(
+        player: Player,
+        used: Node,
+        with: Node,
+    ): Boolean {
         if (!hasOption(with, "use")) {
             return true
         }
@@ -136,45 +159,47 @@ class BankBoothListener : InteractionListener {
     }
 
     companion object {
-        val INOPERABLE_BANK_BOOTHS = intArrayOf(
-            Scenery.BANK_BOOTH_12800,
-            Scenery.BANK_BOOTH_12801,
-            Scenery.BANK_BOOTH_36262,
-            Scenery.BANK_BOOTH_35648
-        )
-        val BANK_BOOTHS = intArrayOf(
-            Scenery.BANK_BOOTH_2213,
-            Scenery.BANK_BOOTH_2214,
-            Scenery.BANK_BOOTH_3045,
-            Scenery.BANK_BOOTH_5276,
-            Scenery.BANK_BOOTH_6084,
-            Scenery.BANK_BOOTH_10517,
-            Scenery.BANK_BOOTH_11338,
-            Scenery.BANK_BOOTH_11402,
-            Scenery.BANK_BOOTH_11758,
-            Scenery.BANK_BOOTH_12798,
-            Scenery.BANK_BOOTH_12799,
-            Scenery.BANK_BOOTH_14367,
-            Scenery.BANK_BOOTH_14368,
-            Scenery.BANK_BOOTH_16700,
-            Scenery.BANK_BOOTH_18491,
-            Scenery.BANK_BOOTH_19230,
-            Scenery.BANK_BOOTH_20325,
-            Scenery.BANK_BOOTH_20326,
-            Scenery.BANK_BOOTH_20327,
-            Scenery.BANK_BOOTH_20328,
-            Scenery.BANK_BOOTH_22819,
-            Scenery.BANK_BOOTH_24914,
-            Scenery.BANK_BOOTH_25808,
-            Scenery.BANK_BOOTH_26972,
-            Scenery.BANK_BOOTH_29085,
-            Scenery.BANK_BOOTH_30015,
-            Scenery.BANK_BOOTH_30016,
-            Scenery.BANK_BOOTH_34205,
-            Scenery.BANK_BOOTH_34752,
-            Scenery.BANK_BOOTH_35647,
-            Scenery.BANK_BOOTH_36786,
-            Scenery.BANK_BOOTH_37474
-        )
+        val INOPERABLE_BANK_BOOTHS =
+            intArrayOf(
+                Scenery.BANK_BOOTH_12800,
+                Scenery.BANK_BOOTH_12801,
+                Scenery.BANK_BOOTH_36262,
+                Scenery.BANK_BOOTH_35648,
+            )
+        val BANK_BOOTHS =
+            intArrayOf(
+                Scenery.BANK_BOOTH_2213,
+                Scenery.BANK_BOOTH_2214,
+                Scenery.BANK_BOOTH_3045,
+                Scenery.BANK_BOOTH_5276,
+                Scenery.BANK_BOOTH_6084,
+                Scenery.BANK_BOOTH_10517,
+                Scenery.BANK_BOOTH_11338,
+                Scenery.BANK_BOOTH_11402,
+                Scenery.BANK_BOOTH_11758,
+                Scenery.BANK_BOOTH_12798,
+                Scenery.BANK_BOOTH_12799,
+                Scenery.BANK_BOOTH_14367,
+                Scenery.BANK_BOOTH_14368,
+                Scenery.BANK_BOOTH_16700,
+                Scenery.BANK_BOOTH_18491,
+                Scenery.BANK_BOOTH_19230,
+                Scenery.BANK_BOOTH_20325,
+                Scenery.BANK_BOOTH_20326,
+                Scenery.BANK_BOOTH_20327,
+                Scenery.BANK_BOOTH_20328,
+                Scenery.BANK_BOOTH_22819,
+                Scenery.BANK_BOOTH_24914,
+                Scenery.BANK_BOOTH_25808,
+                Scenery.BANK_BOOTH_26972,
+                Scenery.BANK_BOOTH_29085,
+                Scenery.BANK_BOOTH_30015,
+                Scenery.BANK_BOOTH_30016,
+                Scenery.BANK_BOOTH_34205,
+                Scenery.BANK_BOOTH_34752,
+                Scenery.BANK_BOOTH_35647,
+                Scenery.BANK_BOOTH_36786,
+                Scenery.BANK_BOOTH_37474,
+            )
     }
 }

@@ -1,6 +1,5 @@
 package content.region.misthalin.handlers
 
-import org.rs.consts.*
 import content.global.handlers.iface.FairyRing
 import content.global.skill.magic.TeleportMethod
 import content.global.skill.prayer.Bones
@@ -24,10 +23,10 @@ import core.game.node.entity.player.link.diary.DiaryType
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.world.map.zone.ZoneBorders
+import org.rs.consts.*
 
 class VarrockAchievementDiary : DiaryEventHookBase(DiaryType.VARROCK) {
     companion object {
-
         private const val ATTRIBUTE_CRAFT_AIR_BATTLESTAFF = "diary:varrock:craft-air-battlestaff"
         const val ATTRIBUTE_VARROCK_ALT_TELE = "diaries:varrock:alttele"
 
@@ -42,7 +41,6 @@ class VarrockAchievementDiary : DiaryEventHookBase(DiaryType.VARROCK) {
             arrayOf(NPCs.STRAY_DOG_4766, NPCs.STRAY_DOG_4767, NPCs.STRAY_DOG_5917, NPCs.STRAY_DOG_5918)
 
         object EasyTasks {
-
             const val THESSALIA_BROWSE_CLOTHES = 0
 
             const val AUBURY_TELEPORT_ESSENCE_MINE = 1
@@ -83,7 +81,6 @@ class VarrockAchievementDiary : DiaryEventHookBase(DiaryType.VARROCK) {
         }
 
         object MediumTasks {
-
             const val APOTHECARY_MAKE_STRENGTH_POTION = 0
 
             const val CHAMPIONS_GUILD_VISIT = 1
@@ -128,7 +125,6 @@ class VarrockAchievementDiary : DiaryEventHookBase(DiaryType.VARROCK) {
         }
 
         object HardTasks {
-
             const val PICK_POISON_IVY_FARMING_PATCH = 0
 
             const val USE_MOSS_GIANT_PIPE_SHORTCUT = 1
@@ -158,133 +154,155 @@ class VarrockAchievementDiary : DiaryEventHookBase(DiaryType.VARROCK) {
     }
 
     override val areaTasks
-        get() = arrayOf(
-            DiaryAreaTask(
-                VARROCK_ROOF_AREA,
-                DiaryLevel.EASY,
-                EasyTasks.FIND_HIGHEST_POINT
-            ),
-            DiaryAreaTask(
-                SOS_LEVEL_2_AREA,
-                DiaryLevel.EASY,
-                EasyTasks.VISIT_SOS_LEVEL2
-            ),
-            DiaryAreaTask(
-                CHAMPIONS_GUILD_AREA,
-                DiaryLevel.MEDIUM,
-                MediumTasks.CHAMPIONS_GUILD_VISIT
-            ),
-            DiaryAreaTask(
-                EARTH_ALTAR_AREA,
-                DiaryLevel.EASY,
-                EasyTasks.ENTER_EARTH_ALTAR
+        get() =
+            arrayOf(
+                DiaryAreaTask(
+                    VARROCK_ROOF_AREA,
+                    DiaryLevel.EASY,
+                    EasyTasks.FIND_HIGHEST_POINT,
+                ),
+                DiaryAreaTask(
+                    SOS_LEVEL_2_AREA,
+                    DiaryLevel.EASY,
+                    EasyTasks.VISIT_SOS_LEVEL2,
+                ),
+                DiaryAreaTask(
+                    CHAMPIONS_GUILD_AREA,
+                    DiaryLevel.MEDIUM,
+                    MediumTasks.CHAMPIONS_GUILD_VISIT,
+                ),
+                DiaryAreaTask(
+                    EARTH_ALTAR_AREA,
+                    DiaryLevel.EASY,
+                    EasyTasks.ENTER_EARTH_ALTAR,
+                ),
             )
-        )
 
-    override fun onResourceProduced(player: Player, event: ResourceProducedEvent) {
+    override fun onResourceProduced(
+        player: Player,
+        event: ResourceProducedEvent,
+    ) {
         when (player.viewport.region.id) {
-            12341 -> when (event.itemId) {
-                Items.RAW_TROUT_335 ->
+            12341 ->
+                when (event.itemId) {
+                    Items.RAW_TROUT_335 ->
+                        finishTask(
+                            player,
+                            DiaryLevel.EASY,
+                            EasyTasks.BARBARIAN_VILLAGE_CATCH_TROUT,
+                        )
+                }
+
+            12853 ->
+                when (event.itemId) {
+                    Items.ADAMANT_MED_HELM_1145 ->
+                        finishTask(
+                            player,
+                            DiaryLevel.HARD,
+                            HardTasks.SMITH_ADAMANT_MED_HELM_SOUTHEAST,
+                        )
+                }
+
+            13108 ->
+                when (event.itemId) {
+                    Items.IRON_ORE_440 ->
+                        finishTask(
+                            player,
+                            DiaryLevel.EASY,
+                            EasyTasks.MINE_IRON_SOUTHEAST,
+                        )
+                }
+
+            13110 ->
+                when (event.itemId) {
+                    Items.LOGS_1511 ->
+                        if (event.source.id == Scenery.DYING_TREE_24168) {
+                            finishTask(
+                                player,
+                                DiaryLevel.EASY,
+                                EasyTasks.LUMBERYARD_CHOP_DYING_TREE,
+                            )
+                        }
+                }
+
+            13366 ->
+                when (event.itemId) {
+                    Items.LIMESTONE_3211 ->
+                        finishTask(
+                            player,
+                            DiaryLevel.EASY,
+                            EasyTasks.PATERDOMUS_MINE_LIMESTONE,
+                        )
+                }
+
+            10571 ->
+                when (event.itemId) {
+                    Items.EARTH_TIARA_5535 ->
+                        finishTask(
+                            player,
+                            DiaryLevel.MEDIUM,
+                            MediumTasks.CRAFT_EARTH_TIARA,
+                        )
+                }
+        }
+    }
+
+    override fun onTeleported(
+        player: Player,
+        event: TeleportEvent,
+    ) {
+        when (event.source) {
+            is NPC ->
+                if (event.method == TeleportMethod.NPC && event.source.id == NPCs.AUBURY_553) {
                     finishTask(
                         player,
                         DiaryLevel.EASY,
-                        EasyTasks.BARBARIAN_VILLAGE_CATCH_TROUT
-                    )
-            }
-
-            12853 -> when (event.itemId) {
-                Items.ADAMANT_MED_HELM_1145 ->
-                    finishTask(
-                        player,
-                        DiaryLevel.HARD,
-                        HardTasks.SMITH_ADAMANT_MED_HELM_SOUTHEAST
-                    )
-            }
-
-            13108 -> when (event.itemId) {
-                Items.IRON_ORE_440 ->
-                    finishTask(
-                        player,
-                        DiaryLevel.EASY,
-                        EasyTasks.MINE_IRON_SOUTHEAST
-                    )
-            }
-
-            13110 -> when (event.itemId) {
-                Items.LOGS_1511 -> if (event.source.id == Scenery.DYING_TREE_24168) {
-                    finishTask(
-                        player,
-                        DiaryLevel.EASY,
-                        EasyTasks.LUMBERYARD_CHOP_DYING_TREE
+                        EasyTasks.AUBURY_TELEPORT_ESSENCE_MINE,
                     )
                 }
-            }
 
-            13366 -> when (event.itemId) {
-                Items.LIMESTONE_3211 ->
-                    finishTask(
-                        player,
-                        DiaryLevel.EASY,
-                        EasyTasks.PATERDOMUS_MINE_LIMESTONE
-                    )
-            }
-
-            10571 -> when (event.itemId) {
-                Items.EARTH_TIARA_5535 ->
+            is Item ->
+                if (event.source.id in 11190..11194) {
                     finishTask(
                         player,
                         DiaryLevel.MEDIUM,
-                        MediumTasks.CRAFT_EARTH_TIARA
+                        MediumTasks.DIGSITE_PENDANT_TELEPORT,
                     )
-            }
+                }
         }
     }
 
-    override fun onTeleported(player: Player, event: TeleportEvent) {
-        when (event.source) {
-            is NPC -> if (event.method == TeleportMethod.NPC && event.source.id == NPCs.AUBURY_553) {
-                finishTask(
-                    player,
-                    DiaryLevel.EASY,
-                    EasyTasks.AUBURY_TELEPORT_ESSENCE_MINE
-                )
-            }
-
-            is Item -> if (event.source.id in 11190..11194) {
-                finishTask(
-                    player,
-                    DiaryLevel.MEDIUM,
-                    MediumTasks.DIGSITE_PENDANT_TELEPORT
-                )
-            }
-        }
-    }
-
-    override fun onInteracted(player: Player, event: InteractionEvent) {
+    override fun onInteracted(
+        player: Player,
+        event: InteractionEvent,
+    ) {
         when (player.viewport.region.id) {
-            12342 -> if (event.target.id == Scenery.TRAPDOOR_26934) {
-                finishTask(
-                    player,
-                    DiaryLevel.EASY,
-                    EasyTasks.EDGEVILLE_ENTER_DUNGEON_SOUTH
-                )
-            }
+            12342 ->
+                if (event.target.id == Scenery.TRAPDOOR_26934) {
+                    finishTask(
+                        player,
+                        DiaryLevel.EASY,
+                        EasyTasks.EDGEVILLE_ENTER_DUNGEON_SOUTH,
+                    )
+                }
 
-            12598 -> if (event.target.id == Scenery.UNDERWALL_TUNNEL_9312 && hasLevelStat(player, Skills.AGILITY, 21)) {
-                finishTask(
-                    player,
-                    DiaryLevel.MEDIUM,
-                    MediumTasks.USE_GE_UNDER_WALL_SHORTCUT
-                )
-            }
+            12598 ->
+                if (event.target.id == Scenery.UNDERWALL_TUNNEL_9312 && hasLevelStat(player, Skills.AGILITY, 21)) {
+                    finishTask(
+                        player,
+                        DiaryLevel.MEDIUM,
+                        MediumTasks.USE_GE_UNDER_WALL_SHORTCUT,
+                    )
+                }
 
-            12698 -> if (event.target.id == Scenery.PIPE_29370 && hasLevelStat(player, Skills.AGILITY, 51)) {
-                finishTask(
-                    player,
-                    DiaryLevel.HARD,
-                    HardTasks.USE_MOSS_GIANT_PIPE_SHORTCUT
-                )
-            }
+            12698 ->
+                if (event.target.id == Scenery.PIPE_29370 && hasLevelStat(player, Skills.AGILITY, 51)) {
+                    finishTask(
+                        player,
+                        DiaryLevel.HARD,
+                        HardTasks.USE_MOSS_GIANT_PIPE_SHORTCUT,
+                    )
+                }
         }
 
         if (isQuestComplete(player, Quests.DRAGON_SLAYER)) {
@@ -292,7 +310,7 @@ class VarrockAchievementDiary : DiaryEventHookBase(DiaryType.VARROCK) {
                 finishTask(
                     player,
                     DiaryLevel.MEDIUM,
-                    MediumTasks.OZIACH_BROWSE_STORE
+                    MediumTasks.OZIACH_BROWSE_STORE,
                 )
             }
         }
@@ -301,20 +319,26 @@ class VarrockAchievementDiary : DiaryEventHookBase(DiaryType.VARROCK) {
             finishTask(
                 player,
                 DiaryLevel.HARD,
-                HardTasks.BARBARIAN_VILLAGE_TELEPORT_USING_SKULL_SCEPTRE
+                HardTasks.BARBARIAN_VILLAGE_TELEPORT_USING_SKULL_SCEPTRE,
             )
         }
     }
 
-    override fun onButtonClicked(player: Player, event: ButtonClickEvent) {
+    override fun onButtonClicked(
+        player: Player,
+        event: ButtonClickEvent,
+    ) {
         player.viewport.region?.let {
             when (it.id) {
                 12342 -> {
-                    if (event.iface == CanoeListener.CANOE_SHAPING_INTERFACE && event.buttonId == CanoeListener.CANOE_SHAPING_BUTTONS[CanoeListener.Companion.Canoes.WAKA.ordinal]) {
+                    if (event.iface == CanoeListener.CANOE_SHAPING_INTERFACE &&
+                        event.buttonId ==
+                        CanoeListener.CANOE_SHAPING_BUTTONS[CanoeListener.Companion.Canoes.WAKA.ordinal]
+                    ) {
                         finishTask(
                             player,
                             DiaryLevel.HARD,
-                            HardTasks.EDGEVILLE_MAKE_WAKA_CANOE
+                            HardTasks.EDGEVILLE_MAKE_WAKA_CANOE,
                         )
                     }
                 }
@@ -322,55 +346,65 @@ class VarrockAchievementDiary : DiaryEventHookBase(DiaryType.VARROCK) {
         }
     }
 
-    override fun onDialogueOptionSelected(player: Player, event: DialogueOptionSelectionEvent) {
+    override fun onDialogueOptionSelected(
+        player: Player,
+        event: DialogueOptionSelectionEvent,
+    ) {
         when (event.dialogue) {
-            is BennyDialogue -> if (event.currentStage == 14) {
-                if (inInventory(player, Items.COINS_995, 50)) {
+            is BennyDialogue ->
+                if (event.currentStage == 14) {
+                    if (inInventory(player, Items.COINS_995, 50)) {
+                        finishTask(
+                            player,
+                            DiaryLevel.EASY,
+                            EasyTasks.BUY_VARROCK_HERALD,
+                        )
+                    }
+                }
+
+            is ElsieDialogue ->
+                if (event.currentStage == 12) {
                     finishTask(
                         player,
                         DiaryLevel.EASY,
-                        EasyTasks.BUY_VARROCK_HERALD
+                        EasyTasks.ELSIE_TELL_A_STORY,
                     )
                 }
-            }
 
-            is ElsieDialogue -> if (event.currentStage == 12) {
-                finishTask(
-                    player,
-                    DiaryLevel.EASY,
-                    EasyTasks.ELSIE_TELL_A_STORY
-                )
-            }
-
-            is DimintheisDialogue -> if (event.currentStage == 6000) {
-                finishTask(
-                    player,
-                    DiaryLevel.HARD,
-                    HardTasks.OBTAIN_NEW_SET_OF_FAMILY_CREST_GAUNTLETS
-                )
-            }
+            is DimintheisDialogue ->
+                if (event.currentStage == 6000) {
+                    finishTask(
+                        player,
+                        DiaryLevel.HARD,
+                        HardTasks.OBTAIN_NEW_SET_OF_FAMILY_CREST_GAUNTLETS,
+                    )
+                }
 
             is OrlandoSmithDialogue -> {
                 if (event.currentStage >= 1) {
                     finishTask(
                         player,
                         DiaryLevel.HARD,
-                        HardTasks.SPEAK_TO_ORLANDO_SMITH_153_KUDOS
+                        HardTasks.SPEAK_TO_ORLANDO_SMITH_153_KUDOS,
                     )
                 }
             }
         }
     }
 
-    override fun onUsedWith(player: Player, event: UseWithEvent) {
+    override fun onUsedWith(
+        player: Player,
+        event: UseWithEvent,
+    ) {
         when (event.used) {
-            in Bones.array -> if (event.with in STRAY_DOGS) {
-                finishTask(
-                    player,
-                    DiaryLevel.EASY,
-                    EasyTasks.GIVE_STRAY_DOG_A_BONE
-                )
-            }
+            in Bones.array ->
+                if (event.with in STRAY_DOGS) {
+                    finishTask(
+                        player,
+                        DiaryLevel.EASY,
+                        EasyTasks.GIVE_STRAY_DOG_A_BONE,
+                    )
+                }
         }
         when {
             inBorders(player, AIR_OBELISK_AREA) -> {
@@ -379,7 +413,7 @@ class VarrockAchievementDiary : DiaryEventHookBase(DiaryType.VARROCK) {
                         finishTask(
                             player,
                             DiaryLevel.HARD,
-                            HardTasks.CRAFT_AIR_BATTLESTAFF
+                            HardTasks.CRAFT_AIR_BATTLESTAFF,
                         )
                     }
                 }
@@ -387,29 +421,39 @@ class VarrockAchievementDiary : DiaryEventHookBase(DiaryType.VARROCK) {
         }
     }
 
-    override fun onInterfaceOpened(player: Player, event: InterfaceOpenEvent) {
+    override fun onInterfaceOpened(
+        player: Player,
+        event: InterfaceOpenEvent,
+    ) {
         when (event.component.id) {
             Components.THESSALIA_CLOTHES_MALE_591,
-            Components.THESSALIA_CLOTHES_FEMALE_594 -> if (player.viewport.region.id == 12853) {
-                finishTask(
-                    player,
-                    DiaryLevel.EASY,
-                    EasyTasks.THESSALIA_BROWSE_CLOTHES
-                )
-            }
+            Components.THESSALIA_CLOTHES_FEMALE_594,
+            ->
+                if (player.viewport.region.id == 12853) {
+                    finishTask(
+                        player,
+                        DiaryLevel.EASY,
+                        EasyTasks.THESSALIA_BROWSE_CLOTHES,
+                    )
+                }
         }
     }
 
-    override fun onSpellCast(player: Player, event: SpellCastEvent) {
-        if (event.spellBook == SpellBookManager.SpellBook.MODERN && event.spellId == 15 && getStatLevel(
+    override fun onSpellCast(
+        player: Player,
+        event: SpellCastEvent,
+    ) {
+        if (event.spellBook == SpellBookManager.SpellBook.MODERN &&
+            event.spellId == 15 &&
+            getStatLevel(
                 player,
-                Skills.MAGIC
+                Skills.MAGIC,
             ) >= 25
         ) {
             finishTask(
                 player,
                 DiaryLevel.MEDIUM,
-                MediumTasks.CAST_VARROCK_TELEPORT_SPELL
+                MediumTasks.CAST_VARROCK_TELEPORT_SPELL,
             )
         }
         when {
@@ -419,45 +463,54 @@ class VarrockAchievementDiary : DiaryEventHookBase(DiaryType.VARROCK) {
                         player,
                         DiaryLevel.HARD,
                         HardTasks.CRAFT_AIR_BATTLESTAFF,
-                        ATTRIBUTE_CRAFT_AIR_BATTLESTAFF
+                        ATTRIBUTE_CRAFT_AIR_BATTLESTAFF,
                     )
                 }
             }
         }
     }
 
-    override fun onFairyRingDialed(player: Player, event: FairyRingDialEvent) {
+    override fun onFairyRingDialed(
+        player: Player,
+        event: FairyRingDialEvent,
+    ) {
         if (event.fairyRing == FairyRing.DKR) {
             finishTask(
                 player,
                 DiaryLevel.MEDIUM,
-                MediumTasks.DIAL_FAIRY_RING_WEST
+                MediumTasks.DIAL_FAIRY_RING_WEST,
             )
         }
     }
 
-    override fun onPickedUp(player: Player, event: PickUpEvent) {
+    override fun onPickedUp(
+        player: Player,
+        event: PickUpEvent,
+    ) {
         when {
             inBorders(player, FARMING_PATCH_AREA) -> {
                 if (event.itemId == Items.POISON_IVY_BERRIES_6018) {
                     finishTask(
                         player,
                         DiaryLevel.HARD,
-                        HardTasks.PICK_POISON_IVY_FARMING_PATCH
+                        HardTasks.PICK_POISON_IVY_FARMING_PATCH,
                     )
                 }
             }
         }
     }
 
-    override fun onDialogueOpened(player: Player, event: DialogueOpenEvent) {
+    override fun onDialogueOpened(
+        player: Player,
+        event: DialogueOpenEvent,
+    ) {
         when (event.dialogue) {
             is CuratorHaigHalenDialogue -> {
                 if (getQuestPoints(player) == 50) {
                     finishTask(
                         player,
                         DiaryLevel.EASY,
-                        EasyTasks.SPEAK_TO_HAIG_HALEN_50QP
+                        EasyTasks.SPEAK_TO_HAIG_HALEN_50QP,
                     )
                 }
             }

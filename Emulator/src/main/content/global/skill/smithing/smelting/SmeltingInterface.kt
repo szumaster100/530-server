@@ -1,14 +1,12 @@
 package content.global.skill.smithing.smelting
 
-import org.rs.consts.Components
 import core.api.sendInputDialogue
 import core.api.submitIndividualPulse
 import core.game.interaction.InterfaceListener
+import org.rs.consts.Components
 
 class SmeltingInterface : InterfaceListener {
-
     override fun defineInterfaceListeners() {
-
         on(Components.SMELTING_311) { player, _, _, buttonID, _, _ ->
             val barType = BarButton.forId(buttonID) ?: return@on true
             if (barType.amount == -1) {
@@ -27,7 +25,11 @@ class SmeltingInterface : InterfaceListener {
         }
     }
 
-    enum class BarButton(val button: Int, val bar: Bar, val amount: Int) {
+    enum class BarButton(
+        val button: Int,
+        val bar: Bar,
+        val amount: Int,
+    ) {
         BRONZE_1(16, Bar.BRONZE, 1),
         BRONZE_5(15, Bar.BRONZE, 5),
         BRONZE_10(14, Bar.BRONZE, 10),
@@ -63,10 +65,10 @@ class SmeltingInterface : InterfaceListener {
         RUNE_1(48, Bar.RUNITE, 1),
         RUNE_5(47, Bar.RUNITE, 5),
         RUNE_10(46, Bar.RUNITE, 10),
-        RUNE_X(45, Bar.RUNITE, -1);
+        RUNE_X(45, Bar.RUNITE, -1),
+        ;
 
         companion object {
-
             @JvmStatic
             fun forId(id: Int): BarButton? {
                 for (button in BarButton.values()) {

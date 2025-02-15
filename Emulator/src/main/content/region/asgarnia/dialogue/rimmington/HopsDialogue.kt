@@ -1,23 +1,27 @@
 package content.region.asgarnia.dialogue.rimmington
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.kandarin.quest.biohazard.BiohazardUtils
 import content.region.kandarin.quest.biohazard.dialogue.HopsDialogue
 import core.api.getAttribute
-import core.api.quest.getQuestStage
 import core.api.openDialogue
+import core.api.quest.getQuestStage
 import core.api.sendDialogue
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.tools.START_DIALOGUE
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class HopsDialogue(player: Player? = null) : Dialogue(player) {
-
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+class HopsDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             START_DIALOGUE -> {
                 end()

@@ -1,7 +1,5 @@
 package content.global.skill.crafting.items.armour.leather.soft
 
-import org.rs.consts.Components
-import org.rs.consts.Items
 import core.api.amountInInventory
 import core.api.sendInputDialogue
 import core.api.submitIndividualPulse
@@ -9,11 +7,13 @@ import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.interaction.InterfaceListener
 import core.game.node.item.Item
+import org.rs.consts.Components
+import org.rs.consts.Items
 
-class SoftLeatherCraftingListener : InteractionListener, InterfaceListener {
-
+class SoftLeatherCraftingListener :
+    InteractionListener,
+    InterfaceListener {
     override fun defineListeners() {
-
         onUseWith(IntType.ITEM, Items.LEATHER_1741, Items.NEEDLE_1733) { player, _, _ ->
             SoftLeather.openCraftingInterface(player)
             return@onUseWith true
@@ -32,7 +32,7 @@ class SoftLeatherCraftingListener : InteractionListener, InterfaceListener {
                     sendInputDialogue(player, true, "Enter the amount:") { value: Any ->
                         submitIndividualPulse(
                             player,
-                            SoftLeatherCraftingPulse(player, Item(Items.LEATHER_1741), soft, value as Int)
+                            SoftLeatherCraftingPulse(player, Item(Items.LEATHER_1741), soft, value as Int),
                         )
                     }
                     return@on true

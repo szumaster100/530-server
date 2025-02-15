@@ -1,8 +1,5 @@
 package content.region.kandarin.quest.ikov.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import content.region.kandarin.quest.ikov.TempleOfIkov
 import core.api.*
 import core.api.quest.finishQuest
 import core.api.quest.getQuestStage
@@ -14,11 +11,20 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 import org.rs.consts.Quests
 
 @Initializable
-class LucienEndingNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+class LucienEndingNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return LucienEndingNPC(id, location)
     }
 
@@ -26,7 +32,11 @@ class LucienEndingNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id,
         return intArrayOf(NPCs.LUCIEN_272)
     }
 
-    override fun isAttackable(entity: Entity, style: CombatStyle, message: Boolean): Boolean {
+    override fun isAttackable(
+        entity: Entity,
+        style: CombatStyle,
+        message: Boolean,
+    ): Boolean {
         val attackable = super.isAttackable(entity, style, message)
         val player = entity.asPlayer()
         if (inEquipment(player, Items.ARMADYL_PENDANT_87)) {
@@ -42,18 +52,22 @@ class LucienEndingNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id,
             openDialogue(
                 player,
                 object : DialogueFile() {
-                    override fun handle(componentID: Int, buttonID: Int) {
+                    override fun handle(
+                        componentID: Int,
+                        buttonID: Int,
+                    ) {
                         when (stage) {
                             0 -> npcl("You have defeated me for now! I shall reappear in the North!").also { stage++ }
-                            1 -> end().also {
-                                if (getQuestStage(player, Quests.TEMPLE_OF_IKOV) == 6) {
-                                    finishQuest(player, Quests.TEMPLE_OF_IKOV)
+                            1 ->
+                                end().also {
+                                    if (getQuestStage(player, Quests.TEMPLE_OF_IKOV) == 6) {
+                                        finishQuest(player, Quests.TEMPLE_OF_IKOV)
+                                    }
                                 }
-                            }
                         }
                     }
                 },
-                NPC(NPCs.LUCIEN_272)
+                NPC(NPCs.LUCIEN_272),
             )
 
             super.finalizeDeath(player)

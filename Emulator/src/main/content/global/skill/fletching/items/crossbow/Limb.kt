@@ -12,14 +12,21 @@ import org.rs.consts.Items
  * @property experience The experience gained from fletch.
  * @property animation  The animation id used during the pulse.
  */
-enum class Limb(val stock: Int, val limb: Int, val product: Int, val level: Int, val experience: Double, val animation: Int) {
+enum class Limb(
+    val stock: Int,
+    val limb: Int,
+    val product: Int,
+    val level: Int,
+    val experience: Double,
+    val animation: Int,
+) {
     WOODEN_STOCK(
         stock = Items.WOODEN_STOCK_9440,
         limb = Items.BRONZE_LIMBS_9420,
         product = Items.BRONZE_CBOW_U_9454,
         level = 9,
         experience = 12.0,
-        animation = 4436
+        animation = 4436,
     ),
     OAK_STOCK(
         stock = Items.OAK_STOCK_9442,
@@ -27,7 +34,7 @@ enum class Limb(val stock: Int, val limb: Int, val product: Int, val level: Int,
         product = Items.BLURITE_CBOW_U_9456,
         level = 24,
         experience = 32.0,
-        animation = 4437
+        animation = 4437,
     ),
     WILLOW_STOCK(
         stock = Items.WILLOW_STOCK_9444,
@@ -35,7 +42,7 @@ enum class Limb(val stock: Int, val limb: Int, val product: Int, val level: Int,
         product = Items.IRON_CBOW_U_9457,
         level = 39,
         experience = 44.0,
-        animation = 4438
+        animation = 4438,
     ),
     TEAK_STOCK(
         stock = Items.TEAK_STOCK_9446,
@@ -43,7 +50,7 @@ enum class Limb(val stock: Int, val limb: Int, val product: Int, val level: Int,
         product = Items.STEEL_CBOW_U_9459,
         level = 46,
         experience = 54.0,
-        animation = 4439
+        animation = 4439,
     ),
     MAPLE_STOCK(
         stock = Items.MAPLE_STOCK_9448,
@@ -51,7 +58,7 @@ enum class Limb(val stock: Int, val limb: Int, val product: Int, val level: Int,
         product = Items.MITHRIL_CBOW_U_9461,
         level = 54,
         experience = 64.0,
-        animation = 4440
+        animation = 4440,
     ),
     MAHOGANY_STOCK(
         stock = Items.MAHOGANY_STOCK_9450,
@@ -59,7 +66,7 @@ enum class Limb(val stock: Int, val limb: Int, val product: Int, val level: Int,
         product = Items.ADAMANT_CBOW_U_9463,
         level = 61,
         experience = 82.0,
-        animation = 4441
+        animation = 4441,
     ),
     YEW_STOCK(
         stock = Items.YEW_STOCK_9452,
@@ -67,8 +74,9 @@ enum class Limb(val stock: Int, val limb: Int, val product: Int, val level: Int,
         product = Items.RUNITE_CBOW_U_9465,
         level = 69,
         experience = 100.0,
-        animation = 4442
-    );
+        animation = 4442,
+    ),
+    ;
 
     companion object {
         val values = enumValues<Limb>()

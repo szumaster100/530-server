@@ -1,18 +1,17 @@
 package core.game.global.action
 
-import org.rs.consts.Animations
 import content.global.handlers.item.SpadeDigUtils.runListener
 import core.api.log
 import core.game.node.entity.player.Player
-import core.tools.Log
 import core.game.system.communication.CommunicationInfo
 import core.game.system.task.Pulse
 import core.game.world.GameWorld.Pulser
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import core.tools.Log
+import org.rs.consts.Animations
 
 object DigSpadeHandler {
-
     private val ACTIONS: MutableMap<Location, DigAction> = HashMap()
 
     val ANIMATION: Animation = Animation.create(Animations.DIG_SPADE_830)
@@ -34,7 +33,7 @@ object DigSpadeHandler {
                         action.run(player)
                         return true
                     }
-                }
+                },
             )
             return true
         }
@@ -42,7 +41,10 @@ object DigSpadeHandler {
     }
 
     @JvmStatic
-    fun register(location: Location, action: DigAction): Boolean {
+    fun register(
+        location: Location,
+        action: DigAction,
+    ): Boolean {
         if (ACTIONS.containsKey(location)) {
             log(CommunicationInfo::class.java, Log.ERR, "Already contained dig reward for location $location.")
             return false

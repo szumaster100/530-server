@@ -8,8 +8,9 @@ import core.plugin.Initializable
 import core.plugin.Plugin
 
 @Initializable
-class Longhall : MapZone("LonghallStageZone", true), Plugin<Any?> {
-
+class Longhall :
+    MapZone("LonghallStageZone", true),
+    Plugin<Any?> {
     override fun newInstance(arg: Any?): Longhall {
         ZoneBuilder.configure(this)
         return this
@@ -26,14 +27,20 @@ class Longhall : MapZone("LonghallStageZone", true), Plugin<Any?> {
         return super.enter(e)
     }
 
-    override fun leave(e: Entity?, logout: Boolean): Boolean {
+    override fun leave(
+        e: Entity?,
+        logout: Boolean,
+    ): Boolean {
         if (e != null && e.isPlayer) {
             e.removeAttribute("onStage")
         }
         return super.leave(e, logout)
     }
 
-    override fun fireEvent(identifier: String?, vararg args: Any?): Any {
+    override fun fireEvent(
+        identifier: String?,
+        vararg args: Any?,
+    ): Any {
         return Unit
     }
 }

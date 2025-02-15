@@ -1,7 +1,5 @@
 package content.global.skill.hunter
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
 import content.global.skill.hunter.NetTrapSetting.NetTrap
 import content.global.skill.hunter.Traps.Companion.forNode
 import content.global.skill.hunter.bnet.BNetTypes
@@ -25,14 +23,15 @@ import core.game.node.item.GroundItem
 import core.game.node.item.Item
 import core.game.node.scenery.Scenery
 import core.game.world.map.Location
+import core.plugin.ClassScanner.definePlugin
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner.definePlugin
+import org.rs.consts.Animations
+import org.rs.consts.Items
 import java.util.*
 
 @Initializable
 class HunterPlugin : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         var definition: Definition<*>? = null
         for (trap in Traps.values()) {
@@ -77,7 +76,11 @@ class HunterPlugin : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val trap = forNode(node)
         when (option) {
             "lay", "activate", "set-trap", "trap" -> {
@@ -98,7 +101,10 @@ class HunterPlugin : OptionHandler() {
         return true
     }
 
-    override fun getDestination(node: Node, n: Node): Location? {
+    override fun getDestination(
+        node: Node,
+        n: Node,
+    ): Location? {
         if (n.name.startsWith("Bird")) {
             if (node.location == n.location) {
                 return n.location.transform(node.direction, 1)
@@ -107,7 +113,10 @@ class HunterPlugin : OptionHandler() {
         return null
     }
 
-    override fun isWalk(player: Player, node: Node): Boolean {
+    override fun isWalk(
+        player: Player,
+        node: Node,
+    ): Boolean {
         return node is GroundItem || node !is Item
     }
 
@@ -116,7 +125,6 @@ class HunterPlugin : OptionHandler() {
     }
 
     class HuntingItemUseWithHandler : UseWithHandler(*ids) {
-
         override fun newInstance(arg: Any?): Plugin<Any> {
             for (trap in Traps.values()) {
                 for (objectId in trap.settings.objectIds) {
@@ -163,19 +171,24 @@ class HunterPlugin : OptionHandler() {
     }
 
     class HunterItemPlugin : OptionHandler() {
-
         override fun newInstance(arg: Any?): Plugin<Any?> {
-            //val toys = intArrayOf(NPCs.TOY_MOUSE_3597, NPCs.TOY_DOLL_3596, NPCs.TOY_SOLDIER_3595)
-            //if (arg is Int && arg !in toys) {
-                ItemDefinition.setOptionHandler("release", this)
-            //}
+            // val toys = intArrayOf(NPCs.TOY_MOUSE_3597, NPCs.TOY_DOLL_3596, NPCs.TOY_SOLDIER_3595)
+            // if (arg is Int && arg !in toys) {
+            ItemDefinition.setOptionHandler("release", this)
+            // }
             for (i in BNetTypes.BABY_IMPLING.ordinal - 1 until BNetTypes.values().size) {
-                BNetTypes.values()[i].node.reward.definition.handlers["option:loot"] = this
+                BNetTypes
+                    .values()[i]
+                    .node.reward.definition.handlers["option:loot"] = this
             }
             return this
         }
 
-        override fun handle(player: Player, node: Node, option: String): Boolean {
+        override fun handle(
+            player: Player,
+            node: Node,
+            option: String,
+        ): Boolean {
             when (option) {
                 "release" -> {
                     val type = ReleaseType.forId(node.id)
@@ -191,7 +204,9 @@ class HunterPlugin : OptionHandler() {
             return false
         }
 
-        enum class ReleaseType(vararg val ids: Int) {
+        enum class ReleaseType(
+            vararg val ids: Int,
+        ) {
             TRAPS(
                 Items.CHINCHOMPA_10033,
                 Items.RED_CHINCHOMPA_10034,
@@ -199,34 +214,44 @@ class HunterPlugin : OptionHandler() {
                 Items.ORANGE_SALAMANDER_10146,
                 Items.RED_SALAMANDER_10147,
                 Items.BLACK_SALAMANDER_10148,
-                Items.SWAMP_LIZARD_10149
+                Items.SWAMP_LIZARD_10149,
             ),
             BUTTERFLY(
                 Items.RUBY_HARVEST_10020,
                 Items.SAPPHIRE_GLACIALIS_10018,
                 Items.SNOWY_KNIGHT_10016,
-                Items.BLACK_WARLOCK_10014
+                Items.BLACK_WARLOCK_10014,
             ) {
-                override fun release(player: Player, item: Item) {
+                override fun release(
+                    player: Player,
+                    item: Item,
+                ) {
                     val node = BNetTypes.forItem(item)
                     if (removeItem(player, item)) {
                         visualize(player, Animations.RELEASE_BUTTERFLY_FROM_JAR_5213, node!!.graphics[1])
                         addItem(player, Items.BUTTERFLY_JAR_10012)
                     }
                 }
-            };
+            }, ;
 
-            open fun release(player: Player, item: Item) {
+            open fun release(
+                player: Player,
+                item: Item,
+            ) {
                 val multiple = item.amount > 1
                 removeItem(player, item)
                 sendMessage(
                     player,
-                    "You release the " + item.name.lowercase(Locale.getDefault()) + (if (multiple) "s" else "") + " and " + (if (multiple) "they" else "it") + " bound" + (if (!multiple) "s" else "") + " away."
+                    "You release the " + item.name.lowercase(Locale.getDefault()) + (if (multiple) "s" else "") +
+                        " and " +
+                        (if (multiple) "they" else "it") +
+                        " bound" +
+                        (if (!multiple) "s" else "") +
+                        " away.",
                 )
             }
 
             companion object {
-
                 @JvmStatic
                 fun forId(id: Int): ReleaseType? {
                     for (type in values()) {
@@ -243,7 +268,6 @@ class HunterPlugin : OptionHandler() {
     }
 
     class HunterNetPlugin : OptionHandler() {
-
         override fun newInstance(arg: Any?): Plugin<Any?> {
             for (type in BNetTypes.values()) {
                 for (id in type.node.npcs) {
@@ -253,7 +277,11 @@ class HunterPlugin : OptionHandler() {
             return this
         }
 
-        override fun handle(player: Player, node: Node, option: String): Boolean {
+        override fun handle(
+            player: Player,
+            node: Node,
+            option: String,
+        ): Boolean {
             val type = BNetTypes.forNpc(node as NPC)
             if (type == null) {
                 sendMessage(player, "There seems to be something wrong with this catch option.")

@@ -1,7 +1,5 @@
 package content.region.misc.dialogue.zanaris
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.*
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
@@ -10,17 +8,29 @@ import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
-class LunderwinDialogue(player: Player? = null) : Dialogue(player) {
-
+class LunderwinDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any?): Boolean {
         npc = args[0] as NPC
-        npc(FaceAnim.OLD_CALM_TALK1, "Buying cabbage am I, not have such thing where I from.", "Will pay money much handsome for wondrous object,", "cabbage you called. Say I 100 gold coins each fair price", "to be giving yes?")
+        npc(
+            FaceAnim.OLD_CALM_TALK1,
+            "Buying cabbage am I, not have such thing where I from.",
+            "Will pay money much handsome for wondrous object,",
+            "cabbage you called. Say I 100 gold coins each fair price",
+            "to be giving yes?",
+        )
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 ->
                 if (!inInventory(player, Items.CABBAGE_1965)) {
@@ -30,10 +40,11 @@ class LunderwinDialogue(player: Player? = null) : Dialogue(player) {
                 }
 
             1 -> npc(FaceAnim.OLD_CALM_TALK1, "Pity be that, I want badly do.").also { stage = END_DIALOGUE }
-            2 -> when (buttonId) {
-                1 -> player("Yes, I'll sell you all my cabbages.").also { stage++ }
-                2 -> player("No, I will keep my cabbbages.").also { stage = END_DIALOGUE }
-            }
+            2 ->
+                when (buttonId) {
+                    1 -> player("Yes, I'll sell you all my cabbages.").also { stage++ }
+                    2 -> player("No, I will keep my cabbbages.").also { stage = END_DIALOGUE }
+                }
 
             3 -> {
                 val invAmount = amountInInventory(player!!, Items.CABBAGE_1965)

@@ -1,8 +1,5 @@
 package content.global.skill.agility.shortcuts
 
-import org.rs.consts.Animations
-import org.rs.consts.Scenery
-import org.rs.consts.Quests
 import content.global.skill.agility.AgilityHandler
 import core.api.quest.hasRequirement
 import core.api.queueScript
@@ -14,9 +11,11 @@ import core.game.interaction.QueueStrength
 import core.game.node.entity.player.Player
 import core.game.world.map.Direction
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
+import org.rs.consts.Quests
+import org.rs.consts.Scenery
 
 class BarrowsShortcut : InteractionListener {
-
     override fun defineListeners() {
         on(Scenery.BROKEN_FENCE_18411, IntType.SCENERY, "climb-over") { player, _ ->
             if (!hasRequirement(player, Quests.IN_AID_OF_THE_MYREQUE)) {
@@ -39,7 +38,7 @@ class BarrowsShortcut : InteractionListener {
                 Animation(Animations.WALK_OVER_STILE_10980),
                 10,
                 0.0,
-                null
+                null,
             )
             return@queueScript stopExecuting(player)
         }

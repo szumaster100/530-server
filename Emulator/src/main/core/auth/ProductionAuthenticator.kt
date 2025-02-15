@@ -9,7 +9,6 @@ import java.sql.SQLDataException
 import java.sql.Timestamp
 
 class ProductionAuthenticator : AuthProvider<AccountStorageProvider>() {
-
     override fun configureFor(provider: AccountStorageProvider) {
         storageProvider = provider
         if (provider is SQLStorageProvider) {
@@ -17,7 +16,7 @@ class ProductionAuthenticator : AuthProvider<AccountStorageProvider>() {
                 ServerConfig.DATABASE_ADDRESS!!,
                 ServerConfig.DATABASE_NAME!!,
                 ServerConfig.DATABASE_USER!!,
-                ServerConfig.DATABASE_PASS!!
+                ServerConfig.DATABASE_PASS!!,
             )
         }
     }
@@ -36,7 +35,10 @@ class ProductionAuthenticator : AuthProvider<AccountStorageProvider>() {
         return true
     }
 
-    override fun checkLogin(username: String, password: String): Pair<AuthResponse, UserAccountInfo?> {
+    override fun checkLogin(
+        username: String,
+        password: String,
+    ): Pair<AuthResponse, UserAccountInfo?> {
         val info: UserAccountInfo
         try {
             if (!storageProvider.checkUsernameTaken(username.lowercase())) {
@@ -54,11 +56,17 @@ class ProductionAuthenticator : AuthProvider<AccountStorageProvider>() {
         return Pair(AuthResponse.Success, info)
     }
 
-    override fun checkPassword(player: Player, password: String): Boolean {
+    override fun checkPassword(
+        player: Player,
+        password: String,
+    ): Boolean {
         return SystemManager.encryption.checkPassword(password, player.details.password)
     }
 
-    override fun updatePassword(username: String, newPassword: String) {
+    override fun updatePassword(
+        username: String,
+        newPassword: String,
+    ) {
         val info = storageProvider.getAccountInfo(username)
         info.password = SystemManager.encryption.hashPassword(newPassword)
         storageProvider.update(info)

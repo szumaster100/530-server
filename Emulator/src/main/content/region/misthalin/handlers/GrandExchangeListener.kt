@@ -1,7 +1,5 @@
 package content.region.misthalin.handlers
 
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import content.global.handlers.iface.ge.ExchangeItemSets
 import content.global.handlers.iface.ge.StockMarket
 import core.api.getUsedOption
@@ -11,16 +9,18 @@ import core.game.ge.PriceGuide
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.npc.NPC
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 class GrandExchangeListener : InteractionListener {
-
     companion object {
-        private val CLERK = intArrayOf(
-            NPCs.GRAND_EXCHANGE_CLERK_6531,
-            NPCs.GRAND_EXCHANGE_CLERK_6529,
-            NPCs.GRAND_EXCHANGE_CLERK_6530,
-            NPCs.GRAND_EXCHANGE_CLERK_6528
-        )
+        private val CLERK =
+            intArrayOf(
+                NPCs.GRAND_EXCHANGE_CLERK_6531,
+                NPCs.GRAND_EXCHANGE_CLERK_6529,
+                NPCs.GRAND_EXCHANGE_CLERK_6530,
+                NPCs.GRAND_EXCHANGE_CLERK_6528,
+            )
     }
 
     override fun defineDestinationOverrides() {
@@ -31,7 +31,6 @@ class GrandExchangeListener : InteractionListener {
     }
 
     override fun defineListeners() {
-
         on(CLERK, IntType.NPC, "talk-to", "exchange", "history", "sets") { player, node ->
             val records = GERecords.getInstance(player)
             if (getUsedOption(player) == "talk-to") {
@@ -47,11 +46,11 @@ class GrandExchangeListener : InteractionListener {
         on(Scenery.DESK_28089, IntType.SCENERY, "use", "exchange", "collect", "history", "sets") { player, _ ->
             val records = GERecords.getInstance(player)
             when (getUsedOption(player)) {
-                "use"       -> openDialogue(player, NPCs.GRAND_EXCHANGE_CLERK_6528)
-                "exchange"  -> StockMarket.openFor(player)
-                "collect"   -> records.openCollectionBox()
-                "history"   -> records.openHistoryLog(player)
-                "sets"      -> ExchangeItemSets.openFor(player)
+                "use" -> openDialogue(player, NPCs.GRAND_EXCHANGE_CLERK_6528)
+                "exchange" -> StockMarket.openFor(player)
+                "collect" -> records.openCollectionBox()
+                "history" -> records.openHistoryLog(player)
+                "sets" -> ExchangeItemSets.openFor(player)
             }
             return@on true
         }

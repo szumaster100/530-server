@@ -9,8 +9,9 @@ import core.game.world.GameWorld.Pulser
 import core.plugin.Initializable
 
 @Initializable
-class BarcrawlDialogue(player: Player? = null) : Dialogue(player) {
-
+class BarcrawlDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npcId = args[0] as Int
         type = args[1] as BarcrawlType
@@ -18,7 +19,10 @@ class BarcrawlDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 interpreter.sendDialogues(npcId, null, *type!!.dialogue[0])
@@ -46,7 +50,7 @@ class BarcrawlDialogue(player: Player? = null) : Dialogue(player) {
                             type!!.effect(player)
                             return true
                         }
-                    }
+                    },
                 )
             }
         }

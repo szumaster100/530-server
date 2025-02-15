@@ -11,12 +11,15 @@ import core.plugin.Plugin
 
 @Initializable
 class PitfallOptionHandler : OptionHandler() {
-
     val graahkPitIds = intArrayOf(19227, 19268, 19267, 19266, 19264, 19265)
     val graahkIds = 5105
     val levelRequirements = 41
 
-    override fun handle(player: Player?, node: Node?, option: String?): Boolean {
+    override fun handle(
+        player: Player?,
+        node: Node?,
+        option: String?,
+    ): Boolean {
         node ?: return true
         player ?: return true
         when (option) {

@@ -5,7 +5,6 @@ import core.game.node.entity.player.Player
 import core.game.world.GameWorld
 
 class BountyEntry {
-
     var target: Player? = null
 
     var hunter: Player? = null
@@ -19,7 +18,10 @@ class BountyEntry {
         updatePenalty(player, false)
     }
 
-    fun updatePenalty(player: Player, unlock: Boolean) {
+    fun updatePenalty(
+        player: Player,
+        unlock: Boolean,
+    ) {
         var penalty = player.getAttribute("pickup_penalty", 0)
         var child = -1
         if (GameWorld.ticks > penalty) {

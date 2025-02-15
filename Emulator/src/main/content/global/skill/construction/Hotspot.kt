@@ -1,7 +1,12 @@
 package content.global.skill.construction
 
-class Hotspot(val hotspot: BuildHotspot, val chunkX: Int, val chunkY: Int, var chunkX2: Int = chunkX, var chunkY2: Int = chunkY) {
-
+class Hotspot(
+    val hotspot: BuildHotspot,
+    val chunkX: Int,
+    val chunkY: Int,
+    var chunkX2: Int = chunkX,
+    var chunkY2: Int = chunkY,
+) {
     var currentX: Int
     var currentY: Int
     var decorationIndex = -1

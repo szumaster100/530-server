@@ -1,7 +1,5 @@
 package content.global.handlers.item
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
@@ -10,11 +8,11 @@ import core.game.node.item.Item
 import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Graphics
+import org.rs.consts.Animations
+import org.rs.consts.Items
 
 class SkullSceptreListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(Items.SKULL_SCEPTRE_9013, IntType.ITEM, "invoke", "divine", "operate") { player, node ->
             if (getUsedOption(player) == "invoke" || getUsedOption(player) == "operate") {
                 if (hasTimerActive(player, "teleblock")) {
@@ -28,8 +26,10 @@ class SkullSceptreListener : InteractionListener {
                     Graphics.send(
                         Graphics(
                             org.rs.consts.Graphics.USE_SCEPTRE_1683,
-                            100
-                        ), player.location)
+                            100,
+                        ),
+                        player.location,
+                    )
                     submitIndividualPulse(
                         player,
                         object : Pulse(2, player) {
@@ -37,7 +37,7 @@ class SkullSceptreListener : InteractionListener {
                                 teleport(player, Location.create(3081, 3421, 0), TeleportManager.TeleportType.INSTANT)
                                 return true
                             }
-                        }
+                        },
                     )
                 }
                 setCharge(node, getCharge(node) - 200)
@@ -51,7 +51,8 @@ class SkullSceptreListener : InteractionListener {
                 }
                 sendMessage(
                     player,
-                    "Concentrating deeply, you divine that the sceptre has " + (getCharge(node) / 200) + " charges left."
+                    "Concentrating deeply, you divine that the sceptre has " + (getCharge(node) / 200) +
+                        " charges left.",
                 )
             }
             return@on true
@@ -81,7 +82,7 @@ class SkullSceptreListener : InteractionListener {
                     player,
                     -1,
                     Items.SKULL_SCEPTRE_9013,
-                    "The skull fits perfectly atop the Sceptre."
+                    "The skull fits perfectly atop the Sceptre.",
                 )
                 replaceSlot(player, with.asItem().index, Item(Items.SKULL_SCEPTRE_9013, 1))
             }

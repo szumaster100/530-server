@@ -1,22 +1,20 @@
 package content.region.kandarin.handlers.ancient
 
-import org.rs.consts.*
 import core.api.*
+import core.api.quest.hasRequirement
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.interaction.QueueStrength
 import core.game.node.entity.impl.Animator
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
-import core.api.quest.hasRequirement
 import core.game.system.task.Pulse
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
+import org.rs.consts.*
 
 class DragonForgeListener : InteractionListener {
-
     override fun defineListeners() {
-
         onUseWith(IntType.SCENERY, DRAGON_ANVIL, *RUINED_PIECES) { player, _, _ ->
             if (!hasRequirement(player, "While Guthix Sleeps")) return@onUseWith false
             if (getStatLevel(player, Skills.SMITHING) < 92) {
@@ -62,8 +60,13 @@ class DragonForgeListener : InteractionListener {
         }
 
         on(MITHRIL_DOOR, IntType.SCENERY, "open") { player, node ->
-            if (!inInventory(player, Items.DRAGONKIN_KEY_14471) && !hasRequirement(player, Quests.WHILE_GUTHIX_SLEEPS, false)) {
-                sendDialogue(player, "The door is solid and resists all attempts to open it. There's no way past it at all, so best to ignore it.")
+            if (!inInventory(player, Items.DRAGONKIN_KEY_14471) &&
+                !hasRequirement(player, Quests.WHILE_GUTHIX_SLEEPS, false)
+            ) {
+                sendDialogue(
+                    player,
+                    "The door is solid and resists all attempts to open it. There's no way past it at all, so best to ignore it.",
+                )
                 return@on true
             }
             sendMessage(player, "The door opens easily.")
@@ -76,10 +79,12 @@ class DragonForgeListener : InteractionListener {
         }
 
         onUseWith(IntType.SCENERY, Items.DRAGONKIN_KEY_14471, *MITHRIL_DOOR) { player, _, node ->
-            if (!inInventory(player, Items.DRAGONKIN_KEY_14471) && !hasRequirement(player, Quests.WHILE_GUTHIX_SLEEPS, false)) {
+            if (!inInventory(player, Items.DRAGONKIN_KEY_14471) &&
+                !hasRequirement(player, Quests.WHILE_GUTHIX_SLEEPS, false)
+            ) {
                 sendDialogue(
                     player,
-                    "The door is solid and resists all attempts to open it. There's no way past it at all, so best to ignore it."
+                    "The door is solid and resists all attempts to open it. There's no way past it at all, so best to ignore it.",
                 )
                 return@onUseWith true
             }
@@ -93,7 +98,9 @@ class DragonForgeListener : InteractionListener {
 
         onUseWith(IntType.NPC, STRANGE_KEYS, *MITHRIL_DRAGON_NPC) { player, _, with ->
             val npc = with.asNpc()
-            if (player.inventory.containItems(*STRANGE_KEYS) && player.equipment.containsAtLeastOneItem(REQUIRED_SHIELD)) {
+            if (player.inventory.containItems(*STRANGE_KEYS) &&
+                player.equipment.containsAtLeastOneItem(REQUIRED_SHIELD)
+            ) {
                 if (!hasRequirement(player, "While Guthix Sleeps", false)) {
                     sendMessage(player, "You cannot currently use any items on that dragon.")
                     return@onUseWith true
@@ -103,6 +110,7 @@ class DragonForgeListener : InteractionListener {
                     player,
                     object : Pulse(1) {
                         var counter = 0
+
                         override fun pulse(): Boolean {
                             when (counter++) {
                                 0 -> {
@@ -119,7 +127,7 @@ class DragonForgeListener : InteractionListener {
                                     sendItemDialogue(
                                         player,
                                         DRAGONKIN_KEY,
-                                        "The intense heat of the mithril dragon's breath fuses the key halves together."
+                                        "The intense heat of the mithril dragon's breath fuses the key halves together.",
                                     )
                                     player.inventory.add(DRAGONKIN_KEY)
                                 }
@@ -131,7 +139,7 @@ class DragonForgeListener : InteractionListener {
                             }
                             return false
                         }
-                    }
+                    },
                 )
             }
             return@onUseWith true
@@ -141,14 +149,17 @@ class DragonForgeListener : InteractionListener {
     companion object {
         private const val DRAGON_ANVIL = Scenery.ANVIL_40200
         private val FUSION_HAMMER = Item(Items.BLAST_FUSION_HAMMER_14478, 1)
-        private val RUINED_PIECES = intArrayOf(
-            Items.RUINED_DRAGON_ARMOUR_LUMP_14472,
-            Items.RUINED_DRAGON_ARMOUR_SLICE_14474,
-            Items.RUINED_DRAGON_ARMOUR_SHARD_14476
-        )
+        private val RUINED_PIECES =
+            intArrayOf(
+                Items.RUINED_DRAGON_ARMOUR_LUMP_14472,
+                Items.RUINED_DRAGON_ARMOUR_SLICE_14474,
+                Items.RUINED_DRAGON_ARMOUR_SHARD_14476,
+            )
         private val DRAGON_PLATEBODY = Item(Items.DRAGON_PLATEBODY_14479, 1)
-        private val REQUIRED_SHIELD = intArrayOf(Items.ANTI_DRAGON_SHIELD_1540, Items.DRAGONFIRE_SHIELD_11283, Items.DRAGONFIRE_SHIELD_11285)
-        private val SMITHING_ANIMATION = Animation(Animations.HIT_WITH_BLAST_FUSION_HAMMER_10758, Animator.Priority.HIGH)
+        private val REQUIRED_SHIELD =
+            intArrayOf(Items.ANTI_DRAGON_SHIELD_1540, Items.DRAGONFIRE_SHIELD_11283, Items.DRAGONFIRE_SHIELD_11285)
+        private val SMITHING_ANIMATION =
+            Animation(Animations.HIT_WITH_BLAST_FUSION_HAMMER_10758, Animator.Priority.HIGH)
         private val MITHRIL_DOOR = intArrayOf(Scenery.MITHRIL_DOOR_25341, Scenery.MITHRIL_DOOR_40208)
         private val MITHRIL_DRAGON_NPC = intArrayOf(NPCs.MITHRIL_DRAGON_5363, NPCs.MITHRIL_DRAGON_8424)
         private val STRANGE_KEYS = intArrayOf(Items.STRANGE_KEY_LOOP_14469, Items.STRANGE_KEY_TEETH_14470)

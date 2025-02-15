@@ -1,12 +1,9 @@
 package content.region.misthalin.quest.dragon.npc
 
-import org.rs.consts.Animations
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.misthalin.quest.dragon.DragonSlayer
 import core.api.combat.calculateDragonFireMaxHit
-import core.api.quest.getQuestStage
 import core.api.inInventory
+import core.api.quest.getQuestStage
 import core.api.sendMessage
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.BattleState
@@ -31,18 +28,24 @@ import core.game.world.map.RegionManager.getObject
 import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
 import core.tools.RandomFunction
+import org.rs.consts.Animations
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 import kotlin.math.ceil
 
 @Initializable
 class ElvargNPC : AbstractNPC {
-
     private val combatHandler: CombatSwingHandler = ElvargCombatSwingHandler()
 
     constructor() : super(0, null)
 
     private constructor(id: Int, location: Location) : super(id, location)
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return ElvargNPC(id, location)
     }
 
@@ -54,7 +57,7 @@ class ElvargNPC : AbstractNPC {
                     faceLocation(centerLocation.transform(direction.stepX * 3, direction.stepY * 3, 0))
                     return true
                 }
-            }
+            },
         )
         setDirection(direction)
     }
@@ -87,7 +90,7 @@ class ElvargNPC : AbstractNPC {
                     }
                     return false
                 }
-            }
+            },
         )
     }
 
@@ -111,7 +114,11 @@ class ElvargNPC : AbstractNPC {
             return 0
         }
 
-    override fun isAttackable(entity: Entity, style: CombatStyle, message: Boolean): Boolean {
+    override fun isAttackable(
+        entity: Entity,
+        style: CombatStyle,
+        message: Boolean,
+    ): Boolean {
         if (entity !is Player) {
             return super.isAttackable(entity, style, message)
         }
@@ -137,11 +144,14 @@ class ElvargNPC : AbstractNPC {
     }
 
     internal class ElvargCombatSwingHandler : CombatSwingHandler(CombatStyle.RANGE) {
-
         private var style = CombatStyle.RANGE
         private val fireType = FireType.FIERY_BREATH
 
-        override fun adjustBattleState(entity: Entity, victim: Entity, state: BattleState) {
+        override fun adjustBattleState(
+            entity: Entity,
+            victim: Entity,
+            state: BattleState,
+        ) {
             if (style == CombatStyle.RANGE) {
                 fireType.task.exec(victim, entity)
                 state.style = null
@@ -153,7 +163,6 @@ class ElvargNPC : AbstractNPC {
         }
 
         override fun calculateAccuracy(entity: Entity?): Int {
-
             if (style == CombatStyle.MELEE) {
                 return style.swingHandler.calculateAccuracy(entity)
             }
@@ -161,8 +170,10 @@ class ElvargNPC : AbstractNPC {
             return CombatStyle.MAGIC.swingHandler.calculateAccuracy(entity)
         }
 
-        override fun calculateDefence(victim: Entity?, attacker: Entity?): Int {
-
+        override fun calculateDefence(
+            victim: Entity?,
+            attacker: Entity?,
+        ): Int {
             if (style == CombatStyle.MELEE) {
                 return style.swingHandler.calculateDefence(victim, attacker)
             }
@@ -170,7 +181,11 @@ class ElvargNPC : AbstractNPC {
             return CombatStyle.MAGIC.swingHandler.calculateDefence(victim, attacker)
         }
 
-        override fun calculateHit(entity: Entity?, victim: Entity?, modifier: Double): Int {
+        override fun calculateHit(
+            entity: Entity?,
+            victim: Entity?,
+            modifier: Double,
+        ): Int {
             if (style == CombatStyle.MELEE) {
                 return style.swingHandler.calculateHit(entity, victim, modifier)
             }
@@ -180,15 +195,20 @@ class ElvargNPC : AbstractNPC {
                 maxDamage = 60,
                 wyvern = false,
                 unprotectableDamage = 3,
-                sendMessage = true
+                sendMessage = true,
             )
         }
 
-        override fun canSwing(entity: Entity, victim: Entity): InteractionType? {
+        override fun canSwing(
+            entity: Entity,
+            victim: Entity,
+        ): InteractionType? {
             if (!isProjectileClipped(entity, victim, false)) {
                 return InteractionType.NO_INTERACT
             }
-            if (victim.centerLocation.withinDistance(entity.centerLocation, getCombatDistance(entity, victim, 9)) && super.canSwing(entity, victim) != InteractionType.NO_INTERACT) {
+            if (victim.centerLocation.withinDistance(entity.centerLocation, getCombatDistance(entity, victim, 9)) &&
+                super.canSwing(entity, victim) != InteractionType.NO_INTERACT
+            ) {
                 entity.walkingQueue.reset()
                 return InteractionType.STILL_INTERACT
             }
@@ -199,15 +219,26 @@ class ElvargNPC : AbstractNPC {
             return style.swingHandler.getArmourSet(e)
         }
 
-        override fun getSetMultiplier(e: Entity?, skillId: Int): Double {
+        override fun getSetMultiplier(
+            e: Entity?,
+            skillId: Int,
+        ): Double {
             return style.swingHandler.getSetMultiplier(e, skillId)
         }
 
-        override fun impact(entity: Entity?, victim: Entity?, state: BattleState?) {
+        override fun impact(
+            entity: Entity?,
+            victim: Entity?,
+            state: BattleState?,
+        ) {
             style.swingHandler.impact(entity, victim, state)
         }
 
-        override fun swing(entity: Entity?, victim: Entity?, state: BattleState?): Int {
+        override fun swing(
+            entity: Entity?,
+            victim: Entity?,
+            state: BattleState?,
+        ): Int {
             style = CombatStyle.RANGE
             var hit = 0
             var ticks = 1
@@ -231,7 +262,11 @@ class ElvargNPC : AbstractNPC {
             return ticks
         }
 
-        override fun visualize(entity: Entity, victim: Entity?, state: BattleState?) {
+        override fun visualize(
+            entity: Entity,
+            victim: Entity?,
+            state: BattleState?,
+        ) {
             when (style) {
                 CombatStyle.MELEE -> entity.animate(MELEE_ATTACK)
                 CombatStyle.RANGE -> {
@@ -243,7 +278,11 @@ class ElvargNPC : AbstractNPC {
             }
         }
 
-        override fun visualizeImpact(entity: Entity?, victim: Entity?, state: BattleState?) {
+        override fun visualizeImpact(
+            entity: Entity?,
+            victim: Entity?,
+            state: BattleState?,
+        ) {
             if (style != CombatStyle.MELEE) {
                 DRAGONFIRE.visualizeImpact(entity, victim, state)
             } else {

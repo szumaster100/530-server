@@ -8,9 +8,8 @@ abstract class RSTimer(
     val identifier: String = "generictimer",
     val isSoft: Boolean = false,
     val isAuto: Boolean = false,
-    val flags: Array<TimerFlag> = arrayOf()
+    val flags: Array<TimerFlag> = arrayOf(),
 ) {
-
     abstract fun run(entity: Entity): Boolean
 
     open fun getInitialRunDelay(): Int {

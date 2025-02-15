@@ -1,19 +1,22 @@
 package content.region.fremennik.handlers.npc.rellekka
 
-import org.rs.consts.NPCs
 import core.api.getWorldTicks
 import core.api.sendChat
 import core.game.node.entity.npc.AbstractNPC
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
 class FremennikGuardNPC : AbstractNPC {
-
     constructor() : super(NPCs.GUARD_5489, null, true)
     private constructor(id: Int, location: Location) : super(id, location)
 
-    override fun construct(id: Int, location: Location, vararg objects: Any?): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any?,
+    ): AbstractNPC {
         return FremennikGuardNPC(id, location)
     }
 

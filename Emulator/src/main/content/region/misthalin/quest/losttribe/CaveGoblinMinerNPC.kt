@@ -1,13 +1,16 @@
 package content.region.misthalin.quest.losttribe
 
-import org.rs.consts.NPCs
 import core.game.node.entity.Entity
 import core.game.node.entity.npc.AbstractNPC
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
-class CaveGoblinMinerNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
+class CaveGoblinMinerNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
     var mining = false
     var originallyMiner = false
     val forceChat = arrayOf("Nooo!", "Eeek!")
@@ -16,7 +19,11 @@ class CaveGoblinMinerNPC(id: Int = 0, location: Location? = null) : AbstractNPC(
         originallyMiner = id > 2073
     }
 
-    override fun construct(id: Int, location: Location?, vararg objects: Any?): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location?,
+        vararg objects: Any?,
+    ): AbstractNPC {
         return CaveGoblinMinerNPC(id, location)
     }
 
@@ -29,7 +36,7 @@ class CaveGoblinMinerNPC(id: Int = 0, location: Location? = null) : AbstractNPC(
             NPCs.CAVE_GOBLIN_MINER_2072,
             NPCs.CAVE_GOBLIN_MINER_2071,
             NPCs.CAVE_GOBLIN_MINER_2070,
-            NPCs.CAVE_GOBLIN_MINER_2069
+            NPCs.CAVE_GOBLIN_MINER_2069,
         )
     }
 

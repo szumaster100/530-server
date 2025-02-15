@@ -1,6 +1,5 @@
 package content.region.desert.handlers.npc
 
-import org.rs.consts.NPCs
 import core.game.node.Node
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.BattleState
@@ -9,15 +8,21 @@ import core.game.node.entity.player.Player
 import core.game.world.map.Location
 import core.game.world.map.RegionManager
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
-class AlKharidWarrior(id: Int = NPCs.AL_KHARID_WARRIOR_18, location: Location? = null) :
-    AbstractNPC(id, location, true) {
-
+class AlKharidWarrior(
+    id: Int = NPCs.AL_KHARID_WARRIOR_18,
+    location: Location? = null,
+) : AbstractNPC(id, location, true) {
     private var target: Player? = null
     private val supportRange: Int = 5
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return AlKharidWarrior(id, location)
     }
 
@@ -42,7 +47,10 @@ class AlKharidWarrior(id: Int = NPCs.AL_KHARID_WARRIOR_18, location: Location? =
         super.attack(node)
     }
 
-    override fun onImpact(entity: Entity?, state: BattleState?) {
+    override fun onImpact(
+        entity: Entity?,
+        state: BattleState?,
+    ) {
         if (entity is Player) {
             if (target == null) {
                 target = entity

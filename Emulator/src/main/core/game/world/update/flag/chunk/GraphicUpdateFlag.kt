@@ -5,8 +5,10 @@ import core.game.world.update.flag.UpdateFlag
 import core.game.world.update.flag.context.Graphics
 import core.net.packet.IoBuffer
 
-class GraphicUpdateFlag(context: Graphics, private val location: Location) : UpdateFlag<Graphics>(context) {
-
+class GraphicUpdateFlag(
+    context: Graphics,
+    private val location: Location,
+) : UpdateFlag<Graphics>(context) {
     override fun write(buffer: IoBuffer) {
         buffer.put(17)
         buffer.put((location.chunkOffsetX shl 4) or (location.chunkOffsetY and 0x7))

@@ -1,9 +1,5 @@
 package content.region.morytania.handlers.phasmatys
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Sounds
 import content.global.skill.prayer.Bones
 import content.global.skill.prayer.Bones.Companion.forBoneMeal
 import core.api.*
@@ -24,18 +20,27 @@ import core.game.world.map.zone.ZoneBuilder
 import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Sounds
 import java.util.*
 
 @Initializable
-class PhasmatysPlugin : MapZone("Port phasmatys", true), Plugin<Any?> {
-
+class PhasmatysPlugin :
+    MapZone("Port phasmatys", true),
+    Plugin<Any?> {
     @Throws(Throwable::class)
     override fun newInstance(arg: Any?): Plugin<Any?> {
         ZoneBuilder.configure(this)
         return this
     }
 
-    override fun interact(e: Entity, target: Node, option: Option): Boolean {
+    override fun interact(
+        e: Entity,
+        target: Node,
+        option: Option,
+    ): Boolean {
         if (e is Player) {
             val player = e.asPlayer()
             val option = getUsedOption(player!!)
@@ -43,10 +48,15 @@ class PhasmatysPlugin : MapZone("Port phasmatys", true), Plugin<Any?> {
             if (target is NPC) {
                 if (target.id == NPCs.GHOST_BANKER_1702) return false
 
-                if ((target.name.lowercase().contains("ghost") || target.name.equals(
-                        "velorina",
-                        ignoreCase = true
-                    ) || target.name.contains("husband")) && !inEquipment(player, Items.GHOSTSPEAK_AMULET_552)
+                if ((
+                        target.name.lowercase().contains("ghost") ||
+                            target.name.equals(
+                                "velorina",
+                                ignoreCase = true,
+                            ) ||
+                            target.name.contains("husband")
+                    ) &&
+                    !inEquipment(player, Items.GHOSTSPEAK_AMULET_552)
                 ) {
                     player.dialogueInterpreter.open(target.getId(), target)
                     return true
@@ -73,13 +83,15 @@ class PhasmatysPlugin : MapZone("Port phasmatys", true), Plugin<Any?> {
                     return true
                 }
 
-                7434 -> if (option == "open") {
-                    SceneryBuilder.replace(target.asScenery(), target.asScenery().transform(7435))
-                }
+                7434 ->
+                    if (option == "open") {
+                        SceneryBuilder.replace(target.asScenery(), target.asScenery().transform(7435))
+                    }
 
-                7435 -> if (option == "close") {
-                    SceneryBuilder.replace(target.asScenery(), target.asScenery().transform(7434))
-                }
+                7435 ->
+                    if (option == "close") {
+                        SceneryBuilder.replace(target.asScenery(), target.asScenery().transform(7434))
+                    }
 
                 9308 -> {
                     if (getStatLevel(player, Skills.AGILITY) < 58) {
@@ -156,7 +168,10 @@ class PhasmatysPlugin : MapZone("Port phasmatys", true), Plugin<Any?> {
         register(ZoneBorders(3667, 9873, 3699, 9914))
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 }

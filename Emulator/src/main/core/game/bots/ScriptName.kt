@@ -1,3 +1,5 @@
 package core.game.bots
 
-annotation class ScriptName(val value: String)
+annotation class ScriptName(
+    val value: String,
+)

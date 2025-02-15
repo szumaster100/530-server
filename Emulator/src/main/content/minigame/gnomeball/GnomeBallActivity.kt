@@ -7,19 +7,21 @@ import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.game.world.map.zone.ZoneRestriction
 
-class GnomeBallActivity : ActivityPlugin(
-    "gnomeball",
-    false,
-    false,
-    false,
-    ZoneRestriction.CANNON,
-    ZoneRestriction.FIRES,
-    ZoneRestriction.FOLLOWERS,
-    ZoneRestriction.RANDOM_EVENTS
-) {
+class GnomeBallActivity :
+    ActivityPlugin(
+        "gnomeball",
+        false,
+        false,
+        false,
+        ZoneRestriction.CANNON,
+        ZoneRestriction.FIRES,
+        ZoneRestriction.FOLLOWERS,
+        ZoneRestriction.RANDOM_EVENTS,
+    ) {
     private val waitTime = if (GameWorld.settings?.isDevMode == true) 10 else 203
     private val waitingPlayers = ArrayList<Player>()
-    //private val sessions = ArrayList<GnomeBallSession>()
+
+    // private val sessions = ArrayList<GnomeBallSession>()
     private var activity: GnomeBallActivity? = null
     private var nextStart = GameWorld.ticks
 
@@ -30,7 +32,11 @@ class GnomeBallActivity : ActivityPlugin(
     override fun configure() {
     }
 
-    override fun start(player: Player?, login: Boolean, vararg args: Any?): Boolean {
+    override fun start(
+        player: Player?,
+        login: Boolean,
+        vararg args: Any?,
+    ): Boolean {
         player ?: return false
         waitingPlayers.add(player)
         return true
@@ -38,7 +44,6 @@ class GnomeBallActivity : ActivityPlugin(
 
     fun addPlayer(player: Player) {
         if (waitingPlayers.isEmpty()) {
-
             nextStart = GameWorld.ticks + waitTime
         }
         waitingPlayers.add(player)

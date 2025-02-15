@@ -50,69 +50,81 @@ internal object SweptUtils {
     const val N_CRATE = org.rs.consts.Scenery.WRONGLY_LABELLED_CRATE_NEWTS_39335
     const val T_CRATE = org.rs.consts.Scenery.WRONGLY_LABELLED_CRATE_TOADS_39334
 
-    val GUS_CRATES = intArrayOf(
-        39334,
-        39335,
-        39336
-    )
+    val GUS_CRATES =
+        intArrayOf(
+            39334,
+            39335,
+            39336,
+        )
 
-    val GUS_CRATES_LABELLED = intArrayOf(
-        39337,
-        39339,
-        39341
-    )
+    val GUS_CRATES_LABELLED =
+        intArrayOf(
+            39337,
+            39339,
+            39341,
+        )
 
-    val CREATURE_PEN = intArrayOf(
-        org.rs.consts.Scenery.SNAIL_PEN_39292,
-        org.rs.consts.Scenery.SPIDER_PEN_39297,
-        org.rs.consts.Scenery.BAT_PEN_39287,
-        org.rs.consts.Scenery.BLACKBIRD_PEN_39281,
-        org.rs.consts.Scenery.RAT_PEN_39309,
-        org.rs.consts.Scenery.HOLDING_PEN_39314,
-        org.rs.consts.Scenery.REPTILE_PEN_39303,
-    )
+    val CREATURE_PEN =
+        intArrayOf(
+            org.rs.consts.Scenery.SNAIL_PEN_39292,
+            org.rs.consts.Scenery.SPIDER_PEN_39297,
+            org.rs.consts.Scenery.BAT_PEN_39287,
+            org.rs.consts.Scenery.BLACKBIRD_PEN_39281,
+            org.rs.consts.Scenery.RAT_PEN_39309,
+            org.rs.consts.Scenery.HOLDING_PEN_39314,
+            org.rs.consts.Scenery.REPTILE_PEN_39303,
+        )
 
-    val CREATURE_PEN_ITEM = intArrayOf(
-        Items.REPTILE_14070,
-        Items.BLACKBIRD_14071,
-        Items.BAT_14072,
-        Items.SPIDER_14073,
-        Items.SNAIL_14075,
-        Items.RAT_14074,
-    )
+    val CREATURE_PEN_ITEM =
+        intArrayOf(
+            Items.REPTILE_14070,
+            Items.BLACKBIRD_14071,
+            Items.BAT_14072,
+            Items.SPIDER_14073,
+            Items.SNAIL_14075,
+            Items.RAT_14074,
+        )
 
     private val CREATURES = mutableMapOf<Int, NPC>()
 
-    private val NPC_TO_ITEM = mapOf(
-        NPCs.BAT_8208       to Items.BAT_14072,
-        NPCs.RAT_8209       to Items.RAT_14074,
-        NPCs.LIZARD_8210    to Items.REPTILE_14070,
-        NPCs.BLACKBIRD_8211 to Items.BLACKBIRD_14071,
-        NPCs.SPIDER_8212    to Items.SPIDER_14073,
-        NPCs.SNAIL_8213     to Items.SNAIL_14075
-    )
+    private val NPC_TO_ITEM =
+        mapOf(
+            NPCs.BAT_8208 to Items.BAT_14072,
+            NPCs.RAT_8209 to Items.RAT_14074,
+            NPCs.LIZARD_8210 to Items.REPTILE_14070,
+            NPCs.BLACKBIRD_8211 to Items.BLACKBIRD_14071,
+            NPCs.SPIDER_8212 to Items.SPIDER_14073,
+            NPCs.SNAIL_8213 to Items.SNAIL_14075,
+        )
 
-    private val PEN_LOCATIONS = mapOf(
-        org.rs.consts.Scenery.BAT_PEN_39287          to Location(3222, 4513, 0),
-        org.rs.consts.Scenery.RAT_PEN_39309          to Location(3240, 4513, 0),
-        org.rs.consts.Scenery.REPTILE_PEN_39303      to Location(3240, 4504, 0),
-        org.rs.consts.Scenery.BLACKBIRD_PEN_39281    to Location(3231, 4513, 0),
-        org.rs.consts.Scenery.SPIDER_PEN_39297       to Location(3231, 4504, 0),
-        org.rs.consts.Scenery.SNAIL_PEN_39292        to Location(3222, 4504, 0),
-        org.rs.consts.Scenery.HOLDING_PEN_39314      to Location(3231, 4523, 0)
-    )
+    private val PEN_LOCATIONS =
+        mapOf(
+            org.rs.consts.Scenery.BAT_PEN_39287 to Location(3222, 4513, 0),
+            org.rs.consts.Scenery.RAT_PEN_39309 to Location(3240, 4513, 0),
+            org.rs.consts.Scenery.REPTILE_PEN_39303 to Location(3240, 4504, 0),
+            org.rs.consts.Scenery.BLACKBIRD_PEN_39281 to Location(3231, 4513, 0),
+            org.rs.consts.Scenery.SPIDER_PEN_39297 to Location(3231, 4504, 0),
+            org.rs.consts.Scenery.SNAIL_PEN_39292 to Location(3222, 4504, 0),
+            org.rs.consts.Scenery.HOLDING_PEN_39314 to Location(3231, 4523, 0),
+        )
 
     /**
      * Spawns the NPCs inside the Betty basement pens.
      */
     @JvmStatic
     fun spawnBettyBasementNPCs() {
-        CREATURES[org.rs.consts.Scenery.BAT_PEN_39287]       = NPC.create(NPCs.BAT_8208, PEN_LOCATIONS[org.rs.consts.Scenery.BAT_PEN_39287]!!)
-        CREATURES[org.rs.consts.Scenery.RAT_PEN_39309]       = NPC.create(NPCs.RAT_8209, PEN_LOCATIONS[org.rs.consts.Scenery.RAT_PEN_39309]!!)
-        CREATURES[org.rs.consts.Scenery.REPTILE_PEN_39303]   = NPC.create(NPCs.LIZARD_8210, PEN_LOCATIONS[org.rs.consts.Scenery.REPTILE_PEN_39303]!!)
-        CREATURES[org.rs.consts.Scenery.BLACKBIRD_PEN_39281] = NPC.create(NPCs.BLACKBIRD_8211, PEN_LOCATIONS[org.rs.consts.Scenery.BLACKBIRD_PEN_39281]!!)
-        CREATURES[org.rs.consts.Scenery.SPIDER_PEN_39297]    = NPC.create(NPCs.SPIDER_8212, PEN_LOCATIONS[org.rs.consts.Scenery.SPIDER_PEN_39297]!!)
-        CREATURES[org.rs.consts.Scenery.SNAIL_PEN_39292]     = NPC.create(NPCs.SNAIL_8213, PEN_LOCATIONS[org.rs.consts.Scenery.SNAIL_PEN_39292]!!)
+        CREATURES[org.rs.consts.Scenery.BAT_PEN_39287] =
+            NPC.create(NPCs.BAT_8208, PEN_LOCATIONS[org.rs.consts.Scenery.BAT_PEN_39287]!!)
+        CREATURES[org.rs.consts.Scenery.RAT_PEN_39309] =
+            NPC.create(NPCs.RAT_8209, PEN_LOCATIONS[org.rs.consts.Scenery.RAT_PEN_39309]!!)
+        CREATURES[org.rs.consts.Scenery.REPTILE_PEN_39303] =
+            NPC.create(NPCs.LIZARD_8210, PEN_LOCATIONS[org.rs.consts.Scenery.REPTILE_PEN_39303]!!)
+        CREATURES[org.rs.consts.Scenery.BLACKBIRD_PEN_39281] =
+            NPC.create(NPCs.BLACKBIRD_8211, PEN_LOCATIONS[org.rs.consts.Scenery.BLACKBIRD_PEN_39281]!!)
+        CREATURES[org.rs.consts.Scenery.SPIDER_PEN_39297] =
+            NPC.create(NPCs.SPIDER_8212, PEN_LOCATIONS[org.rs.consts.Scenery.SPIDER_PEN_39297]!!)
+        CREATURES[org.rs.consts.Scenery.SNAIL_PEN_39292] =
+            NPC.create(NPCs.SNAIL_8213, PEN_LOCATIONS[org.rs.consts.Scenery.SNAIL_PEN_39292]!!)
 
         CREATURES.values.forEach { it.init() }
     }
@@ -143,7 +155,10 @@ internal object SweptUtils {
      * @param targetId The ID of the pen.
      */
     @JvmStatic
-    fun handlePenInteraction(player: Player, targetId: Int) {
+    fun handlePenInteraction(
+        player: Player,
+        targetId: Int,
+    ) {
         val currentNpc = CREATURES[targetId]
 
         if (currentNpc != null) {
@@ -155,22 +170,23 @@ internal object SweptUtils {
 
                 val npcLocation = PEN_LOCATIONS[targetId]
 
-                val message = when (val npcName = getNPCName(currentNpc.id)) {
-                    "Rat", "Bat" -> {
-                        if (npcLocation == PEN_LOCATIONS[39414]) {
-                            "You remove the $npcName from the pen. He doesn't seem very happy here."
-                        } else {
-                            "You remove the $npcName from the pen. He looks extremely happy here."
+                val message =
+                    when (val npcName = getNPCName(currentNpc.id)) {
+                        "Rat", "Bat" -> {
+                            if (npcLocation == PEN_LOCATIONS[39414]) {
+                                "You remove the $npcName from the pen. He doesn't seem very happy here."
+                            } else {
+                                "You remove the $npcName from the pen. He looks extremely happy here."
+                            }
+                        }
+                        else -> {
+                            if (npcLocation == PEN_LOCATIONS[39414]) {
+                                "You remove the $npcName from the pen. She doesn't seem very happy here."
+                            } else {
+                                "You remove the $npcName from the pen. She looks extremely happy here."
+                            }
                         }
                     }
-                    else -> {
-                        if (npcLocation == PEN_LOCATIONS[39414]) {
-                            "You remove the $npcName from the pen. She doesn't seem very happy here."
-                        } else {
-                            "You remove the $npcName from the pen. She looks extremely happy here."
-                        }
-                    }
-                }
 
                 sendMessage(player, message)
             }
@@ -183,22 +199,23 @@ internal object SweptUtils {
                         CREATURES[targetId] = npc
                         npc.init()
 
-                        val message = when (val npcName = getNPCName(npc.id)) {
-                            "Rat", "Bat" -> {
-                                if (location == PEN_LOCATIONS[39414]) {
-                                    "You put the $npcName into the pen. He doesn't seem very happy here."
-                                } else {
-                                    "You put the $npcName into the pen. He looks extremely happy here."
+                        val message =
+                            when (val npcName = getNPCName(npc.id)) {
+                                "Rat", "Bat" -> {
+                                    if (location == PEN_LOCATIONS[39414]) {
+                                        "You put the $npcName into the pen. He doesn't seem very happy here."
+                                    } else {
+                                        "You put the $npcName into the pen. He looks extremely happy here."
+                                    }
+                                }
+                                else -> {
+                                    if (location == PEN_LOCATIONS[39414]) {
+                                        "You put the $npcName into the pen. She doesn't seem very happy here."
+                                    } else {
+                                        "You put the $npcName into the pen. She looks extremely happy here."
+                                    }
                                 }
                             }
-                            else -> {
-                                if (location == PEN_LOCATIONS[39414]) {
-                                    "You put the $npcName into the pen. She doesn't seem very happy here."
-                                } else {
-                                    "You put the $npcName into the pen. She looks extremely happy here."
-                                }
-                            }
-                        }
 
                         sendMessage(player, message)
                     }
@@ -216,7 +233,11 @@ internal object SweptUtils {
      * @param emoteName The name of the emote.
      */
     @JvmStatic
-    fun unlockHalloweenEmotes(player: Player, emote: Emotes, emoteName: String) {
+    fun unlockHalloweenEmotes(
+        player: Player,
+        emote: Emotes,
+        emoteName: String,
+    ) {
         player.emoteManager.unlock(emote)
         openInterface(player, Components.DOUBLEOBJBOX_131).also {
             sendModelOnInterface(player, Components.DOUBLEOBJBOX_131, 2, BROOM_MODEL, -1)
@@ -225,7 +246,7 @@ internal object SweptUtils {
                 player,
                 "You've just learned the ${core.tools.DARK_RED}'$emoteName'</col> emote!",
                 Components.DOUBLEOBJBOX_131,
-                1
+                1,
             )
         }
 
@@ -239,7 +260,10 @@ internal object SweptUtils {
      * @param lineData A map containing the scenery data (ID and location).
      */
     @JvmStatic
-    fun sweepLines(player: Player, lineData: Int2ObjectOpenHashMap<LineScenery>) {
+    fun sweepLines(
+        player: Player,
+        lineData: Int2ObjectOpenHashMap<LineScenery>,
+    ) {
         lineData.values.forEach { (sceneryId, location) ->
             removeScenery(Scenery(sceneryId, location))
         }
@@ -259,48 +283,52 @@ internal object SweptUtils {
         val sceneryId: Int,
         val location: Location,
         val rotation: Int = 2,
-        val type: Int = 22
+        val type: Int = 22,
     )
 
     @JvmStatic
     fun sweepFirstLines(player: Player) {
-        val firstLineData = Int2ObjectOpenHashMap<LineScenery>().apply {
-            put(39363, LineScenery(39363, Location.create(3294, 4515, 0), 2))
-            put(39364, LineScenery(39364, Location.create(3295, 4515, 0), 2))
-            put(39365, LineScenery(39365, Location.create(3296, 4515, 0), 2))
-            put(39366, LineScenery(39366, Location.create(3297, 4515, 0), 4))
-        }
+        val firstLineData =
+            Int2ObjectOpenHashMap<LineScenery>().apply {
+                put(39363, LineScenery(39363, Location.create(3294, 4515, 0), 2))
+                put(39364, LineScenery(39364, Location.create(3295, 4515, 0), 2))
+                put(39365, LineScenery(39365, Location.create(3296, 4515, 0), 2))
+                put(39366, LineScenery(39366, Location.create(3297, 4515, 0), 4))
+            }
         sweepLines(player, firstLineData)
     }
 
     @JvmStatic
     fun sweepSecondLines(player: Player) {
-        val secondLineData = Int2ObjectOpenHashMap<LineScenery>().apply {
-            put(39377, LineScenery(39377, Location.create(3297, 4514, 0), 3))
-            put(39378, LineScenery(39378, Location.create(3296, 4514, 0), 1))
-            put(39379, LineScenery(39379, Location.create(3296, 4513, 0), 1))
-        }
+        val secondLineData =
+            Int2ObjectOpenHashMap<LineScenery>().apply {
+                put(39377, LineScenery(39377, Location.create(3297, 4514, 0), 3))
+                put(39378, LineScenery(39378, Location.create(3296, 4514, 0), 1))
+                put(39379, LineScenery(39379, Location.create(3296, 4513, 0), 1))
+            }
         sweepLines(player, secondLineData)
     }
 
     @JvmStatic
     fun sweepThirdLines(player: Player) {
-        val thirdLineData = Int2ObjectOpenHashMap<LineScenery>().apply {
-            put(39406, LineScenery(39406, Location.create(3299, 4511, 0), 3))
-            put(39407, LineScenery(39407, Location.create(3298, 4511, 0), 1))
-            put(39408, LineScenery(39408, Location.create(3298, 4510, 0), 1))
-        }
+        val thirdLineData =
+            Int2ObjectOpenHashMap<LineScenery>().apply {
+                put(39406, LineScenery(39406, Location.create(3299, 4511, 0), 3))
+                put(39407, LineScenery(39407, Location.create(3298, 4511, 0), 1))
+                put(39408, LineScenery(39408, Location.create(3298, 4510, 0), 1))
+            }
         sweepLines(player, thirdLineData)
     }
 
     @JvmStatic
     fun sweepFourthLines(player: Player) {
-        val fourthLineData = Int2ObjectOpenHashMap<LineScenery>().apply {
-            put(39413, LineScenery(39413, Location.create(3294, 4509, 0), 2))
-            put(39414, LineScenery(39414, Location.create(3295, 4509, 0), 2))
-            put(39415, LineScenery(39415, Location.create(3296, 4509, 0), 2))
-            put(39416, LineScenery(39416, Location.create(3297, 4509, 0), 4))
-        }
+        val fourthLineData =
+            Int2ObjectOpenHashMap<LineScenery>().apply {
+                put(39413, LineScenery(39413, Location.create(3294, 4509, 0), 2))
+                put(39414, LineScenery(39414, Location.create(3295, 4509, 0), 2))
+                put(39415, LineScenery(39415, Location.create(3296, 4509, 0), 2))
+                put(39416, LineScenery(39416, Location.create(3297, 4509, 0), 4))
+            }
         sweepLines(player, fourthLineData)
     }
 
@@ -342,15 +370,17 @@ internal object SweptUtils {
      */
     @JvmStatic
     fun checkGusTask(player: Player) {
-        if (getVarbit(player, VARBIT_NEWT_AND_TOAD_CRATE_LABEL) == 3 && getVarbit(
+        if (getVarbit(player, VARBIT_NEWT_AND_TOAD_CRATE_LABEL) == 3 &&
+            getVarbit(
                 player,
-                VARBIT_TOAD_CRATE_LABEL
-            ) == 2 && getVarbit(player, VARBIT_NEWT_CRATE_LABEL) == 1
+                VARBIT_TOAD_CRATE_LABEL,
+            ) == 2 &&
+            getVarbit(player, VARBIT_NEWT_CRATE_LABEL) == 1
         ) {
             player.dialogueInterpreter.sendDialogue(
                 NPCs.GUS_8205,
                 "Hurray! I do believe that you've labelled the creates",
-                "correctly! Ms Hetty will be so pleased."
+                "correctly! Ms Hetty will be so pleased.",
             )
             removeAttribute(player, GameAttributes.QUEST_SWEPT_AWAY_LABELS)
             setAttribute(player, GameAttributes.QUEST_SWEPT_AWAY_LABELS_COMPLETE, true)
@@ -360,7 +390,7 @@ internal object SweptUtils {
                         NPCs.GUS_8205,
                         "Now, you need a newt, right? Feel free to take one",
                         "from the newts-only create - the other ones aren't",
-                        "apprepriate for ointments and potions."
+                        "apprepriate for ointments and potions.",
                     )
                     return@addDialogueAction
                 }
@@ -379,7 +409,12 @@ internal object SweptUtils {
      * @param value The value set for varbit.
      */
     @JvmStatic
-    fun handleCrateLabelling(player: Player, used: Int, varbit: Int, value: Int) {
+    fun handleCrateLabelling(
+        player: Player,
+        used: Int,
+        varbit: Int,
+        value: Int,
+    ) {
         if (removeItem(player, used.asItem())) {
             sendMessage(player, "You place the label on the crate.")
             setVarbit(player, varbit, value, true)
@@ -397,6 +432,7 @@ internal object SweptUtils {
         GameWorld.Pulser.submit(
             object : Pulse() {
                 var counter = 0
+
                 override fun pulse(): Boolean {
                     when (counter++) {
                         0 -> openInterface(player, Components.FADE_TO_BLACK_120)
@@ -418,7 +454,7 @@ internal object SweptUtils {
                     }
                     return false
                 }
-            }
+            },
         )
     }
 
@@ -433,14 +469,16 @@ internal object SweptUtils {
         GameWorld.Pulser.submit(
             object : Pulse() {
                 var counter = 0
+
                 override fun pulse(): Boolean {
                     when (counter++) {
                         0 -> openInterface(player, Components.FADE_TO_BLACK_120)
-                        1 -> teleport(
-                            player,
-                            Location.create(3086, 3259, 0),
-                            TeleportManager.TeleportType.NORMAL
-                        )
+                        1 ->
+                            teleport(
+                                player,
+                                Location.create(3086, 3259, 0),
+                                TeleportManager.TeleportType.NORMAL,
+                            )
 
                         6 -> {
                             unlock(player)
@@ -450,7 +488,7 @@ internal object SweptUtils {
                     }
                     return false
                 }
-            }
+            },
         )
     }
 }

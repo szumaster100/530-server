@@ -1,15 +1,14 @@
 package content.region.kandarin.handlers.npc.yanille
 
-import org.rs.consts.NPCs
 import core.game.node.entity.combat.BattleState
 import core.game.node.entity.combat.CombatStyle
 import core.game.node.entity.npc.AbstractNPC
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
 class SalarinTwistedNPC : AbstractNPC {
-
     val SPELL_IDS = intArrayOf(1, 4, 6, 8)
 
     constructor() : super(-1, null)
@@ -18,7 +17,11 @@ class SalarinTwistedNPC : AbstractNPC {
         super.setAggressive(true)
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any?): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any?,
+    ): AbstractNPC {
         return SalarinTwistedNPC(id, location)
     }
 

@@ -1,6 +1,5 @@
 package content.global.travel
 
-import org.rs.consts.Sounds
 import core.api.playAudio
 import core.cache.def.impl.SceneryDefinition
 import core.game.interaction.OptionHandler
@@ -19,10 +18,10 @@ import core.game.world.update.flag.context.Graphics
 import core.plugin.Initializable
 import core.plugin.Plugin
 import core.tools.RandomFunction
+import org.rs.consts.Sounds
 
 @Initializable
 class WildernessObelisk : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         SceneryDefinition.forId(org.rs.consts.Scenery.OBELISK_14829).handlers["option:activate"] = this
         SceneryDefinition.forId(org.rs.consts.Scenery.OBELISK_14826).handlers["option:activate"] = this
@@ -33,7 +32,11 @@ class WildernessObelisk : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val scenery = node as Scenery
         val stationObelisk = Obelisk.forLocation(player.location) ?: return false
 
@@ -48,7 +51,7 @@ class WildernessObelisk : OptionHandler() {
                     SceneryBuilder.replace(
                         Scenery(scenery.id, Location.create(x, y, z)),
                         Scenery(org.rs.consts.Scenery.OBELISK_14825, Location.create(x, y, 0)),
-                        6
+                        6,
                     )
                 }
 
@@ -58,7 +61,7 @@ class WildernessObelisk : OptionHandler() {
                     SceneryBuilder.replace(
                         Scenery(scenery.id, Location.create(x, y, z)),
                         Scenery(org.rs.consts.Scenery.OBELISK_14825, Location.create(x, y, 0)),
-                        6
+                        6,
                     )
                 }
 
@@ -68,7 +71,7 @@ class WildernessObelisk : OptionHandler() {
                     SceneryBuilder.replace(
                         Scenery(scenery.id, Location.create(x, y, z)),
                         Scenery(org.rs.consts.Scenery.OBELISK_14825, Location.create(x, y, 0)),
-                        6
+                        6,
                     )
                 }
 
@@ -78,7 +81,7 @@ class WildernessObelisk : OptionHandler() {
                     SceneryBuilder.replace(
                         Scenery(scenery.id, Location.create(x, y, z)),
                         Scenery(org.rs.consts.Scenery.OBELISK_14825, Location.create(x, y, 0)),
-                        6
+                        6,
                     )
                 }
             }
@@ -101,7 +104,6 @@ class WildernessObelisk : OptionHandler() {
 
                     val newObelisks = Obelisk.values()
                     for (i in newObelisks.indices) {
-
                         if (newObelisks[i] == stationObelisk) {
                             newObelisks[i] = newObelisks[newObelisks.size - 1]
                             break
@@ -112,29 +114,32 @@ class WildernessObelisk : OptionHandler() {
                     val newObelisk = newObelisks[index]
 
                     for (player in getLocalPlayersBoundingBox(center, 1, 1)) {
-                        player.packetDispatch.sendMessage("Ancient magic teleports you to a place within the wilderness!")
+                        player.packetDispatch.sendMessage(
+                            "Ancient magic teleports you to a place within the wilderness!",
+                        )
                         val xOffset = player.location.x - center.x
                         val yOffset = player.location.y - center.y
                         player.teleporter.send(
                             Location.create(
                                 newObelisk.location.x + xOffset,
                                 newObelisk.location.y + yOffset,
-                                0
+                                0,
                             ),
                             TeleportType.OBELISK,
-                            2
+                            2,
                         )
                     }
                     super.setDelay(1)
                     return false
                 }
-            }
+            },
         )
         return true
     }
 
-    enum class Obelisk(val location: Location) {
-
+    enum class Obelisk(
+        val location: Location,
+    ) {
         LEVEL_13(Location(3156, 3620, 0)),
 
         LEVEL_19(Location(3219, 3656, 0)),
@@ -145,7 +150,8 @@ class WildernessObelisk : OptionHandler() {
 
         LEVEL_44(Location(2980, 3866, 0)),
 
-        LEVEL_50(Location(3307, 3916, 0));
+        LEVEL_50(Location(3307, 3916, 0)),
+        ;
 
         companion object {
             @JvmStatic

@@ -1,6 +1,5 @@
 package content.region.kandarin.quest.zogre.handlers
 
-import org.rs.consts.NPCs
 import content.region.kandarin.quest.zogre.dialogue.ZavisticRarveDialogueFiles
 import core.api.openDialogue
 import core.api.poofClear
@@ -11,13 +10,20 @@ import core.game.node.entity.player.Player
 import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
+import org.rs.consts.NPCs
 
-class ZavisticRarveNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
+class ZavisticRarveNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
     var clearTime = 0
     private val player: Player? = null
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return ZavisticRarveNPC(id, location)
     }
 
@@ -55,7 +61,7 @@ class ZavisticRarveNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id
                         openDialogue(player, ZavisticRarveDialogueFiles())
                         return true
                     }
-                }
+                },
             )
         }
     }

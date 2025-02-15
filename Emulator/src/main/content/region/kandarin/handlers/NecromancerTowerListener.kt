@@ -1,20 +1,18 @@
 package content.region.kandarin.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
-import org.rs.consts.Quests
 import content.region.kandarin.dialogue.IrwinFeaselbaumAboutNecromancyBookDialogue
 import content.region.kandarin.dialogue.IrwinFeaselbaumAboutTornPagesDialogue
 import core.api.*
 import core.api.quest.getQuestStage
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
+import org.rs.consts.Scenery
 
 class NecromancerTowerListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(Scenery.BOOKCASE_6894, IntType.SCENERY, "search") { player, _ ->
             if (inInventory(player, Items.NECROMANCY_BOOK_4837)) {
                 sendMessage(player, "You search the books...")
@@ -28,7 +26,7 @@ class NecromancerTowerListener : InteractionListener {
 
             sendMessage(
                 player,
-                "You search the bookcase and find a book named 'On loan to the wizards' Guild...to be returned'."
+                "You search the bookcase and find a book named 'On loan to the wizards' Guild...to be returned'.",
             )
             addItem(player, Items.NECROMANCY_BOOK_4837)
             return@on true

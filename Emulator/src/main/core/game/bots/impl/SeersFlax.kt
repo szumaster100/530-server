@@ -1,25 +1,24 @@
 package core.game.bots.impl
 
 import content.global.skill.crafting.spinning.Spinning
+import content.global.skill.crafting.spinning.SpinningPulse
+import core.game.bots.Script
+import core.game.bots.SkillingBotAssembler
 import core.game.interaction.DestinationFlag
 import core.game.interaction.MovementPulse
 import core.game.node.entity.skill.Skills
-import content.global.skill.crafting.spinning.SpinningPulse
 import core.game.node.item.Item
 import core.game.world.map.Location
 import core.game.world.map.path.Pathfinder
 import org.rs.consts.Items
-import core.game.bots.SkillingBotAssembler
-import core.game.bots.Script
 
 class SeersFlax : Script() {
     var state = State.PICKING
     var stage = 0
     var doorOpen = false
+
     override fun tick() {
-
         when (state) {
-
             State.PICKING -> {
                 val flax = scriptAPI.getNearestNode(2646, true)
                 flax?.interaction?.handle(bot, flax.interaction[1])
@@ -29,8 +28,9 @@ class SeersFlax : Script() {
             }
 
             State.TO_SPINNER -> {
-                if (stage == 0)
+                if (stage == 0) {
                     Pathfinder.find(bot, Location.create(2736, 3442, 0)).walk(bot).also { stage++ }
+                }
                 when (bot.location) {
                     Location.create(2736, 3442, 0) -> Pathfinder.find(bot, Location.create(2722, 3456, 0)).walk(bot)
                     Location.create(2722, 3456, 0) -> Pathfinder.find(bot, Location.create(2716, 3472, 0)).walk(bot)
@@ -48,13 +48,19 @@ class SeersFlax : Script() {
                     Location.create(2714, 3470, 1) -> {
                         val spinner = scriptAPI.getNearestNode(25824, true)
                         bot.faceLocation(spinner?.location)
-                        bot.pulseManager.run(object : MovementPulse(bot, spinner, DestinationFlag.OBJECT) {
-                            override fun pulse(): Boolean {
-                                bot.faceLocation(spinner?.location)
-                                state = State.SPINNING.also { stage = 0; doorOpen = false }
-                                return true
-                            }
-                        })
+                        bot.pulseManager.run(
+                            object : MovementPulse(bot, spinner, DestinationFlag.OBJECT) {
+                                override fun pulse(): Boolean {
+                                    bot.faceLocation(spinner?.location)
+                                    state =
+                                        State.SPINNING.also {
+                                            stage = 0
+                                            doorOpen = false
+                                        }
+                                    return true
+                                }
+                            },
+                        )
                     }
                 }
             }
@@ -65,8 +71,8 @@ class SeersFlax : Script() {
                         bot,
                         Item(Items.FLAX_1779),
                         bot.inventory.getAmount(Items.FLAX_1779),
-                        Spinning.FLAX
-                    )
+                        Spinning.FLAX,
+                    ),
                 )
                 state = State.FIND_BANK
             }
@@ -96,26 +102,31 @@ class SeersFlax : Script() {
 
             State.BANKING -> {
                 val bank = scriptAPI.getNearestNode(25808, true)
-                if (bank != null)
-                    bot.pulseManager.run(object : MovementPulse(bot, bank, DestinationFlag.OBJECT) {
-                        override fun pulse(): Boolean {
-                            bot.faceLocation(bank.location)
-                            scriptAPI.bankItem(Items.BOW_STRING_1777)
-                            if (bot.bank.getAmount(Items.BOW_STRING_1777) > 500) {
-                                state = State.TELE_GE
+                if (bank != null) {
+                    bot.pulseManager.run(
+                        object : MovementPulse(bot, bank, DestinationFlag.OBJECT) {
+                            override fun pulse(): Boolean {
+                                bot.faceLocation(bank.location)
+                                scriptAPI.bankItem(Items.BOW_STRING_1777)
+                                if (bot.bank.getAmount(Items.BOW_STRING_1777) > 500) {
+                                    state = State.TELE_GE
+                                    return true
+                                }
+                                state = State.RETURN_TO_FLAX
                                 return true
                             }
-                            state = State.RETURN_TO_FLAX
-                            return true
-                        }
-                    })
+                        },
+                    )
+                }
             }
 
             State.RETURN_TO_FLAX -> {
-                if (bot.location == Location.create(2756, 3478, 0))
+                if (bot.location == Location.create(2756, 3478, 0)) {
                     Pathfinder.find(bot, Location.create(2726, 3486, 0)).walk(bot)
-                if (stage == 0)
+                }
+                if (stage == 0) {
                     Pathfinder.find(bot, Location.create(2726, 3486, 0)).walk(bot).also { stage++ }
+                }
                 when (bot.location) {
                     Location.create(2726, 3486, 0) -> Pathfinder.find(bot, Location.create(2729, 3469, 0)).walk(bot)
                     Location.create(2729, 3469, 0) -> Pathfinder.find(bot, Location.create(2734, 3447, 0)).walk(bot)
@@ -138,7 +149,6 @@ class SeersFlax : Script() {
                 stage = 0
                 state = State.RETURN_TO_FLAX
             }
-
         }
     }
 
@@ -151,7 +161,7 @@ class SeersFlax : Script() {
         TELE_GE,
         SELL_GE,
         RETURN_TO_FLAX,
-        TELE_CAMELOT
+        TELE_CAMELOT,
     }
 
     init {

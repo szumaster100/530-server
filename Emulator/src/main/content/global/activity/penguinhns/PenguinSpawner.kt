@@ -1,11 +1,10 @@
 package content.global.activity.penguinhns
 
-import org.rs.consts.NPCs
 import core.game.node.entity.npc.NPC
 import core.game.world.map.Location
+import org.rs.consts.NPCs
 
 class PenguinSpawner {
-
     fun spawnPenguins(amount: Int): ArrayList<Int> {
         var counter = 0
         val availableOrdinals = (0 until Penguin.values().size).toMutableList()
@@ -14,8 +13,12 @@ class PenguinSpawner {
             val peng = Penguin.values()[availableOrdinals.random()]
             availableOrdinals.remove(peng.ordinal)
             spawnedOrdinals.add(peng.ordinal)
-            NPC(peng.id, peng.location).also { PenguinManager.npcs.add(it); it.isNeverWalks = true; it.isWalks = false }
-                .init()
+            NPC(peng.id, peng.location)
+                .also {
+                    PenguinManager.npcs.add(it)
+                    it.isNeverWalks = true
+                    it.isWalks = false
+                }.init()
             counter++
         }
         return spawnedOrdinals
@@ -24,12 +27,21 @@ class PenguinSpawner {
     fun spawnPenguins(ordinals: List<Int>) {
         ordinals.forEach { it ->
             val peng = Penguin.values()[it]
-            NPC(peng.id, peng.location).also { PenguinManager.npcs.add(it); it.isNeverWalks = true; it.isWalks = false }.init()
+            NPC(peng.id, peng.location)
+                .also {
+                    PenguinManager.npcs.add(it)
+                    it.isNeverWalks = true
+                    it.isWalks = false
+                }.init()
         }
     }
 }
 
-enum class Penguin(val id: Int, val hint: String, val location: Location) {
+enum class Penguin(
+    val id: Int,
+    val hint: String,
+    val location: Location,
+) {
     CACTUS_1(NPCs.CACTUS_8107, "located in the northern desert.", Location(3310, 3157, 0)),
     CACTUS_2(NPCs.CACTUS_8107, "located in the southern desert.", Location.create(3259, 3052, 0)),
 
@@ -58,7 +70,8 @@ enum class Penguin(val id: Int, val hint: String, val location: Location) {
     BARREL_1(NPCs.CRATE_8108, "located where no weapons may go.", Location.create(2806, 3383, 0)),
 
     TOADSTOOL_1(NPCs.TOADSTOOL_8110, "located in the kingdom of Misthalin.", Location.create(3156, 3178, 0)),
-    TOADSTOOL_2(NPCs.TOADSTOOL_8110, "located in the fairy realm.", Location.create(2409, 4462, 0));
+    TOADSTOOL_2(NPCs.TOADSTOOL_8110, "located in the fairy realm.", Location.create(2409, 4462, 0)),
+    ;
 
     companion object {
         private val locationMap = values().associateBy { it.location.toString() }

@@ -1,6 +1,5 @@
 package content.region.desert.quest.deserttreasure.npc
 
-import org.rs.consts.NPCs
 import content.region.desert.quest.deserttreasure.DesertTreasure
 import core.api.*
 import core.game.dialogue.DialogueFile
@@ -21,12 +20,17 @@ import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
 import core.tools.END_DIALOGUE
+import org.rs.consts.NPCs
 
 class DessousMeleeBehavior : NPCBehavior(NPCs.DESSOUS_1914, NPCs.DESSOUS_1915) {
-
     var clearTime = 0
 
-    override fun canBeAttackedBy(self: NPC, attacker: Entity, style: CombatStyle, shouldSendMessage: Boolean): Boolean {
+    override fun canBeAttackedBy(
+        self: NPC,
+        attacker: Entity,
+        style: CombatStyle,
+        shouldSendMessage: Boolean,
+    ): Boolean {
         if (attacker is Player) {
             if (attacker == getAttribute<Player?>(self, "target", null)) {
                 return true
@@ -37,7 +41,6 @@ class DessousMeleeBehavior : NPCBehavior(NPCs.DESSOUS_1914, NPCs.DESSOUS_1915) {
     }
 
     override fun tick(self: NPC): Boolean {
-
         if (self.id == NPCs.DESSOUS_1915 && self.properties.combatPulse.isInCombat) {
             animate(self, Animation(1914))
         }
@@ -47,19 +50,26 @@ class DessousMeleeBehavior : NPCBehavior(NPCs.DESSOUS_1914, NPCs.DESSOUS_1915) {
             self.transform(NPCs.DESSOUS_1915)
             Graphics.send(
                 Graphics(
-                    org.rs.consts.Graphics.RANDOM_EVENT_PUFF_OF_SMOKE_86
-                ), self.location)
-        } else if (self.id == NPCs.DESSOUS_1915 && player != null && (
-                    player.prayer.get(PrayerType.PROTECT_FROM_MAGIC) || player.prayer.get(
-                        PrayerType.PROTECT_FROM_MISSILES
+                    org.rs.consts.Graphics.RANDOM_EVENT_PUFF_OF_SMOKE_86,
+                ),
+                self.location,
+            )
+        } else if (self.id == NPCs.DESSOUS_1915 &&
+            player != null &&
+            (
+                player.prayer.get(PrayerType.PROTECT_FROM_MAGIC) ||
+                    player.prayer.get(
+                        PrayerType.PROTECT_FROM_MISSILES,
                     )
-                    )
+            )
         ) {
             self.transform(NPCs.DESSOUS_1914)
             Graphics.send(
                 Graphics(
-                    org.rs.consts.Graphics.RANDOM_EVENT_PUFF_OF_SMOKE_86
-                ), self.location)
+                    org.rs.consts.Graphics.RANDOM_EVENT_PUFF_OF_SMOKE_86,
+                ),
+                self.location,
+            )
         }
         if (clearTime++ > 800) {
             self.transform(NPCs.DESSOUS_1914)
@@ -73,34 +83,45 @@ class DessousMeleeBehavior : NPCBehavior(NPCs.DESSOUS_1914, NPCs.DESSOUS_1915) {
         return false
     }
 
-    override fun getSwingHandlerOverride(self: NPC, original: CombatSwingHandler): CombatSwingHandler {
+    override fun getSwingHandlerOverride(
+        self: NPC,
+        original: CombatSwingHandler,
+    ): CombatSwingHandler {
         if (self.id == NPCs.DESSOUS_1915) {
-
             return CombatHandler()
         } else {
-
             return original
         }
     }
 
-    override fun beforeAttackFinalized(self: NPC, victim: Entity, state: BattleState) {
-
+    override fun beforeAttackFinalized(
+        self: NPC,
+        victim: Entity,
+        state: BattleState,
+    ) {
         if (victim is Player) {
             if (victim.location.getDistance(self.location) >= 5) {
                 Graphics.send(
                     Graphics(
-                        org.rs.consts.Graphics.RANDOM_EVENT_PUFF_OF_SMOKE_86
-                    ), self.location)
+                        org.rs.consts.Graphics.RANDOM_EVENT_PUFF_OF_SMOKE_86,
+                    ),
+                    self.location,
+                )
                 self.properties.teleportLocation = victim.location
                 Graphics.send(
                     Graphics(
-                        org.rs.consts.Graphics.RANDOM_EVENT_PUFF_OF_SMOKE_86
-                    ), self.location)
+                        org.rs.consts.Graphics.RANDOM_EVENT_PUFF_OF_SMOKE_86,
+                    ),
+                    self.location,
+                )
             }
         }
     }
 
-    override fun onDeathFinished(self: NPC, killer: Entity) {
+    override fun onDeathFinished(
+        self: NPC,
+        killer: Entity,
+    ) {
         if (killer is Player) {
             val player = killer
             if (DesertTreasure.getSubStage(player, DesertTreasure.attributeBloodStage) == 2) {
@@ -110,41 +131,52 @@ class DessousMeleeBehavior : NPCBehavior(NPCs.DESSOUS_1914, NPCs.DESSOUS_1915) {
             openDialogue(
                 player,
                 object : DialogueFile() {
-                    override fun handle(componentID: Int, buttonID: Int) {
+                    override fun handle(
+                        componentID: Int,
+                        buttonID: Int,
+                    ) {
                         when (stage) {
-                            0 -> player(
-                                FaceAnim.ANGRY,
-                                "Well that's Dessous dead, but where is the Diamond he",
-                                "was supposed to have?"
-                            ).also { stage++ }
+                            0 ->
+                                player(
+                                    FaceAnim.ANGRY,
+                                    "Well that's Dessous dead, but where is the Diamond he",
+                                    "was supposed to have?",
+                                ).also { stage++ }
 
-                            1 -> playerl(FaceAnim.ANGRY, "If Malak lied to me about it, he is going to pay!").also {
-                                stage = END_DIALOGUE
-                            }
+                            1 ->
+                                playerl(FaceAnim.ANGRY, "If Malak lied to me about it, he is going to pay!").also {
+                                    stage = END_DIALOGUE
+                                }
                         }
                     }
-                }
+                },
             )
         }
     }
 
-    class CombatHandler : MultiSwingHandler(
-        SwitchAttack(CombatStyle.MAGIC.swingHandler, null),
-        SwitchAttack(CombatStyle.RANGE.swingHandler, null)
-    ) {
-        override fun swing(entity: Entity?, victim: Entity?, state: BattleState?): Int {
+    class CombatHandler :
+        MultiSwingHandler(
+            SwitchAttack(CombatStyle.MAGIC.swingHandler, null),
+            SwitchAttack(CombatStyle.RANGE.swingHandler, null),
+        ) {
+        override fun swing(
+            entity: Entity?,
+            victim: Entity?,
+            state: BattleState?,
+        ): Int {
             if (entity is NPC && victim is Player) {
-                val projectile = Projectile.create(
-                    victim.location.transform(Location(intArrayOf(3, -3).random(), intArrayOf(3, -3).random())),
-                    victim.location,
-                    350,
-                    0,
-                    0,
-                    0,
-                    60,
-                    0,
-                    255
-                )
+                val projectile =
+                    Projectile.create(
+                        victim.location.transform(Location(intArrayOf(3, -3).random(), intArrayOf(3, -3).random())),
+                        victim.location,
+                        350,
+                        0,
+                        0,
+                        0,
+                        60,
+                        0,
+                        255,
+                    )
 
                 state!!.estimatedHit = 5
                 state.secondaryHit = 5

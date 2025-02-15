@@ -1,29 +1,31 @@
 package content.region.asgarnia.quest.gobdip
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import content.region.asgarnia.quest.gobdip.dialogue.GrubfootDialogue
 import content.region.asgarnia.quest.gobdip.handlers.GDiplomacyCutscene
 import content.region.asgarnia.quest.gobdip.handlers.GoblinDiplomacyPlugin
 import core.api.inInventory
+import core.api.quest.updateQuestTab
 import core.api.rewardXP
 import core.api.sendItemZoomOnInterface
-import core.api.quest.updateQuestTab
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
-import core.plugin.Initializable
 import core.plugin.ClassScanner.definePlugins
+import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class GoblinDiplomacy :
     Quest(Quests.GOBLIN_DIPLOMACY, 20, 19, 5, Vars.VARP_QUEST_GOBLIN_DIPLOMACY_QUEST_PROGRESS_62, 0, 1, 100) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         player ?: return
         var line = 11
@@ -123,7 +125,10 @@ class GoblinDiplomacy :
         updateQuestTab(player)
     }
 
-    override fun getConfig(player: Player, stage: Int): IntArray {
+    override fun getConfig(
+        player: Player,
+        stage: Int,
+    ): IntArray {
         if (stage == 0) {
             return intArrayOf(Vars.VARP_QUEST_GOBLIN_DIPLOMACY_QUEST_PROGRESS_62, 0)
         }

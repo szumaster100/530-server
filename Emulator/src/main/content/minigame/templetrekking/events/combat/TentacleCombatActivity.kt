@@ -4,6 +4,7 @@ import content.minigame.templetrekking.TempleTrekking
 import content.minigame.templetrekking.monsters.HeadNPC.Companion.spawnTentacleHeadNPC
 import content.minigame.templetrekking.monsters.TentacleNPC
 import content.minigame.templetrekking.monsters.TentacleNPC.Companion.spawnTentacleNPC
+import core.api.MapArea
 import core.api.keepRunning
 import core.api.queueScript
 import core.api.stopExecuting
@@ -16,7 +17,6 @@ import core.game.node.entity.player.Player
 import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
-import core.api.MapArea
 import core.game.world.map.build.DynamicRegion
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.map.zone.ZoneRestriction
@@ -31,10 +31,9 @@ class TentacleCombatActivity :
         false,
         ZoneRestriction.RANDOM_EVENTS,
         ZoneRestriction.FOLLOWERS,
-        ZoneRestriction.FIRES
+        ZoneRestriction.FIRES,
     ),
     MapArea {
-
     private val tentacleSession = ArrayList<TentacleCombatActivitySession>()
     private var activity: TentacleCombatActivity? = null
     val tentacles = ArrayList<TentacleNPC>()
@@ -48,10 +47,11 @@ class TentacleCombatActivity :
         GameWorld.Pulser.submit(
             object : Pulse(1) {
                 override fun pulse(): Boolean {
-                    val session = TentacleCombatActivitySession(
-                        DynamicRegion.create(TempleTrekking.tentacleCombatEventRegion),
-                        activity!!
-                    )
+                    val session =
+                        TentacleCombatActivitySession(
+                            DynamicRegion.create(TempleTrekking.tentacleCombatEventRegion),
+                            activity!!,
+                        )
                     session.start(player)
                     tentacleSession.add(session)
                     tentacleSession.removeIf { session ->
@@ -68,11 +68,15 @@ class TentacleCombatActivity :
                     }
                     return false
                 }
-            }
+            },
         )
     }
 
-    override fun start(player: Player?, login: Boolean, vararg args: Any?): Boolean {
+    override fun start(
+        player: Player?,
+        login: Boolean,
+        vararg args: Any?,
+    ): Boolean {
         player ?: return false
         queueScript(player, 1, QueueStrength.SOFT) { stage: Int ->
             when (stage) {

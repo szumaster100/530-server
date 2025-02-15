@@ -3,13 +3,12 @@ package core.game.world
 import core.ServerConfig
 import core.api.log
 import core.game.bots.GeneralBotCreator
-import core.tools.Log
 import core.game.system.task.Pulse
+import core.tools.Log
 import core.tools.integration.grafana.Grafana
 import java.util.concurrent.LinkedBlockingQueue
 
 class PulseRunner {
-
     private val pulses = LinkedBlockingQueue<Pulse>()
 
     val currentPulses: Array<Pulse> get() = pulses.toTypedArray()
@@ -26,16 +25,17 @@ class PulseRunner {
         for (i in 0 until pulseCount) {
             val pulse = pulses.take()
 
-            val elapsedTime = measure {
-                try {
-                    if (!pulse.update() && pulse.isRunning) {
-                        pulses.add(pulse)
+            val elapsedTime =
+                measure {
+                    try {
+                        if (!pulse.update() && pulse.isRunning) {
+                            pulses.add(pulse)
+                        }
+                    } catch (e: Exception) {
+                        log(this::class.java, Log.ERR, "Pulse execution error. Stack trace below.")
+                        e.printStackTrace()
                     }
-                } catch (e: Exception) {
-                    log(this::class.java, Log.ERR, "Pulse execution error. Stack trace below.")
-                    e.printStackTrace()
                 }
-            }
 
             var pulseName = pulse::class.java.name
 
@@ -65,19 +65,22 @@ class PulseRunner {
         return System.currentTimeMillis() - startTime
     }
 
-    private fun notifyIfTooLong(pulse: Pulse, elapsedTime: Long) {
+    private fun notifyIfTooLong(
+        pulse: Pulse,
+        elapsedTime: Long,
+    ) {
         if (elapsedTime >= 100) {
             if (pulse is GeneralBotCreator.BotScriptPulse) {
                 log(
                     this::class.java,
                     Log.WARN,
-                    "CRITICALLY long bot-script tick - ${pulse.botScript.javaClass.name} took $elapsedTime ms"
+                    "CRITICALLY long bot-script tick - ${pulse.botScript.javaClass.name} took $elapsedTime ms",
                 )
             } else {
                 log(
                     this::class.java,
                     Log.WARN,
-                    "CRITICALLY long running pulse - ${pulse.javaClass.name} took $elapsedTime ms"
+                    "CRITICALLY long running pulse - ${pulse.javaClass.name} took $elapsedTime ms",
                 )
             }
         } else if (elapsedTime >= 30) {
@@ -85,7 +88,7 @@ class PulseRunner {
                 log(
                     this::class.java,
                     Log.WARN,
-                    "Long bot-script tick - ${pulse.botScript.javaClass.name} took $elapsedTime ms"
+                    "Long bot-script tick - ${pulse.botScript.javaClass.name} took $elapsedTime ms",
                 )
             } else {
                 log(this::class.java, Log.WARN, "Long running pulse - ${pulse.javaClass.name} took $elapsedTime ms")

@@ -1,7 +1,5 @@
 package content.global.skill.herblore.herbs
 
-import org.rs.consts.Components
-import org.rs.consts.Items
 import core.api.addItem
 import core.api.amountInInventory
 import core.api.removeItem
@@ -9,9 +7,10 @@ import core.api.ui.repositionChild
 import core.game.dialogue.SkillDialogueHandler
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.Components
+import org.rs.consts.Items
 
 class HerbTarListener : InteractionListener {
-
     val tar = Tars.values().map(Tars::ingredient).toIntArray()
 
     override fun defineListeners() {
@@ -19,9 +18,12 @@ class HerbTarListener : InteractionListener {
             var tar = Tars.forId(used.id)
             val handler: SkillDialogueHandler =
                 object : SkillDialogueHandler(player, SkillDialogue.ONE_OPTION, tar!!.product) {
-                    override fun create(amount: Int, index: Int) {
+                    override fun create(
+                        amount: Int,
+                        index: Int,
+                    ) {
                         player.pulseManager.run(
-                            tar?.let { HerbTarPulse(player, null, it, amount) }
+                            tar?.let { HerbTarPulse(player, null, it, amount) },
                         )
                     }
 

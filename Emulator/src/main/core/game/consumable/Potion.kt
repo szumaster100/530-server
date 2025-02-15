@@ -9,10 +9,12 @@ import org.rs.consts.Sounds
 open class Potion(
     private val ids: IntArray?,
     private val effect: ConsumableEffect?,
-    vararg private val messages: String?
+    private vararg val messages: String?,
 ) : Drink(ids, effect, *messages) {
-
-    override fun consume(item: Item, player: Player) {
+    override fun consume(
+        item: Item,
+        player: Player,
+    ) {
         executeConsumptionActions(player)
 
         val nextItemId = getNextItemId(item.id)
@@ -20,7 +22,7 @@ open class Potion(
         player.inventory.replace(replacementItem, item.slot)
 
         val initialLifePoints = player.getSkills().lifepoints
-        effect?.activate(player)  // Safe call to handle possible null effect
+        effect?.activate(player) // Safe call to handle possible null effect
         sendMessages(player, item)
 
         sendHealingMessage(player, initialLifePoints)
@@ -31,7 +33,10 @@ open class Potion(
         playAudio(player, Sounds.LIQUID_2401, 1, 1)
     }
 
-    private fun sendMessages(player: Player, item: Item) {
+    private fun sendMessages(
+        player: Player,
+        item: Item,
+    ) {
         if (messages.isEmpty()) {
             sendDefaultMessages(player, item)
         } else {
@@ -39,17 +44,21 @@ open class Potion(
         }
     }
 
-    override fun sendDefaultMessages(player: Player, item: Item) {
+    override fun sendDefaultMessages(
+        player: Player,
+        item: Item,
+    ) {
         val consumedDoses = ids.indexOf(item.id) + 1
         val dosesLeft = ids.size - consumedDoses
 
         player.packetDispatch.sendMessage("You drink some of your ${getFormattedName(item)}.")
 
-        val dosesMessage = when {
-            dosesLeft > 1 -> "You have $dosesLeft doses of potion left."
-            dosesLeft == 1 -> "You have 1 dose of potion left."
-            else -> "You have finished your potion."
-        }
+        val dosesMessage =
+            when {
+                dosesLeft > 1 -> "You have $dosesLeft doses of potion left."
+                dosesLeft == 1 -> "You have 1 dose of potion left."
+                else -> "You have finished your potion."
+            }
         player.packetDispatch.sendMessage(dosesMessage)
     }
 

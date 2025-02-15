@@ -18,12 +18,13 @@ const val DARK_PURPLE = "<col=734a75>"
 
 private val pattern = Regex("%[0-9a-fA-F]{6}")
 
-private val testData = arrayOf(
-    "This is a string with no colors.",
-    "This %R is a string with one color.",
-    "This %R %G %B is a string with multiple colors.",
-    "This %ffffff is an arbitrary hex string."
-)
+private val testData =
+    arrayOf(
+        "This is a string with no colors.",
+        "This %R is a string with one color.",
+        "This %R %G %B is a string with multiple colors.",
+        "This %ffffff is an arbitrary hex string.",
+    )
 
 fun colorize(line: String): String {
     return line
@@ -45,7 +46,10 @@ fun colorize(line: String): String {
         .append("</col>") + " "
 }
 
-fun colorize(line: String, hexColor: String): String {
+fun colorize(
+    line: String,
+    hexColor: String,
+): String {
     return line.prepend("<col=$hexColor>").append("</col>")
 }
 

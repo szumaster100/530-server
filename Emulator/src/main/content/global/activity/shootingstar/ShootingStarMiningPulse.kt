@@ -8,9 +8,11 @@ import core.game.node.entity.skill.Skills
 import core.game.node.scenery.Scenery
 import core.game.world.GameWorld
 
-class ShootingStarMiningPulse(player: Player?, node: Scenery?, val star: ShootingStar) :
-    SkillPulse<Scenery?>(player, node) {
-
+class ShootingStarMiningPulse(
+    player: Player?,
+    node: Scenery?,
+    val star: ShootingStar,
+) : SkillPulse<Scenery?>(player, node) {
     private var ticks = 0
 
     override fun start() {
@@ -43,12 +45,13 @@ class ShootingStarMiningPulse(player: Player?, node: Scenery?, val star: Shootin
             sendMessage(
                 player,
                 "You have ${
-                    player.skills.experienceMultiplier * getAttribute(
-                        player,
-                        "shooting-star:bonus-xp",
-                        0
-                    ).toDouble()
-                } bonus xp towards mining stardust."
+                    player.skills.experienceMultiplier *
+                        getAttribute(
+                            player,
+                            "shooting-star:bonus-xp",
+                            0,
+                        ).toDouble()
+                } bonus xp towards mining stardust.",
             )
             ShootingStarPlugin.submitScoreBoard(player)
             star.isDiscovered = true
@@ -58,7 +61,7 @@ class ShootingStarMiningPulse(player: Player?, node: Scenery?, val star: Shootin
         if (getStatLevel(player, Skills.MINING) < star.miningLevel) {
             sendDialogue(
                 player,
-                "You need a Mining level of at least " + star.miningLevel + " in order to mine this layer."
+                "You need a Mining level of at least " + star.miningLevel + " in order to mine this layer.",
             )
             return false
         }
@@ -66,10 +69,11 @@ class ShootingStarMiningPulse(player: Player?, node: Scenery?, val star: Shootin
             sendMessage(player, "You do not have a pickaxe to use.")
             return false
         }
-        if (freeSlots(player) < 1 && !inInventory(
+        if (freeSlots(player) < 1 &&
+            !inInventory(
                 player,
                 ShootingStarPlugin.STAR_DUST,
-                1
+                1,
             )
         ) {
             sendDialogue(player, "Your inventory is too full to hold any more stardust.")
@@ -114,18 +118,18 @@ class ShootingStarMiningPulse(player: Player?, node: Scenery?, val star: Shootin
     }
 
     fun rollBlueprint(player: Player) {
-        val chance = when (star.level) {
-            ShootingStarType.LEVEL_9 -> 250
-            ShootingStarType.LEVEL_8 -> 500
-            ShootingStarType.LEVEL_7 -> 750
-            ShootingStarType.LEVEL_6 -> 1000
-            ShootingStarType.LEVEL_5 -> 2000
-            ShootingStarType.LEVEL_4 -> 3000
-            ShootingStarType.LEVEL_3 -> 4000
-            ShootingStarType.LEVEL_2 -> 5000
-            ShootingStarType.LEVEL_1 -> 10000
-        }
-
+        val chance =
+            when (star.level) {
+                ShootingStarType.LEVEL_9 -> 250
+                ShootingStarType.LEVEL_8 -> 500
+                ShootingStarType.LEVEL_7 -> 750
+                ShootingStarType.LEVEL_6 -> 1000
+                ShootingStarType.LEVEL_5 -> 2000
+                ShootingStarType.LEVEL_4 -> 3000
+                ShootingStarType.LEVEL_3 -> 4000
+                ShootingStarType.LEVEL_2 -> 5000
+                ShootingStarType.LEVEL_1 -> 10000
+            }
     }
 
     override fun message(type: Int) {

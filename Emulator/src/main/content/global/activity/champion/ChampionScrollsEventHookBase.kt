@@ -8,9 +8,12 @@ import core.game.node.entity.Entity
 import core.game.node.entity.player.Player
 
 abstract class ChampionScrollsEventHookBase : LoginListener {
-
     protected companion object {
-        private fun <T> forEligibleEntityDo(entity: Entity, event: T, handler: (Player, T) -> Unit) {
+        private fun <T> forEligibleEntityDo(
+            entity: Entity,
+            event: T,
+            handler: (Player, T) -> Unit,
+        ) {
             if (entity !is Player) return
             if (entity.isArtificial) return
             handler(entity, event)
@@ -19,8 +22,12 @@ abstract class ChampionScrollsEventHookBase : LoginListener {
 
     class EventHandler<T : Event>(
         private val owner: ChampionScrollsEventHookBase,
-        private val handler: (Player, T) -> Unit) : EventHook<T> {
-        override fun process(entity: Entity, event: T) {
+        private val handler: (Player, T) -> Unit,
+    ) : EventHook<T> {
+        override fun process(
+            entity: Entity,
+            event: T,
+        ) {
             forEligibleEntityDo(entity, event, handler)
         }
     }
@@ -29,6 +36,8 @@ abstract class ChampionScrollsEventHookBase : LoginListener {
         player.hook(core.api.Event.NPCKilled, EventHandler(this, ::onNpcKilled))
     }
 
-    protected open fun onNpcKilled(player: Player, event: NPCKillEvent) {}
-
+    protected open fun onNpcKilled(
+        player: Player,
+        event: NPCKillEvent,
+    ) {}
 }

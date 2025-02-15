@@ -1,18 +1,19 @@
 package content.global.ame.prisonpete
 
-import org.rs.consts.*
 import core.api.*
+import core.api.MapArea
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.interaction.QueueStrength
 import core.game.world.map.Location
-import core.api.MapArea
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.map.zone.ZoneRestriction
 import core.game.world.update.flag.context.Graphics
+import org.rs.consts.*
 
-class PrisonPeteListener : InteractionListener, MapArea {
-
+class PrisonPeteListener :
+    InteractionListener,
+    MapArea {
     init {
         addScenery(4408, Location(2085, 4457, 0), 0, 22)
         addScenery(26191, Location(2083, 4460, 0), 0, 10)
@@ -64,8 +65,8 @@ class PrisonPeteListener : InteractionListener, MapArea {
                             Graphics(
                                 org.rs.consts.Graphics.WHITE_SPIKE_BALL_POPS_524,
                                 0,
-                                10
-                            )
+                                10,
+                            ),
                         )
                         playAudio(player, Sounds.POP3_3252, 5)
                         return@queueScript delayScript(player, 4)

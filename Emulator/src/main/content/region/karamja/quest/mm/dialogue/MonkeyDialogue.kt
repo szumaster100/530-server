@@ -1,12 +1,14 @@
 package content.region.karamja.quest.mm.dialogue
 
-import org.rs.consts.Quests
 import core.api.quest.setQuestStage
 import core.game.dialogue.DialogueFile
+import org.rs.consts.Quests
 
 class MonkeyDialogue : DialogueFile() {
-
-    override fun handle(componentID: Int, buttonID: Int) {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         when (stage) {
             0 -> playerl("Hello there, little money.").also { stage++ }
             1 -> npcl("Hello there!").also { stage++ }

@@ -1,7 +1,5 @@
 package content.region.misthalin.quest.losttribe
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.animate
 import core.api.face
 import core.api.quest.finishQuest
@@ -14,9 +12,12 @@ import core.game.node.entity.player.link.emote.Emotes
 import core.game.world.map.Direction
 import core.game.world.map.Location
 import core.tools.DARK_RED
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
-class LostTribeCutscene(player: Player) : Cutscene(player) {
-
+class LostTribeCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(Location.create(3207, 3217, 0))
         if (player.settings.isRunToggled) {
@@ -42,8 +43,8 @@ class LostTribeCutscene(player: Player) : Cutscene(player) {
                     player,
                     player.dialogueInterpreter.sendPlainMessage(
                         true,
-                        "$DARK_RED- The Signing of the Lumbridge-Dorgeshuun Treaty -"
-                    )
+                        "$DARK_RED- The Signing of the Lumbridge-Dorgeshuun Treaty -",
+                    ),
                 )
                 timedUpdate(2)
             }
@@ -90,7 +91,7 @@ class LostTribeCutscene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     DUKE,
                     FaceAnim.FRIENDLY,
-                    "Welcome, Ur-tag. I am sorry that your race came under suspicion."
+                    "Welcome, Ur-tag. I am sorry that your race came under suspicion.",
                 )
             }
 
@@ -100,17 +101,19 @@ class LostTribeCutscene(player: Player) : Cutscene(player) {
                 rotateCamera(6, 22)
             }
 
-            10 -> dialogueUpdate(
-                URTAG,
-                FaceAnim.OLD_NORMAL,
-                "I apologize for the damage to your cellar. I will send workers to repair the hole."
-            )
+            10 ->
+                dialogueUpdate(
+                    URTAG,
+                    FaceAnim.OLD_NORMAL,
+                    "I apologize for the damage to your cellar. I will send workers to repair the hole.",
+                )
 
-            11 -> dialogueUpdate(
-                DUKE,
-                FaceAnim.FRIENDLY,
-                "No, let it stay. It can be a route of commerce between our lands."
-            )
+            11 ->
+                dialogueUpdate(
+                    DUKE,
+                    FaceAnim.FRIENDLY,
+                    "No, let it stay. It can be a route of commerce between our lands.",
+                )
 
             12 -> {
                 val duke = getNPC(DUKE)!!
@@ -121,7 +124,7 @@ class LostTribeCutscene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     DUKE,
                     FaceAnim.FRIENDLY,
-                    "${player.username}, Lumbridge is in your debt. Please accept this ring as a token of my thanks."
+                    "${player.username}, Lumbridge is in your debt. Please accept this ring as a token of my thanks.",
                 )
             }
 
@@ -131,7 +134,7 @@ class LostTribeCutscene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     URTAG,
                     FaceAnim.OLD_NORMAL,
-                    "I too thank you. Accept the freedom of the Dorgeshuun mines."
+                    "I too thank you. Accept the freedom of the Dorgeshuun mines.",
                 )
             }
 
@@ -139,7 +142,7 @@ class LostTribeCutscene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     URTAG,
                     FaceAnim.OLD_NORMAL,
-                    "These are strange times. I never dreamed that I would see the surface, still less that I would be on friendly terms with its people."
+                    "These are strange times. I never dreamed that I would see the surface, still less that I would be on friendly terms with its people.",
                 )
                 moveCamera(16, 21, 300, 3)
                 rotateCamera(6, 22, 300, 2)

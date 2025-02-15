@@ -6,18 +6,24 @@ import it.unimi.dsi.fastutil.doubles.DoubleArrayList
 import it.unimi.dsi.fastutil.ints.IntArrayList
 import java.nio.ByteBuffer
 
-class SavedData(val player: Player) {
-
+class SavedData(
+    val player: Player,
+) {
     @JvmField
     val globalData: GlobalData = GlobalData()
+
     @JvmField
     val activityData: ActivityData = ActivityData()
+
     @JvmField
     val questData: QuestData = QuestData()
 
     companion object {
-
-        fun save(buffer: ByteBuffer, value: Any?, index: Int) {
+        fun save(
+            buffer: ByteBuffer,
+            value: Any?,
+            index: Int,
+        ) {
             if (isNonDefault(value)) {
                 buffer.put(index.toByte())
                 when (value) {

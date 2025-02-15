@@ -72,16 +72,21 @@ object BrokenItem {
 
     fun getRepair(type: EquipmentType): Item? {
         return when (type) {
-            EquipmentType.ARROWS ->    RandomFunction.rollWeightedChanceTable(brokenArrows)
-            EquipmentType.STAVES ->    RandomFunction.rollWeightedChanceTable(brokenStaves)
-            EquipmentType.SWORDS ->    RandomFunction.rollWeightedChanceTable(rustySwords)
+            EquipmentType.ARROWS -> RandomFunction.rollWeightedChanceTable(brokenArrows)
+            EquipmentType.STAVES -> RandomFunction.rollWeightedChanceTable(brokenStaves)
+            EquipmentType.SWORDS -> RandomFunction.rollWeightedChanceTable(rustySwords)
             EquipmentType.SCIMITARS -> RandomFunction.rollWeightedChanceTable(rustyScimitars)
-            EquipmentType.ARMOUR ->    RandomFunction.rollWeightedChanceTable(damagedArmour)
-            EquipmentType.LEGS ->      RandomFunction.rollWeightedChanceTable(brokenArmour)
+            EquipmentType.ARMOUR -> RandomFunction.rollWeightedChanceTable(damagedArmour)
+            EquipmentType.LEGS -> RandomFunction.rollWeightedChanceTable(brokenArmour)
         }
     }
 
     enum class EquipmentType {
-        ARROWS, STAVES, SWORDS, SCIMITARS, ARMOUR, LEGS
+        ARROWS,
+        STAVES,
+        SWORDS,
+        SCIMITARS,
+        ARMOUR,
+        LEGS,
     }
 }

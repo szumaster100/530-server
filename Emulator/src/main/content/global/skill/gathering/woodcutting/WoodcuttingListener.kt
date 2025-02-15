@@ -1,8 +1,5 @@
 package content.global.skill.gathering.woodcutting
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Sounds
 import content.data.GameAttributes
 import content.data.items.SkillingTool
 import content.data.tables.BirdNestDropTable
@@ -32,40 +29,55 @@ import core.game.system.command.sets.STATS_BASE
 import core.game.system.command.sets.STATS_LOGS
 import core.game.world.map.RegionManager
 import core.tools.RandomFunction
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Sounds
 import kotlin.streams.toList
 
 class WoodcuttingListener : InteractionListener {
-
-    private val woodcuttingSounds = intArrayOf(
-        Sounds.WOODCUTTING_HIT_3038,
-        Sounds.WOODCUTTING_HIT_3039,
-        Sounds.WOODCUTTING_HIT_3040,
-        Sounds.WOODCUTTING_HIT_3041,
-        Sounds.WOODCUTTING_HIT_3042
-    )
+    private val woodcuttingSounds =
+        intArrayOf(
+            Sounds.WOODCUTTING_HIT_3038,
+            Sounds.WOODCUTTING_HIT_3039,
+            Sounds.WOODCUTTING_HIT_3040,
+            Sounds.WOODCUTTING_HIT_3041,
+            Sounds.WOODCUTTING_HIT_3042,
+        )
 
     override fun defineListeners() {
         defineInteraction(
             IntType.SCENERY,
             ids = WoodcuttingNode.values().map { it.id }.toIntArray(),
-            "chop-down", "chop", "chop down", "cut down",
+            "chop-down",
+            "chop",
+            "chop down",
+            "cut down",
             persistent = true,
             allowedDistance = 1,
-            handler = ::handleWoodcutting
+            handler = ::handleWoodcutting,
         )
     }
 
-    private fun handleWoodcutting(player: Player, node: Node, state: Int): Boolean {
+    private fun handleWoodcutting(
+        player: Player,
+        node: Node,
+        state: Int,
+    ): Boolean {
         val resource = WoodcuttingNode.forId(node.id)
         val tool = SkillingTool.getHatchet(player)
 
-        if (!finishedMoving(player))
+        if (!finishedMoving(player)) {
             return restartScript(player)
+        }
 
         if (state == 0) {
             if (getAttribute(player, GameAttributes.TUTORIAL_STAGE, -1) < 4) {
                 if (resource == WoodcuttingNode.STANDARD_TREE_10) {
-                    sendNPCDialogue(player, NPCs.SURVIVAL_EXPERT_943, "I admire your enthusiasm, but let's first have a quick chat.")
+                    sendNPCDialogue(
+                        player,
+                        NPCs.SURVIVAL_EXPERT_943,
+                        "I admire your enthusiasm, but let's first have a quick chat.",
+                    )
                 }
                 return clearScripts(player)
             }
@@ -78,16 +90,19 @@ class WoodcuttingListener : InteractionListener {
 
         if (clockReady(player, Clocks.SKILLING)) {
             animateWoodcutting(player)
-            if (!checkReward(player, resource!!, tool!!))
+            if (!checkReward(player, resource!!, tool!!)) {
                 return delayClock(player, Clocks.SKILLING, 3)
+            }
 
             val reward = resource.reward
             val rewardAmount: Int
 
             if (tool.id == Items.INFERNO_ADZE_13661 && RandomFunction.roll(4)) {
                 sendMessage(player, "You chop some logs. The heat of the inferno adze incinerates them.")
-                Projectile.create(player, null, 1776, 35, 30, 20, 25)
-                    .transform(player, player.location.transform(2, 0, 0), true, 25, 25).send()
+                Projectile
+                    .create(player, null, 1776, 35, 30, 20, 25)
+                    .transform(player, player.location.transform(2, 0, 0), true, 25, 25)
+                    .send()
 
                 player.getSkills().addExperience(Skills.WOODCUTTING, resource.experience)
 
@@ -101,7 +116,6 @@ class WoodcuttingListener : InteractionListener {
             }
 
             if (reward > 0) {
-
                 rewardAmount = calculateRewardAmount(player, reward)
 
                 val experience: Double = calculateExperience(player, resource, rewardAmount)
@@ -116,7 +130,9 @@ class WoodcuttingListener : InteractionListener {
                 if (resource == WoodcuttingNode.DRAMEN_TREE) {
                     player.packetDispatch.sendMessage("You cut a branch from the Dramen tree.")
                 } else {
-                    player.packetDispatch.sendMessage("You get some " + ItemDefinition.forId(reward).name.lowercase() + ".")
+                    player.packetDispatch.sendMessage(
+                        "You get some " + ItemDefinition.forId(reward).name.lowercase() + ".",
+                    )
                 }
 
                 player.inventory.add(Item(reward, rewardAmount))
@@ -141,8 +157,11 @@ class WoodcuttingListener : InteractionListener {
         return keepRunning(player)
     }
 
-    private fun rollDepletion(player: Player, node: Scenery, resource: WoodcuttingNode): Boolean {
-
+    private fun rollDepletion(
+        player: Player,
+        node: Scenery,
+        resource: WoodcuttingNode,
+    ): Boolean {
         if (resource.respawnRate > 0) {
             if (RandomFunction.roll(8) || listOf(1, 2, 3, 4, 6, 19).contains(resource.identifier.toInt())) {
                 if (resource.isFarming) {
@@ -166,7 +185,11 @@ class WoodcuttingListener : InteractionListener {
         return false
     }
 
-    private fun checkReward(player: Player, resource: WoodcuttingNode, tool: SkillingTool): Boolean {
+    private fun checkReward(
+        player: Player,
+        resource: WoodcuttingNode,
+        tool: SkillingTool,
+    ): Boolean {
         val skill = Skills.WOODCUTTING
         val level: Int = player.getSkills().getLevel(skill) + player.familiarManager.getBoost(skill)
         val hostRatio = RandomFunction.randomDouble(100.0)
@@ -181,10 +204,12 @@ class WoodcuttingListener : InteractionListener {
     fun animateWoodcutting(player: Player) {
         if (!player.animator.isAnimating) {
             animate(player, SkillingTool.getHatchet(player)!!.animation)
-            val playersAroundMe: List<Player> = RegionManager.getLocalPlayers(player, 2)
-                .stream()
-                .filter { p: Player -> p.username != player.username }
-                .toList()
+            val playersAroundMe: List<Player> =
+                RegionManager
+                    .getLocalPlayers(player, 2)
+                    .stream()
+                    .filter { p: Player -> p.username != player.username }
+                    .toList()
             val soundIndex = RandomFunction.random(0, woodcuttingSounds.size)
             for (p in playersAroundMe) {
                 playAudio(p, woodcuttingSounds[soundIndex])
@@ -192,7 +217,11 @@ class WoodcuttingListener : InteractionListener {
         }
     }
 
-    fun checkWoodcuttingRequirements(player: Player, resource: WoodcuttingNode, node: Node): Boolean {
+    fun checkWoodcuttingRequirements(
+        player: Player,
+        resource: WoodcuttingNode,
+        node: Node,
+    ): Boolean {
         var regionId = player.location.regionId
         if (regionId == 10300 || regionId == 10044) {
             var npc = if (regionId == 10300) NPCs.CARPENTER_KJALLAK_3916 else NPCs.LUMBERJACK_LEIF_1395
@@ -200,7 +229,9 @@ class WoodcuttingListener : InteractionListener {
             return false
         }
         if (player.getSkills().getLevel(Skills.WOODCUTTING) < resource.level) {
-            player.packetDispatch.sendMessage("You need a woodcutting level of " + resource.level + " to chop this tree.")
+            player.packetDispatch.sendMessage(
+                "You need a woodcutting level of " + resource.level + " to chop this tree.",
+            )
             return false
         }
         if (SkillingTool.getHatchet(player) == null) {
@@ -210,32 +241,47 @@ class WoodcuttingListener : InteractionListener {
         if (player.inventory.freeSlots() < 1 && node.isActive) {
             sendMessage(
                 player,
-                "Your inventory is too full to hold any more " + ItemDefinition.forId(resource.reward).name.lowercase() + "."
+                "Your inventory is too full to hold any more " +
+                    ItemDefinition
+                        .forId(
+                            resource.reward,
+                        ).name
+                        .lowercase() +
+                    ".",
             )
             return false
         }
         return node.isActive
     }
 
-    private fun calculateRewardAmount(player: Player, reward: Int): Int {
+    private fun calculateRewardAmount(
+        player: Player,
+        reward: Int,
+    ): Int {
         var amount = 1
 
         if (reward == 3239 && RandomFunction.random(100) >= 10) {
             amount = 0
         }
 
-        if (reward == 1511 && isDiaryComplete(
+        if (reward == 1511 &&
+            isDiaryComplete(
                 player,
                 DiaryType.SEERS_VILLAGE,
-                1
-            ) && player.viewport.region.id == 10806
+                1,
+            ) &&
+            player.viewport.region.id == 10806
         ) {
             amount = 2
         }
         return amount
     }
 
-    private fun calculateExperience(player: Player, resource: WoodcuttingNode, amount: Int): Double {
+    private fun calculateExperience(
+        player: Player,
+        resource: WoodcuttingNode,
+        amount: Int,
+    ): Double {
         var amount = amount
         var experience: Double = resource.experience
         val reward = resource.reward
@@ -244,7 +290,6 @@ class WoodcuttingListener : InteractionListener {
         }
 
         if (reward == 3239) {
-
             if (amount >= 1) {
                 experience = 275.2
             } else {
@@ -252,10 +297,15 @@ class WoodcuttingListener : InteractionListener {
             }
         }
 
-        if (reward == 1517 && player.achievementDiaryManager.getDiary(DiaryType.SEERS_VILLAGE)!!
-                .isComplete(1) && player.equipment.get(EquipmentContainer.SLOT_HAT) != null && player.equipment.get(
-                EquipmentContainer.SLOT_HAT
-            ).id == Items.SEERS_HEADBAND_1_14631
+        if (reward == 1517 &&
+            player.achievementDiaryManager
+                .getDiary(DiaryType.SEERS_VILLAGE)!!
+                .isComplete(1) &&
+            player.equipment.get(EquipmentContainer.SLOT_HAT) != null &&
+            player.equipment
+                .get(
+                    EquipmentContainer.SLOT_HAT,
+                ).id == Items.SEERS_HEADBAND_1_14631
         ) {
             experience *= 1.10
         }

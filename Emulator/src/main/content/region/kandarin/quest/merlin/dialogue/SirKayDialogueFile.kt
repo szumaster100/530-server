@@ -1,8 +1,5 @@
 package content.region.kandarin.quest.merlin.dialogue
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.quest.getQuestStage
 import core.api.removeItem
 import core.api.sendItemDialogue
@@ -12,16 +9,21 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.link.diary.Diary
 import core.game.node.entity.player.link.diary.DiaryType
 import core.tools.END_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 class SirKayDialogueFile : DialogueFile() {
-
     var STAGE_NOT_STARTED_MERLIN = 4
     var STAGE_UNFORTUNATELY_NOT = 5
     var STAGE_GET_MERLIN_OUT = 10
     var STAGE_MORDRED = 6
     var diaryLevel = 2
 
-    override fun handle(componentID: Int, buttonID: Int) {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         npc = NPC(NPCs.SIR_KAY_241)
 
         when (stage) {
@@ -42,7 +44,10 @@ class SirKayDialogueFile : DialogueFile() {
                         player("Can you remind me what my headband does?")
                         stage = 40
                     } else if (Diary.canClaimLevelRewards(player!!, DiaryType.SEERS_VILLAGE, diaryLevel)) {
-                        player("Greetings, Sir Kay. I have completed all of the Hard", "tasks in my Achievement Diary. May I have a reward?")
+                        player(
+                            "Greetings, Sir Kay. I have completed all of the Hard",
+                            "tasks in my Achievement Diary. May I have a reward?",
+                        )
                         stage = 45
                     } else {
                         playerl(FaceAnim.NEUTRAL, "Hi! Can you help me out with the Achievement Diary tasks?")
@@ -58,12 +63,16 @@ class SirKayDialogueFile : DialogueFile() {
 
             3 -> {
                 if (getQuestStage(player!!, Quests.MERLINS_CRYSTAL) == 0) {
-                    playerl(FaceAnim.NEUTRAL, "Morning. Know where an adventurer has to go to find a quest around here?")
+                    playerl(
+                        FaceAnim.NEUTRAL,
+                        "Morning. Know where an adventurer has to go to find a quest around here?",
+                    )
                     stage = STAGE_NOT_STARTED_MERLIN
                 } else if (getQuestStage(player!!, Quests.MERLINS_CRYSTAL) == 10) {
                     playerl(FaceAnim.NEUTRAL, "Any ideas on getting Merlin out of that crystal?")
                     stage = STAGE_GET_MERLIN_OUT
-                } else if (getQuestStage(player!!, Quests.MERLINS_CRYSTAL) == 20 || getQuestStage(player!!, Quests.MERLINS_CRYSTAL) == 30
+                } else if (getQuestStage(player!!, Quests.MERLINS_CRYSTAL) == 20 ||
+                    getQuestStage(player!!, Quests.MERLINS_CRYSTAL) == 30
                 ) {
                     playerl(FaceAnim.NEUTRAL, "Any ideas on getting into Mordred's fort?")
                     stage = STAGE_MORDRED
@@ -74,7 +83,10 @@ class SirKayDialogueFile : DialogueFile() {
             }
 
             STAGE_NOT_STARTED_MERLIN -> {
-                npcl(FaceAnim.NEUTRAL, "An adventurer eh? There is no service finer than serving the bountiful King Arthur, and I happen to know there's an important quest to fulfill.")
+                npcl(
+                    FaceAnim.NEUTRAL,
+                    "An adventurer eh? There is no service finer than serving the bountiful King Arthur, and I happen to know there's an important quest to fulfill.",
+                )
                 stage = END_DIALOGUE
             }
 
@@ -94,7 +106,10 @@ class SirKayDialogueFile : DialogueFile() {
             }
 
             8 -> {
-                npcl(FaceAnim.NEUTRAL, "I think you may be on to something there. Unfortunately his fortress is impregnable!")
+                npcl(
+                    FaceAnim.NEUTRAL,
+                    "I think you may be on to something there. Unfortunately his fortress is impregnable!",
+                )
                 stage++
             }
 
@@ -115,7 +130,10 @@ class SirKayDialogueFile : DialogueFile() {
             }
 
             40 -> {
-                npcl(FaceAnim.NEUTRAL, "Your headband will help you get experience when woodcutting maple trees, and an extra log or two when cutting normal trees. I've also told Geoff to increase")
+                npcl(
+                    FaceAnim.NEUTRAL,
+                    "Your headband will help you get experience when woodcutting maple trees, and an extra log or two when cutting normal trees. I've also told Geoff to increase",
+                )
                 stage++
             }
 
@@ -125,7 +143,11 @@ class SirKayDialogueFile : DialogueFile() {
             }
 
             45 -> {
-                npcl(FaceAnim.NEUTRAL, "Well done, young " + (if (player!!.isMale) "sir" else "madam") + ". You must be a mighty adventurer indeed to have completed the Hard tasks.")
+                npcl(
+                    FaceAnim.NEUTRAL,
+                    "Well done, young " + (if (player!!.isMale) "sir" else "madam") +
+                        ". You must be a mighty adventurer indeed to have completed the Hard tasks.",
+                )
                 stage++
             }
 
@@ -135,13 +157,20 @@ class SirKayDialogueFile : DialogueFile() {
                     stage = END_DIALOGUE
                 } else {
                     Diary.flagRewarded(player!!, DiaryType.SEERS_VILLAGE, diaryLevel)
-                    sendItemDialogue(player!!, Items.SEERS_HEADBAND_1_14631, "You hand Sir Kay your headband and he concentrates for a moment. Some mysterious knightly energy passes through his hands and he gives the headband back to you, along with an old lamp.")
+                    sendItemDialogue(
+                        player!!,
+                        Items.SEERS_HEADBAND_1_14631,
+                        "You hand Sir Kay your headband and he concentrates for a moment. Some mysterious knightly energy passes through his hands and he gives the headband back to you, along with an old lamp.",
+                    )
                     stage++
                 }
             }
 
             47 -> {
-                npcl(FaceAnim.NEUTRAL, "You will find that your headband now blesses you with the power to spin fabrics at extreme speed in Seers' Village. I will also instruct Geoff-erm-Flax to offer you a far larger flax allowance. Use your new powers")
+                npcl(
+                    FaceAnim.NEUTRAL,
+                    "You will find that your headband now blesses you with the power to spin fabrics at extreme speed in Seers' Village. I will also instruct Geoff-erm-Flax to offer you a far larger flax allowance. Use your new powers",
+                )
                 stage++
             }
 
@@ -156,12 +185,18 @@ class SirKayDialogueFile : DialogueFile() {
             }
 
             50 -> {
-                npcl(FaceAnim.NEUTRAL, "You are most welcome. You may also find that the Lady of the Lake is prepared to reward you for your services if you wear the headband in her presence.")
+                npcl(
+                    FaceAnim.NEUTRAL,
+                    "You are most welcome. You may also find that the Lady of the Lake is prepared to reward you for your services if you wear the headband in her presence.",
+                )
                 stage = END_DIALOGUE
             }
 
             60 -> {
-                npcl(FaceAnim.NEUTRAL, "I'm afraid not. It is important that adventurers complete the tasks unaided. That way, only the truly worthy collect the spoils.")
+                npcl(
+                    FaceAnim.NEUTRAL,
+                    "I'm afraid not. It is important that adventurers complete the tasks unaided. That way, only the truly worthy collect the spoils.",
+                )
                 stage = END_DIALOGUE
             }
         }

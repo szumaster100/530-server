@@ -1,20 +1,23 @@
 package content.global.skill.slayer
 
-import org.rs.consts.Items
 import content.global.handlers.item.equipment.gloves.FOGGlovesListener
 import core.api.*
+import core.api.Event
 import core.cache.def.impl.NPCDefinition
 import core.game.event.EventHook
-import core.api.Event
 import core.game.event.NPCKillEvent
 import core.game.node.entity.Entity
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
+import org.rs.consts.Items
 
-class SlayerManager(val player: Player? = null) : LoginListener, PersistPlayer, EventHook<NPCKillEvent> {
-
+class SlayerManager(
+    val player: Player? = null,
+) : LoginListener,
+    PersistPlayer,
+    EventHook<NPCKillEvent> {
     override fun login(player: Player) {
         val instance = SlayerManager(player)
         player.hook(Event.NPCKilled, instance)
@@ -24,7 +27,10 @@ class SlayerManager(val player: Player? = null) : LoginListener, PersistPlayer, 
     @JvmField
     val flags: SlayerFlags = SlayerFlags()
 
-    override fun savePlayer(player: Player, save: JSONObject) {
+    override fun savePlayer(
+        player: Player,
+        save: JSONObject,
+    ) {
         val slayer = JSONObject()
         val slayerManager = getInstance(player)
         if (slayerManager.removed.isNotEmpty()) {
@@ -42,7 +48,10 @@ class SlayerManager(val player: Player? = null) : LoginListener, PersistPlayer, 
         save["slayer"] = slayer
     }
 
-    override fun parsePlayer(player: Player, data: JSONObject) {
+    override fun parsePlayer(
+        player: Player,
+        data: JSONObject,
+    ) {
         val slayerData = data["slayer"] as JSONObject
         val m = slayerData["master"]
         val flags = getInstance(player).flags
@@ -84,13 +93,18 @@ class SlayerManager(val player: Player? = null) : LoginListener, PersistPlayer, 
         flags.completedTasks = completedTasks.toString().toInt()
         if (flags.completedTasks >= 4) flags.flagCanEarnPoints()
 
-        if (slayerData.containsKey("equipmentFlags")) flags.equipmentFlags =
-            slayerData["equipmentFlags"].toString().toInt()
+        if (slayerData.containsKey("equipmentFlags")) {
+            flags.equipmentFlags =
+                slayerData["equipmentFlags"].toString().toInt()
+        }
         if (slayerData.containsKey("taskFlags")) flags.taskFlags = slayerData["taskFlags"].toString().toInt()
         if (slayerData.containsKey("rewardFlags")) flags.rewardFlags = slayerData["rewardFlags"].toString().toInt()
     }
 
-    override fun process(entity: Entity, event: NPCKillEvent) {
+    override fun process(
+        entity: Entity,
+        event: NPCKillEvent,
+    ) {
         val npc = event.npc
         val player = entity as? Player ?: return
         val slayer = getInstance(player)
@@ -107,7 +121,10 @@ class SlayerManager(val player: Player? = null) : LoginListener, PersistPlayer, 
             if (slayer.hasTask()) return
             flags.taskStreak = flags.taskStreak + 1
             flags.completedTasks = flags.completedTasks + 1
-            if ((flags.completedTasks > 4 || flags.canEarnPoints()) && flags.getMaster() != SlayerMaster.TURAEL && flags.getPoints() < 64000) {
+            if ((flags.completedTasks > 4 || flags.canEarnPoints()) &&
+                flags.getMaster() != SlayerMaster.TURAEL &&
+                flags.getPoints() < 64000
+            ) {
                 var points = flags.getMaster().taskPoints[0]
                 if (flags.taskStreak % 50 == 0) {
                     points = flags.getMaster().taskPoints[2]
@@ -119,8 +136,10 @@ class SlayerManager(val player: Player? = null) : LoginListener, PersistPlayer, 
                     flags.setPoints(64000)
                 }
                 player.sendMessages(
-                    "You've completed " + flags.taskStreak + " tasks in a row and received " + points + " points, with a total of " + flags.getPoints(),
-                    "You have completed " + flags.completedTasks + " tasks in total. Return to a Slayer master."
+                    "You've completed " + flags.taskStreak + " tasks in a row and received " + points +
+                        " points, with a total of " +
+                        flags.getPoints(),
+                    "You have completed " + flags.completedTasks + " tasks in total. Return to a Slayer master.",
                 )
             } else if (flags.completedTasks == 4) {
                 sendMessage(player, "You've completed your task; you will start gaining points on your next task!")
@@ -128,12 +147,13 @@ class SlayerManager(val player: Player? = null) : LoginListener, PersistPlayer, 
             } else if (flags.getMaster() == SlayerMaster.TURAEL) {
                 player.sendMessages(
                     "You've completed your task; Tasks from Turael do not award points.",
-                    "Return to a Slayer master."
+                    "Return to a Slayer master.",
                 )
             } else {
                 player.sendMessages(
-                    "You've completed your task; Complete " + (4 - flags.completedTasks) + " more task(s) to start gaining points.",
-                    "Return to a Slayer master."
+                    "You've completed your task; Complete " + (4 - flags.completedTasks) +
+                        " more task(s) to start gaining points.",
+                    "Return to a Slayer master.",
                 )
             }
         }
@@ -156,7 +176,9 @@ class SlayerManager(val player: Player? = null) : LoginListener, PersistPlayer, 
             }
             return if (task.npcs.isEmpty()) {
                 "npc length too small report me"
-            } else NPCDefinition.forId(task.npcs[0]).name.lowercase()
+            } else {
+                NPCDefinition.forId(task.npcs[0]).name.lowercase()
+            }
         }
 
     var task: Tasks?
@@ -217,7 +239,7 @@ class SlayerManager(val player: Player? = null) : LoginListener, PersistPlayer, 
             return getAttribute(
                 player,
                 "slayer-manager",
-                SlayerManager()
+                SlayerManager(),
             )
         }
     }

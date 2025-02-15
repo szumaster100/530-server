@@ -1,6 +1,5 @@
 package content.minigame.puropuro
 
-import org.rs.consts.Sounds
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
@@ -8,9 +7,11 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.TeleportManager.TeleportType
 import core.game.node.scenery.Scenery
 import core.game.world.map.Location
+import org.rs.consts.Sounds
 
-class CropCircleController : TickListener, InteractionListener {
-
+class CropCircleController :
+    TickListener,
+    InteractionListener {
     override fun tick() {
         if (getWorldTicks() < nextCircle) return
         deconstructOldCircle()
@@ -23,12 +24,11 @@ class CropCircleController : TickListener, InteractionListener {
     }
 
     override fun defineListeners() {
-
         on(center, IntType.SCENERY, "enter") { player, _ ->
             if (hasImpBox(player)) {
                 sendDialogue(
                     player,
-                    "Something prevents you from entering. You think the portal is offended by your imp box. They are not popular on imp and impling planes."
+                    "Something prevents you from entering. You think the portal is offended by your imp box. They are not popular on imp and impling planes.",
                 )
                 return@on true
             }
@@ -47,7 +47,6 @@ class CropCircleController : TickListener, InteractionListener {
     }
 
     private fun constructCircle(location: Location) {
-
         activeSceneries.add(addScenery(center, location, rotation = 0, type = 10))
 
         for ((index, tile) in location.surroundingTiles.withIndex()) {
@@ -56,29 +55,28 @@ class CropCircleController : TickListener, InteractionListener {
     }
 
     private fun deconstructOldCircle() {
-
         for (scenery in activeSceneries) removeScenery(scenery)
         activeSceneries.clear()
     }
 
     private fun hasImpBox(player: Player): Boolean {
-
         return inInventory(player, 10025) || inInventory(player, 10027) || inInventory(player, 10028)
     }
 
     companion object {
         var currentLocName = ""
         val exitLocation = "/save:puro-exit"
-        val possibleLocations = arrayOf(
-            Pair("Doric's Hut", Location.create(2953, 3444, 0)),
-            Pair("Yanille", Location.create(2583, 3104, 0)),
-            Pair("Draynor", Location.create(3113, 3274, 0)),
-            Pair("Rimmington", Location.create(2978, 3216, 0)),
-            Pair("The Grand Exchange", Location.create(3141, 3461, 0)),
-            Pair("Northern Lumbridge", Location.create(3160, 3296, 0)),
-            Pair("Southern Varrock", Location.create(3218, 3348, 0)),
-            Pair("Northern Ardougne", Location.create(2644, 3350, 0))
-        )
+        val possibleLocations =
+            arrayOf(
+                Pair("Doric's Hut", Location.create(2953, 3444, 0)),
+                Pair("Yanille", Location.create(2583, 3104, 0)),
+                Pair("Draynor", Location.create(3113, 3274, 0)),
+                Pair("Rimmington", Location.create(2978, 3216, 0)),
+                Pair("The Grand Exchange", Location.create(3141, 3461, 0)),
+                Pair("Northern Lumbridge", Location.create(3160, 3296, 0)),
+                Pair("Southern Varrock", Location.create(3218, 3348, 0)),
+                Pair("Northern Ardougne", Location.create(2644, 3350, 0)),
+            )
         val activeSceneries = ArrayList<Scenery>()
         val surrounding = arrayOf(24984, 24985, 24986, 24987)
         val center = 24991

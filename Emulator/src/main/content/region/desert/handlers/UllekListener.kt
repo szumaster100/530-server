@@ -1,6 +1,5 @@
 package content.region.desert.handlers
 
-import org.rs.consts.Animations
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
@@ -8,11 +7,10 @@ import core.game.interaction.QueueStrength
 import core.game.node.scenery.Scenery
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
 
 class UllekListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(org.rs.consts.Scenery.STAIRS_DOWN_28481, IntType.SCENERY, "enter") { player, _ ->
             player.properties.teleportLocation = Location.create(3448, 9252, 1)
             return@on true

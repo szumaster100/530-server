@@ -1,16 +1,17 @@
 package content.minigame.fistofguthix.dialogue
 
-import org.rs.consts.NPCs
 import core.game.component.Component
 import core.game.dialogue.Dialogue
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.game.world.GameWorld
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
-class ReggieDialogue(player: Player? = null) : Dialogue(player) {
-
+class ReggieDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         if (GameWorld.settings?.allow_token_purchase == true) {
             options("Can I see your shop?", "Nevermind.", "Can I buy some tokens?")
@@ -20,14 +21,18 @@ class ReggieDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         var buyAmount = 0
         when (stage) {
-            0 -> when (buttonId) {
-                1 -> npc("Certainly!").also { stage++ }
-                2 -> end()
-                3 -> npc("Sure thing. My tokens are 1000 coins", "each.").also { stage = 10 }
-            }
+            0 ->
+                when (buttonId) {
+                    1 -> npc("Certainly!").also { stage++ }
+                    2 -> end()
+                    3 -> npc("Sure thing. My tokens are 1000 coins", "each.").also { stage = 10 }
+                }
 
             1 -> end().also { player.interfaceManager.open(Component(732)) }
 
@@ -58,4 +63,3 @@ class ReggieDialogue(player: Player? = null) : Dialogue(player) {
         return intArrayOf(NPCs.REGGIE_7601)
     }
 }
-

@@ -1,15 +1,14 @@
 package content.global.ame.sandwichlady
 
-import org.rs.consts.Components
-import org.rs.consts.Items
 import content.data.GameAttributes
 import core.api.setAttribute
 import core.game.interaction.InterfaceListener
 import core.game.node.item.Item
 import core.game.system.timer.impl.AntiMacro
+import org.rs.consts.Components
+import org.rs.consts.Items
 
 class SandwichLadyInterface : InterfaceListener {
-
     val SANDWICH_INTERFACE = Components.MACRO_SANDWICH_TRAY_297
     val baguette = Items.BAGUETTE_6961
     val triangle_sandwich = Items.TRIANGLE_SANDWICH_6962
@@ -26,16 +25,17 @@ class SandwichLadyInterface : InterfaceListener {
                 player.interfaceManager.close()
                 return@on true
             }
-            val item = when (buttonID) {
-                7 -> Item(baguette)
-                8 -> Item(triangle_sandwich)
-                9 -> Item(sandwich)
-                10 -> Item(roll)
-                11 -> Item(pie)
-                12 -> Item(kebab)
-                13 -> Item(chocobar)
-                else -> Item(baguette)
-            }
+            val item =
+                when (buttonID) {
+                    7 -> Item(baguette)
+                    8 -> Item(triangle_sandwich)
+                    9 -> Item(sandwich)
+                    10 -> Item(roll)
+                    11 -> Item(pie)
+                    12 -> Item(kebab)
+                    13 -> Item(chocobar)
+                    else -> Item(baguette)
+                }
 
             setAttribute(player, GameAttributes.S_LADY_ITEM_VALUE, item.id)
             player.interfaceManager.close()

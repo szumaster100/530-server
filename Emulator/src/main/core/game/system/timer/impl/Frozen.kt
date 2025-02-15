@@ -8,19 +8,26 @@ import core.game.system.timer.RSTimer
 import core.game.system.timer.TimerFlag
 import org.json.simple.JSONObject
 
-class Frozen : PersistTimer(
-    runInterval = 1,
-    identifier = "frozen",
-    flags = arrayOf(TimerFlag.ClearOnDeath)
-) {
+class Frozen :
+    PersistTimer(
+        runInterval = 1,
+        identifier = "frozen",
+        flags = arrayOf(TimerFlag.ClearOnDeath),
+    ) {
     var shouldApplyImmunity = false
 
-    override fun save(root: JSONObject, entity: Entity) {
+    override fun save(
+        root: JSONObject,
+        entity: Entity,
+    ) {
         root["ticksLeft"] = (nextExecution - getWorldTicks()).toString()
         root["applyImmunity"] = shouldApplyImmunity
     }
 
-    override fun parse(root: JSONObject, entity: Entity) {
+    override fun parse(
+        root: JSONObject,
+        entity: Entity,
+    ) {
         runInterval = root["ticksLeft"].toString().toInt()
         shouldApplyImmunity = root["applyImmunity"] as? Boolean ?: false
     }
@@ -39,7 +46,9 @@ class Frozen : PersistTimer(
     override fun run(entity: Entity): Boolean {
         if (shouldApplyImmunity) {
             registerTimer(entity, spawnTimer<FrozenImmunity>(7))
-        } else (entity as? Player)?.debug("Can't apply immunity")
+        } else {
+            (entity as? Player)?.debug("Can't apply immunity")
+        }
         return false
     }
 

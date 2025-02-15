@@ -16,7 +16,11 @@ import org.rs.consts.Items
  * @param restriction The [IronmanMode] that restricts access to the action.
  * @param action The action to execute if the restriction is not applied.
  */
-fun restrictForIronman(player: Player, restriction: IronmanMode, action: () -> Unit) {
+fun restrictForIronman(
+    player: Player,
+    restriction: IronmanMode,
+    action: () -> Unit,
+) {
     if (!player.ironmanManager.checkRestriction(restriction)) {
         action()
     }
@@ -106,7 +110,10 @@ fun toggleBankAccount(player: Player) {
  * @param invert If true, inverts the result between primary and secondary.
  * @return The name of the player's bank account ("primary" or "secondary").
  */
-fun getBankAccountName(player: Player, invert: Boolean = false): String {
+fun getBankAccountName(
+    player: Player,
+    invert: Boolean = false,
+): String {
     return if (isUsingSecondaryBankAccount(player)) {
         if (invert) "primary" else "secondary"
     } else {
@@ -138,17 +145,19 @@ fun activateSecondaryBankAccount(player: Player): SecondaryBankAccountActivation
         return SecondaryBankAccountActivationResult.NOT_ENOUGH_MONEY
     }
 
-    val operationResult = if (cost > coinsInInventory) {
-        val amountToTakeFromBank = cost - coinsInInventory
+    val operationResult =
+        if (cost > coinsInInventory) {
+            val amountToTakeFromBank = cost - coinsInInventory
 
-        removeItem(player, Item(Items.COINS_995, coinsInInventory), Container.INVENTORY) && removeItem(
-            player,
-            Item(Items.COINS_995, amountToTakeFromBank),
-            Container.BANK
-        )
-    } else {
-        removeItem(player, Item(Items.COINS_995, cost))
-    }
+            removeItem(player, Item(Items.COINS_995, coinsInInventory), Container.INVENTORY) &&
+                removeItem(
+                    player,
+                    Item(Items.COINS_995, amountToTakeFromBank),
+                    Container.BANK,
+                )
+        } else {
+            removeItem(player, Item(Items.COINS_995, cost))
+        }
 
     return if (operationResult) {
         setAttribute(player, "/save:UnlockedSecondaryBank", true)
@@ -188,9 +197,8 @@ enum class SecondaryBankAccountActivationResult {
     /**
      * An internal failure occurred during the activation process.
      */
-    INTERNAL_FAILURE
+    INTERNAL_FAILURE,
 }
-
 
 /**
  * Checks if the player has activated their secondary bank account.

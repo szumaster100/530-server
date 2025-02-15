@@ -1,19 +1,20 @@
 package content.region.kandarin.dialogue.monastery
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.kandarin.quest.drunkmonk.dialogue.BrotherOmadDialogueFile
-import core.api.quest.getQuestStage
 import core.api.openDialogue
+import core.api.quest.getQuestStage
 import core.api.sendDialogue
 import core.game.dialogue.Dialogue
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class BrotherOmadDialogue(player: Player? = null) : Dialogue(player) {
-
+class BrotherOmadDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         if (getQuestStage(player, Quests.MONKS_FRIEND) in 0..100) {
@@ -26,7 +27,10 @@ class BrotherOmadDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> end()
         }

@@ -1,11 +1,10 @@
 package content.global.handlers.iface
 
-import org.rs.consts.Components
 import core.api.sendMessage
 import core.game.interaction.InterfaceListener
+import org.rs.consts.Components
 
 class SummoningTabInterface : InterfaceListener {
-
     override fun defineInterfaceListeners() {
         on(Components.LORE_STATS_SIDE_662) { player, _, opcode, buttonID, _, _ ->
             when (buttonID) {
@@ -19,13 +18,14 @@ class SummoningTabInterface : InterfaceListener {
 
                 67 -> {
                     if (player.familiarManager.hasFamiliar()) {
-                        if (player.familiarManager.familiar.isInvisible || !player.familiarManager.familiar.location.withinDistance(
-                                player.location
+                        if (player.familiarManager.familiar.isInvisible ||
+                            !player.familiarManager.familiar.location.withinDistance(
+                                player.location,
                             )
                         ) {
                             sendMessage(
                                 player,
-                                "Your familiar is too far away to use that Scroll, or it cannot see you."
+                                "Your familiar is too far away to use that Scroll, or it cannot see you.",
                             )
                             return@on true
                         }
@@ -64,7 +64,8 @@ class SummoningTabInterface : InterfaceListener {
                 else -> {
                     if (player.familiarManager.hasFamiliar()) {
                         player.familiarManager.familiar.executeSpecialMove(
-                            content.global.skill.summoning.familiar.FamiliarSpecial(player)
+                            content.global.skill.summoning.familiar
+                                .FamiliarSpecial(player),
                         )
                     } else {
                         sendMessage(player, "You don't have a follower.")

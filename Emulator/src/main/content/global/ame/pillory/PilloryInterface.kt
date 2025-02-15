@@ -1,6 +1,5 @@
 package content.global.ame.pillory
 
-import org.rs.consts.Scenery
 import core.api.openInterface
 import core.api.sendMessage
 import core.api.sendPlainDialogue
@@ -8,9 +7,11 @@ import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.interaction.InterfaceListener
 import core.tools.DARK_RED
+import org.rs.consts.Scenery
 
-class PilloryInterface : InterfaceListener, InteractionListener {
-
+class PilloryInterface :
+    InterfaceListener,
+    InteractionListener {
     override fun defineInterfaceListeners() {
         on(PilloryUtils.INTERFACE) { player, _, _, buttonID, _, _ ->
             when (buttonID) {
@@ -31,7 +32,13 @@ class PilloryInterface : InterfaceListener, InteractionListener {
             if (player.location in PilloryUtils.LOCATIONS) {
                 PilloryUtils.randomPillory(player)
                 openInterface(player, PilloryUtils.INTERFACE)
-                sendPlainDialogue(player, true, "", "Pick the$DARK_RED swinging key</col> that matches the", "hole in the$DARK_RED spinning lock</col>.")
+                sendPlainDialogue(
+                    player,
+                    true,
+                    "",
+                    "Pick the$DARK_RED swinging key</col> that matches the",
+                    "hole in the$DARK_RED spinning lock</col>.",
+                )
             } else {
                 sendMessage(player, "You can't unlock the pillory, you'll let all the prisoners out!")
             }

@@ -1,7 +1,5 @@
 package content.region.misthalin.quest.rag
 
-import org.rs.consts.Items
-import org.rs.consts.Quests
 import content.region.misthalin.quest.rag.handlers.BoneBoiler
 import core.api.getAttribute
 import core.api.inInventory
@@ -11,6 +9,8 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.Quests
 
 @Initializable
 class RagAndBoneMan : Quest(Quests.RAG_AND_BONE_MAN, 100, 99, 2, 714, 0, 1, 4) {
@@ -24,19 +24,23 @@ class RagAndBoneMan : Quest(Quests.RAG_AND_BONE_MAN, 100, 99, 2, 714, 0, 1, 4) {
         const val attributeGiantRatBone = "/save:quest:rag_giantratbonesubmit"
         const val attributeGiantBatBone = "/save:quest:rag_giantbatbonesubmit"
 
-        val requiredBonesMap = mapOf(
-            Items.GOBLIN_SKULL_7814 to attributeGoblinBone,
-            Items.BEAR_RIBS_7817 to attributeBearBone,
-            Items.BIG_FROG_LEG_7910 to attributeBigFrogBone,
-            Items.RAM_SKULL_7820 to attributeRamBone,
-            Items.UNICORN_BONE_7823 to attributeUnicornBone,
-            Items.MONKEY_PAW_7856 to attributeMonkeyBone,
-            Items.GIANT_RAT_BONE_7826 to attributeGiantRatBone,
-            Items.GIANT_BAT_WING_7829 to attributeGiantBatBone
-        )
+        val requiredBonesMap =
+            mapOf(
+                Items.GOBLIN_SKULL_7814 to attributeGoblinBone,
+                Items.BEAR_RIBS_7817 to attributeBearBone,
+                Items.BIG_FROG_LEG_7910 to attributeBigFrogBone,
+                Items.RAM_SKULL_7820 to attributeRamBone,
+                Items.UNICORN_BONE_7823 to attributeUnicornBone,
+                Items.MONKEY_PAW_7856 to attributeMonkeyBone,
+                Items.GIANT_RAT_BONE_7826 to attributeGiantRatBone,
+                Items.GIANT_BAT_WING_7829 to attributeGiantBatBone,
+            )
     }
 
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 12
         var stage = getStage(player)
@@ -108,20 +112,21 @@ class RagAndBoneMan : Quest(Quests.RAG_AND_BONE_MAN, 100, 99, 2, 714, 0, 1, 4) {
         line: Int,
         mob: String,
         boneEnum: BoneBoiler,
-        questAttribute: String
+        questAttribute: String,
     ) {
         line(
             player,
-            if (getAttribute(player, questAttribute, false))
+            if (getAttribute(player, questAttribute, false)) {
                 "!!$mob.??"
-            else if (inInventory(player, boneEnum.polishedBone))
+            } else if (inInventory(player, boneEnum.polishedBone)) {
                 "!!$mob.?? (I have a prepared one !!with me.??)"
-            else if (inInventory(player, boneEnum.bone) || inInventory(player, boneEnum.boneInVinegar))
+            } else if (inInventory(player, boneEnum.bone) || inInventory(player, boneEnum.boneInVinegar)) {
                 "!!$mob.?? (I have an unprepared one !!with me.??)"
-            else
-                "!!$mob.??",
+            } else {
+                "!!$mob.??"
+            },
             line,
-            getAttribute(player, questAttribute, false)
+            getAttribute(player, questAttribute, false),
         )
     }
 
@@ -147,7 +152,7 @@ class RagAndBoneMan : Quest(Quests.RAG_AND_BONE_MAN, 100, 99, 2, 714, 0, 1, 4) {
             attributeUnicornBone,
             attributeMonkeyBone,
             attributeGiantRatBone,
-            attributeGiantBatBone
+            attributeGiantBatBone,
         )
     }
 

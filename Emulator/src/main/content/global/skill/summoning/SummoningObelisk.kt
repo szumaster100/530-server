@@ -1,20 +1,18 @@
 package content.global.skill.summoning
 
-import org.rs.consts.Animations
-import org.rs.consts.Graphics
-import org.rs.consts.Sounds
 import core.api.*
 import core.api.quest.isQuestComplete
 import core.game.event.SummoningPointsRechargeEvent
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.skill.Skills
+import org.rs.consts.Animations
+import org.rs.consts.Graphics
 import org.rs.consts.Quests
+import org.rs.consts.Sounds
 
 class SummoningObelisk : InteractionListener {
-
     override fun defineListeners() {
-
         on(IntType.SCENERY, "infuse-pouch", "renew-points") { player, node ->
             when (getUsedOption(player)) {
                 "infuse-pouch" -> {
@@ -23,7 +21,7 @@ class SummoningObelisk : InteractionListener {
                 }
 
                 "renew-points" -> {
-                    if(!isQuestComplete(player, Quests.WOLF_WHISTLE)) {
+                    if (!isQuestComplete(player, Quests.WOLF_WHISTLE)) {
                         sendMessage(player, "You need to complete Wolf Whistle quest to do this.")
                         return@on true
                     }

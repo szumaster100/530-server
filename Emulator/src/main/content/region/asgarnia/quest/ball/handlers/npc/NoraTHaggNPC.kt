@@ -1,6 +1,5 @@
 package content.region.asgarnia.quest.ball.handlers.npc
 
-import org.rs.consts.NPCs
 import content.region.asgarnia.quest.ball.handlers.WitchHousePlugin.Companion.BALL
 import content.region.asgarnia.quest.ball.handlers.WitchHousePlugin.Companion.DOOR_KEY
 import content.region.asgarnia.quest.ball.handlers.WitchHousePlugin.Companion.KEY
@@ -19,10 +18,10 @@ import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.NPCs
 
 @Initializable
 class NoraTHaggNPC : AbstractNPC {
-
     var walkdir = false
 
     constructor() : super(896, Location.create(2904, 3463, 0))
@@ -45,7 +44,11 @@ class NoraTHaggNPC : AbstractNPC {
         val sectors = intArrayOf(2904, 2907, 2910, 2914, 2918, 2922, 2926, 2928)
         for (i in 0 until sectors.size - 1) {
             if (npcX >= sectors[i] && npcX <= sectors[i + 1] && playerX >= sectors[i] && playerX <= sectors[i + 1]) {
-                if (playerX < npcX && getDirection() == Direction.WEST || playerX > npcX && getDirection() == Direction.EAST) {
+                if (playerX < npcX &&
+                    getDirection() == Direction.WEST ||
+                    playerX > npcX &&
+                    getDirection() == Direction.EAST
+                ) {
                     return true
                 }
                 if (playerX == npcX) {
@@ -56,7 +59,11 @@ class NoraTHaggNPC : AbstractNPC {
         return false
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return NoraTHaggNPC(id, location)
     }
 
@@ -79,6 +86,7 @@ class NoraTHaggNPC : AbstractNPC {
         Pulser.submit(
             object : Pulse(1) {
                 var counter = 0
+
                 override fun pulse(): Boolean {
                     when (counter++) {
                         0 -> {
@@ -88,8 +96,10 @@ class NoraTHaggNPC : AbstractNPC {
                             removeItem(player, DOOR_KEY)
                             sendChat("Stop! Thief!")
                             sendMessage(player, "You've been spotted by the witch.")
-                            visualize(player, -1,
-                                Graphics(110, 100)
+                            visualize(
+                                player,
+                                -1,
+                                Graphics(110, 100),
                             )
                             setMinimapState(player, 2)
                         }
@@ -109,7 +119,7 @@ class NoraTHaggNPC : AbstractNPC {
                     }
                     return false
                 }
-            }
+            },
         )
     }
 
@@ -122,9 +132,14 @@ class NoraTHaggNPC : AbstractNPC {
             walkdir = true
         }
         for (player in players) {
-            if (player == null || !player.isActive || player.locks.isInteractionLocked || DeathTask.isDead(player) || !canTeleport(
-                    player
-                ) || !isProjectileClipped(this, player, false)
+            if (player == null ||
+                !player.isActive ||
+                player.locks.isInteractionLocked ||
+                DeathTask.isDead(player) ||
+                !canTeleport(
+                    player,
+                ) ||
+                !isProjectileClipped(this, player, false)
             ) {
                 continue
             }

@@ -1,6 +1,5 @@
 package core.game.system.command.sets
 
-import content.region.asgarnia.quest.rd.RecruitmentDrive
 import core.ServerConfig
 import core.api.getAttribute
 import core.game.node.entity.player.link.TeleportManager
@@ -14,10 +13,13 @@ import kotlinx.coroutines.launch
 
 @Initializable
 class TeleportCommandSet : CommandSet(Privilege.ADMIN) {
-
     override fun defineCommands() {
-
-        define(name = "to", privilege = Privilege.ADMIN, usage = "::to <lt>String<gt>", description = "See ServerConfig.TELEPORT_DESTINATIONS") { player, args ->
+        define(
+            name = "to",
+            privilege = Privilege.ADMIN,
+            usage = "::to <lt>String<gt>",
+            description = "See ServerConfig.TELEPORT_DESTINATIONS",
+        ) { player, args ->
             var destination: Location? = null
             val place = args.slice(1 until args.size).joinToString(" ")
             for (destinations in ServerConfig.TELEPORT_DESTINATIONS) {
@@ -37,7 +39,12 @@ class TeleportCommandSet : CommandSet(Privilege.ADMIN) {
             }
         }
 
-        define(name = "tele", privilege = Privilege.ADMIN, usage = "::tele <lt>X<gt> <lt>Y<gt> <lt>Z<gt> OR <lt>JAGCOORD<gt>", description = "JAGCOORD is Z_REGIONX_REGIONY_LOCALX_LOCALY") { player, args ->
+        define(
+            name = "tele",
+            privilege = Privilege.ADMIN,
+            usage = "::tele <lt>X<gt> <lt>Y<gt> <lt>Z<gt> OR <lt>JAGCOORD<gt>",
+            description = "JAGCOORD is Z_REGIONX_REGIONY_LOCALX_LOCALY",
+        ) { player, args ->
             if (args.size == 2 && args[1].contains(",")) {
                 val args2 = args[1].split(",".toRegex()).toTypedArray()
                 val x = args2[1].toInt() shl 6 or args2[3].toInt()
@@ -102,7 +109,12 @@ class TeleportCommandSet : CommandSet(Privilege.ADMIN) {
                 Location.create(args[1].toInt(), args[2].toInt(), if (args.size > 3) args[3].toInt() else 0)
         }
 
-        define(name = "teleobj", privilege = Privilege.ADMIN, usage = "::teleobj <lt>RX_RY<gt> <lt>OBJ NAME<gt>", description = "Teleports to the first object with the given name.") { player, args ->
+        define(
+            name = "teleobj",
+            privilege = Privilege.ADMIN,
+            usage = "::teleobj <lt>RX_RY<gt> <lt>OBJ NAME<gt>",
+            description = "Teleports to the first object with the given name.",
+        ) { player, args ->
             if (args.size < 3) reject(player, "Usage: regionX_regionY Object Name")
             var objName = ""
             for (i in 2 until args.size) objName += (args[i] + if (i + 1 == args.size) "" else " ")
@@ -138,7 +150,12 @@ class TeleportCommandSet : CommandSet(Privilege.ADMIN) {
             }
         }
 
-        define(name = "teleto", privilege = Privilege.ADMIN, usage = "::teleto <lt>USERNAME<gt>", description = "Teleports to the named player.") { player, args ->
+        define(
+            name = "teleto",
+            privilege = Privilege.ADMIN,
+            usage = "::teleto <lt>USERNAME<gt>",
+            description = "Teleports to the named player.",
+        ) { player, args ->
             if (args.size < 1) {
                 reject(player, "syntax error: name")
             }
@@ -153,7 +170,12 @@ class TeleportCommandSet : CommandSet(Privilege.ADMIN) {
             player.properties.teleportLocation = target.location
         }
 
-        define(name = "teletome", privilege = Privilege.ADMIN, usage = "::teletome <lt>USERNAME<gt>", description = "Teleports the given user to you.") { player, args ->
+        define(
+            name = "teletome",
+            privilege = Privilege.ADMIN,
+            usage = "::teletome <lt>USERNAME<gt>",
+            description = "Teleports the given user to you.",
+        ) { player, args ->
             if (args.size < 1) {
                 reject(player, "syntax error: name")
             }
@@ -168,11 +190,21 @@ class TeleportCommandSet : CommandSet(Privilege.ADMIN) {
             target.properties.teleportLocation = player.location
         }
 
-        define(name = "home", privilege = Privilege.ADMIN, usage = "", description = "Teleports to ServerConfig.HOME_LOCATION or HOME_LOCATION_ALT (after RD quest).") { player, _ ->
+        define(
+            name = "home",
+            privilege = Privilege.ADMIN,
+            usage = "",
+            description = "Teleports to ServerConfig.HOME_LOCATION or HOME_LOCATION_ALT (after RD quest).",
+        ) { player, _ ->
             player.properties.teleportLocation = ServerConfig.HOME_LOCATION
         }
 
-        define(name = "findobjs", privilege = Privilege.ADMIN, usage = "::findobjs <lt>REGION ID<gt> <lt>SCENERY ID<gt>", description = "Finds all locations of scenery objects of id.") { player, args ->
+        define(
+            name = "findobjs",
+            privilege = Privilege.ADMIN,
+            usage = "::findobjs <lt>REGION ID<gt> <lt>SCENERY ID<gt>",
+            description = "Finds all locations of scenery objects of id.",
+        ) { player, args ->
             if (args.size < 4) reject(player, "Usage: region_id scenery_id")
             val regionId = args[1].toInt()
             val sceneryId = args[2].toInt()

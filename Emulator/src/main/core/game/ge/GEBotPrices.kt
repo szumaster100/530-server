@@ -4,9 +4,7 @@ import core.cache.def.impl.ItemDefinition
 import org.rs.consts.Items
 
 class GEBotPrices {
-
     companion object {
-
         @JvmStatic
         fun getPrice(id: Int): Int {
             return getPriceOverrides(id) ?: ItemDefinition.forId(id).value

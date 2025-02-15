@@ -10,7 +10,6 @@ import core.game.world.update.UpdateSequence
 import java.util.concurrent.CopyOnWriteArrayList
 
 object Repository {
-
     @JvmStatic
     val players = NodeList<Player>(ServerConfig.MAX_PLAYERS)
     val uid_map = HashMap<Int, Player>(ServerConfig.MAX_PLAYERS)
@@ -32,7 +31,11 @@ object Repository {
     val disconnectionQueue = DisconnectionQueue()
 
     @JvmOverloads
-    fun sendMarketUpdate(string: String, icon: Int = 12, color: String = "<col=CC6600>") {
+    fun sendMarketUpdate(
+        string: String,
+        icon: Int = 12,
+        color: String = "<col=CC6600>",
+    ) {
         val players: Array<Any> = playerNames.values.toTypedArray()
         val size = players.size
         for (i in 0 until size) {
@@ -42,7 +45,11 @@ object Repository {
     }
 
     @JvmStatic
-    fun sendNews(string: String, icon: Int = 12, color: String = "CC6600") {
+    fun sendNews(
+        string: String,
+        icon: Int = 12,
+        color: String = "CC6600",
+    ) {
         val players: Array<Any> = playerNames.values.toTypedArray()
         val size = players.size
         for (i in 0 until size) {
@@ -127,7 +134,9 @@ object Repository {
     fun getPlayerByName(name: String?): Player? {
         return if (name == null) {
             null
-        } else playerNames[name.lowercase().replace(" ".toRegex(), "_")]
+        } else {
+            playerNames[name.lowercase().replace(" ".toRegex(), "_")]
+        }
     }
 
     @JvmStatic

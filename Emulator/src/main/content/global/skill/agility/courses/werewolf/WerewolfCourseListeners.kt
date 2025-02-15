@@ -1,9 +1,5 @@
 package content.global.skill.agility.courses.werewolf
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import core.api.*
 import core.game.dialogue.FaceAnim
 import core.game.global.action.ClimbActionHandler
@@ -12,9 +8,12 @@ import core.game.interaction.InteractionListener
 import core.game.node.entity.skill.Skills
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 class WerewolfCourseListeners : InteractionListener {
-
     override fun defineDestinationOverrides() {
         setDest(IntType.SCENERY, ZIP_LINE, "teeth-grip") { _, _ ->
             return@setDest Location(3528, 9910, 0)
@@ -22,7 +21,6 @@ class WerewolfCourseListeners : InteractionListener {
     }
 
     override fun defineListeners() {
-
         on(TRAPDOOR, IntType.SCENERY, "open") { player, node ->
             sendMessage(player, "The trapdoor opens...")
             replaceScenery(node.asScenery(), OPEN_TRAPDOOR, -1)
@@ -37,9 +35,10 @@ class WerewolfCourseListeners : InteractionListener {
         on(OPEN_TRAPDOOR, IntType.SCENERY, "climb-down") { player, _ ->
             findLocalNPC(player, NPCs.WEREWOLF_1665)?.let { face(player, it) }
             findLocalNPC(player, NPCs.WEREWOLF_1665)?.let { face(it, player, 1) }
-            if (!anyInEquipment(player, Items.RING_OF_CHAROS_4202, Items.RING_OF_CHAROSA_6465) || getStatLevel(
+            if (!anyInEquipment(player, Items.RING_OF_CHAROS_4202, Items.RING_OF_CHAROSA_6465) ||
+                getStatLevel(
                     player,
-                    Skills.AGILITY
+                    Skills.AGILITY,
                 ) < 60
             ) {
                 sendNPCDialogueLines(
@@ -49,7 +48,7 @@ class WerewolfCourseListeners : InteractionListener {
                     false,
                     "You can't go down there human. If it wasn't my duty",
                     "to guard this trapdoor, I would be relieving you of the",
-                    "burden of your life right now."
+                    "burden of your life right now.",
                 )
             } else {
                 sendNPCDialogueLines(
@@ -59,12 +58,16 @@ class WerewolfCourseListeners : InteractionListener {
                     false,
                     "Good luck down there, my friend. Remember, to the",
                     "west is the main agility course, while to the east is a",
-                    "skullball course."
+                    "skullball course.",
                 )
                 addDialogueAction(player) { player, button ->
                     if (button >= 1) {
                         sendMessage(player!!, "You climb down through the trapdoor.")
-                        ClimbActionHandler.climb(player, Animation(Animations.MULTI_BEND_OVER_827), Location(3549, 9865, 0))
+                        ClimbActionHandler.climb(
+                            player,
+                            Animation(Animations.MULTI_BEND_OVER_827),
+                            Location(3549, 9865, 0),
+                        )
                     }
                 }
             }

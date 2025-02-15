@@ -1,7 +1,5 @@
 package content.region.misthalin.quest.losttribe
 
-import org.rs.consts.Components
-import org.rs.consts.Quests
 import core.api.*
 import core.api.quest.setQuestStage
 import core.api.ui.sendInterfaceConfig
@@ -11,16 +9,20 @@ import core.game.component.ComponentPlugin
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Components
+import org.rs.consts.Quests
 
 @Initializable
 class HistoryOfTheGoblinRace : ComponentPlugin() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         ComponentDefinition.put(Components.GOBLIN_SYMBOL_BOOK_183, this)
         return this
     }
 
-    override fun open(player: Player?, component: Component?) {
+    override fun open(
+        player: Player?,
+        component: Component?,
+    ) {
         player ?: return
         super.open(player, component)
         sendInterfaceConfig(player, Components.GOBLIN_SYMBOL_BOOK_183, 17, true)
@@ -29,7 +31,7 @@ class HistoryOfTheGoblinRace : ComponentPlugin() {
             if (qstage == 42 || qstage == 41) {
                 sendPlayerDialogue(
                     player,
-                    "Hey... The symbol of the 'Dorgeshuun' tribe looks just, like the symbol on the brooch I found."
+                    "Hey... The symbol of the 'Dorgeshuun' tribe looks just, like the symbol on the brooch I found.",
                 )
                 setQuestStage(player!!, Quests.THE_LOST_TRIBE, 43)
             }
@@ -44,7 +46,7 @@ class HistoryOfTheGoblinRace : ComponentPlugin() {
         opcode: Int,
         button: Int,
         slot: Int,
-        itemId: Int
+        itemId: Int,
     ): Boolean {
         player ?: return false
         when (button) {
@@ -64,7 +66,10 @@ class HistoryOfTheGoblinRace : ComponentPlugin() {
         sendInterfaceConfig(player, Components.GOBLIN_SYMBOL_BOOK_183, 17, index == 0)
     }
 
-    fun setIndex(player: Player, index: Int) {
+    fun setIndex(
+        player: Player,
+        index: Int,
+    ) {
         setAttribute(player, "hgr-index", index)
     }
 

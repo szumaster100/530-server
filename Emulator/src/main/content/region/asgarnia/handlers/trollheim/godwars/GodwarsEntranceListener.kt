@@ -1,9 +1,5 @@
 package content.region.asgarnia.handlers.trollheim.godwars
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.*
 import core.api.quest.hasRequirement
 import core.game.dialogue.FaceAnim
@@ -16,9 +12,12 @@ import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.game.world.map.RegionManager
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 class GodwarsEntranceListener : InteractionListener {
-
     override fun defineListeners() {
         on(26340, IntType.SCENERY, "tie-rope") { player, _ ->
             if (!removeItem(player, Items.ROPE_954)) {
@@ -47,7 +46,7 @@ class GodwarsEntranceListener : InteractionListener {
                         teleport(player, Location.create(2882, 5311, 2))
                         return true
                     }
-                }
+                },
             )
             return@on true
         }
@@ -67,7 +66,7 @@ class GodwarsEntranceListener : InteractionListener {
                     Location.create(2898, 3715, 0),
                     Location.create(2898, 3719, 0),
                     Animation(6978),
-                    3
+                    3,
                 )
             } else {
                 ForceMovement.run(
@@ -75,7 +74,7 @@ class GodwarsEntranceListener : InteractionListener {
                     Location.create(2898, 3719, 0),
                     Location.create(2898, 3715, 0),
                     Animation(6979),
-                    3
+                    3,
                 )
             }
             submitWorldPulse(
@@ -84,7 +83,7 @@ class GodwarsEntranceListener : InteractionListener {
                         animateScenery(RegionManager.getObject(0, 2898, 3716)!!.asScenery(), 6981)
                         return true
                     }
-                }
+                },
             )
             return@on true
         }
@@ -100,7 +99,7 @@ class GodwarsEntranceListener : InteractionListener {
                     Location.create(2904, 3720, 0)
                 } else {
                     Location.create(2899, 3713, 0)
-                }
+                },
             )
             return@on true
         }

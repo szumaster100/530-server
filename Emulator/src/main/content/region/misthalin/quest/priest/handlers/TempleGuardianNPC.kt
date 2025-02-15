@@ -1,10 +1,8 @@
 package content.region.misthalin.quest.priest.handlers
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.quest.getQuestStage
-import core.api.sendMessage
 import core.api.quest.setQuestStage
+import core.api.sendMessage
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.BattleState
 import core.game.node.entity.combat.CombatStyle
@@ -12,11 +10,19 @@ import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.player.Player
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class TempleGuardianNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+class TempleGuardianNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return TempleGuardianNPC(id, location)
     }
 

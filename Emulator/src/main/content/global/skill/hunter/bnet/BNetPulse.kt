@@ -1,8 +1,5 @@
 package content.global.skill.hunter.bnet
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
-import org.rs.consts.Sounds
 import core.api.*
 import core.api.quest.hasRequirement
 import core.game.container.impl.EquipmentContainer
@@ -15,9 +12,16 @@ import core.game.world.GameWorld
 import core.game.world.update.flag.context.Animation
 import core.tools.RandomFunction
 import core.tools.StringUtils
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
+import org.rs.consts.Sounds
 import kotlin.random.Random
 
-class BNetPulse(player: Player?, node: NPC?, private val type: BNetNode) : SkillPulse<NPC?>(player, node) {
+class BNetPulse(
+    player: Player?,
+    node: NPC?,
+    private val type: BNetNode,
+) : SkillPulse<NPC?>(player, node) {
     private var success = false
 
     private var ticks = 0
@@ -35,7 +39,8 @@ class BNetPulse(player: Player?, node: NPC?, private val type: BNetNode) : Skill
             sendMessage(player, "You need a Hunter level of at least " + type.level + " in order to do that.")
             return false
         }
-        if (!hasRequirement(player, Quests.ROCKING_OUT, false) && (node!!.asNpc().id == NPCs.PIRATE_IMPLING_7845 || node!!.asNpc().id == NPCs.PIRATE_IMPLING_7846)
+        if (!hasRequirement(player, Quests.ROCKING_OUT, false) &&
+            (node!!.asNpc().id == NPCs.PIRATE_IMPLING_7845 || node!!.asNpc().id == NPCs.PIRATE_IMPLING_7846)
         ) {
             sendMessage(player, "You can't catch pirate implings until you have completed Rocking Out.")
             return false
@@ -46,13 +51,17 @@ class BNetPulse(player: Player?, node: NPC?, private val type: BNetNode) : Skill
         } else if (!type.hasNet(player)) {
             sendMessage(
                 player,
-                "You need to be wielding a butterfly net to catch " + (if (type is ImplingNode) "implings" else "butterflies") + "."
+                "You need to be wielding a butterfly net to catch " +
+                    (if (type is ImplingNode) "implings" else "butterflies") +
+                    ".",
             )
             return false
         } else if (!type.hasJar(player)) {
             sendMessage(
                 player,
-                "You need to have a" + (if (StringUtils.isPlusN(type.jar!!.name)) "n" else "") + " " + type.jar!!.name.lowercase() + "."
+                "You need to have a" + (if (StringUtils.isPlusN(type.jar!!.name)) "n" else "") + " " +
+                    type.jar!!.name.lowercase() +
+                    ".",
             )
             return false
         }

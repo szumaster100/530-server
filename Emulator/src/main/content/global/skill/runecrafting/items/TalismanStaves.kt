@@ -1,10 +1,14 @@
 package content.global.skill.runecrafting.items
 
+import core.game.node.item.Item
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import org.rs.consts.Items
-import core.game.node.item.Item
 
-enum class TalismanStaves(val items: Item, val staves: Staves, val tiara: Int) {
+enum class TalismanStaves(
+    val items: Item,
+    val staves: Staves,
+    val tiara: Int,
+) {
     AIR(Item(Items.AIR_TALISMAN_1438), Staves.AIR_RC_STAFF, Items.AIR_TIARA_5527),
     MIND(Item(Items.MIND_TALISMAN_1448), Staves.MIND_RC_STAFF, Items.MIND_TIARA_5529),
     WATER(Item(Items.WATER_TALISMAN_1444), Staves.WATER_RC_STAFF, Items.WATER_TIARA_5531),
@@ -16,7 +20,8 @@ enum class TalismanStaves(val items: Item, val staves: Staves, val tiara: Int) {
     NATURE(Item(Items.NATURE_TALISMAN_1462), Staves.NATURE_RC_STAFF, Items.NATURE_TIARA_5541),
     LAW(Item(Items.LAW_TALISMAN_1458), Staves.LAW_RC_STAFF, Items.LAW_TIARA_5545),
     DEATH(Item(Items.DEATH_TALISMAN_1456), Staves.DEATH_RC_STAFF, Items.DEATH_TIARA_5547),
-    BLOOD(Item(Items.BLOOD_TALISMAN_1450), Staves.BLOOD_RC_STAFF, Items.BLOOD_TIARA_5549);
+    BLOOD(Item(Items.BLOOD_TALISMAN_1450), Staves.BLOOD_RC_STAFF, Items.BLOOD_TIARA_5549),
+    ;
 
     companion object {
         private val itemToTalismanStaves = Int2ObjectOpenHashMap<TalismanStaves>()

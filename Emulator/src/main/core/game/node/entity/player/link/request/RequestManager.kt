@@ -5,12 +5,16 @@ import core.game.bots.impl.DoublingMoney
 import core.game.node.entity.player.Player
 import core.game.world.GameWorld.ticks
 
-class RequestManager(val player: Player) {
-
+class RequestManager(
+    val player: Player,
+) {
     var target: Player? = null
         private set
 
-    fun request(target: Player, type: RequestType): Boolean {
+    fun request(
+        target: Player,
+        type: RequestType,
+    ): Boolean {
         if (!canRequest(type, target)) {
             return false
         }
@@ -32,7 +36,10 @@ class RequestManager(val player: Player) {
         return true
     }
 
-    private fun canRequest(type: RequestType, target: Player): Boolean {
+    private fun canRequest(
+        type: RequestType,
+        target: Player,
+    ): Boolean {
         if (target === player) {
             return false
         }
@@ -50,10 +57,15 @@ class RequestManager(val player: Player) {
         }
         return if (!player.zoneMonitor.canRequest(type, target)) {
             false
-        } else type.canRequest(player, target)
+        } else {
+            type.canRequest(player, target)
+        }
     }
 
-    private fun acceptExisting(target: Player, type: RequestType): Boolean {
+    private fun acceptExisting(
+        target: Player,
+        type: RequestType,
+    ): Boolean {
         val lastType = target.getAttribute<RequestType>("lastRequest", null)
         if (lastType === type && player === target.requestManager.target) {
             close(player)

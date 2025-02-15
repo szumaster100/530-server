@@ -1,6 +1,5 @@
 package core.game.node.entity.player.link.request.trade
 
-import org.rs.consts.Components
 import core.api.*
 import core.game.bots.AIRepository
 import core.game.bots.impl.DoublingMoney
@@ -12,11 +11,14 @@ import core.game.node.entity.player.info.PlayerMonitor
 import core.game.node.entity.player.link.request.RequestModule
 import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
+import org.rs.consts.Components
 import java.text.DecimalFormat
 import java.util.*
 
-class TradeModule(player: Player?, target: Player?) : RequestModule {
-
+class TradeModule(
+    player: Player?,
+    target: Player?,
+) : RequestModule {
     var isRetained = false
 
     var player: Player? = player
@@ -36,7 +38,10 @@ class TradeModule(player: Player?, target: Player?) : RequestModule {
     var stage = 0
         private set
 
-    override fun open(player: Player?, target: Player?) {
+    override fun open(
+        player: Player?,
+        target: Player?,
+    ) {
         extend(player, target)
         if (getExtension(target) == null || getExtension(player) == null) {
             return
@@ -62,7 +67,15 @@ class TradeModule(player: Player?, target: Player?) : RequestModule {
     private val acceptMessage: String
         get() {
             val otherAccept = getExtension(target)!!.isAccepted
-            return if (!otherAccept && !isAccepted) "" else if (otherAccept) "Other player has accepted." else "Waiting for other player..."
+            return if (!otherAccept &&
+                !isAccepted
+            ) {
+                ""
+            } else if (otherAccept) {
+                "Other player has accepted."
+            } else {
+                "Waiting for other player..."
+            }
         }
 
     private fun display(stage: Int): TradeModule {
@@ -73,21 +86,26 @@ class TradeModule(player: Player?, target: Player?) : RequestModule {
                 }
                 player!!.packetDispatch.sendString("Trading With: " + target!!.username, Components.TRADEMAIN_335, 15)
                 player!!.packetDispatch.sendString(
-                    target!!.username + " has " + (if (target!!.inventory.freeSlots() == 0) "no" else target!!.inventory.freeSlots()) + " free inventory slots.",
+                    target!!.username + " has " +
+                        (if (target!!.inventory.freeSlots() == 0) "no" else target!!.inventory.freeSlots()) +
+                        " free inventory slots.",
                     Components.TRADEMAIN_335,
-                    21
+                    21,
                 )
                 player!!.packetDispatch.sendString(acceptMessage, Components.TRADEMAIN_335, 36)
             }
 
             1 -> {
                 player!!.packetDispatch.sendString(
-                    "<col=00FFFF>Trading with:<br>" + "<col=00FFFF>" + target!!.username.substring(
-                        0,
-                        1
-                    ).uppercase(Locale.getDefault()) + target!!.username.substring(1),
+                    "<col=00FFFF>Trading with:<br>" + "<col=00FFFF>" +
+                        target!!
+                            .username
+                            .substring(
+                                0,
+                                1,
+                            ).uppercase(Locale.getDefault()) + target!!.username.substring(1),
                     Components.TRADECONFIRM_334,
-                    2
+                    2,
                 )
                 val acceptMessage = acceptMessage
                 if (acceptMessage !== "") {
@@ -184,33 +202,44 @@ class TradeModule(player: Player?, target: Player?) : RequestModule {
         return this
     }
 
-    fun setAccepted(accept: Boolean, update: Boolean) {
+    fun setAccepted(
+        accept: Boolean,
+        update: Boolean,
+    ) {
         isAccepted = accept
         if (update) {
             nextStage()
         }
     }
 
-    private fun displayOffer(container: Container?, child: Int) {
+    private fun displayOffer(
+        container: Container?,
+        child: Int,
+    ) {
         val split = container!!.itemCount() > 14
         if (split) {
             player!!.packetDispatch.sendInterfaceConfig(Components.TRADECONFIRM_334, child + 1, false)
             player!!.packetDispatch.sendInterfaceConfig(Components.TRADECONFIRM_334, child + 2, false)
-            val messages = arrayOf(
-                getDisplayMessage(splitList(container.toArray(), 0, 14)),
-                getDisplayMessage(
-                    splitList(
-                        container.toArray(),
-                        14,
-                        container.toArray().size
-                    )
+            val messages =
+                arrayOf(
+                    getDisplayMessage(splitList(container.toArray(), 0, 14)),
+                    getDisplayMessage(
+                        splitList(
+                            container.toArray(),
+                            14,
+                            container.toArray().size,
+                        ),
+                    ),
                 )
-            )
             player!!.packetDispatch.sendString(messages[0], Components.TRADECONFIRM_334, child + 1)
             player!!.packetDispatch.sendString(messages[1], Components.TRADECONFIRM_334, child + 2)
         } else {
             player!!.packetDispatch.sendInterfaceConfig(Components.TRADECONFIRM_334, child, false)
-            player!!.packetDispatch.sendString(getDisplayMessage(container.toArray()), Components.TRADECONFIRM_334, child)
+            player!!.packetDispatch.sendString(
+                getDisplayMessage(container.toArray()),
+                Components.TRADECONFIRM_334,
+                child,
+            )
         }
     }
 
@@ -237,11 +266,15 @@ class TradeModule(player: Player?, target: Player?) : RequestModule {
     private fun hasSpace(): Boolean {
         var hasSpace = true
         if (!player!!.inventory.hasSpaceFor(getExtension(target)!!.container)) {
-            target!!.packetDispatch.sendMessage("Other player doesn't have enough space in their inventory for this trade.")
+            target!!.packetDispatch.sendMessage(
+                "Other player doesn't have enough space in their inventory for this trade.",
+            )
             player!!.packetDispatch.sendMessage("You don't have enough inventory space for this.")
             hasSpace = false
         } else if (!target!!.inventory.hasSpaceFor(container)) {
-            player!!.packetDispatch.sendMessage("Other player doesn't have enough space in their inventory for this trade.")
+            player!!.packetDispatch.sendMessage(
+                "Other player doesn't have enough space in their inventory for this trade.",
+            )
             target!!.packetDispatch.sendMessage("You don't have enough inventory space for this.")
             hasSpace = false
         }
@@ -262,8 +295,16 @@ class TradeModule(player: Player?, target: Player?) : RequestModule {
 
         PlayerMonitor.logTrade(module.player!!, module.target!!, pContainer, oContainer)
 
-        (AIRepository.PulseRepository[module.player!!.username.lowercase()]?.botScript as DoublingMoney?)?.itemsReceived(module.target!!, oContainer)
-        (AIRepository.PulseRepository[module.target!!.username.lowercase()]?.botScript as DoublingMoney?)?.itemsReceived(module.player!!, pContainer)
+        (AIRepository.PulseRepository[module.player!!.username.lowercase()]?.botScript as DoublingMoney?)
+            ?.itemsReceived(
+                module.target!!,
+                oContainer,
+            )
+        (AIRepository.PulseRepository[module.target!!.username.lowercase()]?.botScript as DoublingMoney?)
+            ?.itemsReceived(
+                module.player!!,
+                pContainer,
+            )
 
         addContainer(module.player, oContainer)
         addContainer(module.target, pContainer)
@@ -271,7 +312,10 @@ class TradeModule(player: Player?, target: Player?) : RequestModule {
         module.player!!.packetDispatch.sendMessage("Accepted trade.")
     }
 
-    private fun addContainer(player: Player?, container: Container?) {
+    private fun addContainer(
+        player: Player?,
+        container: Container?,
+    ) {
         val c = Container(container!!.itemCount(), ContainerType.ALWAYS_STACK)
         c.addAll(container)
         for (i in container.toArray()) {
@@ -287,7 +331,11 @@ class TradeModule(player: Player?, target: Player?) : RequestModule {
         }
     }
 
-    private fun splitList(items: Array<Item?>, min: Int, max: Int): Array<Item?> {
+    private fun splitList(
+        items: Array<Item?>,
+        min: Int,
+        max: Int,
+    ): Array<Item?> {
         val list: MutableList<Item?> = ArrayList(20)
         for (i in min until max) {
             if (items[i] == null) {
@@ -310,22 +358,58 @@ class TradeModule(player: Player?, target: Player?) : RequestModule {
     }
 
     companion object {
-
         val OVERLAY_INTERFACE = Component(336)
 
         val MAIN_INTERFACE: Component = Component(335).setCloseEvent(TradeCloseEvent())
 
         val ACCEPT_INTERFACE: Component = Component(334).setCloseEvent(TradeCloseEvent())
 
-        val INVENTORY_PARAMS = arrayOf<Any>("", "", "", "Lend", "Offer-X", "Offer-All", "Offer-10", "Offer-5", "Offer", -1, 0, 7, 4, 93, 336 shl 16)
+        val INVENTORY_PARAMS =
+            arrayOf<Any>(
+                "",
+                "",
+                "",
+                "Lend",
+                "Offer-X",
+                "Offer-All",
+                "Offer-10",
+                "Offer-5",
+                "Offer",
+                -1,
+                0,
+                7,
+                4,
+                93,
+                336 shl 16,
+            )
 
-        val TRADE_PARAMS = arrayOf<Any>("", "", "", "", "Remove-X", "Remove-All", "Remove-10", "Remove-5", "Remove", -1, 0, 7, 4, 90, 335 shl 16 or 30)
+        val TRADE_PARAMS =
+            arrayOf<Any>(
+                "",
+                "",
+                "",
+                "",
+                "Remove-X",
+                "Remove-All",
+                "Remove-10",
+                "Remove-5",
+                "Remove",
+                -1,
+                0,
+                7,
+                4,
+                90,
+                335 shl 16 or 30,
+            )
 
         val PARTENER_PARAMS = arrayOf<Any>("", "", "", "", "", "", "", "", "", -1, 0, 7, 4, 91, 335 shl 16 or 32)
 
         val HIDDEN_CHILDS = intArrayOf(42, 43, 44, 42, 44, 40, 41)
 
-        fun extend(player: Player?, target: Player?) {
+        fun extend(
+            player: Player?,
+            target: Player?,
+        ) {
             player!!.addExtension(TradeModule::class.java, TradeModule(player, target))
             target!!.addExtension(TradeModule::class.java, TradeModule(target, player))
         }

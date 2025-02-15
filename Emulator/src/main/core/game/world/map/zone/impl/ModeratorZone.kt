@@ -15,7 +15,6 @@ import core.game.world.map.zone.MapZone
 import core.game.world.map.zone.ZoneBorders
 
 class ModeratorZone : MapZone("Moderator Zone", true) {
-
     override fun enter(entity: Entity): Boolean {
         if (entity !is Player) {
             return true
@@ -31,7 +30,10 @@ class ModeratorZone : MapZone("Moderator Zone", true) {
         return true
     }
 
-    override fun leave(entity: Entity, logout: Boolean): Boolean {
+    override fun leave(
+        entity: Entity,
+        logout: Boolean,
+    ): Boolean {
         if (entity !is Player) {
             return true
         }
@@ -39,7 +41,11 @@ class ModeratorZone : MapZone("Moderator Zone", true) {
         return true
     }
 
-    override fun interact(entity: Entity, target: Node, option: Option): Boolean {
+    override fun interact(
+        entity: Entity,
+        target: Node,
+        option: Option,
+    ): Boolean {
         if (entity is Player) {
         }
         return super.interact(entity, target, option)
@@ -51,9 +57,13 @@ class ModeratorZone : MapZone("Moderator Zone", true) {
 
     companion object {
         @JvmStatic var open: Boolean = true
+
         @JvmStatic val center: Location = Location.create(2846, 5213, 0)
 
-        @JvmStatic fun toggle(player: Player, on: Boolean) {
+        @JvmStatic fun toggle(
+            player: Player,
+            on: Boolean,
+        ) {
             sendMessage(player, toggleMessage)
             if (!on) {
                 for (p in getLocalPlayers(center)) {

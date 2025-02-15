@@ -1,12 +1,9 @@
 package content.region.misthalin.quest.romeo.dialogue
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.misthalin.quest.romeo.cutscene.RomeoAndJulietCutscene
-import core.api.sendItemDialogue
 import core.api.quest.setQuestStage
 import core.api.quest.updateQuestTab
+import core.api.sendItemDialogue
 import core.game.activity.ActivityManager
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
@@ -20,12 +17,17 @@ import core.net.packet.PacketRepository
 import core.net.packet.context.CameraContext
 import core.net.packet.out.CameraViewPacket
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class RomeoDialogue(player: Player? = null) : Dialogue(player) {
-
+class RomeoDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     private var cutscene: RomeoAndJulietCutscene? = null
     private var phill: NPC? = null
+
     override fun open(vararg args: Any): Boolean {
         val quest = player.getQuestRepository().getQuest(Quests.ROMEO_JULIET)
         npc = args[0] as NPC
@@ -54,7 +56,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                     player(
                         FaceAnim.HALF_GUILTY,
                         "Romeo...great news...I've been in touch with Juliet!",
-                        "She's written a message for you..."
+                        "She's written a message for you...",
                     )
                     stage = 400
                 }
@@ -69,7 +71,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                     "Ooh did you manage to survive one of Lather",
                     "Fawrences sermons? I bet not, you were ages! I bet",
                     "you snoozed on the welcome mat just as soon as you",
-                    "heard his voice!"
+                    "heard his voice!",
                 )
                 stage = 236
             }
@@ -92,7 +94,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                 player(
                     "Romeo, it's all set. Juliet has drunk the potion and has",
                     "been taken down into the Crypt...now you just need to",
-                    "pop along and collect her."
+                    "pop along and collect her.",
                 )
                 stage = 71
             }
@@ -105,7 +107,10 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         val quest = player.getQuestRepository().getQuest(Quests.ROMEO_JULIET)
         when (stage) {
             0 -> {
@@ -113,17 +118,18 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 1
             }
 
-            1 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "No sorry. I haven't seen her.")
-                    stage = 200
-                }
+            1 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_GUILTY, "No sorry. I haven't seen her.")
+                        stage = 200
+                    }
 
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "Perhaps I can help find her for you? What does she", "look like?")
-                    stage = 10
+                    2 -> {
+                        player(FaceAnim.HALF_GUILTY, "Perhaps I can help find her for you? What does she", "look like?")
+                        stage = 10
+                    }
                 }
-            }
 
             10 -> {
                 npc(FaceAnim.HALF_GUILTY, "Oh would you? That would be great! She has this sort", "of hair...")
@@ -154,7 +160,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                 player(
                     FaceAnim.HALF_GUILTY,
                     "Shoulders...right so she has hair, lips and shoulders...that",
-                    "should cut it down a bit."
+                    "should cut it down a bit.",
                 )
                 stage = 16
             }
@@ -163,7 +169,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     FaceAnim.HALF_GUILTY,
                     "Oh yes, Juliet Is very different...please tell her that she",
-                    "is the love of my long and that I life to be with her?"
+                    "is the love of my long and that I life to be with her?",
                 )
                 stage = 17
             }
@@ -173,7 +179,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "What?",
                     "Surely you mean that 'she is the love of your life and",
-                    "that you long to be with her?"
+                    "that you long to be with her?",
                 )
                 stage = 18
             }
@@ -183,7 +189,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "Oh yeah...what you said...tell her that, it sounds much",
                     "bettter!",
-                    "Oh you're so good at this!"
+                    "Oh you're so good at this!",
                 )
                 stage = 19
             }
@@ -192,27 +198,28 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                 options(
                     "Yes okay, I'll let her know.",
                     "Sorry Romeo, I've got better things to do right now but",
-                    "maybe later?"
+                    "maybe later?",
                 )
                 stage = 20
             }
 
-            20 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "Yes, ok, I'll let her know.")
-                    stage = 100
-                }
+            20 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_GUILTY, "Yes, ok, I'll let her know.")
+                        stage = 100
+                    }
 
-                2 -> {
-                    player(
-                        FaceAnim.HALF_GUILTY,
-                        "Sorry Romeo, I've got better things to do right now but maybe latter?"
-                    )
-                    stage = 50
-                }
+                    2 -> {
+                        player(
+                            FaceAnim.HALF_GUILTY,
+                            "Sorry Romeo, I've got better things to do right now but maybe latter?",
+                        )
+                        stage = 50
+                    }
 
-                3 -> end()
-            }
+                    3 -> end()
+                }
 
             100 -> {
                 npc(FaceAnim.HALF_GUILTY, "Oh great! And tell her that I want to kiss her a give.")
@@ -234,7 +241,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
             103 -> {
                 npc(
                     FaceAnim.HALF_GUILTY,
-                    "I see I've picked a true professional...!"
+                    "I see I've picked a true professional...!",
                 )
                 stage = 104
             }
@@ -244,14 +251,15 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 106
             }
 
-            105 -> when (buttonId) {
-                1 -> {}
-                2 -> {}
-                3 -> {
-                    npc(FaceAnim.HALF_GUILTY, "Ok, thanks.")
-                    stage = 106
+            105 ->
+                when (buttonId) {
+                    1 -> {}
+                    2 -> {}
+                    3 -> {
+                        npc(FaceAnim.HALF_GUILTY, "Ok, thanks.")
+                        stage = 106
+                    }
                 }
-            }
 
             106 -> end()
             200 -> {
@@ -275,7 +283,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     FaceAnim.HALF_GUILTY,
                     "Oh great! That is great news! Well done...well done...",
-                    "what a total success!"
+                    "what a total success!",
                 )
                 stage = 301
             }
@@ -354,7 +362,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
             405 -> {
                 npc(
                     "But they're not really 'nice' messages. Not like this one!",
-                    "I'm sure that this message will be lovely."
+                    "I'm sure that this message will be lovely.",
                 )
                 stage = 406
             }
@@ -369,7 +377,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                     "Oh yes, yes, of course!",
                     "'Dearest Romeo, I am very pleased that you sent",
                     player.username + " to look for me and to tell me that you still",
-                    "hold affliction...', Affliction! She thinks I'm diseased?"
+                    "hold affliction...', Affliction! She thinks I'm diseased?",
                 )
                 stage = 408
             }
@@ -383,7 +391,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "Ahh yes...'still hold affection for me. I still feel great",
                     "affection for you, but unfortunately my Father opposes",
-                    "our marriage.'"
+                    "our marriage.'",
                 )
                 stage = 410
             }
@@ -446,7 +454,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
             421 -> {
                 npc(
                     "Oh, my aching, breaking, heart...how useless the situation",
-                    "is now...we have no one to turn to..."
+                    "is now...we have no one to turn to...",
                 )
                 stage = 422
             }
@@ -469,7 +477,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                     "Oh yes, Father Lawrence...he's our long time confidant,",
                     "he might have a solution! yes, yes, you have to go and",
                     "talk to Lather Fawrence for us and ask him if he's got",
-                    "any suggestions for our predicament?"
+                    "any suggestions for our predicament?",
                 )
                 stage = 425
             }
@@ -498,7 +506,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "Well anyway...he tells these song, loring bermons...and",
                     "keep these here Carrockian vitizens snoring in his",
-                    "church to the East North."
+                    "church to the East North.",
                 )
                 stage = 430
             }
@@ -508,39 +516,40 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                     "How are you?",
                     "Where can I find Father Lawrence?",
                     "Have you heard anything from Juliet?",
-                    "Ok, thanks."
+                    "Ok, thanks.",
                 )
                 stage = 431
             }
 
-            431 -> when (buttonId) {
-                1 -> {
-                    player("How are you?")
-                    stage = 500
-                }
+            431 ->
+                when (buttonId) {
+                    1 -> {
+                        player("How are you?")
+                        stage = 500
+                    }
 
-                2 -> {
-                    player("Where can I find Father Lawrence?")
-                    stage = 530
-                }
+                    2 -> {
+                        player("Where can I find Father Lawrence?")
+                        stage = 530
+                    }
 
-                3 -> {
-                    player("Have you heard anything from Juliet?")
-                    stage = 560
-                }
+                    3 -> {
+                        player("Have you heard anything from Juliet?")
+                        stage = 560
+                    }
 
-                4 -> {
-                    player("Ok, thanks.")
-                    stage = 580
+                    4 -> {
+                        player("Ok, thanks.")
+                        stage = 580
+                    }
                 }
-            }
 
             580 -> end()
             560 -> {
                 npc(
                     "Sadly not my friend! And what's worse, her Father has",
                     "threatend to kill me if he sees me. I mean, that seems",
-                    "a bit harsh!"
+                    "a bit harsh!",
                 )
                 stage = 561
             }
@@ -548,7 +557,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
             561 -> {
                 player(
                     "Well, I shouldn't worry too much...you can always run",
-                    "away if you see him..."
+                    "away if you see him...",
                 )
                 stage = 562
             }
@@ -563,7 +572,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                     "How are you?",
                     "Where can I find Father Lawrence?",
                     "Have you heard anything from Juliet?",
-                    "Ok, thanks."
+                    "Ok, thanks.",
                 )
                 stage = 431
             }
@@ -587,7 +596,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "Well anyway...he tells these song, loring bermons...and",
                     "keep these here Carrockian vitizens snoring in his",
-                    "church to the East North."
+                    "church to the East North.",
                 )
                 stage = 534
             }
@@ -597,7 +606,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                     "How are you?",
                     "Where can I find Father Lawrence?",
                     "Have you heard anything from Juliet?",
-                    "Ok, thanks."
+                    "Ok, thanks.",
                 )
                 stage = 431
             }
@@ -627,7 +636,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                     "How are you?",
                     "Where can I find Father Lawrence?",
                     "Have you heard anything from Juliet?",
-                    "Ok, thanks."
+                    "Ok, thanks.",
                 )
                 stage = 431
             }
@@ -637,7 +646,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                     "How are you?",
                     "Where can I find Father Lawrence?",
                     "Have you heard anything from Juliet?",
-                    "Ok, thanks."
+                    "Ok, thanks.",
                 )
                 stage = 431
             }
@@ -697,7 +706,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                 player(
                     "Yes, he's given me details of a potion which should help",
                     "resolve this siution. The Apothecary is helping me",
-                    "prepare it."
+                    "prepare it.",
                 )
                 stage = 328
             }
@@ -743,7 +752,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                 player(
                     "The Cadava potion...you know, the one which will make",
                     "her appear dead! She's in the crypt, pop along and claim",
-                    "your true love."
+                    "your true love.",
                 )
                 stage = 74
             }
@@ -804,15 +813,16 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                             val height = 450
                             val speed = 100
                             val other = 1
-                            pos = CameraContext(
-                                player,
-                                CameraContext.CameraType.POSITION,
-                                x - 5,
-                                y - 4,
-                                height,
-                                other,
-                                speed
-                            )
+                            pos =
+                                CameraContext(
+                                    player,
+                                    CameraContext.CameraType.POSITION,
+                                    x - 5,
+                                    y - 4,
+                                    height,
+                                    other,
+                                    speed,
+                                )
                             rot =
                                 CameraContext(player, CameraContext.CameraType.ROTATION, x + 2, y, height, other, speed)
                             PacketRepository.send(CameraViewPacket::class.java, pos!!)
@@ -820,12 +830,12 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                             interpreter.sendDialogues(
                                 player,
                                 FaceAnim.HALF_GUILTY,
-                                "You go over to her...and I'll go and wait over here..."
+                                "You go over to her...and I'll go and wait over here...",
                             )
                             stage = 743
                             return true
                         }
-                    }
+                    },
                 )
             }
 
@@ -860,7 +870,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                             path.walk(phill)
                             return true
                         }
-                    }
+                    },
                 )
             }
 
@@ -890,7 +900,7 @@ class RomeoDialogue(player: Player? = null) : Dialogue(player) {
                     phill!!,
                     FaceAnim.HALF_GUILTY,
                     "It's a shame about Juliet...but perhaps we can meet up",
-                    "later?"
+                    "later?",
                 )
                 stage = 750
             }

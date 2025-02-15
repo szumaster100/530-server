@@ -1,8 +1,5 @@
 package content.global.skill.construction.decoration.kitchen
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import content.global.skill.summoning.pet.Pets
 import core.api.animate
 import core.api.lock
@@ -13,9 +10,11 @@ import core.game.node.item.Item
 import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class BasketListener : InteractionListener {
-
     override fun defineListeners() {
         onUseWith(IntType.SCENERY, petItemIDs, *blanketIDs) { player, used, scenery ->
             val item = used as? Item ?: return@onUseWith false
@@ -53,26 +52,28 @@ class BasketListener : InteractionListener {
                             else -> true
                         }
                     }
-                }
+                },
             )
             return@onUseWith true
         }
     }
 
     companion object {
-        private val petItemIDs = intArrayOf(
-            Items.PET_CAT_1561,
-            Items.PET_CAT_1562,
-            Items.PET_CAT_1563,
-            Items.PET_CAT_1564,
-            Items.PET_CAT_1565,
-            Items.PET_CAT_1566
-        )
+        private val petItemIDs =
+            intArrayOf(
+                Items.PET_CAT_1561,
+                Items.PET_CAT_1562,
+                Items.PET_CAT_1563,
+                Items.PET_CAT_1564,
+                Items.PET_CAT_1565,
+                Items.PET_CAT_1566,
+            )
 
-        private val blanketIDs = intArrayOf(
-            Scenery.PET_BLANKET_13574,
-            Scenery.PET_BASKET_13575,
-            Scenery.PET_BASKET_13576
-        )
+        private val blanketIDs =
+            intArrayOf(
+                Scenery.PET_BLANKET_13574,
+                Scenery.PET_BASKET_13575,
+                Scenery.PET_BASKET_13576,
+            )
     }
 }

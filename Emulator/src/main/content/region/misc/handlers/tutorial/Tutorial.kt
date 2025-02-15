@@ -1,6 +1,7 @@
 package content.region.misc.handlers.tutorial
 
 import core.api.LogoutListener
+import core.api.MapArea
 import core.api.getAttribute
 import core.api.getRegionBorders
 import core.api.lockTeleport
@@ -8,11 +9,11 @@ import core.game.component.Component
 import core.game.node.entity.Entity
 import core.game.node.entity.player.Player
 import core.game.world.map.Location
-import core.api.MapArea
 import core.game.world.map.zone.ZoneBorders
 
-class Tutorial : MapArea, LogoutListener {
-
+class Tutorial :
+    MapArea,
+    LogoutListener {
     override fun defineAreaBorders(): Array<ZoneBorders> {
         return arrayOf(
             getRegionBorders(12079),
@@ -20,7 +21,7 @@ class Tutorial : MapArea, LogoutListener {
             getRegionBorders(12592),
             getRegionBorders(12436),
             getRegionBorders(12335),
-            getRegionBorders(12336)
+            getRegionBorders(12336),
         )
     }
 
@@ -40,14 +41,18 @@ class Tutorial : MapArea, LogoutListener {
                         "",
                         "Just click on the first spell, Home Teleport, in your Magic",
                         "Spellbook. This spell doesn't require any runes, but can only",
-                        "be cast once every 30 minutes."
-                    )
+                        "be cast once every 30 minutes.",
+                    ),
                 )
             }
         }
     }
 
-    override fun entityStep(entity: Entity, location: Location, lastLocation: Location) {
+    override fun entityStep(
+        entity: Entity,
+        location: Location,
+        lastLocation: Location,
+    ) {
         super.entityStep(entity, location, lastLocation)
         if (entity is Player) {
             val player = entity.asPlayer()
@@ -62,8 +67,8 @@ class Tutorial : MapArea, LogoutListener {
                         "",
                         "Just click on the first spell, Home Teleport, in your Magic",
                         "Spellbook. This spell doesn't require any runes, but can only",
-                        "be cast once every 30 minutes."
-                    )
+                        "be cast once every 30 minutes.",
+                    ),
                 )
             }
         }
@@ -78,8 +83,8 @@ class Tutorial : MapArea, LogoutListener {
                     "",
                     "Just click on the first spell, Home Teleport, in your Magic",
                     "Spellbook. This spell doesn't require any runes, but can only",
-                    "be cast once every 30 minutes."
-                )
+                    "be cast once every 30 minutes.",
+                ),
             )
         }
     }

@@ -7,7 +7,6 @@ import core.game.node.Node
 import core.game.node.entity.player.Player
 
 class FarmerPayListener : InteractionListener {
-
     override fun defineListeners() {
         on(IntType.NPC, "pay", "pay (north)", "pay (north-west)") { player, node ->
             return@on attemptPay(player, node, 0)
@@ -18,7 +17,11 @@ class FarmerPayListener : InteractionListener {
         }
     }
 
-    fun attemptPay(player: Player, node: Node, index: Int): Boolean {
+    fun attemptPay(
+        player: Player,
+        node: Node,
+        index: Int,
+    ): Boolean {
         val farmer = Farmers.forId(node.id) ?: return false
         val patch = farmer.patches[index].getPatchFor(player)
 

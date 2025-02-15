@@ -1,8 +1,5 @@
 package content.region.misthalin.quest.anma.dialogue
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.misthalin.quest.anma.AnimalMagnetism
 import content.region.misthalin.quest.anma.AnimalMagnetismCutscene
 import core.game.dialogue.Dialogue
@@ -10,9 +7,13 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.item.Item
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
-class AliceHusbandDialogue(player: Player? = null) : Dialogue(player) {
-
+class AliceHusbandDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     private lateinit var quest: Quest
 
     override fun open(vararg args: Any): Boolean {
@@ -56,7 +57,7 @@ class AliceHusbandDialogue(player: Player? = null) : Dialogue(player) {
                 player(
                     "I talked to your wife and thought that if you had a",
                     "special amulet, you could speak to her and sort out the",
-                    "bank situation without me being involved."
+                    "bank situation without me being involved.",
                 )
             }
 
@@ -64,7 +65,7 @@ class AliceHusbandDialogue(player: Player? = null) : Dialogue(player) {
                 player(
                     "I talked to your wife and thought that if you had a",
                     "special amulet, you could speak to her and sort out the",
-                    "bank situation without me being involved."
+                    "bank situation without me being involved.",
                 )
             }
 
@@ -72,7 +73,7 @@ class AliceHusbandDialogue(player: Player? = null) : Dialogue(player) {
                 player(
                     "I talked to your wife and thought that if you had a",
                     "special amulet, you could speak to her and sort out the",
-                    "bank situation without me being involved."
+                    "bank situation without me being involved.",
                 )
             }
 
@@ -87,7 +88,10 @@ class AliceHusbandDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         if (!player.equipment.containsAtLeastOneItem(Items.GHOSTSPEAK_AMULET_552)) {
             end()
             return true
@@ -106,7 +110,7 @@ class AliceHusbandDialogue(player: Player? = null) : Dialogue(player) {
                     0 -> {
                         npc(
                             "It's that fountain thingy in the temple to the east. It's",
-                            "turned them all into zombies."
+                            "turned them all into zombies.",
                         )
                         stage++
                     }
@@ -120,7 +124,7 @@ class AliceHusbandDialogue(player: Player? = null) : Dialogue(player) {
                         npc(
                             "None at all, mate, except that those worshippers at that",
                             "temple keep comin' and killin' em all for their bones.",
-                            "Don't ask me why."
+                            "Don't ask me why.",
                         )
                         stage++
                     }
@@ -135,7 +139,7 @@ class AliceHusbandDialogue(player: Player? = null) : Dialogue(player) {
                             "I don't know nuthin' about nuthin'. Oim a simple ghost",
                             "with simple needs. All I know is, years ago, that temple",
                             "started glowing green and, a few months later, I woke",
-                            "up dead. That's all there is to it."
+                            "up dead. That's all there is to it.",
                         )
                         stage++
                     }
@@ -203,7 +207,7 @@ class AliceHusbandDialogue(player: Player? = null) : Dialogue(player) {
                         npc(
                             "Suit yerself, stick-in-the-mud. Anyway, Oim not one o'",
                             "them yokels. Tell 'er I putted the cash in the bank like",
-                            "she always told me to."
+                            "she always told me to.",
                         )
                         stage++
                     }
@@ -244,7 +248,7 @@ class AliceHusbandDialogue(player: Player? = null) : Dialogue(player) {
                         npc(
                             "Maybe she said that, maybe she didn't. I think you're",
                             "just after me savings. Tell 'er that no one but a fool",
-                            "gives away their pass numbers."
+                            "gives away their pass numbers.",
                         )
                         stage++
                     }
@@ -279,7 +283,7 @@ class AliceHusbandDialogue(player: Player? = null) : Dialogue(player) {
                     0 -> {
                         npc(
                             "Arr, that makes far more sense than I was expecting",
-                            "from a muscle-head like you. My wife's a clever one."
+                            "from a muscle-head like you. My wife's a clever one.",
                         )
                         stage++
                     }
@@ -288,7 +292,7 @@ class AliceHusbandDialogue(player: Player? = null) : Dialogue(player) {
                         if (player.inventory.containsItem(AnimalMagnetism.CRONE_AMULET)) {
                             player(
                                 "Well... oh, never mind. I'm desperate enough for those",
-                                "chickens to let that pass."
+                                "chickens to let that pass.",
                             )
                             stage += 2
                         } else {
@@ -304,7 +308,7 @@ class AliceHusbandDialogue(player: Player? = null) : Dialogue(player) {
                     3 -> {
                         npc(
                             "Give me that amulet, then, and we'll be seeing about",
-                            "your unnatural desire for chickens."
+                            "your unnatural desire for chickens.",
                         )
                         stage++
                     }
@@ -369,7 +373,7 @@ class AliceHusbandDialogue(player: Player? = null) : Dialogue(player) {
                             "Could I buy those chickens now, then?",
                             "Your animals don't look too healthy.",
                             "I'm okay, thank you.",
-                            "Where can I get these ecto-tokens?"
+                            "Where can I get these ecto-tokens?",
                         )
                         stage++
                     }
@@ -407,7 +411,7 @@ class AliceHusbandDialogue(player: Player? = null) : Dialogue(player) {
                         options(
                             "Could I buy 1 chicken now?",
                             "Could I buy 2 chickens now?",
-                            "Your animals don't look too healthy; I'll buy elsewhere."
+                            "Your animals don't look too healthy; I'll buy elsewhere.",
                         )
                         stage++
                     }
@@ -452,7 +456,7 @@ class AliceHusbandDialogue(player: Player? = null) : Dialogue(player) {
                     20 -> {
                         npc(
                             "It's that fountain thingy in the temple to the east. It's",
-                            "turned them all into zombies."
+                            "turned them all into zombies.",
                         )
                         stage++
                     }
@@ -466,7 +470,7 @@ class AliceHusbandDialogue(player: Player? = null) : Dialogue(player) {
                         npc(
                             "None at all, mate, except that those worshippers at that",
                             "temple keep comin' and killin' em all for their bones.",
-                            "Don't ask me why."
+                            "Don't ask me why.",
                         )
                         stage++
                     }
@@ -481,7 +485,7 @@ class AliceHusbandDialogue(player: Player? = null) : Dialogue(player) {
                             "I don't know nuthin' about nuthin'. Oim a simple ghost",
                             "with simple needs. All I know is, years ago, that temple",
                             "started glowing green and, a few months later, I woke",
-                            "up dead. That's all there is to it."
+                            "up dead. That's all there is to it.",
                         )
                         stage++
                     }
@@ -498,7 +502,7 @@ class AliceHusbandDialogue(player: Player? = null) : Dialogue(player) {
                         npc(
                             "The ghosts I talk to say that the tokens have something",
                             "to do with the tower just east of here. If you need to",
-                            "collect some I'd try there."
+                            "collect some I'd try there.",
                         )
                         stage++
                     }
@@ -518,7 +522,7 @@ class AliceHusbandDialogue(player: Player? = null) : Dialogue(player) {
             npc(
                 "I'm not a charity here, ya know. Bad enough all you",
                 "cow-killing folks are a'slaughterin' me beasts. Come back",
-                "when ya have enough tokens."
+                "when ya have enough tokens.",
             )
             return
         }

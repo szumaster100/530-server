@@ -7,7 +7,7 @@ enum class Bars(
     val barType: BarType,
     val smithingType: SmithingType,
     @JvmField val product: Int,
-    @JvmField val level: Int
+    @JvmField val level: Int,
 ) {
     BRONZE_DAGGER(BarType.BRONZE, SmithingType.TYPE_DAGGER, Items.BRONZE_DAGGER_1205, 1),
     BRONZE_AXE(BarType.BRONZE, SmithingType.TYPE_AXE, Items.BRONZE_AXE_1351, 1),
@@ -166,7 +166,8 @@ enum class Bars(
     RUNITE_PLATE_SKIRT(BarType.RUNITE, SmithingType.TYPE_PLATE_SKIRT, Items.RUNE_PLATESKIRT_1093, 99),
     RUNITE_PLATE_LEGS(BarType.RUNITE, SmithingType.TYPE_PLATELEG, Items.RUNE_PLATELEGS_1079, 99),
     RUNITE_PLATE_BODY(BarType.RUNITE, SmithingType.TYPE_PLATEBODY, Items.RUNE_PLATEBODY_1127, 99),
-    RUNITE_PICKAXE(BarType.RUNITE, SmithingType.TYPE_PICKAXE, Items.RUNE_PICKAXE_1275, 90);
+    RUNITE_PICKAXE(BarType.RUNITE, SmithingType.TYPE_PICKAXE, Items.RUNE_PICKAXE_1275, 90),
+    ;
 
     companion object {
         private val bars: MutableMap<Short, Bars> = HashMap()
@@ -201,7 +202,10 @@ enum class Bars(
             return barss
         }
 
-        fun getItemId(buttonId: Int, type: BarType): Int {
+        fun getItemId(
+            buttonId: Int,
+            type: BarType,
+        ): Int {
             for (bar in values()) {
                 if (bar.barType != type) {
                     continue
@@ -215,7 +219,11 @@ enum class Bars(
             return -1
         }
 
-        fun getIndex(player: Player?, buttonId: Int, type: BarType): Int {
+        fun getIndex(
+            player: Player?,
+            buttonId: Int,
+            type: BarType,
+        ): Int {
             var index = 0
             for (bar in values()) {
                 var bar = bar

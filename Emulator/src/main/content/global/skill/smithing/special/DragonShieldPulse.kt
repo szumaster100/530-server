@@ -1,15 +1,17 @@
 package content.global.skill.smithing.special
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
 import core.api.*
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import org.rs.consts.Animations
+import org.rs.consts.Items
 
-class DragonShieldPulse(player: Player?, val item: Item) : SkillPulse<Item>(player, null) {
-
+class DragonShieldPulse(
+    player: Player?,
+    val item: Item,
+) : SkillPulse<Item>(player, null) {
     private var tick = 0
 
     override fun checkRequirements(): Boolean {
@@ -54,13 +56,14 @@ class DragonShieldPulse(player: Player?, val item: Item) : SkillPulse<Item>(play
                     false,
                     "Even for an experienced armourer it is not an easy task, but",
                     "eventually it is ready. You have restored the dragon square shield to",
-                    "its former glory."
+                    "its former glory.",
                 )
                 addDialogueAction(player) { player, button ->
                     if (button >= 2) {
-                        if (removeItem(player, Items.SHIELD_LEFT_HALF_2366) && removeItem(
+                        if (removeItem(player, Items.SHIELD_LEFT_HALF_2366) &&
+                            removeItem(
                                 player,
-                                Items.SHIELD_RIGHT_HALF_2368
+                                Items.SHIELD_RIGHT_HALF_2368,
                             )
                         ) {
                             addItem(player, Items.DRAGON_SQ_SHIELD_1187, 1)

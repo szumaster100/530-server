@@ -1,15 +1,14 @@
 package content.global.skill.crafting.items.armour.yakhide
 
-import org.rs.consts.Items
 import core.api.amountInInventory
 import core.api.skill.sendSkillDialogue
 import core.api.submitIndividualPulse
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.item.Item
+import org.rs.consts.Items
 
 class YakArmourCraftingListener : InteractionListener {
-
     override fun defineListeners() {
         onUseWith(IntType.ITEM, Items.CURED_YAK_HIDE_10820, Items.NEEDLE_1733) { player, used, _ ->
             sendSkillDialogue(player) {
@@ -17,19 +16,19 @@ class YakArmourCraftingListener : InteractionListener {
                 create { index, amount ->
                     submitIndividualPulse(
                         entity = player,
-                        pulse = YakArmourCraftingPulse(
-                            player,
-                            if (index == 1) BODY else LEGS,
-                            index,
-                            amount
-                        )
+                        pulse =
+                            YakArmourCraftingPulse(
+                                player,
+                                if (index == 1) BODY else LEGS,
+                                index,
+                                amount,
+                            ),
                     )
                 }
 
                 calculateMaxAmount {
                     amountInInventory(player, used.id)
                 }
-
             }
             return@onUseWith true
         }

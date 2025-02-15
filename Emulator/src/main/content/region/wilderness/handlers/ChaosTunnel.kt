@@ -1,9 +1,8 @@
 package content.region.wilderness.handlers
 
-import org.rs.consts.Quests
 import core.ServerStore.Companion.getArchive
-import core.api.quest.hasRequirement
 import core.api.lock
+import core.api.quest.hasRequirement
 import core.api.visualize
 import core.cache.def.impl.SceneryDefinition
 import core.game.activity.ActivityManager
@@ -14,8 +13,6 @@ import core.game.node.entity.Entity
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.scenery.Scenery
-import core.tools.Log
-import core.tools.SystemLogger
 import core.game.world.GameWorld.settings
 import core.game.world.GameWorld.ticks
 import core.game.world.map.Location
@@ -24,16 +21,20 @@ import core.game.world.map.zone.ZoneBorders
 import core.game.world.map.zone.ZoneBuilder
 import core.game.world.map.zone.ZoneRestriction
 import core.game.world.update.flag.context.Graphics
+import core.plugin.ClassScanner.definePlugin
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner.definePlugin
+import core.tools.Log
 import core.tools.RandomFunction
+import core.tools.SystemLogger
 import org.json.simple.JSONObject
+import org.rs.consts.Quests
 import java.util.*
 
 @Initializable
-class ChaosTunnel : MapZone("Chaos tunnel", true, ZoneRestriction.CANNON), Plugin<Any?> {
-
+class ChaosTunnel :
+    MapZone("Chaos tunnel", true, ZoneRestriction.CANNON),
+    Plugin<Any?> {
     @Throws(Throwable::class)
     override fun newInstance(arg: Any?): Plugin<Any?> {
         ZoneBuilder.configure(this)
@@ -49,42 +50,66 @@ class ChaosTunnel : MapZone("Chaos tunnel", true, ZoneRestriction.CANNON), Plugi
                     return this
                 }
 
-                override fun handle(player: Player, node: Node, option: String): Boolean {
+                override fun handle(
+                    player: Player,
+                    node: Node,
+                    option: String,
+                ): Boolean {
                     var data: Array<Any>? = null
                     when (option) {
-                        "enter", "climb-up" -> when (node.id) {
-                            28891, 28893, 28892, 28782 -> {
-                                if (option == "enter" && player.inCombat()) {
-                                    player.sendMessage("You can't enter the rift when you've recently been in combat.")
-                                    return true
-                                }
-                                var i = 0
-                                while (i < ENTRANCE_DATA.size) {
-                                    if (ENTRANCE_DATA[i][if (option == "enter") 0 else 2] as Int == node.id && player.location.withinDistance(ENTRANCE_DATA[i][if (option == "enter") 3 else 1] as Location)) {
-                                        data = ENTRANCE_DATA[i]
-                                        break
+                        "enter", "climb-up" ->
+                            when (node.id) {
+                                28891, 28893, 28892, 28782 -> {
+                                    if (option == "enter" && player.inCombat()) {
+                                        player.sendMessage(
+                                            "You can't enter the rift when you've recently been in combat.",
+                                        )
+                                        return true
                                     }
-                                    i++
+                                    var i = 0
+                                    while (i < ENTRANCE_DATA.size) {
+                                        if (ENTRANCE_DATA[i][if (option == "enter") 0 else 2] as Int == node.id &&
+                                            player.location.withinDistance(
+                                                ENTRANCE_DATA[i][
+                                                    if (option ==
+                                                        "enter"
+                                                    ) {
+                                                        3
+                                                    } else {
+                                                        1
+                                                    },
+                                                ] as Location,
+                                            )
+                                        ) {
+                                            data = ENTRANCE_DATA[i]
+                                            break
+                                        }
+                                        i++
+                                    }
+                                    if (data == null) {
+                                        return false
+                                    }
+                                    player.teleport(data[if (option == "enter") 1 else 3] as Location)
                                 }
-                                if (data == null) {
-                                    return false
-                                }
-                                player.teleport(data[if (option == "enter") 1 else 3] as Location)
                             }
-                        }
 
-                        "climb" -> when (node.id) {
-                            23074 -> player.teleport(Location(3283, 3467, 0))
-                        }
+                        "climb" ->
+                            when (node.id) {
+                                23074 -> player.teleport(Location(3283, 3467, 0))
+                            }
                     }
                     return true
                 }
-            }
+            },
         )
         return this
     }
 
-    override fun interact(entity: Entity, target: Node, option: Option): Boolean {
+    override fun interact(
+        entity: Entity,
+        target: Node,
+        option: Option,
+    ): Boolean {
         if (entity is Player) {
             when (target.id) {
                 29537 -> {}
@@ -110,7 +135,10 @@ class ChaosTunnel : MapZone("Chaos tunnel", true, ZoneRestriction.CANNON), Plugi
         return super.enter(entity)
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 
@@ -190,7 +218,10 @@ class ChaosTunnel : MapZone("Chaos tunnel", true, ZoneRestriction.CANNON), Plugi
         addLink(3222, 5488, 3218, 5497)
     }
 
-    private fun teleport(player: Player, scenery: Scenery) {
+    private fun teleport(
+        player: Player,
+        scenery: Scenery,
+    ) {
         if (scenery.location.x == 3142 && scenery.location.y == 5545) {
             if (hasRequirement(player, Quests.WHAT_LIES_BELOW)) commenceBorkBattle(player)
             return
@@ -268,28 +299,36 @@ class ChaosTunnel : MapZone("Chaos tunnel", true, ZoneRestriction.CANNON), Plugi
         return null
     }
 
-    private fun addLink(x: Int, y: Int, x2: Int, y2: Int) {
+    private fun addLink(
+        x: Int,
+        y: Int,
+        x2: Int,
+        y2: Int,
+    ) {
         addLink(Location(x, y, 0), Location(x2, y2, 0))
     }
 
-    private fun addLink(location: Location, loc: Location) {
+    private fun addLink(
+        location: Location,
+        loc: Location,
+    ) {
         PORTALS[location] = loc
     }
 
     companion object {
-
         @JvmStatic
         fun getBorkStoreFile(): JSONObject {
             return getArchive("daily-bork-killed")
         }
 
-        private val ENTRANCE_DATA = arrayOf(
-            arrayOf(28891, Location(3182, 5471, 0), 28782, Location(3059, 3549, 0)),
-            arrayOf(28893, Location(3248, 5489, 0), 28782, Location(3120, 3571, 0)),
-            arrayOf(28892, Location(3292, 5479, 0), 28782, Location(3166, 3561, 0)),
-            arrayOf(28893, Location(3234, 5558, 0), 28782, Location(3107, 3640, 0)),
-            arrayOf(28892, Location(3290, 5538, 0), 28782, Location(3165, 3617, 0)),
-        )
+        private val ENTRANCE_DATA =
+            arrayOf(
+                arrayOf(28891, Location(3182, 5471, 0), 28782, Location(3059, 3549, 0)),
+                arrayOf(28893, Location(3248, 5489, 0), 28782, Location(3120, 3571, 0)),
+                arrayOf(28892, Location(3292, 5479, 0), 28782, Location(3166, 3561, 0)),
+                arrayOf(28893, Location(3234, 5558, 0), 28782, Location(3107, 3640, 0)),
+                arrayOf(28892, Location(3290, 5538, 0), 28782, Location(3165, 3617, 0)),
+            )
 
         private val PORTALS: MutableMap<Location, Location> = HashMap()
     }

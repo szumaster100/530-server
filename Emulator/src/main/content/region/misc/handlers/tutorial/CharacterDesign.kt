@@ -1,19 +1,56 @@
 package content.region.misc.handlers.tutorial
 
-import org.rs.consts.Components
 import core.api.*
 import core.api.ui.sendInterfaceConfig
 import core.game.component.Component
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.appearance.Gender
 import core.tools.RandomFunction
+import org.rs.consts.Components
 import kotlin.math.abs
 
 object CharacterDesign {
-
-    private val MALE_HEAD_IDS = intArrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 91, 92, 93, 94, 95, 96, 97, 261, 262, 263, 264, 265, 266, 267, 268)
-    private val FEMALE_HEAD_IDS = intArrayOf(45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280)
-    private val MALE_JAW_IDS = intArrayOf(10, 11, 12, 13, 14, 15, 16, 17, 98, 99, 100, 101, 102, 103, 104, 305, 306, 307, 308)
+    private val MALE_HEAD_IDS =
+        intArrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 91, 92, 93, 94, 95, 96, 97, 261, 262, 263, 264, 265, 266, 267, 268)
+    private val FEMALE_HEAD_IDS =
+        intArrayOf(
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            135,
+            136,
+            137,
+            138,
+            139,
+            140,
+            141,
+            142,
+            143,
+            144,
+            145,
+            146,
+            269,
+            270,
+            271,
+            272,
+            273,
+            274,
+            275,
+            276,
+            277,
+            278,
+            279,
+            280,
+        )
+    private val MALE_JAW_IDS =
+        intArrayOf(10, 11, 12, 13, 14, 15, 16, 17, 98, 99, 100, 101, 102, 103, 104, 305, 306, 307, 308)
     private val FEMALE_JAW_IDS = intArrayOf(1000)
     private val MALE_TORSO_IDS = intArrayOf(18, 19, 20, 21, 22, 23, 24, 25, 111, 112, 113, 114, 115, 116)
     private val FEMALE_TORSO_IDS = intArrayOf(56, 57, 58, 59, 60, 153, 154, 155, 156, 157, 158)
@@ -26,11 +63,92 @@ object CharacterDesign {
     val FEMALE_LEGS_IDS = intArrayOf(70, 71, 72, 73, 74, 75, 76, 77, 128, 129, 130, 131, 132, 133, 134)
     val MALE_FEET_IDS = intArrayOf(42, 43)
     val FEMALE_FEET_IDS = intArrayOf(79, 80)
-    val MALE_LOOK_IDS: Array<IntArray> = arrayOf(MALE_HEAD_IDS, MALE_JAW_IDS, MALE_TORSO_IDS, MALE_ARMS_IDS, MALE_HANDS_IDS, MALE_LEGS_IDS, MALE_FEET_IDS)
-    val FEMALE_LOOK_IDS: Array<IntArray> = arrayOf(FEMALE_HEAD_IDS, FEMALE_JAW_IDS, FEMALE_TORSO_IDS, FEMALE_ARMS_IDS, FEMALE_HANDS_IDS, FEMALE_LEGS_IDS, FEMALE_FEET_IDS)
-    val HAIR_COLORS: IntArray = intArrayOf(20, 19, 10, 18, 4, 5, 15, 7, 0, 6, 21, 9, 22, 17, 8, 16, 11, 24, 23, 3, 2, 1, 14, 13, 12)
-    val TORSO_COLORS: IntArray = intArrayOf(24, 23, 2, 22, 12, 11, 6, 19, 4, 0, 9, 13, 25, 8, 15, 26, 21, 7, 20, 14, 10, 28, 27, 3, 5, 18, 17, 1, 16)
-    val LEG_COLORS: IntArray = intArrayOf(26, 24, 23, 3, 22, 13, 12, 7, 19, 5, 1, 10, 14, 25, 9, 0, 21, 8, 20, 15, 11, 28, 27, 4, 6, 18, 17, 2, 16)
+    val MALE_LOOK_IDS: Array<IntArray> =
+        arrayOf(
+            MALE_HEAD_IDS,
+            MALE_JAW_IDS,
+            MALE_TORSO_IDS,
+            MALE_ARMS_IDS,
+            MALE_HANDS_IDS,
+            MALE_LEGS_IDS,
+            MALE_FEET_IDS,
+        )
+    val FEMALE_LOOK_IDS: Array<IntArray> =
+        arrayOf(
+            FEMALE_HEAD_IDS,
+            FEMALE_JAW_IDS,
+            FEMALE_TORSO_IDS,
+            FEMALE_ARMS_IDS,
+            FEMALE_HANDS_IDS,
+            FEMALE_LEGS_IDS,
+            FEMALE_FEET_IDS,
+        )
+    val HAIR_COLORS: IntArray =
+        intArrayOf(20, 19, 10, 18, 4, 5, 15, 7, 0, 6, 21, 9, 22, 17, 8, 16, 11, 24, 23, 3, 2, 1, 14, 13, 12)
+    val TORSO_COLORS: IntArray =
+        intArrayOf(
+            24,
+            23,
+            2,
+            22,
+            12,
+            11,
+            6,
+            19,
+            4,
+            0,
+            9,
+            13,
+            25,
+            8,
+            15,
+            26,
+            21,
+            7,
+            20,
+            14,
+            10,
+            28,
+            27,
+            3,
+            5,
+            18,
+            17,
+            1,
+            16,
+        )
+    val LEG_COLORS: IntArray =
+        intArrayOf(
+            26,
+            24,
+            23,
+            3,
+            22,
+            13,
+            12,
+            7,
+            19,
+            5,
+            1,
+            10,
+            14,
+            25,
+            9,
+            0,
+            21,
+            8,
+            20,
+            15,
+            11,
+            28,
+            27,
+            4,
+            6,
+            18,
+            17,
+            2,
+            16,
+        )
     val FEET_COLORS: IntArray = intArrayOf(0, 1, 2, 3, 4, 5)
     val SKIN_COLORS: IntArray = intArrayOf(7, 6, 5, 4, 3, 2, 1, 0)
 
@@ -66,7 +184,10 @@ object CharacterDesign {
     }
 
     @JvmStatic
-    fun handleButtons(player: Player, buttonId: Int): Boolean {
+    fun handleButtons(
+        player: Player,
+        buttonId: Int,
+    ): Boolean {
         when (buttonId) {
             37, 40 -> player.settings.toggleMouseButton()
             92, 93 -> changeLook(player, 0, buttonId == 93)
@@ -110,7 +231,10 @@ object CharacterDesign {
         return false
     }
 
-    private fun changeGender(player: Player, male: Boolean) {
+    private fun changeGender(
+        player: Player,
+        male: Boolean,
+    ) {
         player.setAttribute("male", male)
         setVarp(player, 1262, if (male) 1 else 0)
         if (male) {
@@ -123,7 +247,11 @@ object CharacterDesign {
         reset(player)
     }
 
-    private fun changeLook(player: Player, index: Int, increment: Boolean) {
+    private fun changeLook(
+        player: Player,
+        index: Int,
+        increment: Boolean,
+    ) {
         if (index < 2 && !player.getAttribute("first-click:$index", false)) {
             setAttribute(player, "first-click:$index", true)
             return
@@ -131,11 +259,17 @@ object CharacterDesign {
         setAttribute(
             player,
             "look-val:$index",
-            getValue(player, "look", index, player.getAttribute("look:$index", 0), increment)
+            getValue(player, "look", index, player.getAttribute("look:$index", 0), increment),
         )
     }
 
-    private fun changeColor(player: Player, index: Int, array: IntArray, startId: Int, buttonId: Int) {
+    private fun changeColor(
+        player: Player,
+        index: Int,
+        array: IntArray,
+        startId: Int,
+        buttonId: Int,
+    ) {
         val col = array[abs((buttonId - startId).toDouble()).toInt()]
         setAttribute(player, "color-val:$index", col)
     }
@@ -151,7 +285,10 @@ object CharacterDesign {
     }
 
     @JvmStatic
-    fun randomize(player: Player, head: Boolean) {
+    fun randomize(
+        player: Player,
+        head: Boolean,
+    ) {
         if (head) {
             changeLook(player, 0, RandomFunction.random(2) == 1)
             changeLook(player, 1, RandomFunction.random(2) == 1)
@@ -168,7 +305,10 @@ object CharacterDesign {
         confirm(player, false)
     }
 
-    private fun confirm(player: Player, close: Boolean) {
+    private fun confirm(
+        player: Player,
+        close: Boolean,
+    ) {
         if (close) {
             setAttribute(player, "char-design:accepted", true)
             player.interfaceManager.close()
@@ -179,20 +319,26 @@ object CharacterDesign {
             player.appearance.appearanceCache[i].changeLook(
                 player.getAttribute(
                     "look-val:$i",
-                    player.appearance.appearanceCache[i].look
-                )
+                    player.appearance.appearanceCache[i].look,
+                ),
             )
             player.appearance.appearanceCache[i].changeColor(
                 player.getAttribute(
                     "color-val:$i",
-                    player.appearance.appearanceCache[i].color
-                )
+                    player.appearance.appearanceCache[i].color,
+                ),
             )
         }
         player.appearance.sync()
     }
 
-    private fun getValue(player: Player, key: String, index: Int, currentIndex: Int, increment: Boolean): Int {
+    private fun getValue(
+        player: Player,
+        key: String,
+        index: Int,
+        currentIndex: Int,
+        increment: Boolean,
+    ): Int {
         var currentIndex = currentIndex
         val array =
             if (player.getAttribute("male", player.appearance.isMale)) MALE_LOOK_IDS[index] else FEMALE_LOOK_IDS[index]

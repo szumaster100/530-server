@@ -1,14 +1,13 @@
 package content.global.handlers.item.withitem
 
-import org.rs.consts.Items
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.Node
 import core.tools.RandomFunction
+import org.rs.consts.Items
 
 class MacheteListener : InteractionListener {
-
     val MACHETE =
         intArrayOf(Items.MACHETE_975, Items.OPAL_MACHETE_6313, Items.JADE_MACHETE_6315, Items.RED_TOPAZ_MACHETE_6317)
     val THATCHSPAR_LIGHT = Items.THATCH_SPAR_LIGHT_6281

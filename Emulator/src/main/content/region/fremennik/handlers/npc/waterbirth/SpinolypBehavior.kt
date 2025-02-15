@@ -1,8 +1,5 @@
 package content.region.fremennik.handlers.npc.waterbirth
 
-import org.rs.consts.Graphics
-import org.rs.consts.NPCs
-import org.rs.consts.Sounds
 import core.api.playAudio
 import core.api.sendGraphics
 import core.api.stopWalk
@@ -12,13 +9,16 @@ import core.game.node.entity.npc.NPCBehavior
 import core.game.world.map.RegionManager
 import core.game.world.map.path.ClipMaskSupplier
 import core.tools.RandomFunction
+import org.rs.consts.Graphics
+import org.rs.consts.NPCs
+import org.rs.consts.Sounds
 
-class SpinolypBehavior : NPCBehavior(
-    NPCs.SPINOLYP_2894,
-    NPCs.SUSPICIOUS_WATER_2895,
-    NPCs.SPINOLYP_2896
-) {
-
+class SpinolypBehavior :
+    NPCBehavior(
+        NPCs.SPINOLYP_2894,
+        NPCs.SUSPICIOUS_WATER_2895,
+        NPCs.SPINOLYP_2896,
+    ) {
     override fun onCreation(self: NPC) {
         if (self.id == NPCs.SUSPICIOUS_WATER_2895) {
             self.apply {
@@ -73,7 +73,11 @@ class SpinolypBehavior : NPCBehavior(
 }
 
 object WaterClipping : ClipMaskSupplier {
-    override fun getClippingFlag(z: Int, x: Int, y: Int): Int {
+    override fun getClippingFlag(
+        z: Int,
+        x: Int,
+        y: Int,
+    ): Int {
         return RegionManager.getWaterClipFlag(z, x, y)
     }
 }

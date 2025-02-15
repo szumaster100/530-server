@@ -4,7 +4,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 object TaskExecutor {
-
     @JvmStatic
     fun executeSQL(task: () -> Unit) {
         GlobalScope.launch {

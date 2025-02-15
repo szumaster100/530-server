@@ -1,6 +1,5 @@
 package content.region.misthalin.dialogue.draynor
 
-import org.rs.consts.Items
 import core.api.setAttribute
 import core.game.dialogue.Dialogue
 import core.game.node.entity.combat.ImpactHandler.HitsplatType
@@ -8,10 +7,12 @@ import core.game.node.entity.player.Player
 import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
 import core.plugin.Initializable
+import org.rs.consts.Items
 
 @Initializable
-class ManorFountainDialogue(player: Player? = null) : Dialogue(player) {
-
+class ManorFountainDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         if (player.getAttribute("pressure-gauge", false) && player.inventory.containsItem(PRESSURE_GAUGE)) {
             player("It's full of dead fish!")
@@ -23,7 +24,10 @@ class ManorFountainDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             1 -> {
                 player.impactHandler.manualHit(player, 1, HitsplatType.NORMAL)

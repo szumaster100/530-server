@@ -5,7 +5,9 @@ import core.game.world.map.Region
 import core.game.world.map.RegionChunk
 import core.game.world.map.build.DynamicRegion
 
-open class FillChunkContract(var chunk: RegionChunk? = null) : ChunkSpecContract {
+open class FillChunkContract(
+    var chunk: RegionChunk? = null,
+) : ChunkSpecContract {
     constructor(chunk: (Int, Int, Int, Region) -> RegionChunk?) : this(null) {
         this.chunkDelegate = chunk
     }
@@ -17,8 +19,8 @@ open class FillChunkContract(var chunk: RegionChunk? = null) : ChunkSpecContract
 
     override fun populateChunks(dyn: DynamicRegion) {
         for (plane in planes) {
-            for (x in 0 until 8)
-                for (y in 0 until 8)
+            for (x in 0 until 8) {
+                for (y in 0 until 8) {
                     if (replaceCondition.invoke(x, y, plane)) {
                         val chunk = getChunk(x, y, plane, dyn)
                         dyn.replaceChunk(
@@ -26,18 +28,31 @@ open class FillChunkContract(var chunk: RegionChunk? = null) : ChunkSpecContract
                             x,
                             y,
                             chunk,
-                            sourceRegion
+                            sourceRegion,
                         )
                         afterSetting(chunk, x, y, plane, dyn)
                     }
+                }
+            }
         }
     }
 
-    open fun getChunk(x: Int, y: Int, plane: Int, dyn: DynamicRegion): BuildRegionChunk? {
+    open fun getChunk(
+        x: Int,
+        y: Int,
+        plane: Int,
+        dyn: DynamicRegion,
+    ): BuildRegionChunk? {
         return chunkDelegate.invoke(x, y, plane, sourceRegion)?.copy(dyn.planes[plane])
     }
 
-    open fun afterSetting(chunk: BuildRegionChunk?, x: Int, y: Int, plane: Int, dyn: DynamicRegion) {}
+    open fun afterSetting(
+        chunk: BuildRegionChunk?,
+        x: Int,
+        y: Int,
+        plane: Int,
+        dyn: DynamicRegion,
+    ) {}
 
     fun from(region: Region): FillChunkContract {
         this.sourceRegion = region

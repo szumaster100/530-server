@@ -1,8 +1,5 @@
 package content.region.kandarin.quest.grandtree.dialogue
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.addItemOrDrop
 import core.api.quest.getQuestStage
 import core.api.sendDialogue
@@ -13,11 +10,18 @@ import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class AnitaDialogue(player: Player? = null) : Dialogue(player) {
-
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+class AnitaDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (getQuestStage(player!!, Quests.THE_GRAND_TREE)) {
             0 -> sendDialogue(player!!, "Anita seems too busy to talk.").also { stage = END_DIALOGUE }
             60 -> {
@@ -36,15 +40,17 @@ class AnitaDialogue(player: Player? = null) : Dialogue(player) {
                         4 -> playerl(FaceAnim.FRIENDLY, "Indeed!").also { stage++ }
                         5 -> npcl(FaceAnim.OLD_DEFAULT, "Could you do me a favour?").also { stage++ }
                         6 -> playerl(FaceAnim.THINKING, "I suppose so.").also { stage++ }
-                        7 -> npcl(
-                            FaceAnim.OLD_DEFAULT,
-                            "Please give this key to Glough, he left it here last night."
-                        ).also { stage++ }
+                        7 ->
+                            npcl(
+                                FaceAnim.OLD_DEFAULT,
+                                "Please give this key to Glough, he left it here last night.",
+                            ).also { stage++ }
 
-                        8 -> sendItemDialogue(player!!, Items.GLOUGHS_KEY_788, "Anita gives you a key.").also {
-                            addItemOrDrop(player!!, Items.GLOUGHS_KEY_788)
-                            stage++
-                        }
+                        8 ->
+                            sendItemDialogue(player!!, Items.GLOUGHS_KEY_788, "Anita gives you a key.").also {
+                                addItemOrDrop(player!!, Items.GLOUGHS_KEY_788)
+                                stage++
+                            }
 
                         9 -> npcl(FaceAnim.OLD_DEFAULT, "Thanks a lot.").also { stage++ }
                         10 -> playerl(FaceAnim.HAPPY, "No...thank you!").also { stage = END_DIALOGUE }

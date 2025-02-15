@@ -1,15 +1,13 @@
 package content.minigame.puropuro
 
+import core.api.*
+import core.game.interaction.InterfaceListener
 import org.rs.consts.Components
 import org.rs.consts.Items
 import org.rs.consts.NPCs
-import core.api.*
-import core.game.interaction.InterfaceListener
 
 class ElnockExchangeInterface : InterfaceListener {
-
     override fun defineInterfaceListeners() {
-
         onOpen(Components.ELNOCK_EXCHANGE_540) { player, _ ->
             val values = intArrayOf(22, 25, 28, 31)
             for (i in ElnockExchange.values().indices) {
@@ -38,12 +36,20 @@ class ElnockExchangeInterface : InterfaceListener {
                 if (!hasSpaceFor(player, exchange.reward)) {
                     var amount = exchange.reward.amount - freeSlots(player)
                     when {
-                        (exchange.reward.id == Items.IMPLING_JAR_11260) -> sendDialogue(
-                            player,
-                            "You'll need $amount empty inventory ${if (freeSlots(player) <= 1) "spaces" else "space"} to hold the impling ${
-                                if (freeSlots(player) <= 1) "jars" else "jar"
-                            }."
-                        )
+                        (exchange.reward.id == Items.IMPLING_JAR_11260) ->
+                            sendDialogue(
+                                player,
+                                "You'll need $amount empty inventory ${if (freeSlots(
+                                        player,
+                                    ) <= 1
+                                ) {
+                                    "spaces"
+                                } else {
+                                    "space"
+                                }} to hold the impling ${
+                                    if (freeSlots(player) <= 1) "jars" else "jar"
+                                }.",
+                            )
 
                         else -> sendMessage(player, "You don't have enough inventory space.")
                     }
@@ -51,26 +57,34 @@ class ElnockExchangeInterface : InterfaceListener {
                     removeAttribute(player, "exchange")
                     return@on true
                 }
-                if (if (exchange == ElnockExchange.IMPLING_JAR) player.inventory.remove(ElnockExchange.getItem(player)) else player.inventory.remove(
-                        *exchange.required
-                    )
+                if (if (exchange ==
+                        ElnockExchange.IMPLING_JAR
+                    ) {
+                        player.inventory.remove(ElnockExchange.getItem(player))
+                    } else {
+                        player.inventory.remove(
+                            *exchange.required,
+                        )
+                    }
                 ) {
                     closeInterface(player)
                     removeAttribute(player, "exchange")
                     player.inventory.add(exchange.reward, player)
 
                     when {
-                        (exchange.reward.id == Items.IMPLING_JAR_11260) -> sendItemDialogue(
-                            player,
-                            exchange.reward,
-                            "Elnock gives you three ${getItemName(exchange.reward.id).lowercase()}s."
-                        )
+                        (exchange.reward.id == Items.IMPLING_JAR_11260) ->
+                            sendItemDialogue(
+                                player,
+                                exchange.reward,
+                                "Elnock gives you three ${getItemName(exchange.reward.id).lowercase()}s.",
+                            )
 
-                        else -> sendItemDialogue(
-                            player,
-                            exchange.reward,
-                            "Elnock gives you ${getItemName(exchange.reward.id).lowercase()}."
-                        )
+                        else ->
+                            sendItemDialogue(
+                                player,
+                                exchange.reward,
+                                "Elnock gives you ${getItemName(exchange.reward.id).lowercase()}.",
+                            )
                     }
 
                     addDialogueAction(player) { _, button ->

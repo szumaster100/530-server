@@ -1,7 +1,5 @@
 package content.region.kandarin.quest.grail
 
-import org.rs.consts.Items
-import org.rs.consts.Quests
 import core.api.getAttribute
 import core.api.rewardXP
 import core.game.node.entity.player.Player
@@ -10,10 +8,11 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.Quests
 
 @Initializable
 class HolyGrail : Quest(Quests.HOLY_GRAIL, 76, 75, 1, 5, 0, 1, 10) {
-
     override fun newInstance(`object`: Any?): Quest {
         return this
     }
@@ -31,7 +30,10 @@ class HolyGrail : Quest(Quests.HOLY_GRAIL, 76, 75, 1, 5, 0, 1, 10) {
         const val VARP_SHOW_MERLIN_VALUE = 45
     }
 
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var ln = 11
         player ?: return

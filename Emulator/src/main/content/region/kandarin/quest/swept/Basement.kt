@@ -9,7 +9,6 @@ import core.game.world.map.zone.ZoneRestriction
 import org.rs.consts.Items
 
 class Basement : MapArea {
-
     override fun defineAreaBorders(): Array<ZoneBorders> {
         return arrayOf(bettyBasement, hettyBasement)
     }
@@ -20,7 +19,7 @@ class Basement : MapArea {
 
     override fun areaEnter(entity: Entity) {
         super.areaEnter(entity)
-        if(entity is Player) {
+        if (entity is Player) {
             val p = entity.asPlayer()
             if (inBorders(p, bettyBasement)) {
                 SweptUtils.spawnBettyBasementNPCs()
@@ -41,7 +40,10 @@ class Basement : MapArea {
         }
     }
 
-    override fun areaLeave(entity: Entity, logout: Boolean) {
+    override fun areaLeave(
+        entity: Entity,
+        logout: Boolean,
+    ) {
         if (entity is Player) {
             val p = entity.asPlayer()
             if (inBorders(entity, hettyBasement)) {
@@ -59,7 +61,7 @@ class Basement : MapArea {
             }
 
             if (inBorders(p, bettyBasement)) {
-                if(inInventory(p, Items.MAGIC_SLATE_14069)) {
+                if (inInventory(p, Items.MAGIC_SLATE_14069)) {
                     removeItem(p, Items.MAGIC_SLATE_14069)
                 }
 
@@ -75,6 +77,5 @@ class Basement : MapArea {
     companion object {
         val bettyBasement = ZoneBorders(3244, 4500, 3217, 4525)
         val hettyBasement = ZoneBorders(3158, 4510, 3176, 4526)
-
     }
 }

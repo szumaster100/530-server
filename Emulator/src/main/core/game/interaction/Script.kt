@@ -8,39 +8,47 @@ typealias InteractExecutor = (Player, Node, Int) -> Boolean
 typealias VoidExecutor = (Int) -> Boolean
 
 enum class QueueStrength {
-
     WEAK,
 
     NORMAL,
 
     STRONG,
 
-    SOFT
+    SOFT,
 }
 
-open class Script<T>(val execution: T, val persist: Boolean) {
+open class Script<T>(
+    val execution: T,
+    val persist: Boolean,
+) {
     var state: Int = 0
     var nextExecution = 0
 }
 
-class Interaction(execution: InteractExecutor, val distance: Int, persist: Boolean) :
-    Script<InteractExecutor>(execution, persist)
+class Interaction(
+    execution: InteractExecutor,
+    val distance: Int,
+    persist: Boolean,
+) : Script<InteractExecutor>(execution, persist)
 
 class UseWithInteraction(
     execution: UseWithExecutor,
     val distance: Int,
     persist: Boolean,
     val used: Node,
-    val with: Node
+    val with: Node,
 ) : Script<UseWithExecutor>(execution, persist)
 
-class QueuedScript(executor: VoidExecutor, val strength: QueueStrength, persist: Boolean) :
-    Script<VoidExecutor>(executor, persist)
+class QueuedScript(
+    executor: VoidExecutor,
+    val strength: QueueStrength,
+    persist: Boolean,
+) : Script<VoidExecutor>(executor, persist)
 
 class QueuedUseWith(
     executor: UseWithExecutor,
     val strength: QueueStrength,
     persist: Boolean,
     val used: Node,
-    val with: Node
+    val with: Node,
 ) : Script<UseWithExecutor>(executor, persist)

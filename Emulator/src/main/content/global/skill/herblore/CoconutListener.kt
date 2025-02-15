@@ -1,6 +1,5 @@
 package content.global.skill.herblore
 
-import org.rs.consts.Items
 import core.api.addItem
 import core.api.removeItem
 import core.api.replaceSlot
@@ -8,9 +7,9 @@ import core.api.sendMessage
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.item.Item
+import org.rs.consts.Items
 
 class CoconutListener : InteractionListener {
-
     override fun defineListeners() {
         onUseWith(IntType.ITEM, Items.COCONUT_5974, Items.HAMMER_2347) { player, used, _ ->
             val itemSlot = used.asItem().slot

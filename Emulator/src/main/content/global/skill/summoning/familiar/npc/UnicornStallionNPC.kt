@@ -21,9 +21,14 @@ import core.plugin.Plugin
 import org.rs.consts.*
 
 @Initializable
-class UnicornStallionNPC(owner: Player? = null, id: Int = NPCs.UNICORN_STALLION_6822) :
-    Familiar(owner, id, 5400, Items.UNICORN_STALLION_POUCH_12039, 20, WeaponInterface.STYLE_CONTROLLED) {
-    override fun construct(owner: Player, id: Int): Familiar {
+class UnicornStallionNPC(
+    owner: Player? = null,
+    id: Int = NPCs.UNICORN_STALLION_6822,
+) : Familiar(owner, id, 5400, Items.UNICORN_STALLION_POUCH_12039, 20, WeaponInterface.STYLE_CONTROLLED) {
+    override fun construct(
+        owner: Player,
+        id: Int,
+    ): Familiar {
         return UnicornStallionNPC(owner, id)
     }
 
@@ -44,7 +49,11 @@ class UnicornStallionNPC(owner: Player? = null, id: Int = NPCs.UNICORN_STALLION_
                     return this
                 }
 
-                override fun handle(player: Player, node: Node, option: String): Boolean {
+                override fun handle(
+                    player: Player,
+                    node: Node,
+                    option: String,
+                ): Boolean {
                     val familiar = node as Familiar
                     if (!player.familiarManager.isOwner(familiar)) {
                         return true
@@ -63,20 +72,24 @@ class UnicornStallionNPC(owner: Player? = null, id: Int = NPCs.UNICORN_STALLION_
                     }
 
                     playAudio(player, Sounds.HEALING_AURA_4372)
-                    familiar.visualize(Animation.create(8267), Graphics.create(org.rs.consts.Graphics.ELECTRIC_BALL_OVER_HEAD_1356))
+                    familiar.visualize(
+                        Animation.create(8267),
+                        Graphics.create(org.rs.consts.Graphics.ELECTRIC_BALL_OVER_HEAD_1356),
+                    )
                     curePoison(player)
                     cureDisease(player)
                     player.getSkills().updateLevel(Skills.SUMMONING, -2, 0)
                     return true
                 }
-            }
+            },
         )
     }
 
     override fun visualizeSpecialMove() {
-        visualize(owner,
+        visualize(
+            owner,
             Animation.create(Animations.CAST_FAMILIAR_SCROLL_7660),
-            Graphics.create(org.rs.consts.Graphics.WHITE_FAMILIAR_GRAPHIC_1298)
+            Graphics.create(org.rs.consts.Graphics.WHITE_FAMILIAR_GRAPHIC_1298),
         )
     }
 

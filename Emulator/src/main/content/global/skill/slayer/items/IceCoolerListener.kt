@@ -1,6 +1,5 @@
 package content.global.skill.slayer.items
 
-import org.rs.consts.Items
 import content.global.skill.slayer.Tasks
 import core.api.getStatLevel
 import core.api.impact
@@ -11,9 +10,9 @@ import core.game.interaction.InteractionListener
 import core.game.node.entity.combat.ImpactHandler
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.skill.Skills
+import org.rs.consts.Items
 
 class IceCoolerListener : InteractionListener {
-
     override fun defineListeners() {
         onUseWith(IntType.NPC, Items.ICE_COOLER_6696, *Tasks.DESERT_LIZARDS.npcs) { player, used, with ->
             if (getStatLevel(player, Skills.SLAYER) < 22) {

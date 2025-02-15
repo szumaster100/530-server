@@ -7,13 +7,15 @@ import core.game.node.entity.player.Player
 import core.game.node.scenery.Scenery
 import core.game.world.map.zone.*
 import core.game.world.map.zone.impl.WildernessZone
+import core.plugin.ClassScanner.definePlugin
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner.definePlugin
 import java.util.*
 
 @Initializable
-class ClanWarsChallengeRoom : MapZone("clan wars cr", true, ZoneRestriction.RANDOM_EVENTS), Plugin<Any?> {
+class ClanWarsChallengeRoom :
+    MapZone("clan wars cr", true, ZoneRestriction.RANDOM_EVENTS),
+    Plugin<Any?> {
     override fun configure() {
         register(ZoneBorders(3264, 3672, 3279, 3695))
     }
@@ -30,7 +32,10 @@ class ClanWarsChallengeRoom : MapZone("clan wars cr", true, ZoneRestriction.RAND
         return super.enter(e)
     }
 
-    override fun leave(e: Entity, logout: Boolean): Boolean {
+    override fun leave(
+        e: Entity,
+        logout: Boolean,
+    ): Boolean {
         if (e is Player) {
             val p = e
             p.skullManager.isWildernessDisabled = false
@@ -44,7 +49,11 @@ class ClanWarsChallengeRoom : MapZone("clan wars cr", true, ZoneRestriction.RAND
         return super.leave(e, logout)
     }
 
-    override fun interact(e: Entity, target: Node, option: Option): Boolean {
+    override fun interact(
+        e: Entity,
+        target: Node,
+        option: Option,
+    ): Boolean {
         if (target is Scenery) {
             val player = e as Player
             if (target.id == 28213) {
@@ -56,7 +65,8 @@ class ClanWarsChallengeRoom : MapZone("clan wars cr", true, ZoneRestriction.RAND
                 } else if (player.communication.clan.clanWar == null) {
                     player.packetDispatch.sendMessage("Your clan has to be in a war.")
                 } else {
-                    player.communication.clan.clanWar.fireEvent("join", player)
+                    player.communication.clan.clanWar
+                        .fireEvent("join", player)
                 }
                 return true
             }
@@ -71,7 +81,10 @@ class ClanWarsChallengeRoom : MapZone("clan wars cr", true, ZoneRestriction.RAND
         return this
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 }

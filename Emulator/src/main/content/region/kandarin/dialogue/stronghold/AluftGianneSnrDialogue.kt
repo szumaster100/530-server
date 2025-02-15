@@ -1,7 +1,5 @@
 package content.region.kandarin.dialogue.stronghold
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.minigame.gnomecook.*
 import core.api.*
 import core.game.component.Component
@@ -17,35 +15,39 @@ import core.tools.END_DIALOGUE
 import core.tools.colorize
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 import java.util.concurrent.TimeUnit
 
-val gnomeItems = arrayOf(
-    Items.FRUIT_BATTA_2277,
-    Items.TOAD_BATTA_2255,
-    Items.CHEESE_PLUSTOM_BATTA_2259,
-    Items.WORM_BATTA_2253,
-    Items.VEGETABLE_BATTA_2281,
-    Items.CHOCOLATE_BOMB_2185,
-    Items.VEG_BALL_2195,
-    Items.TANGLED_TOADS_LEGS_2187,
-    Items.WORM_HOLE_2191,
-    Items.TOAD_CRUNCHIES_2217,
-    Items.WORM_CRUNCHIES_2205,
-    Items.CHOCCHIP_CRUNCHIES_2209,
-    Items.SPICY_CRUNCHIES_2213,
-    Items.FRUIT_BLAST_9514,
-    Items.DRUNK_DRAGON_2092,
-    Items.CHOC_SATURDAY_2074,
-    Items.SHORT_GREEN_GUY_9510,
-    Items.BLURBERRY_SPECIAL_9520,
-    Items.PINEAPPLE_PUNCH_9512,
-    Items.WIZARD_BLIZZARD_9508
-)
+val gnomeItems =
+    arrayOf(
+        Items.FRUIT_BATTA_2277,
+        Items.TOAD_BATTA_2255,
+        Items.CHEESE_PLUSTOM_BATTA_2259,
+        Items.WORM_BATTA_2253,
+        Items.VEGETABLE_BATTA_2281,
+        Items.CHOCOLATE_BOMB_2185,
+        Items.VEG_BALL_2195,
+        Items.TANGLED_TOADS_LEGS_2187,
+        Items.WORM_HOLE_2191,
+        Items.TOAD_CRUNCHIES_2217,
+        Items.WORM_CRUNCHIES_2205,
+        Items.CHOCCHIP_CRUNCHIES_2209,
+        Items.SPICY_CRUNCHIES_2213,
+        Items.FRUIT_BLAST_9514,
+        Items.DRUNK_DRAGON_2092,
+        Items.CHOC_SATURDAY_2074,
+        Items.SHORT_GREEN_GUY_9510,
+        Items.BLURBERRY_SPECIAL_9520,
+        Items.PINEAPPLE_PUNCH_9512,
+        Items.WIZARD_BLIZZARD_9508,
+    )
 val ALUFT_ALOFT_BOX = Item(Items.ALUFT_ALOFT_BOX_9477)
 
 @Initializable
-class AluftGianneSnrDialogue(player: Player? = null) : Dialogue(player) {
-
+class AluftGianneSnrDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     var tutorialProgress = -1
     var tutorialComplete = false
 
@@ -73,24 +75,39 @@ class AluftGianneSnrDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> player(FaceAnim.HAPPY, "Yes, how do I get started?").also { stage++ }
             1 -> npc("Well first thing's first I need to teach", "you how to cook!").also { stage++ }
             2 -> player(FaceAnim.THINKING, "But I already-").also { stage++ }
-            3 -> npc("Stop whatever it is you're saying, no one knows", "how to cook gnome food except gnomes!").also { stage++ }
+            3 ->
+                npc(
+                    "Stop whatever it is you're saying, no one knows",
+                    "how to cook gnome food except gnomes!",
+                ).also { stage++ }
             4 -> player("Alright, go on...").also { stage++ }
-            5 -> npc("Alright, first thing I want you to do is", "make me a toad batta. Here's all the", "ingredients, now get to work!").also { stage++ }
+            5 ->
+                npc(
+                    "Alright, first thing I want you to do is",
+                    "make me a toad batta. Here's all the",
+                    "ingredients, now get to work!",
+                ).also {
+                    stage++
+                }
             6 -> {
                 end()
-                val items = arrayOf(
-                    Item(Items.BATTA_TIN_2164),
-                    Item(Items.GIANNE_DOUGH_2171),
-                    Item(Items.EQUA_LEAVES_2128),
-                    Item(Items.GNOME_SPICE_2169),
-                    Item(Items.CHEESE_1985),
-                    Item(Items.TOADS_LEGS_2152)
-                )
+                val items =
+                    arrayOf(
+                        Item(Items.BATTA_TIN_2164),
+                        Item(Items.GIANNE_DOUGH_2171),
+                        Item(Items.EQUA_LEAVES_2128),
+                        Item(Items.GNOME_SPICE_2169),
+                        Item(Items.CHEESE_1985),
+                        Item(Items.TOADS_LEGS_2152),
+                    )
                 if (!player.inventory.hasSpaceFor(*items)) {
                     player.dialogueInterpreter.sendDialogue("You don't have space for the items.")
                 } else {
@@ -111,15 +128,22 @@ class AluftGianneSnrDialogue(player: Player? = null) : Dialogue(player) {
                 setAttribute(player, "/save:$GC_BASE_ATTRIBUTE:$GC_TUT_PROG", 13)
                 sendDialogue(player, "You hand over the toad batta.").also { stage++ }
             }
-            13 -> npc("Very nicely done. Now I would like you to make me", "toad crunchies. Here's everything you need.").also { stage++ }
+            13 ->
+                npc(
+                    "Very nicely done. Now I would like you to make me",
+                    "toad crunchies. Here's everything you need.",
+                ).also {
+                    stage++
+                }
             14 -> {
                 end()
-                val items = arrayOf(
-                    Item(Items.CRUNCHY_TRAY_2165),
-                    Item(Items.EQUA_LEAVES_2128),
-                    Item(Items.GIANNE_DOUGH_2171),
-                    Item(Items.TOADS_LEGS_2152, 2)
-                )
+                val items =
+                    arrayOf(
+                        Item(Items.CRUNCHY_TRAY_2165),
+                        Item(Items.EQUA_LEAVES_2128),
+                        Item(Items.GIANNE_DOUGH_2171),
+                        Item(Items.TOADS_LEGS_2152, 2),
+                    )
                 if (!player.inventory.hasSpaceFor(*items)) {
                     sendDialogue(player, "You don't have enough space for the items.")
                 } else {
@@ -142,17 +166,19 @@ class AluftGianneSnrDialogue(player: Player? = null) : Dialogue(player) {
                 player.dialogueInterpreter.sendDialogue("You hand over the toad crunchies.").also { stage++ }
             }
 
-            18 -> npc("Very nice indeed. Now I'd like you to go see my friend", "Blurberry at the bar.").also {
-                stage = END_DIALOGUE
-            }
+            18 ->
+                npc("Very nice indeed. Now I'd like you to go see my friend", "Blurberry at the bar.").also {
+                    stage = END_DIALOGUE
+                }
 
             300 -> options("I'd like to take on a hard job.", "I'd like an easy job please.").also { stage++ }
-            301 -> end().also {
-                when (buttonId) {
-                    1 -> getJob(GnomeTipper.LEVEL.HARD)
-                    2 -> getJob(GnomeTipper.LEVEL.EASY)
+            301 ->
+                end().also {
+                    when (buttonId) {
+                        1 -> getJob(GnomeTipper.LEVEL.HARD)
+                        2 -> getJob(GnomeTipper.LEVEL.EASY)
+                    }
                 }
-            }
 
             else -> player("Uhhhh, good.").also { stage = END_DIALOGUE }
         }
@@ -189,14 +215,17 @@ class AluftGianneSnrDialogue(player: Player? = null) : Dialogue(player) {
                 sendDialogueLines(
                     player,
                     "I need to deliver a ${item.name.lowercase()} to ${NPC(job.npc_id).name.lowercase()},",
-                    "who is ${job.tip}"
+                    "who is ${job.tip}",
                 )
                 GameWorld.Pulser.submit(GnomeRestaurantPulse(player, if (level == GnomeTipper.LEVEL.HARD) 11L else 6L))
             }
         }
     }
 
-    internal class GnomeRestaurantPulse(val player: Player, val minutes: Long) : Pulse() {
+    internal class GnomeRestaurantPulse(
+        val player: Player,
+        val minutes: Long,
+    ) : Pulse() {
         var endTime = 0L
         var timerMsgSent = false
 

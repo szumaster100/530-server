@@ -1,17 +1,15 @@
 package content.minigame.stealingcreation
 
-import org.rs.consts.Components
 import core.api.freeSlots
 import core.api.getAttribute
 import core.api.sendMessage
 import core.api.sendString
 import core.game.interaction.InterfaceListener
 import core.game.node.entity.player.Player
+import org.rs.consts.Components
 
 class StealingCreationStore : InterfaceListener {
-
     override fun defineInterfaceListeners() {
-
         var shopPrice = 0
 
         fun sendUpdate(player: Player) {

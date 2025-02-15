@@ -1,22 +1,26 @@
 package content.global.skill.cooking
 
-import org.rs.consts.Components
-import org.rs.consts.Items
 import content.global.skill.cooking.data.CookableItem
 import core.api.*
 import core.api.ui.repositionChild
 import core.game.dialogue.DialogueFile
 import core.game.node.scenery.Scenery
+import org.rs.consts.Components
+import org.rs.consts.Items
 
-class CookingDialogue(vararg val args: Any) : DialogueFile() {
-
+class CookingDialogue(
+    vararg val args: Any,
+) : DialogueFile() {
     private var initial = 0
     private var product = 0
     private var scenery: Scenery? = null
     private var sinew = false
     private var itemId = 0
 
-    override fun handle(componentID: Int, buttonID: Int) {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         when (stage) {
             0 -> handleCook()
             1 -> handleAmount(buttonID)
@@ -29,7 +33,14 @@ class CookingDialogue(vararg val args: Any) : DialogueFile() {
             2 -> {
                 initial = args[0] as Int
                 product =
-                    if (CookableItem.intentionalBurn(initial)) CookableItem.getIntentionalBurn(initial).id else CookableItem.forId(initial)!!.cooked
+                    if (CookableItem.intentionalBurn(
+                            initial,
+                        )
+                    ) {
+                        CookableItem.getIntentionalBurn(initial).id
+                    } else {
+                        CookableItem.forId(initial)!!.cooked
+                    }
                 scenery = args[1] as Scenery
             }
 
@@ -60,21 +71,23 @@ class CookingDialogue(vararg val args: Any) : DialogueFile() {
     }
 
     private fun handleProduct(buttonID: Int) {
-        product = when (buttonID) {
-            1 -> Items.SINEW_9436
-            2 -> CookableItem.forId(initial)!!.cooked
-            else -> return
-        }
+        product =
+            when (buttonID) {
+                1 -> Items.SINEW_9436
+                2 -> CookableItem.forId(initial)!!.cooked
+                else -> return
+            }
         display()
     }
 
-    private fun getAmount(buttonId: Int): Int = when (buttonId) {
-        5 -> 1
-        4 -> 5
-        3 -> -1
-        2 -> amountInInventory(player!!, initial)
-        else -> -1
-    }
+    private fun getAmount(buttonId: Int): Int =
+        when (buttonId) {
+            5 -> 1
+            4 -> 5
+            3 -> -1
+            2 -> amountInInventory(player!!, initial)
+            else -> -1
+        }
 
     private fun display() {
         sendItemZoomOnInterface(player!!, Components.SKILL_COOKMANY_307, 2, initial, 160)

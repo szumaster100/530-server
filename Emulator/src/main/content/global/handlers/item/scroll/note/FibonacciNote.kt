@@ -1,15 +1,14 @@
 package content.global.handlers.item.scroll.note
 
-import org.rs.consts.Components
-import org.rs.consts.Items
 import core.api.openInterface
 import core.api.sendString
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.player.Player
+import org.rs.consts.Components
+import org.rs.consts.Items
 
 class FibonacciNote : InteractionListener {
-
     companion object {
         private fun NotesTheFeud(player: Player) {
             val notesthefeudContent =

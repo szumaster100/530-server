@@ -1,7 +1,5 @@
 package content.region.misthalin.dialogue.varrock
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.*
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
@@ -9,17 +7,23 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
-class VarrockCookDialogue(player: Player? = null) : Dialogue(player) {
-
+class VarrockCookDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         npc(FaceAnim.HALF_GUILTY, "What do you want? I'm busy!")
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 setTitle(player, 3)
@@ -28,35 +32,36 @@ class VarrockCookDialogue(player: Player? = null) : Dialogue(player) {
                     "What would you like to say?",
                     "Can you sell me any food?",
                     "Can you give me any free food?",
-                    "I don't want anything from this horrible kitchen."
+                    "I don't want anything from this horrible kitchen.",
                 ).also { stage++ }
             }
 
-            1 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "Can you sell me any food?")
-                    stage = 10
-                }
+            1 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_GUILTY, "Can you sell me any food?")
+                        stage = 10
+                    }
 
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "Can you give me any free food?")
-                    stage = 20
-                }
+                    2 -> {
+                        player(FaceAnim.HALF_GUILTY, "Can you give me any free food?")
+                        stage = 20
+                    }
 
-                3 -> {
-                    player(
-                        FaceAnim.HALF_GUILTY,
-                        "I don't want anything from this horrible kitchen."
-                    )
-                    stage = 30
+                    3 -> {
+                        player(
+                            FaceAnim.HALF_GUILTY,
+                            "I don't want anything from this horrible kitchen.",
+                        )
+                        stage = 30
+                    }
                 }
-            }
 
             10 -> {
                 npc(
                     FaceAnim.HALF_GUILTY,
                     "I suppose I could sell you some cabbage, if you're willing to",
-                    "pay for it. Cabbage is good for you."
+                    "pay for it. Cabbage is good for you.",
                 )
                 stage = 11
             }
@@ -65,22 +70,23 @@ class VarrockCookDialogue(player: Player? = null) : Dialogue(player) {
                 interpreter.sendOptions(
                     "What would you like to say?",
                     "Alright, I'll buy a cabbage.",
-                    "No thanks, I don't like cabbage."
+                    "No thanks, I don't like cabbage.",
                 )
                 stage = 12
             }
 
-            12 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "Alright, I'll buy a cabbage.")
-                    stage = 150
-                }
+            12 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_GUILTY, "Alright, I'll buy a cabbage.")
+                        stage = 150
+                    }
 
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "No thanks, I don't like cabbage.")
-                    stage = 160
+                    2 -> {
+                        player(FaceAnim.HALF_GUILTY, "No thanks, I don't like cabbage.")
+                        stage = 160
+                    }
                 }
-            }
 
             20 -> {
                 npc(FaceAnim.HALF_GUILTY, "Can you give me any free money?")
@@ -108,7 +114,7 @@ class VarrockCookDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "How dare you? I put a lot of effort into cleaning this",
                     "kitchen. My daily sweat and elbow-grease keep this kitchen",
-                    "clean!"
+                    "clean!",
                 )
                 stage = 31
             }
@@ -130,7 +136,7 @@ class VarrockCookDialogue(player: Player? = null) : Dialogue(player) {
                     npc(
                         FaceAnim.HALF_GUILTY,
                         "It's a deal. Now, make sure you eat it all up. Cabbage is",
-                        "good for you."
+                        "good for you.",
                     )
                     stage = 151
                 } else {

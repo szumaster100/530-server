@@ -10,14 +10,20 @@ import core.game.node.entity.player.link.SpellBookManager.SpellBook
 import core.game.world.map.Location
 import core.tools.RandomFunction
 
-class SpinolypNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
+class SpinolypNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
     init {
         super.setAggressive(true)
         super.setNeverWalks(true)
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return SpinolypNPC(id, location)
     }
 
@@ -51,11 +57,15 @@ class SpinolypNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, loc
         return intArrayOf(2894, 2896)
     }
 
-    class SpinolpySwingHandler : MultiSwingHandler(
-        SwitchAttack(CombatStyle.MAGIC.swingHandler, null),
-        SwitchAttack(CombatStyle.RANGE.swingHandler, null)
-    ) {
-        override fun canSwing(entity: Entity, victim: Entity): InteractionType? {
+    class SpinolpySwingHandler :
+        MultiSwingHandler(
+            SwitchAttack(CombatStyle.MAGIC.swingHandler, null),
+            SwitchAttack(CombatStyle.RANGE.swingHandler, null),
+        ) {
+        override fun canSwing(
+            entity: Entity,
+            victim: Entity,
+        ): InteractionType? {
             var type = super.canSwing(entity, victim)
             if (type == InteractionType.MOVE_INTERACT) {
                 type = InteractionType.NO_INTERACT
@@ -63,7 +73,11 @@ class SpinolypNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, loc
             return type
         }
 
-        override fun swing(entity: Entity?, victim: Entity?, state: BattleState?): Int {
+        override fun swing(
+            entity: Entity?,
+            victim: Entity?,
+            state: BattleState?,
+        ): Int {
             val swing = super.swing(entity, victim, state)
             if (type == CombatStyle.MAGIC) {
                 setSpell(entity)
@@ -71,15 +85,26 @@ class SpinolypNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, loc
             return swing
         }
 
-        override fun getCombatDistance(e: Entity, v: Entity, rawDistance: Int): Int {
+        override fun getCombatDistance(
+            e: Entity,
+            v: Entity,
+            rawDistance: Int,
+        ): Int {
             return 12
         }
 
-        override fun calculateDefence(victim: Entity?, attacker: Entity?): Int {
+        override fun calculateDefence(
+            victim: Entity?,
+            attacker: Entity?,
+        ): Int {
             return CombatStyle.RANGE.swingHandler.calculateDefence(victim, attacker)
         }
 
-        override fun visualize(entity: Entity, victim: Entity?, state: BattleState?) {
+        override fun visualize(
+            entity: Entity,
+            victim: Entity?,
+            state: BattleState?,
+        ) {
             super.visualize(entity, victim, state)
             if (state!!.style == CombatStyle.MAGIC) {
                 setSpell(entity)
@@ -90,7 +115,11 @@ class SpinolypNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, loc
             entity.animator.forceAnimation(entity.properties.attackAnimation)
         }
 
-        override fun impact(entity: Entity?, victim: Entity?, state: BattleState?) {
+        override fun impact(
+            entity: Entity?,
+            victim: Entity?,
+            state: BattleState?,
+        ) {
             super.impact(entity, victim, state)
             if (super.type == CombatStyle.MAGIC && state!!.estimatedHit > 0) {
                 victim!!.getSkills().decrementPrayerPoints(1.0)

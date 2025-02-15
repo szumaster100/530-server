@@ -15,7 +15,10 @@ import kotlin.math.min
  * @return A pair where the first value indicates whether the path was truncated,
  *         and the second value is the new truncated destination location.
  */
-fun truncateLoc(mover: Entity, destination: Location): Pair<Boolean, Location> {
+fun truncateLoc(
+    mover: Entity,
+    destination: Location,
+): Pair<Boolean, Location> {
     val vector = Vector.betweenLocs(mover.location, destination)
     val normVec = vector.normalized()
     val mag = vector.magnitude()

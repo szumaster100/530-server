@@ -1,18 +1,21 @@
 package core.game.dialogue
 
-import org.rs.consts.Components
-import core.api.ui.repositionChild
 import core.api.sendItemZoomOnInterface
 import core.api.sendString
+import core.api.ui.repositionChild
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.net.packet.PacketRepository
 import core.net.packet.context.ChildPositionContext
 import core.net.packet.out.RepositionChild
 import core.tools.StringUtils
+import org.rs.consts.Components
 
-open class SkillDialogueHandler(val player: Player, val type: SkillDialogue?, vararg data: Any) {
-
+open class SkillDialogueHandler(
+    val player: Player,
+    val type: SkillDialogue?,
+    vararg data: Any,
+) {
     val data: Array<Any>
 
     fun open() {
@@ -27,7 +30,10 @@ open class SkillDialogueHandler(val player: Player, val type: SkillDialogue?, va
         type.display(player, this)
     }
 
-    open fun create(amount: Int, index: Int) {}
+    open fun create(
+        amount: Int,
+        index: Int,
+    ) {}
 
     open fun getAll(index: Int): Int {
         return player.inventory.getAmount(data[0] as Item)
@@ -37,10 +43,16 @@ open class SkillDialogueHandler(val player: Player, val type: SkillDialogue?, va
         return StringUtils.formatDisplayName(item.name.replace("Unfired", ""))
     }
 
-    enum class SkillDialogue(val interfaceId: Int, private val baseButton: Int, private val length: Int) {
-
+    enum class SkillDialogue(
+        val interfaceId: Int,
+        private val baseButton: Int,
+        private val length: Int,
+    ) {
         ONE_OPTION(Components.SKILL_MULTI1_309, 5, 1) {
-            override fun display(player: Player, handler: SkillDialogueHandler) {
+            override fun display(
+                player: Player,
+                handler: SkillDialogueHandler,
+            ) {
                 val item = handler.data[0] as Item
                 repositionChild(player, Components.SKILL_MULTI1_309, 7, 8, 12)
                 sendString(player, "<br><br><br><br>${item.name}", 309, 6)
@@ -54,7 +66,10 @@ open class SkillDialogueHandler(val player: Player, val type: SkillDialogue?, va
                 repositionChild(player, Components.SKILL_MULTI1_309, 6, 60, 35)
             }
 
-            override fun getAmount(handler: SkillDialogueHandler, buttonId: Int): Int {
+            override fun getAmount(
+                handler: SkillDialogueHandler,
+                buttonId: Int,
+            ): Int {
                 return when (buttonId) {
                     5 -> 1
                     4 -> 5
@@ -65,7 +80,10 @@ open class SkillDialogueHandler(val player: Player, val type: SkillDialogue?, va
         },
 
         MAKE_SET_ONE_OPTION(Components.SKILL_MULTI1_SMALL_582, 4, 1) {
-            override fun display(player: Player, handler: SkillDialogueHandler) {
+            override fun display(
+                player: Player,
+                handler: SkillDialogueHandler,
+            ) {
                 val item = handler.data[0] as Item
                 sendItemZoomOnInterface(player, Components.SKILL_MULTI1_SMALL_582, 2, item.id, 160)
                 sendString(player, "<br><br><br><br>${item.name}", 582, 5)
@@ -78,7 +96,10 @@ open class SkillDialogueHandler(val player: Player, val type: SkillDialogue?, va
                 repositionChild(player, Components.SKILL_MULTI1_SMALL_582, 5, 60, 35)
             }
 
-            override fun getAmount(handler: SkillDialogueHandler, buttonId: Int): Int {
+            override fun getAmount(
+                handler: SkillDialogueHandler,
+                buttonId: Int,
+            ): Int {
                 return when (buttonId) {
                     5 -> 1
                     4 -> 1
@@ -90,7 +111,10 @@ open class SkillDialogueHandler(val player: Player, val type: SkillDialogue?, va
         },
 
         TWO_OPTION(Components.SKILL_MAKE_303, 7, 2) {
-            override fun display(player: Player, handler: SkillDialogueHandler) {
+            override fun display(
+                player: Player,
+                handler: SkillDialogueHandler,
+            ) {
                 var item: Item
                 for (i in handler.data.indices) {
                     item = handler.data[i] as Item
@@ -107,7 +131,10 @@ open class SkillDialogueHandler(val player: Player, val type: SkillDialogue?, va
                 }
             }
 
-            override fun getIndex(handler: SkillDialogueHandler?, buttonId: Int): Int {
+            override fun getIndex(
+                handler: SkillDialogueHandler?,
+                buttonId: Int,
+            ): Int {
                 when (buttonId) {
                     6, 5, 4, 3 -> return 0
                     10, 9, 8, 7 -> return 1
@@ -115,7 +142,10 @@ open class SkillDialogueHandler(val player: Player, val type: SkillDialogue?, va
                 return 1
             }
 
-            override fun getAmount(handler: SkillDialogueHandler, buttonId: Int): Int {
+            override fun getAmount(
+                handler: SkillDialogueHandler,
+                buttonId: Int,
+            ): Int {
                 when (buttonId) {
                     6, 10 -> return 1
                     5, 9 -> return 5
@@ -127,18 +157,28 @@ open class SkillDialogueHandler(val player: Player, val type: SkillDialogue?, va
         },
 
         THREE_OPTION(Components.SKILL_MAKE_304, 8, 3) {
-            override fun display(player: Player, handler: SkillDialogueHandler) {
+            override fun display(
+                player: Player,
+                handler: SkillDialogueHandler,
+            ) {
                 var item: Item? = null
                 for (i in 0..2) {
                     item = handler.data[i] as Item
                     repositionChild(player, Components.SKILL_MAKE_304, 0, 12, 13)
                     repositionChild(player, Components.SKILL_MAKE_304, 1, 431, 13)
                     player.packetDispatch.sendItemZoomOnInterface(item.id, 170, Components.SKILL_MAKE_304, 2 + i)
-                    player.packetDispatch.sendString("<br><br><br><br>" + item.name, Components.SKILL_MAKE_304, 304 - 296 + i * 4)
+                    player.packetDispatch.sendString(
+                        "<br><br><br><br>" + item.name,
+                        Components.SKILL_MAKE_304,
+                        304 - 296 + i * 4,
+                    )
                 }
             }
 
-            override fun getIndex(handler: SkillDialogueHandler?, buttonId: Int): Int {
+            override fun getIndex(
+                handler: SkillDialogueHandler?,
+                buttonId: Int,
+            ): Int {
                 when (buttonId) {
                     7, 6, 5, 4 -> return 0
                     11, 10, 9, 8 -> return 1
@@ -147,7 +187,10 @@ open class SkillDialogueHandler(val player: Player, val type: SkillDialogue?, va
                 return 1
             }
 
-            override fun getAmount(handler: SkillDialogueHandler, buttonId: Int): Int {
+            override fun getAmount(
+                handler: SkillDialogueHandler,
+                buttonId: Int,
+            ): Int {
                 when (buttonId) {
                     7, 11, 15 -> return 1
                     6, 10, 14 -> return 5
@@ -159,7 +202,10 @@ open class SkillDialogueHandler(val player: Player, val type: SkillDialogue?, va
         },
 
         FOUR_OPTION(Components.SKILL_MAKE_305, 9, 4) {
-            override fun display(player: Player, handler: SkillDialogueHandler) {
+            override fun display(
+                player: Player,
+                handler: SkillDialogueHandler,
+            ) {
                 var item: Item? = null
                 for (i in 0..3) {
                     item = handler.data[i] as Item
@@ -170,7 +216,10 @@ open class SkillDialogueHandler(val player: Player, val type: SkillDialogue?, va
                 }
             }
 
-            override fun getIndex(handler: SkillDialogueHandler?, buttonId: Int): Int {
+            override fun getIndex(
+                handler: SkillDialogueHandler?,
+                buttonId: Int,
+            ): Int {
                 when (buttonId) {
                     5, 8, 6, 7 -> return 0
                     9, 10, 11, 12 -> return 1
@@ -180,7 +229,10 @@ open class SkillDialogueHandler(val player: Player, val type: SkillDialogue?, va
                 return 0
             }
 
-            override fun getAmount(handler: SkillDialogueHandler, buttonId: Int): Int {
+            override fun getAmount(
+                handler: SkillDialogueHandler,
+                buttonId: Int,
+            ): Int {
                 when (buttonId) {
                     8, 12, 16, 20 -> return 1
                     7, 11, 15, 19 -> return 5
@@ -192,29 +244,49 @@ open class SkillDialogueHandler(val player: Player, val type: SkillDialogue?, va
         },
 
         FIVE_OPTION(Components.SKILL_MAKE_306, 7, 5) {
+            private val positions =
+                arrayOf(
+                    intArrayOf(10, 30),
+                    intArrayOf(117, 10),
+                    intArrayOf(217, 20),
+                    intArrayOf(317, 15),
+                    intArrayOf(408, 15),
+                )
 
-            private val positions = arrayOf(
-                intArrayOf(10, 30),
-                intArrayOf(117, 10),
-                intArrayOf(217, 20),
-                intArrayOf(317, 15),
-                intArrayOf(408, 15)
-            )
-
-            override fun display(player: Player, handler: SkillDialogueHandler) {
+            override fun display(
+                player: Player,
+                handler: SkillDialogueHandler,
+            ) {
                 var item: Item
                 player.interfaceManager.openChatbox(Components.SKILL_MAKE_306)
                 for (i in handler.data.indices) {
                     item = handler.data[i] as Item
-                    sendString(player, "<br><br><br><br>" + handler.getName(item), Components.SKILL_MAKE_306, 10 + 4 * i)
+                    sendString(
+                        player,
+                        "<br><br><br><br>" + handler.getName(item),
+                        Components.SKILL_MAKE_306,
+                        10 + 4 * i,
+                    )
                     player.packetDispatch.sendItemZoomOnInterface(item.id, 160, Components.SKILL_MAKE_306, 2 + i)
-                    PacketRepository.send(RepositionChild::class.java, ChildPositionContext(player, Components.SKILL_MAKE_306, 2 + i, positions[i][0], positions[i][1]))
+                    PacketRepository.send(
+                        RepositionChild::class.java,
+                        ChildPositionContext(
+                            player,
+                            Components.SKILL_MAKE_306,
+                            2 + i,
+                            positions[i][0],
+                            positions[i][1],
+                        ),
+                    )
                 }
                 repositionChild(player, Components.SKILL_MAKE_306, 0, 12, 15)
                 repositionChild(player, Components.SKILL_MAKE_306, 1, 431, 15)
             }
 
-            override fun getIndex(handler: SkillDialogueHandler?, buttonId: Int): Int {
+            override fun getIndex(
+                handler: SkillDialogueHandler?,
+                buttonId: Int,
+            ): Int {
                 when (buttonId) {
                     9, 8, 7, 6 -> return 0
                     13, 12, 11, 10 -> return 1
@@ -225,7 +297,10 @@ open class SkillDialogueHandler(val player: Player, val type: SkillDialogue?, va
                 return 0
             }
 
-            override fun getAmount(handler: SkillDialogueHandler, buttonId: Int): Int {
+            override fun getAmount(
+                handler: SkillDialogueHandler,
+                buttonId: Int,
+            ): Int {
                 when (buttonId) {
                     9, 13, 17, 21, 25 -> return 1
                     8, 12, 16, 20, 24 -> return 5
@@ -234,23 +309,40 @@ open class SkillDialogueHandler(val player: Player, val type: SkillDialogue?, va
                 }
                 return 1
             }
-        };
+        }, ;
 
-        open fun display(player: Player, handler: SkillDialogueHandler) {}
+        open fun display(
+            player: Player,
+            handler: SkillDialogueHandler,
+        ) {}
 
-        open fun getAmount(handler: SkillDialogueHandler, buttonId: Int): Int {
+        open fun getAmount(
+            handler: SkillDialogueHandler,
+            buttonId: Int,
+        ): Int {
             for (k in 0..3) {
                 for (i in 0 until length) {
                     val `val` = baseButton - k + 4 * i
                     if (`val` == buttonId) {
-                        return if (k == 13) 1 else if (k == 8) 5 else if (k == 7) 10 else 6
+                        return if (k == 13) {
+                            1
+                        } else if (k == 8) {
+                            5
+                        } else if (k == 7) {
+                            10
+                        } else {
+                            6
+                        }
                     }
                 }
             }
             return -1
         }
 
-        open fun getIndex(handler: SkillDialogueHandler?, buttonId: Int): Int {
+        open fun getIndex(
+            handler: SkillDialogueHandler?,
+            buttonId: Int,
+        ): Int {
             var index = 0
             for (k in 0..3) {
                 for (i in 1 until length) {
@@ -267,7 +359,6 @@ open class SkillDialogueHandler(val player: Player, val type: SkillDialogue?, va
         }
 
         companion object {
-
             fun forLength(length2: Int): SkillDialogue? {
                 for (dial in values()) {
                     if (dial.length == length2) {
@@ -280,7 +371,6 @@ open class SkillDialogueHandler(val player: Player, val type: SkillDialogue?, va
     }
 
     companion object {
-
         const val SKILL_DIALOGUE = 3 shl 16
     }
 

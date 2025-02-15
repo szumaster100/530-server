@@ -1,7 +1,5 @@
 package content.global.ame.evilbob
 
-import org.rs.consts.NPCs
-import org.rs.consts.Sounds
 import content.data.RandomEvent
 import content.global.ame.RandomEventNPC
 import core.api.*
@@ -11,9 +9,12 @@ import core.game.node.entity.npc.NPC
 import core.game.system.timer.impl.AntiMacro
 import core.game.world.GameWorld
 import core.game.world.map.Location
+import org.rs.consts.NPCs
+import org.rs.consts.Sounds
 
-class EvilBobNPC(override var loot: WeightBasedTable? = null) : RandomEventNPC(NPCs.EVIL_BOB_2478) {
-
+class EvilBobNPC(
+    override var loot: WeightBasedTable? = null,
+) : RandomEventNPC(NPCs.EVIL_BOB_2478) {
     override fun init() {
         super.init()
         sendChat("meow")

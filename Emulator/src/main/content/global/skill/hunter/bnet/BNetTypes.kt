@@ -1,15 +1,17 @@
 package content.global.skill.hunter.bnet
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.npc.drop.DropFrequency
 import core.game.node.entity.player.Player
 import core.game.node.item.ChanceItem
 import core.game.node.item.Item
 import core.game.world.update.flag.context.Graphics
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
-enum class BNetTypes(val node: BNetNode) {
+enum class BNetTypes(
+    val node: BNetNode,
+) {
     RUBY_HARVEST(
         BNetNode(
             intArrayOf(5085),
@@ -17,10 +19,10 @@ enum class BNetTypes(val node: BNetNode) {
             doubleArrayOf(24.0, 300.0, 50.0),
             arrayOf(
                 Graphics(913),
-                Graphics(917)
+                Graphics(917),
             ),
-            ChanceItem(10020)
-        )
+            ChanceItem(10020),
+        ),
     ),
     SAPPHIRE_GLACIALIS(
         BNetNode(
@@ -29,10 +31,10 @@ enum class BNetTypes(val node: BNetNode) {
             doubleArrayOf(34.0, 400.0, 70.0),
             arrayOf(
                 Graphics(912),
-                Graphics(916)
+                Graphics(916),
             ),
-            ChanceItem(10018)
-        )
+            ChanceItem(10018),
+        ),
     ),
     SNOWRY_KNIGHT(
         BNetNode(
@@ -41,10 +43,10 @@ enum class BNetTypes(val node: BNetNode) {
             doubleArrayOf(44.0, 500.0, 100.0),
             arrayOf(
                 Graphics(911),
-                Graphics(915)
+                Graphics(915),
             ),
-            ChanceItem(10016)
-        )
+            ChanceItem(10016),
+        ),
     ),
     BLACK_WARLOCK(
         BNetNode(
@@ -53,10 +55,10 @@ enum class BNetTypes(val node: BNetNode) {
             doubleArrayOf(54.0, 650.0, 125.0),
             arrayOf(
                 Graphics(910),
-                Graphics(914)
+                Graphics(914),
             ),
-            ChanceItem(10014)
-        )
+            ChanceItem(10014),
+        ),
     ),
     BABY_IMPLING(
         ImplingNode(
@@ -84,8 +86,8 @@ enum class BNetTypes(val node: BNetNode) {
             ChanceItem(1607, 1, 1, DropFrequency.RARE),
             ChanceItem(1743, 1, 1, DropFrequency.RARE),
             ChanceItem(379, 1, 1, DropFrequency.RARE),
-            ChanceItem(1761, 1, 1, DropFrequency.RARE)
-        )
+            ChanceItem(1761, 1, 1, DropFrequency.RARE),
+        ),
     ),
     YOUNG_IMPLING(
         ImplingNode(
@@ -103,8 +105,8 @@ enum class BNetTypes(val node: BNetNode) {
             ChanceItem(1777, 1, 1, DropFrequency.UNCOMMON),
             ChanceItem(2293, 1, 1, DropFrequency.UNCOMMON),
             ChanceItem(1353, 1, 1, DropFrequency.UNCOMMON),
-            ChanceItem(2359, 1, 1, DropFrequency.RARE)
-        )
+            ChanceItem(2359, 1, 1, DropFrequency.RARE),
+        ),
     ),
     GOURMET_IMPLING(
         ImplingNode(
@@ -128,8 +130,8 @@ enum class BNetTypes(val node: BNetNode) {
             ChanceItem(386, 3, 3, DropFrequency.UNCOMMON),
             ChanceItem(5406, 1, 1, DropFrequency.RARE),
             ChanceItem(10136, 1, 1, DropFrequency.RARE),
-            ChanceItem(1883, 1, 1, DropFrequency.UNCOMMON)
-        )
+            ChanceItem(1883, 1, 1, DropFrequency.UNCOMMON),
+        ),
     ),
     EARTH_IMPLING(
         ImplingNode(
@@ -146,8 +148,8 @@ enum class BNetTypes(val node: BNetNode) {
             ChanceItem(1784, 4, 4, DropFrequency.UNCOMMON),
             ChanceItem(447, 1, 1, DropFrequency.UNCOMMON),
             ChanceItem(447, 1, 1, DropFrequency.UNCOMMON),
-            ChanceItem(1606, 2, 2, DropFrequency.RARE)
-        )
+            ChanceItem(1606, 2, 2, DropFrequency.RARE),
+        ),
     ),
     ESSENCE_IMPLING(
         ImplingNode(
@@ -166,8 +168,8 @@ enum class BNetTypes(val node: BNetNode) {
             ChanceItem(564, 4, 4, DropFrequency.UNCOMMON),
             ChanceItem(565, 7, 7, DropFrequency.RARE),
             ChanceItem(563, 13, 13, DropFrequency.RARE),
-            ChanceItem(566, 11, 11, DropFrequency.RARE)
-        )
+            ChanceItem(566, 11, 11, DropFrequency.RARE),
+        ),
     ),
     ECLECTIC_IMPLING(
         ImplingNode(
@@ -195,8 +197,8 @@ enum class BNetTypes(val node: BNetNode) {
             ChanceItem(5760, 2, 2, DropFrequency.RARE),
             ChanceItem(7208, 1, 1, DropFrequency.RARE),
             ChanceItem(5321, 3, 3, DropFrequency.RARE),
-            ChanceItem(1601, 1, 1, DropFrequency.VERY_RARE)
-        )
+            ChanceItem(1601, 1, 1, DropFrequency.VERY_RARE),
+        ),
     ),
     NATURE_IMPLING(
         ImplingNode(
@@ -223,8 +225,8 @@ enum class BNetTypes(val node: BNetNode) {
             ChanceItem(6016, 1, 1, DropFrequency.COMMON),
             ChanceItem(1513, 1, 1, DropFrequency.COMMON),
             ChanceItem(254, 4, 4, DropFrequency.COMMON),
-            ChanceItem(5313, 1, 1, DropFrequency.UNCOMMON)
-        )
+            ChanceItem(5313, 1, 1, DropFrequency.UNCOMMON),
+        ),
     ),
     MAGPIE_IMPLING(
         ImplingNode(
@@ -252,8 +254,8 @@ enum class BNetTypes(val node: BNetNode) {
             ChanceItem(985, 1, 1, DropFrequency.RARE),
             ChanceItem(987, 1, 1, DropFrequency.RARE),
             ChanceItem(993, 1, 1, DropFrequency.VERY_RARE),
-            ChanceItem(5300, 1, 1, DropFrequency.VERY_RARE)
-        )
+            ChanceItem(5300, 1, 1, DropFrequency.VERY_RARE),
+        ),
     ),
     NINJA_IMPLING(
         ImplingNode(
@@ -274,8 +276,8 @@ enum class BNetTypes(val node: BNetNode) {
             ChanceItem(9194, 4, 4, DropFrequency.RARE),
             ChanceItem(140, 4, 4, DropFrequency.COMMON),
             ChanceItem(6155, 3, 3, DropFrequency.UNCOMMON),
-            ChanceItem(1748, 10, 16, DropFrequency.COMMON)
-        )
+            ChanceItem(1748, 10, 16, DropFrequency.COMMON),
+        ),
     ),
     PIRATE_IMPLING(
         ImplingNode(
@@ -310,8 +312,8 @@ enum class BNetTypes(val node: BNetNode) {
             ChanceItem(Items.BANDANA_AND_EYEPATCH_8998, 1, 1, DropFrequency.UNCOMMON),
             ChanceItem(Items.BANDANA_AND_EYEPATCH_9000, 1, 1, DropFrequency.UNCOMMON),
             ChanceItem(Items.PIECES_OF_EIGHT_8951, 1, 10, DropFrequency.VERY_RARE),
-            ChanceItem(Items.LEFT_EYEPATCH_13355, 1, 1, DropFrequency.RARE)
-        )
+            ChanceItem(Items.LEFT_EYEPATCH_13355, 1, 1, DropFrequency.RARE),
+        ),
     ),
     DRAGON_IMPLING(
         ImplingNode(
@@ -337,11 +339,15 @@ enum class BNetTypes(val node: BNetNode) {
             ChanceItem(537, 52, 99, DropFrequency.UNCOMMON),
             ChanceItem(1616, 3, 6, DropFrequency.UNCOMMON),
             ChanceItem(5300, 6, 6, DropFrequency.RARE),
-            ChanceItem(7219, 5, 15, DropFrequency.RARE)
-        )
-    );
+            ChanceItem(7219, 5, 15, DropFrequency.RARE),
+        ),
+    ),
+    ;
 
-    fun handle(player: Player, npc: NPC) {
+    fun handle(
+        player: Player,
+        npc: NPC,
+    ) {
         player.pulseManager.run(BNetPulse(player, npc, node))
     }
 
@@ -362,9 +368,10 @@ enum class BNetTypes(val node: BNetNode) {
 
         @JvmStatic
         fun forItem(item: Item): BNetNode? {
-            return values().firstOrNull { type ->
-                type.node.reward.id == item.id
-            }?.node
+            return values()
+                .firstOrNull { type ->
+                    type.node.reward.id == item.id
+                }?.node
         }
 
         fun getImplings(): List<ImplingNode> = implings
@@ -373,7 +380,7 @@ enum class BNetTypes(val node: BNetNode) {
             implings.addAll(
                 values().mapNotNull { type ->
                     type.node as? ImplingNode
-                }
+                },
             )
         }
     }

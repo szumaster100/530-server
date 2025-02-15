@@ -1,19 +1,17 @@
 package content.global.skill.magic.spells.lunar
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import content.global.skill.farming.CompostBins
 import content.global.skill.farming.FarmingPatch
 import content.global.skill.magic.SpellListener
 import content.global.skill.magic.spells.LunarSpells
 import core.api.sendMessage
 import core.game.node.item.Item
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 
 class CurePlantSpell : SpellListener("lunar") {
-
     override fun defineListeners() {
-
         onCast(LunarSpells.CURE_PLANT, OBJECT) { player, node ->
             requires(player, 66, arrayOf(Item(Items.ASTRAL_RUNE_9075), Item(Items.EARTH_RUNE_557, 8)))
             if (CompostBins.forObject(node!!.asScenery()) != null) {
@@ -41,7 +39,7 @@ class CurePlantSpell : SpellListener("lunar") {
             if (patch.isDead) {
                 sendMessage(
                     player,
-                    "It says 'Cure' not 'Resurrect'. Although death may arise from disease, it is not in itself a disease and hence cannot be cured. So there."
+                    "It says 'Cure' not 'Resurrect'. Although death may arise from disease, it is not in itself a disease and hence cannot be cured. So there.",
                 )
                 return@onCast
             }

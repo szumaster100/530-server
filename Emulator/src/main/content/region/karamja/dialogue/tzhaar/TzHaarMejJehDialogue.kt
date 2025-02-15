@@ -1,7 +1,5 @@
 package content.region.karamja.dialogue.tzhaar
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.getAttribute
 import core.api.inInventory
 import core.api.setAttribute
@@ -13,17 +11,23 @@ import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.game.world.GameWorld.settings
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
-class TzHaarMejJehDialogue(player: Player? = null) : Dialogue(player) {
-
+class TzHaarMejJehDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         npc(FaceAnim.CHILD_GUILTY, "You want help JalYt-Ket-" + player.username + "?")
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 if (settings!!.jad_practice_enabled) {
@@ -31,83 +35,97 @@ class TzHaarMejJehDialogue(player: Player? = null) : Dialogue(player) {
                         options(
                             if (inInventory(
                                     player,
-                                    Items.FIRE_CAPE_6570
+                                    Items.FIRE_CAPE_6570,
                                 )
-                            ) "I have a fire cape here." else "What is this place?",
+                            ) {
+                                "I have a fire cape here."
+                            } else {
+                                "What is this place?"
+                            },
                             "What did you call me?",
                             "About my challenge...",
-                            "No I'm fine thanks."
+                            "No I'm fine thanks.",
                         )
                     } else {
                         options(
                             if (inInventory(
                                     player,
-                                    Items.FIRE_CAPE_6570
+                                    Items.FIRE_CAPE_6570,
                                 )
-                            ) "I have a fire cape here." else "What is this place?",
+                            ) {
+                                "I have a fire cape here."
+                            } else {
+                                "What is this place?"
+                            },
                             "What did you call me?",
                             "I want to challenge Jad directly.",
-                            "No I'm fine thanks."
+                            "No I'm fine thanks.",
                         )
                     }
                 } else {
                     options(
                         if (inInventory(
                                 player,
-                                Items.FIRE_CAPE_6570
+                                Items.FIRE_CAPE_6570,
                             )
-                        ) "I have a fire cape here." else "What is this place?",
+                        ) {
+                            "I have a fire cape here."
+                        } else {
+                            "What is this place?"
+                        },
                         "What did you call me?",
-                        "No I'm fine thanks."
+                        "No I'm fine thanks.",
                     )
                 }
                 stage = 1
             }
 
-            1 -> when (buttonId) {
-                1 -> {
-                    if (inInventory(player, Items.FIRE_CAPE_6570)) {
-                        interpreter.open(DialogueInterpreter.getDialogueKey("firecape-exchange"), npc)
-                    }
-                    player(FaceAnim.HALF_GUILTY, "What is this place?")
-                    stage = 10
-                }
-
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "What did you call me?")
-                    stage = 20
-                }
-
-                3 ->
-                    stage = if (settings!!.jad_practice_enabled) {
-                        if (getAttribute(player, "fc_practice_jad", false)) {
-                            player(FaceAnim.HALF_GUILTY, "About my challenge...")
-                            64
-                        } else {
-                            player(
-                                FaceAnim.HALF_GUILTY,
-                                "The challenge is too long.",
-                                "I want to challenge Jad directly."
-                            )
-                            50
+            1 ->
+                when (buttonId) {
+                    1 -> {
+                        if (inInventory(player, Items.FIRE_CAPE_6570)) {
+                            interpreter.open(DialogueInterpreter.getDialogueKey("firecape-exchange"), npc)
                         }
-                    } else {
-                        player(FaceAnim.HALF_GUILTY, "No I'm fine thanks.")
-                        30
+                        player(FaceAnim.HALF_GUILTY, "What is this place?")
+                        stage = 10
                     }
 
-                4 -> {
-                    player(FaceAnim.HALF_GUILTY, "No I'm fine thanks.")
-                    stage = 30
+                    2 -> {
+                        player(FaceAnim.HALF_GUILTY, "What did you call me?")
+                        stage = 20
+                    }
+
+                    3 ->
+                        stage =
+                            if (settings!!.jad_practice_enabled) {
+                                if (getAttribute(player, "fc_practice_jad", false)) {
+                                    player(FaceAnim.HALF_GUILTY, "About my challenge...")
+                                    64
+                                } else {
+                                    player(
+                                        FaceAnim.HALF_GUILTY,
+                                        "The challenge is too long.",
+                                        "I want to challenge Jad directly.",
+                                    )
+                                    50
+                                }
+                            } else {
+                                player(FaceAnim.HALF_GUILTY, "No I'm fine thanks.")
+                                30
+                            }
+
+                    4 -> {
+                        player(FaceAnim.HALF_GUILTY, "No I'm fine thanks.")
+                        stage = 30
+                    }
                 }
-            }
 
             10 -> {
                 npc(
                     FaceAnim.CHILD_FRIENDLY,
                     "This is the fight caves, TzHaar-Xil made it for practice,",
                     "but many JalYt come here to fight too.",
-                    "Just enter the cave and make sure you're prepared."
+                    "Just enter the cave and make sure you're prepared.",
                 )
                 stage = 11
             }
@@ -117,17 +135,18 @@ class TzHaarMejJehDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 12
             }
 
-            12 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "Are there any rules?")
-                    stage = 14
-                }
+            12 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_GUILTY, "Are there any rules?")
+                        stage = 14
+                    }
 
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "Ok thanks.")
-                    stage = 13
+                    2 -> {
+                        player(FaceAnim.HALF_GUILTY, "Ok thanks.")
+                        stage = 13
+                    }
                 }
-            }
 
             13 -> end()
             14 -> {
@@ -140,23 +159,24 @@ class TzHaarMejJehDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 16
             }
 
-            16 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "Do I win anything?")
-                    stage = 17
-                }
+            16 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_GUILTY, "Do I win anything?")
+                        stage = 17
+                    }
 
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "Sounds good.")
-                    stage = 13
+                    2 -> {
+                        player(FaceAnim.HALF_GUILTY, "Sounds good.")
+                        stage = 13
+                    }
                 }
-            }
 
             17 -> {
                 npc(
                     FaceAnim.CHILD_GUILTY,
                     "You ask a lot of questions.",
-                    "Might give you TokKul if you last long enough."
+                    "Might give you TokKul if you last long enough.",
                 )
                 stage = 18
             }
@@ -175,7 +195,7 @@ class TzHaarMejJehDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     FaceAnim.CHILD_GUILTY,
                     "Gold is like you JalYt, soft and easily broken, we use",
-                    "hard rock forged in fire like TzHaar!"
+                    "hard rock forged in fire like TzHaar!",
                 )
                 stage = 501
             }
@@ -191,22 +211,23 @@ class TzHaarMejJehDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 22
             }
 
-            22 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "What's a 'JalYt-Ket'?")
-                    stage = 100
-                }
+            22 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_GUILTY, "What's a 'JalYt-Ket'?")
+                        stage = 100
+                    }
 
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "I guess so...")
-                    stage = 200
-                }
+                    2 -> {
+                        player(FaceAnim.HALF_GUILTY, "I guess so...")
+                        stage = 200
+                    }
 
-                3 -> {
-                    player(FaceAnim.HALF_GUILTY, "No I'm not!")
-                    stage = 300
+                    3 -> {
+                        player(FaceAnim.HALF_GUILTY, "No I'm not!")
+                        stage = 300
+                    }
                 }
-            }
 
             100 -> {
                 npc(FaceAnim.CHILD_GUILTY, "That what you are... you tough and strong no?")
@@ -231,7 +252,7 @@ class TzHaarMejJehDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     FaceAnim.CHILD_SUSPICIOUS,
                     "I thought you strong and tough",
-                    "but you want skip endurance training?"
+                    "but you want skip endurance training?",
                 )
                 stage = 57
             }
@@ -246,17 +267,18 @@ class TzHaarMejJehDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 51
             }
 
-            51 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "I don't have time for it, man.")
-                    stage = 52
-                }
+            51 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_GUILTY, "I don't have time for it, man.")
+                        stage = 52
+                    }
 
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "No, I'm JalYt-Ket! I swear!", "I'll do the training properly.")
-                    stage = 30
+                    2 -> {
+                        player(FaceAnim.HALF_GUILTY, "No, I'm JalYt-Ket! I swear!", "I'll do the training properly.")
+                        stage = 30
+                    }
                 }
-            }
 
             52 -> {
                 npc(FaceAnim.CHILD_GUILTY, "JalYt, you know you not get reward", "if you not do training properly, ok?")
@@ -268,17 +290,18 @@ class TzHaarMejJehDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 53
             }
 
-            53 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "That's okay, I don't need a reward.")
-                    stage = 54
-                }
+            53 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_GUILTY, "That's okay, I don't need a reward.")
+                        stage = 54
+                    }
 
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "Oh, nevermind then.")
-                    stage = 30
+                    2 -> {
+                        player(FaceAnim.HALF_GUILTY, "Oh, nevermind then.")
+                        stage = 30
+                    }
                 }
-            }
 
             54 -> {
                 player(FaceAnim.NEUTRAL, "I just wanna fight the big guy.")
@@ -294,7 +317,7 @@ class TzHaarMejJehDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     FaceAnim.CHILD_FRIENDLY,
                     "You give 8000 TokKul, TzTok-Jad know you serious.",
-                    "You get it back if you victorious."
+                    "You get it back if you victorious.",
                 )
                 stage = 60
             }
@@ -303,7 +326,7 @@ class TzHaarMejJehDialogue(player: Player? = null) : Dialogue(player) {
                 options(
                     "That's fair, here's 8000 TokKul.",
                     "I don't have that much on me, but I'll go get it.",
-                    "TzTok-Jad must be old and tired to not just accept my challenge."
+                    "TzTok-Jad must be old and tired to not just accept my challenge.",
                 )
                 stage = 61
                 when (buttonId) {
@@ -312,11 +335,12 @@ class TzHaarMejJehDialogue(player: Player? = null) : Dialogue(player) {
                         if (!player.inventory.containsItem(APPEARANCE_FEE)) {
                             stage = 62
                         }
-                        stage = if (player.inventory.remove(APPEARANCE_FEE)) {
-                            69
-                        } else {
-                            62
-                        }
+                        stage =
+                            if (player.inventory.remove(APPEARANCE_FEE)) {
+                                69
+                            } else {
+                                62
+                            }
                     }
 
                     2 -> {
@@ -328,36 +352,42 @@ class TzHaarMejJehDialogue(player: Player? = null) : Dialogue(player) {
                         player(
                             FaceAnim.HALF_GUILTY,
                             "TzTok-Jad must be old and tired",
-                            "to not just accept my challenge."
+                            "to not just accept my challenge.",
                         )
                         stage = 63
                     }
                 }
             }
 
-            61 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "That's fair, here's 8000 TokKul.")
-                    if (!player.inventory.containsItem(APPEARANCE_FEE)) {
-                        stage = 62
+            61 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_GUILTY, "That's fair, here's 8000 TokKul.")
+                        if (!player.inventory.containsItem(APPEARANCE_FEE)) {
+                            stage = 62
+                        }
+                        stage =
+                            if (player.inventory.remove(APPEARANCE_FEE)) {
+                                69
+                            } else {
+                                62
+                            }
                     }
-                    stage = if (player.inventory.remove(APPEARANCE_FEE)) {
-                        69
-                    } else {
-                        62
+
+                    2 -> {
+                        player(FaceAnim.HALF_GUILTY, "I don't have that much on me, but I'll go get it.")
+                        stage = 30
+                    }
+
+                    3 -> {
+                        player(
+                            FaceAnim.HALF_GUILTY,
+                            "TzTok-Jad must be old and tired",
+                            "to not just accept my challenge.",
+                        )
+                        stage = 63
                     }
                 }
-
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "I don't have that much on me, but I'll go get it.")
-                    stage = 30
-                }
-
-                3 -> {
-                    player(FaceAnim.HALF_GUILTY, "TzTok-Jad must be old and tired", "to not just accept my challenge.")
-                    stage = 63
-                }
-            }
 
             62 -> {
                 npc(FaceAnim.CHILD_FRIENDLY, "JalYt, you not have the TokKul.", "You come back when you are serious.")
@@ -368,7 +398,7 @@ class TzHaarMejJehDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     FaceAnim.CHILD_FRIENDLY,
                     "JalYt-Mor, you the old and tired one.",
-                    "You the one not want to do proper training."
+                    "You the one not want to do proper training.",
                 )
                 stage = 30
             }
@@ -382,7 +412,7 @@ class TzHaarMejJehDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     FaceAnim.CHILD_FRIENDLY,
                     "Okay JalYt. Enter cave when you are prepared.",
-                    "You find TzTok-Jad waiting for JalYt challenger."
+                    "You find TzTok-Jad waiting for JalYt challenger.",
                 )
                 setAttribute(player, "fc_practice_jad", true)
                 stage = 30

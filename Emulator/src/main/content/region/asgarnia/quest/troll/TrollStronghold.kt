@@ -1,9 +1,5 @@
 package content.region.asgarnia.quest.troll
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.*
 import core.api.quest.getQuestStage
 import core.api.quest.isQuestComplete
@@ -11,12 +7,18 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class TrollStronghold :
     Quest(Quests.TROLL_STRONGHOLD, 128, 127, 1, Vars.VARP_QUEST_TROLL_SRONGHOLD_PROGRESS_317, 0, 1, 50) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 12
         var stage = getStage(player)
@@ -31,13 +33,26 @@ class TrollStronghold :
             line++
             line(player, "To complete this quest I need:", line++)
             line(player, "Level 15 Agility.", line++, hasLevelStat(player, Skills.AGILITY, 15))
-            line(player, "I also need to be able to defeat a !!level 113 Troll??.", line++, player.properties.combatLevel >= 100)
+            line(
+                player,
+                "I also need to be able to defeat a !!level 113 Troll??.",
+                line++,
+                player.properties.combatLevel >= 100,
+            )
             line(player, "Level 30 Thieving might be useful.", line++, hasLevelStat(player, Skills.THIEVING, 30))
-            if (isQuestComplete(player, Quests.DEATH_PLATEAU) && hasLevelStat(player, Skills.AGILITY, 15) && hasLevelStat(player, Skills.THIEVING, 30)) {
+            if (isQuestComplete(player, Quests.DEATH_PLATEAU) &&
+                hasLevelStat(player, Skills.AGILITY, 15) &&
+                hasLevelStat(player, Skills.THIEVING, 30)
+            ) {
                 line(player, "I have all the requirements to start this quest.", line)
             }
         } else {
-            line(player, "I promised !!Denulth?? that I would rescue !!Godric?? from the !!Troll??", line++, stage == 100)
+            line(
+                player,
+                "I promised !!Denulth?? that I would rescue !!Godric?? from the !!Troll??",
+                line++,
+                stage == 100,
+            )
             line(player, "!!Stronghold??", line++, stage == 100)
             line++
             if (stage >= 5 || hasBoots) {
@@ -96,4 +111,3 @@ class TrollStronghold :
         return this
     }
 }
-

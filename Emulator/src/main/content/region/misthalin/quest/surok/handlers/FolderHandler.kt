@@ -35,12 +35,12 @@ class FolderHandler : UseWithHandler(WhatLiesBelowListener.EMPTY_FOLDER, WhatLie
                 player.inventory.replace(Item(WhatLiesBelowListener.FULL_FOLDER), folder.slot)
                 sendMessage(
                     player,
-                    "You add the last page to Rat's folder. You should take this back to Rat as soon as possible."
+                    "You add the last page to Rat's folder. You should take this back to Rat as soon as possible.",
                 )
                 sendDialogueLines(
                     player,
                     "You have added all the pages to the folder that Rat gave to you.",
-                    "You should take this folder back to Rat."
+                    "You should take this folder back to Rat.",
                 )
             } else {
                 sendMessage(player, "You need to find $remainingPages more page${if (remainingPages > 1) "s" else "."}")

@@ -1,15 +1,17 @@
 package content.region.fremennik.quest.viking.handlers
 
-import org.rs.consts.NPCs
 import core.game.node.entity.player.Player
+import org.rs.consts.NPCs
 
-class KoscheiSession(val player: Player) {
-
-    private val koschei: KoscheiNPC = KoscheiNPC(
-        NPCs.KOSCHEI_THE_DEATHLESS_1290,
-        player.location?.transform(1, 0, 0),
-        this
-    )
+class KoscheiSession(
+    val player: Player,
+) {
+    private val koschei: KoscheiNPC =
+        KoscheiNPC(
+            NPCs.KOSCHEI_THE_DEATHLESS_1290,
+            player.location?.transform(1, 0, 0),
+            this,
+        )
 
     init {
         if (player.getExtension<Any?>(KoscheiSession::class.java) != null) {
@@ -19,7 +21,6 @@ class KoscheiSession(val player: Player) {
     }
 
     fun start() {
-
         koschei.init()
         player.unlock()
     }
@@ -31,7 +32,6 @@ class KoscheiSession(val player: Player) {
     }
 
     companion object {
-
         fun create(player: Player): KoscheiSession {
             return KoscheiSession(player)
         }

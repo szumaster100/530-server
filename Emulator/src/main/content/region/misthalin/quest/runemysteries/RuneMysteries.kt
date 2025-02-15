@@ -1,19 +1,21 @@
 package content.region.misthalin.quest.runemysteries
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.sendItemZoomOnInterface
 import core.api.setVarbit
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class RuneMysteries : Quest(Quests.RUNE_MYSTERIES, 27, 26, 1, Vars.VARP_QUEST_RUNE_MYSTERIES_PROGRESS_63, 0, 1, 6) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 11
 

@@ -1,7 +1,5 @@
 package content.region.karamja.dialogue.brimhaven
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.region.asgarnia.quest.hero.HeroesQuest
 import core.api.*
 import core.game.dialogue.Dialogue
@@ -10,17 +8,23 @@ import core.game.dialogue.DialogueBuilderFile
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
-class GripDialogue(player: Player? = null) : Dialogue(player) {
-
+class GripDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         openDialogue(player, GripDialogueFile(), npc)
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         return true
     }
 
@@ -34,9 +38,9 @@ class GripDialogue(player: Player? = null) : Dialogue(player) {
 }
 
 class GripDialogueFile : DialogueBuilderFile() {
-
     override fun create(b: DialogueBuilder) {
-        b.onPredicate { _ -> true }
+        b
+            .onPredicate { _ -> true }
             .branch { player ->
                 return@branch if (getAttribute(player, HeroesQuest.attributeGripTookPapers, false)) {
                     1
@@ -45,13 +49,16 @@ class GripDialogueFile : DialogueBuilderFile() {
                 }
             }.let { branch ->
                 val continuePath = b.placeholder()
-                branch.onValue(1)
+                branch
+                    .onValue(1)
                     .goto(continuePath)
-                branch.onValue(0)
+                branch
+                    .onValue(0)
                     .playerl("Hi there. I am Hartigen, reporting for duty as your new deputy sir!")
                     .npcl("Ah good, at last. You took your time getting here! Now let me see...")
-                    .npcl("I'll get your hours and duty roster sorted out in a while. Oh, and do you have your I.D. papers with you? Internal security is almost as important as external security for a guard.")
-                    .branch { player ->
+                    .npcl(
+                        "I'll get your hours and duty roster sorted out in a while. Oh, and do you have your I.D. papers with you? Internal security is almost as important as external security for a guard.",
+                    ).branch { player ->
                         return@branch if (inInventory(player, Items.ID_PAPERS_1584)) {
                             1
                         } else {
@@ -59,54 +66,59 @@ class GripDialogueFile : DialogueBuilderFile() {
                         }
                     }.let { branch ->
                         val continuePath2 = b.placeholder()
-                        branch.onValue(1)
+                        branch
+                            .onValue(1)
                             .playerl("Right here sir!")
                             .linel("You hand the ID papers over to Grip.")
                             .betweenStage { df, player, _, _ ->
                                 if (removeItem(player, Items.ID_PAPERS_1584)) {
                                     setAttribute(player, HeroesQuest.attributeGripTookPapers, true)
                                 }
-                            }
-                            .goto(continuePath2)
-                        branch.onValue(0)
+                            }.goto(continuePath2)
+                        branch
+                            .onValue(0)
                             .playerl("Oh, dear. I don't have that with me any more.")
                             .npcl("Well, that's no good! Go get them immediately, then report back for duty.")
                             .end()
                         return@let continuePath2.builder()
-                    }
-                    .goto(continuePath)
+                    }.goto(continuePath)
                 return@let continuePath.builder()
-            }
-            .options()
+            }.options()
             .let { optionBuilder ->
                 val returnJoin = b.placeholder()
 
-                optionBuilder.option_playerl("So can I please guard the treasure room please?")
-                    .npcl("Well, I might post you outside it sometimes. I prefer to be the only one allowed inside however.")
-                    .npcl("There's some pretty valuable artefacts in there! Those keys stay ONLY with the head guard and Scarface Pete.")
-                    .goto(returnJoin)
+                optionBuilder
+                    .option_playerl("So can I please guard the treasure room please?")
+                    .npcl(
+                        "Well, I might post you outside it sometimes. I prefer to be the only one allowed inside however.",
+                    ).npcl(
+                        "There's some pretty valuable artefacts in there! Those keys stay ONLY with the head guard and Scarface Pete.",
+                    ).goto(returnJoin)
 
-                optionBuilder.optionIf("So what do my duties involve?") { player ->
-                    return@optionIf !getAttribute(player, HeroesQuest.attributeGripSaidDuties, false)
-                }
-                    .betweenStage { _, player, _, _ ->
+                optionBuilder
+                    .optionIf("So what do my duties involve?") { player ->
+                        return@optionIf !getAttribute(player, HeroesQuest.attributeGripSaidDuties, false)
+                    }.betweenStage { _, player, _, _ ->
                         setAttribute(player, HeroesQuest.attributeGripSaidDuties, true)
-                    }
-                    .playerl("So what do my duties involve?")
-                    .npcl("You'll have various guard related duties on various shifts. I'll assign specific duties as they are required as and when they become necessary. Just so you know, if anything happens to me")
-                    .npcl("you'll need to take over as head guard here. You'll find important keys to the treasure room and Pete's quarters inside my jacket - although I doubt anything bad's going to happen to")
-                    .npcl("me anytime soon!")
+                    }.playerl("So what do my duties involve?")
+                    .npcl(
+                        "You'll have various guard related duties on various shifts. I'll assign specific duties as they are required as and when they become necessary. Just so you know, if anything happens to me",
+                    ).npcl(
+                        "you'll need to take over as head guard here. You'll find important keys to the treasure room and Pete's quarters inside my jacket - although I doubt anything bad's going to happen to",
+                    ).npcl("me anytime soon!")
                     .linel("Grip laughs to himself at the thought.")
                     .goto(returnJoin)
 
-                optionBuilder.option_playerl("Well, I'd better sort my new room out.")
-                    .npcl("Yeah, I'll give you time to settle in. Better get a good night's sleep, I expect you to report for duty at oh five hundred hours tomorrow on the dot!")
-                    .end()
+                optionBuilder
+                    .option_playerl("Well, I'd better sort my new room out.")
+                    .npcl(
+                        "Yeah, I'll give you time to settle in. Better get a good night's sleep, I expect you to report for duty at oh five hundred hours tomorrow on the dot!",
+                    ).end()
 
-                optionBuilder.optionIf("Anything I can do now?") { player ->
-                    return@optionIf getAttribute(player, HeroesQuest.attributeGripSaidDuties, false)
-                }
-                    .playerl("Anything I can do now?")
+                optionBuilder
+                    .optionIf("Anything I can do now?") { player ->
+                        return@optionIf getAttribute(player, HeroesQuest.attributeGripSaidDuties, false)
+                    }.playerl("Anything I can do now?")
                     .branch { player ->
                         return@branch if (inInventory(player, Items.MISCELLANEOUS_KEY_1586)) {
                             1
@@ -114,13 +126,16 @@ class GripDialogueFile : DialogueBuilderFile() {
                             0
                         }
                     }.let { branch ->
-                        branch.onValue(1)
+                        branch
+                            .onValue(1)
                             .npcl("Can't think of anything right now.")
                             .end()
 
-                        branch.onValue(0)
-                            .npcl("Hmm. Well, you could find out what this key opens for me. Apparently it's for something in this building, but for the life of me I can't find what.")
-                            .linel("Grip hands you a key.")
+                        branch
+                            .onValue(0)
+                            .npcl(
+                                "Hmm. Well, you could find out what this key opens for me. Apparently it's for something in this building, but for the life of me I can't find what.",
+                            ).linel("Grip hands you a key.")
                             .endWith { _, player ->
                                 addItemOrDrop(player, Items.MISCELLANEOUS_KEY_1586)
                             }

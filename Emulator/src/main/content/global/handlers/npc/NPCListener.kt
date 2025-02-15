@@ -1,6 +1,5 @@
 package content.global.handlers.npc
 
-import org.rs.consts.*
 import content.global.ame.RandomEvents
 import content.minigame.gnomecook.*
 import content.region.kandarin.miniquest.barcrawl.BarcrawlManager
@@ -22,11 +21,10 @@ import core.game.system.timer.impl.AntiMacro
 import core.game.worldevents.events.HolidayRandomEventNPC
 import core.game.worldevents.events.HolidayRandomEvents
 import core.game.worldevents.events.HolidayRandoms
+import org.rs.consts.*
 
 class NPCListener : InteractionListener {
-
     override fun defineListeners() {
-
         onUseWith(IntType.ITEM, Items.BUCKET_1925, *cowSceneryIds) { player, _, with ->
             milk(player, with.asScenery())
             return@onUseWith true
@@ -65,14 +63,14 @@ class NPCListener : InteractionListener {
                     player,
                     Items.FREMENNIK_SEA_BOOTS_1_14571,
                     Items.FREMENNIK_SEA_BOOTS_2_14572,
-                    Items.FREMENNIK_SEA_BOOTS_3_14573
+                    Items.FREMENNIK_SEA_BOOTS_3_14573,
                 )
             ) {
                 sendNPCDialogue(
                     player,
                     NPCs.PEER_THE_SEER_1288,
                     "Do not pester me, outerlander! I will only deposit items into the banks of those who have earned Fremennik sea boots!",
-                    FaceAnim.ANNOYED
+                    FaceAnim.ANNOYED,
                 )
                 return@on true
             }
@@ -106,9 +104,12 @@ class NPCListener : InteractionListener {
             val npc = node.asNpc()
 
             if (RandomEvents.randomIDs.contains(node.id)) {
-                if (AntiMacro.getEventNpc(player) == null || AntiMacro.getEventNpc(player) != node.asNpc() || AntiMacro.getEventNpc(
-                        player
-                    )?.finalized == true
+                if (AntiMacro.getEventNpc(player) == null ||
+                    AntiMacro.getEventNpc(player) != node.asNpc() ||
+                    AntiMacro
+                        .getEventNpc(
+                            player,
+                        )?.finalized == true
                 ) {
                     sendMessage(player, "They aren't interested in talking to you.")
                 } else {
@@ -118,9 +119,12 @@ class NPCListener : InteractionListener {
             }
 
             if (HolidayRandomEvents.holidayRandomIDs.contains(node.id) && node is HolidayRandomEventNPC) {
-                if (HolidayRandoms.getEventNpc(player) == null || HolidayRandoms.getEventNpc(player) != node.asNpc() || HolidayRandoms.getEventNpc(
-                        player
-                    )?.finalized == true
+                if (HolidayRandoms.getEventNpc(player) == null ||
+                    HolidayRandoms.getEventNpc(player) != node.asNpc() ||
+                    HolidayRandoms
+                        .getEventNpc(
+                            player,
+                        )?.finalized == true
                 ) {
                     sendMessage(player, "They aren't interested in talking to you.")
                 } else {
@@ -161,39 +165,44 @@ class NPCListener : InteractionListener {
 
     companion object {
         val peerTheSeerNPC = NPCs.PEER_THE_SEER_1288
-        val barCrawlNPCs = intArrayOf(
-            NPCs.BARTENDER_733,
-            NPCs.BLURBERRY_848,
-            NPCs.BARTENDER_735,
-            NPCs.BARTENDER_739,
-            NPCs.BARTENDER_737,
-            NPCs.BARTENDER_738,
-            NPCs.BARTENDER_731,
-            NPCs.ZAMBO_568,
-            NPCs.KAYLEE_3217,
-            NPCs.EMILY_736,
-            NPCs.BARTENDER_734
-        )
-        val dummySceneryIds = intArrayOf(
-            Scenery.DUMMY_2038,
-            Scenery.DUMMY_15624,
-            Scenery.DUMMY_15625,
-            Scenery.DUMMY_15626,
-            Scenery.DUMMY_15627,
-            Scenery.DUMMY_15628,
-            Scenery.DUMMY_15629,
-            Scenery.DUMMY_15630,
-            Scenery.DUMMY_18238,
-            Scenery.DUMMY_25648,
-            Scenery.DUMMY_PAWYA_CORPSE_28912,
-            Scenery.DUMMY_823,
-            Scenery.DUMMY_23921
-        )
+        val barCrawlNPCs =
+            intArrayOf(
+                NPCs.BARTENDER_733,
+                NPCs.BLURBERRY_848,
+                NPCs.BARTENDER_735,
+                NPCs.BARTENDER_739,
+                NPCs.BARTENDER_737,
+                NPCs.BARTENDER_738,
+                NPCs.BARTENDER_731,
+                NPCs.ZAMBO_568,
+                NPCs.KAYLEE_3217,
+                NPCs.EMILY_736,
+                NPCs.BARTENDER_734,
+            )
+        val dummySceneryIds =
+            intArrayOf(
+                Scenery.DUMMY_2038,
+                Scenery.DUMMY_15624,
+                Scenery.DUMMY_15625,
+                Scenery.DUMMY_15626,
+                Scenery.DUMMY_15627,
+                Scenery.DUMMY_15628,
+                Scenery.DUMMY_15629,
+                Scenery.DUMMY_15630,
+                Scenery.DUMMY_18238,
+                Scenery.DUMMY_25648,
+                Scenery.DUMMY_PAWYA_CORPSE_28912,
+                Scenery.DUMMY_823,
+                Scenery.DUMMY_23921,
+            )
         val cowSceneryIds = intArrayOf(Scenery.DAIRY_COW_8689, Scenery.DAIRY_COW_12111)
         val items: Array<Item> =
             arrayOf(Item(Items.BUCKET_1925, 1), Item(Items.EMPTY_BUCKET_3727, 1), Item(Items.BUCKET_OF_MILK_1927, 1))
 
-        fun milk(player: Player, node: Node): Boolean {
+        fun milk(
+            player: Player,
+            node: Node,
+        ): Boolean {
             if (!anyInInventory(player, Items.BUCKET_1925, Items.EMPTY_BUCKET_3727)) {
                 player.dialogueInterpreter.open(NPCs.GILLIE_GROATS_3807, true, true)
                 return true
@@ -209,10 +218,11 @@ class NPCListener : InteractionListener {
                             player.inventory.add(items[2])
                             sendMessage(player, "You milk the cow.")
                         }
-                        if (inInventory(player, Items.BUCKET_1925, 1) || inInventory(
+                        if (inInventory(player, Items.BUCKET_1925, 1) ||
+                            inInventory(
                                 player,
                                 Items.EMPTY_BUCKET_3727,
-                                1
+                                1,
                             )
                         ) {
                             animate(player, Animations.MILKING_COW_2305)
@@ -226,7 +236,7 @@ class NPCListener : InteractionListener {
                         super.stop()
                         resetAnimator(player)
                     }
-                }
+                },
             )
             return true
         }

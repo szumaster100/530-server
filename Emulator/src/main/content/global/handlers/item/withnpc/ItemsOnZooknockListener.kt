@@ -1,14 +1,13 @@
 package content.global.handlers.item.withnpc
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.region.karamja.dialogue.apeatoll.dungeon.ZooknockDialogueFile
 import core.api.openDialogue
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 open class ItemsOnZooknockListener : InteractionListener {
-
     val goldBar = Items.GOLD_BAR_2357
     val monkeyAmuletMould = Items.MAMULET_MOULD_4020
     val monkeyDentures = Items.MONKEY_DENTURES_4006

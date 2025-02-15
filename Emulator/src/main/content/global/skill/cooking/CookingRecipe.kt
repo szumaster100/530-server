@@ -10,12 +10,14 @@ import core.plugin.Plugin
 
 @Initializable
 class CookingRecipe : UseWithHandler(*getAllowedNodes()) {
-
     companion object {
         private fun getAllowedNodes(): IntArray {
-            return Recipe.values().flatMap { recipe ->
-                recipe.parts.map { it.id } + recipe.base.id
-            }.distinct().toIntArray()
+            return Recipe
+                .values()
+                .flatMap { recipe ->
+                    recipe.parts.map { it.id } + recipe.base.id
+                }.distinct()
+                .toIntArray()
         }
     }
 
@@ -32,24 +34,28 @@ class CookingRecipe : UseWithHandler(*getAllowedNodes()) {
         val recipe = findMatchingRecipe(event) ?: return false
 
         val player = event.player
-        val dialogueHandler = object : SkillDialogueHandler(player, SkillDialogue.ONE_OPTION, recipe.product) {
-            override fun create(amount: Int, index: Int) {
-                player.pulseManager.run(
-                    object : Pulse(2) {
-                        var count = 0
+        val dialogueHandler =
+            object : SkillDialogueHandler(player, SkillDialogue.ONE_OPTION, recipe.product) {
+                override fun create(
+                    amount: Int,
+                    index: Int,
+                ) {
+                    player.pulseManager.run(
+                        object : Pulse(2) {
+                            var count = 0
 
-                        override fun pulse(): Boolean {
-                            recipe.mix(player, event)
-                            return ++count >= amount
-                        }
-                    }
-                )
-            }
+                            override fun pulse(): Boolean {
+                                recipe.mix(player, event)
+                                return ++count >= amount
+                            }
+                        },
+                    )
+                }
 
-            override fun getAll(index: Int): Int {
-                return player.inventory.getAmount(recipe.base)
+                override fun getAll(index: Int): Int {
+                    return player.inventory.getAmount(recipe.base)
+                }
             }
-        }
 
         if (player.inventory.getAmount(recipe.base) == 1) {
             recipe.mix(player, event)
@@ -63,12 +69,12 @@ class CookingRecipe : UseWithHandler(*getAllowedNodes()) {
         return Recipe.values().firstOrNull { recipe ->
             if (recipe.singular) {
                 (recipe.base.id == event.usedItem.id || recipe.base.id == event.baseItem.id) &&
-                        recipe.ingredients.any { it.id == event.usedItem.id || it.id == event.baseItem.id }
+                    recipe.ingredients.any { it.id == event.usedItem.id || it.id == event.baseItem.id }
             } else {
                 recipe.parts.any { part ->
                     recipe.ingredients.any { ingredient ->
                         (part.id == event.usedItem.id && ingredient.id == event.baseItem.id) ||
-                                (part.id == event.baseItem.id && ingredient.id == event.usedItem.id)
+                            (part.id == event.baseItem.id && ingredient.id == event.usedItem.id)
                     }
                 }
             }

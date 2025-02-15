@@ -1,9 +1,5 @@
 package content.global.activity.champion.npc
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Vars
 import content.global.activity.champion.ChallengeListener
 import core.api.*
 import core.game.node.entity.Entity
@@ -16,13 +12,23 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Vars
 
 @Initializable
-class GiantChampionNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
+class GiantChampionNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
     var clearTime = 0
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return GiantChampionNPC(id, location)
     }
 
@@ -57,7 +63,7 @@ class GiantChampionNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id
                         champion.attack(player)
                         return true
                     }
-                }
+                },
             )
         }
     }

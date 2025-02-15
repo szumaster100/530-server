@@ -1,6 +1,5 @@
 package content.global.skill.agility.shortcuts
 
-import org.rs.consts.Animations
 import core.api.*
 import core.cache.def.impl.SceneryDefinition
 import core.game.interaction.OptionHandler
@@ -13,20 +12,24 @@ import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Animations
 
 @Initializable
 class SteppingStoneShortcut : OptionHandler() {
-
     private val stones = mutableMapOf<Location, SteppingStoneInstance>()
 
     internal data class SteppingStoneInstance(
         val pointA: Location,
         val pointB: Location,
         val option: String,
-        val levelReq: Int
+        val levelReq: Int,
     )
 
-    override fun handle(player: Player?, node: Node?, option: String?): Boolean {
+    override fun handle(
+        player: Player?,
+        node: Node?,
+        option: String?,
+    ): Boolean {
         player ?: return false
         val stone = stones[player.location] ?: return false
 
@@ -50,7 +53,7 @@ class SteppingStoneShortcut : OptionHandler() {
                     player.location,
                     player.location.transform(offset.first, offset.second, 0),
                     ANIMATION,
-                    10
+                    10,
                 )
                 delayScript(player, 2)
             } else {
@@ -60,13 +63,22 @@ class SteppingStoneShortcut : OptionHandler() {
         return true
     }
 
-    private fun getOffset(player: Player, location: Location): Pair<Int, Int> {
+    private fun getOffset(
+        player: Player,
+        location: Location,
+    ): Pair<Int, Int> {
         val diffX = (location.x - player.location.x).coerceIn(-1, 1)
         val diffY = (location.y - player.location.y).coerceIn(-1, 1)
         return Pair(diffX, diffY)
     }
 
-    fun configure(objects: IntArray, pointA: Location, pointB: Location, option: String, levelReq: Int) {
+    fun configure(
+        objects: IntArray,
+        pointA: Location,
+        pointB: Location,
+        option: String,
+        levelReq: Int,
+    ) {
         val instance = SteppingStoneInstance(pointA, pointB, option, levelReq)
         objects.forEach {
             SceneryDefinition.forId(it).handlers["option:$option"] = this

@@ -2,6 +2,7 @@ package core.game.node.entity.player.info.login
 
 import core.api.LoginListener
 import core.api.reinitVarps
+import core.auth.AuthResponse
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.info.PlayerDetails
 import core.game.system.SystemManager
@@ -9,12 +10,15 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.GameWorld.loginListeners
 import core.game.world.repository.Repository
-import core.auth.AuthResponse
 import java.util.function.Consumer
 
-class LoginParser(val details: PlayerDetails) {
-
-    fun initialize(player: Player, reconnect: Boolean) {
+class LoginParser(
+    val details: PlayerDetails,
+) {
+    fun initialize(
+        player: Player,
+        reconnect: Boolean,
+    ) {
         if (!validateRequest()) return
 
         lateinit var parser: PlayerSaveParser
@@ -54,7 +58,7 @@ class LoginParser(val details: PlayerDetails) {
                     }
                     return true
                 }
-            }
+            },
         )
     }
 
@@ -77,7 +81,9 @@ class LoginParser(val details: PlayerDetails) {
         }
         return if (details.isBanned) {
             flag(AuthResponse.AccountDisabled)
-        } else true
+        } else {
+            true
+        }
     }
 
     fun flag(response: AuthResponse): Boolean {

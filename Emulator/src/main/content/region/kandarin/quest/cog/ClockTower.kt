@@ -1,13 +1,13 @@
 package content.region.kandarin.quest.cog
 
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.addItemOrDrop
 import core.api.getAttribute
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class ClockTower : Quest(Quests.CLOCK_TOWER, 38, 37, 1, Vars.VARP_QUEST_CLOCK_TOWER_PROGRESS_10, 0, 1, 8) {
@@ -21,7 +21,10 @@ class ClockTower : Quest(Quests.CLOCK_TOWER, 38, 37, 1, Vars.VARP_QUEST_CLOCK_TO
         const val ASK_ABOUT_RATS_ATTR = "quest:clocktower-askkojoaboutrats"
     }
 
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
 
         var line = 12
@@ -43,44 +46,60 @@ class ClockTower : Quest(Quests.CLOCK_TOWER, 38, 37, 1, Vars.VARP_QUEST_CLOCK_TO
                     if (getAttribute(
                             player!!,
                             BLUE_COG_ATTR,
-                            false
+                            false,
                         )
-                    ) "I placed the !!Blue Cog?? on it's !!spindle??." else "I haven't placed the !!Blue Cog?? on it's !!spindle?? yet.",
+                    ) {
+                        "I placed the !!Blue Cog?? on it's !!spindle??."
+                    } else {
+                        "I haven't placed the !!Blue Cog?? on it's !!spindle?? yet."
+                    },
                     line++,
-                    getAttribute(player, BLUE_COG_ATTR, false)
+                    getAttribute(player, BLUE_COG_ATTR, false),
                 )
                 line(
                     player,
                     if (getAttribute(
                             player,
                             BLACK_COG_ATTR,
-                            false
+                            false,
                         )
-                    ) "I placed the !!Black Cog?? on it's !!spindle??." else "I haven't placed the !!Black Cog?? on it's !!spindle?? yet.",
+                    ) {
+                        "I placed the !!Black Cog?? on it's !!spindle??."
+                    } else {
+                        "I haven't placed the !!Black Cog?? on it's !!spindle?? yet."
+                    },
                     line++,
-                    getAttribute(player, BLACK_COG_ATTR, false)
+                    getAttribute(player, BLACK_COG_ATTR, false),
                 )
                 line(
                     player,
                     if (getAttribute(
                             player,
                             WHITE_COG_ATTR,
-                            false
+                            false,
                         )
-                    ) "I placed the !!White Cog?? on it's !!spindle??." else "I haven't placed the !!White Cog?? on it's !!spindle?? yet.",
+                    ) {
+                        "I placed the !!White Cog?? on it's !!spindle??."
+                    } else {
+                        "I haven't placed the !!White Cog?? on it's !!spindle?? yet."
+                    },
                     line++,
-                    getAttribute(player, WHITE_COG_ATTR, false)
+                    getAttribute(player, WHITE_COG_ATTR, false),
                 )
                 line(
                     player,
                     if (getAttribute(
                             player,
                             RED_COG_ATTR,
-                            false
+                            false,
                         )
-                    ) "I placed the !!Red Cog?? on it's !!spindle??." else "I haven't placed the !!Red Cog?? on it's !!spindle?? yet.",
+                    ) {
+                        "I placed the !!Red Cog?? on it's !!spindle??."
+                    } else {
+                        "I haven't placed the !!Red Cog?? on it's !!spindle?? yet."
+                    },
                     line++,
-                    getAttribute(player, RED_COG_ATTR, false)
+                    getAttribute(player, RED_COG_ATTR, false),
                 )
             }
 

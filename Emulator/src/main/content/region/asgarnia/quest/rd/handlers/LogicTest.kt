@@ -1,22 +1,22 @@
 package content.region.asgarnia.quest.rd.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import content.region.asgarnia.quest.rd.RDUtils
 import content.region.asgarnia.quest.rd.RecruitmentDrive
 import content.region.asgarnia.quest.rd.cutscene.FailTest
 import core.api.*
+import core.api.EquipmentSlot
+import core.api.ui.closeDialogue
 import core.game.dialogue.DialogueBuilder
 import core.game.dialogue.DialogueBuilderFile
 import core.game.dialogue.FaceAnim
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
-import core.api.EquipmentSlot
-import core.api.ui.closeDialogue
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.game.world.map.zone.ZoneBorders
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 class LogicTest : InteractionListener {
     companion object {
@@ -45,9 +45,11 @@ class LogicTest : InteractionListener {
         }
 
         fun checkFinished(player: Player) {
-            if (getVarbit(player, foxToVarbit) == 1 && getVarbit(player, chickenToVarbit) == 1 && getVarbit(
+            if (getVarbit(player, foxToVarbit) == 1 &&
+                getVarbit(player, chickenToVarbit) == 1 &&
+                getVarbit(
                     player,
-                    grainToVarbit
+                    grainToVarbit,
                 ) == 1
             ) {
                 sendMessage(player, "Congratulations! You have solved this room's puzzle!")
@@ -57,43 +59,51 @@ class LogicTest : InteractionListener {
 
         fun checkFail(player: Player): Boolean {
             return (
+                (
+                    getVarbit(player, foxFromVarbit) == 0 &&
+                        getVarbit(
+                            player,
+                            chickenFromVarbit,
+                        ) == 0 &&
+                        getVarbit(
+                            player,
+                            grainFromVarbit,
+                        ) == 1
+                ) ||
                     (
-                            getVarbit(player, foxFromVarbit) == 0 && getVarbit(
+                        getVarbit(player, foxFromVarbit) == 1 &&
+                            getVarbit(
                                 player,
-                                chickenFromVarbit
-                            ) == 0 && getVarbit(
+                                chickenFromVarbit,
+                            ) == 0 &&
+                            getVarbit(
                                 player,
-                                grainFromVarbit
+                                grainFromVarbit,
+                            ) == 0
+                    ) ||
+                    (
+                        getVarbit(player, foxToVarbit) == 1 &&
+                            getVarbit(
+                                player,
+                                chickenToVarbit,
+                            ) == 1 &&
+                            getVarbit(
+                                player,
+                                grainToVarbit,
+                            ) == 0
+                    ) ||
+                    (
+                        getVarbit(player, foxToVarbit) == 0 &&
+                            getVarbit(
+                                player,
+                                chickenToVarbit,
+                            ) == 1 &&
+                            getVarbit(
+                                player,
+                                grainToVarbit,
                             ) == 1
-                            ) ||
-                            (
-                                    getVarbit(player, foxFromVarbit) == 1 && getVarbit(
-                                        player,
-                                        chickenFromVarbit
-                                    ) == 0 && getVarbit(
-                                        player,
-                                        grainFromVarbit
-                                    ) == 0
-                                    ) ||
-                            (
-                                    getVarbit(player, foxToVarbit) == 1 && getVarbit(
-                                        player,
-                                        chickenToVarbit
-                                    ) == 1 && getVarbit(
-                                        player,
-                                        grainToVarbit
-                                    ) == 0
-                                    ) ||
-                            (
-                                    getVarbit(player, foxToVarbit) == 0 && getVarbit(
-                                        player,
-                                        chickenToVarbit
-                                    ) == 1 && getVarbit(
-                                        player,
-                                        grainToVarbit
-                                    ) == 1
-                                    )
                     )
+            )
         }
 
         fun resetStage(player: Player) {
@@ -116,7 +126,7 @@ class LogicTest : InteractionListener {
                     countEquipmentItems(player) > 1 -> {
                         sendDialogue(
                             player,
-                            "I really don't think I should be carrying more than 5Kg across that rickety bridge..."
+                            "I really don't think I should be carrying more than 5Kg across that rickety bridge...",
                         )
                     }
 
@@ -129,7 +139,14 @@ class LogicTest : InteractionListener {
                     else -> {
                         lock(player, 5)
                         sendMessage(player, "You carefully walk across the rickety bridge...")
-                        val path = if (bridge == Scenery.PRECARIOUS_BRIDGE_7286) listOf(2476, 4972) else listOf(2484, 4972)
+                        val path =
+                            if (bridge ==
+                                Scenery.PRECARIOUS_BRIDGE_7286
+                            ) {
+                                listOf(2476, 4972)
+                            } else {
+                                listOf(2484, 4972)
+                            }
                         player.walkingQueue.reset()
                         player.walkingQueue.addPath(path[0], path[1])
                     }
@@ -198,7 +215,7 @@ class LogicTest : InteractionListener {
                         EquipmentSlot.SHIELD.ordinal,
                         Item(Items.CHICKEN_5609),
                         null,
-                        Container.EQUIPMENT
+                        Container.EQUIPMENT,
                     )
                     setVarbit(player, chickenFromVarbit, 1)
                 }
@@ -208,7 +225,7 @@ class LogicTest : InteractionListener {
                         EquipmentSlot.SHIELD.ordinal,
                         Item(Items.CHICKEN_5609),
                         null,
-                        Container.EQUIPMENT
+                        Container.EQUIPMENT,
                     )
                     setVarbit(player, chickenToVarbit, 0)
                 }
@@ -230,30 +247,30 @@ class LogicTest : InteractionListener {
     }
 }
 
-class SirSpishyusDialogueFile(private val dialogueNum: Int = 0) : DialogueBuilderFile() {
-
+class SirSpishyusDialogueFile(
+    private val dialogueNum: Int = 0,
+) : DialogueBuilderFile() {
     override fun create(b: DialogueBuilder) {
-        b.onPredicate { player -> getAttribute(player, RecruitmentDrive.stagePass, false) }
+        b
+            .onPredicate { player -> getAttribute(player, RecruitmentDrive.stagePass, false) }
             .npc(
                 FaceAnim.HAPPY,
                 "Excellent work, @name.",
                 "Please step through the portal to meet your next",
-                "challenge."
-            )
-            .end()
+                "challenge.",
+            ).end()
 
-        b.onPredicate { player -> dialogueNum == 2 || getAttribute(player, RecruitmentDrive.stageFail, false) }
+        b
+            .onPredicate { player -> dialogueNum == 2 || getAttribute(player, RecruitmentDrive.stageFail, false) }
             .betweenStage { _, player, _, _ ->
                 setAttribute(player, RecruitmentDrive.stageFail, true)
-            }
-            .npc(
+            }.npc(
                 FaceAnim.SAD,
                 "No... I am very sorry.",
                 "Apparently you are not up to the challenge.",
                 "I will return you where you came from, better luck in the",
-                "future."
-            )
-            .endWith { _, player ->
+                "future.",
+            ).endWith { _, player ->
                 removeAttribute(player, PatienceTest.patience)
                 setAttribute(player, RecruitmentDrive.stagePass, false)
                 setAttribute(player, RecruitmentDrive.stageFail, false)
@@ -262,7 +279,8 @@ class SirSpishyusDialogueFile(private val dialogueNum: Int = 0) : DialogueBuilde
                     return@runTask
                 }
             }
-        b.onPredicate { _ -> true }
+        b
+            .onPredicate { _ -> true }
             .betweenStage { _, player, _, _ ->
                 setVarbit(player, RDUtils.VARBIT_FOX_EAST, 0)
                 setVarbit(player, RDUtils.VARBIT_FOX_WEST, 0)
@@ -270,25 +288,21 @@ class SirSpishyusDialogueFile(private val dialogueNum: Int = 0) : DialogueBuilde
                 setVarbit(player, RDUtils.VARBIT_CHICKEN_WEST, 0)
                 setVarbit(player, RDUtils.VARBIT_GRAIN_EAST, 0)
                 setVarbit(player, RDUtils.VARBIT_GRAIN_WEST, 0)
-            }
-            .npcl(FaceAnim.FRIENDLY, "Ah, welcome @name.")
+            }.npcl(FaceAnim.FRIENDLY, "Ah, welcome @name.")
             .playerl(FaceAnim.FRIENDLY, "Hello there." + " What am I supposed to be doing in this room?")
             .npcl(
                 FaceAnim.FRIENDLY,
-                "Well, your task is to take this fox, this chicken and this bag of grain across that bridge there to the other side of the room."
-            )
-            .npcl(FaceAnim.FRIENDLY, "When you have done that, your task is complete.")
+                "Well, your task is to take this fox, this chicken and this bag of grain across that bridge there to the other side of the room.",
+            ).npcl(FaceAnim.FRIENDLY, "When you have done that, your task is complete.")
             .playerl(FaceAnim.FRIENDLY, "Is that it?")
             .npcl(FaceAnim.FRIENDLY, "Well, it is not quite as simple as that may sound.")
             .npcl(
                 FaceAnim.FRIENDLY,
-                "Firstly, you may only carry one of the objects across the room at a time, for the bridge is old and fragile."
-            )
-            .npcl(
+                "Firstly, you may only carry one of the objects across the room at a time, for the bridge is old and fragile.",
+            ).npcl(
                 FaceAnim.FRIENDLY,
-                "Secondly, the fox wants to eat the chicken, and the chicken wants to eat the grain. Should you ever leave the fox unattended with the chicken, or the grain unattended with the chicken, then"
-            )
-            .npcl(FaceAnim.FRIENDLY, "one of them will be eaten, and you will be unable to complete the test.")
+                "Secondly, the fox wants to eat the chicken, and the chicken wants to eat the grain. Should you ever leave the fox unattended with the chicken, or the grain unattended with the chicken, then",
+            ).npcl(FaceAnim.FRIENDLY, "one of them will be eaten, and you will be unable to complete the test.")
             .playerl(FaceAnim.FRIENDLY, "Okay, I'll see what I can do.")
     }
 }

@@ -1,6 +1,5 @@
 package content.global.skill.crafting.pottery
 
-import org.rs.consts.Animations
 import core.api.*
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.diary.DiaryType
@@ -8,9 +7,14 @@ import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.world.map.Location
+import org.rs.consts.Animations
 
-class FirePotteryPulse(player: Player?, node: Item?, val pottery: Pottery, var amount: Int) :
-    SkillPulse<Item?>(player, node) {
+class FirePotteryPulse(
+    player: Player?,
+    node: Item?,
+    val pottery: Pottery,
+    var amount: Int,
+) : SkillPulse<Item?>(player, node) {
     var ticks = 0
 
     override fun checkRequirements(): Boolean {
@@ -47,10 +51,12 @@ class FirePotteryPulse(player: Player?, node: Item?, val pottery: Pottery, var a
             sendMessage(player, "The " + getItemName(pottery.product.id).lowercase() + " hardens in the oven.")
             sendMessage(player, "You remove a " + getItemName(pottery.product.id).lowercase() + " from the oven.")
 
-            if (pottery == Pottery.BOWL && withinDistance(player, Location(3085, 3408, 0)) && getAttribute(
+            if (pottery == Pottery.BOWL &&
+                withinDistance(player, Location(3085, 3408, 0)) &&
+                getAttribute(
                     player,
                     "diary:varrock:spun-bowl",
-                    false
+                    false,
                 )
             ) {
                 finishDiaryTask(player, DiaryType.VARROCK, 0, 9)

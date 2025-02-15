@@ -3,11 +3,11 @@ package content.global.handlers.iface
 import core.api.ui.setInterfaceText
 import core.game.component.CloseEvent
 import core.game.component.Component
+import core.game.interaction.InterfaceListener
 import core.game.node.entity.combat.equipment.WeaponInterface
 import core.game.node.entity.combat.equipment.WeaponInterface.WeaponInterfaces
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.info.Rights
-import core.game.interaction.InterfaceListener
 import core.game.world.GameWorld.settings
 import org.rs.consts.Components
 
@@ -19,42 +19,47 @@ class MainGameInterface : InterfaceListener {
     val REPORT_ABUSE = Components.SNAPSHOT_MAIN_553
 
     override fun defineInterfaceListeners() {
-        on(FILTER_BUTTONS){player, _, _, buttonID, _, _ ->
-            if(buttonID == 27)
+        on(FILTER_BUTTONS) { player, _, _, buttonID, _, _ ->
+            if (buttonID == 27) {
                 openReport(player)
+            }
             return@on true
         }
 
-        on(RUN_BUTTON){player, _, _, _, _, _ ->
+        on(RUN_BUTTON) { player, _, _, _, _, _ ->
             player.settings.toggleRun()
             return@on true
         }
 
-        on(TOPLEVEL_FS){player, _, _, buttonID, _, _ ->
+        on(TOPLEVEL_FS) { player, _, _, buttonID, _, _ ->
             when (buttonID) {
-                12 -> setInterfaceText(player,
-                        "When you have finished playing " + settings!!.name + ", always use the button below to logout safely. ",
+                12 ->
+                    setInterfaceText(
+                        player,
+                        "When you have finished playing " + settings!!.name +
+                            ", always use the button below to logout safely. ",
                         Components.LOGOUT_182,
-                        0
-                )
-                49 -> setInterfaceText(player,
+                        0,
+                    )
+                49 ->
+                    setInterfaceText(
+                        player,
                         "Friends List - " + settings!!.name + " " + settings!!.worldId,
                         Components.FRIENDS2_550,
-                        3
-                )
+                        3,
+                    )
                 110 -> configureWorldMap(player)
             }
             return@on true
         }
 
-
-        on(TOPLEVEL){player, _, _, buttonID, _, _ ->
+        on(TOPLEVEL) { player, _, _, buttonID, _, _ ->
             when (buttonID) {
                 21 -> {
                     player.packetDispatch.sendString(
                         "Friends List - " + settings!!.name + " " + settings!!.worldId,
                         Components.FRIENDS2_550,
-                        3
+                        3,
                     )
                 }
                 38 -> {
@@ -68,11 +73,13 @@ class MainGameInterface : InterfaceListener {
                 40 -> player.questRepository.syncronizeTab(player)
                 41 -> player.inventory.refresh()
                 66, 110 -> configureWorldMap(player)
-                69 -> player.packetDispatch.sendString(
-                    "When you have finished playing " + settings!!.name + ", always use the button below to logout safely. ",
-                    Components.LOGOUT_182,
-                    0
-                )
+                69 ->
+                    player.packetDispatch.sendString(
+                        "When you have finished playing " + settings!!.name +
+                            ", always use the button below to logout safely. ",
+                        Components.LOGOUT_182,
+                        0,
+                    )
             }
             return@on true
         }

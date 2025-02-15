@@ -1,9 +1,5 @@
 package content.global.skill.herblore
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Sounds
 import content.global.skill.herblore.potions.GenericPotion
 import core.api.*
 import core.api.quest.isQuestComplete
@@ -11,10 +7,17 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Sounds
 
-class HerblorePulse(player: Player?, node: Item?, var amount: Int, private val potion: GenericPotion) :
-    SkillPulse<Item?>(player, node) {
-
+class HerblorePulse(
+    player: Player?,
+    node: Item?,
+    var amount: Int,
+    private val potion: GenericPotion,
+) : SkillPulse<Item?>(player, node) {
     private val initialAmount: Int = amount
     private var cycles = 0
 
@@ -31,6 +34,7 @@ class HerblorePulse(player: Player?, node: Item?, var amount: Int, private val p
     }
 
     override fun animate() {}
+
     override fun reward(): Boolean {
         if (potion.base!!.id == VIAL_OF_WATER.id) {
             if (initialAmount == 1 && delay == 1) {
@@ -60,17 +64,21 @@ class HerblorePulse(player: Player?, node: Item?, var amount: Int, private val p
         if (cycles == 0) {
             animate(player, ANIMATION)
         }
-        if (inInventory(player, potion.base!!.id) && inInventory(
+        if (inInventory(player, potion.base!!.id) &&
+            inInventory(
                 player,
-                potion.ingredient!!.id
-            ) && player.inventory.remove(potion.base, potion.ingredient)
+                potion.ingredient!!.id,
+            ) &&
+            player.inventory.remove(potion.base, potion.ingredient)
         ) {
             val item = potion.product
             addItem(player, item!!.id)
             sendMessage(
                 player,
-                "You put the" + getItemName(potion.ingredient.id).lowercase()
-                    .replace("clean", "") + " leaf into the vial of water."
+                "You put the" +
+                    getItemName(potion.ingredient.id)
+                        .lowercase()
+                        .replace("clean", "") + " leaf into the vial of water.",
             )
             playAudio(player, Sounds.GRIND_2608)
             if (cycles++ == 3) {
@@ -81,10 +89,12 @@ class HerblorePulse(player: Player?, node: Item?, var amount: Int, private val p
     }
 
     fun handleFinished() {
-        if (inInventory(player, potion.base!!.id) && inInventory(
+        if (inInventory(player, potion.base!!.id) &&
+            inInventory(
                 player,
-                potion.ingredient!!.id
-            ) && player.inventory.remove(potion.base, potion.ingredient)
+                potion.ingredient!!.id,
+            ) &&
+            player.inventory.remove(potion.base, potion.ingredient)
         ) {
             var item = potion.product
             addItem(player, item!!.id)
@@ -97,6 +107,7 @@ class HerblorePulse(player: Player?, node: Item?, var amount: Int, private val p
 
     companion object {
         @JvmField val VIAL_OF_WATER = Item(Items.VIAL_OF_WATER_227)
+
         @JvmField val COCONUT_MILK = Item(Items.COCONUT_MILK_5935)
         private const val ANIMATION = Animations.MIX_POTION_363
     }

@@ -22,7 +22,9 @@ import core.plugin.Plugin
 import core.tools.RandomFunction
 
 @Initializable
-class ImpetuousImpulses : MapZone("puro puro", true), Plugin<Any> {
+class ImpetuousImpulses :
+    MapZone("puro puro", true),
+    Plugin<Any> {
     init {
         zoneType = ZoneType.SAFE.id
     }
@@ -34,7 +36,10 @@ class ImpetuousImpulses : MapZone("puro puro", true), Plugin<Any> {
         return this
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 
@@ -52,7 +57,10 @@ class ImpetuousImpulses : MapZone("puro puro", true), Plugin<Any> {
         return super.enter(e)
     }
 
-    override fun leave(e: Entity, logout: Boolean): Boolean {
+    override fun leave(
+        e: Entity,
+        logout: Boolean,
+    ): Boolean {
         if (e is Player) {
             val p = e.asPlayer()
             if (!logout) {
@@ -63,7 +71,11 @@ class ImpetuousImpulses : MapZone("puro puro", true), Plugin<Any> {
         return super.leave(e, logout)
     }
 
-    override fun interact(e: Entity, target: Node, option: Option): Boolean {
+    override fun interact(
+        e: Entity,
+        target: Node,
+        option: Option,
+    ): Boolean {
         return super.interact(e, target, option)
     }
 
@@ -112,7 +124,10 @@ class ImpetuousImpulses : MapZone("puro puro", true), Plugin<Any> {
         WHEAT.add(WheatSet(0, Location.create(2583, 4304, 0), Location.create(2583, 4303, 0)))
     }
 
-    class WheatSet(private val rot: Int, vararg locations: Location) {
+    class WheatSet(
+        private val rot: Int,
+        vararg locations: Location,
+    ) {
         val locations: Array<Location> = locations as Array<Location>
         private val scenery = arrayOfNulls<Scenery>(2)
         var nextWhilt: Int = 0
@@ -147,7 +162,7 @@ class ImpetuousImpulses : MapZone("puro puro", true), Plugin<Any> {
                                 }
                                 return true
                             }
-                        }
+                        },
                     )
                     addScenery(`object`)
                     continue
@@ -165,7 +180,7 @@ class ImpetuousImpulses : MapZone("puro puro", true), Plugin<Any> {
                             removeScenery(`object`)
                             return true
                         }
-                    }
+                    },
                 )
             }
             removed = !removed
@@ -190,15 +205,16 @@ class ImpetuousImpulses : MapZone("puro puro", true), Plugin<Any> {
     companion object {
         private val WHEAT: MutableList<WheatSet> = ArrayList(20)
 
-        private val PULSE: Pulse = object : Pulse(1) {
-            override fun pulse(): Boolean {
-                for (set in WHEAT) {
-                    if (set.canWhilt()) {
-                        set.whilt()
+        private val PULSE: Pulse =
+            object : Pulse(1) {
+                override fun pulse(): Boolean {
+                    for (set in WHEAT) {
+                        if (set.canWhilt()) {
+                            set.whilt()
+                        }
                     }
+                    return false
                 }
-                return false
             }
-        }
     }
 }

@@ -8,19 +8,24 @@ import core.game.node.entity.player.Player
 import core.game.node.item.Item
 
 class EquipmentDegrade {
-
     companion object StaticDegrade {
         var p: Player? = null
         val itemList = arrayListOf<Int>()
         val setList = arrayListOf<ArrayList<Int>>()
         val itemCharges = hashMapOf<Int, Int>()
 
-        fun register(charges: Int, item: Int) {
+        fun register(
+            charges: Int,
+            item: Int,
+        ) {
             itemList.add(item)
             itemCharges[item] = charges
         }
 
-        fun registerSet(charges: Int, items: Array<Int>) {
+        fun registerSet(
+            charges: Int,
+            items: Array<Int>,
+        ) {
             setList.add(ArrayList(items.map { item -> item.also { register(charges, item) } }))
         }
     }
@@ -45,8 +50,9 @@ class EquipmentDegrade {
     fun Item.degrade(slot: Int) {
         val set = getDegradableSet(this.id)
         val charges = itemCharges.getOrElse(this.id) { 1000 }
-        if (this.charge > charges)
+        if (this.charge > charges) {
             charge = charges
+        }
         this.charge--
         if (set?.indexOf(this.id) == 0 && !this.name.contains("100")) {
             charge = 0

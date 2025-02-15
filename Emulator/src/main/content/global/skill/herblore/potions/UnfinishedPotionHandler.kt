@@ -1,16 +1,15 @@
 package content.global.skill.herblore.potions
 
-import org.rs.consts.Items
 import content.global.skill.herblore.HerblorePulse
 import core.game.dialogue.SkillDialogueHandler
 import core.game.interaction.NodeUsageEvent
 import core.game.interaction.UseWithHandler
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Items
 
 @Initializable
 class UnfinishedPotionHandler : UseWithHandler(Items.VIAL_OF_WATER_227, Items.COCONUT_MILK_5935) {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         for (potion in UnfinishedPotion.values()) {
             addHandler(potion.ingredient.id, ITEM_TYPE, this)
@@ -24,7 +23,10 @@ class UnfinishedPotionHandler : UseWithHandler(Items.VIAL_OF_WATER_227, Items.CO
         val player = event.player
         val handler: SkillDialogueHandler =
             object : SkillDialogueHandler(player, SkillDialogue.ONE_OPTION, potion.product!!) {
-                override fun create(amount: Int, index: Int) {
+                override fun create(
+                    amount: Int,
+                    index: Int,
+                ) {
                     player.pulseManager.run(HerblorePulse(player, potion.base, amount, potion))
                 }
 

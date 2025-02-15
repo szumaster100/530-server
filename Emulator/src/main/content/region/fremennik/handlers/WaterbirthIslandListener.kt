@@ -1,19 +1,20 @@
 package content.region.fremennik.handlers
 
-import org.rs.consts.Components
-import org.rs.consts.Scenery
 import core.api.*
+import core.api.MapArea
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.Entity
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.TeleportManager
 import core.game.world.map.Location
-import core.api.MapArea
 import core.game.world.map.zone.ZoneBorders
+import org.rs.consts.Components
+import org.rs.consts.Scenery
 
-class WaterbirthIslandListener : MapArea, InteractionListener {
-
+class WaterbirthIslandListener :
+    MapArea,
+    InteractionListener {
     override fun defineAreaBorders(): Array<ZoneBorders> {
         return arrayOf(ZoneBorders(2487, 3711, 2565, 3776))
     }
@@ -26,7 +27,10 @@ class WaterbirthIslandListener : MapArea, InteractionListener {
         }
     }
 
-    override fun areaLeave(entity: Entity, logout: Boolean) {
+    override fun areaLeave(
+        entity: Entity,
+        logout: Boolean,
+    ) {
         super.areaLeave(entity, logout)
         if (entity is Player) {
             val player = entity.asPlayer()
@@ -35,7 +39,6 @@ class WaterbirthIslandListener : MapArea, InteractionListener {
     }
 
     override fun defineListeners() {
-
         on(intArrayOf(Scenery.CAVE_ENTRANCE_8929), IntType.SCENERY, "enter") { player, _ ->
             if (inBorders(player, getRegionBorders(10042))) {
                 teleport(player, Location.create(2442, 10147, 0))

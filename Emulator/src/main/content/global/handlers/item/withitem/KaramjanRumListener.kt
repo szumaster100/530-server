@@ -1,18 +1,16 @@
 package content.global.handlers.item.withitem
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
 import core.api.addItemOrDrop
 import core.api.animate
 import core.api.removeItem
 import core.api.sendMessage
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.Animations
+import org.rs.consts.Items
 
 class KaramjanRumListener : InteractionListener {
-
     override fun defineListeners() {
-
         onUseWith(IntType.ITEM, Items.SLICED_BANANA_3162, Items.KARAMJAN_RUM_431) { player, used, with ->
             if (removeItem(player, used.asItem()) && removeItem(player, with.asItem())) {
                 animate(player, Animations.HUMAN_USE_BANANA_WITH_KARAMJAN_RUM_1195)

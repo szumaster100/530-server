@@ -7,5 +7,5 @@ enum class OfferState {
     UPDATED,
     COMPLETED,
     OUTDATED,
-    REMOVED
+    REMOVED,
 }

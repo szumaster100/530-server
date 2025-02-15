@@ -6,55 +6,75 @@ import core.api.replaceScenery
 import core.game.world.map.Location
 
 class BFSceneryController {
-
-    fun updateBreakable(potPipeBroken: Boolean, pumpPipeBroken: Boolean, beltBroken: Boolean, cogBroken: Boolean) {
+    fun updateBreakable(
+        potPipeBroken: Boolean,
+        pumpPipeBroken: Boolean,
+        beltBroken: Boolean,
+        cogBroken: Boolean,
+    ) {
         val beltObj = getScenery(beltGearRight)!!
         val gearObj = getScenery(cogRightLoc)!!
         val potPipe = getScenery(potPipeLoc)!!
         val pumpPipe = getScenery(pumpPipeLoc)!!
 
-        if (potPipeBroken && potPipe.id != BROKEN_POT_PIPE) replaceScenery(
-            potPipe,
-            BROKEN_POT_PIPE,
-            -1
-        )
-        else if (!potPipeBroken && potPipe.id == BROKEN_POT_PIPE) replaceScenery(
-            potPipe,
-            DEFAULT_POT_PIPE,
-            -1
-        )
+        if (potPipeBroken && potPipe.id != BROKEN_POT_PIPE) {
+            replaceScenery(
+                potPipe,
+                BROKEN_POT_PIPE,
+                -1,
+            )
+        } else if (!potPipeBroken && potPipe.id == BROKEN_POT_PIPE) {
+            replaceScenery(
+                potPipe,
+                DEFAULT_POT_PIPE,
+                -1,
+            )
+        }
 
-        if (pumpPipeBroken && pumpPipe.id != BROKEN_PUMP_PIPE) replaceScenery(
-            pumpPipe,
-            BROKEN_PUMP_PIPE,
-            -1
-        )
-        else if (!pumpPipeBroken && pumpPipe.id == BROKEN_PUMP_PIPE) replaceScenery(
-            pumpPipe,
-            DEFAULT_PUMP_PIPE,
-            -1
-        )
+        if (pumpPipeBroken && pumpPipe.id != BROKEN_PUMP_PIPE) {
+            replaceScenery(
+                pumpPipe,
+                BROKEN_PUMP_PIPE,
+                -1,
+            )
+        } else if (!pumpPipeBroken && pumpPipe.id == BROKEN_PUMP_PIPE) {
+            replaceScenery(
+                pumpPipe,
+                DEFAULT_PUMP_PIPE,
+                -1,
+            )
+        }
 
-        if (beltBroken && beltObj.id != BROKEN_BELT) replaceScenery(
-            beltObj,
-            BROKEN_BELT,
-            -1
-        )
-        else if (!beltBroken && beltObj.id == BROKEN_BELT) replaceScenery(
-            beltObj,
-            DEFAULT_BELT,
-            -1
-        )
+        if (beltBroken && beltObj.id != BROKEN_BELT) {
+            replaceScenery(
+                beltObj,
+                BROKEN_BELT,
+                -1,
+            )
+        } else if (!beltBroken && beltObj.id == BROKEN_BELT) {
+            replaceScenery(
+                beltObj,
+                DEFAULT_BELT,
+                -1,
+            )
+        }
 
-        if (cogBroken && gearObj.id != BROKEN_COG) replaceScenery(gearObj, BROKEN_COG, -1)
-        else if (!cogBroken && gearObj.id == BROKEN_COG) replaceScenery(
-            gearObj,
-            DEFAULT_COG,
-            -1
-        )
+        if (cogBroken && gearObj.id != BROKEN_COG) {
+            replaceScenery(gearObj, BROKEN_COG, -1)
+        } else if (!cogBroken && gearObj.id == BROKEN_COG) {
+            replaceScenery(
+                gearObj,
+                DEFAULT_COG,
+                -1,
+            )
+        }
     }
 
-    fun updateAnimations(pedaling: Boolean, beltBroken: Boolean, cogBroken: Boolean) {
+    fun updateAnimations(
+        pedaling: Boolean,
+        beltBroken: Boolean,
+        cogBroken: Boolean,
+    ) {
         val belt1 = getScenery(belt1Loc)!!
         val belt2 = getScenery(belt2Loc)!!
         val belt3 = getScenery(belt3Loc)!!
@@ -80,9 +100,13 @@ class BFSceneryController {
     fun updateStove(temp: Int) {
         val stoveObj = getScenery(stoveLoc)!!
 
-        if (temp >= 67 && stoveObj.id != STOVE_HOT) replaceScenery(stoveObj, STOVE_HOT, -1)
-        else if (temp in 34..66 && stoveObj.id != STOVE_WARM) replaceScenery(stoveObj, STOVE_WARM, -1)
-        else if (temp in 0..33 && stoveObj.id != STOVE_COLD) replaceScenery(stoveObj, STOVE_COLD, -1)
+        if (temp >= 67 && stoveObj.id != STOVE_HOT) {
+            replaceScenery(stoveObj, STOVE_HOT, -1)
+        } else if (temp in 34..66 && stoveObj.id != STOVE_WARM) {
+            replaceScenery(stoveObj, STOVE_WARM, -1)
+        } else if (temp in 0..33 && stoveObj.id != STOVE_COLD) {
+            replaceScenery(stoveObj, STOVE_COLD, -1)
+        }
     }
 
     fun resetAllScenery() {

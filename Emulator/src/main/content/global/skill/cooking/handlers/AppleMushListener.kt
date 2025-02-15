@@ -1,8 +1,5 @@
 package content.global.skill.cooking.handlers
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
@@ -12,9 +9,11 @@ import core.game.node.item.Item
 import core.game.system.task.Pulse
 import core.game.world.map.Direction
 import core.game.world.map.Location
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class AppleMushListener : InteractionListener {
-
     override fun defineListeners() {
         onUseWith(IntType.SCENERY, Items.COOKING_APPLE_1955, Scenery.APPLE_BARREL_7403) { player, _, _ ->
             if (getStatLevel(player, Skills.COOKING) < 14) {
@@ -44,6 +43,7 @@ class AppleMushListener : InteractionListener {
             player,
             object : Pulse(1) {
                 private var counter = 0
+
                 override fun pulse(): Boolean {
                     when (counter++) {
                         0 -> {
@@ -52,17 +52,22 @@ class AppleMushListener : InteractionListener {
                             replaceScenery(
                                 core.game.node.scenery.Scenery(
                                     EMPTY_BARREL,
-                                    BARREL_LOCATION
-                                ), APPLE_BARREL, -1
+                                    BARREL_LOCATION,
+                                ),
+                                APPLE_BARREL,
+                                -1,
                             )
                         }
 
-                        3 -> replaceScenery(
-                            core.game.node.scenery.Scenery(
-                                APPLE_BARREL,
-                                BARREL_LOCATION
-                            ), APPLE_MUSH_BARREL, -1
-                        )
+                        3 ->
+                            replaceScenery(
+                                core.game.node.scenery.Scenery(
+                                    APPLE_BARREL,
+                                    BARREL_LOCATION,
+                                ),
+                                APPLE_MUSH_BARREL,
+                                -1,
+                            )
 
                         5 -> forceMove(player, BARREL_LOCATION, END_LOCATION, 0, 20, Direction.SOUTH, -1)
                         7 -> resetAnimator(player)
@@ -74,15 +79,17 @@ class AppleMushListener : InteractionListener {
                             replaceScenery(
                                 core.game.node.scenery.Scenery(
                                     APPLE_MUSH_BARREL,
-                                    BARREL_LOCATION
-                                ), EMPTY_BARREL, -1
+                                    BARREL_LOCATION,
+                                ),
+                                EMPTY_BARREL,
+                                -1,
                             )
                             sendMessage(player, "You fill the bucket with apple mush.")
                         }
                     }
                     return false
                 }
-            }
+            },
         )
     }
 

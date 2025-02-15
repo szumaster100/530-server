@@ -1,7 +1,6 @@
 package content.region.fremennik.handlers.npc.waterbirth
 
 import core.api.utils.BossKillCounter
-import org.rs.consts.NPCs
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.BattleState
 import core.game.node.entity.combat.CombatStyle
@@ -10,9 +9,12 @@ import core.game.node.entity.player.Player
 import core.game.world.map.Location
 import core.game.world.map.RegionManager.getLocalPlayers
 import core.tools.RandomFunction
+import org.rs.consts.NPCs
 
-class DagannothKingNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
+class DagannothKingNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
     private var type: DagType? = null
 
     override fun init() {
@@ -30,7 +32,10 @@ class DagannothKingNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id
         }
     }
 
-    override fun getLevelMod(entity: Entity, victim: Entity): Double {
+    override fun getLevelMod(
+        entity: Entity,
+        victim: Entity,
+    ): Double {
         if (type == DagType.PRIME) {
             return 3.5
         }
@@ -55,7 +60,11 @@ class DagannothKingNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id
         }
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return DagannothKingNPC(id, location)
     }
 
@@ -75,29 +84,30 @@ class DagannothKingNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id
         val style: CombatStyle,
         val weakStyle: CombatStyle,
         val immuneStyle: CombatStyle,
-        val maxHit: Int
+        val maxHit: Int,
     ) {
         SUPREME(
             id = NPCs.DAGANNOTH_SUPREME_2881,
             style = CombatStyle.RANGE,
             weakStyle = CombatStyle.MELEE,
             immuneStyle = CombatStyle.MAGIC,
-            maxHit = 30
+            maxHit = 30,
         ),
         PRIME(
             id = NPCs.DAGANNOTH_PRIME_2882,
             style = CombatStyle.MAGIC,
             weakStyle = CombatStyle.RANGE,
             immuneStyle = CombatStyle.MELEE,
-            maxHit = 61
+            maxHit = 61,
         ),
         REX(
             id = NPCs.DAGANNOTH_REX_2883,
             style = CombatStyle.MELEE,
             weakStyle = CombatStyle.MAGIC,
             immuneStyle = CombatStyle.RANGE,
-            maxHit = 28
-        );
+            maxHit = 28,
+        ),
+        ;
 
         fun isImmune(style: CombatStyle): Boolean {
             return style == immuneStyle || style == this.style

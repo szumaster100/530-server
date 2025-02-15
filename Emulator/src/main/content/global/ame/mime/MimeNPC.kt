@@ -1,7 +1,5 @@
 package content.global.ame.mime
 
-import org.rs.consts.Music
-import org.rs.consts.NPCs
 import content.data.GameAttributes
 import content.data.RandomEvent
 import content.global.ame.RandomEventNPC
@@ -12,12 +10,19 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.link.TeleportManager
 import core.game.system.timer.impl.AntiMacro
 import core.tools.RandomFunction
+import org.rs.consts.Music
+import org.rs.consts.NPCs
 
-class MimeNPC(override var loot: WeightBasedTable? = null) : RandomEventNPC(NPCs.MYSTERIOUS_OLD_MAN_410) {
-
+class MimeNPC(
+    override var loot: WeightBasedTable? = null,
+) : RandomEventNPC(NPCs.MYSTERIOUS_OLD_MAN_410) {
     override fun init() {
         super.init()
-        sendChat("Aha, you're required, " + player.username.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() } + "!")
+        sendChat(
+            "Aha, you're required, " +
+                player.username.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() } +
+                "!",
+        )
         queueScript(player, 3, QueueStrength.SOFT) { stage: Int ->
             when (stage) {
                 0 -> {
@@ -40,7 +45,7 @@ class MimeNPC(override var loot: WeightBasedTable? = null) : RandomEventNPC(NPCs
                 1 -> {
                     sendMessage(
                         player,
-                        "You need to copy the mime's performance, then you'll be returned to where you were."
+                        "You need to copy the mime's performance, then you'll be returned to where you were.",
                     )
 
                     forceMove(player, MimeUtils.MIME_EVENT_LOCATION, MimeUtils.MIME_LOCATION, 20, 80)

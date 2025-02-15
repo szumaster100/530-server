@@ -1,8 +1,5 @@
 package content.global.skill.construction.decoration.bedroom
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
@@ -10,9 +7,11 @@ import core.game.interaction.QueueStrength
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.node.scenery.SceneryBuilder
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class FireplaceListener : InteractionListener {
-
     private val animationId = Animations.TINDERBOX_3658
     private val fireplaceSpaceFurniture =
         intArrayOf(Scenery.CLAY_FIREPLACE_13609, Scenery.LIMESTONE_FIREPLACE_13611, Scenery.MARBLE_FIREPLACE_13613)
@@ -45,8 +44,11 @@ class FireplaceListener : InteractionListener {
                 removeItem(player, Item(Items.LOGS_1511, 1), Container.INVENTORY)
                 rewardXP(player, Skills.FIREMAKING, 80.0)
                 SceneryBuilder.replace(
-                    core.game.node.scenery.Scenery(n.id, n.location),
-                    core.game.node.scenery.Scenery(n.id + 1, n.location, n.rotation), 1000
+                    core.game.node.scenery
+                        .Scenery(n.id, n.location),
+                    core.game.node.scenery
+                        .Scenery(n.id + 1, n.location, n.rotation),
+                    1000,
                 )
                 sendMessage(player, "You light the fireplace.")
                 return@queueScript stopExecuting(player)

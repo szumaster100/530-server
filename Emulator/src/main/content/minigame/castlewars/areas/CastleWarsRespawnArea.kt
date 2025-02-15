@@ -8,8 +8,9 @@ import core.game.node.item.Item
 import core.game.world.map.Location
 import core.game.world.map.zone.ZoneBorders
 
-class CastleWarsRespawnArea : CastleWarsArea(), TickListener {
-
+class CastleWarsRespawnArea :
+    CastleWarsArea(),
+    TickListener {
     companion object {
         val zamorakRespawnRoom: ZoneBorders =
             ZoneBorders(Location.create(2376, 3127, 1), Location.create(2368, 3135, 1))
@@ -35,5 +36,4 @@ class CastleWarsRespawnArea : CastleWarsArea(), TickListener {
 
     override fun tick() {
     }
-
 }

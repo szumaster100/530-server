@@ -1,19 +1,22 @@
 package content.region.kandarin.handlers.seers
 
+import core.api.MapArea
 import core.game.node.entity.Entity
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.diary.DiaryType
 import core.game.world.map.Location
-import core.api.MapArea
 import core.game.world.map.zone.ZoneBorders
 import core.tools.Vector3d
 
 class MysteriousStatue : MapArea {
-
     var origin: Vector3d = Vector3d(2740.5, 3490.5, 0.0)
     var n: Vector3d = Vector3d(0.0, 0.0, 1.0)
 
-    override fun entityStep(entity: Entity, location: Location, lastLocation: Location) {
+    override fun entityStep(
+        entity: Entity,
+        location: Location,
+        lastLocation: Location,
+    ) {
         if (entity is Player) {
             val player = entity.asPlayer()
 
@@ -43,7 +46,10 @@ class MysteriousStatue : MapArea {
         }
     }
 
-    override fun areaLeave(entity: Entity, logout: Boolean) {
+    override fun areaLeave(
+        entity: Entity,
+        logout: Boolean,
+    ) {
         if (entity is Player) {
             entity.removeAttribute("diary:seers:statue-walk-start")
         }

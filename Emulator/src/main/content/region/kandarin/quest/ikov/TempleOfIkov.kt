@@ -1,7 +1,6 @@
 package content.region.kandarin.quest.ikov
 
 import content.data.GameAttributes
-import org.rs.consts.Items
 import core.api.*
 import core.api.quest.getQuestStage
 import core.game.node.entity.player.Player
@@ -9,13 +8,16 @@ import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
 import org.rs.consts.Components
+import org.rs.consts.Items
 import org.rs.consts.Quests
 import org.rs.consts.Vars
 
 @Initializable
 class TempleOfIkov : Quest(Quests.TEMPLE_OF_IKOV, 121, 120, 1, Vars.VARP_QUEST_TEMPLE_OF_IKOV_PROGRESS_26, 0, 1, 80) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 12
         var stage = getStage(player)
@@ -50,7 +52,6 @@ class TempleOfIkov : Quest(Quests.TEMPLE_OF_IKOV, 121, 120, 1, Vars.VARP_QUEST_T
             }
 
             if (stage < 4) {
-
                 if (getAttribute(player, GameAttributes.QUEST_IKOV_ICE_ARROWS, false)) {
                     line(player, "I have found some boots that make me lighter. I made it", line++, true)
                     line(player, "across the lava bridge and found a lever. I fit the lever", line++, true)
@@ -115,14 +116,12 @@ class TempleOfIkov : Quest(Quests.TEMPLE_OF_IKOV, 121, 120, 1, Vars.VARP_QUEST_T
 
             if (stage >= 100) {
                 if (getAttribute(player, GameAttributes.QUEST_IKOV_SELECTED_END, 0) == 1) {
-
                     line++
                     line(player, "I agreed to help the Guardians of Armadyl, I killed Lucien", line++, true)
                     line(player, "and banished him from this plane!", line++, true)
                 }
 
                 if (getAttribute(player, GameAttributes.QUEST_IKOV_SELECTED_END, 0) == 2) {
-
                     line++
                     line(player, "I recovered the Staff of Armadyl from the Temple of Ikov.", line++, true)
                     line(player, "Lucien was staying at his house west of the Grand Exchange", line++, true)
@@ -149,11 +148,34 @@ class TempleOfIkov : Quest(Quests.TEMPLE_OF_IKOV, 121, 120, 1, Vars.VARP_QUEST_T
         var ln = 10
         super.finish(player)
         when (getAttribute(player, GameAttributes.QUEST_IKOV_SELECTED_END, 0)) {
-            1 -> sendString(player, "${Quests.TEMPLE_OF_IKOV} Quest completed for Armadyl!", Components.QUEST_COMPLETE_SCROLL_277, 4)
-            2 -> sendString(player,"${Quests.TEMPLE_OF_IKOV} Quest completed for Lucien!", Components.QUEST_COMPLETE_SCROLL_277, 4)
-            else -> sendString(player,"${Quests.TEMPLE_OF_IKOV} Quest completed!!", Components.QUEST_COMPLETE_SCROLL_277, 4)
+            1 ->
+                sendString(
+                    player,
+                    "${Quests.TEMPLE_OF_IKOV} Quest completed for Armadyl!",
+                    Components.QUEST_COMPLETE_SCROLL_277,
+                    4,
+                )
+            2 ->
+                sendString(
+                    player,
+                    "${Quests.TEMPLE_OF_IKOV} Quest completed for Lucien!",
+                    Components.QUEST_COMPLETE_SCROLL_277,
+                    4,
+                )
+            else ->
+                sendString(
+                    player,
+                    "${Quests.TEMPLE_OF_IKOV} Quest completed!!",
+                    Components.QUEST_COMPLETE_SCROLL_277,
+                    4,
+                )
         }
-        player.packetDispatch.sendItemZoomOnInterface(Items.YEW_LONGBOW_855, 230, Components.QUEST_COMPLETE_SCROLL_277, 5)
+        player.packetDispatch.sendItemZoomOnInterface(
+            Items.YEW_LONGBOW_855,
+            230,
+            Components.QUEST_COMPLETE_SCROLL_277,
+            5,
+        )
 
         drawReward(player, "1 Quest Point", ln++)
         drawReward(player, "10,500 Ranged XP", ln++)

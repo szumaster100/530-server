@@ -1,8 +1,5 @@
 package content.global.skill.magic.spells.lunar
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import content.global.skill.magic.SpellListener
 import content.global.skill.magic.spells.LunarSpells
 import core.api.impact
@@ -11,12 +8,13 @@ import core.api.sendMessage
 import core.api.visualize
 import core.game.node.entity.combat.ImpactHandler
 import core.game.node.item.Item
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 import kotlin.math.floor
 
 class EnergyTransferSpell : SpellListener("lunar") {
-
     override fun defineListeners() {
-
         onCast(LunarSpells.ENERGY_TRANSFER, PLAYER) { player, node ->
             node?.let {
                 if (!isPlayer(node)) {
@@ -42,8 +40,8 @@ class EnergyTransferSpell : SpellListener("lunar") {
                     arrayOf(
                         Item(Items.ASTRAL_RUNE_9075, 3),
                         Item(Items.LAW_RUNE_563, 2),
-                        Item(Items.NATURE_RUNE_561, 1)
-                    )
+                        Item(Items.NATURE_RUNE_561, 1),
+                    ),
                 )
                 player.face(p)
                 visualizeSpell(
@@ -51,7 +49,7 @@ class EnergyTransferSpell : SpellListener("lunar") {
                     Animations.LUNAR_ENERGY_TRANSFER_4411,
                     738,
                     90,
-                    Sounds.LUNAR_ENERGY_TRANSFER_2885
+                    Sounds.LUNAR_ENERGY_TRANSFER_2885,
                 )
                 visualize(p, -1, 738)
                 val hp = floor(player.skills.lifepoints * 0.10)

@@ -1,11 +1,11 @@
 package content.global.skill.farming
 
-import org.rs.consts.Items
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.system.task.Pulse
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Items
 
 class UseWithBinHandler : InteractionListener {
     @JvmField
@@ -35,7 +35,7 @@ class UseWithBinHandler : InteractionListener {
                                     }
                                     return true
                                 }
-                            }
+                            },
                         )
                     } else {
                         sendDialogue(player, "You can only do this with an open bin of finished regular compost.")
@@ -56,7 +56,7 @@ class UseWithBinHandler : InteractionListener {
                                     }
                                     return item == null || !player.inventory.containsItem(usedNode.asItem())
                                 }
-                            }
+                            },
                         )
                     } else {
                         sendDialogue(player, "You can only scoop an opened bin of finished compost.")
@@ -78,12 +78,12 @@ class UseWithBinHandler : InteractionListener {
                                     }
                                     return bin.isFull() || player.inventory.getAmount(usedNode.asItem()) == 0
                                 }
-                            }
+                            },
                         )
                     } else {
                         sendDialogue(
                             player,
-                            "The compost bin must be empty of compost before you can put new items in it."
+                            "The compost bin must be empty of compost before you can put new items in it.",
                         )
                     }
             }
@@ -107,7 +107,10 @@ class UseWithBinHandler : InteractionListener {
     }
 
     private fun Int.getNext(): Int {
-        if (this != 6476) return this + 2
-        else return Items.VIAL_229
+        if (this != 6476) {
+            return this + 2
+        } else {
+            return Items.VIAL_229
+        }
     }
 }

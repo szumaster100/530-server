@@ -1,20 +1,18 @@
 package content.region.misc.handlers
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import content.region.misc.dialogue.keldagrim.BlastFusionHammerDialogue
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.player.link.TeleportManager
 import core.game.world.map.Location
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 class KeldagrimListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(DOORWAY_1, IntType.SCENERY, "enter") { player, _ ->
             teleport(player, Location(2941, 10179, 0))
             return@on true

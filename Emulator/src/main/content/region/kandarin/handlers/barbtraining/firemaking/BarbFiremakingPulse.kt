@@ -1,6 +1,5 @@
 package content.region.kandarin.handlers.barbtraining.firemaking
 
-import org.rs.consts.Items
 import content.data.items.SkillingTool
 import content.global.skill.firemaking.Log
 import content.global.skill.firemaking.Log.Companion.forId
@@ -20,9 +19,14 @@ import core.game.world.map.RegionManager.getObject
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
 import core.tools.RandomFunction
+import org.rs.consts.Items
 import kotlin.math.ceil
 
-class BarbFiremakingPulse(player: Player, node: Item, groundItem: GroundItem?) : SkillPulse<Item?>(player, node) {
+class BarbFiremakingPulse(
+    player: Player,
+    node: Item,
+    groundItem: GroundItem?,
+) : SkillPulse<Item?>(player, node) {
     val tools = SkillingTool.getFiremakingTool(player)
     private val animationId = Animation(tools!!.animation)
     private val graphicsId = Graphics(1169)
@@ -119,7 +123,7 @@ class BarbFiremakingPulse(player: Player, node: Item, groundItem: GroundItem?) :
             sendDialogueLines(
                 player,
                 "You feel you have learned more of barbarian ways. Otto might wish",
-                "to talk to you more."
+                "to talk to you more.",
             )
         }
     }
@@ -152,8 +156,11 @@ class BarbFiremakingPulse(player: Player, node: Item, groundItem: GroundItem?) :
     }
 
     companion object {
-
-        fun getAsh(player: Player?, fire: Log, scenery: Scenery): GroundItem {
+        fun getAsh(
+            player: Player?,
+            fire: Log,
+            scenery: Scenery,
+        ): GroundItem {
             val ash = GroundItem(Item(Items.ASHES_592), scenery.location, player)
             ash.decayTime = fire.life + 200
             return ash

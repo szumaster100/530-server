@@ -1,7 +1,5 @@
 package content.region.fremennik.dialogue.lighthouse
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.data.GodBook
 import content.region.fremennik.quest.horror.dialogue.JossikRewardDialogue
 import core.api.inInventory
@@ -11,10 +9,13 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
-class JossikDialogue(player: Player? = null) : Dialogue(player) {
-
+class JossikDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         if (inInventory(player, Items.RUSTY_CASKET_3849, 1)) {
@@ -26,18 +27,22 @@ class JossikDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         var uncompleted: MutableList<GodBook>? = null
         when (stage) {
             0 -> options("Can I see your wares?", "Have you found any prayerbooks?").also { stage++ }
             1 ->
-                stage = if (buttonId == 1) {
-                    player("Can I see your wares?")
-                    10
-                } else {
-                    player("Have you found any prayerbooks?")
-                    20
-                }
+                stage =
+                    if (buttonId == 1) {
+                        player("Can I see your wares?")
+                        10
+                    } else {
+                        player("Have you found any prayerbooks?")
+                        20
+                    }
 
             20 -> {
                 var missing = false
@@ -47,7 +52,7 @@ class JossikDialogue(player: Player? = null) : Dialogue(player) {
                         player.inventory.add(book.book, player)
                         npc(
                             "As a matter of fact, I did! This book washed up on the",
-                            "beach, and I recognised it as yours!"
+                            "beach, and I recognised it as yours!",
                         )
                     }
                 }
@@ -57,7 +62,7 @@ class JossikDialogue(player: Player? = null) : Dialogue(player) {
                     player.inventory.add(GodBook.values()[damaged].damagedBook, player)
                     npc(
                         "As a matter of fact, I did! This book washed up on the",
-                        "beach, and I recognised it as yours!"
+                        "beach, and I recognised it as yours!",
                     )
                 }
                 if (missing) {
@@ -84,7 +89,7 @@ class JossikDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "Funnily enough I have! I found some books in caskets",
                     "just the other day! I'll sell one to you for 5000 coins;",
-                    "what do you say?"
+                    "what do you say?",
                 )
                 stage++
             }

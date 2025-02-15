@@ -1,6 +1,5 @@
 package content.region.morytania.quest.fenk
 
-import org.rs.consts.NPCs
 import core.api.teleport
 import core.game.interaction.MovementPulse
 import core.game.node.entity.impl.PulseType
@@ -10,6 +9,7 @@ import core.game.world.map.Location
 import core.game.world.map.path.Pathfinder
 import core.plugin.Initializable
 import core.tools.secondsToTicks
+import org.rs.consts.NPCs
 
 @Initializable
 class GardenerGhostNPC : AbstractNPC {
@@ -20,7 +20,11 @@ class GardenerGhostNPC : AbstractNPC {
     constructor() : super(NPCs.GARDENER_GHOST_1675, null, true)
     private constructor(id: Int, location: Location) : super(id, location)
 
-    override fun construct(id: Int, location: Location, vararg objects: Any?): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any?,
+    ): AbstractNPC {
         return GardenerGhostNPC(id, location)
     }
 
@@ -41,21 +45,17 @@ class GardenerGhostNPC : AbstractNPC {
             }
 
             if (this.location.withinDistance(graveLocation, 5) && ticksLeft > secondsToTicks(5)) {
-
                 ticksLeft = secondsToTicks(4)
                 sendChat("Here is the place where I met me' maker.")
             }
             if (!properties.spawnLocation.withinDistance(target!!.location, 160) && ticksLeft > secondsToTicks(5)) {
-
                 ticksLeft = secondsToTicks(4)
                 sendChat("Fare thee well - oi must return to me' garden.")
             }
             if (ticksLeft == secondsToTicks(5)) {
-
                 sendChat("Fare thee well - oi must return to me' garden.")
             }
             if (ticksLeft == 0) {
-
                 target = null
                 pulseManager.clear(PulseType.STANDARD)
                 walkRadius = 11
@@ -65,35 +65,34 @@ class GardenerGhostNPC : AbstractNPC {
     }
 
     fun startFollowing(player: Player) {
-
         ticksLeft = secondsToTicks(120)
         target = player
         walkRadius = 200
 
         pulseManager.run(
             (
-                    object : MovementPulse(this, player, Pathfinder.DUMB) {
-                        override fun pulse(): Boolean {
-                            face(player)
-                            return false
-                        }
+                object : MovementPulse(this, player, Pathfinder.DUMB) {
+                    override fun pulse(): Boolean {
+                        face(player)
+                        return false
                     }
-                    ),
-            PulseType.STANDARD
+                }
+            ),
+            PulseType.STANDARD,
         )
     }
 
     fun continueFollowing(player: Player) {
         pulseManager.run(
             (
-                    object : MovementPulse(this, player, Pathfinder.DUMB) {
-                        override fun pulse(): Boolean {
-                            face(player)
-                            return false
-                        }
+                object : MovementPulse(this, player, Pathfinder.DUMB) {
+                    override fun pulse(): Boolean {
+                        face(player)
+                        return false
                     }
-                    ),
-            PulseType.STANDARD
+                }
+            ),
+            PulseType.STANDARD,
         )
     }
 }

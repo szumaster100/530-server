@@ -12,8 +12,10 @@ import kotlin.math.sqrt
  * @property x The x component of the vector.
  * @property y The y component of the vector.
  */
-class Vector(val x: Double, val y: Double) {
-
+class Vector(
+    val x: Double,
+    val y: Double,
+) {
     /**
      * Returns a new normalized vector (a unit vector) with the same direction as the current vector.
      * The normalized vector has a magnitude of 1.
@@ -122,8 +124,11 @@ class Vector(val x: Double, val y: Double) {
     fun toDirection(): Direction {
         val norm = normalized()
 
-        if (norm.x >= 0.85) return Direction.EAST
-        else if (norm.x <= -0.85) return Direction.WEST
+        if (norm.x >= 0.85) {
+            return Direction.EAST
+        } else if (norm.x <= -0.85) {
+            return Direction.WEST
+        }
 
         if (norm.y > 0) {
             if (norm.y >= 0.85) return Direction.NORTH
@@ -143,7 +148,10 @@ class Vector(val x: Double, val y: Double) {
          * @return A vector representing the difference between the two locations.
          */
         @JvmStatic
-        fun betweenLocs(from: Location, to: Location): Vector {
+        fun betweenLocs(
+            from: Location,
+            to: Location,
+        ): Vector {
             val xDiff = to.x - from.x
             val yDiff = to.y - from.y
             return Vector(xDiff.toDouble(), yDiff.toDouble())

@@ -1,7 +1,5 @@
 package content.region.asgarnia.handlers
 
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import core.api.*
 import core.api.interaction.openBankAccount
 import core.api.interaction.openGrandExchangeCollectionBox
@@ -12,11 +10,11 @@ import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.skill.Skills
 import core.game.world.map.Location
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 class BurthopeListener : InteractionListener {
-
     override fun defineListeners() {
-
         /*
          * Handles entering through the Thieving Guild passage.
          */
@@ -67,7 +65,23 @@ class BurthopeListener : InteractionListener {
 
         on(MARTIN, IntType.NPC, "trade") { player, _ ->
             if (getStatLevel(player, Skills.THIEVING) < 50 || getStatLevel(player, Skills.AGILITY) < 50) {
-                sendNPCDialogue(player, NPCs.MARTIN_THWAIT_2270, "Sorry, mate. Train up your ${if (getStatLevel(player, Skills.THIEVING) < 50 && getStatLevel(player, Skills.AGILITY) < 50) "Thieving and Agility" else if (getStatLevel(player, Skills.THIEVING) < 50) "Thieving" else "Agility"} skill to at least 50 and I might be able to help you out.", FaceAnim.HALF_GUILTY)
+                sendNPCDialogue(
+                    player,
+                    NPCs.MARTIN_THWAIT_2270,
+                    "Sorry, mate. Train up your ${if (getStatLevel(
+                            player,
+                            Skills.THIEVING,
+                        ) < 50 &&
+                        getStatLevel(player, Skills.AGILITY) < 50
+                    ) {
+                        "Thieving and Agility"
+                    } else if (getStatLevel(player, Skills.THIEVING) < 50) {
+                        "Thieving"
+                    } else {
+                        "Agility"
+                    }} skill to at least 50 and I might be able to help you out.",
+                    FaceAnim.HALF_GUILTY,
+                )
             } else {
                 openNpcShop(player, NPCs.MARTIN_THWAIT_2270)
             }
@@ -137,7 +151,6 @@ class BurthopeListener : InteractionListener {
             sendDialogue(player, "The guard won't talk whilst on duty.")
             return@on true
         }
-
     }
 
     companion object {

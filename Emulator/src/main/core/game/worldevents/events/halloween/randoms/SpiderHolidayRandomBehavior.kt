@@ -10,12 +10,19 @@ import core.game.worldevents.events.HolidayRandomEventNPC
 import org.rs.consts.Sounds
 
 class SpiderHolidayRandomBehavior : NPCBehavior() {
-
-    override fun canBeAttackedBy(self: NPC, attacker: Entity, style: CombatStyle, shouldSendMessage: Boolean): Boolean {
+    override fun canBeAttackedBy(
+        self: NPC,
+        attacker: Entity,
+        style: CombatStyle,
+        shouldSendMessage: Boolean,
+    ): Boolean {
         return false
     }
 
-    override fun onDeathStarted(self: NPC, killer: Entity) {
+    override fun onDeathStarted(
+        self: NPC,
+        killer: Entity,
+    ) {
         getAttribute<HolidayRandomEventNPC?>(self, "holiday-npc", null)?.terminate()
         playGlobalAudio(self.location, Sounds.SMALL_SPIDER_DEATH_3608)
         super.onDeathFinished(self, killer)

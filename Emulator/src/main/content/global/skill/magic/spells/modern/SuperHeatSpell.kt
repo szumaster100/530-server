@@ -1,7 +1,5 @@
 package content.global.skill.magic.spells.modern
 
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import content.global.skill.magic.SpellListener
 import content.global.skill.magic.spells.ModernSpells
 import content.global.skill.smithing.smelting.Bar
@@ -10,17 +8,17 @@ import core.api.*
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 
 class SuperHeatSpell : SpellListener("modern") {
-
     override fun defineListeners() {
-
         onCast(ModernSpells.SUPERHEAT, ITEM) { player, node ->
             val item = node?.asItem() ?: return@onCast
             requires(
                 player = player,
                 magicLevel = 43,
-                runes = arrayOf(Item(Items.FIRE_RUNE_554, 4), Item(Items.NATURE_RUNE_561, 1))
+                runes = arrayOf(Item(Items.FIRE_RUNE_554, 4), Item(Items.NATURE_RUNE_561, 1)),
             )
             if (!item.name.contains("ore") && !item.name.equals("coal", true)) {
                 sendMessage(player, "You can only cast this spell on ore.")
@@ -32,7 +30,10 @@ class SuperHeatSpell : SpellListener("modern") {
                 return@onCast
             }
 
-            fun returnBar(player: Player, item: Item): Bar? {
+            fun returnBar(
+                player: Player,
+                item: Item,
+            ): Bar? {
                 for (potentialBar in Bar.values().reversed()) {
                     val inputOreInBar = potentialBar.ores.map { it.id }.contains(item.id)
                     val playerHasNecessaryOres =

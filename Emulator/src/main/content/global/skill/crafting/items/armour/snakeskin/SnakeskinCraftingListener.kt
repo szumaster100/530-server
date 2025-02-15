@@ -1,16 +1,14 @@
 package content.global.skill.crafting.items.armour.snakeskin
 
-import org.rs.consts.Components
-import org.rs.consts.Items
 import core.api.*
 import core.api.skill.sendSkillDialogue
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.Components
+import org.rs.consts.Items
 
 class SnakeskinCraftingListener : InteractionListener {
-
     override fun defineListeners() {
-
         onUseWith(IntType.ITEM, Items.NEEDLE_1733, Items.SNAKESKIN_6289) { player, used, _ ->
             sendString(player, "Which snakeskin item would you like to make?", Components.SKILL_MAKE_306, 27)
             sendSkillDialogue(player) {
@@ -26,7 +24,7 @@ class SnakeskinCraftingListener : InteractionListener {
                     item?.let {
                         submitIndividualPulse(
                             entity = player,
-                            pulse = SnakeskinCraftingPulse(player, null, amount, it)
+                            pulse = SnakeskinCraftingPulse(player, null, amount, it),
                         )
                     } ?: sendMessage(player, "Invalid snakeskin item selected.")
                 }

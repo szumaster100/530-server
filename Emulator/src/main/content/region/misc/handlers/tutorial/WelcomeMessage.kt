@@ -4,8 +4,10 @@ import core.api.closeAllInterfaces
 import core.game.dialogue.DialogueFile
 
 class WelcomeMessage : DialogueFile() {
-
-    override fun handle(componentID: Int, buttonID: Int) {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         when (stage) {
             0 -> {
                 player!!.dialogueInterpreter.sendDialogues(
@@ -13,7 +15,7 @@ class WelcomeMessage : DialogueFile() {
                     "Lumbridge Guide or one of the Tutors - these can be found by",
                     "looking for the question mark icon on your minimap. If you find you",
                     "are lost at any time, look for a signpost or use the Lumbridge Home",
-                    "Teleport spell."
+                    "Teleport spell.",
                 )
                 stage++
             }

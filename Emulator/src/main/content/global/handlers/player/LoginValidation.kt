@@ -1,7 +1,5 @@
 package content.global.handlers.player
 
-import org.rs.consts.Items
-import org.rs.consts.Music
 import core.api.*
 import core.game.activity.ActivityManager
 import core.game.node.entity.player.Player
@@ -12,15 +10,19 @@ import core.plugin.Initializable
 import core.plugin.Plugin
 import core.plugin.PluginManifest
 import core.plugin.PluginType
+import org.rs.consts.Items
+import org.rs.consts.Music
 import java.util.concurrent.TimeUnit
 
 @Initializable
 @PluginManifest(type = PluginType.LOGIN)
 class LoginValidation : Plugin<Player> {
-
     private val QUEST_ITEMS = arrayOf(Item(Items.QUEST_POINT_CAPE_9813), Item(Items.QUEST_POINT_HOOD_9814))
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 
@@ -44,8 +46,15 @@ class LoginValidation : Plugin<Player> {
         if (player.getSavedData().questData.getDragonSlayerAttribute("repaired")) {
             setVarp(player, 177, 1967876)
         }
-        if (player.getSavedData().globalData.getLootShareDelay() < System.currentTimeMillis() && player.getSavedData().globalData.getLootShareDelay() != 0L) {
-            player.globalData.setLootSharePoints((player.globalData.getLootSharePoints() - player.globalData.getLootSharePoints() * 0.10).toInt())
+        if (player.getSavedData().globalData.getLootShareDelay() < System.currentTimeMillis() &&
+            player.getSavedData().globalData.getLootShareDelay() != 0L
+        ) {
+            player.globalData.setLootSharePoints(
+                (
+                    player.globalData.getLootSharePoints() -
+                        player.globalData.getLootSharePoints() * 0.10
+                ).toInt(),
+            )
         } else {
             player.getSavedData().globalData.setLootShareDelay(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1))
         }
@@ -135,7 +144,8 @@ class LoginValidation : Plugin<Player> {
 
     private fun checkQuestPointsItems(player: Player) {
         if (!player.getQuestRepository().hasCompletedAll() &&
-            anyInEquipment(player, Items.QUEST_POINT_CAPE_9813, Items.QUEST_POINT_HOOD_9814)) {
+            anyInEquipment(player, Items.QUEST_POINT_CAPE_9813, Items.QUEST_POINT_HOOD_9814)
+        ) {
             var location1: String? = null
             var location2: String? = null
             var item1 = 0
@@ -168,9 +178,28 @@ class LoginValidation : Plugin<Player> {
                 }
             }
             if (amt == 2) {
-                sendDoubleItemDialogue(player, item1, item2, "As you no longer have completed all the quests, your " + getItemName(item1) + " unequips itself to " + location1 + " and your " + getItemName(item2) + " unequips itself to " + location2 + "!")
+                sendDoubleItemDialogue(
+                    player,
+                    item1,
+                    item2,
+                    "As you no longer have completed all the quests, your " + getItemName(item1) +
+                        " unequips itself to " +
+                        location1 +
+                        " and your " +
+                        getItemName(item2) +
+                        " unequips itself to " +
+                        location2 +
+                        "!",
+                )
             } else {
-                sendItemDialogue(player, item1, "As you no longer have completed all the quests, your " + getItemName(item1) + " unequips itself to " + location1 + "!")
+                sendItemDialogue(
+                    player,
+                    item1,
+                    "As you no longer have completed all the quests, your " + getItemName(item1) +
+                        " unequips itself to " +
+                        location1 +
+                        "!",
+                )
             }
         }
     }

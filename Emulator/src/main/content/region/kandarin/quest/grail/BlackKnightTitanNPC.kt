@@ -1,15 +1,21 @@
 package content.region.kandarin.quest.grail
 
-import org.rs.consts.NPCs
 import core.game.node.entity.Entity
 import core.game.node.entity.npc.AbstractNPC
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
-class BlackKnightTitanNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
-    override fun construct(id: Int, location: Location?, vararg objects: Any?): AbstractNPC {
+class BlackKnightTitanNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location?,
+        vararg objects: Any?,
+    ): AbstractNPC {
         val obj = BlackKnightTitanNPC(id, location)
         obj.isNeverWalks = true
         obj.isWalks = false

@@ -23,8 +23,9 @@ class GhostHolidayRandomNPC : HolidayRandomEventNPC(NPCs.GHOST_2716) {
 
     override fun tick() {
         super.tick()
-        if (RandomFunction.roll(10))
+        if (RandomFunction.roll(10)) {
             playGlobalAudio(this.location, Sounds.BIGGHOST_LAUGH_1600)
+        }
     }
 
     override fun talkTo(npc: NPC) {

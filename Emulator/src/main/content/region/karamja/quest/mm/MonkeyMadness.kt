@@ -1,21 +1,23 @@
 package content.region.karamja.quest.mm
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.addItemOrDrop
-import core.api.sendItemZoomOnInterface
 import core.api.quest.updateQuestTab
+import core.api.sendItemZoomOnInterface
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.item.Item
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class MonkeyMadness : Quest(Quests.MONKEY_MADNESS, 88, 87, 3, Vars.VARP_QUEST_MONKEY_MADNESS_PROGRESS_365, 0, 1, 9) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 12
         if (stage == 0) {

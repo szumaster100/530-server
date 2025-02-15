@@ -1,8 +1,5 @@
 package content.region.misc.handlers.npc
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.*
 import core.api.interaction.transformNpc
 import core.game.interaction.IntType
@@ -16,11 +13,14 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.system.task.Pulse
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 import java.lang.Integer.max
 
-class ZygomiteNPC : NPCBehavior(NPCs.FUNGI_3344, NPCs.FUNGI_3345, NPCs.ZYGOMITE_3346, NPCs.ZYGOMITE_3347),
+class ZygomiteNPC :
+    NPCBehavior(NPCs.FUNGI_3344, NPCs.FUNGI_3345, NPCs.ZYGOMITE_3346, NPCs.ZYGOMITE_3347),
     InteractionListener {
-
     override fun defineListeners() {
         on(intArrayOf(NPCs.FUNGI_3344, NPCs.FUNGI_3345), IntType.NPC, "pick") { player, node ->
             val fungi = node as NPC
@@ -33,6 +33,7 @@ class ZygomiteNPC : NPCBehavior(NPCs.FUNGI_3344, NPCs.FUNGI_3345, NPCs.ZYGOMITE_
             submitWorldPulse(
                 object : Pulse() {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             0 -> {
@@ -45,7 +46,7 @@ class ZygomiteNPC : NPCBehavior(NPCs.FUNGI_3344, NPCs.FUNGI_3345, NPCs.ZYGOMITE_
                         }
                         return false
                     }
-                }
+                },
             )
             return@on true
         }
@@ -53,7 +54,11 @@ class ZygomiteNPC : NPCBehavior(NPCs.FUNGI_3344, NPCs.FUNGI_3345, NPCs.ZYGOMITE_
         onUseWith(IntType.NPC, (7421..7431).toIntArray(), *ids, handler = ::handleFungicideSpray)
     }
 
-    override fun beforeDamageReceived(self: NPC, attacker: Entity, state: BattleState) {
+    override fun beforeDamageReceived(
+        self: NPC,
+        attacker: Entity,
+        state: BattleState,
+    ) {
         val lifepoints = self.skills.lifepoints
         if (state.estimatedHit + max(state.secondaryHit, 0) > lifepoints - 1) {
             state.estimatedHit = lifepoints - 1
@@ -70,21 +75,31 @@ class ZygomiteNPC : NPCBehavior(NPCs.FUNGI_3344, NPCs.FUNGI_3345, NPCs.ZYGOMITE_
         return true
     }
 
-    override fun onDeathFinished(self: NPC, killer: Entity) {
+    override fun onDeathFinished(
+        self: NPC,
+        killer: Entity,
+    ) {
         super.onDeathFinished(self, killer)
         self.reTransform()
     }
 
-    override fun shouldIgnoreMultiRestrictions(self: NPC, victim: Entity): Boolean {
+    override fun shouldIgnoreMultiRestrictions(
+        self: NPC,
+        victim: Entity,
+    ): Boolean {
         return true
     }
 
-    private fun handleFungicideSpray(player: Player, used: Node, with: Node): Boolean {
+    private fun handleFungicideSpray(
+        player: Player,
+        used: Node,
+        with: Node,
+    ): Boolean {
         if (with !is NPC) return false
         if (used.id == Items.FUNGICIDE_SPRAY_0_7431) return false
-        if (with.skills.lifepoints >= 3)
+        if (with.skills.lifepoints >= 3) {
             sendMessage(player, "The zygomite isn't weak enough to be affected by the fungicide.")
-        else {
+        } else {
             sendMessage(player, "The zygomite is covered in fungicide. It bubbles away to nothing!")
             replaceSlot(player, used.asItem().slot, Item(used.id + 1))
             with.startDeath(player)

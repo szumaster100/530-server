@@ -1,7 +1,5 @@
 package content.global.skill.crafting.pottery
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
 import core.api.*
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.diary.DiaryType
@@ -10,10 +8,15 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.world.map.Location
 import core.tools.StringUtils
+import org.rs.consts.Animations
+import org.rs.consts.Items
 
-class PotteryCraftingPulse(player: Player?, node: Item?, var amount: Int, val pottery: Pottery) :
-    SkillPulse<Item?>(player, node) {
-
+class PotteryCraftingPulse(
+    player: Player?,
+    node: Item?,
+    var amount: Int,
+    val pottery: Pottery,
+) : SkillPulse<Item?>(player, node) {
     var ticks = 0
 
     override fun checkRequirements(): Boolean {
@@ -47,7 +50,9 @@ class PotteryCraftingPulse(player: Player?, node: Item?, var amount: Int, val po
             rewardXP(player, Skills.CRAFTING, pottery.exp)
             sendMessage(
                 player,
-                "You make the clay into " + (if (StringUtils.isPlusN(pottery.unfinished.name)) "an" else "a") + " " + pottery.unfinished.name.lowercase() + "."
+                "You make the clay into " + (if (StringUtils.isPlusN(pottery.unfinished.name)) "an" else "a") + " " +
+                    pottery.unfinished.name.lowercase() +
+                    ".",
             )
 
             if (pottery == Pottery.POT && withinDistance(player, Location(3086, 3410, 0))) {

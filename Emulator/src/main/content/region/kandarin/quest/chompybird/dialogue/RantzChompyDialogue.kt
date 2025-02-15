@@ -1,8 +1,5 @@
 package content.region.kandarin.quest.chompybird.dialogue
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.kandarin.quest.chompybird.ChompyBird
 import content.region.kandarin.quest.chompybird.ChompyDialogue
 import core.api.*
@@ -16,18 +13,25 @@ import core.game.node.item.Item
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
 import core.tools.RandomFunction
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class RantzChompyDialogue(player: Player? = null) : Dialogue(player) {
-
+class RantzChompyDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any?): Boolean {
         npc = args[0] as NPC
         val chompyBird = player.questRepository.getQuest(Quests.BIG_CHOMPY_BIRD_HUNTING)
         val chompyStage = chompyBird.getStage(player)
-        val hasOgreBow = inInventory(player, Items.OGRE_BOW_2883) || inEquipment(player, Items.OGRE_BOW_2883) || inBank(
-            player,
-            Items.OGRE_BOW_2883
-        )
+        val hasOgreBow =
+            inInventory(player, Items.OGRE_BOW_2883) ||
+                inEquipment(player, Items.OGRE_BOW_2883) ||
+                inBank(
+                    player,
+                    Items.OGRE_BOW_2883,
+                )
         if (stage in 60 until 100 && !hasOgreBow) {
             stage = 201
             player.dialogueInterpreter.handle(0, 0)
@@ -40,16 +44,32 @@ class RantzChompyDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(componentId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        componentId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
-            0 -> npcl(FaceAnim.OLD_NORMAL, "Creature done good, cooking da chompy. Maybe you wants a free hatsie? Rantz got lots of hatsies for chompy shooters.").also { stage++ }
+            0 ->
+                npcl(
+                    FaceAnim.OLD_NORMAL,
+                    "Creature done good, cooking da chompy. Maybe you wants a free hatsie? Rantz got lots of hatsies for chompy shooters.",
+                ).also {
+                    stage++
+                }
             1 -> options("What are these 'hatsies'?", "Okay, show me your 'hatsies'.", "No thanks.").also { stage++ }
-            2 -> when (buttonId) {
-                1 -> playerl(FaceAnim.FRIENDLY, "What are these 'hatsies'?").also { stage = 3 }
-                2 -> playerl(FaceAnim.FRIENDLY, "Okay, show me your 'hatsies'.").also { stage = 100 }
-                3 -> playerl(FaceAnim.FRIENDLY, "No thanks.").also { stage = END_DIALOGUE }
-            }
-            3 -> npcl(FaceAnim.OLD_NORMAL, "Creature stupid? Hatsies to wear on head, make you look good. Huh huh huh.").also { stage++ }
+            2 ->
+                when (buttonId) {
+                    1 -> playerl(FaceAnim.FRIENDLY, "What are these 'hatsies'?").also { stage = 3 }
+                    2 -> playerl(FaceAnim.FRIENDLY, "Okay, show me your 'hatsies'.").also { stage = 100 }
+                    3 -> playerl(FaceAnim.FRIENDLY, "No thanks.").also { stage = END_DIALOGUE }
+                }
+            3 ->
+                npcl(
+                    FaceAnim.OLD_NORMAL,
+                    "Creature stupid? Hatsies to wear on head, make you look good. Huh huh huh.",
+                ).also {
+                    stage++
+                }
             4 -> playerl(FaceAnim.FRIENDLY, "Ah, I see, you're offering me hats.").also { stage++ }
             5 -> npcl(FaceAnim.OLD_NORMAL, "Dat's what Rantz said. You want hatsies or not?").also { stage = 1 }
             100 -> {
@@ -58,7 +78,7 @@ class RantzChompyDialogue(player: Player? = null) : Dialogue(player) {
                 if (!hasBow) {
                     npcl(
                         FaceAnim.OLD_NORMAL,
-                        "Stupid creature. Me need bow to see how many chompy creature kill. Bring bow."
+                        "Stupid creature. Me need bow to see how many chompy creature kill. Bring bow.",
                     )
                     stage = 200
                     return true
@@ -73,23 +93,24 @@ class RantzChompyDialogue(player: Player? = null) : Dialogue(player) {
                         for (i in 0 until spaces) addItem(player, hats[i])
                         npcl(
                             FaceAnim.OLD_NORMAL,
-                            "There all hats you can fit, creature. Come back when have more room for hatsies."
+                            "There all hats you can fit, creature. Come back when have more room for hatsies.",
                         )
                     } else {
                         for (hat in hats) addItem(player, hat)
                         npcl(
                             FaceAnim.OLD_NORMAL,
-                            "There all hats, creature. Come back when kill more chompy. Unless you kill all chompy already."
+                            "There all hats, creature. Come back when kill more chompy. Unless you kill all chompy already.",
                         )
                     }
                 }
                 stage = END_DIALOGUE
             }
 
-            200 -> showTopics(
-                IfTopic("About that...", 201, !inBank(player, Items.OGRE_BOW_2883)),
-                Topic("Okay.", END_DIALOGUE)
-            )
+            200 ->
+                showTopics(
+                    IfTopic("About that...", 201, !inBank(player, Items.OGRE_BOW_2883)),
+                    Topic("Okay.", END_DIALOGUE),
+                )
 
             201 -> npcl(FaceAnim.OLD_NORMAL, "Yes, creature?").also { stage++ }
             202 -> playerl(FaceAnim.HALF_GUILTY, "I lost my bow.").also { stage++ }
@@ -103,14 +124,16 @@ class RantzChompyDialogue(player: Player? = null) : Dialogue(player) {
                 stage++
             }
 
-            207 -> showTopics(
-                IfTopic(
-                    "Okay.",
-                    208,
-                    amountInInventory(player, Items.COINS_995) >= getAttribute(player, "chompybird:new-bow-cost", 500)
-                ),
-                Topic("No thank you...", END_DIALOGUE)
-            )
+            207 ->
+                showTopics(
+                    IfTopic(
+                        "Okay.",
+                        208,
+                        amountInInventory(player, Items.COINS_995) >=
+                            getAttribute(player, "chompybird:new-bow-cost", 500),
+                    ),
+                    Topic("No thank you...", END_DIALOGUE),
+                )
 
             208 -> {
                 if (removeItem(player, Item(Items.COINS_995, getAttribute(player, "chompybird:new-bow-cost", 500)))) {

@@ -1,6 +1,5 @@
 package content.region.kandarin.quest.grandtree.handlers
 
-import org.rs.consts.NPCs
 import content.region.kandarin.quest.grandtree.handlers.BlackDemonNPC.Companion.spawnBlackDemon
 import core.api.face
 import core.api.sendChat
@@ -11,8 +10,11 @@ import core.game.node.entity.player.Player
 import core.game.world.GameWorld.settings
 import core.game.world.map.Direction
 import core.game.world.map.Location
+import org.rs.consts.NPCs
 
-class BlackDemonCutscene(player: Player) : Cutscene(player) {
+class BlackDemonCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(Location.create(2491, 9864, 0))
         if (player.settings.isRunToggled) {
@@ -66,7 +68,9 @@ class BlackDemonCutscene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.GLOUGH_671,
                     FaceAnim.OLD_ANGRY1,
-                    "You really are becoming a headache! Well, at least now you can die knowing you were right, it will save me having to hunt you down like all the other human filth of " + settings!!.name + "!"
+                    "You really are becoming a headache! Well, at least now you can die knowing you were right, it will save me having to hunt you down like all the other human filth of " +
+                        settings!!.name +
+                        "!",
                 )
             }
 
@@ -78,7 +82,7 @@ class BlackDemonCutscene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.GLOUGH_671,
                     FaceAnim.OLD_ANGRY1,
-                    "Bah! Well, soon you'll see, the gnomes are ready to fight. In three weeks this tree will be dead wood, in ten weeks it will be 30 battleships! Finally we will rid the world of the disease called humanity!"
+                    "Bah! Well, soon you'll see, the gnomes are ready to fight. In three weeks this tree will be dead wood, in ten weeks it will be 30 battleships! Finally we will rid the world of the disease called humanity!",
                 )
             }
 

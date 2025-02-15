@@ -13,13 +13,16 @@ private const val CRUNCHY_INTERFACE = 437
 
 @Initializable
 class GnomeCrunchyPrepareHandler : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         ItemDefinition.forId(HALF_BAKED_CRUNCHY).handlers["option:prepare"] = this
         return this
     }
 
-    override fun handle(player: Player?, node: Node?, option: String?): Boolean {
+    override fun handle(
+        player: Player?,
+        node: Node?,
+        option: String?,
+    ): Boolean {
         player ?: return false
         player.interfaceManager.open(Component(CRUNCHY_INTERFACE))
         return true

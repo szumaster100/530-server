@@ -1,15 +1,14 @@
 package content.global.handlers.item
 
-import org.rs.consts.Components
-import org.rs.consts.Items
 import core.api.openInterface
 import core.api.sendDialogueLines
 import core.api.sendString
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.Components
+import org.rs.consts.Items
 
 class NewsPaperListener : InteractionListener {
-
     companion object {
         private const val NEWSPAPER_INTERFACE_530 = Components.V_NEWSPAPER_530
 
@@ -56,7 +55,7 @@ class NewsPaperListener : InteractionListener {
                 "Come to the Al Kharid Market place! High quality",
                 "produce at low, low prices! Show this flyer to a",
                 "merchant for money off your next purchase,",
-                "courtesy of Ali Morrisane!"
+                "courtesy of Ali Morrisane!",
             )
             true
         }

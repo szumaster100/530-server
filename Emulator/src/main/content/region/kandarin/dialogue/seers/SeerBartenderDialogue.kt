@@ -1,6 +1,5 @@
 package content.region.kandarin.dialogue.seers
 
-import org.rs.consts.NPCs
 import core.api.freeSlots
 import core.api.sendMessage
 import core.game.dialogue.Dialogue
@@ -9,17 +8,22 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
-class SeerBartenderDialogue(player: Player? = null) : Dialogue(player) {
-
+class SeerBartenderDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         npc(FaceAnim.HALF_GUILTY, "Good morning, what would you like?")
         return true
     }
 
-    fun buy(item: Int, ammount: Int) {
+    fun buy(
+        item: Int,
+        ammount: Int,
+    ) {
         if (freeSlots(player) == 0) {
             player(FaceAnim.HALF_GUILTY, "I don't seem to have room, sorry.")
             stage = 99
@@ -39,36 +43,40 @@ class SeerBartenderDialogue(player: Player? = null) : Dialogue(player) {
         }
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 options("What do you have?", "Beer please.", "I don't really want anything thanks.")
                 stage = 1
             }
 
-            1 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "What do you have?")
-                    stage = 30
-                }
+            1 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_GUILTY, "What do you have?")
+                        stage = 30
+                    }
 
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "Beer please.")
-                    stage = 20
-                }
+                    2 -> {
+                        player(FaceAnim.HALF_GUILTY, "Beer please.")
+                        stage = 20
+                    }
 
-                3 -> {
-                    player(FaceAnim.HALF_GUILTY, "I don't really want anything thanks.")
-                    stage = 67
+                    3 -> {
+                        player(FaceAnim.HALF_GUILTY, "I don't really want anything thanks.")
+                        stage = 67
+                    }
                 }
-            }
 
             67 -> end()
             30 -> {
                 npc(
                     FaceAnim.HALF_GUILTY,
                     "Well we have beer, or if you want some food, we have",
-                    "our home made stew and meat pies."
+                    "our home made stew and meat pies.",
                 )
                 stage = 31
             }
@@ -84,32 +92,33 @@ class SeerBartenderDialogue(player: Player? = null) : Dialogue(player) {
                     "Beer please.",
                     "I'll try the meat pie.",
                     "Could I have some stew please?",
-                    "I don't really want anything thanks."
+                    "I don't really want anything thanks.",
                 )
                 stage = 32
             }
 
-            32 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "Beer please.")
-                    stage = 100
-                }
+            32 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_GUILTY, "Beer please.")
+                        stage = 100
+                    }
 
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "I'll try the meat pie.")
-                    stage = 200
-                }
+                    2 -> {
+                        player(FaceAnim.HALF_GUILTY, "I'll try the meat pie.")
+                        stage = 200
+                    }
 
-                3 -> {
-                    player(FaceAnim.HALF_GUILTY, "Could I have some stew please?")
-                    stage = 300
-                }
+                    3 -> {
+                        player(FaceAnim.HALF_GUILTY, "Could I have some stew please?")
+                        stage = 300
+                    }
 
-                4 -> {
-                    player(FaceAnim.HALF_GUILTY, "I don't really want anything thanks.")
-                    stage = 99
+                    4 -> {
+                        player(FaceAnim.HALF_GUILTY, "I don't really want anything thanks.")
+                        stage = 99
+                    }
                 }
-            }
 
             99 -> end()
             100 -> {

@@ -4,11 +4,11 @@ import com.moandjiezana.toml.Toml
 import core.ServerConfig
 import core.api.log
 import core.api.parseEnumEntry
-import core.tools.Log
-import core.tools.LogLevel
 import core.game.world.GameSettings
 import core.game.world.GameWorld
 import core.game.world.map.Location
+import core.tools.Log
+import core.tools.LogLevel
 import core.tools.integration.mysql.Database
 import java.io.File
 import java.net.URL
@@ -58,38 +58,39 @@ object ServerConfigParser {
         tomlData ?: return
         val data = tomlData!!
 
-        GameWorld.settings = GameSettings(
-            name = ServerConfig.SERVER_NAME,
-            isBeta = data.getBoolean("world.debug"),
-            isDevMode = data.getBoolean("world.dev"),
-            isGui = data.getBoolean("world.start_gui"),
-            worldId = data.getString("world.world_id").toInt(),
-            countryIndex = data.getString("world.country_id").toInt(),
-            activity = data.getString("world.activity"),
-            isMembers = data.getBoolean("world.members"),
-            isPvp = data.getBoolean("world.pvp"),
-            isQuickChat = false,
-            isLootshare = false,
-            msAddress = data.getString("server.msip"),
-            default_xp_rate = data.getDouble("world.default_xp_rate"),
-            // allow_slayer_reroll = data.getBoolean("world.allow_slayer_reroll"),
-            enable_default_clan = data.getBoolean("world.enable_default_clan"),
-            enable_bots = data.getBoolean("world.enable_bots"),
-            autostock_ge = data.getBoolean("world.autostock_ge"),
-            allow_token_purchase = data.getBoolean("world.allow_token_purchase"),
-            // skillcape_perks = data.getBoolean("world.skillcape_perks"),
-            increased_door_time = data.getBoolean("world.increased_door_time"),
-            enabled_botting = data.getBoolean("world.enable_botting"),
-            max_adv_bots = data.getLong("world.max_adv_bots").toInt(),
-            enable_doubling_money_scammers = data.getBoolean("world.enable_doubling_money_scammers", false),
-            wild_pvp_enabled = data.getBoolean("world.wild_pvp_enabled"),
-            jad_practice_enabled = data.getBoolean("world.jad_practice_enabled"),
-            ge_announcement_limit = data.getLong("world.ge_announcement_limit", 500L).toInt(),
-            smartpathfinder_bfs = data.getBoolean("world.smartpathfinder_bfs", false),
-            enable_castle_wars = data.getBoolean("world.enable_castle_wars", false),
-            message_model = data.getString("world.motw_identifier").toInt(),
-            message_string = data.getString("world.motw_text").replace("@name", ServerConfig.SERVER_NAME)
-        )
+        GameWorld.settings =
+            GameSettings(
+                name = ServerConfig.SERVER_NAME,
+                isBeta = data.getBoolean("world.debug"),
+                isDevMode = data.getBoolean("world.dev"),
+                isGui = data.getBoolean("world.start_gui"),
+                worldId = data.getString("world.world_id").toInt(),
+                countryIndex = data.getString("world.country_id").toInt(),
+                activity = data.getString("world.activity"),
+                isMembers = data.getBoolean("world.members"),
+                isPvp = data.getBoolean("world.pvp"),
+                isQuickChat = false,
+                isLootshare = false,
+                msAddress = data.getString("server.msip"),
+                default_xp_rate = data.getDouble("world.default_xp_rate"),
+                // allow_slayer_reroll = data.getBoolean("world.allow_slayer_reroll"),
+                enable_default_clan = data.getBoolean("world.enable_default_clan"),
+                enable_bots = data.getBoolean("world.enable_bots"),
+                autostock_ge = data.getBoolean("world.autostock_ge"),
+                allow_token_purchase = data.getBoolean("world.allow_token_purchase"),
+                // skillcape_perks = data.getBoolean("world.skillcape_perks"),
+                increased_door_time = data.getBoolean("world.increased_door_time"),
+                enabled_botting = data.getBoolean("world.enable_botting"),
+                max_adv_bots = data.getLong("world.max_adv_bots").toInt(),
+                enable_doubling_money_scammers = data.getBoolean("world.enable_doubling_money_scammers", false),
+                wild_pvp_enabled = data.getBoolean("world.wild_pvp_enabled"),
+                jad_practice_enabled = data.getBoolean("world.jad_practice_enabled"),
+                ge_announcement_limit = data.getLong("world.ge_announcement_limit", 500L).toInt(),
+                smartpathfinder_bfs = data.getBoolean("world.smartpathfinder_bfs", false),
+                enable_castle_wars = data.getBoolean("world.enable_castle_wars", false),
+                message_model = data.getString("world.motw_identifier").toInt(),
+                message_string = data.getString("world.motw_text").replace("@name", ServerConfig.SERVER_NAME),
+            )
     }
 
     private fun parseServerSettings() {
@@ -103,7 +104,13 @@ object ServerConfigParser {
         ServerConfig.DATABASE_PASS = data.getString("database.database_password")
         ServerConfig.DATABASE_ADDRESS = data.getString("database.database_address")
         ServerConfig.DATABASE_PORT = data.getString("database.database_port")
-        ServerConfig.DATABASE = Database(ServerConfig.DATABASE_ADDRESS + ":" + ServerConfig.DATABASE_PORT, ServerConfig.DATABASE_NAME, ServerConfig.DATABASE_USER, ServerConfig.DATABASE_PASS)
+        ServerConfig.DATABASE =
+            Database(
+                ServerConfig.DATABASE_ADDRESS + ":" + ServerConfig.DATABASE_PORT,
+                ServerConfig.DATABASE_NAME,
+                ServerConfig.DATABASE_USER,
+                ServerConfig.DATABASE_PASS,
+            )
         ServerConfig.CACHE_PATH = data.getPath("paths.cache_path")
         ServerConfig.CONFIG_PATH = data.getPath("paths.configs_path")
         ServerConfig.PLAYER_SAVE_PATH = data.getPath("paths.save_path")
@@ -184,16 +191,18 @@ object ServerConfigParser {
 
     fun parsePath(pathString: String): String {
         var pathTokens: List<String>? = null
-        if (pathString.contains("/"))
+        if (pathString.contains("/")) {
             pathTokens = pathString.split("/")
-        else if (pathString.contains("\\"))
+        } else if (pathString.contains("\\")) {
             pathTokens = pathString.split("\\")
+        }
 
         pathTokens ?: return pathString
         var pathProduct = ""
         for (token in pathTokens) {
-            if (token != "")
+            if (token != "") {
                 pathProduct += "$token${File.separator}"
+            }
         }
 
         return pathProduct

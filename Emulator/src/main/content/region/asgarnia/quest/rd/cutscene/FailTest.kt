@@ -1,6 +1,5 @@
 package content.region.asgarnia.quest.rd.cutscene
 
-import org.rs.consts.NPCs
 import content.region.asgarnia.quest.rd.handlers.TacticsTest
 import core.api.*
 import core.api.ui.setMinimapState
@@ -9,9 +8,11 @@ import core.game.interaction.QueueStrength
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.world.map.Location
+import org.rs.consts.NPCs
 
-class FailTest(player: Player) : Cutscene(player) {
-
+class FailTest(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(Location(2996, 3375))
     }

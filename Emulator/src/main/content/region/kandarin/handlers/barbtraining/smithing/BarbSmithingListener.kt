@@ -1,19 +1,17 @@
 package content.region.kandarin.handlers.barbtraining.smithing
 
-import org.rs.consts.Scenery
 import core.api.amountInInventory
 import core.api.asItem
 import core.api.skill.sendSkillDialogue
 import core.api.submitIndividualPulse
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.Scenery
 
 class BarbSmithingListener : InteractionListener {
-
     val bars = BarbarianWeapon.values().map { it.requiredBar }.toIntArray()
 
     override fun defineListeners() {
-
         onUseWith(IntType.SCENERY, bars, Scenery.BARBARIAN_ANVIL_25349) { player, used, _ ->
             val weapon = BarbarianWeapon.product[used.id] ?: return@onUseWith true
 
@@ -22,7 +20,7 @@ class BarbSmithingListener : InteractionListener {
                 create { id, amount ->
                     submitIndividualPulse(
                         entity = player,
-                        pulse = BarbSmithingPulse(player, weapon, amount, id)
+                        pulse = BarbSmithingPulse(player, weapon, amount, id),
                     )
                 }
                 calculateMaxAmount {

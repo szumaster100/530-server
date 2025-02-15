@@ -21,7 +21,6 @@ import kotlin.math.max
 import kotlin.system.exitProcess
 
 object Server {
-
     @JvmField
     var startTime: Long = 0
 
@@ -89,7 +88,7 @@ object Server {
         log(
             this::class.java,
             Log.INFO,
-            GameWorld.settings?.name + " started in " + t.duration(false, "") + " milliseconds."
+            GameWorld.settings?.name + " started in " + t.duration(false, "") + " milliseconds.",
         )
         val scanner = Scanner(System.`in`)
 
@@ -111,10 +110,11 @@ object Server {
                 delay(20000)
                 while (running) {
                     val timeStart = System.currentTimeMillis()
-                    if (!checkConnectivity())
+                    if (!checkConnectivity()) {
                         networkReachability = NetworkReachability.UNREACHABLE
-                    else
+                    } else {
                         networkReachability = NetworkReachability.REACHABLE
+                    }
                     if (System.currentTimeMillis() - lastHeartbeat > 7200 && running) {
                         log(this::class.java, Log.ERR, "Triggering reboot due to heartbeat timeout")
                         log(this::class.java, Log.ERR, "Creating thread dump...")
@@ -122,7 +122,6 @@ object Server {
 
                         withContext(Dispatchers.IO) {
                             FileWriter("latestdump.txt").use {
-
                                 if (dump != null) {
                                     it.write(dump)
                                 }
@@ -132,8 +131,9 @@ object Server {
                             }
                         }
 
-                        if (!SystemManager.isTerminated)
+                        if (!SystemManager.isTerminated) {
                             exitProcess(0)
+                        }
                     }
                     val timeNow = System.currentTimeMillis()
                     delay(max(0L, 625 - (timeNow - timeStart)))
@@ -145,8 +145,10 @@ object Server {
     private fun checkConnectivity(): Boolean {
         val urls = ServerConfig.CONNECTIVITY_CHECK_URL.split(",")
         var timeout = ServerConfig.CONNECTIVITY_TIMEOUT
-        if (timeout * urls.size > 5000) // Limit timeout down to 5000ms so other watchdog functions continue as expected.
+        if (timeout * urls.size > 5000) {
+            // Limit timeout down to 5000ms so other watchdog functions continue as expected.
             timeout = 5000 / urls.size
+        }
         for (targetUrl in urls) {
             try {
                 val url = URL(targetUrl)
@@ -177,14 +179,16 @@ object Server {
     }
 
     fun autoReconnect() {
-
     }
 
     fun getStartTime(): Long {
         return startTime
     }
 
-    private fun threadDump(lockedMonitors: Boolean, lockedSynchronizers: Boolean): String? {
+    private fun threadDump(
+        lockedMonitors: Boolean,
+        lockedSynchronizers: Boolean,
+    ): String? {
         val threadDump = StringBuffer(System.lineSeparator())
         val threadMXBean: ThreadMXBean = ManagementFactory.getThreadMXBean()
         for (threadInfo in threadMXBean.dumpAllThreads(lockedMonitors, lockedSynchronizers)) {

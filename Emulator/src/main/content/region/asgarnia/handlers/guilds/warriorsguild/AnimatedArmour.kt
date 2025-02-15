@@ -17,9 +17,8 @@ import core.tools.RandomFunction
 class AnimatedArmour internal constructor(
     private val player: Player,
     location: Location?,
-    private val set: AnimationRoom.ArmourSet
+    private val set: AnimationRoom.ArmourSet,
 ) : NPC(set.npcId, location) {
-
     private var running = false
 
     override fun init() {
@@ -41,7 +40,10 @@ class AnimatedArmour internal constructor(
         }
     }
 
-    override fun onImpact(entity: Entity, state: BattleState) {
+    override fun onImpact(
+        entity: Entity,
+        state: BattleState,
+    ) {
         if (!running) {
             if (getSkills().lifepoints < (getSkills().maximumLifepoints / 10) && RandomFunction.randomize(10) < 2) {
                 running = true
@@ -53,7 +55,11 @@ class AnimatedArmour internal constructor(
         }
     }
 
-    override fun isAttackable(entity: Entity, style: CombatStyle, message: Boolean): Boolean {
+    override fun isAttackable(
+        entity: Entity,
+        style: CombatStyle,
+        message: Boolean,
+    ): Boolean {
         if (entity !== player) {
             if (entity is Player) {
                 entity.packetDispatch.sendMessage("This isn't your armour to attack.")

@@ -1,9 +1,5 @@
 package content.region.morytania.handlers.npc
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Sounds
 import content.data.consumables.Consumables
 import content.global.activity.creation.CreatureCreation
 import content.region.morytania.quest.druidspirit.NSUtils
@@ -22,15 +18,23 @@ import core.plugin.Initializable
 import core.tools.RandomFunction
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Sounds
 
 @Initializable
 class GhastNPC : AbstractNPC {
-
     constructor() : super(NPCs.GHAST_1052, null, true) {}
     private constructor(id: Int, location: Location) : super(id, location) {}
 
     private val supportRange = 10
-    override fun construct(id: Int, location: Location, vararg objects: Any?): AbstractNPC {
+
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any?,
+    ): AbstractNPC {
         isAggressive = id != ids[0]
         return GhastNPC(id, location)
     }
@@ -50,7 +54,7 @@ class GhastNPC : AbstractNPC {
                             attemptLifeSiphon(player)
                             return true
                         }
-                    }
+                    },
                 )
             }
         } else {
@@ -80,11 +84,11 @@ class GhastNPC : AbstractNPC {
         val inventoryItems = player.inventory.toArray().filterNotNull()
 
         GlobalScope.launch {
-
-            val foodInInventory = inventoryItems.firstOrNull { item ->
-                val consumable = Consumables.getConsumableById(item.id)
-                consumable?.consumable is Food
-            }
+            val foodInInventory =
+                inventoryItems.firstOrNull { item ->
+                    val consumable = Consumables.getConsumableById(item.id)
+                    consumable?.consumable is Food
+                }
 
             if (foodInInventory != null) {
                 removeItem(player, foodInInventory, Container.INVENTORY)
@@ -93,15 +97,17 @@ class GhastNPC : AbstractNPC {
                 return@launch
             }
 
-            val foodInSatchel = inventoryItems.firstOrNull { item ->
-                item.id in CreatureCreation.SATCHEL_IDS && getCharge(item) >= CreatureCreation.BASE_CHARGE_AMOUNT
-            }
+            val foodInSatchel =
+                inventoryItems.firstOrNull { item ->
+                    item.id in CreatureCreation.SATCHEL_IDS && getCharge(item) >= CreatureCreation.BASE_CHARGE_AMOUNT
+                }
 
             if (foodInSatchel != null) {
                 val chargesAmount = getCharge(foodInSatchel)
-                val foodFound = CreatureCreation.SATCHEL_RESOURCES.firstOrNull { foodId ->
-                    chargesAmount >= (foodId + CreatureCreation.BASE_CHARGE_AMOUNT)
-                }
+                val foodFound =
+                    CreatureCreation.SATCHEL_RESOURCES.firstOrNull { foodId ->
+                        chargesAmount >= (foodId + CreatureCreation.BASE_CHARGE_AMOUNT)
+                    }
 
                 if (foodFound != null) {
                     addItem(player, rottenFoodItem)

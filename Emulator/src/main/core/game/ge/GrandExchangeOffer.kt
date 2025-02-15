@@ -41,35 +41,55 @@ class GrandExchangeOffer {
         get() = if (isBot) min(ServerConfig.BOTSTOCK_LIMIT, amount - completedAmount) else amount - completedAmount
 
     val isActive: Boolean
-        get() = offerState != OfferState.ABORTED && offerState != OfferState.PENDING && offerState != OfferState.COMPLETED && offerState != OfferState.REMOVED
+        get() =
+            offerState != OfferState.ABORTED &&
+                offerState != OfferState.PENDING &&
+                offerState != OfferState.COMPLETED &&
+                offerState != OfferState.REMOVED
 
-    fun addWithdrawItem(id: Int, amount: Int) {
+    fun addWithdrawItem(
+        id: Int,
+        amount: Int,
+    ) {
         if (amount == 0) return
-        for (item in withdraw)
+        for (item in withdraw) {
             if (item != null && item.id == id) {
                 item.amount += amount
                 return
             }
+        }
 
-        for ((index, item) in withdraw.withIndex())
+        for ((index, item) in withdraw.withIndex()) {
             if (item == null) {
                 withdraw[index] = Item(id, amount)
                 return
             }
+        }
 
-        if (player != null)
+        if (player != null) {
             visualize(player)
+        }
     }
 
     fun visualize(player: Player?) {
         player ?: return
         PacketRepository.send(
             GrandExchangePacket::class.java,
-            GrandExchangeContext(player, index.toByte(), offerState.ordinal.toByte(), itemID.toShort(), sell, offeredValue, amount, completedAmount, totalCoinExchange)
+            GrandExchangeContext(
+                player,
+                index.toByte(),
+                offerState.ordinal.toByte(),
+                itemID.toShort(),
+                sell,
+                offeredValue,
+                amount,
+                completedAmount,
+                totalCoinExchange,
+            ),
         )
         PacketRepository.send(
             ContainerPacket::class.java,
-            ContainerContext(player, -1, -1757, 523 + index, withdraw, false)
+            ContainerContext(player, -1, -1757, 523 + index, withdraw, false),
         )
     }
 
@@ -83,7 +103,9 @@ class GrandExchangeOffer {
                 stmt.close()
             } else {
                 val stmt =
-                    conn.prepareStatement("UPDATE player_offers SET amount_complete = ?, offer_state = ?, total_coin_xc = ?, withdraw_items = ?, slot_index = ? WHERE uid = ?")
+                    conn.prepareStatement(
+                        "UPDATE player_offers SET amount_complete = ?, offer_state = ?, total_coin_xc = ?, withdraw_items = ?, slot_index = ? WHERE uid = ?",
+                    )
                 stmt.setInt(1, completedAmount)
                 stmt.setInt(2, offerState.ordinal)
                 stmt.setInt(3, totalCoinExchange)
@@ -106,14 +128,15 @@ class GrandExchangeOffer {
                 if (isExists) {
                     val oldAmount = result.getInt("amount")
                     stmt.executeUpdate("UPDATE bot_offers set amount = ${oldAmount + amount} where item_id = $itemID")
-                } else
+                } else {
                     stmt.executeUpdate("INSERT INTO bot_offers(item_id,amount) values($itemID,$amount)")
+                }
                 stmt.close()
             } else {
                 val stmt = conn.createStatement()
                 stmt.executeUpdate(
                     "INSERT INTO player_offers(player_uid, item_id, amount_total, offered_value, time_stamp, offer_state, is_sale, slot_index) " +
-                            "values($playerUID,$itemID,$amount,$offeredValue,${System.currentTimeMillis()},${offerState.ordinal},${if (sell) 1 else 0}, $index)"
+                        "values($playerUID,$itemID,$amount,$offeredValue,${System.currentTimeMillis()},${offerState.ordinal},${if (sell) 1 else 0}, $index)",
                 )
                 val nowuid = stmt.executeQuery("SELECT last_insert_rowid()")
                 uid = nowuid.getLong(1)
@@ -123,8 +146,12 @@ class GrandExchangeOffer {
                 stmt.close()
 
                 val username =
-                    if (getAttribute(player ?: return@run, "ge-exclude", false)) "?????" else player?.username
-                        ?: "?????"
+                    if (getAttribute(player ?: return@run, "ge-exclude", false)) {
+                        "?????"
+                    } else {
+                        player?.username
+                            ?: "?????"
+                    }
 
                 // Discord.postNewOffer(sell, itemID, offeredValue, amount, username)
             }
@@ -136,29 +163,48 @@ class GrandExchangeOffer {
         for ((index, item) in withdraw.withIndex()) {
             sb.append(index)
             sb.append(",")
-            if (item == null)
+            if (item == null) {
                 sb.append("null")
-            else
+            } else {
                 sb.append(item.id)
+            }
             sb.append(",")
-            if (item == null)
+            if (item == null) {
                 sb.append("null")
-            else
+            } else {
                 sb.append(item.amount)
+            }
 
-            if (index + 1 < withdraw.size)
+            if (index + 1 < withdraw.size) {
                 sb.append(":")
+            }
         }
 
         return sb.toString()
     }
 
     override fun toString(): String {
-        return "[name=" + ItemDefinition.forId(itemID).name + ", itemId=" + itemID + ", amount=" + amount + ", completedAmount=" + completedAmount + ", offeredValue=" + offeredValue + ", index=" + index + ", sell=" + sell + ", state=" + offerState + ", withdraw=" + withdraw.contentToString() + ", totalCoinExchange=" + totalCoinExchange + ", playerUID=" + playerUID + "]"
+        return "[name=" + ItemDefinition.forId(itemID).name + ", itemId=" + itemID + ", amount=" + amount +
+            ", completedAmount=" +
+            completedAmount +
+            ", offeredValue=" +
+            offeredValue +
+            ", index=" +
+            index +
+            ", sell=" +
+            sell +
+            ", state=" +
+            offerState +
+            ", withdraw=" +
+            withdraw.contentToString() +
+            ", totalCoinExchange=" +
+            totalCoinExchange +
+            ", playerUID=" +
+            playerUID +
+            "]"
     }
 
     companion object {
-
         fun fromQuery(result: ResultSet): GrandExchangeOffer {
             val o = GrandExchangeOffer()
             o.itemID = result.getInt("item_id")
@@ -202,7 +248,11 @@ class GrandExchangeOffer {
             return o
         }
 
-        fun createBotOffer(itemId: Int, amount: Int, sale: Boolean = true): GrandExchangeOffer {
+        fun createBotOffer(
+            itemId: Int,
+            amount: Int,
+            sale: Boolean = true,
+        ): GrandExchangeOffer {
             val o = GrandExchangeOffer()
             o.sell = sale
             o.itemID = itemId

@@ -1,7 +1,5 @@
 package content.region.asgarnia.quest.rd.cutscene
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.*
 import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
@@ -12,9 +10,12 @@ import core.game.interaction.QueueStrength
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.world.map.Location
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
-class FinishTest(player: Player) : Cutscene(player) {
-
+class FinishTest(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(Location(2996, 3375))
     }

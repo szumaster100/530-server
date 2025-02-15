@@ -1,6 +1,5 @@
 package content.region.asgarnia.handlers
 
-import org.rs.consts.*
 import core.api.*
 import core.api.quest.getQuestStage
 import core.game.dialogue.DialogueFile
@@ -11,11 +10,10 @@ import core.game.interaction.QueueStrength
 import core.game.node.entity.npc.NPC
 import core.game.world.map.Location
 import core.tools.RandomFunction
+import org.rs.consts.*
 
 class PortSarimListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(Items.AHABS_BEER_6561, IntType.GROUNDITEM, "take") { player, node ->
             face(player, node)
             animate(player, Animations.HUMAN_MULTI_USE_832)
@@ -56,7 +54,10 @@ class PortSarimListener : InteractionListener {
                     openDialogue(
                         player,
                         object : DialogueFile() {
-                            override fun handle(componentID: Int, buttonID: Int) {
+                            override fun handle(
+                                componentID: Int,
+                                buttonID: Int,
+                            ) {
                                 when (stage) {
                                     0 -> {
                                         setTitle(player, 2)
@@ -64,19 +65,20 @@ class PortSarimListener : InteractionListener {
                                         stage++
                                     }
 
-                                    1 -> when (buttonID) {
-                                        1 -> {
-                                            end()
-                                            animate(player, 832)
-                                            addItem(player, Items.BANANA_1963)
-                                            sendMessage(player, "You take a banana.")
-                                        }
+                                    1 ->
+                                        when (buttonID) {
+                                            1 -> {
+                                                end()
+                                                animate(player, 832)
+                                                addItem(player, Items.BANANA_1963)
+                                                sendMessage(player, "You take a banana.")
+                                            }
 
-                                        2 -> end()
-                                    }
+                                            2 -> end()
+                                        }
                                 }
                             }
-                        }
+                        },
                     )
                 }
                 return@queueScript stopExecuting(player)
@@ -91,8 +93,13 @@ class PortSarimListener : InteractionListener {
             }
 
             if (getUsedOption(player) == "pick-lock") {
-                if (player.location.y <= 3187) sendMessage(player, "You simply cannot find a way to pick the lock from this side.")
-                else sendMessage(player, "The door is securely locked.")
+                if (player.location.y <=
+                    3187
+                ) {
+                    sendMessage(player, "You simply cannot find a way to pick the lock from this side.")
+                } else {
+                    sendMessage(player, "The door is securely locked.")
+                }
             }
             return@on true
         }
@@ -103,7 +110,13 @@ class PortSarimListener : InteractionListener {
         }
 
         on(SLEEPING_GUARD, IntType.NPC, "talk-to") { player, node ->
-            val forceChat = arrayOf("Hmph... heh heh heh...", "Mmmm... big pint of beer... kebab...", "Mmmmmm... donuts...", "Guh.. mwww... zzzzzz...")
+            val forceChat =
+                arrayOf(
+                    "Hmph... heh heh heh...",
+                    "Mmmm... big pint of beer... kebab...",
+                    "Mmmmmm... donuts...",
+                    "Guh.. mwww... zzzzzz...",
+                )
             lock(player, 2)
             sendChat((node as NPC), forceChat[RandomFunction.random(forceChat.size)])
             queueScript(player, 1, QueueStrength.SOFT) {
@@ -145,14 +158,15 @@ class PortSarimListener : InteractionListener {
         private const val WYDIN_BANANA_CRATE = Scenery.CRATE_2071
         private const val WYDIN_STORE_DOOR = Scenery.DOOR_2069
         private val DOORS = intArrayOf(Scenery.CELL_DOOR_9563, Scenery.DOOR_9565)
-        private val MONKS_OF_ENTRANA = intArrayOf(
-            NPCs.MONK_OF_ENTRANA_2728,
-            NPCs.MONK_OF_ENTRANA_657,
-            NPCs.MONK_OF_ENTRANA_2729,
-            2730,
-            NPCs.MONK_OF_ENTRANA_2731,
-            NPCs.MONK_OF_ENTRANA_658
-        )
+        private val MONKS_OF_ENTRANA =
+            intArrayOf(
+                NPCs.MONK_OF_ENTRANA_2728,
+                NPCs.MONK_OF_ENTRANA_657,
+                NPCs.MONK_OF_ENTRANA_2729,
+                2730,
+                NPCs.MONK_OF_ENTRANA_2731,
+                NPCs.MONK_OF_ENTRANA_658,
+            )
         private val SEAMAN = intArrayOf(NPCs.CAPTAIN_TOBIAS_376, NPCs.SEAMAN_LORRIS_377, NPCs.SEAMAN_THRESNOR_378)
     }
 }

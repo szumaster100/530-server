@@ -1,8 +1,5 @@
 package content.global.activity.mogre
 
-import org.rs.consts.Graphics
-import org.rs.consts.NPCs
-import org.rs.consts.Sounds
 import core.api.*
 import core.api.movement.finishedMoving
 import core.game.interaction.QueueStrength
@@ -11,25 +8,29 @@ import core.game.node.entity.npc.NPCBehavior
 import core.game.world.map.Direction
 import core.game.world.map.Location
 import core.tools.RandomFunction
+import org.rs.consts.Graphics
+import org.rs.consts.NPCs
+import org.rs.consts.Sounds
 
 class SkippyNPC : NPCBehavior(NPCs.SKIPPY_2795) {
-
-    private val forceChat = arrayOf(
-        "I'll get you, I'll get you all!",
-        "The horror...The horror...",
-        "They're coming out of the walls!",
-        "Mudskippers, thousands of them!",
-        "I've got a bottle with your name on it!"
-    )
+    private val forceChat =
+        arrayOf(
+            "I'll get you, I'll get you all!",
+            "The horror...The horror...",
+            "They're coming out of the walls!",
+            "Mudskippers, thousands of them!",
+            "I've got a bottle with your name on it!",
+        )
 
     override fun onCreation(self: NPC) {
-        val route = arrayOf(
-            Location.create(2980, 3198, 0),
-            Location.create(2973, 3193, 0),
-            Location.create(2977, 3196, 0),
-            Location.create(2984, 3192, 0),
-            Location.create(2982, 3196, 0)
-        )
+        val route =
+            arrayOf(
+                Location.create(2980, 3198, 0),
+                Location.create(2973, 3193, 0),
+                Location.create(2977, 3196, 0),
+                Location.create(2984, 3192, 0),
+                Location.create(2982, 3196, 0),
+            )
         self.configureMovementPath(*route)
         self.isWalks = !inBorders(self, SkippyUtils.TUTORIAL_ISLAND)
         self.isNeverWalks = !self.isWalks
@@ -47,9 +48,10 @@ class SkippyNPC : NPCBehavior(NPCs.SKIPPY_2795) {
     }
 
     private fun sendTutorialChat(self: NPC): Boolean {
-        return RandomFunction.random(100) < 10 && inBorders(self, SkippyUtils.TUTORIAL_ISLAND).also {
-            if (it) sendChat(self, "You can skip the tutorial by talking to me!")
-        }
+        return RandomFunction.random(100) < 10 &&
+            inBorders(self, SkippyUtils.TUTORIAL_ISLAND).also {
+                if (it) sendChat(self, "You can skip the tutorial by talking to me!")
+            }
     }
 
     private fun randomRoll(self: NPC): Boolean {
@@ -72,7 +74,7 @@ class SkippyNPC : NPCBehavior(NPCs.SKIPPY_2795) {
                 20,
                 10,
                 100,
-                0
+                0,
             )
             return@queueScript stopExecuting(self)
         }

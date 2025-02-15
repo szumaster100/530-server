@@ -1,11 +1,10 @@
 package content.region.misthalin.handlers.lumbridge
 
+import core.game.world.map.zone.ZoneBorders
 import org.rs.consts.NPCs
 import org.rs.consts.Scenery
-import core.game.world.map.zone.ZoneBorders
 
 object LumbridgeUtils {
-
     val cowPenArea = ZoneBorders(3242, 3255, 3265, 3297)
 
     var flagInUse: Boolean = false

@@ -1,7 +1,5 @@
 package content.minigame.pyramidplunder
 
-import org.rs.consts.Components
-import org.rs.consts.Items
 import core.api.*
 import core.game.component.Component
 import core.game.node.Node
@@ -10,9 +8,10 @@ import core.game.node.entity.skill.Skills
 import core.game.world.map.Direction
 import core.game.world.map.Location
 import core.tools.RandomFunction
+import org.rs.consts.Components
+import org.rs.consts.Items
 
 object PlunderUtils {
-
     fun hasPlayer(player: Player): Boolean {
         return PlunderData.playerLocations[player] != null
     }
@@ -29,7 +28,10 @@ object PlunderUtils {
         removeAttribute(player, "pyramid-entrance")
     }
 
-    fun expel(player: Player, summonMummy: Boolean) {
+    fun expel(
+        player: Player,
+        summonMummy: Boolean,
+    ) {
         teleport(player, Location.create(3288, 2802, 0))
         unregisterPlayer(player)
         resetOverlay(player)
@@ -55,8 +57,12 @@ object PlunderUtils {
     fun loadNextRoom(player: Player) {
         val current = PlunderData.playerLocations[player]
 
-        val next: PlunderRoom = if (current == null) getRoom(1)
-        else getRoom(current.room + 1)
+        val next: PlunderRoom =
+            if (current == null) {
+                getRoom(1)
+            } else {
+                getRoom(current.room + 1)
+            }
 
         if (PlunderData.playerLocations.filter { it.value == next }.isEmpty()) {
             PlunderData.doors[next.room - 1] = PlunderData.doorVarbits.random()
@@ -89,7 +95,10 @@ object PlunderUtils {
         }
     }
 
-    fun getUrnXp(player: Player, check: Boolean): Double {
+    fun getUrnXp(
+        player: Player,
+        check: Boolean,
+    ): Double {
         val room = getRoom(player)!!.room
         return if (check) {
             when (room) {
@@ -149,13 +158,14 @@ object PlunderUtils {
 
     fun rollSceptre(player: Player): Boolean {
         val room = getRoom(player)!!.room
-        val chance = when (room) {
-            1 -> 1500
-            2 -> 1350
-            3 -> 1250
-            4 -> 1150
-            else -> 1000
-        }
+        val chance =
+            when (room) {
+                1 -> 1500
+                2 -> 1350
+                3 -> 1250
+                4 -> 1150
+                else -> 1000
+            }
 
         if (RandomFunction.roll(chance)) {
             expel(player, true)
@@ -201,26 +211,33 @@ object PlunderUtils {
         } * 0.66
     }
 
-    fun getDoorXp(player: Player, lockpick: Boolean): Double {
+    fun getDoorXp(
+        player: Player,
+        lockpick: Boolean,
+    ): Double {
         val room = getRoom(player)?.room ?: return 0.0
-        var reward = when (room) {
-            1 -> 60.0
-            2 -> 90.0
-            3 -> 150.0
-            4 -> 215.0
-            5 -> 300.0
-            6 -> 450.0
-            7 -> 675.0
-            8 -> 825.0
-            else -> 0.0
-        } * 0.66
+        var reward =
+            when (room) {
+                1 -> 60.0
+                2 -> 90.0
+                3 -> 150.0
+                4 -> 215.0
+                5 -> 300.0
+                6 -> 450.0
+                7 -> 675.0
+                8 -> 825.0
+                else -> 0.0
+            } * 0.66
 
         if (lockpick) reward /= 2.0
 
         return reward
     }
 
-    fun rollArtifact(player: Player, tier: Int): Int {
+    fun rollArtifact(
+        player: Player,
+        tier: Int,
+    ): Int {
         val room = getRoom(player)!!.room
         val divisor = (room * 2) * (tier * 35)
         val goldRate = divisor / 650.0
@@ -243,7 +260,10 @@ object PlunderUtils {
         return door.asScenery().definition.varbitID == PlunderData.currentEntrance
     }
 
-    fun rollUrnSuccess(player: Player, charmed: Boolean = false): Boolean {
+    fun rollUrnSuccess(
+        player: Player,
+        charmed: Boolean = false,
+    ): Boolean {
         val level = getDynLevel(player, Skills.THIEVING)
 
         if (getRoom(player) == null) {

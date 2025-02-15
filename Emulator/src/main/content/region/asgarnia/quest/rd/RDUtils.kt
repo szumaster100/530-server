@@ -1,9 +1,5 @@
 package content.region.asgarnia.quest.rd
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Scenery
-import org.rs.consts.Sounds
 import content.region.asgarnia.quest.rd.handlers.ResourcefulnessTest
 import core.api.*
 import core.api.ui.setMinimapState
@@ -13,9 +9,12 @@ import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Scenery
+import org.rs.consts.Sounds
 
 object RDUtils {
-
     const val VARBIT_FOX_EAST = 680
     const val VARBIT_FOX_WEST = 681
     const val VARBIT_CHICKEN_EAST = 682
@@ -42,9 +41,8 @@ object RDUtils {
             VARBIT_CHICKEN_EAST,
             VARBIT_CHICKEN_WEST,
             VARBIT_GRAIN_EAST,
-            VARBIT_GRAIN_WEST
-        )
-            .forEach { setVarbit(player, it, 0) }
+            VARBIT_GRAIN_WEST,
+        ).forEach { setVarbit(player, it, 0) }
 
         listOf(Items.GRAIN_5607, Items.FOX_5608, Items.CHICKEN_5609)
             .forEach { removeItem(player, it, Container.EQUIPMENT) }
@@ -56,15 +54,25 @@ object RDUtils {
 
         removeAttributes(
             player,
-            RecruitmentDrive.stagePass, RecruitmentDrive.stageFail, RecruitmentDrive.stage,
-            RecruitmentDrive.stage0, RecruitmentDrive.stage1, RecruitmentDrive.stage2,
-            RecruitmentDrive.stage3, RecruitmentDrive.stage4
+            RecruitmentDrive.stagePass,
+            RecruitmentDrive.stageFail,
+            RecruitmentDrive.stage,
+            RecruitmentDrive.stage0,
+            RecruitmentDrive.stage1,
+            RecruitmentDrive.stage2,
+            RecruitmentDrive.stage3,
+            RecruitmentDrive.stage4,
         )
 
         runTask(player, 3) { teleport(player, Location(2996, 3375)) }
     }
 
-    fun processItemUsage(player: Player, used: Item, with: Item, newItem: Item) {
+    fun processItemUsage(
+        player: Player,
+        used: Item,
+        with: Item,
+        newItem: Item,
+    ) {
         replaceSlot(player, slot = used.index, Item(newItem.id))
         replaceSlot(player, slot = with.index, Item(Items.VIAL_229))
         animate(player, Animation(Animations.HUMAN_USE_PESTLE_AND_MORTAR_364))
@@ -72,7 +80,10 @@ object RDUtils {
         sendMessage(player, "You empty the vial into the tin.")
     }
 
-    fun handleVialUsage(player: Player, used: Item) {
+    fun handleVialUsage(
+        player: Player,
+        used: Item,
+    ) {
         lock(player, 5)
         lockInteractions(player, 5)
 
@@ -109,9 +120,9 @@ object RDUtils {
         lockInteractions(player, 3)
 
         if (ResourcefulnessTest.Companion.DoorVials.doorVialsRequiredMap.all
-            {
-                getAttribute(player, it.value.attribute, false)
-            }
+                {
+                    getAttribute(player, it.value.attribute, false)
+                }
         ) {
             sendMessage(player, "You pull on the spade...")
             sendMessage(player, "It works as a handle, and you swing the stone door open.")
@@ -139,7 +150,7 @@ object RDUtils {
         attributeCheck: String,
         item: Int,
         searchingDescription: String,
-        objectDescription: String
+        objectDescription: String,
     ) {
         sendMessage(player, searchingDescription)
         queueScript(player, 1, QueueStrength.WEAK) {
@@ -154,7 +165,12 @@ object RDUtils {
         }
     }
 
-    fun processItemUsageAndReturn(player: Player, used: Item, with: Item, resultItem: Item) {
+    fun processItemUsageAndReturn(
+        player: Player,
+        used: Item,
+        with: Item,
+        resultItem: Item,
+    ) {
         processItemUsage(player, used, with, resultItem)
     }
 

@@ -1,14 +1,13 @@
 package content.global.skill.agility.courses.werewolf
 
-import org.rs.consts.Items
 import core.api.*
+import core.api.MapArea
 import core.game.node.entity.Entity
 import core.game.node.entity.player.Player
-import core.api.MapArea
 import core.game.world.map.zone.ZoneBorders
+import org.rs.consts.Items
 
 class WerewolfCourseZone : MapArea {
-
     override fun defineAreaBorders(): Array<ZoneBorders> {
         return arrayOf(ZoneBorders(3510, 9851, 3592, 9920))
     }
@@ -19,7 +18,10 @@ class WerewolfCourseZone : MapArea {
         }
     }
 
-    override fun areaLeave(entity: Entity, logout: Boolean) {
+    override fun areaLeave(
+        entity: Entity,
+        logout: Boolean,
+    ) {
         if (entity is Player) {
             val p = entity.asPlayer()
             removeAttribute(p, "werewolf-agility-course")

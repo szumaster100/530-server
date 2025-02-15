@@ -1,25 +1,30 @@
 package content.region.fremennik.quest.viking
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.*
 import core.api.quest.getQuestStage
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class FremennikTrials :
     Quest(Quests.THE_FREMENNIK_TRIALS, 64, 63, 3, Vars.VARP_QUEST_FREMENNIK_TRIALS_PROGRESS_347, 0, 1, 10) {
-
-    class SkillRequirement(val skill: Int?, val level: Int?)
+    class SkillRequirement(
+        val skill: Int?,
+        val level: Int?,
+    )
 
     val requirements = arrayListOf<SkillRequirement>()
 
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 11
         val started = getQuestStage(player, Quests.THE_FREMENNIK_TRIALS) > 0

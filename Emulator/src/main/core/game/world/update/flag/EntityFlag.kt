@@ -12,5 +12,5 @@ enum class EntityFlag {
     FaceLocation,
     ForceMove,
     AnimSeq,
-    TypeSwap
+    TypeSwap,
 }

@@ -1,26 +1,31 @@
 package content.global.activity.shootingstar
 
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.ServerStore
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.player.Player
-import core.tools.Log
 import core.game.system.command.Privilege
 import core.game.world.GameWorld
+import core.tools.Log
 import core.tools.secondsToTicks
 import org.json.simple.JSONObject
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
-class ShootingStarPlugin : LoginListener, InteractionListener, TickListener, Commands, StartupListener {
-
+class ShootingStarPlugin :
+    LoginListener,
+    InteractionListener,
+    TickListener,
+    Commands,
+    StartupListener {
     override fun login(player: Player) {
-        if (star.isSpawned && !star.spriteSpawned)
+        if (star.isSpawned && !star.spriteSpawned) {
             sendMessage(
                 player,
-                "<img=12><col=CC6600>News: A shooting star (Level ${star.level.ordinal + 1}) has just crashed near the ${star.location}!"
+                "<img=12><col=CC6600>News: A shooting star (Level ${star.level.ordinal + 1}) has just crashed near the ${star.location}!",
             )
+        }
     }
 
     override fun tick() {
@@ -78,7 +83,10 @@ class ShootingStarPlugin : LoginListener, InteractionListener, TickListener, Com
         log(this::class.java, Log.FINE, "Shooting Stars initialized.")
     }
 
-    private data class ScoreboardEntry(val player: String, val time: Int)
+    private data class ScoreboardEntry(
+        val player: String,
+        val time: Int,
+    )
 
     companion object {
         private val star = ShootingStar()
@@ -90,8 +98,9 @@ class ShootingStarPlugin : LoginListener, InteractionListener, TickListener, Com
 
         @JvmStatic
         fun submitScoreBoard(player: Player) {
-            if (scoreboardEntries.size == 5)
+            if (scoreboardEntries.size == 5) {
                 scoreboardEntries.removeAt(0)
+            }
             scoreboardEntries.add(ScoreboardEntry(player.username, GameWorld.ticks))
         }
 

@@ -1,9 +1,6 @@
 package content.region.kandarin.quest.ikov.handlers
 
 import content.data.GameAttributes
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import core.api.*
 import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
@@ -19,10 +16,12 @@ import core.game.system.task.Pulse
 import core.game.world.map.Direction
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 import org.rs.consts.Quests
+import org.rs.consts.Scenery
 
 class TempleOfIkovListener : InteractionListener {
-
     companion object {
         val chestLocations =
             arrayOf(
@@ -31,19 +30,17 @@ class TempleOfIkovListener : InteractionListener {
                 Location(2729, 9850, 0),
                 Location(2747, 9848, 0),
                 Location(2738, 9835, 0),
-                Location(2745, 9821, 0)
+                Location(2745, 9821, 0),
             )
     }
 
     override fun defineDestinationOverrides() {
-
         setDest(IntType.SCENERY, intArrayOf(Scenery.LEVER_87), "pull") { _, _ ->
             return@setDest Location.create(2671, 9805, 0)
         }
     }
 
     override fun defineListeners() {
-
         addClimbDest(Location.create(2682, 9849, 0), Location.create(2665, 9849, 0))
 
         on(Scenery.DOOR_99, SCENERY, "open") { player, node ->
@@ -75,7 +72,7 @@ class TempleOfIkovListener : InteractionListener {
             sendDialogueLines(
                 player,
                 "You try to open the trapdoor but it won't budge! It looks like the",
-                "trapdoor can only be opened from the other side."
+                "trapdoor can only be opened from the other side.",
             )
             sendMessage(player, "You try to open the trapdoor but it won't budge!")
             sendMessage(player, "It looks like the trapdoor can only be opened from the other side.")
@@ -96,7 +93,7 @@ class TempleOfIkovListener : InteractionListener {
                     Location.create(2682, 9855, 0),
                     Animation(770),
                     20,
-                    "You slip and fall to the pit below."
+                    "You slip and fall to the pit below.",
                 )
             }
             return@on true
@@ -133,12 +130,12 @@ class TempleOfIkovListener : InteractionListener {
         }
 
         on(intArrayOf(Scenery.GATE_89, Scenery.GATE_90), SCENERY, "open") { player, node ->
-            if (getAttribute(player, GameAttributes.QUEST_IKOV_ICE_CHAMBER_ACCESS, false) || getQuestStage(
+            if (getAttribute(player, GameAttributes.QUEST_IKOV_ICE_CHAMBER_ACCESS, false) ||
+                getQuestStage(
                     player,
-                    Quests.TEMPLE_OF_IKOV
+                    Quests.TEMPLE_OF_IKOV,
                 ) >= 4
             ) {
-
                 setAttribute(player, GameAttributes.QUEST_IKOV_CHEST_INTER, chestLocations.random())
                 DoorActionHandler.handleAutowalkDoor(player, node.asScenery())
             } else {
@@ -201,6 +198,7 @@ class TempleOfIkovListener : InteractionListener {
                         player,
                         object : Pulse() {
                             var counter = 0
+
                             override fun pulse(): Boolean {
                                 when (counter++) {
                                     0 -> {
@@ -219,11 +217,10 @@ class TempleOfIkovListener : InteractionListener {
                                 }
                                 return false
                             }
-                        }
+                        },
                     )
 
                     setAttribute(player, GameAttributes.QUEST_IKOV_WARRIOR_INST, npc)
-
                 } else {
                     sendMessage(player, "The door won't open.")
                 }
@@ -232,10 +229,11 @@ class TempleOfIkovListener : InteractionListener {
         }
 
         on(Items.STAFF_OF_ARMADYL_84, IntType.GROUNDITEM, "take") { player, node ->
-            if (getQuestStage(player, Quests.TEMPLE_OF_IKOV) >= 6 && getAttribute(
+            if (getQuestStage(player, Quests.TEMPLE_OF_IKOV) >= 6 &&
+                getAttribute(
                     player,
                     GameAttributes.QUEST_IKOV_SELECTED_END,
-                    0
+                    0,
                 ) == 1
             ) {
                 sendMessage(player, "You decide not to steal the staff as you have agreed to help the Guardians")

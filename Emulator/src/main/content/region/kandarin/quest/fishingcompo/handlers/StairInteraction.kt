@@ -13,8 +13,10 @@ import core.plugin.Plugin
 
 @Initializable
 class StairInteraction : PluginInteraction() {
-
-    override fun handle(player: Player, node: Node): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+    ): Boolean {
         if (!player.getQuestRepository().isComplete("Fishing Contest")) {
             val `object` = node.asScenery()
             when (`object`.id) {
@@ -32,7 +34,11 @@ class StairInteraction : PluginInteraction() {
         return false
     }
 
-    private fun handleStairs(player: Player, npc_id: Int, scenery: Scenery) {
+    private fun handleStairs(
+        player: Player,
+        npc_id: Int,
+        scenery: Scenery,
+    ) {
         player.pulseManager.run(
             object : MovementPulse(player, scenery.location.transform(0, 2, 0)) {
                 override fun pulse(): Boolean {
@@ -45,7 +51,7 @@ class StairInteraction : PluginInteraction() {
                     return true
                 }
             },
-            PulseType.STANDARD
+            PulseType.STANDARD,
         )
     }
 
@@ -55,7 +61,10 @@ class StairInteraction : PluginInteraction() {
         return this
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 }

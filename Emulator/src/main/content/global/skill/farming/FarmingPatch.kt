@@ -6,8 +6,10 @@ import core.cache.def.impl.SceneryDefinition
 import core.game.node.entity.player.Player
 import core.game.node.scenery.Scenery
 
-enum class FarmingPatch(val varbit: Int, val type: PatchType) {
-
+enum class FarmingPatch(
+    val varbit: Int,
+    val type: PatchType,
+) {
     S_FALADOR_ALLOTMENT_NW(708, PatchType.ALLOTMENT),
     S_FALADOR_ALLOTMENT_SE(709, PatchType.ALLOTMENT),
     CATHERBY_ALLOTMENT_N(710, PatchType.ALLOTMENT),
@@ -61,7 +63,8 @@ enum class FarmingPatch(val varbit: Int, val type: PatchType) {
     ALKHARID_CACTUS(744, PatchType.CACTUS_PATCH),
     EVIL_TURNIP(4291, PatchType.EVIL_TURNIP_PATCH),
     CALQUAT_TREE(726, PatchType.FRUIT_TREE_PATCH),
-    ENRICHED_SEED(5533, PatchType.SPECIAL_PATCH);
+    ENRICHED_SEED(5533, PatchType.SPECIAL_PATCH),
+    ;
 
     companion object {
         @JvmField
@@ -111,7 +114,10 @@ enum class FarmingPatch(val varbit: Int, val type: PatchType) {
         }
     }
 
-    fun getPatchFor(player: Player, addPatch: Boolean = true): Patch {
+    fun getPatchFor(
+        player: Player,
+        addPatch: Boolean = true,
+    ): Patch {
         val crops = getOrStartTimer<CropGrowth>(player)
         return crops.getPatch(this, addPatch)
     }

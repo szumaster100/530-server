@@ -8,11 +8,14 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 
 class GatheringListener : InteractionListener {
-
     override fun defineListeners() {
     }
 
-    fun fish(player: Player, node: Node, opt: String): Boolean {
+    fun fish(
+        player: Player,
+        node: Node,
+        opt: String,
+    ): Boolean {
         val npc = node as NPC
         val spot = FishingSpot.forId(npc.id) ?: return false
         val op = spot.getOptionByName(opt) ?: return false

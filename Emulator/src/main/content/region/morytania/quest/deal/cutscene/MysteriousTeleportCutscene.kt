@@ -1,7 +1,5 @@
 package content.region.morytania.quest.deal.cutscene
 
-import org.rs.consts.Music
-import org.rs.consts.NPCs
 import content.region.morytania.quest.deal.dialogue.CaptainBrainDeathDialogueFile
 import core.api.*
 import core.api.ui.setMinimapState
@@ -11,9 +9,12 @@ import core.game.node.entity.player.Player
 import core.game.world.map.Direction
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Graphics
+import org.rs.consts.Music
+import org.rs.consts.NPCs
 
-class MysteriousTeleportCutscene(player: Player) : Cutscene(player) {
-
+class MysteriousTeleportCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(Location(2144, 5108, 1))
         if (player.settings.isRunToggled) {
@@ -66,11 +67,14 @@ class MysteriousTeleportCutscene(player: Player) : Cutscene(player) {
 
             7 -> dialogueUpdate(CAPTAIN, FaceAnim.FRIENDLY, "Be they heroic, brave and true?")
             8 -> dialogueUpdate(PIRATE, FaceAnim.HAPPY, "Aye! They also be gullible, tied up and unconscious!")
-            9 -> dialogueUpdate(
-                PIRATE,
-                FaceAnim.HAPPY,
-                "They were willing to help out some random stranger" + "with a good enough sob story, so I smacked them with a" + "bottle and rowed them over."
-            )
+            9 ->
+                dialogueUpdate(
+                    PIRATE,
+                    FaceAnim.HAPPY,
+                    "They were willing to help out some random stranger" +
+                        "with a good enough sob story, so I smacked them with a" +
+                        "bottle and rowed them over.",
+                )
 
             10 -> dialogueUpdate(CAPTAIN, FaceAnim.HAPPY, "Brilliant! The island's location will remain a secret!")
             11 -> dialogueUpdate(CAPTAIN, FaceAnim.HAPPY, "Bring 'em here and wake 'em up.")
@@ -86,8 +90,10 @@ class MysteriousTeleportCutscene(player: Player) : Cutscene(player) {
                 sendGraphics(
                     Graphics(
                         org.rs.consts.Graphics.STUN_BIRDIES_ABOVE_HEAD_80,
-                        96
-                    ), player.location)
+                        96,
+                    ),
+                    player.location,
+                )
             }
         }
     }

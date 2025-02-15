@@ -6,7 +6,10 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class BFSceneryControllerTests {
-    init { TestUtils.preTestSetup(); BFSceneryController().resetAllScenery() }
+    init {
+        TestUtils.preTestSetup()
+        BFSceneryController().resetAllScenery()
+    }
 
     @Test
     fun updateBrokenShouldReplaceWithCorrectVariants() {
@@ -27,11 +30,12 @@ class BFSceneryControllerTests {
 
     @Test
     fun stoveIdShouldCorrespondToTemperature() {
-        val testData = arrayOf(
-            Pair(0, BFSceneryController.STOVE_COLD),
-            Pair(40, BFSceneryController.STOVE_WARM),
-            Pair(80, BFSceneryController.STOVE_HOT)
-        )
+        val testData =
+            arrayOf(
+                Pair(0, BFSceneryController.STOVE_COLD),
+                Pair(40, BFSceneryController.STOVE_WARM),
+                Pair(80, BFSceneryController.STOVE_HOT),
+            )
         for ((temp, expectedId) in testData) {
             val cont = BFSceneryController()
             cont.resetAllScenery()

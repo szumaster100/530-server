@@ -4,7 +4,6 @@ import core.ServerStore.Companion.getInt
 import org.json.simple.JSONObject
 
 object GlobalStatistics {
-
     @JvmStatic
     fun incrementDeathCount() {
         getDailyDeathArchive()["players"] = getDailyDeathArchive().getInt("players") + 1

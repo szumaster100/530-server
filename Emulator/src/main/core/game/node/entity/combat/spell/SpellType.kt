@@ -7,10 +7,15 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 
-enum class SpellType(val accuracyMod: Double) {
-
+enum class SpellType(
+    val accuracyMod: Double,
+) {
     STRIKE(1.0) {
-        override fun getImpactAmount(e: Entity, victim: Entity?, base: Int): Int {
+        override fun getImpactAmount(
+            e: Entity,
+            victim: Entity?,
+            base: Int,
+        ): Int {
             if (victim is NPC && victim.id == 205) {
                 return 8 + base
             }
@@ -19,7 +24,11 @@ enum class SpellType(val accuracyMod: Double) {
     },
 
     BOLT(1.1) {
-        override fun getImpactAmount(e: Entity, victim: Entity?, base: Int): Int {
+        override fun getImpactAmount(
+            e: Entity,
+            victim: Entity?,
+            base: Int,
+        ): Int {
             if (e is Player && e.equipment.getNew(EquipmentContainer.SLOT_HANDS).id == 777) {
                 return 11 + base
             }
@@ -28,43 +37,71 @@ enum class SpellType(val accuracyMod: Double) {
     },
 
     CRUMBLE_UNDEAD(1.2) {
-        override fun getImpactAmount(e: Entity, victim: Entity?, base: Int): Int {
+        override fun getImpactAmount(
+            e: Entity,
+            victim: Entity?,
+            base: Int,
+        ): Int {
             return 15
         }
     },
 
     BLAST(1.2) {
-        override fun getImpactAmount(e: Entity, victim: Entity?, base: Int): Int {
+        override fun getImpactAmount(
+            e: Entity,
+            victim: Entity?,
+            base: Int,
+        ): Int {
             return 12 + base
         }
     },
 
     WAVE(1.3) {
-        override fun getImpactAmount(e: Entity, victim: Entity?, base: Int): Int {
+        override fun getImpactAmount(
+            e: Entity,
+            victim: Entity?,
+            base: Int,
+        ): Int {
             return 16 + base
         }
     },
 
     RUSH(1.1) {
-        override fun getImpactAmount(e: Entity, victim: Entity?, base: Int): Int {
+        override fun getImpactAmount(
+            e: Entity,
+            victim: Entity?,
+            base: Int,
+        ): Int {
             return 14 + base
         }
     },
 
     BURST(1.2) {
-        override fun getImpactAmount(e: Entity, victim: Entity?, base: Int): Int {
+        override fun getImpactAmount(
+            e: Entity,
+            victim: Entity?,
+            base: Int,
+        ): Int {
             return 18 + base
         }
     },
 
     BLITZ(1.3) {
-        override fun getImpactAmount(e: Entity, victim: Entity?, base: Int): Int {
+        override fun getImpactAmount(
+            e: Entity,
+            victim: Entity?,
+            base: Int,
+        ): Int {
             return 22 + base
         }
     },
 
     BARRAGE(1.4) {
-        override fun getImpactAmount(e: Entity, victim: Entity?, base: Int): Int {
+        override fun getImpactAmount(
+            e: Entity,
+            victim: Entity?,
+            base: Int,
+        ): Int {
             return 26 + base
         }
     },
@@ -82,7 +119,11 @@ enum class SpellType(val accuracyMod: Double) {
     STUN(1.25),
 
     GOD_STRIKE(1.2) {
-        override fun getImpactAmount(e: Entity, victim: Entity?, base: Int): Int {
+        override fun getImpactAmount(
+            e: Entity,
+            victim: Entity?,
+            base: Int,
+        ): Int {
             if (e !is Player) return 20
             if (hasTimerActive(e, "magic:spellcharge")) {
                 val cape = e.equipment.getNew(EquipmentContainer.SLOT_CAPE)
@@ -101,22 +142,35 @@ enum class SpellType(val accuracyMod: Double) {
     ENTANGLE(1.3),
 
     MAGIC_DART(1.15) {
-        override fun getImpactAmount(e: Entity, victim: Entity?, base: Int): Int {
+        override fun getImpactAmount(
+            e: Entity,
+            victim: Entity?,
+            base: Int,
+        ): Int {
             return 10 + (e.getSkills().getLevel(Skills.MAGIC) / 10)
         }
     },
 
     IBANS_BLAST(1.4) {
-        override fun getImpactAmount(e: Entity, victim: Entity?, base: Int): Int {
+        override fun getImpactAmount(
+            e: Entity,
+            victim: Entity?,
+            base: Int,
+        ): Int {
             return 25
         }
     },
 
     TELEBLOCK(1.3),
 
-    NULL(0.0);
+    NULL(0.0),
+    ;
 
-    open fun getImpactAmount(e: Entity, victim: Entity?, base: Int): Int {
+    open fun getImpactAmount(
+        e: Entity,
+        victim: Entity?,
+        base: Int,
+    ): Int {
         return 2
     }
 }

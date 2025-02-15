@@ -10,14 +10,18 @@ import core.plugin.Initializable
 
 @Initializable
 class CrumblingWallShortcut : AgilityShortcut(intArrayOf(11844), 5, 0.0, "climb-over") {
-
-    override fun run(player: Player, scenery: Scenery, option: String, failed: Boolean) {
+    override fun run(
+        player: Player,
+        scenery: Scenery,
+        option: String,
+        failed: Boolean,
+    ) {
         ForceMovement.run(
             player,
             if (player.location.x >= 2936) LOCATIONS[0] else LOCATIONS[1],
             if (player.location.x >= 2936) LOCATIONS[1] else LOCATIONS[0],
             Animation.create(839),
-            10
+            10,
         )
     }
 

@@ -1,8 +1,5 @@
 package content.minigame.magearena
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import content.data.GodType
 import core.api.*
 import core.game.global.action.PickupHandler.take
@@ -14,16 +11,17 @@ import core.game.node.item.GroundItemManager
 import core.game.world.map.Direction
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Graphics
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class MageArenaListener : InteractionListener {
-
     private val godCapes = intArrayOf(Items.SARADOMIN_CAPE_2412, Items.GUTHIX_CAPE_2413, Items.ZAMORAK_CAPE_2414)
     private val godStatue =
         intArrayOf(Scenery.STATUE_OF_SARADOMIN_2873, Scenery.STATUE_OF_ZAMORAK_2874, Scenery.STATUE_OF_GUTHIX_2875)
     private val sparklingPool = intArrayOf(Scenery.SPARKLING_POOL_2878, Scenery.SPARKLING_POOL_2879)
 
     override fun defineListeners() {
-
         on(godCapes, IntType.ITEM, "take", "drop") { player, node ->
             val type = GodType.forCape(node.asItem())
             if (getUsedOption(player) == "take") {
@@ -32,7 +30,7 @@ class MageArenaListener : InteractionListener {
                     GroundItemManager.destroy(capeOnGround)
                     sendMessage(
                         player,
-                        "You may only possess one sacred cape at a time. The conflicting powers of the capes drive them apart."
+                        "You may only possess one sacred cape at a time. The conflicting powers of the capes drive them apart.",
                     )
                 } else {
                     take(player, capeOnGround)
@@ -76,7 +74,7 @@ class MageArenaListener : InteractionListener {
                     sendDialogueLines(
                         player,
                         "You step into the pool of sparkling water. You feel energy rush",
-                        "through your veins."
+                        "through your veins.",
                     )
                     addDialogueAction(player) { _, _ ->
                         queueScript(player, 1, QueueStrength.STRONG) { stage: Int ->
@@ -89,7 +87,7 @@ class MageArenaListener : InteractionListener {
                                         0,
                                         30,
                                         Direction.NORTH,
-                                        Animations.JUMP_INTO_WATER_7269
+                                        Animations.JUMP_INTO_WATER_7269,
                                     )
                                     return@queueScript keepRunning(player)
                                 }
@@ -98,8 +96,10 @@ class MageArenaListener : InteractionListener {
                                     sendGraphics(
                                         Graphics(
                                             68,
-                                            10
-                                        ), player.location)
+                                            10,
+                                        ),
+                                        player.location,
+                                    )
                                     return@queueScript keepRunning(player)
                                 }
 
@@ -127,7 +127,7 @@ class MageArenaListener : InteractionListener {
                                 0,
                                 30,
                                 Direction.SOUTH,
-                                Animations.JUMP_INTO_WATER_7269
+                                Animations.JUMP_INTO_WATER_7269,
                             )
                             return@queueScript keepRunning(player)
                         }

@@ -1,8 +1,5 @@
 package content.region.morytania.quest.fenk
 
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.*
 import core.api.quest.getQuestStage
 import core.api.quest.isQuestComplete
@@ -10,11 +7,13 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class CreatureOfFenkenstrain :
     Quest(Quests.CREATURE_OF_FENKENSTRAIN, 41, 40, 2, Vars.VARP_QUEST_CREATURE_OF_FENKENSTRAIN_PROGRESS_399, 0, 1, 9) {
-
     companion object {
         const val attributeArms = "/save:quest:cof-arms"
         const val attributeLegs = "/save:quest:cof-legs"
@@ -26,7 +25,10 @@ class CreatureOfFenkenstrain :
         const val attributeThread = "/save:quest:cof-thread"
     }
 
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 12
         var stage = getStage(player)
@@ -149,13 +151,15 @@ class CreatureOfFenkenstrain :
         rewardXP(player, Skills.THIEVING, 1000.0)
     }
 
-    override fun setStage(player: Player, stage: Int) {
+    override fun setStage(
+        player: Player,
+        stage: Int,
+    ) {
         super.setStage(player, stage)
         this.updateVarps(player)
     }
 
     override fun updateVarps(player: Player) {
-
         if (getQuestStage(player, Quests.CREATURE_OF_FENKENSTRAIN) == 4) {
             setVarp(player, Vars.VARP_QUEST_CREATURE_OF_FENKENSTRAIN_PROGRESS_399, 3, true)
         }

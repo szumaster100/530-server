@@ -16,14 +16,13 @@ private const val BUTTON_ADD_COLD = 16
 private const val BUTTON_ADD_HOT = 18
 
 class IncubationInterface : ComponentPlugin() {
-
     override fun handle(
         player: Player?,
         component: Component?,
         opcode: Int,
         button: Int,
         slot: Int,
-        itemId: Int
+        itemId: Int,
     ): Boolean {
         TODO("Not yet implemented")
     }

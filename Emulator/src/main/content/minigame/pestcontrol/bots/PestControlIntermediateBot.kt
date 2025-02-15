@@ -8,8 +8,9 @@ import core.game.world.map.Location
 import core.tools.RandomFunction
 import java.util.*
 
-class PestControlIntermediateBot(l: Location) : PvMBots(legitimizeLocation(l)) {
-
+class PestControlIntermediateBot(
+    l: Location,
+) : PvMBots(legitimizeLocation(l)) {
     var tick = 0
     var combatMoveTimer = 0
     var justStartedGame = true
@@ -27,7 +28,7 @@ class PestControlIntermediateBot(l: Location) : PvMBots(legitimizeLocation(l)) {
         REFRESH,
         WAITING_IN_BOAT,
         PLAY_GAME,
-        GET_TO_PC
+        GET_TO_PC,
     }
 
     init {
@@ -87,7 +88,7 @@ class PestControlIntermediateBot(l: Location) : PvMBots(legitimizeLocation(l)) {
             test ?: println("PC: Gangplank Null")
             test!!.interaction.handle(
                 this,
-                test.interaction[0]
+                test.interaction[0],
             )
         }
         walkingQueue.isRunning = true
@@ -167,6 +168,7 @@ class PestControlIntermediateBot(l: Location) : PvMBots(legitimizeLocation(l)) {
     }
 
     var switch = false
+
     private fun handlePestControl() {
         time = 0
         if (!switch) {

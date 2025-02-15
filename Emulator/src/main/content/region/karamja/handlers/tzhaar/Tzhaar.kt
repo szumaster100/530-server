@@ -8,14 +8,18 @@ import core.plugin.Initializable
 import core.plugin.Plugin
 
 @Initializable
-class Tzhaar : MapZone("Tzhaar zone", true, ZoneRestriction.CANNON), Plugin<Any?> {
-
+class Tzhaar :
+    MapZone("Tzhaar zone", true, ZoneRestriction.CANNON),
+    Plugin<Any?> {
     override fun newInstance(arg: Any?): Plugin<Any?> {
         ZoneBuilder.configure(this)
         return this
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 

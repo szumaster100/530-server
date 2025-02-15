@@ -1,6 +1,5 @@
 package content.global.handlers.npc
 
-import org.rs.consts.NPCs
 import core.game.node.entity.combat.CombatStyle
 import core.game.node.entity.combat.CombatSwingHandler
 import core.game.node.entity.combat.MultiSwingHandler
@@ -12,20 +11,28 @@ import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
-class ChromaticDragonNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+class ChromaticDragonNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return ChromaticDragonNPC(id, location)
     }
 
-    private val combatAction: CombatSwingHandler = MultiSwingHandler(
-        false,
-        SwitchAttack(CombatStyle.MELEE.swingHandler, Animation(80, Priority.HIGH)),
-        SwitchAttack(CombatStyle.MELEE.swingHandler, Animation(91, Priority.HIGH)),
-        DRAGONFIRE
-    )
+    private val combatAction: CombatSwingHandler =
+        MultiSwingHandler(
+            false,
+            SwitchAttack(CombatStyle.MELEE.swingHandler, Animation(80, Priority.HIGH)),
+            SwitchAttack(CombatStyle.MELEE.swingHandler, Animation(91, Priority.HIGH)),
+            DRAGONFIRE,
+        )
 
     override fun getSwingHandler(swing: Boolean): CombatSwingHandler {
         return combatAction
@@ -56,13 +63,19 @@ class ChromaticDragonNPC(id: Int = 0, location: Location? = null) : AbstractNPC(
             NPCs.BLUE_DRAGON_4681,
             NPCs.BLUE_DRAGON_4682,
             NPCs.BLUE_DRAGON_4683,
-            NPCs.BLUE_DRAGON_4684
+            NPCs.BLUE_DRAGON_4684,
         )
     }
 
     companion object {
         private val DRAGONFIRE: SwitchAttack =
-            DragonfireSwingHandler.get(true, 52, Animation(81, Priority.HIGH),
-                Graphics(1, 64), null, null)
+            DragonfireSwingHandler.get(
+                true,
+                52,
+                Animation(81, Priority.HIGH),
+                Graphics(1, 64),
+                null,
+                null,
+            )
     }
 }

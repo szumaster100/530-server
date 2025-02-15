@@ -1,11 +1,10 @@
 package content.global.skill.smithing.smelting
 
-import org.rs.consts.*
 import core.api.*
-import core.game.container.impl.EquipmentContainer
-import core.game.event.ResourceProducedEvent
 import core.api.EquipmentSlot
 import core.api.quest.isQuestComplete
+import core.game.container.impl.EquipmentContainer
+import core.game.event.ResourceProducedEvent
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.diary.DiaryType
 import core.game.node.entity.skill.SkillPulse
@@ -15,9 +14,9 @@ import core.game.world.map.Location
 import core.game.world.update.flag.context.Graphics
 import core.tools.RandomFunction
 import core.tools.StringUtils
+import org.rs.consts.*
 
 class SmeltingPulse : SkillPulse<Item?> {
-
     private val bar: Bar?
     private val superHeat: Boolean
     private var ticks = 0
@@ -45,7 +44,14 @@ class SmeltingPulse : SkillPulse<Item?> {
             return false
         }
         if (getStatLevel(player, Skills.SMITHING) < bar.level) {
-            sendMessage(player, "You need a Smithing level of at least " + bar.level + " in order to smelt " + bar.product.name.lowercase().replace("bar", "") + ".")
+            sendMessage(
+                player,
+                "You need a Smithing level of at least " + bar.level + " in order to smelt " +
+                    bar.product.name
+                        .lowercase()
+                        .replace("bar", "") +
+                    ".",
+            )
             closeChatBox(player)
             return false
         }
@@ -53,9 +59,13 @@ class SmeltingPulse : SkillPulse<Item?> {
             if (!inInventory(player, item.id, item.amount)) {
                 when (bar.product.id) {
                     Items.BRONZE_BAR_2349 -> {
-                        if (amountInInventory(player, Items.TIN_ORE_438) < amountInInventory(player, Items.COPPER_ORE_436)) {
+                        if (amountInInventory(player, Items.TIN_ORE_438) <
+                            amountInInventory(player, Items.COPPER_ORE_436)
+                        ) {
                             sendMessage(player, "You don't have enough copper to make any more bronze.")
-                        } else if (amountInInventory(player, Items.TIN_ORE_438) > amountInInventory(player, Items.COPPER_ORE_436)) {
+                        } else if (amountInInventory(player, Items.TIN_ORE_438) >
+                            amountInInventory(player, Items.COPPER_ORE_436)
+                        ) {
                             sendMessage(player, "You don't have enough tin to make any more bronze.")
                         } else {
                             sendMessage(player, "You smelt the copper and tin together in the furnace.")
@@ -108,7 +118,11 @@ class SmeltingPulse : SkillPulse<Item?> {
                             sendMessage(player, "You place the runite and eight heaps of coal into the furnace.")
                         }
 
-                    else -> sendMessage(player, "You have run out of ${getItemName(bar.ores.size).lowercase()} to smelt.")
+                    else ->
+                        sendMessage(
+                            player,
+                            "You have run out of ${getItemName(bar.ores.size).lowercase()} to smelt.",
+                        )
                 }
                 return false
             }
@@ -119,8 +133,10 @@ class SmeltingPulse : SkillPulse<Item?> {
     override fun animate() {
         if (ticks == 0 || ticks % 5 == 0) {
             if (superHeat) {
-                visualize(player, Animations.HUMAN_CAST_SUPERHEAT_SPELL_725,
-                    Graphics(org.rs.consts.Graphics.SUPERHEAT_ITEM_148, 96)
+                visualize(
+                    player,
+                    Animations.HUMAN_CAST_SUPERHEAT_SPELL_725,
+                    Graphics(org.rs.consts.Graphics.SUPERHEAT_ITEM_148, 96),
                 )
             } else {
                 animate(player, Animations.HUMAN_FURNACE_SMELT_3243)
@@ -134,7 +150,10 @@ class SmeltingPulse : SkillPulse<Item?> {
             return false
         }
         if (!superHeat) {
-            sendMessage(player, "You place a lump of " + StringUtils.formatDisplayName(bar.toString().lowercase()) + " in the furnace.")
+            sendMessage(
+                player,
+                "You place a lump of " + StringUtils.formatDisplayName(bar.toString().lowercase()) + " in the furnace.",
+            )
         }
         for (i in bar!!.ores) {
             if (!removeItem(player, i)) {
@@ -142,7 +161,23 @@ class SmeltingPulse : SkillPulse<Item?> {
             }
         }
         if (success(player)) {
-            var amt = if (((freeSlots(player) != 0 && !superHeat && withinDistance(player, Location(3107, 3500, 0)) && player.inventory.containsItems(*bar.ores)) && player.achievementDiaryManager.getDiary(DiaryType.VARROCK)!!.level != -1 && player.achievementDiaryManager.checkSmithReward(bar) && RandomFunction.random(100) <= 10)) 2 else 1
+            var amt =
+                if ((
+                        (
+                            freeSlots(player) != 0 &&
+                                !superHeat &&
+                                withinDistance(player, Location(3107, 3500, 0)) &&
+                                player.inventory.containsItems(*bar.ores)
+                        ) &&
+                            player.achievementDiaryManager.getDiary(DiaryType.VARROCK)!!.level != -1 &&
+                            player.achievementDiaryManager.checkSmithReward(bar) &&
+                            RandomFunction.random(100) <= 10
+                    )
+                ) {
+                    2
+                } else {
+                    1
+                }
             if (amt != 1) {
                 if (!removeItem(player, bar.ores)) {
                     amt = 1
@@ -154,12 +189,25 @@ class SmeltingPulse : SkillPulse<Item?> {
             player.dispatch(ResourceProducedEvent(bar.product.id, 1, player, -1))
             var xp = bar.experience * amt
 
-            if (((player.equipment[EquipmentContainer.SLOT_HANDS] != null && player.equipment[EquipmentContainer.SLOT_HANDS].id == Items.GOLDSMITH_GAUNTLETS_776)) && bar.product.id == Items.GOLD_BAR_2357) {
+            if ((
+                    (
+                        player.equipment[EquipmentContainer.SLOT_HANDS] != null &&
+                            player.equipment[EquipmentContainer.SLOT_HANDS].id == Items.GOLDSMITH_GAUNTLETS_776
+                    )
+                ) &&
+                bar.product.id == Items.GOLD_BAR_2357
+            ) {
                 xp = 56.2 * amt
             }
             rewardXP(player, Skills.SMITHING, xp)
             if (!superHeat) {
-                sendMessage(player, "You retrieve a bar of " + bar.product.name.lowercase().replace(" bar", "") + ".")
+                sendMessage(
+                    player,
+                    "You retrieve a bar of " +
+                        bar.product.name
+                            .lowercase()
+                            .replace(" bar", "") + ".",
+                )
             }
         } else {
             sendMessage(player, "The ore is too impure and you fail to refine it.")

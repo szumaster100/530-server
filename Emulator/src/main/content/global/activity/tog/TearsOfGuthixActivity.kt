@@ -1,7 +1,6 @@
 package content.global.activity.tog
 
 import content.data.GameAttributes
-import content.region.misthalin.quest.tog.TearsOfGuthix
 import core.api.*
 import core.api.quest.getQuestPoints
 import core.api.quest.isQuestComplete
@@ -20,8 +19,8 @@ import core.game.world.map.zone.ZoneRestriction
 import core.game.world.update.flag.context.Animation
 import org.rs.consts.Components
 import org.rs.consts.Items
-import org.rs.consts.Scenery
 import org.rs.consts.Quests
+import org.rs.consts.Scenery
 
 /**
  * Tears of Guthix Activity
@@ -31,9 +30,11 @@ import org.rs.consts.Quests
  *
  * @author https://gitlab.com/ovenbreado
  */
-class TearsOfGuthixActivity : InteractionListener, EventHook<TickEvent>, MapArea {
+class TearsOfGuthixActivity :
+    InteractionListener,
+    EventHook<TickEvent>,
+    MapArea {
     companion object {
-
         const val varbitTimeBar = 454
         const val varbitPoints = 455
         const val attributeTicksRemaining = "minigame:tearsofguthix-ticksremaining"
@@ -41,75 +42,77 @@ class TearsOfGuthixActivity : InteractionListener, EventHook<TickEvent>, MapArea
         const val attributeIsCollecting = "minigame:tearsofguthix-iscollecting"
 
         // In order specified by RS
-        private val rewardArray = arrayOf(
-            Skills.COOKING,
-            Skills.CRAFTING,
-            Skills.FIREMAKING,
-            Skills.FISHING,
-            Skills.MAGIC,
-            Skills.MINING,
-            Skills.PRAYER,
-            Skills.RANGE,
-            Skills.RUNECRAFTING,
-            Skills.SMITHING,
-            Skills.WOODCUTTING,
-            Skills.AGILITY,
-            Skills.HERBLORE,
-            Skills.FLETCHING,
-            Skills.THIEVING,
-            Skills.SLAYER,
-            Skills.ATTACK,
-            Skills.DEFENCE,
-            Skills.STRENGTH,
-            Skills.HITPOINTS,
-            Skills.FARMING,
-            Skills.CONSTRUCTION,
-            Skills.HUNTER
-        )
+        private val rewardArray =
+            arrayOf(
+                Skills.COOKING,
+                Skills.CRAFTING,
+                Skills.FIREMAKING,
+                Skills.FISHING,
+                Skills.MAGIC,
+                Skills.MINING,
+                Skills.PRAYER,
+                Skills.RANGE,
+                Skills.RUNECRAFTING,
+                Skills.SMITHING,
+                Skills.WOODCUTTING,
+                Skills.AGILITY,
+                Skills.HERBLORE,
+                Skills.FLETCHING,
+                Skills.THIEVING,
+                Skills.SLAYER,
+                Skills.ATTACK,
+                Skills.DEFENCE,
+                Skills.STRENGTH,
+                Skills.HITPOINTS,
+                Skills.FARMING,
+                Skills.CONSTRUCTION,
+                Skills.HUNTER,
+            )
 
-        val rewardText = arrayOf(
-            "You have a brief urge to cook some food.",
-            "Your fingers feel nimble and suited to delicate work.",
-            "You have a brief urge to set light to something.",
-            "You gain a deep understanding of the creatures of the sea.",
-            "You feel the power of the runes surging through you. ",
-            "You gain a deep understanding of the stones of the earth.",
-            "You suddenly feel very close to the gods.",
-            "Your aim improves.",
-            "You gain a deep understanding of runes.",
-            "You gain a deep understanding of all types of metal.",
-            "You gain a deep understanding of the trees in the wood.",
-            "You feel very nimble.",
-            "You gain a deep understanding of all kinds of strange plants.",
-            "You gain a deep understanding of wooden sticks.",
-            "You feel your respect for others' property slipping away.",
-            "You gain a deep understanding of many strange creatures.",
-            "You feel a brief surge of aggression.",
-            "You feel more able to defend yourself.",
-            "Your muscles bulge.",
-            "You feel very healthy.",
-            "You gain a deep understanding of the cycles of nature.",
-            "You feel homesick.",
-            "You briefly experience the joy of the hunt.",
-            "You feel at one with nature.",
-        )
-
+        val rewardText =
+            arrayOf(
+                "You have a brief urge to cook some food.",
+                "Your fingers feel nimble and suited to delicate work.",
+                "You have a brief urge to set light to something.",
+                "You gain a deep understanding of the creatures of the sea.",
+                "You feel the power of the runes surging through you. ",
+                "You gain a deep understanding of the stones of the earth.",
+                "You suddenly feel very close to the gods.",
+                "Your aim improves.",
+                "You gain a deep understanding of runes.",
+                "You gain a deep understanding of all types of metal.",
+                "You gain a deep understanding of the trees in the wood.",
+                "You feel very nimble.",
+                "You gain a deep understanding of all kinds of strange plants.",
+                "You gain a deep understanding of wooden sticks.",
+                "You feel your respect for others' property slipping away.",
+                "You gain a deep understanding of many strange creatures.",
+                "You feel a brief surge of aggression.",
+                "You feel more able to defend yourself.",
+                "Your muscles bulge.",
+                "You feel very healthy.",
+                "You gain a deep understanding of the cycles of nature.",
+                "You feel homesick.",
+                "You briefly experience the joy of the hunt.",
+                "You feel at one with nature.",
+            )
 
         fun rewardTears(player: Player) {
-            val lowestSkill = rewardArray.reduce { acc, curr ->
+            val lowestSkill =
+                rewardArray.reduce { acc, curr ->
 
-                if (curr == Skills.CONSTRUCTION && !hasHouse(player)) {
-                    acc
-                } else if (curr == Skills.HERBLORE && !isQuestComplete(player, Quests.DRUIDIC_RITUAL)) {
-                    acc
-                } else if (curr == Skills.RUNECRAFTING && !isQuestComplete(player, Quests.RUNE_MYSTERIES)) {
-                    acc
-                } else if (player.skills.getExperience(acc) <= player.skills.getExperience(curr)) {
-                    acc
-                } else {
-                    curr
+                    if (curr == Skills.CONSTRUCTION && !hasHouse(player)) {
+                        acc
+                    } else if (curr == Skills.HERBLORE && !isQuestComplete(player, Quests.DRUIDIC_RITUAL)) {
+                        acc
+                    } else if (curr == Skills.RUNECRAFTING && !isQuestComplete(player, Quests.RUNE_MYSTERIES)) {
+                        acc
+                    } else if (player.skills.getExperience(acc) <= player.skills.getExperience(curr)) {
+                        acc
+                    } else {
+                        curr
+                    }
                 }
-            }
 
             var perTearXP = 60.0
             if (getStatLevel(player, lowestSkill) < 30) {
@@ -139,7 +142,7 @@ class TearsOfGuthixActivity : InteractionListener, EventHook<TickEvent>, MapArea
             queueScript(player, 0, QueueStrength.SOFT) { stage: Int ->
                 when (stage) {
                     0 -> {
-                        val distance = player.location.getDistance(Location(3251, 9516, 2)).toInt() + 1// Per tick?
+                        val distance = player.location.getDistance(Location(3251, 9516, 2)).toInt() + 1 // Per tick?
                         forceMove(player, player.location, Location(3251, 9516, 2), 0, distance * 15, null, 2041)
                         return@queueScript delayScript(player, distance)
                     }
@@ -251,21 +254,21 @@ class TearsOfGuthixActivity : InteractionListener, EventHook<TickEvent>, MapArea
                 }
             }
         }
-
     }
 
     override fun defineListeners() {
-
         on(Scenery.WEEPING_WALL_6660, SCENERY, "collect-from") { player, node ->
             animate(player, 2043)
             val index = TearsOfGuthixGlobalTick.allWalls.indexOf(node.location)
             setAttribute(player, attributeIsCollecting, index)
             return@on true
         }
-
     }
 
-    override fun process(entity: Entity, event: TickEvent) {
+    override fun process(
+        entity: Entity,
+        event: TickEvent,
+    ) {
         if (entity is Player) {
             if (getAttribute(entity, attributeTicksRemaining, -1) > 0) {
                 setAttribute(entity, attributeTicksRemaining, getAttribute(entity, attributeTicksRemaining, 0) - 1)
@@ -273,7 +276,7 @@ class TearsOfGuthixActivity : InteractionListener, EventHook<TickEvent>, MapArea
                     entity,
                     varbitTimeBar,
                     (getAttribute(entity, attributeTicksRemaining, 0) * 10 / getQuestPoints(entity)),
-                    false
+                    false,
                 )
                 if (getAttribute(entity, attributeIsCollecting, 0) != 0) {
                     val currentArrayIndex = getAttribute(entity, attributeIsCollecting, 0)
@@ -282,13 +285,13 @@ class TearsOfGuthixActivity : InteractionListener, EventHook<TickEvent>, MapArea
                         setAttribute(
                             entity,
                             attributeTearsCollected,
-                            getAttribute(entity, attributeTearsCollected, 0) + 1
+                            getAttribute(entity, attributeTearsCollected, 0) + 1,
                         )
                     } else if (currentTearState == 2 && getAttribute(entity, attributeTearsCollected, 0) > 0) {
                         setAttribute(
                             entity,
                             attributeTearsCollected,
-                            getAttribute(entity, attributeTearsCollected, 0) - 1
+                            getAttribute(entity, attributeTearsCollected, 0) - 1,
                         )
                     }
                     setVarbit(entity, varbitPoints, getAttribute(entity, attributeTearsCollected, 0))
@@ -300,7 +303,6 @@ class TearsOfGuthixActivity : InteractionListener, EventHook<TickEvent>, MapArea
         }
     }
 
-
     override fun defineAreaBorders(): Array<ZoneBorders> {
         return arrayOf(ZoneBorders(3253, 9513, 3262, 9522, 2))
     }
@@ -310,7 +312,7 @@ class TearsOfGuthixActivity : InteractionListener, EventHook<TickEvent>, MapArea
             ZoneRestriction.RANDOM_EVENTS,
             ZoneRestriction.CANNON,
             ZoneRestriction.FOLLOWERS,
-            ZoneRestriction.TELEPORT
+            ZoneRestriction.TELEPORT,
         )
     }
 
@@ -325,7 +327,10 @@ class TearsOfGuthixActivity : InteractionListener, EventHook<TickEvent>, MapArea
         }
     }
 
-    override fun areaLeave(entity: Entity, logout: Boolean) {
+    override fun areaLeave(
+        entity: Entity,
+        logout: Boolean,
+    ) {
         if (entity is Player) {
             entity.unhook(this)
             if (logout) {
@@ -337,7 +342,11 @@ class TearsOfGuthixActivity : InteractionListener, EventHook<TickEvent>, MapArea
         }
     }
 
-    override fun entityStep(entity: Entity, location: Location, lastLocation: Location) {
+    override fun entityStep(
+        entity: Entity,
+        location: Location,
+        lastLocation: Location,
+    ) {
         if (entity is Player) {
             entity.hook(Event.Tick, this)
             setAttribute(entity, attributeIsCollecting, 0)
@@ -346,25 +355,25 @@ class TearsOfGuthixActivity : InteractionListener, EventHook<TickEvent>, MapArea
 }
 
 class TearsOfGuthixGlobalTick : TickListener {
-
     companion object {
         var ticks = 0
         var globalWallState = intArrayOf(0, 0, 2, 1, 2, 1, 0, 0, 2, 1)
-        val allWalls = arrayOf(
-            // Blank
-            Location(0, 0, 0),
-            // Left Walls
-            Location(3258, 9520, 2),
-            Location(3261, 9516, 2),
-            Location(3261, 9518, 2),
-            Location(3257, 9514, 2),
-            Location(3259, 9514, 2),
-            // Right Walls
-            Location(3257, 9520, 2),
-            Location(3259, 9520, 2),
-            Location(3261, 9517, 2),
-            Location(3258, 9514, 2),
-        )
+        val allWalls =
+            arrayOf(
+                // Blank
+                Location(0, 0, 0),
+                // Left Walls
+                Location(3258, 9520, 2),
+                Location(3261, 9516, 2),
+                Location(3261, 9518, 2),
+                Location(3257, 9514, 2),
+                Location(3259, 9514, 2),
+                // Right Walls
+                Location(3257, 9520, 2),
+                Location(3259, 9520, 2),
+                Location(3261, 9517, 2),
+                Location(3258, 9514, 2),
+            )
     }
 
     override fun tick() {
@@ -389,34 +398,38 @@ class TearsOfGuthixGlobalTick : TickListener {
          */
         wallStates.forEachIndexed { index, state ->
             val scenery = getScenery(allWalls[index + 1])!!
-            val newSceneryId = if (state == 2) {
-                if (index + 1 <= 5) {
-                    Scenery.GREEN_TEARS_6662
+            val newSceneryId =
+                if (state == 2) {
+                    if (index + 1 <= 5) {
+                        Scenery.GREEN_TEARS_6662
+                    } else {
+                        Scenery.GREEN_TEARS_6666
+                    }
+                } else if (state == 1) {
+                    if (index + 1 <= 5) {
+                        Scenery.BLUE_TEARS_6661
+                    } else {
+                        Scenery.BLUE_TEARS_6665
+                    }
                 } else {
-                    Scenery.GREEN_TEARS_6666
+                    if (index + 1 <= 5) {
+                        Scenery.ABSENCE_OF_TEARS_6663
+                    } else {
+                        Scenery.ABSENCE_OF_TEARS_6667
+                    }
                 }
-            } else if (state == 1) {
-                if (index + 1 <= 5) {
-                    Scenery.BLUE_TEARS_6661
-                } else {
-                    Scenery.BLUE_TEARS_6665
-                }
-            } else {
-                if (index + 1 <= 5) {
-                    Scenery.ABSENCE_OF_TEARS_6663
-                } else {
-                    Scenery.ABSENCE_OF_TEARS_6667
-                }
-            }
             addScenery(
                 core.game.node.scenery.Scenery(
                     newSceneryId,
                     scenery.location,
                     4,
-                    scenery.rotation
-                )
+                    scenery.rotation,
+                ),
             )
-            addScenery(core.game.node.scenery.Scenery(Scenery.WEEPING_WALL_6660, scenery.location, 0, scenery.rotation))
+            addScenery(
+                core.game.node.scenery
+                    .Scenery(Scenery.WEEPING_WALL_6660, scenery.location, 0, scenery.rotation),
+            )
         }
     }
 }

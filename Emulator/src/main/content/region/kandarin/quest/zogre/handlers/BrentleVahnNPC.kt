@@ -1,8 +1,5 @@
 package content.region.kandarin.quest.zogre.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Vars
 import core.api.*
 import core.api.item.produceGroundItem
 import core.game.node.entity.Entity
@@ -12,14 +9,23 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Vars
 
 @Initializable
-class BrentleVahnNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
+class BrentleVahnNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
     var despawnTime = 0
     private val player: Player? = null
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return BrentleVahnNPC(id, location)
     }
 
@@ -59,7 +65,7 @@ class BrentleVahnNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, 
                         zombie.attack(player)
                         return true
                     }
-                }
+                },
             )
         }
     }

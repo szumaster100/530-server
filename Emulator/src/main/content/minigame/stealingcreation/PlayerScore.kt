@@ -8,9 +8,8 @@ package content.minigame.stealingcreation
  */
 data class PlayerScore(
     val name: String,
-    val team: Boolean
+    val team: Boolean,
 ) {
-
     private var gather = 0
     private var process = 0
     private var depositing = 0
@@ -89,7 +88,6 @@ data class PlayerScore(
     }
 
     companion object {
-
         /**
          * Calculates the total experience for a team.
          * @param playerScores the list of scores
@@ -97,8 +95,13 @@ data class PlayerScore(
          * @param winner whether the team is the winner
          * @return the total experience
          */
-        fun totalXP(playerScores: List<PlayerScore>, team: Boolean, winner: Boolean): Int {
-            return playerScores.filter { it.team == team }
+        fun totalXP(
+            playerScores: List<PlayerScore>,
+            team: Boolean,
+            winner: Boolean,
+        ): Int {
+            return playerScores
+                .filter { it.team == team }
                 .sumOf { it.total(winner) }
         }
 
@@ -108,7 +111,10 @@ data class PlayerScore(
          * @param winnerTeam the winner team (1 or 2)
          * @return the player with the highest total score
          */
-        fun highestTotal(playerScores: List<PlayerScore>, winnerTeam: Int): PlayerScore? {
+        fun highestTotal(
+            playerScores: List<PlayerScore>,
+            winnerTeam: Int,
+        ): PlayerScore? {
             return playerScores.maxByOrNull { it.total(it.team == (winnerTeam == 1)) }
         }
 
@@ -118,7 +124,10 @@ data class PlayerScore(
          * @param winnerTeam the winner team (1 or 2)
          * @return the player with the lowest total score
          */
-        fun lowestTotal(playerScores: List<PlayerScore>, winnerTeam: Int): PlayerScore? {
+        fun lowestTotal(
+            playerScores: List<PlayerScore>,
+            winnerTeam: Int,
+        ): PlayerScore? {
             return playerScores.minByOrNull { it.total(it.team == (winnerTeam == 1)) }
         }
 

@@ -17,51 +17,67 @@ object PlayerMonitor {
     private var activeTask: Job? = null
     private lateinit var db: DatabaseManager
 
-    var expectedTables = hashMapOf(
-        "chat_logs" to """
+    var expectedTables =
+        hashMapOf(
+            "chat_logs" to """
             CREATE TABLE "chat_logs" ( "player" TEXT, "uid" INTEGER, "type" TEXT, "message" TEXT, "timestamp" NUMERIC );
             """,
-        "misc_logs" to """
+            "misc_logs" to """
             CREATE TABLE "misc_logs" ( "player" TEXT, "uid" INTEGER, "type" TEXT, "details" TEXT , "timestamp" NUMERIC);
             """,
-        "trade_logs" to """
+            "trade_logs" to """
             CREATE TABLE "trade_logs" ( "player_a" TEXT, "player_b" TEXT, "uid_a" INTEGER, "uid_b" INTEGER, "items_a" TEXT, "items_b" TEXT, "timestamp" NUMERIC );
             """,
-        "xp_gains" to """
+            "xp_gains" to """
             CREATE TABLE "xp_gains" ( "player" TEXT, "uid" INTEGER, "attack" INTEGER, "defence" INTEGER, "strength" INTEGER, "hitpoints" INTEGER, "ranged" INTEGER, "prayer" INTEGER, "magic" INTEGER, "cooking" INTEGER, "woodcutting" INTEGER, "fletching" INTEGER, "fishing" INTEGER, "firemaking" INTEGER, "crafting" INTEGER, "smithing" INTEGER, "mining" INTEGER, "herblore" INTEGER, "agility" INTEGER, "thieving" INTEGER, "slayer" INTEGER, "farming" INTEGER, "runecrafting" INTEGER, "hunter" INTEGER, "construction" INTEGER, "summoning" INTEGER , "timestamp" NUMERIC)
             """,
-        "wealth_logs" to """
+            "wealth_logs" to """
             CREATE TABLE "wealth_logs" ( "player" TEXT, "uid" INTEGER, "total" NUMERIC, "diff" NUMERIC, "timestamp" NUMERIC )
-            """
-    )
+            """,
+        )
 
     @JvmStatic
-    fun logWealthChange(player: Player, totalWealth: Long, diff: Long) {
-        val event = LogEvent.WealthLog(
-            player.name,
-            player.details.uid,
-            totalWealth,
-            diff,
-            System.currentTimeMillis()
-        )
+    fun logWealthChange(
+        player: Player,
+        totalWealth: Long,
+        diff: Long,
+    ) {
+        val event =
+            LogEvent.WealthLog(
+                player.name,
+                player.details.uid,
+                totalWealth,
+                diff,
+                System.currentTimeMillis(),
+            )
         dispatch(event)
     }
 
     @JvmStatic
-    fun logChat(player: Player, type: String, message: String) {
-        val event = LogEvent.ChatLog(
-            player.name,
-            player.details.uid,
-            type,
-            message,
-            System.currentTimeMillis()
-        )
+    fun logChat(
+        player: Player,
+        type: String,
+        message: String,
+    ) {
+        val event =
+            LogEvent.ChatLog(
+                player.name,
+                player.details.uid,
+                type,
+                message,
+                System.currentTimeMillis(),
+            )
 
         dispatch(event)
     }
 
     @JvmStatic
-    fun logTrade(player1: Player, player2: Player, container1: Container, container2: Container) {
+    fun logTrade(
+        player1: Player,
+        player2: Player,
+        container1: Container,
+        container2: Container,
+    ) {
         val container1String = StringBuilder()
         val container2String = StringBuilder()
 
@@ -75,45 +91,59 @@ object PlayerMonitor {
             container2String.append(getItemName(item.id) + "(${item.amount}), ")
         }
 
-        val event = LogEvent.TradeLog(
-            player1.name,
-            player1.details.uid,
-            player2.name,
-            player2.details.uid,
-            container1String.toString(),
-            container2String.toString(),
-            System.currentTimeMillis()
-        )
+        val event =
+            LogEvent.TradeLog(
+                player1.name,
+                player1.details.uid,
+                player2.name,
+                player2.details.uid,
+                container1String.toString(),
+                container2String.toString(),
+                System.currentTimeMillis(),
+            )
         dispatch(event)
     }
 
     @JvmStatic
-    fun logPrivateChat(sender: Player, receiver: String, message: String) {
-        val event = LogEvent.ChatLog(
-            sender.name,
-            sender.details.uid,
-            "private",
-            "=> $receiver: $message",
-            System.currentTimeMillis()
-        )
+    fun logPrivateChat(
+        sender: Player,
+        receiver: String,
+        message: String,
+    ) {
+        val event =
+            LogEvent.ChatLog(
+                sender.name,
+                sender.details.uid,
+                "private",
+                "=> $receiver: $message",
+                System.currentTimeMillis(),
+            )
 
         dispatch(event)
     }
 
     @JvmStatic
-    fun log(player: Player, type: LogType, details: String) {
-        val event = LogEvent.MiscLog(
-            player.name,
-            player.details.uid,
-            type.token,
-            details,
-            System.currentTimeMillis()
-        )
+    fun log(
+        player: Player,
+        type: LogType,
+        details: String,
+    ) {
+        val event =
+            LogEvent.MiscLog(
+                player.name,
+                player.details.uid,
+                type.token,
+                details,
+                System.currentTimeMillis(),
+            )
         dispatch(event)
     }
 
     @JvmStatic
-    fun logXpGains(player: Player, xpDiff: List<Pair<Int, Double>>) {
+    fun logXpGains(
+        player: Player,
+        xpDiff: List<Pair<Int, Double>>,
+    ) {
         if (player.isArtificial) return
         if (xpDiff.isEmpty()) return
         val query = StringBuilder("INSERT INTO xp_gains(player,uid,")
@@ -150,28 +180,36 @@ object PlayerMonitor {
 
     fun processQueuedEvents() {
         init()
-        if (activeTask?.isActive == true)
+        if (activeTask?.isActive == true) {
             return
-
-        activeTask = db.runAsync {
-            while (eventQueue.isNotEmpty())
-                process(eventQueue.take(), it)
         }
+
+        activeTask =
+            db.runAsync {
+                while (eventQueue.isNotEmpty()) {
+                    process(eventQueue.take(), it)
+                }
+            }
     }
 
     @JvmStatic
     fun flushRemainingEventsImmediately() {
         core.api.log(this::class.java, Log.FINE, "Flushing player log events...")
         init()
-        if (activeTask != null)
+        if (activeTask != null) {
             activeTask?.cancel("Interrupted by shutdown. This is probably fine.")
+        }
         db.run {
-            while (eventQueue.isNotEmpty())
+            while (eventQueue.isNotEmpty()) {
                 process(eventQueue.take(), it)
+            }
         }
     }
 
-    private fun process(event: LogEvent, conn: Connection) {
+    private fun process(
+        event: LogEvent,
+        conn: Connection,
+    ) {
         when (event) {
             is LogEvent.ChatLog -> {
                 val stmt = conn.prepareStatement(CHAT_LOG_INSERT)
@@ -228,7 +266,7 @@ object PlayerMonitor {
             val uid: Int,
             val type: String,
             val message: String,
-            val timestamp: Long
+            val timestamp: Long,
         ) : LogEvent()
 
         data class TradeLog(
@@ -238,7 +276,7 @@ object PlayerMonitor {
             val uid2: Int,
             val items1: String,
             val items2: String,
-            val timestamp: Long
+            val timestamp: Long,
         ) : LogEvent()
 
         data class MiscLog(
@@ -246,12 +284,20 @@ object PlayerMonitor {
             val uid: Int,
             val type: String,
             val details: String,
-            val timestamp: Long
+            val timestamp: Long,
         ) : LogEvent()
 
-        data class XpLog(val query: String) : LogEvent()
-        data class WealthLog(val player: String, val uid: Int, val total: Long, val diff: Long, val timeStamp: Long) :
-            LogEvent()
+        data class XpLog(
+            val query: String,
+        ) : LogEvent()
+
+        data class WealthLog(
+            val player: String,
+            val uid: Int,
+            val total: Long,
+            val diff: Long,
+            val timeStamp: Long,
+        ) : LogEvent()
     }
 
     private const val CHAT_LOG_INSERT = "INSERT INTO chat_logs(player,uid,type,message,timestamp) VALUES (?,?,?,?,?);"
@@ -261,11 +307,13 @@ object PlayerMonitor {
     private const val WEALTH_LOG_INSERT = "INSERT INTO wealth_logs(player,uid,total,diff,timestamp) VALUES (?,?,?,?,?);"
 }
 
-enum class LogType(val token: String) {
+enum class LogType(
+    val token: String,
+) {
     DUPE_ALERT("dupe_warning"),
     DUEL_INFO("Duel"),
     PK("PK"),
     DROP_TRADE("DropTrade"),
     COMMAND("CommandUsed"),
-    IP_LOG("login_ip")
+    IP_LOG("login_ip"),
 }

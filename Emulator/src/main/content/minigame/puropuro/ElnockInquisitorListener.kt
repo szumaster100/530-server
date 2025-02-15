@@ -1,18 +1,16 @@
 package content.minigame.puropuro
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.addItemOrDrop
 import core.api.openInterface
 import core.api.sendNPCDialogue
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 class ElnockInquisitorListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(NPCs.ELNOCK_INQUISITOR_6070, IntType.NPC, "trade") { player, _ ->
             openInterface(player, Components.ELNOCK_EXCHANGE_540)
             return@on true
@@ -29,7 +27,7 @@ class ElnockInquisitorListener : InteractionListener {
                 sendNPCDialogue(
                     player,
                     NPCs.ELNOCK_INQUISITOR_6070,
-                    "Since I have already given you some equipment for free, I'll be willing to sell you some now."
+                    "Since I have already given you some equipment for free, I'll be willing to sell you some now.",
                 )
             }
             return@on true

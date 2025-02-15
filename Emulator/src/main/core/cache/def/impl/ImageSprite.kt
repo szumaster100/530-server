@@ -8,8 +8,11 @@ import java.io.IOException
 import java.nio.ByteBuffer
 import java.util.*
 
-class ImageSprite(private val spriteWidth: Int, private val spriteHeight: Int, size: Int = 1) {
-
+class ImageSprite(
+    private val spriteWidth: Int,
+    private val spriteHeight: Int,
+    size: Int = 1,
+) {
     companion object {
         const val VERTICAL_FLAG = 0x01
         const val ALPHA_FLAG = 0x02
@@ -87,7 +90,7 @@ class ImageSprite(private val spriteWidth: Int, private val spriteHeight: Int, s
                                             image.setRGB(
                                                 x + offsetX,
                                                 y + offsetY,
-                                                alpha shl 24 or palette[indices[x][y]]
+                                                alpha shl 24 or palette[indices[x][y]],
                                             )
                                         } catch (e: Exception) {
                                         }
@@ -104,7 +107,7 @@ class ImageSprite(private val spriteWidth: Int, private val spriteHeight: Int, s
                                         image.setRGB(
                                             x + offsetX,
                                             y + offsetY,
-                                            (0xFF000000 or palette[index].toLong()).toInt()
+                                            (0xFF000000 or palette[index].toLong()).toInt(),
                                         )
                                     }
                                 }

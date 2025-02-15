@@ -1,7 +1,5 @@
 package content.region.asgarnia.quest.rd.handlers
 
-import org.rs.consts.Components
-import org.rs.consts.NPCs
 import content.region.asgarnia.quest.rd.RecruitmentDrive
 import content.region.asgarnia.quest.rd.cutscene.FailTest
 import core.api.*
@@ -10,10 +8,16 @@ import core.game.dialogue.FaceAnim
 import core.game.node.entity.npc.NPC
 import core.game.system.task.Pulse
 import core.game.world.GameWorld
+import org.rs.consts.Components
+import org.rs.consts.NPCs
 
-class ObservationTest(private val state: Int = 0) : DialogueFile() {
-
-    override fun handle(componentID: Int, buttonID: Int) {
+class ObservationTest(
+    private val state: Int = 0,
+) : DialogueFile() {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         npc = NPC(NPCs.LADY_TABLE_2283)
         when (state) {
             1 -> handleTaskBegin()
@@ -31,20 +35,23 @@ class ObservationTest(private val state: Int = 0) : DialogueFile() {
                 npcl(FaceAnim.FRIENDLY, "Welcome, @name. This room will test your observation skills.").also { stage++ }
             }
 
-            1 -> npcl(
-                FaceAnim.FRIENDLY,
-                "Study the statues closely. There is one missing statue in this room."
-            ).also { stage++ }
+            1 ->
+                npcl(
+                    FaceAnim.FRIENDLY,
+                    "Study the statues closely. There is one missing statue in this room.",
+                ).also { stage++ }
 
-            2 -> npcl(
-                FaceAnim.FRIENDLY,
-                "We will also mix the order up a little, to make things interesting for you!"
-            ).also { stage++ }
+            2 ->
+                npcl(
+                    FaceAnim.FRIENDLY,
+                    "We will also mix the order up a little, to make things interesting for you!",
+                ).also { stage++ }
 
-            3 -> npcl(
-                FaceAnim.FRIENDLY,
-                "You have 10 seconds to memorise the statues... starting NOW!"
-            ).also { stage++ }
+            3 ->
+                npcl(
+                    FaceAnim.FRIENDLY,
+                    "You have 10 seconds to memorise the statues... starting NOW!",
+                ).also { stage++ }
 
             4 -> {
                 end()
@@ -58,6 +65,7 @@ class ObservationTest(private val state: Int = 0) : DialogueFile() {
         GameWorld.Pulser.submit(
             object : Pulse() {
                 var counter = 0
+
                 override fun pulse(): Boolean {
                     return when (counter++) {
                         16 -> {
@@ -68,7 +76,7 @@ class ObservationTest(private val state: Int = 0) : DialogueFile() {
                                 FaceAnim.FRIENDLY,
                                 true,
                                 "We will now dim the lights and bring the missing statue",
-                                "back in."
+                                "back in.",
                             )
                             false
                         }
@@ -83,17 +91,18 @@ class ObservationTest(private val state: Int = 0) : DialogueFile() {
                         else -> false
                     }
                 }
-            }
+            },
         )
     }
 
     private fun handleTaskFail() {
         when (stage) {
             0 ->
-                if (getAttribute(player!!, RecruitmentDrive.stageFail, false) && !getAttribute(
+                if (getAttribute(player!!, RecruitmentDrive.stageFail, false) &&
+                    !getAttribute(
                         player!!,
                         RecruitmentDrive.stagePass,
-                        false
+                        false,
                     )
                 ) {
                     setAttribute(player!!, RecruitmentDrive.stageFail, true)
@@ -102,7 +111,7 @@ class ObservationTest(private val state: Int = 0) : DialogueFile() {
                         "No... I am very sorry.",
                         "Apparently you are not up to the challenge.",
                         "I will return you where you came from, better luck in the",
-                        "future."
+                        "future.",
                     )
                     stage++
                 }

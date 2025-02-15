@@ -1,15 +1,14 @@
 package content.region.fremennik.quest.viking.handlers
 
-import org.rs.consts.Components
 import core.api.getAttribute
 import core.api.removeAttribute
 import core.api.sendMessage
 import core.api.setAttribute
 import core.game.interaction.InterfaceListener
 import core.game.node.entity.player.Player
+import org.rs.consts.Components
 
 class SeerLockInterface : InterfaceListener {
-
     private val letters = ('A'..'Z').toList()
     private val letterBacks = listOf(39, 35, 31, 27)
     private val letterForwards = listOf(40, 36, 32, 28)
@@ -17,7 +16,6 @@ class SeerLockInterface : InterfaceListener {
     private val doorLockInterface = Components.SEER_COMBOLOCK_298
 
     override fun defineInterfaceListeners() {
-
         onOpen(doorLockInterface) { player, _ ->
             resetPlayerAttributes(player)
             return@onOpen true
@@ -44,7 +42,10 @@ class SeerLockInterface : InterfaceListener {
         (1..4).forEach { removeAttribute(player, "riddle-letter-$it") }
     }
 
-    private fun handleButtonClick(player: Player, buttonID: Int) {
+    private fun handleButtonClick(
+        player: Player,
+        buttonID: Int,
+    ) {
         when (buttonID) {
             in letterBacks -> updateLetter(player, letterBacks.indexOf(buttonID), -1)
             in letterForwards -> updateLetter(player, letterForwards.indexOf(buttonID), 1)
@@ -52,7 +53,11 @@ class SeerLockInterface : InterfaceListener {
         }
     }
 
-    private fun updateLetter(player: Player, index: Int, change: Int) {
+    private fun updateLetter(
+        player: Player,
+        index: Int,
+        change: Int,
+    ) {
         val letterKey = "riddle-letter-${index + 1}"
         val currentValue = getAttribute(player, letterKey, 0)
         if (currentValue == 0 && change < 0) {

@@ -5,7 +5,6 @@ import core.game.bots.Script
 import core.game.world.map.zone.ZoneBorders
 
 class BarbarianKiller : Script() {
-
     private val barbarianVillage = ZoneBorders(3091, 3405, 3071, 3450)
 
     var state = State.KILLING
@@ -26,7 +25,7 @@ class BarbarianKiller : Script() {
             CombatBotAssembler().produce(
                 CombatBotAssembler.Type.values().random(),
                 CombatBotAssembler.Tier.MED,
-                barbarianVillage.randomLoc
+                barbarianVillage.randomLoc,
             )
         script.state = State.KILLING
         return script

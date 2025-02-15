@@ -1,6 +1,5 @@
 package content.global.skill.crafting.loom
 
-import org.rs.consts.Animations
 import core.api.*
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.diary.DiaryType
@@ -9,11 +8,16 @@ import core.game.node.entity.skill.Skills
 import core.game.node.scenery.Scenery
 import core.game.world.map.Location
 import core.tools.StringUtils
+import org.rs.consts.Animations
 
-class WeavingPulse(player: Player?, node: Scenery?, private val type: Weaving, private var amount: Int) :
-    SkillPulse<Scenery?>(player, node) {
-
+class WeavingPulse(
+    player: Player?,
+    node: Scenery?,
+    private val type: Weaving,
+    private var amount: Int,
+) : SkillPulse<Scenery?>(player, node) {
     private var ticks = 0
+
     override fun checkRequirements(): Boolean {
         if (getStatLevel(player, Skills.CRAFTING) < type.level) {
             sendMessage(player, "You need a crafting level of at least " + type.level + " in order to do this.")
@@ -22,13 +26,29 @@ class WeavingPulse(player: Player?, node: Scenery?, private val type: Weaving, p
         if (!inInventory(player, type.required.id)) {
             sendMessage(
                 player,
-                "You need " + type.required.amount + " " + type.required.name.lowercase().replace(
-                    "ball",
-                    "balls"
-                ) + (if (type == Weaving.SACK) "s" else if (type == Weaving.CLOTH) "" else "es") + " to weave " + (if (StringUtils.isPlusN(
-                        type.product.name.lowercase()
-                    )
-                ) "an" else "a") + " " + type.product.name.lowercase() + "."
+                "You need " + type.required.amount + " " +
+                    type.required.name.lowercase().replace(
+                        "ball",
+                        "balls",
+                    ) + (
+                        if (type == Weaving.SACK) {
+                            "s"
+                        } else if (type == Weaving.CLOTH) {
+                            ""
+                        } else {
+                            "es"
+                        }
+                    ) + " to weave " +
+                    (
+                        if (StringUtils.isPlusN(
+                                type.product.name.lowercase(),
+                            )
+                        ) {
+                            "an"
+                        } else {
+                            "a"
+                        }
+                    ) + " " + type.product.name.lowercase() + ".",
             )
             return false
         }
@@ -51,15 +71,28 @@ class WeavingPulse(player: Player?, node: Scenery?, private val type: Weaving, p
             sendMessage(
                 player,
                 "You weave the " +
-                        type.required.name.lowercase().replace("ball", "balls") +
-                        (if (type == Weaving.SACK) "s" else if (type == Weaving.CLOTH) "" else "es") +
-                        " into " + (if (StringUtils.isPlusN(type.product.name.lowercase())) "an" else "a") +
-                        " " + type.product.name.lowercase() + "."
+                    type.required.name
+                        .lowercase()
+                        .replace("ball", "balls") +
+                    (
+                        if (type == Weaving.SACK) {
+                            "s"
+                        } else if (type == Weaving.CLOTH) {
+                            ""
+                        } else {
+                            "es"
+                        }
+                    ) +
+                    " into " + (if (StringUtils.isPlusN(type.product.name.lowercase())) "an" else "a") +
+                    " " + type.product.name.lowercase() + ".",
             )
-            if (type == Weaving.BASKET && node?.id == 8717 && withinDistance(
+            if (type == Weaving.BASKET &&
+                node?.id == 8717 &&
+                withinDistance(
                     player,
-                    Location(3039, 3287, 0)
-                ) && !hasDiaryTaskComplete(player, DiaryType.FALADOR, 1, 0)
+                    Location(3039, 3287, 0),
+                ) &&
+                !hasDiaryTaskComplete(player, DiaryType.FALADOR, 1, 0)
             ) {
                 finishDiaryTask(player, DiaryType.FALADOR, 1, 0)
             }

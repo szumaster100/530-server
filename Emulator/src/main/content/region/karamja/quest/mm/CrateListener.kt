@@ -1,7 +1,5 @@
 package content.region.karamja.quest.mm
 
-import org.rs.consts.Animations
-import org.rs.consts.Scenery
 import content.region.karamja.quest.mm.dialogue.CrateMMDialogue
 import core.api.animate
 import core.api.openDialogue
@@ -10,9 +8,10 @@ import core.api.submitIndividualPulse
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.system.task.Pulse
+import org.rs.consts.Animations
+import org.rs.consts.Scenery
 
 class CrateListener : InteractionListener {
-
     private val monkeyAmuletMouldCrate = Scenery.CRATE_4724
     private val threadCrate = Scenery.CRATE_4718
     private val monkeyTalkingDentures = Scenery.CRATE_4715
@@ -23,7 +22,6 @@ class CrateListener : InteractionListener {
     private val hammersCrate = Scenery.CRATE_4726
 
     override fun defineListeners() {
-
         on(monkeyAmuletMouldCrate, IntType.SCENERY, "search") { player, _ ->
             animate(player, Animations.HUMAN_OPEN_CHEST_536)
             sendMessage(player, "You search the crate.")
@@ -37,13 +35,14 @@ class CrateListener : InteractionListener {
                 player,
                 object : Pulse() {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             3 -> openDialogue(player, CrateMMDialogue(1))
                         }
                         return false
                     }
-                }
+                },
             )
             return@on true
         }
@@ -54,13 +53,14 @@ class CrateListener : InteractionListener {
                 player,
                 object : Pulse() {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             3 -> openDialogue(player, CrateMMDialogue(2))
                         }
                         return false
                     }
-                }
+                },
             )
             return@on true
         }
@@ -71,13 +71,14 @@ class CrateListener : InteractionListener {
                 player,
                 object : Pulse() {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             3 -> openDialogue(player, CrateMMDialogue(3))
                         }
                         return false
                     }
-                }
+                },
             )
             return@on true
         }
@@ -94,13 +95,14 @@ class CrateListener : InteractionListener {
                 player,
                 object : Pulse() {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             3 -> openDialogue(player, CrateMMDialogue(5))
                         }
                         return false
                     }
-                }
+                },
             )
             return@on true
         }
@@ -111,13 +113,14 @@ class CrateListener : InteractionListener {
                 player,
                 object : Pulse() {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             3 -> openDialogue(player, CrateMMDialogue(6))
                         }
                         return false
                     }
-                }
+                },
             )
             return@on true
         }
@@ -128,13 +131,14 @@ class CrateListener : InteractionListener {
                 player,
                 object : Pulse() {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             3 -> openDialogue(player, CrateMMDialogue(7))
                         }
                         return false
                     }
-                }
+                },
             )
             return@on true
         }

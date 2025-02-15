@@ -11,11 +11,15 @@ import core.game.node.item.Item
 import core.game.system.timer.impl.AntiMacro
 import core.tools.END_DIALOGUE
 
-class SandwichLadyDialogue(val isChoice: Boolean) : DialogueFile() {
-
+class SandwichLadyDialogue(
+    val isChoice: Boolean,
+) : DialogueFile() {
     val SANDWICH_INTERFACE = 297
 
-    override fun handle(componentID: Int, buttonID: Int) {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         val assigned = getAttribute(player!!, GameAttributes.S_LADY_ITEM, 0)
         val choice = getAttribute(player!!, GameAttributes.S_LADY_ITEM_VALUE, 0)
         if (!isChoice) {

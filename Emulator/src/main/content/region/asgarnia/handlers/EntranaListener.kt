@@ -1,18 +1,16 @@
 package content.region.asgarnia.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.world.map.Location
 import core.game.world.repository.Repository.findNPC
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 class EntranaListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(ENTRANA_BOOKCASE, IntType.SCENERY, "Search") { player, _ ->
             if (freeSlots(player) == 0) {
                 sendMessage(player, "You don't have enough inventory space.")

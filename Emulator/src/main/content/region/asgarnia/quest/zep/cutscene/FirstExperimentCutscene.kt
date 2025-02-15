@@ -1,9 +1,5 @@
 package content.region.asgarnia.quest.zep.cutscene
 
-import org.rs.consts.Animations
-import org.rs.consts.Graphics
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.face
 import core.api.location
 import core.api.quest.setQuestStage
@@ -14,8 +10,14 @@ import core.game.node.entity.impl.Projectile
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.world.map.Direction
+import org.rs.consts.Animations
+import org.rs.consts.Graphics
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
-class FirstExperimentCutscene(player: Player) : Cutscene(player) {
+class FirstExperimentCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(location(2808, 3355, 0))
         if (player.settings.isRunToggled) {
@@ -46,13 +48,15 @@ class FirstExperimentCutscene(player: Player) : Cutscene(player) {
             }
 
             4 -> {
-                Projectile.create(player, null, Graphics.BALLOON_FLOATING_881, 45, 45, 1, 70, 0).transform(
-                    player,
-                    player.location.transform(Direction.SOUTH, player.direction.ordinal + 1),
-                    false,
-                    70,
-                    140
-                ).send()
+                Projectile
+                    .create(player, null, Graphics.BALLOON_FLOATING_881, 45, 45, 1, 70, 0)
+                    .transform(
+                        player,
+                        player.location.transform(Direction.SOUTH, player.direction.ordinal + 1),
+                        false,
+                        70,
+                        140,
+                    ).send()
                 timedUpdate(3)
             }
 
@@ -92,7 +96,7 @@ class FirstExperimentCutscene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.AUGUSTE_5049,
                     FaceAnim.HAPPY,
-                    "We shall meekly go! No...no...it needs to sound grander. We shall cautiously go..."
+                    "We shall meekly go! No...no...it needs to sound grander. We shall cautiously go...",
                 )
             }
 

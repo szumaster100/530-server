@@ -1,9 +1,5 @@
 package content.region.kandarin.quest.chompybird
 
-import org.rs.consts.Graphics
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
@@ -16,6 +12,10 @@ import core.game.world.map.RegionManager
 import core.game.world.map.zone.ZoneBorders
 import core.plugin.Initializable
 import core.tools.RandomFunction
+import org.rs.consts.Graphics
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
 class BloatedToadNPC : AbstractNPC {
@@ -25,8 +25,11 @@ class BloatedToadNPC : AbstractNPC {
     var ticksToLive = 100
     var chompySpawned = false
 
-    override fun construct(id: Int, location: Location, vararg objects: Any?): AbstractNPC {
-
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any?,
+    ): AbstractNPC {
         val npc = BloatedToadNPC(id, location)
         npc.isWalks = false
         npc.isNeverWalks = true
@@ -77,7 +80,10 @@ class BloatedToadNPC : AbstractNPC {
     }
 }
 
-class BloatedToadListeners : InteractionListener, StartupListener, Commands {
+class BloatedToadListeners :
+    InteractionListener,
+    StartupListener,
+    Commands {
     lateinit var borders: ZoneBorders
     val extraBorders = ArrayList<ZoneBorders>()
 
@@ -134,10 +140,12 @@ class BloatedToadListeners : InteractionListener, StartupListener, Commands {
             }
 
             if (quest.getStage(player) in 30..40) {
-                if (player.location == Location.create(2635, 2966, 0) || player.location == Location.create(
+                if (player.location == Location.create(2635, 2966, 0) ||
+                    player.location ==
+                    Location.create(
                         2636,
                         2966,
-                        0
+                        0,
                     )
                 ) {
                     quest.setStage(player, 40)
@@ -148,7 +156,9 @@ class BloatedToadListeners : InteractionListener, StartupListener, Commands {
             }
 
             if (removeItem(player, used.asItem())) {
-                val toad = core.game.node.entity.npc.NPC.create(NPCs.BLOATED_TOAD_1014, player.location)
+                val toad =
+                    core.game.node.entity.npc.NPC
+                        .create(NPCs.BLOATED_TOAD_1014, player.location)
                 setAttribute(toad, "owner", player)
                 toad.init()
             }

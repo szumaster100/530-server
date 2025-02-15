@@ -9,8 +9,9 @@ import core.game.system.timer.impl.AntiMacro
 import core.game.world.update.flag.context.Animation
 import org.rs.consts.NPCs
 
-class QuizMasterNPC(override var loot: WeightBasedTable? = null) : RandomEventNPC(NPCs.QUIZ_MASTER_2477) {
-
+class QuizMasterNPC(
+    override var loot: WeightBasedTable? = null,
+) : RandomEventNPC(NPCs.QUIZ_MASTER_2477) {
     override fun init() {
         super.init()
         sendChat("It's your lucky day!")
@@ -27,13 +28,12 @@ class QuizMasterNPC(override var loot: WeightBasedTable? = null) : RandomEventNP
                         player.animate(Animation.create(QuizMaster.SIT_ANIMATION))
                         return false
                     }
-                }
+                },
             )
         }
         AntiMacro.terminateEventNpc(player)
     }
 
     override fun talkTo(npc: NPC) {
-
     }
 }

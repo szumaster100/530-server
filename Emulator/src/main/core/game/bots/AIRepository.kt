@@ -1,9 +1,9 @@
 package core.game.bots
 
-import core.game.node.entity.player.Player
-import core.game.node.item.GroundItem
 import core.game.bots.impl.Adventurer
 import core.game.ge.GrandExchangeOffer
+import core.game.node.entity.player.Player
+import core.game.node.item.GroundItem
 
 class AIRepository {
     companion object {
@@ -30,7 +30,10 @@ class AIRepository {
         }
 
         @JvmStatic
-        fun addOffer(player: Player, offer: GrandExchangeOffer) {
+        fun addOffer(
+            player: Player,
+            offer: GrandExchangeOffer,
+        ) {
             GrandExchangeOffers[player] = offer
         }
 
@@ -49,15 +52,21 @@ class AIRepository {
         }
 
         @JvmStatic
-        fun sendBotInfo(player: Player, bot: AIPlayer) {
+        fun sendBotInfo(
+            player: Player,
+            bot: AIPlayer,
+        ) {
             val pulse = PulseRepository[bot.username.lowercase()] ?: return
             bot.setAttribute("tracked", true)
             player.debug("[Bot: ${bot.username}][${pulse.botScript::class.simpleName}]=================")
-            player.debug("PM Pulse Running? ${if (bot.pulseManager.hasPulseRunning()) bot.pulseManager.getCurrent()::class.java.name else "No"}")
+            player.debug(
+                "PM Pulse Running? ${if (bot.pulseManager.hasPulseRunning()) bot.pulseManager.getCurrent()::class.java.name else "No"}",
+            )
             player.debug(
                 "Interaction Running? ${bot.scripts.getActiveScript() != null} ${
                     bot.scripts.getActiveScript()?.let { " : " + it.execution!!::class.java.name } ?: ""
-                }")
+                }",
+            )
             player.debug("Botscript Running? ${pulse.botScript.running}")
             player.debug("Random Delay? ${pulse.randomDelay}")
             player.debug("Delayed? ${bot.scripts.delay}")

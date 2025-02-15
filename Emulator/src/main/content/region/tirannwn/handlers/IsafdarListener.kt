@@ -1,17 +1,15 @@
 package content.region.tirannwn.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.player.link.TeleportManager
 import core.game.world.map.Location
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class IsafdarListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(Scenery.CAVE_ENTRANCE_4006, IntType.SCENERY, "enter") { player, _ ->
             teleport(player, Location(2314, 9624, 0), TeleportManager.TeleportType.INSTANT)
             return@on true

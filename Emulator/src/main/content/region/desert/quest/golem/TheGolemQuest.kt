@@ -1,6 +1,5 @@
 package content.region.desert.quest.golem
 
-import org.rs.consts.*
 import content.global.skill.thieving.PickpocketListener
 import core.api.*
 import core.api.quest.getQuestStage
@@ -12,7 +11,6 @@ import core.game.global.action.SpecialLadder
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.interaction.InterfaceListener
-import core.game.node.Node
 import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
@@ -20,14 +18,16 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.node.scenery.Scenery
 import core.game.world.map.Location
-import core.net.packet.out.Interface
 import core.plugin.Initializable
 import core.tools.RandomFunction
+import org.rs.consts.*
 
 @Initializable
 class TheGolemQuest : Quest(Quests.THE_GOLEM, 70, 69, 1, Vars.VARBIT_QUEST_THE_GOLEM_PROGRESS_346, 0, 1, 10) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var ln = 11
         if (stage == 0) {
@@ -108,7 +108,11 @@ class ClayGolemNPC : AbstractNPC {
     constructor() : super(NPCs.BROKEN_CLAY_GOLEM_1908, null, true)
     private constructor(id: Int, location: Location) : super(id, location)
 
-    override fun construct(id: Int, location: Location, vararg objects: Any?): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any?,
+    ): AbstractNPC {
         return ClayGolemNPC(id, location)
     }
 
@@ -117,20 +121,23 @@ class ClayGolemNPC : AbstractNPC {
             NPCs.TOUGH_GUY_1907,
             NPCs.BROKEN_CLAY_GOLEM_1908,
             NPCs.DAMAGED_CLAY_GOLEM_1909,
-            NPCs.CLAY_GOLEM_1910
+            NPCs.CLAY_GOLEM_1910,
         )
     }
 }
 
-class TheGolemListeners : InteractionListener, InterfaceListener {
-
+class TheGolemListeners :
+    InteractionListener,
+    InterfaceListener {
     companion object {
         @JvmStatic
         fun hasStatuette(player: Player): Boolean {
-            return player.inventory.containsAtLeastOneItem(Items.STATUETTE_4618) || player.bank.containsAtLeastOneItem(Items.STATUETTE_4618) || player.getAttribute(
-                "the-golem:placed-statuette",
-                false
-            )
+            return player.inventory.containsAtLeastOneItem(Items.STATUETTE_4618) ||
+                player.bank.containsAtLeastOneItem(Items.STATUETTE_4618) ||
+                player.getAttribute(
+                    "the-golem:placed-statuette",
+                    false,
+                )
         }
 
         @JvmStatic
@@ -146,21 +153,24 @@ class TheGolemListeners : InteractionListener, InterfaceListener {
         @JvmStatic
         fun updateVarps(player: Player) {
             val clayUsed = player.getAttribute("the-golem:clay-used", 0)
-            val gemsTaken = if (player.getAttribute("the-golem:gems-taken", false)) {
-                1
-            } else {
-                0
-            }
-            val statuetteTaken = if (hasStatuette(player)) {
-                1
-            } else {
-                0
-            }
-            val statuettePlaced = if (player.getAttribute("the-golem:placed-statuette", false)) {
-                1
-            } else {
-                0
-            }
+            val gemsTaken =
+                if (player.getAttribute("the-golem:gems-taken", false)) {
+                    1
+                } else {
+                    0
+                }
+            val statuetteTaken =
+                if (hasStatuette(player)) {
+                    1
+                } else {
+                    0
+                }
+            val statuettePlaced =
+                if (player.getAttribute("the-golem:placed-statuette", false)) {
+                    1
+                } else {
+                    0
+                }
             initializeStatuettes(player)
             val rotation0 = player.getAttribute("the-golem:statuette-rotation:0", 0)
             val rotation1 = player.getAttribute("the-golem:statuette-rotation:1", 0)
@@ -212,7 +222,6 @@ class TheGolemListeners : InteractionListener, InterfaceListener {
     }
 
     override fun defineListeners() {
-
         /*
          * Handles using the soft clay on Golem NPC.
          */
@@ -220,13 +229,14 @@ class TheGolemListeners : InteractionListener, InterfaceListener {
         onUseWith(IntType.NPC, Items.SOFT_CLAY_1761, NPCs.TOUGH_GUY_1907) { player, used, _ ->
             if (player.questRepository.getStage(Quests.THE_GOLEM) == 1) {
                 var clayUsed = player.getAttribute("the-golem:clay-used", 0)
-                val msg = when (clayUsed) {
-                    0 -> "You apply some clay to the golem's wounds. The clay begins to harden in the hot sun."
-                    1 -> "You fix the golem's legs."
-                    2 -> "The golem is nearly whole."
-                    3 -> "You repair the golem with a final piece of clay."
-                    else -> "Maybe you should ask the golem first!"
-                }
+                val msg =
+                    when (clayUsed) {
+                        0 -> "You apply some clay to the golem's wounds. The clay begins to harden in the hot sun."
+                        1 -> "You fix the golem's legs."
+                        2 -> "The golem is nearly whole."
+                        3 -> "You repair the golem with a final piece of clay."
+                        else -> "Maybe you should ask the golem first!"
+                    }
                 if (removeItem(player, used.asItem())) {
                     playGlobalAudio(player.location, Sounds.GOLEM_REPAIRCLAY_1850)
                     if (msg != null) {
@@ -251,7 +261,7 @@ class TheGolemListeners : InteractionListener, InterfaceListener {
             ClimbActionHandler.climb(
                 player,
                 null,
-                SpecialLadder.getDestination(node.location)!!
+                SpecialLadder.getDestination(node.location)!!,
             )
             return@on true
         }
@@ -381,13 +391,14 @@ class TheGolemListeners : InteractionListener, InterfaceListener {
                 sendMessage(player, "You've already opened the door.")
                 return@on true
             }
-            val index = when (node.asScenery().wrapper.id) {
-                6303 -> 0
-                6304 -> 1
-                6305 -> 2
-                6306 -> 3
-                else -> return@on true
-            }
+            val index =
+                when (node.asScenery().wrapper.id) {
+                    6303 -> 0
+                    6304 -> 1
+                    6305 -> 2
+                    6306 -> 3
+                    else -> return@on true
+                }
 
             initializeStatuettes(player)
             val rotation = 1 - player.getAttribute("the-golem:statuette-rotation:$index", 0)
@@ -405,12 +416,21 @@ class TheGolemListeners : InteractionListener, InterfaceListener {
 
         onUseWith(IntType.ITEM, Items.PESTLE_AND_MORTAR_233, Items.BLACK_MUSHROOM_4620) { player, _, with ->
             if (!inInventory(player, Items.VIAL_229)) {
-                sendMessage(player, "You crush the mushroom, but you have no vial to put the ink in and it goes everywhere!")
+                sendMessage(
+                    player,
+                    "You crush the mushroom, but you have no vial to put the ink in and it goes everywhere!",
+                )
                 removeItem(player, Item(Items.BLACK_MUSHROOM_4620, 1))
                 return@onUseWith true
             }
-            if (removeItem(player, with.asItem(), Container.INVENTORY) && removeItem(player, Items.VIAL_229, Container.INVENTORY)) {
-                sendItemDialogue(player, Items.BLACK_MUSHROOM_INK_4622, "You crush the mushroom and pour the juice into a vial.")
+            if (removeItem(player, with.asItem(), Container.INVENTORY) &&
+                removeItem(player, Items.VIAL_229, Container.INVENTORY)
+            ) {
+                sendItemDialogue(
+                    player,
+                    Items.BLACK_MUSHROOM_INK_4622,
+                    "You crush the mushroom and pour the juice into a vial.",
+                )
                 addItem(player, Items.BLACK_MUSHROOM_INK_4622, 1)
             }
             return@onUseWith true
@@ -479,12 +499,13 @@ class TheGolemListeners : InteractionListener, InterfaceListener {
         on(NPCs.DESERT_PHOENIX_1911, IntType.NPC, "grab-feather") { player, node ->
             if (getAttribute(player, "the-golem:varmen-notes-read", false)) {
                 lock(player, 1000)
-                val lootTable = PickpocketListener.pickpocketRoll(
-                    player = player,
-                    low = 90.0,
-                    high = 240.0,
-                    table = WeightBasedTable.create(WeightedItem(Items.PHOENIX_FEATHER_4621, 1, 1, 1.0, true))
-                )
+                val lootTable =
+                    PickpocketListener.pickpocketRoll(
+                        player = player,
+                        low = 90.0,
+                        high = 240.0,
+                        table = WeightBasedTable.create(WeightedItem(Items.PHOENIX_FEATHER_4621, 1, 1, 1.0, true)),
+                    )
                 if (lootTable != null) {
                     sendMessage(player, "You attempt to grab the pheonix's tail-feather.")
                     animate(player, Animations.PICK_POCKET_881)
@@ -511,7 +532,6 @@ class TheGolemListeners : InteractionListener, InterfaceListener {
     }
 
     override fun defineInterfaceListeners() {
-
         /*
          * Handles opening the message scroll interface.
          */
@@ -520,7 +540,6 @@ class TheGolemListeners : InteractionListener, InterfaceListener {
             val lines: Array<String> = player.getAttribute("ifaces:220:lines", arrayOf())
             for (i in 0 until Math.min(lines.size, 15)) {
                 sendString(player, lines[i], Components.MESSAGESCROLL_220, i + 1)
-
             }
             return@onOpen true
         }

@@ -1,7 +1,5 @@
 package content.region.morytania.quest.ahoy.dialogue
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.region.morytania.quest.ahoy.GhostsAhoyUtils.collectSignature
 import core.api.amountInInventory
 import core.api.removeItem
@@ -9,10 +7,14 @@ import core.game.dialogue.DialogueFile
 import core.game.node.entity.npc.NPC
 import core.game.node.item.Item
 import core.tools.END_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 class PaidVillagerDialogueFile : DialogueFile() {
-
-    override fun handle(componentID: Int, buttonID: Int) {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         val tokens = amountInInventory(player!!, Items.ECTO_TOKEN_4278)
         npc = NPC(NPCs.GHOST_VILLAGER_1697)
         when (stage) {
@@ -26,17 +28,19 @@ class PaidVillagerDialogueFile : DialogueFile() {
                 }
 
             3 -> npc("No tokens, no signature.").also { stage = END_DIALOGUE }
-            4 -> when (buttonID) {
-                1 -> player("Okay, if you insist.").also { stage = 6 }
-                2 -> player("There's no way I'm giving in to corruption.").also { stage++ }
-            }
+            4 ->
+                when (buttonID) {
+                    1 -> player("Okay, if you insist.").also { stage = 6 }
+                    2 -> player("There's no way I'm giving in to corruption.").also { stage++ }
+                }
 
             5 -> npc("Suit yourself.").also { stage = END_DIALOGUE }
             6 -> player("Okay, if you insist.").also { stage++ }
-            7 -> if (removeItem(player!!, Item(Items.ECTO_TOKEN_4278, 1))) {
-                end()
-                collectSignature(player!!)
-            }
+            7 ->
+                if (removeItem(player!!, Item(Items.ECTO_TOKEN_4278, 1))) {
+                    end()
+                    collectSignature(player!!)
+                }
         }
     }
 }

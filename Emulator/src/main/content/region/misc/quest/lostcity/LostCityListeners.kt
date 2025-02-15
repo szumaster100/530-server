@@ -1,8 +1,5 @@
 package content.region.misc.quest.lostcity
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.data.items.SkillingTool
 import content.global.skill.gathering.woodcutting.WoodcuttingPulse
 import core.api.*
@@ -23,10 +20,12 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
 class LostCityListeners : InteractionListener {
-
     init {
         SHAMUS.init()
         SHAMUS.isWalks = true
@@ -35,6 +34,7 @@ class LostCityListeners : InteractionListener {
 
     companion object {
         val SHAMUS = NPC(NPCs.SHAMUS_654, Location(3138, 3211, 0))
+
         fun disappearShamus() {
             SHAMUS.isInvisible = true
         }
@@ -54,7 +54,12 @@ class LostCityListeners : InteractionListener {
             SHAMUS.isInvisible = false
             SHAMUS.properties.teleportLocation = SHAMUS.properties.spawnLocation
         }
-        sendNPCDialogue(player, NPCs.SHAMUS_654, "Hey! Yer big elephant! Don't go choppin' down me house, now!", FaceAnim.OLD_EVIL1)
+        sendNPCDialogue(
+            player,
+            NPCs.SHAMUS_654,
+            "Hey! Yer big elephant! Don't go choppin' down me house, now!",
+            FaceAnim.OLD_EVIL1,
+        )
         GameWorld.Pulser.submit(
             object : Pulse(100) {
                 override fun pulse(): Boolean {
@@ -64,12 +69,11 @@ class LostCityListeners : InteractionListener {
                     }
                     return false
                 }
-            }
+            },
         )
     }
 
     override fun defineListeners() {
-
         on(org.rs.consts.Scenery.TREE_2409, IntType.SCENERY, "chop") { player, _ ->
             if (SkillingTool.getHatchet(player) == null) {
                 sendMessage(player, "You do not have an axe which you have the level to use.")
@@ -83,10 +87,16 @@ class LostCityListeners : InteractionListener {
             DoorActionHandler.handleAutowalkDoor(player, node as Scenery)
             val quest = Quests.LOST_CITY
             val isOutsideShed = player.location.x < node.location.x
-            val hasRequirements = (inEquipment(player, Items.DRAMEN_STAFF_772) || inEquipment(
-                player,
-                Items.LUNAR_STAFF_9084
-            )) && (getQuestStage(player, quest) > 20) && isOutsideShed
+            val hasRequirements =
+                (
+                    inEquipment(player, Items.DRAMEN_STAFF_772) ||
+                        inEquipment(
+                            player,
+                            Items.LUNAR_STAFF_9084,
+                        )
+                ) &&
+                    (getQuestStage(player, quest) > 20) &&
+                    isOutsideShed
             if (hasRequirements) {
                 var count = 0
                 submitWorldPulse(
@@ -106,7 +116,7 @@ class LostCityListeners : InteractionListener {
                             }
                             return false
                         }
-                    }
+                    },
                 )
             }
             return@on true

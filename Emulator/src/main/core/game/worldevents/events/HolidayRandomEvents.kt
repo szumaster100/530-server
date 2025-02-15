@@ -3,84 +3,89 @@ package core.game.worldevents.events
 import core.game.worldevents.events.christmas.randoms.*
 import core.game.worldevents.events.halloween.randoms.*
 
-enum class HolidayRandomEvents(val npc: HolidayRandomEventNPC, val type: String) {
-
+enum class HolidayRandomEvents(
+    val npc: HolidayRandomEventNPC,
+    val type: String,
+) {
     BLACK_CAT(
         npc = BlackCatHolidayRandomNPC(),
-        "halloween"
+        "halloween",
     ),
 
     SPIDER(
         npc = SpiderHolidayRandomNPC(),
-        "halloween"
+        "halloween",
     ),
 
     GHOST(
         npc = GhostHolidayRandomNPC(),
-        "halloween"
+        "halloween",
     ),
 
     ZOMBIE(
         npc = ZombieHolidayRandomNPC(),
-        "halloween"
+        "halloween",
     ),
 
     WITCH(
         npc = WitchHolidayRandomNPC(),
-        "halloween"
+        "halloween",
     ),
 
     DEATH(
         npc = DeathHolidayRandomNPC(),
-        "halloween"
+        "halloween",
     ),
 
     VAMPIRE(
         npc = VampireHolidayRandomNPC(),
-        "halloween"
+        "halloween",
     ),
 
     CHOIR(
         npc = ChoirHolidayRandomNPC(),
-        "christmas"
+        "christmas",
     ),
 
     SANTA(
         npc = SantaHolidayRandomNPC(),
-        "christmas"
+        "christmas",
     ),
 
     SNOWMAN_FIGHT(
         npc = SnowmanFightHolidayRandom(),
-        "christmas"
+        "christmas",
     ),
 
     JACK_FROST(
         npc = JackFrostHolidayRandomNPC(),
-        "christmas"
+        "christmas",
     ),
 
     SNOWMAN(
         npc = SnowmanHolidayRandomNPC(),
-        "christmas"
+        "christmas",
     ),
 
     SNOWSTORM(
         npc = SnowStormHolidayRandomNPC(),
-        "christmas"
+        "christmas",
     ),
 
     COOK(
         npc = CookHolidayRandomNPC(),
-        "christmas"
-    );
+        "christmas",
+    ),
+    ;
 
     companion object {
-        @JvmField
         // List to hold Halloween events
+        @JvmField
         val halloweenEventsList = ArrayList<HolidayRandomEvents>()
+
         // List to hold Christmas events
         val christmasEventsList = ArrayList<HolidayRandomEvents>()
+
         // List of holiday random event IDs
         val holidayRandomIDs = HolidayRandomEvents.values().map { it.npc.id }.toList()
 

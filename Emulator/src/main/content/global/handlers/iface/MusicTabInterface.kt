@@ -1,12 +1,11 @@
 package content.global.handlers.iface
 
-import org.rs.consts.Components
 import core.api.sendMessage
 import core.game.interaction.InterfaceListener
 import core.game.node.entity.player.link.music.MusicEntry
+import org.rs.consts.Components
 
 class MusicTabInterface : InterfaceListener {
-
     override fun defineInterfaceListeners() {
         on(Components.MUSIC_V3_187) { player, _, opcode, buttonID, slot, _ ->
             if (opcode == 155) {

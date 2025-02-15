@@ -1,20 +1,20 @@
 package content.region.misthalin.handlers.npc.varrock
 
-import org.rs.consts.Animations
-import org.rs.consts.NPCs
 import core.api.movement.finishedMoving
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.npc.NPCBehavior
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
+import org.rs.consts.NPCs
 
-private val movementPath = arrayOf(
-    Location.create(3316, 3506, 0),
-    Location.create(3317, 3513, 0)
-)
+private val movementPath =
+    arrayOf(
+        Location.create(3316, 3506, 0),
+        Location.create(3317, 3513, 0),
+    )
 
 class SawmillWorkerNPC : NPCBehavior(NPCs.WILL_7737, NPCs.WILL_7738) {
-
     override fun onCreation(self: NPC) {
         self.configureMovementPath(*movementPath)
         self.isWalks = true

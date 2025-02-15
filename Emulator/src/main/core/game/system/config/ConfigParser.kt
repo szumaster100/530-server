@@ -17,6 +17,7 @@ class ConfigParser : Commands {
         XteaParser().load()
         InterfaceConfigParser().load()
     }
+
     fun postPlugin() {
         ShopParser().load()
         DropTableParser().load()

@@ -1,7 +1,5 @@
 package content.global.skill.thieving
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
 import core.api.*
 import core.cache.def.impl.SceneryDefinition
 import core.game.interaction.OptionHandler
@@ -17,10 +15,11 @@ import core.game.world.GameWorld.ticks
 import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Animations
+import org.rs.consts.Items
 
 @Initializable
 class ThievableChestsHandler : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         for (chest in Chest.values()) {
             for (id in chest.objectIds) {
@@ -32,7 +31,11 @@ class ThievableChestsHandler : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val chest = Chest.forId(node.id)
         when (option) {
             "open" -> {
@@ -63,7 +66,19 @@ class ThievableChestsHandler : OptionHandler() {
         FIFTY_COIN(2568, 43, 125.0, arrayOf(Item(Items.COINS_995, 50)), 55),
         STEEL_ARROWHEADS(2573, 47, 150.0, arrayOf(Item(41, 5)), 210),
         BLOOD_RUNES(2569, 59, 250.0, arrayOf(Item(Items.COINS_995, 500), Item(Items.BLOOD_RUNE_565, 2)), 135),
-        PALADIN(2570, 72, 500.0, arrayOf(Item(Items.COINS_995, 1000), Item(Items.RAW_SHARK_383, 1), Item(Items.ADAMANTITE_ORE_449, 1), Item(Items.UNCUT_SAPPHIRE_1623, 1)), 120);
+        PALADIN(
+            2570,
+            72,
+            500.0,
+            arrayOf(
+                Item(Items.COINS_995, 1000),
+                Item(Items.RAW_SHARK_383, 1),
+                Item(Items.ADAMANTITE_ORE_449, 1),
+                Item(Items.UNCUT_SAPPHIRE_1623, 1),
+            ),
+            120,
+        ),
+        ;
 
         private var currentRespawn = 0
 
@@ -75,7 +90,10 @@ class ThievableChestsHandler : OptionHandler() {
             respawn: Int,
         ) : this(intArrayOf(objectId), level, experience, rewards, respawn)
 
-        internal fun open(player: Player, scenery: Scenery) {
+        internal fun open(
+            player: Player,
+            scenery: Scenery,
+        ) {
             if (isRespawning) {
                 sendMessage(player, "It looks like this chest has already been looted.")
                 return
@@ -85,7 +103,10 @@ class ThievableChestsHandler : OptionHandler() {
             impact(player, getHitAmount(player), HitsplatType.NORMAL)
         }
 
-        fun searchTraps(player: Player, scenery: Scenery) {
+        fun searchTraps(
+            player: Player,
+            scenery: Scenery,
+        ) {
             player.faceLocation(scenery.location)
             if (isRespawning) {
                 sendMessage(player, "It looks like this chest has already been looted.")
@@ -134,7 +155,7 @@ class ThievableChestsHandler : OptionHandler() {
                         }
                         return false
                     }
-                }
+                },
             )
         }
 

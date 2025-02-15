@@ -1,16 +1,15 @@
 package content.region.kandarin.handlers
 
-import org.rs.consts.*
 import content.global.travel.RowingBoat
 import core.api.*
+import core.api.quest.hasRequirement
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.item.Item
 import core.game.system.task.Pulse
-import core.api.quest.hasRequirement
+import org.rs.consts.*
 
 class PiscatorisListener : InteractionListener {
-
     companion object {
         private const val NET_SCENERY = Scenery.NET_14973
         private const val EMPTY_NET_SCENERY = Scenery.NET_14972
@@ -18,7 +17,6 @@ class PiscatorisListener : InteractionListener {
     }
 
     override fun defineListeners() {
-
         on(KATHY_CORKAT, IntType.NPC, "travel") { player, node ->
             RowingBoat.sail(player, node.asNpc())
             return@on true
@@ -35,6 +33,7 @@ class PiscatorisListener : InteractionListener {
                 player,
                 object : Pulse() {
                     private var tick = 0
+
                     override fun pulse(): Boolean {
                         when (tick++) {
                             0 -> animate(player, Animations.HUMAN_BURYING_BONES_827)
@@ -47,7 +46,7 @@ class PiscatorisListener : InteractionListener {
                         }
                         return false
                     }
-                }
+                },
             )
             return@on true
         }

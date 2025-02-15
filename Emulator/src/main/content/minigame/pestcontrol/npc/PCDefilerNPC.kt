@@ -1,6 +1,5 @@
 package content.minigame.pestcontrol.npc
 
-import org.rs.consts.NPCs
 import content.minigame.pestcontrol.PestControlSession
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.*
@@ -9,9 +8,9 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.world.map.Location
 import core.game.world.map.MapDistance
+import org.rs.consts.NPCs
 
 class PCDefilerNPC : AbstractNPC {
-
     private var session: PestControlSession? = null
 
     constructor() : super(NPCs.DEFILER_3762, null)
@@ -38,7 +37,10 @@ class PCDefilerNPC : AbstractNPC {
         return mover is NPC
     }
 
-    override fun onImpact(entity: Entity, state: BattleState) {
+    override fun onImpact(
+        entity: Entity,
+        state: BattleState,
+    ) {
         super.onImpact(entity, state)
         if (session != null && state != null && entity is Player) {
             var total = 0
@@ -56,7 +58,11 @@ class PCDefilerNPC : AbstractNPC {
         return SWING_HANDLER
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return PCDefilerNPC(id, location)
     }
 
@@ -71,28 +77,33 @@ class PCDefilerNPC : AbstractNPC {
             NPCs.DEFILER_3768,
             NPCs.DEFILER_3769,
             NPCs.DEFILER_3770,
-            NPCs.DEFILER_3771
+            NPCs.DEFILER_3771,
         )
     }
 
     companion object {
-        private val SWING_HANDLER: CombatSwingHandler = object : RangeSwingHandler() {
-            override fun canSwing(entity: Entity, victim: Entity): InteractionType {
-                if (!isProjectileClipped(entity, victim, false)) {
+        private val SWING_HANDLER: CombatSwingHandler =
+            object : RangeSwingHandler() {
+                override fun canSwing(
+                    entity: Entity,
+                    victim: Entity,
+                ): InteractionType {
+                    if (!isProjectileClipped(entity, victim, false)) {
+                        return InteractionType.NO_INTERACT
+                    }
+                    if (victim.centerLocation.withinDistance(entity.centerLocation, 8) &&
+                        isAttackable(
+                            entity,
+                            victim,
+                        ) !== InteractionType.NO_INTERACT
+                    ) {
+                        if (victim.location.withinDistance(entity.location, MapDistance.RENDERING.distance / 2)) {
+                            entity.walkingQueue.reset()
+                        }
+                        return InteractionType.STILL_INTERACT
+                    }
                     return InteractionType.NO_INTERACT
                 }
-                if (victim.centerLocation.withinDistance(entity.centerLocation, 8) && isAttackable(
-                        entity,
-                        victim
-                    ) !== InteractionType.NO_INTERACT
-                ) {
-                    if (victim.location.withinDistance(entity.location, MapDistance.RENDERING.distance / 2)) {
-                        entity.walkingQueue.reset()
-                    }
-                    return InteractionType.STILL_INTERACT
-                }
-                return InteractionType.NO_INTERACT
             }
-        }
     }
 }

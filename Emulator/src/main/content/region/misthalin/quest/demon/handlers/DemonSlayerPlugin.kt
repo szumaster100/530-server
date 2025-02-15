@@ -1,6 +1,5 @@
 package content.region.misthalin.quest.demon.handlers
 
-import org.rs.consts.Quests
 import content.region.misthalin.quest.demon.cutscene.DemonSlayerCutscenePlugin
 import core.api.removeAttribute
 import core.api.setVarp
@@ -18,9 +17,9 @@ import core.game.node.scenery.SceneryBuilder
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.plugin.Plugin
+import org.rs.consts.Quests
 
 class DemonSlayerPlugin : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         SceneryDefinition.forId(881).handlers["option:open"] = this
         SceneryDefinition.forId(882).handlers["option:close"] = this
@@ -32,9 +31,20 @@ class DemonSlayerPlugin : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val quest = player.getQuestRepository().getQuest(Quests.DEMON_SLAYER)
-        val id = if (node is Scenery) node.getId() else if (node is Item) node.id else node.id
+        val id =
+            if (node is Scenery) {
+                node.getId()
+            } else if (node is Item) {
+                node.id
+            } else {
+                node.id
+            }
         when (id) {
             880 -> player.dialogueInterpreter.open(8427322)
             879 -> {
@@ -58,16 +68,17 @@ class DemonSlayerPlugin : OptionHandler() {
             }
 
             881 -> SceneryBuilder.replace((node as Scenery), node.transform(882))
-            882 -> when (option) {
-                "climb-down" ->
-                    if (node.location == Location(3237, 3458, 0)) {
-                        climb(player, Animation(828), SEWER_LOCATION)
-                    } else {
-                        climbLadder(player, node as Scenery, option)
-                    }
+            882 ->
+                when (option) {
+                    "climb-down" ->
+                        if (node.location == Location(3237, 3458, 0)) {
+                            climb(player, Animation(828), SEWER_LOCATION)
+                        } else {
+                            climbLadder(player, node as Scenery, option)
+                        }
 
-                "close" -> SceneryBuilder.replace((node as Scenery), node.transform(881))
-            }
+                    "close" -> SceneryBuilder.replace((node as Scenery), node.transform(881))
+                }
 
             17429 ->
                 if (quest.getStage(player) == 20 && player.inventory.add(DemonSlayerUtils.FIRST_KEY)) {
@@ -76,7 +87,7 @@ class DemonSlayerPlugin : OptionHandler() {
                     removeAttribute(player, "demon-slayer:just-poured")
                     player.dialogueInterpreter.sendItemMessage(
                         DemonSlayerUtils.FIRST_KEY.id,
-                        "You pick up an old rusty key."
+                        "You pick up an old rusty key.",
                     )
                 } else {
                     if (player.inventory.freeSlots() == 0) {
@@ -88,7 +99,10 @@ class DemonSlayerPlugin : OptionHandler() {
         return true
     }
 
-    override fun getDestination(node: Node, n: Node): Location? {
+    override fun getDestination(
+        node: Node,
+        n: Node,
+    ): Location? {
         if (n is NPC) {
             return n.getLocation().transform(2, 0, 0)
         }
@@ -99,7 +113,6 @@ class DemonSlayerPlugin : OptionHandler() {
     }
 
     companion object {
-
         const val DRAIN_ID: Int = 17424
 
         private val SEWER_LOCATION = Location(3237, 9858, 0)

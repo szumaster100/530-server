@@ -1,6 +1,5 @@
 package content.global.handlers.npc
 
-import org.rs.consts.Items
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.BattleState
 import core.game.node.entity.combat.CombatStyle
@@ -10,11 +9,18 @@ import core.game.node.entity.player.link.SpellBookManager.SpellBook
 import core.game.world.map.Location
 import core.plugin.Initializable
 import core.tools.RandomFunction
+import org.rs.consts.Items
 
 @Initializable
-class DarkWizardNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+class DarkWizardNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return DarkWizardNPC(id, location)
     }
 
@@ -25,7 +31,10 @@ class DarkWizardNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, l
         setDefault()
     }
 
-    override fun onImpact(entity: Entity, state: BattleState) {
+    override fun onImpact(
+        entity: Entity,
+        state: BattleState,
+    ) {
         super.onImpact(entity, state)
         if (getAttribute("switched", false)) {
             removeAttribute("switched")

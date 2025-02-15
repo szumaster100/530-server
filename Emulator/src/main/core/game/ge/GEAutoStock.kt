@@ -9,7 +9,6 @@ import java.io.File
 import java.io.FileReader
 
 class GEAutoStock : StartupListener {
-
     override fun startup() {
         autostock()
     }

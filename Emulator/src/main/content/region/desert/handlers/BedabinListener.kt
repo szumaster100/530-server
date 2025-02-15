@@ -1,7 +1,5 @@
 package content.region.desert.handlers
 
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import core.api.findNPC
 import core.api.getScenery
 import core.api.replaceScenery
@@ -9,11 +7,11 @@ import core.api.sendMessage
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.world.map.Location
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 class BedabinListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(TENT, IntType.SCENERY, "walk-through") { player, _ ->
             if (player.location.y >= 3046) {
                 val door = getScenery(Location(3169, 3046, 0))
@@ -39,7 +37,6 @@ class BedabinListener : InteractionListener {
     }
 
     override fun defineDestinationOverrides() {
-
         setDest(IntType.NPC, intArrayOf(NPCs.BEDABIN_NOMAD_GUARD_834), "talk-to") { _, _ ->
             return@setDest Location(3169, 3045, 0)
         }

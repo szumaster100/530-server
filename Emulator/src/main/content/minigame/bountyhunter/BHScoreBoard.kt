@@ -42,7 +42,11 @@ class BHScoreBoard {
         }
     }
 
-    private fun insert(player: Player, score: Int, index: Int) {
+    private fun insert(
+        player: Player,
+        score: Int,
+        index: Int,
+    ) {
         if (names[index] == player.name) {
             scores[index] = score
             return

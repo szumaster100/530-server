@@ -1,7 +1,5 @@
 package content.global.skill.prayer
 
-import org.rs.consts.Animations
-import org.rs.consts.Sounds
 import core.api.*
 import core.api.skill.clockReady
 import core.api.skill.delayClock
@@ -13,13 +11,13 @@ import core.game.interaction.QueueStrength
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import org.rs.consts.Animations
+import org.rs.consts.Sounds
 
 class BonesBuryListener : InteractionListener {
-
     private val bones = Bones.values().map { it.itemId }.toIntArray()
 
     override fun defineListeners() {
-
         on(bones, IntType.ITEM, "bury") { player, node ->
             val boneType = Bones.values().find { it.itemId == node.id } ?: return@on true
 
@@ -46,7 +44,10 @@ class BonesBuryListener : InteractionListener {
         }
     }
 
-    private fun removeBones(player: Player, item: Item): Boolean {
+    private fun removeBones(
+        player: Player,
+        item: Item,
+    ): Boolean {
         val removedItem = replaceSlot(player, item.slot, Item())
         return removedItem == item && removedItem.slot == item.slot
     }

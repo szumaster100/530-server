@@ -10,18 +10,25 @@ import core.game.system.timer.RSTimer
 import core.game.system.timer.TimerFlag
 import org.json.simple.JSONObject
 
-class FrozenImmunity : PersistTimer(
-    runInterval = 1,
-    identifier = "frozen:immunity",
-    flags = arrayOf(TimerFlag.ClearOnDeath)
-) {
+class FrozenImmunity :
+    PersistTimer(
+        runInterval = 1,
+        identifier = "frozen:immunity",
+        flags = arrayOf(TimerFlag.ClearOnDeath),
+    ) {
     var ticksRemaining = 0
 
-    override fun save(root: JSONObject, entity: Entity) {
+    override fun save(
+        root: JSONObject,
+        entity: Entity,
+    ) {
         root["ticksLeft"] = (nextExecution - getWorldTicks()).toString()
     }
 
-    override fun parse(root: JSONObject, entity: Entity) {
+    override fun parse(
+        root: JSONObject,
+        entity: Entity,
+    ) {
         runInterval = root["ticksLeft"].toString().toInt()
     }
 

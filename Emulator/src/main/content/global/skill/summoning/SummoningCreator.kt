@@ -13,39 +13,46 @@ import core.game.world.map.RegionManager.getObject
 import org.rs.consts.*
 
 object SummoningCreator {
+    private val POUCH_PARAMS =
+        arrayOf(
+            "List<col=FF9040>",
+            "Infuse-X<col=FF9040>",
+            "Infuse-All<col=FF9040>",
+            "Infuse-10<col=FF9040>",
+            "Infuse-5<col=FF9040>",
+            "Infuse<col=FF9040>",
+            20,
+            4,
+            669 shl 16 or 15,
+        )
 
-    private val POUCH_PARAMS = arrayOf(
-        "List<col=FF9040>",
-        "Infuse-X<col=FF9040>",
-        "Infuse-All<col=FF9040>",
-        "Infuse-10<col=FF9040>",
-        "Infuse-5<col=FF9040>",
-        "Infuse<col=FF9040>",
-        20,
-        4,
-        669 shl 16 or 15
-    )
-
-    private val SCROLL_PARAMS = arrayOf(
-        "Transform-X<col=ff9040>",
-        "Transform-All<col=ff9040>",
-        "Transform-10<col=ff9040>",
-        "Transform-5<col=ff9040>",
-        "Transform<col=ff9040>",
-        20,
-        4,
-        673 shl 16 or 15
-    )
+    private val SCROLL_PARAMS =
+        arrayOf(
+            "Transform-X<col=ff9040>",
+            "Transform-All<col=ff9040>",
+            "Transform-10<col=ff9040>",
+            "Transform-5<col=ff9040>",
+            "Transform<col=ff9040>",
+            20,
+            4,
+            673 shl 16 or 15,
+        )
 
     private val SUMMONING_COMPONENT = Component(669)
 
     private val SCROLL_COMPONENT = Component(673)
 
     @JvmStatic
-    fun open(player: Player, pouch: Boolean) = configure(player, pouch)
+    fun open(
+        player: Player,
+        pouch: Boolean,
+    ) = configure(player, pouch)
 
     @JvmStatic
-    fun configure(player: Player, pouch: Boolean) {
+    fun configure(
+        player: Player,
+        pouch: Boolean,
+    ) {
         val component = if (pouch) SUMMONING_COMPONENT else SCROLL_COMPONENT
         val scriptParams = if (pouch) POUCH_PARAMS else SCROLL_PARAMS
         val ifaceId = if (pouch) 190 else 126
@@ -55,26 +62,35 @@ object SummoningCreator {
         player.packetDispatch.sendRunScript(
             if (pouch) 757 else 765,
             if (pouch) "Iiissssss" else "Iiisssss",
-            *scriptParams
+            *scriptParams,
         )
         player.packetDispatch.sendIfaceSettings(ifaceId, 15, componentId, 0, 78)
     }
 
     @JvmStatic
-    fun create(player: Player, amount: Int, node: Any?) {
+    fun create(
+        player: Player,
+        amount: Int,
+        node: Any?,
+    ) {
         node?.let {
             player.pulseManager.run(CreatePulse(player, SummoningNode.parse(node), amount))
         }
     }
 
     @JvmStatic
-    fun list(player: Player, pouch: SummoningPouch) {
+    fun list(
+        player: Player,
+        pouch: SummoningPouch,
+    ) {
         player.packetDispatch.sendMessage(CS2Mapping.forId(1186)?.map?.get(pouch.pouchId) as? String)
     }
 
-    class CreatePulse(player: Player?, private val type: SummoningNode, private val amount: Int) :
-        SkillPulse<Item?>(player, null) {
-
+    class CreatePulse(
+        player: Player?,
+        private val type: SummoningNode,
+        private val amount: Int,
+    ) : SkillPulse<Item?>(player, null) {
         private val objectIDs = getObject(Location(2209, 5344, 0))
 
         override fun checkRequirements(): Boolean {
@@ -85,7 +101,9 @@ object SummoningCreator {
                     false
                 }
 
-                type.isPouch && type.product.id == Items.PHOENIX_POUCH_14624 && !isQuestComplete(player, Quests.IN_PYRE_NEED) -> {
+                type.isPouch &&
+                    type.product.id == Items.PHOENIX_POUCH_14624 &&
+                    !isQuestComplete(player, Quests.IN_PYRE_NEED) -> {
                     sendMessage(player, "You must complete In Pyre Need to infuse phoenix pouches.")
                     false
                 }
@@ -138,31 +156,33 @@ object SummoningCreator {
         val required: Array<Item>,
         val product: Item,
         val experience: Double,
-        val level: Int
+        val level: Int,
     ) {
         val isPouch: Boolean get() = base is SummoningPouch
 
         companion object {
+            fun parse(node: Any): SummoningNode =
+                when (node) {
+                    is SummoningPouch ->
+                        SummoningNode(
+                            base = node,
+                            required = node.items,
+                            product = Item(node.pouchId, 1),
+                            experience = node.createExperience,
+                            level = node.requiredLevel,
+                        )
 
-            fun parse(node: Any): SummoningNode = when (node) {
-                is SummoningPouch -> SummoningNode(
-                    base = node,
-                    required = node.items,
-                    product = Item(node.pouchId, 1),
-                    experience = node.createExperience,
-                    level = node.requiredLevel
-                )
+                    is SummoningScroll ->
+                        SummoningNode(
+                            base = node,
+                            required = node.items.map { Item(it, 1) }.toTypedArray(),
+                            product = Item(node.itemId, 10),
+                            experience = node.experience,
+                            level = node.level,
+                        )
 
-                is SummoningScroll -> SummoningNode(
-                    base = node,
-                    required = node.items.map { Item(it, 1) }.toTypedArray(),
-                    product = Item(node.itemId, 10),
-                    experience = node.experience,
-                    level = node.level
-                )
-
-                else -> throw IllegalArgumentException("Invalid node type: [${node::class.simpleName}]")
-            }
+                    else -> throw IllegalArgumentException("Invalid node type: [${node::class.simpleName}]")
+                }
         }
     }
 }

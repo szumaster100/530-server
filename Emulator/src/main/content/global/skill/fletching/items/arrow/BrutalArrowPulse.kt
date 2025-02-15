@@ -7,9 +7,12 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import org.rs.consts.Items
 
-class BrutalArrowPulse(player: Player?, node: Item?, private val arrow: BrutalArrow, sets: Int) :
-    SkillPulse<Item?>(player, node) {
-
+class BrutalArrowPulse(
+    player: Player?,
+    node: Item?,
+    private val arrow: BrutalArrow,
+    sets: Int,
+) : SkillPulse<Item?>(player, node) {
     private val base = Items.FLIGHTED_OGRE_ARROW_2865
     private var sets = 0
     private var ticks = 0
@@ -23,7 +26,7 @@ class BrutalArrowPulse(player: Player?, node: Item?, private val arrow: BrutalAr
             sendDialogue(player, "You need a fletching level of " + arrow.level + " in order to do that.")
             return false
         }
-        if(!inInventory(player, Items.HAMMER_2347)) {
+        if (!inInventory(player, Items.HAMMER_2347)) {
             sendMessage(player, "You need a hammer to attach nails to these arrows.")
             return false
         }
@@ -69,9 +72,18 @@ class BrutalArrowPulse(player: Player?, node: Item?, private val arrow: BrutalAr
             rewardXP(player, Skills.FLETCHING, arrow.experience * product.amount)
             sendMessage(
                 player,
-                if (product.amount == 1) "You attach the " + getItemName(arrow.base).lowercase() + "to the flighted ogre arrow." else "You fletch " + product.amount + " " + getItemName(
-                    arrow.product
-                ).lowercase() + " arrows."
+                if (product.amount ==
+                    1
+                ) {
+                    "You attach the " + getItemName(arrow.base).lowercase() + "to the flighted ogre arrow."
+                } else {
+                    "You fletch " +
+                        product.amount +
+                        " " +
+                        getItemName(
+                            arrow.product,
+                        ).lowercase() + " arrows."
+                },
             )
         }
         sets--

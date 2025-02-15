@@ -18,27 +18,31 @@ import core.plugin.Plugin
 
 @Initializable
 class BrimhavenCourse : OptionHandler() {
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val scenery = node as Scenery
         var dir = scenery.direction
         var start = player.location
         when (scenery.id) {
             3566 -> {
-
                 start = scenery.location.transform(dir.stepX shl 1, dir.stepY shl 1, 0)
                 val end = scenery.location.transform(-dir.stepX * 3, -dir.stepY * 3, 0)
                 if (AgilityHandler.hasFailed(player, 1, 0.1)) {
-                    AgilityHandler.failWalk(
-                        player,
-                        2,
-                        start,
-                        start.transform(-dir.stepX, -dir.stepY, 0),
-                        player.location.transform(0, 0, -3),
-                        Animation.create(1105),
-                        26,
-                        getHitAmount(player),
-                        "You missed the rope!"
-                    ).endAnimation = Animation.RESET
+                    AgilityHandler
+                        .failWalk(
+                            player,
+                            2,
+                            start,
+                            start.transform(-dir.stepX, -dir.stepY, 0),
+                            player.location.transform(0, 0, -3),
+                            Animation.create(1105),
+                            26,
+                            getHitAmount(player),
+                            "You missed the rope!",
+                        ).endAnimation = Animation.RESET
                     return true
                 }
                 AgilityHandler.forceWalk(player, -1, start, end, Animation.create(751), 25, getExp(player, 20.0), null)
@@ -55,19 +59,17 @@ class BrimhavenCourse : OptionHandler() {
                             player.packetDispatch.sendSceneryAnimation(scenery, Animation.create(-1))
                             return true
                         }
-                    }
+                    },
                 )
                 return true
             }
 
             3578 -> {
-
                 handlePillarObstacle(player, scenery)
                 return true
             }
 
             3565 -> {
-
                 dir = Direction.getLogicalDirection(player.location, scenery.location)
                 start = player.location
                 if (AgilityHandler.hasFailed(player, 1, 0.05)) {
@@ -81,7 +83,7 @@ class BrimhavenCourse : OptionHandler() {
                         Animation.create(1106),
                         15,
                         getHitAmount(player),
-                        "You lost your balance!"
+                        "You lost your balance!",
                     )
                     AgilityHandler.forceWalk(
                         player,
@@ -92,7 +94,7 @@ class BrimhavenCourse : OptionHandler() {
                         10,
                         0.0,
                         null,
-                        4
+                        4,
                     )
                     return true
                 }
@@ -104,7 +106,7 @@ class BrimhavenCourse : OptionHandler() {
                     Animation.create(1252),
                     6,
                     getExp(player, 8.0),
-                    null
+                    null,
                 )
                 return true
             }
@@ -160,7 +162,10 @@ class BrimhavenCourse : OptionHandler() {
         return this
     }
 
-    override fun getDestination(node: Node, n: Node): Location? {
+    override fun getDestination(
+        node: Node,
+        n: Node,
+    ): Location? {
         val scenery = n as Scenery
         val dir = scenery.direction
         when (scenery.id) {
@@ -192,7 +197,10 @@ class BrimhavenCourse : OptionHandler() {
     }
 
     companion object {
-        private fun handleHandHolds(player: Player, scenery: Scenery) {
+        private fun handleHandHolds(
+            player: Player,
+            scenery: Scenery,
+        ) {
             if (player.getSkills().getLevel(Skills.AGILITY) < 20) {
                 player.packetDispatch.sendMessage("You need an agility of at least 20 to get past this obstacle!")
                 return
@@ -233,7 +241,7 @@ class BrimhavenCourse : OptionHandler() {
                                     last.transform(0, 0, -3),
                                     Animation.create(1119 + m),
                                     getHitAmount(player),
-                                    "You missed a hand hold!"
+                                    "You missed a hand hold!",
                                 )
                                 player.logoutListeners.remove("brimcourse")
                                 return true
@@ -241,37 +249,42 @@ class BrimhavenCourse : OptionHandler() {
                         } else if (count == 6) {
                             player.appearance.setAnimations()
                             player.appearance.sync()
-                            AgilityHandler.forceWalk(
-                                player,
-                                -1,
-                                last,
-                                last.transform(dir),
-                                Animation.create(1120 + m),
-                                5,
-                                getExp(player, 22.0),
-                                null
-                            ).direction = faceDirection
+                            AgilityHandler
+                                .forceWalk(
+                                    player,
+                                    -1,
+                                    last,
+                                    last.transform(dir),
+                                    Animation.create(1120 + m),
+                                    5,
+                                    getExp(player, 22.0),
+                                    null,
+                                ).direction = faceDirection
                             player.logoutListeners.remove("brimcourse")
                             return true
                         }
                         player.logoutListeners.remove("brimcourse")
-                        AgilityHandler.forceWalk(
-                            player,
-                            -1,
-                            last,
-                            last.transform(dir).also { last = it },
-                            Animation.create(1118 + m),
-                            5,
-                            0.0,
-                            null
-                        ).direction = faceDirection
+                        AgilityHandler
+                            .forceWalk(
+                                player,
+                                -1,
+                                last,
+                                last.transform(dir).also { last = it },
+                                Animation.create(1118 + m),
+                                5,
+                                0.0,
+                                null,
+                            ).direction = faceDirection
                         return false
                     }
-                }
+                },
             )
         }
 
-        private fun handleBalancingRope(player: Player, scenery: Scenery) {
+        private fun handleBalancingRope(
+            player: Player,
+            scenery: Scenery,
+        ) {
             val dir = scenery.direction
             val failed = AgilityHandler.hasFailed(player, 1, 0.1)
             if (failed) {
@@ -287,11 +300,11 @@ class BrimhavenCourse : OptionHandler() {
                                 player.location.transform(d.stepX shl 1, d.stepY shl 1, -3),
                                 Animation.create(764),
                                 getHitAmount(player),
-                                "You lost your balance!"
+                                "You lost your balance!",
                             )
                             return true
                         }
-                    }
+                    },
                 )
                 return
             }
@@ -302,11 +315,14 @@ class BrimhavenCourse : OptionHandler() {
                 player.location.transform(dir.stepX * 7, dir.stepY * 7, 0),
                 Animation.create(155),
                 getExp(player, 10.0),
-                null
+                null,
             )
         }
 
-        private fun handleMonkeyBars(player: Player, scenery: Scenery) {
+        private fun handleMonkeyBars(
+            player: Player,
+            scenery: Scenery,
+        ) {
             player.lock(5)
             val dir = Direction.get((scenery.direction.toInteger() + 2) % 4)
             val start = player.location
@@ -315,7 +331,7 @@ class BrimhavenCourse : OptionHandler() {
                 start.transform(dir),
                 start.transform(dir.stepX shl 1, dir.stepY shl 1, 0),
                 Animation.create(742),
-                Animation.create(744)
+                Animation.create(744),
             )
             player.logoutListeners["brimcourse"] = { p: Player ->
                 p.location = start
@@ -341,7 +357,7 @@ class BrimhavenCourse : OptionHandler() {
                                 player.location.transform(dir.stepX * 7, dir.stepY * 7, 0),
                                 Animation.create(662),
                                 0.0,
-                                null
+                                null,
                             )
                         } else if (count == 2 && failed) {
                             player.appearance.setAnimations()
@@ -352,7 +368,7 @@ class BrimhavenCourse : OptionHandler() {
                                 player.location.transform(0, 0, -3),
                                 Animation.create(768),
                                 getHitAmount(player),
-                                "You missed a hand hold!"
+                                "You missed a hand hold!",
                             )
                             player.logoutListeners.remove("brimcourse")
                             return true
@@ -366,17 +382,20 @@ class BrimhavenCourse : OptionHandler() {
                                 Animation.create(743),
                                 10,
                                 getExp(player, 14.0),
-                                null
+                                null,
                             )
                             return true
                         }
                         return false
                     }
-                }
+                },
             )
         }
 
-        private fun handleBalancingLedge(player: Player, scenery: Scenery) {
+        private fun handleBalancingLedge(
+            player: Player,
+            scenery: Scenery,
+        ) {
             val diff = if (scenery.id == 3561) 0 else 1
             val start = player.location
             val dir = Direction.getLogicalDirection(start, scenery.location)
@@ -394,11 +413,11 @@ class BrimhavenCourse : OptionHandler() {
                                 player.location.transform(d.stepX, d.stepY, -3),
                                 Animation.create(761 - diff),
                                 getHitAmount(player),
-                                "You lost your balance!"
+                                "You lost your balance!",
                             )
                             return true
                         }
-                    }
+                    },
                 )
             } else {
                 xp = 16.0
@@ -411,11 +430,14 @@ class BrimhavenCourse : OptionHandler() {
                 end,
                 Animation.create(157 - diff),
                 getExp(player, xp),
-                null
+                null,
             )
         }
 
-        private fun handlePlankObstacle(player: Player, scenery: Scenery) {
+        private fun handlePlankObstacle(
+            player: Player,
+            scenery: Scenery,
+        ) {
             val dir = Direction.getLogicalDirection(player.location, scenery.location)
             val start = player.location
             val end = start.transform(dir.stepX * 7, dir.stepY * 7, 0)
@@ -429,7 +451,7 @@ class BrimhavenCourse : OptionHandler() {
                     start.transform(dir.stepX * 2, dir.stepY * 2, 0),
                     Animation.create(1426),
                     0.0,
-                    null
+                    null,
                 )
                 Pulser.submit(
                     object : Pulse(3) {
@@ -444,7 +466,7 @@ class BrimhavenCourse : OptionHandler() {
                                     player.location.transform(0, 0, -3),
                                     Animation.create(189),
                                     getHitAmount(player),
-                                    "You stepped on a broken piece of plank!"
+                                    "You stepped on a broken piece of plank!",
                                 )
                                 finish = true
                                 return false
@@ -452,14 +474,17 @@ class BrimhavenCourse : OptionHandler() {
                             AgilityHandler.walk(player, -1, player.location, start.transform(dir), null, 0.0, null)
                             return true
                         }
-                    }
+                    },
                 )
                 return
             }
             AgilityHandler.walk(player, -1, start, end, Animation.create(1426), getExp(player, 6.0), null)
         }
 
-        private fun handlePillarObstacle(player: Player, scenery: Scenery) {
+        private fun handlePillarObstacle(
+            player: Player,
+            scenery: Scenery,
+        ) {
             val dir = Direction.getLogicalDirection(player.location, scenery.location)
             AgilityHandler.forceWalk(
                 player,
@@ -469,7 +494,7 @@ class BrimhavenCourse : OptionHandler() {
                 Animation.create(741),
                 10,
                 0.0,
-                null
+                null,
             )
             val start = player.location
             player.logoutListeners["brimcourse"] = { p: Player ->
@@ -492,7 +517,7 @@ class BrimhavenCourse : OptionHandler() {
                                 player.location.transform(d.stepX shl 1, d.stepY shl 1, -3),
                                 Animation.create(764),
                                 getHitAmount(player),
-                                "You lost your balance!"
+                                "You lost your balance!",
                             )
                             player.logoutListeners.remove("brimcourse")
                             return true
@@ -505,16 +530,19 @@ class BrimhavenCourse : OptionHandler() {
                             Animation.create(741),
                             10,
                             if (count == 5) getExp(player, 18.0) else 0.0,
-                            null
+                            null,
                         )
                         player.logoutListeners.remove("brimcourse")
                         return ++count == 6
                     }
-                }
+                },
             )
         }
 
-        private fun handleLogBalance(player: Player, scenery: Scenery) {
+        private fun handleLogBalance(
+            player: Player,
+            scenery: Scenery,
+        ) {
             val dir = Direction.getLogicalDirection(player.location, scenery.location)
             val failed = AgilityHandler.hasFailed(player, 1, 0.1)
             if (failed) {
@@ -530,11 +558,11 @@ class BrimhavenCourse : OptionHandler() {
                                 player.location.transform(d.stepX shl 1, d.stepY shl 1, -3),
                                 Animation.create(764),
                                 getHitAmount(player),
-                                "You lost your balance!"
+                                "You lost your balance!",
                             )
                             return true
                         }
-                    }
+                    },
                 )
                 return
             }
@@ -545,11 +573,14 @@ class BrimhavenCourse : OptionHandler() {
                 player.location.transform(dir.stepX * 7, dir.stepY * 7, 0),
                 Animation.create(155),
                 getExp(player, 12.0),
-                null
+                null,
             )
         }
 
-        private fun getExp(player: Player, exp: Double): Double {
+        private fun getExp(
+            player: Player,
+            exp: Double,
+        ): Double {
             return if (player.achievementDiaryManager.karamjaGlove > 1) exp + (exp * 0.10) else exp
         }
 

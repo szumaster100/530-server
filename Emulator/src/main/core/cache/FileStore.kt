@@ -2,7 +2,9 @@ package core.cache
 
 import java.nio.ByteBuffer
 
-class FileStore(data: ByteArray) {
+class FileStore(
+    data: ByteArray,
+) {
     var isDynamic: Boolean = false
     private var data: ByteArray = data
 

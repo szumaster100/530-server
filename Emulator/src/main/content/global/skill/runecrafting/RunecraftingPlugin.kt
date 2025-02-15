@@ -1,7 +1,5 @@
 package content.global.skill.runecrafting
 
-import org.rs.consts.Components
-import org.rs.consts.Quests
 import content.global.skill.runecrafting.items.Talisman
 import content.global.skill.runecrafting.pouch.RunePouchPlugin
 import content.global.skill.runecrafting.runes.CombinationHandler
@@ -26,13 +24,14 @@ import core.game.node.entity.player.link.TeleportManager
 import core.game.node.item.Item
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import core.plugin.ClassScanner.definePlugin
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner.definePlugin
+import org.rs.consts.Components
+import org.rs.consts.Quests
 
 @Initializable
 class RunecraftingPlugin : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any?> {
         addNodes()
         definePlugin(RunePouchPlugin())
@@ -48,7 +47,11 @@ class RunecraftingPlugin : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         if (!isQuestComplete(player, Quests.RUNE_MYSTERIES) && player.details.rights !== Rights.ADMINISTRATOR) {
             sendMessage(player, "You need to finish the Rune Mysteries Quest in order to do this.")
             return true
@@ -127,7 +130,10 @@ class RunecraftingPlugin : OptionHandler() {
         return false
     }
 
-    override fun isWalk(player: Player, node: Node): Boolean {
+    override fun isWalk(
+        player: Player,
+        node: Node,
+    ): Boolean {
         return node !is Item
     }
 }

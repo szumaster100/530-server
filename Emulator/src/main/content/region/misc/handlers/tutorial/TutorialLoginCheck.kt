@@ -9,10 +9,10 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld
 
 class TutorialLoginCheck : LoginListener {
-
     override fun login(player: Player) {
         if (!getAttribute(player, GameAttributes.TUTORIAL_COMPLETE, false)) {
-            if (getAttribute(player, TutorialStage.TUTORIAL_STAGE, 0) == 0 && (player.skills.totalLevel > 33 || player.bank.itemCount() > 0 || player.inventory.itemCount() > 0)
+            if (getAttribute(player, TutorialStage.TUTORIAL_STAGE, 0) == 0 &&
+                (player.skills.totalLevel > 33 || player.bank.itemCount() > 0 || player.inventory.itemCount() > 0)
             ) {
                 setAttribute(player, "/save:${GameAttributes.TUTORIAL_COMPLETE}", true)
                 return
@@ -23,7 +23,7 @@ class TutorialLoginCheck : LoginListener {
                         TutorialStage.load(player, getAttribute(player, TutorialStage.TUTORIAL_STAGE, 0), true)
                         return true
                     }
-                }
+                },
             )
         }
     }

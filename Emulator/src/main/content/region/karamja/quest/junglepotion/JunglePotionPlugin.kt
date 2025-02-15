@@ -1,6 +1,5 @@
 package content.region.karamja.quest.junglepotion
 
-import org.rs.consts.Quests
 import core.cache.def.impl.SceneryDefinition
 import core.game.interaction.OptionHandler
 import core.game.node.Node
@@ -10,9 +9,9 @@ import core.game.node.scenery.Scenery
 import core.game.node.scenery.SceneryBuilder
 import core.game.world.map.Location
 import core.plugin.Plugin
+import org.rs.consts.Quests
 
 class JunglePotionPlugin : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         SceneryDefinition.forId(2584).handlers["option:search"] = this
         SceneryDefinition.forId(2585).handlers["option:climb"] = this
@@ -20,12 +19,16 @@ class JunglePotionPlugin : OptionHandler() {
             SceneryDefinition.forId(s.objectId).handlers["option:search"] = this
         }
         SceneryBuilder.add(
-            Scenery(2585, Location.create(2828, 9522, 0), 8, 0)
+            Scenery(2585, Location.create(2828, 9522, 0), 8, 0),
         )
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val quest = player.getQuestRepository().getQuest(Quests.JUNGLE_POTION)
         when (node.id) {
             2584 -> {
@@ -44,7 +47,12 @@ class JunglePotionPlugin : OptionHandler() {
         return true
     }
 
-    private fun search(player: Player, quest: Quest, scenery: Scenery, objective: JungleObjective) {
+    private fun search(
+        player: Player,
+        quest: Quest,
+        scenery: Scenery,
+        objective: JungleObjective,
+    ) {
         if (quest.getStage(player) < objective.stage) {
             player.sendMessage("Unfortunately, you find nothing of interest.")
             return
@@ -57,7 +65,10 @@ class JunglePotionPlugin : OptionHandler() {
         objective.search(player, scenery)
     }
 
-    override fun getDestination(n: Node, node: Node): Location? {
+    override fun getDestination(
+        n: Node,
+        node: Node,
+    ): Location? {
         if (node.id == 2585) {
             return Location.create(2830, 9521, 0)
         }

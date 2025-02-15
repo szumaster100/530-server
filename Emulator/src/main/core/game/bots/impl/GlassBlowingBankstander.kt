@@ -10,22 +10,24 @@ import org.rs.consts.Items
 
 class GlassBlowingBankstander : Script() {
     var state = State.BLOWING
+
     override fun tick() {
         val bank = scriptAPI.getNearestNode("Bank booth")
         bot.faceLocation(bank?.location)
-        state = when (state) {
-            State.BLOWING -> {
-                bot.inventory.add(Item(Items.GLASSBLOWING_PIPE_1785))
-                bot.inventory.add(Item(Items.MOLTEN_GLASS_1775, 27))
-                bot.pulseManager.run(GlassblowingPulse(bot, Glass.UNPOWERED_ORB, 27))
-                State.BANKING
-            }
+        state =
+            when (state) {
+                State.BLOWING -> {
+                    bot.inventory.add(Item(Items.GLASSBLOWING_PIPE_1785))
+                    bot.inventory.add(Item(Items.MOLTEN_GLASS_1775, 27))
+                    bot.pulseManager.run(GlassblowingPulse(bot, Glass.UNPOWERED_ORB, 27))
+                    State.BANKING
+                }
 
-            State.BANKING -> {
-                bot.inventory.clear()
-                State.BLOWING
+                State.BANKING -> {
+                    bot.inventory.clear()
+                    State.BLOWING
+                }
             }
-        }
     }
 
     override fun newInstance(): Script {
@@ -40,6 +42,6 @@ class GlassBlowingBankstander : Script() {
 
     enum class State {
         BLOWING,
-        BANKING
+        BANKING,
     }
 }

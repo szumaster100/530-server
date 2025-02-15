@@ -20,15 +20,16 @@ import org.rs.consts.Components
 import org.rs.consts.Items
 import kotlin.math.min
 
-class WorkbenchSpace : InterfaceListener, InteractionListener {
-
+class WorkbenchSpace :
+    InterfaceListener,
+    InteractionListener {
     private val flatpackItemIDs = Decoration.values().map { it.interfaceItem }.toIntArray()
     private val buildHotspot = BuildHotspot.values().map { it.objectId }.toIntArray()
     private val workBenchIDs = intArrayOf(13704, 13705, 13706, 13707, 13708)
 
     override fun defineListeners() {
         on(workBenchIDs, IntType.SCENERY, "work-at") { player, obj ->
-            if(player.houseManager.isBuildingMode && !player.isAdmin) {
+            if (player.houseManager.isBuildingMode && !player.isAdmin) {
                 player.sendMessage("You can't do this in build mode.")
                 return@on true
             }
@@ -54,25 +55,26 @@ class WorkbenchSpace : InterfaceListener, InteractionListener {
 
     override fun defineInterfaceListeners() {
         on(Components.POH_WORKBENCH_397) { player, _, _, buttonID, _, _ ->
-            val furnitureType = when (buttonID) {
-                111 -> BuildHotspot.CHAIRS_1
-                112 -> BuildHotspot.BOOKCASE
-                113 -> BuildHotspot.BARRELS
-                114 -> BuildHotspot.KITCHEN_TABLE
-                115 -> BuildHotspot.DINING_TABLE
-                116 -> BuildHotspot.DINING_BENCH_1
-                117 -> BuildHotspot.BED
-                118 -> BuildHotspot.DRESSER
-                119 -> BuildHotspot.DRAWERS
-                120 -> BuildHotspot.CLOCK
-                121 -> BuildHotspot.CAPE_RACK
-                122 -> BuildHotspot.MAGIC_WARDROBE
-                123 -> BuildHotspot.ARMOUR_CASE
-                124 -> BuildHotspot.TREASURE_CHEST
-                125 -> BuildHotspot.COSTUME_BOX
-                126 -> BuildHotspot.TOY_BOX
-                else -> return@on false
-            }
+            val furnitureType =
+                when (buttonID) {
+                    111 -> BuildHotspot.CHAIRS_1
+                    112 -> BuildHotspot.BOOKCASE
+                    113 -> BuildHotspot.BARRELS
+                    114 -> BuildHotspot.KITCHEN_TABLE
+                    115 -> BuildHotspot.DINING_TABLE
+                    116 -> BuildHotspot.DINING_BENCH_1
+                    117 -> BuildHotspot.BED
+                    118 -> BuildHotspot.DRESSER
+                    119 -> BuildHotspot.DRAWERS
+                    120 -> BuildHotspot.CLOCK
+                    121 -> BuildHotspot.CAPE_RACK
+                    122 -> BuildHotspot.MAGIC_WARDROBE
+                    123 -> BuildHotspot.ARMOUR_CASE
+                    124 -> BuildHotspot.TREASURE_CHEST
+                    125 -> BuildHotspot.COSTUME_BOX
+                    126 -> BuildHotspot.TOY_BOX
+                    else -> return@on false
+                }
             val hotspot = Hotspot(BuildHotspot.FLATPACK, 0, 0)
 
             player.setAttribute(GameAttributes.CON_HOTSPOT, hotspot)
@@ -82,7 +84,11 @@ class WorkbenchSpace : InterfaceListener, InteractionListener {
         }
     }
 
-    private fun buildFlatpackOnHotspot(player: Player, used: Item, with: Scenery): Boolean {
+    private fun buildFlatpackOnHotspot(
+        player: Player,
+        used: Item,
+        with: Scenery,
+    ): Boolean {
         val hotspotUsed = player.houseManager.getHotspot(with)
         val decorationUsed = Decoration.forObjectId(used.id)
 
@@ -98,7 +104,10 @@ class WorkbenchSpace : InterfaceListener, InteractionListener {
         return true
     }
 
-    private fun openBuildInterface(player: Player, hotspot: BuildHotspot) {
+    private fun openBuildInterface(
+        player: Player,
+        hotspot: BuildHotspot,
+    ) {
         val BUILD_INDEXES = intArrayOf(0, 2, 4, 6, 1, 3, 5)
         player.interfaceManager.open(Component(396))
         val items = arrayOfNulls<Item>(7)
@@ -108,7 +117,9 @@ class WorkbenchSpace : InterfaceListener, InteractionListener {
         for (menuIndex in 0..6) {
             val itemsStringOffset = 97 + (menuIndex * 5)
 
-            if (menuIndex >= hotspot.decorations.size || (hotspot.decorations[menuIndex] != null && hotspot.decorations[menuIndex].isInvisibleNode)) {
+            if (menuIndex >= hotspot.decorations.size ||
+                (hotspot.decorations[menuIndex] != null && hotspot.decorations[menuIndex].isInvisibleNode)
+            ) {
                 for (j in 0..4) {
                     player.packetDispatch.sendString("", Components.POH_BUILD_FURNITURE_396, itemsStringOffset + j)
                 }
@@ -122,25 +133,26 @@ class WorkbenchSpace : InterfaceListener, InteractionListener {
             player.packetDispatch.sendString(
                 getItemName(decoration.interfaceItem),
                 Components.POH_BUILD_FURNITURE_396,
-                itemsStringOffset
+                itemsStringOffset,
             )
-            var hasRequirements = min(
-                player.skills.getLevel(22),
-                player.getAttribute(GameAttributes.CON_FLATPACK_TIER, 0)
-            ) >= decoration.level
+            var hasRequirements =
+                min(
+                    player.skills.getLevel(22),
+                    player.getAttribute(GameAttributes.CON_FLATPACK_TIER, 0),
+                ) >= decoration.level
             for (j in 0..3) {
                 if (j >= decoration.items.size) {
                     if (j == decoration.items.size && decoration.nailAmount > 0) {
                         player.packetDispatch.sendString(
                             "Nails: " + decoration.nailAmount,
                             Components.POH_BUILD_FURNITURE_396,
-                            (itemsStringOffset + 1) + j
+                            (itemsStringOffset + 1) + j,
                         )
                     } else {
                         player.packetDispatch.sendString(
                             "",
                             Components.POH_BUILD_FURNITURE_396,
-                            (itemsStringOffset + 1) + j
+                            (itemsStringOffset + 1) + j,
                         )
                     }
                 } else {
@@ -159,14 +171,14 @@ class WorkbenchSpace : InterfaceListener, InteractionListener {
             player.packetDispatch.sendString(
                 "Level " + decoration.level,
                 Components.POH_BUILD_FURNITURE_396,
-                140 + menuIndex
+                140 + menuIndex,
             )
         }
 
         setVarp(player, 261, c261Value)
         PacketRepository.send(
             ContainerPacket::class.java,
-            ContainerContext(player, Components.POH_BUILD_FURNITURE_396, 132, 8, items, false)
+            ContainerContext(player, Components.POH_BUILD_FURNITURE_396, 132, 8, items, false),
         )
     }
 }

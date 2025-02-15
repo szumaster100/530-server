@@ -1,8 +1,5 @@
 package content.minigame.gnomeball
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.*
 import core.api.interaction.transformNpc
 import core.game.global.action.EquipHandler
@@ -12,9 +9,11 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.game.system.task.Pulse
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 class PassGnomeBallListener : InteractionListener {
-
     override fun defineListeners() {
         on(IntType.PLAYER, "pass") { player, node ->
             val catcher = node.asPlayer()
@@ -37,7 +36,10 @@ class PassGnomeBallListener : InteractionListener {
         }
     }
 
-    internal class PlayerPlayerPassPulse(private val thrower: Player, private val catcher: Player) : Pulse() {
+    internal class PlayerPlayerPassPulse(
+        private val thrower: Player,
+        private val catcher: Player,
+    ) : Pulse() {
         override fun pulse(): Boolean {
             face(thrower, catcher)
             if (removeItem(thrower, Items.GNOMEBALL_751)) {
@@ -52,7 +54,10 @@ class PassGnomeBallListener : InteractionListener {
         }
     }
 
-    internal class PlayerNPCPassPulse(private val player: Player, private val npc: NPC) : Pulse() {
+    internal class PlayerNPCPassPulse(
+        private val player: Player,
+        private val npc: NPC,
+    ) : Pulse() {
         override fun pulse(): Boolean {
             player.face(npc)
             if (removeItem(player, Item(Items.GNOMEBALL_751))) {

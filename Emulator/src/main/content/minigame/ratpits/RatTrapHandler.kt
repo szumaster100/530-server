@@ -1,6 +1,5 @@
 package content.minigame.ratpits
 
-import org.rs.consts.Scenery
 import core.api.animateScenery
 import core.api.impact
 import core.api.queueScript
@@ -9,9 +8,9 @@ import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.interaction.QueueStrength
 import core.game.node.entity.combat.ImpactHandler
+import org.rs.consts.Scenery
 
 class RatTrapHandler : InteractionListener {
-
     val RatTrapAnimFirst = 2897
     val RatLeverAnimFirst = 2899
     val RatBarnAnimFirst = 2901

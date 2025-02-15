@@ -10,8 +10,11 @@ import core.plugin.Plugin
 
 @Initializable
 class AttackOption : OptionHandler() {
-
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         player.attack(node)
         return true
     }

@@ -20,12 +20,16 @@ import org.rs.consts.Items
 import org.rs.consts.NPCs
 
 @Initializable
-class MacawFamiliar(owner: Player? = null, id: Int = NPCs.MACAW_6851) :
-    Forager(owner, id, 3100, Items.MACAW_POUCH_12071, 12, *HERBS) {
-
+class MacawFamiliar(
+    owner: Player? = null,
+    id: Int = NPCs.MACAW_6851,
+) : Forager(owner, id, 3100, Items.MACAW_POUCH_12071, 12, *HERBS) {
     private var specialDelay = 0
 
-    override fun construct(owner: Player, id: Int): Familiar {
+    override fun construct(
+        owner: Player,
+        id: Int,
+    ): Familiar {
         return MacawFamiliar(owner, id)
     }
 
@@ -54,18 +58,19 @@ class MacawFamiliar(owner: Player? = null, id: Int = NPCs.MACAW_6851) :
     }
 
     companion object {
-        private val HERBS = arrayOf(
-            Item(Items.GRIMY_GUAM_199),
-            Item(Items.GRIMY_RANARR_207),
-            Item(Items.GRIMY_MARRENTILL_201),
-            Item(Items.GRIMY_AVANTOE_211),
-            Item(Items.GRIMY_IRIT_209),
-            Item(Items.GRIMY_TARROMIN_203),
-            Item(Items.GRIMY_HARRALANDER_205),
-            Item(Items.GRIMY_KWUARM_213),
-            Item(Items.GRIMY_DWARF_WEED_217),
-            Item(Items.GRIMY_CADANTINE_215),
-            Item(Items.GRIMY_LANTADYME_2485)
-        )
+        private val HERBS =
+            arrayOf(
+                Item(Items.GRIMY_GUAM_199),
+                Item(Items.GRIMY_RANARR_207),
+                Item(Items.GRIMY_MARRENTILL_201),
+                Item(Items.GRIMY_AVANTOE_211),
+                Item(Items.GRIMY_IRIT_209),
+                Item(Items.GRIMY_TARROMIN_203),
+                Item(Items.GRIMY_HARRALANDER_205),
+                Item(Items.GRIMY_KWUARM_213),
+                Item(Items.GRIMY_DWARF_WEED_217),
+                Item(Items.GRIMY_CADANTINE_215),
+                Item(Items.GRIMY_LANTADYME_2485),
+            )
     }
 }

@@ -13,9 +13,9 @@ import core.game.node.entity.player.link.request.RequestType
 import core.game.world.map.Location
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.map.zone.ZoneBuilder
-import core.plugin.Initializable
 import core.plugin.ClassScanner.definePlugin
 import core.plugin.ClassScanner.definePlugins
+import core.plugin.Initializable
 import core.tools.RandomFunction
 import java.util.*
 
@@ -31,7 +31,10 @@ class DuelArenaActivity : ActivityPlugin("Duel arena", false, false, true) {
         return super.enter(e)
     }
 
-    override fun leave(e: Entity, logout: Boolean): Boolean {
+    override fun leave(
+        e: Entity,
+        logout: Boolean,
+    ): Boolean {
         if (e is Player) {
             val player = e
             player.interfaceManager.closeOverlay()
@@ -49,13 +52,28 @@ class DuelArenaActivity : ActivityPlugin("Duel arena", false, false, true) {
         return null
     }
 
-    override fun continueAttack(e: Entity, target: Node, style: CombatStyle, message: Boolean): Boolean {
-        return if (e.isPlayer && e.asPlayer().zoneMonitor.zones.size > 1) {
+    override fun continueAttack(
+        e: Entity,
+        target: Node,
+        style: CombatStyle,
+        message: Boolean,
+    ): Boolean {
+        return if (e.isPlayer &&
+            e
+                .asPlayer()
+                .zoneMonitor.zones.size > 1
+        ) {
             super.continueAttack(e, target, style, message)
-        } else false
+        } else {
+            false
+        }
     }
 
-    override fun interact(e: Entity, target: Node, o: Option): Boolean {
+    override fun interact(
+        e: Entity,
+        target: Node,
+        o: Option,
+    ): Boolean {
         if (e.isPlayer) {
             when (target.id) {
                 3192 -> {
@@ -67,8 +85,15 @@ class DuelArenaActivity : ActivityPlugin("Duel arena", false, false, true) {
         return super.interact(e, target, o)
     }
 
-    override fun death(e: Entity, killer: Entity): Boolean {
-        if (e.isPlayer && e.asPlayer().zoneMonitor.zones.size > 1) {
+    override fun death(
+        e: Entity,
+        killer: Entity,
+    ): Boolean {
+        if (e.isPlayer &&
+            e
+                .asPlayer()
+                .zoneMonitor.zones.size > 1
+        ) {
             return true
         }
         if (e is Player && killer is Player) {
@@ -92,14 +117,15 @@ class DuelArenaActivity : ActivityPlugin("Duel arena", false, false, true) {
     companion object {
         val FRIEND_REQUEST = RequestType("Sending duel offer...", ":duelfriend:", DuelRequestModule(false))
         val STAKE_REQUEST = RequestType("Sending duel offer...", ":duelstake:", DuelRequestModule(true))
-        val DUEL_AREAS = arrayOf(
-            DuelArea(0, ZoneBorders(3332, 3244, 3357, 3258), false, Location.create(3345, 3251, 0)),
-            DuelArea(1, ZoneBorders(3364, 3244, 3388, 3259), true, Location.create(3378, 3251, 0)),
-            DuelArea(2, ZoneBorders(3333, 3224, 3357, 3239), true, Location.create(3345, 3231, 0)),
-            DuelArea(3, ZoneBorders(3364, 3225, 3388, 3240), false, Location.create(3376, 3231, 0)),
-            DuelArea(4, ZoneBorders(3333, 3205, 3357, 3220), false, Location.create(3346, 3212, 0)),
-            DuelArea(5, ZoneBorders(3364, 3206, 3388, 3221), true, Location.create(3377, 3213, 0))
-        )
+        val DUEL_AREAS =
+            arrayOf(
+                DuelArea(0, ZoneBorders(3332, 3244, 3357, 3258), false, Location.create(3345, 3251, 0)),
+                DuelArea(1, ZoneBorders(3364, 3244, 3388, 3259), true, Location.create(3378, 3251, 0)),
+                DuelArea(2, ZoneBorders(3333, 3224, 3357, 3239), true, Location.create(3345, 3231, 0)),
+                DuelArea(3, ZoneBorders(3364, 3225, 3388, 3240), false, Location.create(3376, 3231, 0)),
+                DuelArea(4, ZoneBorders(3333, 3205, 3357, 3220), false, Location.create(3346, 3212, 0)),
+                DuelArea(5, ZoneBorders(3364, 3206, 3388, 3221), true, Location.create(3377, 3213, 0)),
+            )
         val CHALLENGE_OPTION = Option("Challenge", 0)
         val DUEL_TYPE_SELECT = Component(640)
         private val OVERLAY = Component(638)
@@ -112,11 +138,15 @@ class DuelArenaActivity : ActivityPlugin("Duel arena", false, false, true) {
             var index = 0
             for (i in 16..64) {
                 player.packetDispatch.sendString(
-                    if (SCOREBOARD.get(index) == null) "" else SCOREBOARD.get(
-                        index
-                    ),
+                    if (SCOREBOARD.get(index) == null) {
+                        ""
+                    } else {
+                        SCOREBOARD.get(
+                            index,
+                        )
+                    },
                     632,
-                    i - 1
+                    i - 1,
                 )
                 index++
             }
@@ -124,7 +154,10 @@ class DuelArenaActivity : ActivityPlugin("Duel arena", false, false, true) {
 
         fun parseScoreboard() {}
 
-        fun insertEntry(winner: Player?, looser: Player?) {}
+        fun insertEntry(
+            winner: Player?,
+            looser: Player?,
+        ) {}
 
         fun getDuelArea(obstacles: Boolean): DuelArea {
             val options: MutableList<DuelArea> = ArrayList(20)

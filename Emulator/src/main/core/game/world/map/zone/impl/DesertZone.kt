@@ -20,14 +20,18 @@ import org.rs.consts.Animations
 import org.rs.consts.Items
 
 @Initializable
-class DesertZone : MapZone(DESERT_ZONE, true), Plugin<Any?> {
-
+class DesertZone :
+    MapZone(DESERT_ZONE, true),
+    Plugin<Any?> {
     override fun newInstance(arg: Any?): Plugin<Any?> {
         ZoneBuilder.configure(this)
         return this
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 
@@ -80,7 +84,10 @@ class DesertZone : MapZone(DESERT_ZONE, true), Plugin<Any?> {
         return true
     }
 
-    override fun leave(e: Entity, logout: Boolean): Boolean {
+    override fun leave(
+        e: Entity,
+        logout: Boolean,
+    ): Boolean {
         if (e is Player) {
             PLAYERS.remove(e)
             e.removeAttribute(DESERT_DELAY)
@@ -89,37 +96,52 @@ class DesertZone : MapZone(DESERT_ZONE, true), Plugin<Any?> {
     }
 
     companion object {
-        @JvmStatic private val WATER_SKINS = arrayOf(
-            Item(Items.WATERSKIN4_1823),
-            Item(Items.WATERSKIN3_1825),
-            Item(Items.WATERSKIN2_1827),
-            Item(Items.WATERSKIN1_1829)
-        )
-        @JvmStatic private val VESSILS = arrayOf(
-            intArrayOf(Items.JUG_OF_WATER_1937, Items.JUG_1935),
-            intArrayOf(Items.BUCKET_OF_WATER_1929, Items.BUCKET_1925),
-            intArrayOf(Items.BOWL_OF_WATER_1921, Items.BOWL_1923),
-            intArrayOf(Items.VIAL_OF_WATER_227, Items.VIAL_229)
-        )
-       @JvmStatic private val ANIMATION = Animation(Animations.EAT_OLD_829)
-       @JvmStatic private val PLAYERS: MutableList<Player> = ArrayList(20)
-       @JvmStatic private val DESERT_DELAY = "desert-delay"
-       @JvmStatic private val TUTORIAL_STAGE = GameAttributes.TUTORIAL_STAGE
-       @JvmStatic private val TUTORIAL_COMPLETE = GameAttributes.TUTORIAL_COMPLETE
-       @JvmStatic private val DESERT_ZONE = "Desert Zone"
-       @JvmStatic private val pulse: Pulse = object : Pulse(3) {
-            override fun pulse(): Boolean {
-                for (player in PLAYERS) {
-                    if (!getAttribute(player, TUTORIAL_COMPLETE, false) || player.interfaceManager.isOpened || player.interfaceManager.hasChatbox() || player.locks.isMovementLocked) {
-                        continue
+        @JvmStatic private val WATER_SKINS =
+            arrayOf(
+                Item(Items.WATERSKIN4_1823),
+                Item(Items.WATERSKIN3_1825),
+                Item(Items.WATERSKIN2_1827),
+                Item(Items.WATERSKIN1_1829),
+            )
+
+        @JvmStatic private val VESSILS =
+            arrayOf(
+                intArrayOf(Items.JUG_OF_WATER_1937, Items.JUG_1935),
+                intArrayOf(Items.BUCKET_OF_WATER_1929, Items.BUCKET_1925),
+                intArrayOf(Items.BOWL_OF_WATER_1921, Items.BOWL_1923),
+                intArrayOf(Items.VIAL_OF_WATER_227, Items.VIAL_229),
+            )
+
+        @JvmStatic private val ANIMATION = Animation(Animations.EAT_OLD_829)
+
+        @JvmStatic private val PLAYERS: MutableList<Player> = ArrayList(20)
+
+        @JvmStatic private val DESERT_DELAY = "desert-delay"
+
+        @JvmStatic private val TUTORIAL_STAGE = GameAttributes.TUTORIAL_STAGE
+
+        @JvmStatic private val TUTORIAL_COMPLETE = GameAttributes.TUTORIAL_COMPLETE
+
+        @JvmStatic private val DESERT_ZONE = "Desert Zone"
+
+        @JvmStatic private val pulse: Pulse =
+            object : Pulse(3) {
+                override fun pulse(): Boolean {
+                    for (player in PLAYERS) {
+                        if (!getAttribute(player, TUTORIAL_COMPLETE, false) ||
+                            player.interfaceManager.isOpened ||
+                            player.interfaceManager.hasChatbox() ||
+                            player.locks.isMovementLocked
+                        ) {
+                            continue
+                        }
+                        if (player.getAttribute(DESERT_DELAY, -1) < ticks) {
+                            effect(player)
+                        }
                     }
-                    if (player.getAttribute(DESERT_DELAY, -1) < ticks) {
-                        effect(player)
-                    }
+                    return PLAYERS.isEmpty()
                 }
-                return PLAYERS.isEmpty()
             }
-        }
 
         @JvmStatic private fun effect(player: Player) {
             player.setAttribute(DESERT_DELAY, ticks + getDelay(player))
@@ -127,7 +149,20 @@ class DesertZone : MapZone(DESERT_ZONE, true), Plugin<Any?> {
             if (drink(player)) {
                 return
             }
-            impact(player, RandomFunction.random(1, if (player.location.y < 2990) 12 else 8), ImpactHandler.HitsplatType.NORMAL)
+            impact(
+                player,
+                RandomFunction.random(
+                    1,
+                    if (player.location.y <
+                        2990
+                    ) {
+                        12
+                    } else {
+                        8
+                    },
+                ),
+                ImpactHandler.HitsplatType.NORMAL,
+            )
             sendMessage(player, "You start dying of thirst while you're in the desert.")
         }
 
@@ -136,7 +171,12 @@ class DesertZone : MapZone(DESERT_ZONE, true), Plugin<Any?> {
                 if (inInventory(player, VESSILS[i][0], 1)) {
                     if (removeItem(player, Item(VESSILS[i][0]))) {
                         addItem(player, VESSILS[i][1])
-                        sendMessage(player, "The water in your " + getItemName(VESSILS[i][0]).lowercase().replace("of water", "").trim { it <= ' ' } + " evaporates in the desert heat.")
+                        sendMessage(
+                            player,
+                            "The water in your " +
+                                getItemName(VESSILS[i][0]).lowercase().replace("of water", "").trim { it <= ' ' } +
+                                " evaporates in the desert heat.",
+                        )
                     }
                 }
             }

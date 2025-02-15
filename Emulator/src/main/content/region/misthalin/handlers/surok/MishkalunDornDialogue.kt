@@ -1,22 +1,26 @@
 package content.region.misthalin.handlers.surok
 
-import org.rs.consts.NPCs
 import core.game.dialogue.Dialogue
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.NPCs
 
 @Initializable
-class MishkalunDornDialogue(player: Player? = null) : Dialogue(player) {
-
+class MishkalunDornDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         npc("You are excused. And you are welcome.")
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> player("Excuse me...er..thanks.").also { stage++ }
             1 -> npc("We are the Order of the Dagon'hai.").also { stage++ }

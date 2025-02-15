@@ -1,3 +1,5 @@
 package core.game.bots
 
-annotation class ScriptDescription(vararg val value: String)
+annotation class ScriptDescription(
+    vararg val value: String,
+)

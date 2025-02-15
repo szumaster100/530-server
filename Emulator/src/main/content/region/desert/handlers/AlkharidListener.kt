@@ -1,9 +1,5 @@
 package content.region.desert.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
-import org.rs.consts.Quests
 import content.region.desert.dialogue.alkharid.AlKharidHealDialogue
 import content.region.desert.dialogue.alkharid.AliTheLeafletDropperDialogue
 import content.region.desert.dialogue.alkharid.BorderGuardDialogue
@@ -18,11 +14,13 @@ import core.game.interaction.InteractionListener
 import core.game.node.item.Item
 import core.game.system.command.sets.STATS_ALKHARID_GATE
 import core.game.system.command.sets.STATS_BASE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
+import org.rs.consts.Scenery
 
 class AlkharidListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(BORDER_GUARD, IntType.NPC, "talk-to") { player, _ ->
             openDialogue(player, BorderGuardDialogue())
             return@on true

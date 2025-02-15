@@ -1,8 +1,5 @@
 package content.region.misthalin.dialogue.varrock
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.global.travel.EssenceTeleport.teleport
 import core.api.*
 import core.api.interaction.openNpcShop
@@ -19,10 +16,14 @@ import core.game.node.item.GroundItem
 import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class AuburyDialogue(player: Player? = null) : Dialogue(player) {
-
+class AuburyDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any?): Boolean {
         npc = args[0] as NPC
         val quest = getQuestStage(player, Quests.RUNE_MYSTERIES)
@@ -31,7 +32,7 @@ class AuburyDialogue(player: Player? = null) : Dialogue(player) {
                 "My gratitude to you adventurer for bringing me these",
                 "research notes. I notice that you brought the head",
                 "wizard a special talisman that was the key to our finally",
-                "unlocking the puzzle."
+                "unlocking the puzzle.",
             )
             stage = 900
             return true
@@ -45,7 +46,10 @@ class AuburyDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         val quest = getQuestStage(player, Quests.RUNE_MYSTERIES)
         when (stage) {
             0 -> {
@@ -53,7 +57,7 @@ class AuburyDialogue(player: Player? = null) : Dialogue(player) {
                     options(
                         "Yes please!",
                         "Oh, it's a rune shop. No thank you, then.",
-                        "I have been sent here with a package for you."
+                        "I have been sent here with a package for you.",
                     )
                     stage = 800
                     return true
@@ -63,7 +67,7 @@ class AuburyDialogue(player: Player? = null) : Dialogue(player) {
                         "My gratitude to you adventurer for bringing me these",
                         "research notes. I notice that you brought the head",
                         "wizard a special talisman that was the key to our finally",
-                        "unlocking the puzzle."
+                        "unlocking the puzzle.",
                     )
                     stage = 900
                     return true
@@ -71,25 +75,26 @@ class AuburyDialogue(player: Player? = null) : Dialogue(player) {
                 if (quest == 50) {
                     npc(
                         "I suggest you take those research notes of mine back",
-                        "to the head wizard at the Wizards' Tower."
+                        "to the head wizard at the Wizards' Tower.",
                     )
                     stage = 950
                     return true
                 }
-                stage = if (!isQuestComplete(player, Quests.RUNE_MYSTERIES)) {
-                    options("Yes please!", "Oh, it's a rune shop. No thank you, then.")
-                    100
-                } else {
-                    options("Yes, please.", "No thanks.", "Can you teleport me to the rune essence?")
-                    1
-                }
+                stage =
+                    if (!isQuestComplete(player, Quests.RUNE_MYSTERIES)) {
+                        options("Yes please!", "Oh, it's a rune shop. No thank you, then.")
+                        100
+                    } else {
+                        options("Yes, please.", "No thanks.", "Can you teleport me to the rune essence?")
+                        1
+                    }
             }
 
             900 -> {
                 npc(
                     "Combined with the information I had already collated",
                     "regarding the Rune Essence, I think we have finally",
-                    "unlocked the power to"
+                    "unlocked the power to",
                 )
                 stage = 901
             }
@@ -99,7 +104,7 @@ class AuburyDialogue(player: Player? = null) : Dialogue(player) {
                     "...no. I am getting ahead of myself. Please take this",
                     "summary of my research back to the head wizard at",
                     "the Wizards' Tower. I trust his judgement on whether",
-                    "to let you in on our little secret or not."
+                    "to let you in on our little secret or not.",
                 )
                 stage = 902
             }
@@ -139,7 +144,7 @@ class AuburyDialogue(player: Player? = null) : Dialogue(player) {
                     "Well, luckily I have duplicates. It's a good thing they",
                     "are written in code, I would not want the wrong kind",
                     "of person to get access to the information contained",
-                    "within."
+                    "within.",
                 )
                 stage = 956
             }
@@ -153,30 +158,31 @@ class AuburyDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             957 -> end()
-            800 -> when (buttonId) {
-                1 -> {
-                    npc.openShop(player)
-                    end()
-                }
+            800 ->
+                when (buttonId) {
+                    1 -> {
+                        npc.openShop(player)
+                        end()
+                    }
 
-                2 -> {
-                    player("Oh, it's a rune shop. No thank you, then.")
-                    stage = 105
-                }
+                    2 -> {
+                        player("Oh, it's a rune shop. No thank you, then.")
+                        stage = 105
+                    }
 
-                3 -> {
-                    player(
-                        "I have been sent here with a package for you. It's from",
-                        "the head wizard at the Wizards' Tower."
-                    )
-                    stage = 801
+                    3 -> {
+                        player(
+                            "I have been sent here with a package for you. It's from",
+                            "the head wizard at the Wizards' Tower.",
+                        )
+                        stage = 801
+                    }
                 }
-            }
 
             801 -> {
                 player(
                     "I have been sent here with a package for you. It's from",
-                    "the head wizard at the Wizards' Tower."
+                    "the head wizard at the Wizards' Tower.",
                 )
                 stage = 802
             }
@@ -185,7 +191,7 @@ class AuburyDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "Really? But... surely he can't  have..? Please, let me",
                     "have it, it must be extremely important for him to have",
-                    "sent a stranger."
+                    "sent a stranger.",
                 )
                 stage = 803
             }
@@ -211,46 +217,50 @@ class AuburyDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             806 -> end()
-            807 -> if (removeItem(player, PACKAGE)) {
-                setQuestStage(player, Quests.RUNE_MYSTERIES, 40)
-                npc(
-                    "This... this is incredible. Please, give me a few moments",
-                    "to quickly look over this, and then talk to me again."
-                )
-                stage = 808
-            }
+            807 ->
+                if (removeItem(player, PACKAGE)) {
+                    setQuestStage(player, Quests.RUNE_MYSTERIES, 40)
+                    npc(
+                        "This... this is incredible. Please, give me a few moments",
+                        "to quickly look over this, and then talk to me again.",
+                    )
+                    stage = 808
+                }
 
             808 -> end()
-            1 -> when (interfaceId) {
-                230 -> when (buttonId) {
+            1 ->
+                when (interfaceId) {
+                    230 ->
+                        when (buttonId) {
+                            1 -> {
+                                npc.openShop(player)
+                                end()
+                            }
+
+                            2 -> {
+                                player("No thanks.")
+                                stage = 10
+                            }
+
+                            3 -> {
+                                player("Can you teleport me to the rune essence?")
+                                stage = 11
+                            }
+                        }
+                }
+
+            100 ->
+                when (buttonId) {
                     1 -> {
-                        npc.openShop(player)
+                        openNpcShop(player, npc.id)
                         end()
                     }
 
                     2 -> {
-                        player("No thanks.")
-                        stage = 10
-                    }
-
-                    3 -> {
-                        player("Can you teleport me to the rune essence?")
-                        stage = 11
+                        player("Oh, it's a rune shop. No thank you, then.")
+                        stage = 105
                     }
                 }
-            }
-
-            100 -> when (buttonId) {
-                1 -> {
-                    openNpcShop(player, npc.id)
-                    end()
-                }
-
-                2 -> {
-                    player("Oh, it's a rune shop. No thank you, then.")
-                    stage = 105
-                }
-            }
 
             105 -> end()
             106 -> end()
@@ -260,17 +270,18 @@ class AuburyDialogue(player: Player? = null) : Dialogue(player) {
                 end()
             }
 
-            450 -> when (buttonId) {
-                1 -> {
-                    player("Can I buy a Skillcape of Runecrafting?")
-                    stage = 2
-                }
+            450 ->
+                when (buttonId) {
+                    1 -> {
+                        player("Can I buy a Skillcape of Runecrafting?")
+                        stage = 2
+                    }
 
-                2 -> {
-                    npc("Do you want to buy some runes?")
-                    stage = 0
+                    2 -> {
+                        npc("Do you want to buy some runes?")
+                        stage = 0
+                    }
                 }
-            }
 
             2 -> {
                 npc("Certainly! Right when you give me 99000 coins.")
@@ -282,14 +293,15 @@ class AuburyDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 4
             }
 
-            4 -> when (buttonId) {
-                1 -> {
-                    player("Okay, here you go.")
-                    stage = 5
-                }
+            4 ->
+                when (buttonId) {
+                    1 -> {
+                        player("Okay, here you go.")
+                        stage = 5
+                    }
 
-                2 -> end()
-            }
+                    2 -> end()
+                }
 
             5 -> {
                 if (purchase(player, Skills.RUNECRAFTING)) {

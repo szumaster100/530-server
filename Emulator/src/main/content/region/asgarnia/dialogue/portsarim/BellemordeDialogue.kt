@@ -1,7 +1,5 @@
 package content.region.asgarnia.dialogue.portsarim
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.anyInEquipment
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
@@ -9,17 +7,23 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
-class BellemordeDialogue(player: Player? = null) : Dialogue(player) {
-
+class BellemordeDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any?): Boolean {
         npc = args[0] as NPC
         player("Hello puss.")
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 if (!anyInEquipment(player, Items.CATSPEAK_AMULET_4677, Items.CATSPEAK_AMULETE_6544)) {
@@ -30,7 +34,11 @@ class BellemordeDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             1 -> player("Would you like a fish?").also { stage++ }
-            2 -> npc(FaceAnim.CHILD_FRIENDLY, "I don't want your fish. I hunt and eat what I", "need by myself.").also { stage = END_DIALOGUE }
+            2 ->
+                npc(FaceAnim.CHILD_FRIENDLY, "I don't want your fish. I hunt and eat what I", "need by myself.").also {
+                    stage =
+                        END_DIALOGUE
+                }
         }
         return true
     }

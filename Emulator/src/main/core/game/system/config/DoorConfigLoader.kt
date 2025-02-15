@@ -46,7 +46,9 @@ class DoorConfigLoader {
         log(this::class.java, Log.FINE, "Parsed $count door configs.")
     }
 
-    class Door(val id: Int) {
+    class Door(
+        val id: Int,
+    ) {
         var replaceId = 0
         var isFence = false
         var isAutoWalk = false

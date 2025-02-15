@@ -11,14 +11,17 @@ import java.util.*
 
 @Initializable
 class MapDumpCommandSet : CommandPlugin() {
-
     @Throws(Throwable::class)
     override fun newInstance(arg: Any?): Plugin<Any?> {
         link(CommandSet.ADMINISTRATOR)
         return this
     }
 
-    override fun parse(player: Player?, name: String?, args: Array<String?>?): Boolean {
+    override fun parse(
+        player: Player?,
+        name: String?,
+        args: Array<String?>?,
+    ): Boolean {
         when (name) {
             "mapredo" -> redoMap(3000, 3000, 1).also { return true }
             "findobj" -> findObj(player, args?.toList() as List<String>?).also { return true }
@@ -29,7 +32,12 @@ class MapDumpCommandSet : CommandPlugin() {
     companion object {
         private val GameObjectMap = HashMap<Location, Int>()
         private val LocationObjectMap = HashMap<Int, MutableList<Location>?>()
-        private fun redoMap(xmax: Int, ymax: Int, zmax: Int) {
+
+        private fun redoMap(
+            xmax: Int,
+            ymax: Int,
+            zmax: Int,
+        ) {
             GameObjectMap.clear()
             LocationObjectMap.clear()
             for (x in 0 until xmax - 1) {
@@ -54,7 +62,10 @@ class MapDumpCommandSet : CommandPlugin() {
             return
         }
 
-        private fun findObj(player: Player?, args: List<String>?) {
+        private fun findObj(
+            player: Player?,
+            args: List<String>?,
+        ) {
             val objId = Integer.parseInt(args?.getOrNull(1))
             val xmin = 50
             val ymin = 50

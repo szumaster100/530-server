@@ -1,14 +1,14 @@
 package core.game.bots
 
+import core.Server
+import core.api.*
+import core.game.bots.impl.Idler
+import core.game.interaction.MovementPulse
 import core.game.node.entity.player.Player
 import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.tools.RandomFunction
-import core.Server
-import core.game.bots.impl.Idler
-import core.api.*
-import core.game.interaction.MovementPulse
 
 class GBCTick : TickListener {
     override fun tick() {
@@ -24,9 +24,14 @@ class GeneralBotCreator {
 
     constructor(botScript: Script, bot: AIPlayer?) {
         botScript.bot = bot
-        GameWorld.Pulser.submit(BotScriptPulse(botScript).also {
-            AIRepository.PulseRepository[it.botScript.bot.username.lowercase()] = it
-        })
+        GameWorld.Pulser.submit(
+            BotScriptPulse(botScript).also {
+                AIRepository.PulseRepository[
+                    it.botScript.bot.username
+                        .lowercase(),
+                ] = it
+            },
+        )
     }
 
     constructor(botScript: Script, player: Player, isPlayer: Boolean) {
@@ -41,7 +46,10 @@ class GeneralBotCreator {
         var botPulsesTriggeredThisTick = 0
     }
 
-    inner class BotScriptPulse(public val botScript: Script, val isPlayer: Boolean = false) : Pulse(1) {
+    inner class BotScriptPulse(
+        public val botScript: Script,
+        val isPlayer: Boolean = false,
+    ) : Pulse(1) {
         var ticks = 0
 
         init {
@@ -51,6 +59,7 @@ class GeneralBotCreator {
         var randomDelay = 0
         var lastBotLocation: Location = botScript.bot.location.transform(0, 0, 0)
         var lastBotMoveTicks = getWorldTicks()
+
         override fun pulse(): Boolean {
             if (randomDelay > 0) {
                 randomDelay -= 1
@@ -63,12 +72,16 @@ class GeneralBotCreator {
                         lastBotMoveTicks = getWorldTicks()
                     }
                     if (lastBotLocation == botScript.bot.location && getWorldTicks() - lastBotMoveTicks > 5) {
-                        botScript.bot.pulseManager.current.stop()
+                        botScript.bot.pulseManager.current
+                            .stop()
                     }
                 }
             }
 
-            if (botScript.bot.scripts.getActiveScript() != null && botScript.bot.hasModalOpen() && botScript.endDialogue) {
+            if (botScript.bot.scripts.getActiveScript() != null &&
+                botScript.bot.hasModalOpen() &&
+                botScript.endDialogue
+            ) {
                 botScript.bot.interfaceManager.closeChatbox()
                 botScript.bot.interfaceManager.openChatbox(137)
                 botScript.bot.interfaceManager.close()
@@ -76,10 +89,10 @@ class GeneralBotCreator {
             }
 
             if (!botScript.bot.pulseManager.hasPulseRunning() && botScript.bot.scripts.getActiveScript() == null) {
-
                 if (!botScript.running) return true
-                if (botPulsesTriggeredThisTick++ >= 75)
+                if (botPulsesTriggeredThisTick++ >= 75) {
                     return false
+                }
 
                 val idleRoll = RandomFunction.random(10)
                 if (idleRoll == 2 && botScript !is Idler) {
@@ -95,15 +108,27 @@ class GeneralBotCreator {
             ticks = Integer.MAX_VALUE - 20
             pulse()
             super.stop()
-            if (Server.running) AIRepository.PulseRepository.remove(this.botScript.bot.username.lowercase())
+            if (Server.running) {
+                AIRepository.PulseRepository.remove(
+                    this.botScript.bot.username
+                        .lowercase(),
+                )
+            }
         }
     }
 
-    inner class TransitionPulse(val script: Script) : Pulse(RandomFunction.random(60, 200)) {
+    inner class TransitionPulse(
+        val script: Script,
+    ) : Pulse(RandomFunction.random(60, 200)) {
         override fun pulse(): Boolean {
-            GameWorld.Pulser.submit(BotScriptPulse(script.newInstance()).also {
-                AIRepository.PulseRepository[it.botScript.bot.username.lowercase()] = it
-            })
+            GameWorld.Pulser.submit(
+                BotScriptPulse(script.newInstance()).also {
+                    AIRepository.PulseRepository[
+                        it.botScript.bot.username
+                            .lowercase(),
+                    ] = it
+                },
+            )
             return true
         }
     }

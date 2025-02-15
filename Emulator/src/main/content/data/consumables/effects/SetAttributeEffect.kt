@@ -6,7 +6,6 @@ import core.game.node.entity.player.Player
 import core.game.world.GameWorld.ticks
 
 class SetAttributeEffect : ConsumableEffect {
-
     private var attrString: String
     private var attrValue: Any
     private var isTicks: Boolean = false

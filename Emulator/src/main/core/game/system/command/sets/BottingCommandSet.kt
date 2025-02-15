@@ -13,7 +13,6 @@ import org.rs.consts.Components
 @Initializable
 class BottingCommandSet : CommandSet(Privilege.ADMIN) {
     override fun defineCommands() {
-
         if (GameWorld.settings?.enabled_botting != true) {
             return
         }
@@ -24,7 +23,10 @@ class BottingCommandSet : CommandSet(Privilege.ADMIN) {
                 return@define
             }
             if (!player.getAttribute("botting:warning_shown", false)) {
-                player.dialogueInterpreter.sendDialogue(colorize("%RWARNING: Running a bot script will permanently remove you"), colorize("%Rfrom the highscores."))
+                player.dialogueInterpreter.sendDialogue(
+                    colorize("%RWARNING: Running a bot script will permanently remove you"),
+                    colorize("%Rfrom the highscores."),
+                )
                 player.dialogueInterpreter.addAction { player, buttonId ->
                     player.setAttribute("/save:botting:warning_shown", true)
                 }
@@ -52,11 +54,13 @@ class BottingCommandSet : CommandSet(Privilege.ADMIN) {
                 return@define
             }
             if (!player.getAttribute("botting:warning_shown", false)) {
-                player.dialogueInterpreter.sendDialogue(colorize("%RWARNING: Running a bot script will permanently remove you from the highscores."))
+                player.dialogueInterpreter.sendDialogue(
+                    colorize("%RWARNING: Running a bot script will permanently remove you from the highscores."),
+                )
                 player.dialogueInterpreter.addAction { player, _ ->
                     player.setAttribute(
                         "/save:botting:warning_shown",
-                        true
+                        true,
                     )
                 }
                 return@define

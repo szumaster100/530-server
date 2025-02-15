@@ -1,6 +1,5 @@
 package content.region.kandarin.quest.murder
 
-import org.rs.consts.Items
 import core.api.addItem
 import core.api.removeItem
 import core.api.sendMessage
@@ -12,9 +11,10 @@ import core.game.node.Node
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.diary.DiaryType
 import core.game.node.scenery.Scenery
+import core.plugin.ClassScanner
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner
+import org.rs.consts.Items
 
 @Initializable
 class SinclairFlourBarrelPlugin : OptionHandler() {
@@ -24,11 +24,18 @@ class SinclairFlourBarrelPlugin : OptionHandler() {
         private const val MAX_FLOUR_COUNT = 4
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         return retrieveFlour(player, node as Scenery)
     }
 
-    private fun retrieveFlour(player: Player, barrel: Scenery): Boolean {
+    private fun retrieveFlour(
+        player: Player,
+        barrel: Scenery,
+    ): Boolean {
         if (!removeItem(player, Items.EMPTY_POT_1931)) {
             sendMessage(player, "I need an empty pot to hold the flour in.")
         } else {
@@ -42,13 +49,15 @@ class SinclairFlourBarrelPlugin : OptionHandler() {
     }
 
     private fun updateDiaryProgress(player: Player) {
-        if (!player.achievementDiaryManager.getDiary(DiaryType.SEERS_VILLAGE)
+        if (!player.achievementDiaryManager
+                .getDiary(DiaryType.SEERS_VILLAGE)
                 .isComplete(DIARY_TASK_INDEX, DIARY_TASK_ID)
         ) {
             val currentFlourCount = player.getAttribute("diary:seers:sinclair-flour", 0)
             if (currentFlourCount >= MAX_FLOUR_COUNT) {
                 player.setAttribute("/save:diary:seers:sinclair-flour", DIARY_TASK_ID)
-                player.achievementDiaryManager.getDiary(DiaryType.SEERS_VILLAGE)
+                player.achievementDiaryManager
+                    .getDiary(DiaryType.SEERS_VILLAGE)
                     .updateTask(player, DIARY_TASK_INDEX, DIARY_TASK_ID, true)
             } else {
                 player.setAttribute("/save:diary:seers:sinclair-flour", currentFlourCount + 1)

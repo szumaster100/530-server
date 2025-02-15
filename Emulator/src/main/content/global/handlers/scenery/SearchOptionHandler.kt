@@ -1,7 +1,5 @@
 package content.global.handlers.scenery
 
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.api.addItem
 import core.api.inInventory
 import core.api.sendMessage
@@ -13,12 +11,17 @@ import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 @Initializable
 class SearchOptionHandler : OptionHandler() {
-
-    enum class Search(val scenery: Int, val item: Item) {
-        DEFAULT(-1, Item(Items.LEATHER_GLOVES_1059, 1));
+    enum class Search(
+        val scenery: Int,
+        val item: Item,
+    ) {
+        DEFAULT(-1, Item(Items.LEATHER_GLOVES_1059, 1)),
+        ;
 
         companion object {
             fun forId(id: Int): Search? {
@@ -37,7 +40,11 @@ class SearchOptionHandler : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         if (node.name == "Bookcase") {
             sendMessage(player, "You search the books...")
             sendMessageWithDelay(player, "You find nothing of interest to you.", 1)

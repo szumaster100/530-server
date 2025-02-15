@@ -1,9 +1,5 @@
 package content.region.morytania.handlers.phasmatys
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Scenery
-import org.rs.consts.Sounds
 import content.global.skill.prayer.Bones
 import core.api.*
 import core.game.interaction.IntType
@@ -15,11 +11,13 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld.Pulser
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Scenery
+import org.rs.consts.Sounds
 
 class BoneGrinderListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(Scenery.LOADER_11162, IntType.SCENERY, "fill") { player, _ ->
             handleFill(player)
         }
@@ -57,14 +55,15 @@ class BoneGrinderListener : InteractionListener {
     fun handleFill(player: Player): Boolean {
         val bone = getBone(player)
         if ((bone == null) || (bone.bonemealId == null)) {
-            if (inInventory(player, Items.MARINATED_J_BONES_3130) || inInventory(
+            if (inInventory(player, Items.MARINATED_J_BONES_3130) ||
+                inInventory(
                     player,
-                    Items.MARINATED_J_BONES_3133
+                    Items.MARINATED_J_BONES_3133,
                 )
             ) {
                 sendDialogue(
                     player,
-                    "These bones could break the bone grinder. Perhaps I should find some different bones."
+                    "These bones could break the bone grinder. Perhaps I should find some different bones.",
                 )
             } else {
                 sendMessage(player, "You have no bones to grind.")
@@ -80,32 +79,35 @@ class BoneGrinderListener : InteractionListener {
             return true
         }
 
-        val fillPulse = object : Pulse() {
-            var stage = 0
-            override fun pulse(): Boolean {
-                when (stage++) {
-                    0 -> {
-                        lock(player, FILL_ANIM.duration)
-                        animate(player, FILL_ANIM)
-                        playAudio(player, Sounds.FILL_GRINDER_1133)
-                    }
+        val fillPulse =
+            object : Pulse() {
+                var stage = 0
 
-                    FILL_ANIM.duration -> {
-                        sendMessage(player, "You fill the hopper with bones.")
-                        removeItem(player, Item(bone.itemId), Container.INVENTORY)
-                        setAttribute(player, LOADED_BONE_KEY, bone.ordinal)
-                        setAttribute(player, BONE_HOPPER_KEY, true)
-                        return true
+                override fun pulse(): Boolean {
+                    when (stage++) {
+                        0 -> {
+                            lock(player, FILL_ANIM.duration)
+                            animate(player, FILL_ANIM)
+                            playAudio(player, Sounds.FILL_GRINDER_1133)
+                        }
+
+                        FILL_ANIM.duration -> {
+                            sendMessage(player, "You fill the hopper with bones.")
+                            removeItem(player, Item(bone.itemId), Container.INVENTORY)
+                            setAttribute(player, LOADED_BONE_KEY, bone.ordinal)
+                            setAttribute(player, BONE_HOPPER_KEY, true)
+                            return true
+                        }
                     }
+                    return false
                 }
-                return false
             }
-        }
 
         if (inInventory(player, bone.itemId)) {
             player.pulseManager.run(
                 object : Pulse() {
                     var stage = 0
+
                     override fun pulse(): Boolean {
                         when (stage++) {
                             0 -> Pulser.submit(fillPulse).also { delay = FILL_ANIM.duration + 1 }
@@ -149,7 +151,7 @@ class BoneGrinderListener : InteractionListener {
                         }
                         return false
                     }
-                }
+                },
             )
         } else {
             player.pulseManager.run(fillPulse, PulseType.CUSTOM_1)
@@ -171,6 +173,7 @@ class BoneGrinderListener : InteractionListener {
         player.pulseManager.run(
             object : Pulse() {
                 var stage = 0
+
                 override fun pulse(): Boolean {
                     when (stage++) {
                         0 -> {
@@ -191,7 +194,7 @@ class BoneGrinderListener : InteractionListener {
                     return false
                 }
             },
-            PulseType.CUSTOM_1
+            PulseType.CUSTOM_1,
         )
         return true
     }
@@ -216,12 +219,13 @@ class BoneGrinderListener : InteractionListener {
         val hasMeal = getAttribute(player, BONE_BIN_KEY, false) && boneType != -1
 
         if (!hasMeal) {
-            if (inHopper)
+            if (inHopper) {
                 sendMessage(player, "You need to wind the wheel to grind the bones.")
-            else if (boneType == -1)
+            } else if (boneType == -1) {
                 sendMessage(player, "You need to load some bones in the hopper first.")
-            else
+            } else {
                 sendMessage(player, "You have no bonemeal to collect.")
+            }
             return true
         }
 
@@ -238,6 +242,7 @@ class BoneGrinderListener : InteractionListener {
         player.pulseManager.run(
             object : Pulse() {
                 var stage = 0
+
                 override fun pulse(): Boolean {
                     when (stage++) {
                         0 -> {
@@ -256,7 +261,7 @@ class BoneGrinderListener : InteractionListener {
                     return false
                 }
             },
-            PulseType.CUSTOM_1
+            PulseType.CUSTOM_1,
         )
         return true
     }

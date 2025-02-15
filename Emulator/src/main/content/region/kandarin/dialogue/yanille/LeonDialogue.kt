@@ -1,7 +1,5 @@
 package content.region.kandarin.dialogue.yanille
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.Container
 import core.api.addItem
 import core.api.interaction.openNpcShop
@@ -13,51 +11,71 @@ import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
-class LeonDialogue(player: Player? = null) : Dialogue(player) {
-
+class LeonDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         options(
             "What is this place?",
             "Can I have a go with your crossbow?",
-            "What are you holding there?"
+            "What are you holding there?",
         ).also { stage = 1 }
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
-            1 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.ASKING, "What is this place?")
-                    stage = 10
-                }
+            1 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.ASKING, "What is this place?")
+                        stage = 10
+                    }
 
-                2 -> {
-                    player(FaceAnim.FRIENDLY, "Can I have a go with your crossbow?")
-                    stage = 20
-                }
+                    2 -> {
+                        player(FaceAnim.FRIENDLY, "Can I have a go with your crossbow?")
+                        stage = 20
+                    }
 
-                3 -> {
-                    player(FaceAnim.ASKING, "What are you holding there?")
-                    stage = 30
+                    3 -> {
+                        player(FaceAnim.ASKING, "What are you holding there?")
+                        stage = 30
+                    }
                 }
-            }
 
             10 -> {
-                npc(FaceAnim.HAPPY, "This is Aleck's Hunter Emporium. Basically, it's just a", "shop with fancy name; you can buy various weapons", "and traps here.")
+                npc(
+                    FaceAnim.HAPPY,
+                    "This is Aleck's Hunter Emporium. Basically, it's just a",
+                    "shop with fancy name; you can buy various weapons",
+                    "and traps here.",
+                )
                 stage = END_DIALOGUE
             }
 
             20 -> {
-                npc(FaceAnim.HALF_GUILTY, "I'm afraid with it being a prototype, I've only got a few", "for my own testing purposes.")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "I'm afraid with it being a prototype, I've only got a few",
+                    "for my own testing purposes.",
+                )
                 stage = 21
             }
 
             21 -> {
-                npc(FaceAnim.HALF_GUILTY, "Of course, for the right price, it might be worth my while", "to make another prototype.")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "Of course, for the right price, it might be worth my while",
+                    "to make another prototype.",
+                )
                 stage = 22
             }
 
@@ -76,22 +94,23 @@ class LeonDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 25
             }
 
-            25 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "Ok, here you go.")
-                    stage = 40
-                }
+            25 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_GUILTY, "Ok, here you go.")
+                        stage = 40
+                    }
 
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "I'll give it a miss, thanks.")
-                    stage = 41
-                }
+                    2 -> {
+                        player(FaceAnim.HALF_GUILTY, "I'll give it a miss, thanks.")
+                        stage = 41
+                    }
 
-                3 -> {
-                    player(FaceAnim.HALF_GUILTY, "Does it use normal crossbow bolts?")
-                    stage = 42
+                    3 -> {
+                        player(FaceAnim.HALF_GUILTY, "Does it use normal crossbow bolts?")
+                        stage = 42
+                    }
                 }
-            }
 
             30 -> {
                 npc(FaceAnim.HAPPY, "This? This is a prototype for a new type of crossbow", "I've been designing.")
@@ -103,26 +122,48 @@ class LeonDialogue(player: Player? = null) : Dialogue(player) {
                     player(FaceAnim.HALF_GUILTY, "Oh, actually I don't have enough money with me.")
                     stage = END_DIALOGUE
                 } else if (player.inventory.freeSlots() == 0) {
-                    npc(FaceAnim.HALF_GUILTY, "Well, you look a little overburdened there at the moment.", "Maybe you should free up some space to carry it in first.")
+                    npc(
+                        FaceAnim.HALF_GUILTY,
+                        "Well, you look a little overburdened there at the moment.",
+                        "Maybe you should free up some space to carry it in first.",
+                    )
                     stage = END_DIALOGUE
                 } else {
-                    npc(FaceAnim.HALF_GUILTY, "Here, you might as well take this one.", "Aleck over there doesn't seem interested and it'll save you", "a wait.")
+                    npc(
+                        FaceAnim.HALF_GUILTY,
+                        "Here, you might as well take this one.",
+                        "Aleck over there doesn't seem interested and it'll save you",
+                        "a wait.",
+                    )
                     addItem(player, Items.HUNTERS_CROSSBOW_10156, 1, Container.INVENTORY)
                     stage = END_DIALOGUE
                 }
 
             41 -> {
-                npc(FaceAnim.HALF_GUILTY, "Your loss; they'll", "probably become highly valuable and sought after once", "I convince someone to market the things.")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "Your loss; they'll",
+                    "probably become highly valuable and sought after once",
+                    "I convince someone to market the things.",
+                )
                 stage = END_DIALOGUE
             }
 
             42 -> {
-                npc(FaceAnim.HALF_GUILTY, "Ah, I admit as a result of its er...unique construction, it", "won't take just any old bolts")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "Ah, I admit as a result of its er...unique construction, it",
+                    "won't take just any old bolts",
+                )
                 stage = 43
             }
 
             43 -> {
-                npc(FaceAnim.HALF_GUILTY, "If you can supply the materials and a token fee, I'd", "be happy to make some for you.")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "If you can supply the materials and a token fee, I'd",
+                    "be happy to make some for you.",
+                )
                 stage = 44
             }
 
@@ -132,31 +173,41 @@ class LeonDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             45 -> {
-                npc(FaceAnim.HALF_GUILTY, "Kebbit spikes. Lots of 'em. Not all kebbits have spikes, mind", "you. You'll be needing to look for prickly kebbits or, even better, ", "razor-backed kebbits to get material hard enough.")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "Kebbit spikes. Lots of 'em. Not all kebbits have spikes, mind",
+                    "you. You'll be needing to look for prickly kebbits or, even better, ",
+                    "razor-backed kebbits to get material hard enough.",
+                )
                 stage = 46
             }
 
             46 -> {
-                options("Let's see what you can make then.", "I'll give it a miss, thanks.", "Can't I just make my own?")
+                options(
+                    "Let's see what you can make then.",
+                    "I'll give it a miss, thanks.",
+                    "Can't I just make my own?",
+                )
                 stage = 47
             }
 
-            47 -> when (buttonId) {
-                1 -> {
-                    player(FaceAnim.HALF_GUILTY, "Let's see what you can make then.")
-                    stage = 48
-                }
+            47 ->
+                when (buttonId) {
+                    1 -> {
+                        player(FaceAnim.HALF_GUILTY, "Let's see what you can make then.")
+                        stage = 48
+                    }
 
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "I'll give it a miss, thanks.")
-                    stage = 49
-                }
+                    2 -> {
+                        player(FaceAnim.HALF_GUILTY, "I'll give it a miss, thanks.")
+                        stage = 49
+                    }
 
-                3 -> {
-                    player(FaceAnim.HALF_GUILTY, "Can't I just make my own?")
-                    stage = 52
+                    3 -> {
+                        player(FaceAnim.HALF_GUILTY, "Can't I just make my own?")
+                        stage = 52
+                    }
                 }
-            }
 
             48 -> {
                 end()
@@ -164,7 +215,11 @@ class LeonDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             49 -> {
-                npc(FaceAnim.HALF_GUILTY, "Well, if you ever find yourself in need of that innovative", "edge, you know who to contact.")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "Well, if you ever find yourself in need of that innovative",
+                    "edge, you know who to contact.",
+                )
                 stage = 50
             }
 
@@ -174,12 +229,21 @@ class LeonDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             51 -> {
-                npc(FaceAnim.HALF_GUILTY, "Yes, I suppose you could, although you'll need a steady hand with", "a knife and chisel.")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "Yes, I suppose you could, although you'll need a steady hand with",
+                    "a knife and chisel.",
+                )
                 stage = 52
             }
 
             52 -> {
-                npc(FaceAnim.HALF_GUILTY, "The bolts have an unusual diameter, but basically you'll", "just need to be able to carve kebbit spikes into", "straight shafts.")
+                npc(
+                    FaceAnim.HALF_GUILTY,
+                    "The bolts have an unusual diameter, but basically you'll",
+                    "just need to be able to carve kebbit spikes into",
+                    "straight shafts.",
+                )
                 stage = 53
             }
 

@@ -1,6 +1,5 @@
 package content.region.kandarin.quest.arena.cutscene
 
-import org.rs.consts.NPCs
 import content.region.kandarin.quest.arena.handlers.npc.ScorpionNPC.Companion.spawnScorpion
 import core.api.animate
 import core.api.location
@@ -9,8 +8,11 @@ import core.game.activity.Cutscene
 import core.game.global.action.DoorActionHandler
 import core.game.node.entity.player.Player
 import core.game.world.map.Direction
+import org.rs.consts.NPCs
 
-class ScorpionFightCutscene(player: Player) : Cutscene(player) {
+class ScorpionFightCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(location(2603, 3155, 0))
         if (player.settings.isRunToggled) {
@@ -22,7 +24,6 @@ class ScorpionFightCutscene(player: Player) : Cutscene(player) {
 
     override fun runStage(stage: Int) {
         when (stage) {
-
             0 -> {
                 move(getNPC(GUARD)!!, 39, 5)
                 sendChat(getNPC(GUARD)!!, "Right you, move it.")
@@ -98,7 +99,9 @@ class ScorpionFightCutscene(player: Player) : Cutscene(player) {
             }
 
             14 -> {
-                dialogueUpdate("From above you hear a voice..... 'Ladies and gentlemen! Let today's first fight between the outsider and everyone's favourite scorpion commence.'")
+                dialogueUpdate(
+                    "From above you hear a voice..... 'Ladies and gentlemen! Let today's first fight between the outsider and everyone's favourite scorpion commence.'",
+                )
             }
 
             15 -> {

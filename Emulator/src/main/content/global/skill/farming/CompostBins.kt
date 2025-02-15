@@ -6,11 +6,14 @@ import core.cache.def.impl.SceneryDefinition
 import core.game.node.entity.player.Player
 import core.game.node.scenery.Scenery
 
-enum class CompostBins(val varbit: Int) {
+enum class CompostBins(
+    val varbit: Int,
+) {
     FALADOR_COMPOST(740),
     CATHERBY_COMPOST(741),
     PORT_PHAS_COMPOST(742),
-    ARDOUGNE_COMPOST(743);
+    ARDOUGNE_COMPOST(743),
+    ;
 
     companion object {
         @JvmField

@@ -13,15 +13,19 @@ import core.plugin.Plugin
 
 @Initializable
 class DummyAttack : OptionHandler() {
-
     @Throws(Throwable::class)
     override fun newInstance(arg: Any?): Plugin<Any> {
-        for (i in intArrayOf(*NPCListener.dummySceneryIds))
+        for (i in intArrayOf(*NPCListener.dummySceneryIds)) {
             SceneryDefinition.forId(i).handlers["option:attack"] = this
+        }
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         player.lock(3)
         player.animate(player.properties.attackAnimation)
         if (player.properties.currentCombatLevel < 8) {

@@ -1,6 +1,5 @@
 package content.region.kandarin.quest.elementalquest2
 
-import org.rs.consts.*
 import core.api.*
 import core.api.interaction.transformNpc
 import core.api.quest.isQuestComplete
@@ -13,15 +12,14 @@ import core.game.node.entity.skill.Skills
 import core.game.node.scenery.SceneryBuilder
 import core.game.system.task.Pulse
 import core.game.world.map.Location
+import org.rs.consts.*
 
 class EW2Listener : InteractionListener {
-
     init {
         EW2Utils.JigCartNPC.init()
     }
 
     override fun defineListeners() {
-
         fun eW2scroll(player: Player) {
             val ew2Scroll =
                 arrayOf("Down", "", "2 N", "", "2 E", "", "2 N", "", "2 E", "", "10 N", "", "4 W", "", "Pipe 3.")
@@ -57,7 +55,7 @@ class EW2Listener : InteractionListener {
             player.dialogueInterpreter.sendDialogue(
                 "The label on this shelf reads 'Earth Sciences'; however, the helpful",
                 "books have been taken. It looks like the other students got to them",
-                "first."
+                "first.",
             )
             return@on true
         }
@@ -166,7 +164,7 @@ class EW2Listener : InteractionListener {
             player.dialogueInterpreter.sendDialogue(
                 "The schematic drawing details the construction and maintenance of a",
                 "mechanical arm. One of the sections you notice is an explanation of",
-                "how to make an elemental claw."
+                "how to make an elemental claw.",
             )
             return@on true
         }
@@ -193,34 +191,36 @@ class EW2Listener : InteractionListener {
                 SceneryBuilder.add(
                     core.game.node.scenery.Scenery(
                         EW2Utils.BrokenCraneUp,
-                        location(1954, 5145, 2)
-                    )
+                        location(1954, 5145, 2),
+                    ),
                 )
 
                 removeAttribute(player, EW2Utils.PullSupport)
             } else {
-                core.game.node.scenery.Scenery(EW2Utils.BrokenCraneDown, location(1954, 5145, 2))
+                core.game.node.scenery
+                    .Scenery(EW2Utils.BrokenCraneDown, location(1954, 5145, 2))
                 setAttribute(player, EW2Utils.PullSupport, true)
             }
 
-            if (player.getAttribute(EW2Utils.PullSupport, true) && player.getAttribute(
+            if (player.getAttribute(EW2Utils.PullSupport, true) &&
+                player.getAttribute(
                     EW2Utils.TurnSupport,
-                    true
+                    true,
                 )
             ) {
                 SceneryBuilder.add(
                     core.game.node.scenery.Scenery(
                         EW2Utils.BrokenCraneUpOnCorrectSide,
-                        Location(1954, 5145, 2)
-                    )
+                        Location(1954, 5145, 2),
+                    ),
                 )
                 removeAttribute(player, EW2Utils.TurnSupport)
             } else {
                 SceneryBuilder.add(
                     core.game.node.scenery.Scenery(
                         EW2Utils.BrokenCraneDown,
-                        location(1954, 5145, 2)
-                    )
+                        location(1954, 5145, 2),
+                    ),
                 )
                 setAttribute(player, EW2Utils.TurnSupport, true)
             }
@@ -242,7 +242,7 @@ class EW2Listener : InteractionListener {
             animate(player, EW2Utils.PullLever)
             player.dialogueInterpreter.sendDialogue(
                 "You pull the lever and the press responds. The hardy comes down,",
-                "hitting the elemental bar. The bar has been flattened"
+                "hitting the elemental bar. The bar has been flattened",
             )
             return@on true
         }
@@ -253,6 +253,7 @@ class EW2Listener : InteractionListener {
                 player,
                 object : Pulse() {
                     var count = 0
+
                     override fun pulse(): Boolean {
                         when (count++) {
                             0 -> sendDialogue(player, "the fan starts to blow.")
@@ -260,10 +261,9 @@ class EW2Listener : InteractionListener {
                         }
                         return false
                     }
-                }
+                },
             )
             return@on true
-
         }
 
         on(EW2Utils.CartLever, IntType.SCENERY, "pull") { player, _ ->
@@ -271,7 +271,7 @@ class EW2Listener : InteractionListener {
             animate(player, EW2Utils.PullLever)
             player.dialogueInterpreter.sendDialogue(
                 "The cart does not respond; maybe the cart is being blocked by",
-                "watertank door"
+                "watertank door",
             )
             return@on true
         }
@@ -283,18 +283,21 @@ class EW2Listener : InteractionListener {
                 SceneryBuilder.add(
                     core.game.node.scenery.Scenery(
                         EW2Utils.PipingDoorClose,
-                        location(1953, 5163, 2)
-                    )
+                        location(1953, 5163, 2),
+                    ),
                 )
                 removeAttribute(player, "ew2:door-lock-cart")
                 return@on true
             } else {
-                SceneryBuilder.remove(core.game.node.scenery.Scenery(18651, location(1953, 5163, 2)))
+                SceneryBuilder.remove(
+                    core.game.node.scenery
+                        .Scenery(18651, location(1953, 5163, 2)),
+                )
                 SceneryBuilder.add(
                     core.game.node.scenery.Scenery(
                         EW2Utils.PipingDoorOpen,
-                        location(1953, 5163, 2)
-                    )
+                        location(1953, 5163, 2),
+                    ),
                 )
                 setAttribute(player, "ew2:door-lock-cart", true)
             }
@@ -309,8 +312,8 @@ class EW2Listener : InteractionListener {
                     SceneryBuilder.add(
                         core.game.node.scenery.Scenery(
                             18660,
-                            location(1951, 5164, 2)
-                        )
+                            location(1951, 5164, 2),
+                        ),
                     )
                     playAudio(player, Sounds.EW2_WATER_RACK_3184)
                     playAudio(player, Sounds.EW2_WATER_VALVE_3185)
@@ -321,8 +324,8 @@ class EW2Listener : InteractionListener {
                     SceneryBuilder.add(
                         core.game.node.scenery.Scenery(
                             18661,
-                            location(1951, 5164, 2)
-                        )
+                            location(1951, 5164, 2),
+                        ),
                     )
                     playAudio(player, Sounds.EW2_WATER_FLOW_3183)
                     playAudio(player, Sounds.EW2_WATER_VALVE_3185)

@@ -1,8 +1,5 @@
 package content.global.ame.evilbob
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import content.data.GameAttributes
 import content.data.RandomEvent
 import core.api.*
@@ -12,6 +9,9 @@ import core.game.world.map.zone.ZoneBorders
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
 import core.tools.RandomFunction
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 object EvilBobUtils {
     const val evilBob = NPCs.EVIL_BOB_2479
@@ -55,7 +55,7 @@ object EvilBobUtils {
             GameAttributes.RE_BOB_ALERT,
             GameAttributes.RE_BOB_DIAL,
             GameAttributes.RE_BOB_DIAL_INDEX,
-            GameAttributes.RE_BOB_START
+            GameAttributes.RE_BOB_START,
         )
         removeItem(player, Items.SMALL_FISHING_NET_303)
         removeAll(player, Items.FISHLIKE_THING_6202)
@@ -77,7 +77,7 @@ object EvilBobUtils {
                     openDialogue(
                         player,
                         EvilBobDialogue(rewardDialogue = true, rewardXpSkill = Skills.FISHING),
-                        NPCs.EVIL_BOB_2479
+                        NPCs.EVIL_BOB_2479,
                     )
                 }
 
@@ -86,7 +86,7 @@ object EvilBobUtils {
                     openDialogue(
                         player,
                         EvilBobDialogue(rewardDialogue = true, rewardXpSkill = Skills.MAGIC),
-                        NPCs.EVIL_BOB_2479
+                        NPCs.EVIL_BOB_2479,
                     )
                 }
             }
@@ -95,7 +95,7 @@ object EvilBobUtils {
             openDialogue(
                 player,
                 EvilBobDialogue(rewardDialogue = true, rewardXpSkill = Skills.FISHING),
-                NPCs.EVIL_BOB_2479
+                NPCs.EVIL_BOB_2479,
             )
         }
     }

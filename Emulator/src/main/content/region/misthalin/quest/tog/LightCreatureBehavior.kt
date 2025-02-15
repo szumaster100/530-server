@@ -9,13 +9,14 @@ import core.tools.RandomFunction
 import org.rs.consts.NPCs
 
 class LightCreatureBehavior : NPCBehavior(NPCs.LIGHT_CREATURE_2021) {
-
     companion object {
-        fun moveLightCreature(self: NPC, location: Location) {
+        fun moveLightCreature(
+            self: NPC,
+            location: Location,
+        ) {
             self.setNextWalk()
             Pathfinder.find(self, location, true, Pathfinder.PROJECTILE).walk(self)
         }
-
     }
 
     override fun tick(self: NPC): Boolean {
@@ -24,7 +25,12 @@ class LightCreatureBehavior : NPCBehavior(NPCs.LIGHT_CREATURE_2021) {
             self.walkRadius = 20
             if (self.isWalks && !self.pulseManager.hasPulseRunning() && self.nextWalk < ticks) {
                 self.setNextWalk()
-                val l: Location = self.location.transform(-5 + RandomFunction.random(self.walkRadius), -5 + RandomFunction.random(self.walkRadius), 0)
+                val l: Location =
+                    self.location.transform(
+                        -5 + RandomFunction.random(self.walkRadius),
+                        -5 + RandomFunction.random(self.walkRadius),
+                        0,
+                    )
                 if (self.canMove(l)) {
                     Pathfinder.find(self, l, true, Pathfinder.PROJECTILE).walk(self)
                 }
@@ -32,21 +38,20 @@ class LightCreatureBehavior : NPCBehavior(NPCs.LIGHT_CREATURE_2021) {
         }
         return true
     }
-
 }
 
 /*
 
 	/**
-	 * Handles the sapphire lantern on a light creature.
-	 * @author Vexia
-	 *
-	 */
+ * Handles the sapphire lantern on a light creature.
+ * @author Vexia
+ *
+ */
 	public class LightCreatureHandler extends UseWithHandler {
 
 		/**
-		 * Constructs the {@code LightCreatureHandler}
-		 */
+ * Constructs the {@code LightCreatureHandler}
+ */
 		public LightCreatureHandler() {
 			super( 4700, 4701, 4702);
 		}
@@ -79,15 +84,15 @@ class LightCreatureBehavior : NPCBehavior(NPCs.LIGHT_CREATURE_2021) {
 
 
 	/**
-	 * Handles the light creature npc.
-	 * @author Vexia
-	 *
-	 */
+ * Handles the light creature npc.
+ * @author Vexia
+ *
+ */
 	public class LightCreatureNPC extends AbstractNPC {
 
 		/**
-		 * Constructs the {@code LightCreatureNPC}
-		 */
+ * Constructs the {@code LightCreatureNPC}
+ */
 		public LightCreatureNPC() {
 			super(0, null);
 			this.setWalks(true);
@@ -95,8 +100,8 @@ class LightCreatureBehavior : NPCBehavior(NPCs.LIGHT_CREATURE_2021) {
 		}
 
 		/**
-		 * Constructs the {@code LightCreatureNPC}
-		 */
+ * Constructs the {@code LightCreatureNPC}
+ */
 		public LightCreatureNPC(int id, Location location) {
 			super(id, location);
 		}

@@ -3,7 +3,6 @@ package core.storage
 import core.auth.UserAccountInfo
 
 interface AccountStorageProvider {
-
     fun checkUsernameTaken(username: String): Boolean
 
     fun getAccountInfo(username: String): UserAccountInfo

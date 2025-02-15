@@ -4,7 +4,6 @@ import core.game.consumable.ConsumableEffect
 import core.game.node.entity.player.Player
 
 class DwarvenRockCakeEffect : ConsumableEffect() {
-
     override fun activate(player: Player) {
         if (player.getSkills().lifepoints > 2) {
             effect.activate(player)

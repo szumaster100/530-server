@@ -1,21 +1,27 @@
 package content.region.kandarin.quest.itgronigen.handlers.npc
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.item.produceGroundItem
-import core.api.sendChat
 import core.api.quest.setQuestStage
+import core.api.sendChat
 import core.game.node.entity.Entity
 import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.player.Player
 import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
-class GoblinGuardNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+class GoblinGuardNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return GoblinGuardNPC(id, location)
     }
 
@@ -48,7 +54,7 @@ class GoblinGuardNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, 
                         guard.attack(player)
                         return true
                     }
-                }
+                },
             )
         }
     }

@@ -12,9 +12,7 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.request.RequestType
 
 class PlayerOption : InteractionListener {
-
     override fun defineListeners() {
-
         on(IntType.PLAYER, _P_ATTACK.name) { player, node ->
             player.attack(node)
             return@on true
@@ -45,7 +43,7 @@ class PlayerOption : InteractionListener {
                         mover.face(null)
                     }
                 },
-                PulseType.STANDARD
+                PulseType.STANDARD,
             )
             return@on true
         }

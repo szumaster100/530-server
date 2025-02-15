@@ -1,9 +1,5 @@
 package content.region.fremennik.quest.viking.handlers
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.global.skill.gathering.woodcutting.WoodcuttingPulse
 import content.global.travel.LyreTeleport
 import content.region.fremennik.quest.viking.dialogue.CouncilWorkerDialogue
@@ -32,11 +28,13 @@ import core.game.world.GameWorld.Pulser
 import core.game.world.map.Location
 import core.game.world.map.RegionManager
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 class FremennikTrialsListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(FISHERMAN, IntType.NPC, "talk-to") { player, _ ->
             openDialogue(player, FremennikFishermanDialogue())
             return@on true
@@ -77,10 +75,12 @@ class FremennikTrialsListener : InteractionListener {
                 } else {
                     player.dialogueInterpreter?.sendDialogue(
                         "I can't do this right now. I should create",
-                        "a distraction."
+                        "a distraction.",
                     )
                 }
-            } else return@onUseWith false
+            } else {
+                return@onUseWith false
+            }
             return@onUseWith true
         }
 
@@ -97,10 +97,11 @@ class FremennikTrialsListener : InteractionListener {
                 sendDialogue(player, "You need 40 crafting to do this!")
                 return@onUseWith true
             }
-            if (inInventory(player, KNIFE))
+            if (inInventory(player, KNIFE)) {
                 Pulser.submit(BranchFletchingPulse(player))
-            else
+            } else {
                 sendMessage(player, "You need a knife to do this.")
+            }
             return@onUseWith true
         }
 
@@ -157,19 +158,23 @@ class FremennikTrialsListener : InteractionListener {
         }
 
         on(LONGHALL_BACKDOOR, IntType.SCENERY, "open") { player, node ->
-            if (player.location == Location.create(2662, 3692, 0) || player.location == Location.create(
+            if (player.location == Location.create(2662, 3692, 0) ||
+                player.location ==
+                Location.create(
                     2661,
                     3692,
-                    0
+                    0,
                 )
             ) {
                 DoorActionHandler.handleDoor(player, node.asScenery())
                 return@on true
             }
-            if (player.location == Location.create(2621, 3666, 0) || player.location == Location.create(
+            if (player.location == Location.create(2621, 3666, 0) ||
+                player.location ==
+                Location.create(
                     2622,
                     3666,
-                    0
+                    0,
                 )
             ) {
                 DoorActionHandler.handleDoor(player, node.asScenery())
@@ -181,7 +186,7 @@ class FremennikTrialsListener : InteractionListener {
                     sendNPCDialogue(
                         player,
                         NPCs.LONGHALL_BOUNCER_1278,
-                        "Yeah you're good to go through. Olaf tells me you're some kind of outerlander bard here on tour. I doubt you're worse than Olaf is."
+                        "Yeah you're good to go through. Olaf tells me you're some kind of outerlander bard here on tour. I doubt you're worse than Olaf is.",
                     )
                     DoorActionHandler.handleAutowalkDoor(player, node.asScenery())
                 }
@@ -202,12 +207,13 @@ class FremennikTrialsListener : InteractionListener {
                 Pulser.submit(
                     LyreConcertPulse(
                         player,
-                        lyre.id
-                    )
+                        lyre.id,
+                    ),
                 )
-            } else if (getQuestStage(player, Quests.THE_FREMENNIK_TRIALS) < 20 || !isQuestComplete(
+            } else if (getQuestStage(player, Quests.THE_FREMENNIK_TRIALS) < 20 ||
+                !isQuestComplete(
                     player,
-                    Quests.THE_FREMENNIK_TRIALS
+                    Quests.THE_FREMENNIK_TRIALS,
                 )
             ) {
                 sendMessage(player, "You lack the knowledge to play this.")
@@ -230,7 +236,7 @@ class FremennikTrialsListener : InteractionListener {
                 setAttribute(player, "/save:fremtrials:cherrybomb", true)
                 removeItem(
                     player,
-                    LIT_BOMB
+                    LIT_BOMB,
                 )
             } else {
                 sendMessage(player, "What am I supposed to put in there? A shoe?")
@@ -239,20 +245,21 @@ class FremennikTrialsListener : InteractionListener {
         }
 
         on(PORTALIDs, IntType.SCENERY, "use") { player, portal ->
-            player.properties?.teleportLocation = when (portal.id) {
-                2273 -> DestRoom(2639, 10012, 2645, 10018).getCenter()
-                2274 -> DestRoom(2650, 10034, 2656, 10040).getCenter()
-                2506 -> DestRoom(2662, 10023, 2669, 10029).getCenter()
-                2507 -> DestRoom(2626, 10023, 2633, 10029).getCenter()
-                2505 -> DestRoom(2650, 10001, 2656, 10007).getCenter()
-                2503 -> DestRoom(2662, 10012, 2668, 10018).getCenter()
-                2504 -> {
-                    setAttribute(player, "/save:fremtrials:maze-complete", true)
-                    DestRoom(2662, 10034, 2668, 10039).getCenter()
-                }
+            player.properties?.teleportLocation =
+                when (portal.id) {
+                    2273 -> DestRoom(2639, 10012, 2645, 10018).getCenter()
+                    2274 -> DestRoom(2650, 10034, 2656, 10040).getCenter()
+                    2506 -> DestRoom(2662, 10023, 2669, 10029).getCenter()
+                    2507 -> DestRoom(2626, 10023, 2633, 10029).getCenter()
+                    2505 -> DestRoom(2650, 10001, 2656, 10007).getCenter()
+                    2503 -> DestRoom(2662, 10012, 2668, 10018).getCenter()
+                    2504 -> {
+                        setAttribute(player, "/save:fremtrials:maze-complete", true)
+                        DestRoom(2662, 10034, 2668, 10039).getCenter()
+                    }
 
-                else -> getRandomLocation(player)
-            }
+                    else -> getRandomLocation(player)
+                }
             return@on true
         }
 
@@ -264,10 +271,11 @@ class FremennikTrialsListener : InteractionListener {
         }
 
         on(THORVALD_LADDER, IntType.SCENERY, "climb-down") { player, _ ->
-            if (isQuestComplete(player, Quests.THE_FREMENNIK_TRIALS) || getAttribute(
+            if (isQuestComplete(player, Quests.THE_FREMENNIK_TRIALS) ||
+                getAttribute(
                     player,
                     "fremtrials:thorvald-vote",
-                    false
+                    false,
                 )
             ) {
                 sendMessage(player, "You have no reason to go back down there.")
@@ -278,7 +286,7 @@ class FremennikTrialsListener : InteractionListener {
                     FaceAnim.ANGRY,
                     "Outerlander... do not test my patience. I do not take",
                     "kindly to people wandering in here and acting as though",
-                    "they own the place."
+                    "they own the place.",
                 )
                 return@on true
             } else if (hasEquippableItems(player)) {
@@ -286,7 +294,7 @@ class FremennikTrialsListener : InteractionListener {
                     NPCs.THORVALD_THE_WARRIOR_1289,
                     FaceAnim.ANGRY,
                     "You may not enter the battleground with any armour",
-                    "or weaponry of any kind."
+                    "or weaponry of any kind.",
                 )
                 player.dialogueInterpreter.addAction { _, _ ->
                     player.dialogueInterpreter?.sendDialogues(
@@ -294,7 +302,7 @@ class FremennikTrialsListener : InteractionListener {
                         FaceAnim.ANGRY,
                         "If you need to place your equipment into your bank",
                         "account, I recommend that you speak to the seer. He",
-                        "knows a spell that will do that for you."
+                        "knows a spell that will do that for you.",
                     )
                 }
                 return@on true
@@ -324,18 +332,29 @@ class FremennikTrialsListener : InteractionListener {
         on(SHOPNPCS, IntType.NPC, "Trade") { player, npc ->
             if (isQuestComplete(player, Quests.THE_FREMENNIK_TRIALS)) {
                 openNpcShop(player, npc.id)
-            } else when (npc.id) {
-                NPCs.THORA_THE_BARKEEP_1300 -> sendMessage(player, "Only Fremenniks may buy drinks here.")
-                NPCs.SKULGRIMEN_1303 -> sendMessage(player, "Only Fremenniks may purchase weapons and armour here.")
-                NPCs.SIGMUND_THE_MERCHANT_1282 -> sendMessage(player, "Only Fremenniks may trade with this merchant.")
-                NPCs.YRSA_1301 -> sendMessage(player, "Only Fremenniks may buy clothes here.")
-                NPCs.FISH_MONGER_1315 -> sendMessage(player, "Only Fremenniks may purchase fish here.")
+            } else {
+                when (npc.id) {
+                    NPCs.THORA_THE_BARKEEP_1300 -> sendMessage(player, "Only Fremenniks may buy drinks here.")
+                    NPCs.SKULGRIMEN_1303 -> sendMessage(player, "Only Fremenniks may purchase weapons and armour here.")
+                    NPCs.SIGMUND_THE_MERCHANT_1282 ->
+                        sendMessage(
+                            player,
+                            "Only Fremenniks may trade with this merchant.",
+                        )
+                    NPCs.YRSA_1301 -> sendMessage(player, "Only Fremenniks may buy clothes here.")
+                    NPCs.FISH_MONGER_1315 -> sendMessage(player, "Only Fremenniks may purchase fish here.")
+                }
             }
             return@on true
         }
     }
 
-    class DestRoom(val swx: Int, val swy: Int, val nex: Int, val ney: Int)
+    class DestRoom(
+        val swx: Int,
+        val swy: Int,
+        val nex: Int,
+        val ney: Int,
+    )
 
     fun DestRoom.getCenter(): Location {
         return Location((swx + nex) / 2, (swy + ney) / 2).transform(1, 0, 0)
@@ -345,7 +364,13 @@ class FremennikTrialsListener : InteractionListener {
         var obj: Scenery? = null
 
         while (obj?.id != 5138) {
-            val objects = player?.viewport?.chunks?.random()?.random()?.objects
+            val objects =
+                player
+                    ?.viewport
+                    ?.chunks
+                    ?.random()
+                    ?.random()
+                    ?.objects
             obj = objects?.random()?.random()
             if (obj == null || obj.location?.equals(Location(0, 0, 0))!!) {
                 continue
@@ -376,16 +401,21 @@ class FremennikTrialsListener : InteractionListener {
         return false
     }
 
-    class SpiritPulse(val player: Player, val fish: Int) : Pulse() {
+    class SpiritPulse(
+        val player: Player,
+        val fish: Int,
+    ) : Pulse() {
         var counter = 0
         val npc = NPC(1273, player.location)
-        val sea_boots = intArrayOf(
-            Items.FREMENNIK_SEA_BOOTS_1_14571,
-            Items.FREMENNIK_SEA_BOOTS_2_14572,
-            Items.FREMENNIK_SEA_BOOTS_3_14573
-        )
+        val sea_boots =
+            intArrayOf(
+                Items.FREMENNIK_SEA_BOOTS_1_14571,
+                Items.FREMENNIK_SEA_BOOTS_2_14572,
+                Items.FREMENNIK_SEA_BOOTS_3_14573,
+            )
         val hasboots = player.equipment.containsAtLeastOneItem(sea_boots)
         val hasring = player.equipment.containsItem(Item(Items.RING_OF_CHAROS_4202))
+
         override fun pulse(): Boolean {
             when (counter++) {
                 0 -> {
@@ -396,75 +426,91 @@ class FremennikTrialsListener : InteractionListener {
 
                 1 -> npc.moveStep()
                 2 -> npc.face(player).also { player.face(npc) }
-                3 -> player.dialogueInterpreter?.sendDialogues(
-                    npc,
-                    FaceAnim.HAPPY,
-                    "I will kindly accept this offering, and",
-                    "bestow upon you a gift in return."
-                )
+                3 ->
+                    player.dialogueInterpreter?.sendDialogues(
+                        npc,
+                        FaceAnim.HAPPY,
+                        "I will kindly accept this offering, and",
+                        "bestow upon you a gift in return.",
+                    )
 
-                4 -> if (!removeItem(player, Items.LYRE_3689)) {
-                    removeItem(player, Items.ENCHANTED_LYRE_3690)
-                }
+                4 ->
+                    if (!removeItem(player, Items.LYRE_3689)) {
+                        removeItem(player, Items.ENCHANTED_LYRE_3690)
+                    }
 
                 5 -> {
-                    if (hasring) when (fish) {
-                        363 -> {
-                            finishDiaryTask(player, DiaryType.FREMENNIK, 1, 4)
-                            if (hasboots) {
-                                addItem(player, Items.ENCHANTED_LYRE3_6126)
-                            } else {
-                                addItem(player, Items.ENCHANTED_LYRE2_6125)
+                    if (hasring) {
+                        when (fish) {
+                            363 -> {
+                                finishDiaryTask(player, DiaryType.FREMENNIK, 1, 4)
+                                if (hasboots) {
+                                    addItem(player, Items.ENCHANTED_LYRE3_6126)
+                                } else {
+                                    addItem(player, Items.ENCHANTED_LYRE2_6125)
+                                }
                             }
                         }
                     } else {
-                        if (hasboots) when (fish) {
-                            383 -> addItem(player, Items.ENCHANTED_LYRE3_6126)
-                            389 -> addItem(player, Items.ENCHANTED_LYRE5_14590)
-                            395 -> addItem(player, Items.ENCHANTED_LYRE6_14591)
-                        } else when (fish) {
-                            383 -> addItem(player, Items.ENCHANTED_LYRE2_6125)
-                            389 -> addItem(player, Items.ENCHANTED_LYRE3_6126)
-                            395 -> addItem(player, Items.ENCHANTED_LYRE4_6127)
+                        if (hasboots) {
+                            when (fish) {
+                                383 -> addItem(player, Items.ENCHANTED_LYRE3_6126)
+                                389 -> addItem(player, Items.ENCHANTED_LYRE5_14590)
+                                395 -> addItem(player, Items.ENCHANTED_LYRE6_14591)
+                            }
+                        } else {
+                            when (fish) {
+                                383 -> addItem(player, Items.ENCHANTED_LYRE2_6125)
+                                389 -> addItem(player, Items.ENCHANTED_LYRE3_6126)
+                                395 -> addItem(player, Items.ENCHANTED_LYRE4_6127)
+                            }
                         }
                     }
                 }
 
                 6 -> player.unlock()
-                10 -> npc.clear().also {
-                    setAttribute(player, "/save:LyreEnchanted", true)
-                    return true
-                }
+                10 ->
+                    npc.clear().also {
+                        setAttribute(player, "/save:LyreEnchanted", true)
+                        return true
+                    }
             }
             return false
         }
     }
 
-    class LyreConcertPulse(val player: Player, val Lyre: Int) : Pulse() {
-        val GENERIC_LYRICS = arrayOf(
-            "${player.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }} is my name,",
-            "I haven't much to say",
-            "But since I have to sing this song.",
-            "I'll just go ahead and play."
-        )
-        val CHAMPS_LYRICS = arrayOf(
-            "The thought of lots of questing,",
-            "Leaves some people unfulfilled,",
-            "But I have done my simple best, in",
-            "Entering the Champions Guild."
-        )
-        val HEROES_LYRICS = arrayOf(
-            "When it comes to fighting",
-            "I hit my share of zeroes",
-            "But I'm well respected at",
-            "the Guild reserved for Heroes,"
-        )
-        val LEGENDS_LYRICS = arrayOf(
-            "I cannot even start to list",
-            "The amount of foes I've killed.",
-            "I will simply tell you this:",
-            "I've joined the Legends' Guild!"
-        )
+    class LyreConcertPulse(
+        val player: Player,
+        val Lyre: Int,
+    ) : Pulse() {
+        val GENERIC_LYRICS =
+            arrayOf(
+                "${player.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }} is my name,",
+                "I haven't much to say",
+                "But since I have to sing this song.",
+                "I'll just go ahead and play.",
+            )
+        val CHAMPS_LYRICS =
+            arrayOf(
+                "The thought of lots of questing,",
+                "Leaves some people unfulfilled,",
+                "But I have done my simple best, in",
+                "Entering the Champions Guild.",
+            )
+        val HEROES_LYRICS =
+            arrayOf(
+                "When it comes to fighting",
+                "I hit my share of zeroes",
+                "But I'm well respected at",
+                "the Guild reserved for Heroes,",
+            )
+        val LEGENDS_LYRICS =
+            arrayOf(
+                "I cannot even start to list",
+                "The amount of foes I've killed.",
+                "I will simply tell you this:",
+                "I've joined the Legends' Guild!",
+            )
         var counter = 0
         val questPoints = getQuestPoints(player)
         val champGuild = player.achievementDiaryManager?.hasCompletedTask(DiaryType.VARROCK, 1, 1) ?: false
@@ -473,21 +519,22 @@ class FremennikTrialsListener : InteractionListener {
         val masteredAmount = player.getSkills()?.masteredSkills!! > 0
         var SKILLNAME = getMasteredSkillNames(player)
 
-        val LYRICS = when {
-            masteredAmount -> {
-                arrayOf(
-                    "When people speak of training,",
-                    "Some people think they're fine.",
-                    "But they just all seem jealous that",
-                    "My ${SKILLNAME.random()}'s ninety-nine!"
-                )
-            }
+        val LYRICS =
+            when {
+                masteredAmount -> {
+                    arrayOf(
+                        "When people speak of training,",
+                        "Some people think they're fine.",
+                        "But they just all seem jealous that",
+                        "My ${SKILLNAME.random()}'s ninety-nine!",
+                    )
+                }
 
-            legGuild -> LEGENDS_LYRICS
-            heroGuild -> HEROES_LYRICS
-            champGuild -> CHAMPS_LYRICS
-            else -> GENERIC_LYRICS
-        }
+                legGuild -> LEGENDS_LYRICS
+                heroGuild -> HEROES_LYRICS
+                champGuild -> CHAMPS_LYRICS
+                else -> GENERIC_LYRICS
+            }
 
         override fun pulse(): Boolean {
             when (counter++) {
@@ -528,8 +575,9 @@ class FremennikTrialsListener : InteractionListener {
                 14 -> {
                     setAttribute(player, "/save:lyreConcertPlayed", true)
                     removeAttribute(player, "LyreEnchanted")
-                    if (removeItem(player, Lyre))
+                    if (removeItem(player, Lyre)) {
                         addItem(player, Items.ENCHANTED_LYRE_3690)
+                    }
                     player.unlock()
                 }
             }
@@ -537,15 +585,18 @@ class FremennikTrialsListener : InteractionListener {
         }
     }
 
-    class BranchFletchingPulse(val player: Player) : Pulse() {
+    class BranchFletchingPulse(
+        val player: Player,
+    ) : Pulse() {
         var counter = 0
 
         override fun pulse(): Boolean {
             when (counter++) {
                 0 -> player.animator?.animate(Animation(1248)).also { player.lock() }
                 3 -> {
-                    if (removeItem(player, Items.BRANCH_3692))
+                    if (removeItem(player, Items.BRANCH_3692)) {
                         addItem(player, Items.UNSTRUNG_LYRE_3688)
+                    }
                     player.unlock()
                     return true
                 }
@@ -554,14 +605,18 @@ class FremennikTrialsListener : InteractionListener {
         }
     }
 
-    class KoscheiPulse(val player: Player) : Pulse() {
+    class KoscheiPulse(
+        val player: Player,
+    ) : Pulse() {
         var counter = 0
+
         override fun pulse(): Boolean {
             when (counter++) {
                 0 -> sendMessage(player, "Explore this battleground and find your foe...")
                 20 -> {
-                    if (player.getExtension<Any?>(KoscheiSession::class.java) != null)
+                    if (player.getExtension<Any?>(KoscheiSession::class.java) != null) {
                         return true
+                    }
                     KoscheiSession.create(player).start().also { return true }
                 }
             }
@@ -598,12 +653,13 @@ class FremennikTrialsListener : InteractionListener {
             intArrayOf(Items.RAW_BASS_363, Items.RAW_SHARK_383, Items.RAW_SEA_TURTLE_395, Items.RAW_MANTA_RAY_389)
         private val STEW_INGREDIENT_IDS =
             intArrayOf(Items.POTATO_1942, Items.ONION_1957, Items.CABBAGE_1965, Items.PET_ROCK_3695)
-        private val SHOPNPCS = intArrayOf(
-            NPCs.YRSA_1301,
-            NPCs.SKULGRIMEN_1303,
-            NPCs.THORA_THE_BARKEEP_1300,
-            NPCs.SIGMUND_THE_MERCHANT_1282,
-            NPCs.FISH_MONGER_1315
-        )
+        private val SHOPNPCS =
+            intArrayOf(
+                NPCs.YRSA_1301,
+                NPCs.SKULGRIMEN_1303,
+                NPCs.THORA_THE_BARKEEP_1300,
+                NPCs.SIGMUND_THE_MERCHANT_1282,
+                NPCs.FISH_MONGER_1315,
+            )
     }
 }

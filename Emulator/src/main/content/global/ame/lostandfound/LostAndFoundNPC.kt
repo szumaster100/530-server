@@ -1,6 +1,5 @@
 package content.global.ame.lostandfound
 
-import org.rs.consts.Components
 import content.data.RandomEvent
 import content.global.ame.RandomEventNPC
 import core.api.*
@@ -12,9 +11,11 @@ import core.game.node.entity.player.link.TeleportManager
 import core.game.node.item.Item
 import core.game.system.timer.impl.AntiMacro
 import core.game.world.map.zone.ZoneBorders
+import org.rs.consts.Components
 
-class LostAndFoundNPC(override var loot: WeightBasedTable? = null) : RandomEventNPC(-1) {
-
+class LostAndFoundNPC(
+    override var loot: WeightBasedTable? = null,
+) : RandomEventNPC(-1) {
     override fun init() {
         super.init()
 
@@ -38,7 +39,7 @@ class LostAndFoundNPC(override var loot: WeightBasedTable? = null) : RandomEvent
                     teleport(
                         player,
                         LostAndFoundUtils.eventLocation,
-                        type = TeleportManager.TeleportType.RANDOM_EVENT_OLD
+                        type = TeleportManager.TeleportType.RANDOM_EVENT_OLD,
                     )
                     sendMessage(player, "You have slipped through to the Abyssal plane!")
                     return@queueScript delayScript(player, 6)
@@ -50,7 +51,7 @@ class LostAndFoundNPC(override var loot: WeightBasedTable? = null) : RandomEvent
                         player,
                         true,
                         "There has been a fault in the teleportation matrix. Please operate the",
-                        "odd appendage out to be forwarded to your destination."
+                        "odd appendage out to be forwarded to your destination.",
                     )
                     lockTeleport(player, 100)
                     AntiMacro.terminateEventNpc(player)

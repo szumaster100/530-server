@@ -1,16 +1,16 @@
 package core.game.bots.impl
 
+import core.api.*
+import core.game.bots.*
 import core.game.interaction.DestinationFlag
+import core.game.interaction.IntType
+import core.game.interaction.InteractionListeners
 import core.game.interaction.MovementPulse
 import core.game.node.Node
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.world.map.zone.ZoneBorders
 import org.rs.consts.Items
-import core.game.interaction.IntType
-import core.game.interaction.InteractionListeners
-import core.api.*
-import core.game.bots.*
 
 @PlayerCompatible
 @ScriptName("Falador Coal Miner")
@@ -28,7 +28,6 @@ class CoalMiner : Script() {
 
     override fun tick() {
         when (state) {
-
             State.INIT -> {
                 overlay = scriptAPI.getOverlay()
                 ladderSwitch = true
@@ -63,14 +62,15 @@ class CoalMiner : Script() {
                 if (bank.insideBorder(bot)) {
                     val bank = scriptAPI.getNearestNode("bank booth", true)
                     if (bank != null) {
-                        bot.pulseManager.run(object : BankingPulse(this, bank) {
-                            override fun pulse(): Boolean {
-                                state = State.BANKING
-                                return super.pulse()
-                            }
-                        })
+                        bot.pulseManager.run(
+                            object : BankingPulse(this, bank) {
+                                override fun pulse(): Boolean {
+                                    state = State.BANKING
+                                    return super.pulse()
+                                }
+                            },
+                        )
                     }
-
                 } else {
                     if (!ladderSwitch) {
                         val ladder = scriptAPI.getNearestNode(30941, true)
@@ -128,8 +128,10 @@ class CoalMiner : Script() {
         }
     }
 
-    open class BankingPulse(val script: Script, val bank: Node) :
-        MovementPulse(script.bot, bank, DestinationFlag.OBJECT) {
+    open class BankingPulse(
+        val script: Script,
+        val bank: Node,
+    ) : MovementPulse(script.bot, bank, DestinationFlag.OBJECT) {
         override fun pulse(): Boolean {
             script.bot.faceLocation(bank.location)
             return true
@@ -150,7 +152,7 @@ class CoalMiner : Script() {
         TO_GE,
         SELLING,
         GO_BACK,
-        INIT
+        INIT,
     }
 
     init {

@@ -1,7 +1,5 @@
 package content.region.fremennik.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.api.addItem
 import core.api.freeSlots
 import core.api.replaceScenery
@@ -9,11 +7,11 @@ import core.api.sendMessage
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.tools.RandomFunction
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class PiratesCoveListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(FULL_BARREL, IntType.SCENERY, "take-from") { player, node ->
             val incrementAmount = RandomFunction.random(83, 1000)
 
@@ -23,7 +21,6 @@ class PiratesCoveListener : InteractionListener {
             }
 
             if (node.asScenery().charge >= 0) {
-
                 node.asScenery().charge -= incrementAmount
                 when (node.id) {
                     Scenery.BARREL_16884 -> addItem(player, Items.ROTTEN_APPLE_1984)

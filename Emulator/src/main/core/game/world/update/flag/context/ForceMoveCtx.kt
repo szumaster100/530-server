@@ -8,5 +8,5 @@ data class ForceMoveCtx(
     val dest: Location, // The endpoint of the move
     val startArrive: Int, // Indicates when the move starts
     val destArrive: Int, // Indicates when the move ends
-    val direction: Direction // Specifies the direction of the move
+    val direction: Direction, // Specifies the direction of the move
 )

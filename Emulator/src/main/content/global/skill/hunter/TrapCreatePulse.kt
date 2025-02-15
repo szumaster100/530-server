@@ -1,6 +1,5 @@
 package content.global.skill.hunter
 
-import org.rs.consts.Sounds
 import core.api.lock
 import core.api.playAudio
 import core.game.node.Node
@@ -13,9 +12,13 @@ import core.game.node.item.Item
 import core.game.node.scenery.SceneryBuilder
 import core.game.world.map.Location
 import core.game.world.map.RegionManager.getObject
+import org.rs.consts.Sounds
 
-class TrapCreatePulse(player: Player, node: Node, val trap: Traps) : SkillPulse<Node?>(player, node) {
-
+class TrapCreatePulse(
+    player: Player,
+    node: Node,
+    val trap: Traps,
+) : SkillPulse<Node?>(player, node) {
     private val startLocation: Location = if (node is GroundItem) node.getLocation() else player.location
     private var groundItem: GroundItem? = null
     private var ticks = 0
@@ -44,7 +47,11 @@ class TrapCreatePulse(player: Player, node: Node, val trap: Traps) : SkillPulse<
 
     override fun checkRequirements(): Boolean {
         if (player.skills.getStaticLevel(Skills.HUNTER) < trap.settings.level) {
-            player.sendMessage("You need a Hunter level of at least " + trap.settings.level + " in order to setup a " + node!!.name.lowercase() + ".")
+            player.sendMessage(
+                "You need a Hunter level of at least " + trap.settings.level + " in order to setup a " +
+                    node!!.name.lowercase() +
+                    ".",
+            )
             return false
         }
         if (instance.exceedsTrapLimit(trap)) {

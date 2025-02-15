@@ -1,9 +1,5 @@
 package content.region.kandarin.quest.arena.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
-import org.rs.consts.Quests
 import content.region.kandarin.quest.arena.cutscene.JeremyRescueCutscene
 import content.region.kandarin.quest.arena.cutscene.PrisonCutscene
 import content.region.kandarin.quest.arena.dialogue.*
@@ -16,9 +12,12 @@ import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.npc.NPC
 import core.game.world.map.Location
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
+import org.rs.consts.Scenery
 
 class FightArenaListener : InteractionListener {
-
     init {
         Jeremy.init()
         Jeremy.isWalks = true
@@ -53,7 +52,9 @@ class FightArenaListener : InteractionListener {
         }
 
         on(FULL_ARMOR_STAND, IntType.SCENERY, "borrow") { player, _ ->
-            if (getQuestStage(player, Quests.FIGHT_ARENA) >= 10 && !allInEquipment(player, HELMET, ARMOR) && freeSlots(player) >= 2
+            if (getQuestStage(player, Quests.FIGHT_ARENA) >= 10 &&
+                !allInEquipment(player, HELMET, ARMOR) &&
+                freeSlots(player) >= 2
             ) {
                 replaceScenery(FULL_ARMOR_STAND_1!!.asScenery(), EMPTY_STAND, 10, location(2619, 3196, 0))
                 sendMessage(player, "You borrow the suit of armour. It looks like it's just your size.")
@@ -114,7 +115,7 @@ class FightArenaListener : InteractionListener {
         onUseWith(
             IntType.SCENERY,
             CELL_KEY,
-            CELL_DOOR_2
+            CELL_DOOR_2,
         ) { player, _, _ ->
             if (getQuestStage(player, Quests.FIGHT_ARENA) == 88) {
                 PrisonCutscene(player).start()
@@ -128,12 +129,12 @@ class FightArenaListener : InteractionListener {
         onUseWith(
             IntType.SCENERY,
             CELL_KEY,
-            CELL_DOOR_1
+            CELL_DOOR_1,
         ) { player, _, _ ->
             if (getQuestStage(player, Quests.FIGHT_ARENA) >= 68) {
                 sendDialogue(
                     player,
-                    "I don't want to attract too much attention by freeing all the prisoners. I need to find Jeremy and he's not in this cell."
+                    "I don't want to attract too much attention by freeing all the prisoners. I need to find Jeremy and he's not in this cell.",
                 )
             } else {
                 sendMessage(player, "The cell gate is securely locked.")
@@ -153,7 +154,6 @@ class FightArenaListener : InteractionListener {
     }
 
     override fun defineDestinationOverrides() {
-
         setDest(IntType.NPC, intArrayOf(JEREMY_A), "talk-to") { _, _ ->
             return@setDest Location.create(2617, 3167, 0)
         }

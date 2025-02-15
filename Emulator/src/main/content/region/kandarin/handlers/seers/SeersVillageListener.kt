@@ -1,6 +1,5 @@
 package content.region.kandarin.handlers.seers
 
-import org.rs.consts.*
 import core.api.*
 import core.api.quest.getQuestStage
 import core.game.interaction.IntType
@@ -10,9 +9,9 @@ import core.game.node.Node
 import core.game.node.entity.impl.PulseType
 import core.game.node.entity.player.Player
 import core.game.shops.Shops.Companion.openId
+import org.rs.consts.*
 
 class SeersVillageListener : InteractionListener {
-
     companion object {
         private val GATES = intArrayOf(47, 48, 52, 53)
         private const val COURTHOUSE_STAIRS = Scenery.STAIRS_26017
@@ -22,7 +21,6 @@ class SeersVillageListener : InteractionListener {
     }
 
     override fun defineListeners() {
-
         on(COURTHOUSE_STAIRS, IntType.SCENERY, "climb-down") { player, _ ->
             sendMessage(player, "Court is not in session.")
             return@on true
@@ -40,9 +38,10 @@ class SeersVillageListener : InteractionListener {
 
         on(GATES, IntType.SCENERY, "open") { player, node ->
             if (node.id == 47 || node.id == 48) {
-                if (!getAttribute(player, "fishing_contest:pass-shown", false) || getQuestStage(
+                if (!getAttribute(player, "fishing_contest:pass-shown", false) ||
+                    getQuestStage(
                         player,
-                        Quests.FISHING_CONTEST
+                        Quests.FISHING_CONTEST,
                     ) < 10
                 ) {
                     player.pulseManager.run(
@@ -57,7 +56,7 @@ class SeersVillageListener : InteractionListener {
                                 return true
                             }
                         },
-                        PulseType.STANDARD
+                        PulseType.STANDARD,
                     )
                 } else {
                     if (!inInventory(player, Items.FISHING_ROD_307)) {
@@ -73,11 +72,11 @@ class SeersVillageListener : InteractionListener {
                     sendNPCDialogue(
                         player,
                         NPCs.FORESTER_231,
-                        "Hey! You can't come through here! This is private land!"
+                        "Hey! You can't come through here! This is private land!",
                     )
                     sendMessage(
                         player,
-                        "There might be a gap in the fence somewhere where he wouldn't see you sneak in."
+                        "There might be a gap in the fence somewhere where he wouldn't see you sneak in.",
                     )
                     sendMessage(player, "You should look around.")
                 } else {

@@ -1,6 +1,5 @@
 package content.region.kandarin.quest.itgronigen.handlers.npc
 
-import org.rs.consts.NPCs
 import core.api.event.applyPoison
 import core.game.node.entity.Entity
 import core.game.node.entity.npc.AbstractNPC
@@ -9,10 +8,17 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.tools.RandomFunction
+import org.rs.consts.NPCs
 
-class PoisonSpiderNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+class PoisonSpiderNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return PoisonSpiderNPC(id, location)
     }
 
@@ -44,7 +50,7 @@ class PoisonSpiderNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id,
                         spider.attack(player)
                         return true
                     }
-                }
+                },
             )
         }
     }
@@ -52,8 +58,9 @@ class PoisonSpiderNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id,
     override fun onAttack(target: Entity?) {
         super.onAttack(target)
         if (target is Player) {
-            if (RandomFunction.roll(10))
+            if (RandomFunction.roll(10)) {
                 applyPoison(target, this, 13)
+            }
         }
     }
 

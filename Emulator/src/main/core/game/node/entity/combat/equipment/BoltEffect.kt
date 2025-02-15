@@ -16,10 +16,12 @@ import org.rs.consts.NPCs
 import org.rs.consts.Sounds
 import kotlin.math.ceil
 
-enum class BoltEffect(val itemId: Int, private val graphics: Graphics, private val sound: Audio) {
-
+enum class BoltEffect(
+    val itemId: Int,
+    private val graphics: Graphics,
+    private val sound: Audio,
+) {
     OPAL(Items.OPAL_BOLTS_E_9236, Graphics.create(749), Audio(Sounds.LUCKY_LIGHTNING_2918)) {
-
         override fun impact(state: BattleState) {
             state.estimatedHit += RandomFunction.random(3, 20)
             if (state.estimatedHit > 29) {
@@ -30,7 +32,6 @@ enum class BoltEffect(val itemId: Int, private val graphics: Graphics, private v
     },
 
     JADE(Items.JADE_BOLTS_E_9237, Graphics(755), Audio(Sounds.EARTHS_FURY_2916)) {
-
         override fun impact(state: BattleState) {
             if (state.victim is Player) {
                 val p = state.victim.asPlayer()
@@ -54,7 +55,6 @@ enum class BoltEffect(val itemId: Int, private val graphics: Graphics, private v
     },
 
     PEARL(Items.PEARL_BOLTS_E_9238, Graphics.create(750), Audio(Sounds.SEA_CURSE_2920)) {
-
         override fun impact(state: BattleState) {
             state.estimatedHit += RandomFunction.random(3, 20)
             if (state.estimatedHit > 29) {
@@ -65,7 +65,15 @@ enum class BoltEffect(val itemId: Int, private val graphics: Graphics, private v
 
         override fun canFire(state: BattleState): Boolean {
             if (state.victim is Player) {
-                if (state.victim.asPlayer().equipment.contains(1383, 1) || state.victim.asPlayer().equipment.contains(1395, 1)) {
+                if (state.victim
+                        .asPlayer()
+                        .equipment
+                        .contains(1383, 1) ||
+                    state.victim
+                        .asPlayer()
+                        .equipment
+                        .contains(1395, 1)
+                ) {
                     return false
                 }
             }
@@ -74,7 +82,6 @@ enum class BoltEffect(val itemId: Int, private val graphics: Graphics, private v
     },
 
     TOPAZ(Items.TOPAZ_BOLTS_E_9239, Graphics.create(757), Audio(Sounds.DOWN_TO_EARTH_2914)) {
-
         override fun impact(state: BattleState) {
             if (state.victim is Player) {
                 val p = state.victim.asPlayer()
@@ -85,9 +92,11 @@ enum class BoltEffect(val itemId: Int, private val graphics: Graphics, private v
         }
     },
 
-    SAPPHIRE(Items.SAPPHIRE_BOLTS_E_9240,
-        Graphics(759, 100), Audio(Sounds.CLEAR_MIND_2912)) {
-
+    SAPPHIRE(
+        Items.SAPPHIRE_BOLTS_E_9240,
+        Graphics(759, 100),
+        Audio(Sounds.CLEAR_MIND_2912),
+    ) {
         override fun impact(state: BattleState) {
             if (state.victim is Player && state.attacker is Player) {
                 val p = state.victim.asPlayer()
@@ -103,16 +112,17 @@ enum class BoltEffect(val itemId: Int, private val graphics: Graphics, private v
     },
 
     EMERALD(Items.EMERALD_BOLTS_E_9241, Graphics(752), Audio(Sounds.MAGICAL_POISON_2919)) {
-
         override fun impact(state: BattleState) {
             applyPoison(state.victim, state.attacker, 40)
             super.impact(state)
         }
     },
 
-    RUBY(Items.RUBY_BOLTS_E_9242,
-        Graphics(754), Audio(Sounds.BLOOD_SACRIFICE_2911, 1)) {
-
+    RUBY(
+        Items.RUBY_BOLTS_E_9242,
+        Graphics(754),
+        Audio(Sounds.BLOOD_SACRIFICE_2911, 1),
+    ) {
         override fun impact(state: BattleState) {
             var victimPoints = (state.victim.getSkills().lifepoints * 0.20).toInt()
             val playerPoints = (state.attacker.getSkills().lifepoints * 0.10).toInt()
@@ -134,7 +144,6 @@ enum class BoltEffect(val itemId: Int, private val graphics: Graphics, private v
     },
 
     DIAMOND(Items.DIAMOND_BOLTS_E_9243, Graphics(758), Audio(Sounds.CROSSBOW_DIAMOND_2913)) {
-
         override fun impact(state: BattleState) {
             state.estimatedHit += RandomFunction.random(5, 14)
             super.impact(state)
@@ -142,7 +151,6 @@ enum class BoltEffect(val itemId: Int, private val graphics: Graphics, private v
     },
 
     DRAGON(Items.DRAGON_BOLTS_E_9244, Graphics(756), Audio(Sounds.DRAGONS_BREATH_2915)) {
-
         override fun impact(state: BattleState) {
             state.estimatedHit += RandomFunction.random(17, 29)
             super.impact(state)
@@ -156,7 +164,16 @@ enum class BoltEffect(val itemId: Int, private val graphics: Graphics, private v
                 }
             }
             if (state.victim is Player) {
-                if (state.victim.asPlayer().equipment.contains(1540, 1) || state.victim.asPlayer().equipment.contains(11283, 1) || state.victim.hasFireResistance()) {
+                if (state.victim
+                        .asPlayer()
+                        .equipment
+                        .contains(1540, 1) ||
+                    state.victim
+                        .asPlayer()
+                        .equipment
+                        .contains(11283, 1) ||
+                    state.victim.hasFireResistance()
+                ) {
                     return false
                 }
             }
@@ -165,7 +182,6 @@ enum class BoltEffect(val itemId: Int, private val graphics: Graphics, private v
     },
 
     ONYX(Items.ONYX_BOLTS_E_9245, Graphics(753), Audio(Sounds.LIFE_LEECH_2917)) {
-
         override fun impact(state: BattleState) {
             val newDamage = (state.estimatedHit * 0.25).toInt()
             state.estimatedHit += newDamage
@@ -186,7 +202,7 @@ enum class BoltEffect(val itemId: Int, private val graphics: Graphics, private v
             }
             return super.canFire(state)
         }
-    };
+    }, ;
 
     open fun impact(state: BattleState) {
         val victim = state.victim
@@ -205,7 +221,6 @@ enum class BoltEffect(val itemId: Int, private val graphics: Graphics, private v
     }
 
     companion object {
-
         @JvmStatic fun forId(id: Int): BoltEffect? {
             for (effect in values()) {
                 if (effect.itemId == id) {

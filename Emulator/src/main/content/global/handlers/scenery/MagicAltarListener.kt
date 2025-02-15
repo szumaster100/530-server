@@ -1,9 +1,5 @@
 package content.global.handlers.scenery
 
-import org.rs.consts.Animations
-import org.rs.consts.Scenery
-import org.rs.consts.Quests
-import org.rs.consts.Sounds
 import core.api.*
 import core.api.quest.hasRequirement
 import core.game.interaction.IntType
@@ -12,9 +8,12 @@ import core.game.node.Node
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.SpellBookManager.SpellBook
 import core.game.node.entity.skill.Skills
+import org.rs.consts.Animations
+import org.rs.consts.Quests
+import org.rs.consts.Scenery
+import org.rs.consts.Sounds
 
 class MagicAltarListener : InteractionListener {
-
     override fun defineListeners() {
         on(intArrayOf(ANCIENT_ALTAR, LUNAR_ALTAR), IntType.SCENERY, "pray-at", "pray") { player, node ->
             if (meetsRequirements(player, node)) {
@@ -24,9 +23,22 @@ class MagicAltarListener : InteractionListener {
         }
     }
 
-    private fun meetsRequirements(player: Player, altar: Node): Boolean {
+    private fun meetsRequirements(
+        player: Player,
+        altar: Node,
+    ): Boolean {
         val level = if (altar.id == ANCIENT_ALTAR) 50 else 65
-        if (!hasRequirement(player, if (altar.id == ANCIENT_ALTAR) Quests.DESERT_TREASURE else Quests.LUNAR_DIPLOMACY)) {
+        if (!hasRequirement(
+                player,
+                if (altar.id ==
+                    ANCIENT_ALTAR
+                ) {
+                    Quests.DESERT_TREASURE
+                } else {
+                    Quests.LUNAR_DIPLOMACY
+                },
+            )
+        ) {
             return false
         }
         if (!hasLevelStat(player, Skills.MAGIC, level)) {
@@ -37,7 +49,10 @@ class MagicAltarListener : InteractionListener {
         return true
     }
 
-    private fun swapSpellBook(player: Player, altar: Node) {
+    private fun swapSpellBook(
+        player: Player,
+        altar: Node,
+    ) {
         lock(player, 3)
         playAudio(player, Sounds.PRAYER_RECHARGE_2674)
         animate(player, Animations.HUMAN_PRAY_645)
@@ -45,12 +60,32 @@ class MagicAltarListener : InteractionListener {
         if (altar.id == ANCIENT_ALTAR) {
             player.skills.decrementPrayerPoints(player.skills.prayerPoints)
         }
-        if (SpellBook.forInterface(player.spellBookManager.spellBook) == if (altar.id == ANCIENT_ALTAR) SpellBook.ANCIENT else SpellBook.LUNAR) {
-            sendMessage(player, if (altar.id == ANCIENT_ALTAR) "You feel a strange drain upon your memory..." else "Modern spells activated!")
+        if (SpellBook.forInterface(player.spellBookManager.spellBook) ==
+            if (altar.id == ANCIENT_ALTAR) SpellBook.ANCIENT else SpellBook.LUNAR
+        ) {
+            sendMessage(
+                player,
+                if (altar.id ==
+                    ANCIENT_ALTAR
+                ) {
+                    "You feel a strange drain upon your memory..."
+                } else {
+                    "Modern spells activated!"
+                },
+            )
             player.spellBookManager.setSpellBook(SpellBook.MODERN)
             player.spellBookManager.update(player)
         } else {
-            sendMessage(player, if (altar.id == ANCIENT_ALTAR) "You feel a strange wisdom fill your mind..." else "Lunar spells activated!")
+            sendMessage(
+                player,
+                if (altar.id ==
+                    ANCIENT_ALTAR
+                ) {
+                    "You feel a strange wisdom fill your mind..."
+                } else {
+                    "Lunar spells activated!"
+                },
+            )
             player.spellBookManager.setSpellBook(if (altar.id == ANCIENT_ALTAR) SpellBook.ANCIENT else SpellBook.LUNAR)
             player.spellBookManager.update(player)
         }

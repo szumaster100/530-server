@@ -1,25 +1,40 @@
 package content.region.morytania.quest.ahoy.dialogue
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.region.morytania.quest.ahoy.GhostsAhoyUtils.collectSignature
 import core.api.inEquipment
 import core.api.openDialogue
 import core.game.dialogue.DialogueFile
 import core.game.node.entity.npc.NPC
 import core.tools.END_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 class GhostVillagerDialogueFile : DialogueFile() {
-
-    override fun handle(componentID: Int, buttonID: Int) {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         npc = NPC(NPCs.GHOST_VILLAGER_1697)
         when (stage) {
             0 -> player("Would you sign this petition form, please?").also { stage++ }
             1 -> {
                 if (!inEquipment(player!!, Items.BEDSHEET_4285)) {
-                    npc("I'm sorry, but it's hard to believe that a mortal", "could be interested in helping us.").also { stage = END_DIALOGUE }
+                    npc(
+                        "I'm sorry, but it's hard to believe that a mortal",
+                        "could be interested in helping us.",
+                    ).also {
+                        stage =
+                            END_DIALOGUE
+                    }
                 } else if (inEquipment(player!!, Items.BEDSHEET_4284)) {
-                    npc("Why are you wearing that bedsheet? If you're", "trying to pretend to be one of us, you're not fooling", "anybody - you're not even green!").also { stage = END_DIALOGUE }
+                    npc(
+                        "Why are you wearing that bedsheet? If you're",
+                        "trying to pretend to be one of us, you're not fooling",
+                        "anybody - you're not even green!",
+                    ).also {
+                        stage =
+                            END_DIALOGUE
+                    }
                 } else {
                     when ((0..6).random()) {
                         0 -> npc("Most certainly, I will.").also { stage = 10 }

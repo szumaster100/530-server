@@ -1,9 +1,5 @@
 package content.region.misc.quest.lostcity
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.hasLevelStat
 import core.api.sendItemZoomOnInterface
 import core.game.node.entity.player.Player
@@ -11,15 +7,24 @@ import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class LostCity : Quest(Quests.LOST_CITY, 83, 82, 3, Vars.VARP_QUEST_LOST_CITY_PROGRESS_147, 0, 1, 6) {
-
-    class SkillRequirement(val skill: Int?, val level: Int?)
+    class SkillRequirement(
+        val skill: Int?,
+        val level: Int?,
+    )
 
     val requirements = arrayListOf<SkillRequirement>()
 
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 11
 
@@ -92,7 +97,8 @@ class LostCity : Quest(Quests.LOST_CITY, 83, 82, 3, Vars.VARP_QUEST_LOST_CITY_PR
     private fun drawQuestRequirements(player: Player) {
         var line = 7 + 7
         val questRequirements = arrayOf("Level 31 Crafting", "Level 36 Woodcutting")
-        val requireQuests = booleanArrayOf(hasLevelStat(player, Skills.CRAFTING, 31), hasLevelStat(player, Skills.WOODCUTTING, 36))
+        val requireQuests =
+            booleanArrayOf(hasLevelStat(player, Skills.CRAFTING, 31), hasLevelStat(player, Skills.WOODCUTTING, 36))
         line(player, "To complete this quest I will need:", line++)
         for (i in 0..1) {
             line(player, questRequirements[i], line++, requireQuests[i])

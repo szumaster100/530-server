@@ -1,8 +1,5 @@
 package content.global.skill.agility.shortcuts
 
-import org.rs.consts.Animations
-import org.rs.consts.Scenery
-import org.rs.consts.Sounds
 import content.global.skill.agility.AgilityHandler
 import core.api.*
 import core.game.interaction.IntType
@@ -13,12 +10,13 @@ import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
+import org.rs.consts.Animations
+import org.rs.consts.Scenery
+import org.rs.consts.Sounds
 import kotlin.random.Random
 
 class SinclairMansionLogShortcut : InteractionListener {
-
     override fun defineListeners() {
-
         on(sinclarLog, IntType.SCENERY, "walk-across") { player, node ->
             if (!hasLevelDyn(player, Skills.AGILITY, 48)) {
                 sendMessage(player, "You need an agility level of at least 48 to do this.")
@@ -45,6 +43,7 @@ class SinclairMansionLogShortcut : InteractionListener {
                     player,
                     object : Pulse(2) {
                         var counter = 0
+
                         override fun pulse(): Boolean {
                             when (counter++) {
                                 0 -> {
@@ -54,28 +53,33 @@ class SinclairMansionLogShortcut : InteractionListener {
                                     player.animator.forceAnimation(swimmingLoopAnimation)
                                 }
 
-                                1 -> AgilityHandler.fail(
-                                    player,
-                                    1,
-                                    failLand,
-                                    swimmingAnimation,
-                                    Random.nextInt(1, 7),
-                                    null
-                                ).also { return true }
+                                1 ->
+                                    AgilityHandler
+                                        .fail(
+                                            player,
+                                            1,
+                                            failLand,
+                                            swimmingAnimation,
+                                            Random.nextInt(1, 7),
+                                            null,
+                                        ).also { return true }
                             }
                             return false
                         }
-                    }
+                    },
                 )
             } else {
                 val end = if (fromSouth) start.transform(0, 4, 0) else start.transform(0, -4, 0)
                 AgilityHandler.forceWalk(player, -1, start, end, logBalanceAnimation, 10, 0.0, null, 0).endAnimation =
                     Animation.RESET
                 runTask(player, 4) {
-                    if (node.id in sinclarLog && !player.achievementDiaryManager.getDiary(DiaryType.SEERS_VILLAGE)!!
+                    if (node.id in sinclarLog &&
+                        !player.achievementDiaryManager
+                            .getDiary(DiaryType.SEERS_VILLAGE)!!
                             .isComplete(1, 0)
                     ) {
-                        player.achievementDiaryManager.getDiary(DiaryType.SEERS_VILLAGE)!!
+                        player.achievementDiaryManager
+                            .getDiary(DiaryType.SEERS_VILLAGE)!!
                             .updateTask(player, 1, 0, true)
                     }
                 }

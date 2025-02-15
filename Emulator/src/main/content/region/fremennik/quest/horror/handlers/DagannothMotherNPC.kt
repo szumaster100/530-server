@@ -1,8 +1,5 @@
 package content.region.fremennik.quest.horror.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.fremennik.quest.horror.dialogue.JossikDialogueFile
 import core.api.*
 import core.api.quest.finishQuest
@@ -16,9 +13,15 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld.Pulser
 import core.game.world.map.Location
 import core.tools.RandomFunction
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
-class DagannothMotherNPC(id: Int = 0, location: Location? = null, session: DagannothSession? = null) :
-    AbstractNPC(id, location) {
+class DagannothMotherNPC(
+    id: Int = 0,
+    location: Location? = null,
+    session: DagannothSession? = null,
+) : AbstractNPC(id, location) {
     private val airSpells = intArrayOf(1, 10, 24, 45)
     private val waterSpells = intArrayOf(4, 14, 27, 48)
     private val earthSpells = intArrayOf(6, 17, 33, 52)
@@ -39,9 +42,11 @@ class DagannothMotherNPC(id: Int = 0, location: Location? = null, session: Dagan
 
     override fun init() {
         super.init()
-        if (session?.player?.location?.regionId == 10056)
+        if (session?.player?.location?.regionId == 10056) {
             Pulser.submit(DagannothTransform(session.player, this))
-        else session?.close()
+        } else {
+            session?.close()
+        }
     }
 
     override fun handleTickActions() {
@@ -68,7 +73,6 @@ class DagannothMotherNPC(id: Int = 0, location: Location? = null, session: Dagan
     override fun checkImpact(state: BattleState) {
         if (state.attacker is Player) {
             if (state.victim is NPC) {
-
                 if (type!!.npcId == NPCs.DAGANNOTH_MOTHER_1351) {
                     if (state.style != CombatStyle.MAGIC) {
                         state.neutralizeHits()
@@ -193,11 +197,19 @@ class DagannothMotherNPC(id: Int = 0, location: Location? = null, session: Dagan
         super.finalizeDeath(killer)
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return DagannothMotherNPC(id, location, null)
     }
 
-    override fun isAttackable(entity: Entity, style: CombatStyle, message: Boolean): Boolean {
+    override fun isAttackable(
+        entity: Entity,
+        style: CombatStyle,
+        message: Boolean,
+    ): Boolean {
         if (session == null) {
             return false
         }
@@ -224,15 +236,23 @@ class DagannothMotherNPC(id: Int = 0, location: Location? = null, session: Dagan
         )
     }
 
-    enum class DagannothType(var npcId: Int, var sendChat: String?, var sendMessage: String?) {
+    enum class DagannothType(
+        var npcId: Int,
+        var sendChat: String?,
+        var sendMessage: String?,
+    ) {
         WHITE(NPCs.DAGANNOTH_MOTHER_1351, "Tktktktktktkt", null),
         BLUE(NPCs.DAGANNOTH_MOTHER_1352, "Krrrrrrk", "the dagannoth changes to blue..."),
         RED(NPCs.DAGANNOTH_MOTHER_1353, "Sssssrrrkkkkk", "the dagannoth changes to red..."),
         BROWN(NPCs.DAGANNOTH_MOTHER_1354, "Krrrrrrssssssss", "the dagannoth changes to brown..."),
         GREEN(NPCs.DAGANNOTH_MOTHER_1355, "Krkrkrkrkrkrkrkr", "the dagannoth changes to green..."),
-        ORANGE(NPCs.DAGANNOTH_MOTHER_1356, "Chkhkhkhkhk", "the dagannoth changes to orange...");
+        ORANGE(NPCs.DAGANNOTH_MOTHER_1356, "Chkhkhkhkhk", "the dagannoth changes to orange..."),
+        ;
 
-        fun transform(dagannoth: DagannothMotherNPC, player: Player) {
+        fun transform(
+            dagannoth: DagannothMotherNPC,
+            player: Player,
+        ) {
             val newType = next()
             val oldHp = dagannoth.getSkills().lifepoints
             dagannoth.type = newType
@@ -247,7 +267,6 @@ class DagannothMotherNPC(id: Int = 0, location: Location? = null, session: Dagan
         }
 
         companion object {
-
             fun forId(id: Int): DagannothType? {
                 for (type in values()) {
                     if (type.npcId == id) {
@@ -259,8 +278,12 @@ class DagannothMotherNPC(id: Int = 0, location: Location? = null, session: Dagan
         }
     }
 
-    class DagannothTransform(val player: Player?, val dagannoth: DagannothMotherNPC) : Pulse() {
+    class DagannothTransform(
+        val player: Player?,
+        val dagannoth: DagannothMotherNPC,
+    ) : Pulse() {
         var counter = 0
+
         override fun pulse(): Boolean {
             when (counter++) {
                 0 -> {

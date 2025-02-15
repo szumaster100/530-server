@@ -1,6 +1,5 @@
 package content.region.misthalin.handlers
 
-import org.rs.consts.*
 import content.region.kandarin.quest.biohazard.dialogue.GuidorsWifeDialogue
 import content.region.misc.handlers.MinecartTravel
 import content.region.misthalin.dialogue.varrock.KnockatDoorDialogue
@@ -21,20 +20,18 @@ import core.game.interaction.QueueStrength
 import core.game.node.Node
 import core.game.node.entity.Entity
 import core.game.node.entity.skill.Skills
-import core.tools.Log
 import core.game.system.task.Pulse
 import core.game.world.GameWorld.Pulser
 import core.game.world.map.Location
 import core.game.world.map.zone.MapZone
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.update.flag.context.Animation
-import core.tools.END_DIALOGUE
+import core.tools.Log
 import core.tools.RandomFunction
+import org.rs.consts.*
 
 class VarrockListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(NPCs.THESSALIA_548, IntType.NPC, "change-clothes") { player, _ ->
             openDialogue(player, NPCs.THESSALIA_548, true, true, true)
             return@on true
@@ -44,7 +41,7 @@ class VarrockListener : InteractionListener {
             sendDialogueLines(
                 player,
                 "You search the cart but are surprised to find very little there. It's a",
-                "little odd for a travelling trader not to have anything to trade."
+                "little odd for a travelling trader not to have anything to trade.",
             )
             return@on true
         }
@@ -68,13 +65,16 @@ class VarrockListener : InteractionListener {
         }
 
         on(Scenery.BEDROOM_DOOR_2032, IntType.SCENERY, "open") { player, node ->
-            if (!anyInEquipment(player, Items.PRIEST_GOWN_426, Items.PRIEST_GOWN_428) && getQuestStage(player, Quests.BIOHAZARD) >= 11
+            if (!anyInEquipment(player, Items.PRIEST_GOWN_426, Items.PRIEST_GOWN_428) &&
+                getQuestStage(player, Quests.BIOHAZARD) >= 11
             ) {
                 openDialogue(player, GuidorsWifeDialogue())
-            } else if (inEquipment(player, Items.PRIEST_GOWN_426) && !inEquipment(
+            } else if (inEquipment(player, Items.PRIEST_GOWN_426) &&
+                !inEquipment(
                     player,
-                    Items.PRIEST_GOWN_428
-                ) && getQuestStage(player, Quests.BIOHAZARD) >= 11
+                    Items.PRIEST_GOWN_428,
+                ) &&
+                getQuestStage(player, Quests.BIOHAZARD) >= 11
             ) {
                 DoorActionHandler.handleAutowalkDoor(player, node.asScenery())
                 if (player.location.x == 3282) sendMessage(player, "Guidor's wife allows you to go in.")
@@ -83,7 +83,7 @@ class VarrockListener : InteractionListener {
                     player,
                     NPCs.GUIDORS_WIFE_342,
                     "Please leave my husband alone. He's very sick, and I don't want anyone bothering him.",
-                    FaceAnim.SAD
+                    FaceAnim.SAD,
                 )
             }
             return@on true
@@ -96,7 +96,11 @@ class VarrockListener : InteractionListener {
             } else {
                 when (player.location.y) {
                     3363 -> {
-                        sendNPCDialogue(player, NPCs.GUILDMASTER_198, "Greetings bold adventurer. Welcome to the guild of Champions.").also {
+                        sendNPCDialogue(
+                            player,
+                            NPCs.GUILDMASTER_198,
+                            "Greetings bold adventurer. Welcome to the guild of Champions.",
+                        ).also {
                             DoorActionHandler.handleAutowalkDoor(player, node.asScenery())
                         }
                     }
@@ -146,13 +150,14 @@ class VarrockListener : InteractionListener {
         }
 
         on(intArrayOf(Scenery.DOOR_2712, Scenery.DOOR_26810), IntType.SCENERY, "open") { player, node ->
-            var requiredItems = anyInEquipment(
-                player,
-                Items.CHEFS_HAT_1949,
-                Items.COOKING_CAPE_9801,
-                Items.COOKING_CAPET_9802,
-                Items.VARROCK_ARMOUR_3_11758
-            )
+            var requiredItems =
+                anyInEquipment(
+                    player,
+                    Items.CHEFS_HAT_1949,
+                    Items.COOKING_CAPE_9801,
+                    Items.COOKING_CAPET_9802,
+                    Items.VARROCK_ARMOUR_3_11758,
+                )
 
             when (node.id) {
                 26810 -> {
@@ -160,7 +165,7 @@ class VarrockListener : InteractionListener {
                         sendNPCDialogue(
                             player,
                             NPCs.HEAD_CHEF_847,
-                            "The bank's closed. You just can't get the staff these days."
+                            "The bank's closed. You just can't get the staff these days.",
                         )
                     } else if (getStatLevel(player, Skills.COOKING) == 99) {
                         DoorActionHandler.handleAutowalkDoor(player, node.asScenery())
@@ -175,27 +180,27 @@ class VarrockListener : InteractionListener {
                             sendNPCDialogue(
                                 player,
                                 NPCs.HEAD_CHEF_847,
-                                "Sorry. Only the finest chefs are allowed in here. Get your cooking level up to 32 and come back wearing a chef's hat."
+                                "Sorry. Only the finest chefs are allowed in here. Get your cooking level up to 32 and come back wearing a chef's hat.",
                             )
                         } else {
                             sendNPCDialogue(
                                 player,
                                 NPCs.HEAD_CHEF_847,
-                                "Sorry. Only the finest chefs are allowed in here. Get your cooking level up to 32."
+                                "Sorry. Only the finest chefs are allowed in here. Get your cooking level up to 32.",
                             )
                         }
                     } else if (!requiredItems && player.location.y <= 3443) {
                         sendNPCDialogue(
                             player,
                             NPCs.HEAD_CHEF_847,
-                            "You can't come in here unless you're wearing a chef's hat or something like that."
+                            "You can't come in here unless you're wearing a chef's hat or something like that.",
                         )
                     } else {
                         if (inEquipment(player, Items.VARROCK_ARMOUR_3_11758)) {
                             sendNPCDialogue(
                                 player,
                                 NPCs.HEAD_CHEF_847,
-                                "My word! A master explorer of Varrock! Come in, come in! You are more than welcome in here, my friend!"
+                                "My word! A master explorer of Varrock! Come in, come in! You are more than welcome in here, my friend!",
                             )
                         }
                         DoorActionHandler.handleAutowalkDoor(player, node.asScenery())
@@ -223,16 +228,18 @@ class VarrockListener : InteractionListener {
             lock(player, 3)
             animate(player, Animations.PICK_SOMETHING_UP_FROM_GROUND_2282)
 
-            if (node.id == 23628 || node.id == 23629)
+            if (node.id == 23628 || node.id == 23629) {
                 addItem(player, Items.REDBERRIES_1951)
-            else
+            } else {
                 addItem(player, Items.CADAVA_BERRIES_753)
+            }
 
             if (COUNTER == 2) {
-                if (node.id != 23628 || node.id != 23629)
+                if (node.id != 23628 || node.id != 23629) {
                     replaceScenery(node.asScenery(), 23630, 30)
-                else
+                } else {
                     replaceScenery(node.asScenery(), 23627, 30)
+                }
 
                 COUNTER = 0
                 return@on true
@@ -241,16 +248,25 @@ class VarrockListener : InteractionListener {
             return@on true
         }
 
-        val zone = object : MapZone("Varrock Guards", true) {
-            override fun interact(e: Entity?, target: Node?, option: Option?): Boolean {
-                if (option != null && option.name.lowercase()
-                        .contains("pickpocket") && target != null && target.name.lowercase().contains("guard")
-                ) {
-                    GlobalStatistics.incrementGuardPickpockets()
+        val zone =
+            object : MapZone("Varrock Guards", true) {
+                override fun interact(
+                    e: Entity?,
+                    target: Node?,
+                    option: Option?,
+                ): Boolean {
+                    if (option != null &&
+                        option.name
+                            .lowercase()
+                            .contains("pickpocket") &&
+                        target != null &&
+                        target.name.lowercase().contains("guard")
+                    ) {
+                        GlobalStatistics.incrementGuardPickpockets()
+                    }
+                    return false
                 }
-                return false
             }
-        }
 
         registerMapZone(zone, ZoneBorders(3225, 3445, 3198, 3471))
         registerMapZone(zone, ZoneBorders(3222, 3375, 3199, 3387))
@@ -261,20 +277,23 @@ class VarrockListener : InteractionListener {
             val pickpocketCount = GlobalStatistics.getDailyGuardPickpockets()
             log(this::class.java, Log.FINE, "Is equal? ${pickpocketCount == 0}")
             when (pickpocketCount) {
-                0 -> sendDialogue(
-                    player,
-                    "The Varrock Palace guards are pleased to announce that crime is at an all-time low, without a single guard in the palace or at the city gates being pickpocketed today."
-                )
+                0 ->
+                    sendDialogue(
+                        player,
+                        "The Varrock Palace guards are pleased to announce that crime is at an all-time low, without a single guard in the palace or at the city gates being pickpocketed today.",
+                    )
 
-                1 -> sendDialogue(
-                    player,
-                    "One of the Varrock Palace guards was pickpocketed today. He was close to tears at having lost his last few gold pieces."
-                )
+                1 ->
+                    sendDialogue(
+                        player,
+                        "One of the Varrock Palace guards was pickpocketed today. He was close to tears at having lost his last few gold pieces.",
+                    )
 
-                else -> sendDialogue(
-                    player,
-                    "Guards in the Varrock Palace are on full alert due to increasing levels of pickpocketing. So far today, $pickpocketCount guards have had their money pickpocketed in the palace or at the city gates."
-                )
+                else ->
+                    sendDialogue(
+                        player,
+                        "Guards in the Varrock Palace are on full alert due to increasing levels of pickpocketing. So far today, $pickpocketCount guards have had their money pickpocketed in the palace or at the city gates.",
+                    )
             }
             return@on true
         }
@@ -284,7 +303,7 @@ class VarrockListener : InteractionListener {
                 player,
                 ClimbActionHandler.CLIMB_DOWN,
                 Location(3204, 9910),
-                "You enter the murky sewers."
+                "You enter the murky sewers.",
             )
             return@on true
         }
@@ -308,13 +327,13 @@ class VarrockListener : InteractionListener {
                 ClimbActionHandler.climb(
                     player,
                     Animation(Animations.MULTI_BEND_OVER_827),
-                    Location.create(3097, 3432, 1)
+                    Location.create(3097, 3432, 1),
                 )
             } else {
                 ClimbActionHandler.climb(
                     player,
                     Animation(Animations.MULTI_BEND_OVER_827),
-                    Location.create(3096, 3432, 0)
+                    Location.create(3096, 3432, 0),
                 )
             }
             return@on true
@@ -335,7 +354,11 @@ class VarrockListener : InteractionListener {
                 player,
                 object : DialogueFile() {
                     val keldagrimVisited = getAttribute(player, "keldagrim-visited", false)
-                    override fun handle(componentID: Int, buttonID: Int) {
+
+                    override fun handle(
+                        componentID: Int,
+                        buttonID: Int,
+                    ) {
                         when (stage) {
                             0 -> {
                                 if (!keldagrimVisited) {
@@ -346,13 +369,14 @@ class VarrockListener : InteractionListener {
                                 }
                             }
 
-                            1 -> when (buttonID) {
-                                1 -> MinecartTravel.goToKeldagrim(player).also { end() }
-                                2 -> end()
-                            }
+                            1 ->
+                                when (buttonID) {
+                                    1 -> MinecartTravel.goToKeldagrim(player).also { end() }
+                                    2 -> end()
+                                }
                         }
                     }
-                }
+                },
             )
             return@on true
         }
@@ -393,7 +417,7 @@ class VarrockListener : InteractionListener {
                     player,
                     NPCs.TEA_SELLER_595,
                     "Hey! Put that back! Those are for display only!",
-                    FaceAnim.ANNOYED
+                    FaceAnim.ANNOYED,
                 )
             }
             return@on true
@@ -405,6 +429,7 @@ class VarrockListener : InteractionListener {
                 Pulser.submit(
                     object : Pulse(1) {
                         var count: Int = 0
+
                         override fun pulse(): Boolean {
                             if (count == 0) sendChat(npc, "You're the one who stole something from me!")
                             if (count == 2) {
@@ -414,7 +439,7 @@ class VarrockListener : InteractionListener {
                             count++
                             return false
                         }
-                    }
+                    },
                 )
                 return@on false
             }
@@ -425,14 +450,15 @@ class VarrockListener : InteractionListener {
 
     companion object {
         private var COUNTER = 0
-        private val BERRIES = intArrayOf(
-            Scenery.CADAVA_BUSH_23625,
-            Scenery.CADAVA_BUSH_23626,
-            Scenery.CADAVA_BUSH_23627,
-            Scenery.REDBERRY_BUSH_23628,
-            Scenery.REDBERRY_BUSH_23629,
-            Scenery.REDBERRY_BUSH_23630
-        )
+        private val BERRIES =
+            intArrayOf(
+                Scenery.CADAVA_BUSH_23625,
+                Scenery.CADAVA_BUSH_23626,
+                Scenery.CADAVA_BUSH_23627,
+                Scenery.REDBERRY_BUSH_23628,
+                Scenery.REDBERRY_BUSH_23629,
+                Scenery.REDBERRY_BUSH_23630,
+            )
         private val STRAY_DOGS = intArrayOf(NPCs.STRAY_DOG_5917, NPCs.STRAY_DOG_5918)
         private const val HIDDEN_TRAPDOOR = Scenery.HIDDEN_TRAPDOOR_28094
         private const val SAWMILL_OPERATOR = NPCs.SAWMILL_OPERATOR_4250

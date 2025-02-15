@@ -1,8 +1,6 @@
 package content.global.skill.runecrafting
 
 import content.global.skill.runecrafting.items.Staves
-import org.rs.consts.Items
-import org.rs.consts.Vars
 import content.global.skill.runecrafting.items.TalismanStaves
 import content.global.skill.runecrafting.items.Tiara
 import content.global.skill.runecrafting.scenery.Altar
@@ -13,9 +11,10 @@ import core.game.interaction.InteractionListener
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import org.rs.consts.Items
+import org.rs.consts.Vars
 
 class RunecraftingListener : InteractionListener {
-
     private val pouchIDs = (5509..5515).toIntArray()
     private val tiara = IntArray(Tiara.values().size) { Tiara.values()[it].item.id }
     private val staves = IntArray(Staves.values().size) { Staves.values()[it].item }
@@ -32,7 +31,6 @@ class RunecraftingListener : InteractionListener {
     }
 
     override fun defineListeners() {
-
         on(pouchIDs, IntType.ITEM, "fill", "empty", "check", "drop") { player, node ->
             val option = getUsedOption(player)
             val runeEssenceAmount = amountInInventory(player, Items.RUNE_ESSENCE_1436)
@@ -102,7 +100,10 @@ class RunecraftingListener : InteractionListener {
         }
     }
 
-    private fun checkAmount(runeEssenceAmount: Int, pureEssenceAmount: Int): Item {
+    private fun checkAmount(
+        runeEssenceAmount: Int,
+        pureEssenceAmount: Int,
+    ): Item {
         val isRunePreferred = runeEssenceAmount >= pureEssenceAmount
         val id = if (isRunePreferred) Items.RUNE_ESSENCE_1436 else Items.PURE_ESSENCE_7936
         val amount = if (isRunePreferred) runeEssenceAmount else pureEssenceAmount
@@ -110,7 +111,12 @@ class RunecraftingListener : InteractionListener {
         return Item(id, amount)
     }
 
-    private fun enchant(player: Player, itemId: Item, buttonId: Int, product: TalismanStaves) {
+    private fun enchant(
+        player: Player,
+        itemId: Item,
+        buttonId: Int,
+        product: TalismanStaves,
+    ) {
         closeDialogue(player)
         removeItem(player, if (buttonId == 3) Items.RUNECRAFTING_STAFF_13629 else Items.TIARA_5525)
         replaceSlot(player, itemId.slot, if (buttonId == 3) Item(product.staves.item) else Item(product.tiara))

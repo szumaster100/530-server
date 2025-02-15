@@ -10,7 +10,6 @@ import org.rs.consts.Items
 import org.rs.consts.Quests
 
 class SaveVersionHooks : LoginListener {
-
     // Override the login method to handle player login events
     override fun login(player: Player) {
         // Check if the player's version is less than the current save file version
@@ -18,7 +17,7 @@ class SaveVersionHooks : LoginListener {
             // Send a message to the player about migrating their save file version
             sendMessage(
                 player,
-                "<col=CC6600>Migrating save file version ${player.version} to current save file version ${ServerConfig.CURRENT_SAVEFILE_VERSION}.</col>"
+                "<col=CC6600>Migrating save file version ${player.version} to current save file version ${ServerConfig.CURRENT_SAVEFILE_VERSION}.</col>",
             )
 
             // Check if the player's version is less than 1
@@ -47,7 +46,7 @@ class SaveVersionHooks : LoginListener {
                 if (need > 0) {
                     sendMessage(
                         player,
-                        "<col=CC6600>You are being given $need crafting hood(s), because we think you bought $need crafting cape(s) when the hoods were still unobtainable.</col>"
+                        "<col=CC6600>You are being given $need crafting hood(s), because we think you bought $need crafting cape(s) when the hoods were still unobtainable.</col>",
                     )
                     addItemOrBank(player, Items.CRAFTING_HOOD_9782, need)
                 }
@@ -59,12 +58,12 @@ class SaveVersionHooks : LoginListener {
 
                 // Migrate old location attributes to the new format
                 for (
-                    old in arrayOf(
-                        "/save:drilldemon:original-loc",
-                        "/save:evilbob:prevlocation",
-                        "/save:freakyf:location",
-                        "supexam:loc"
-                    )
+                old in arrayOf(
+                    "/save:drilldemon:original-loc",
+                    "/save:evilbob:prevlocation",
+                    "/save:freakyf:location",
+                    "supexam:loc",
+                )
                 ) {
                     // Retrieve the old location attribute for the player
                     val oldloc = player.getAttribute(old, player.location)

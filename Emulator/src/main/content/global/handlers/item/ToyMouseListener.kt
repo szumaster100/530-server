@@ -1,5 +1,6 @@
 package content.global.handlers.item
 
+import content.data.GameAttributes
 import content.global.handlers.npc.ToyMouseNPC
 import content.global.skill.agility.AgilityHandler
 import core.api.*
@@ -8,10 +9,8 @@ import core.game.interaction.InteractionListener
 import core.game.node.entity.skill.Skills
 import org.rs.consts.Items
 import org.rs.consts.NPCs
-import content.data.GameAttributes
 
 class ToyMouseListener : InteractionListener {
-
     override fun defineListeners() {
         /*
          * Handles releasing the toy mouse.

@@ -1,8 +1,5 @@
 package content.region.asgarnia.quest.druid
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.*
 import core.api.quest.getQuestStage
 import core.game.component.Component
@@ -12,11 +9,16 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
 class DruidicRitual : Quest(Quests.DRUIDIC_RITUAL, 48, 47, 4, 80, 0, 3, 4) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 12
         var stage = getStage(player)
@@ -78,7 +80,10 @@ class DruidicRitual : Quest(Quests.DRUIDIC_RITUAL, 48, 47, 4, 80, 0, 3, 4) {
         player.interfaceManager.closeChatbox()
     }
 
-    override fun questCloseEvent(player: Player?, component: Component?) {
+    override fun questCloseEvent(
+        player: Player?,
+        component: Component?,
+    ) {
         queueScript(player!!, 1, QueueStrength.SOFT) {
             openDialogue(player, NPCs.KAQEMEEX_455, NPC.create(NPCs.KAQEMEEX_455, player.location), true)
             return@queueScript stopExecuting(player)

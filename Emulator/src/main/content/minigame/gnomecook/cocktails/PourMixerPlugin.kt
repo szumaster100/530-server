@@ -1,6 +1,5 @@
 package content.minigame.gnomecook.cocktails
 
-import org.rs.consts.Items
 import core.api.inInventory
 import core.cache.def.impl.ItemDefinition
 import core.game.interaction.OptionHandler
@@ -10,6 +9,7 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Items
 
 private const val WIZ_BLIZ_MIX = 9566
 private const val SGG_MIX = 9567
@@ -30,7 +30,11 @@ class PourMixerPlugin : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player?, node: Node?, option: String?): Boolean {
+    override fun handle(
+        player: Player?,
+        node: Node?,
+        option: String?,
+    ): Boolean {
         player ?: return false
         node ?: return false
         when (node.id) {
@@ -45,7 +49,11 @@ class PourMixerPlugin : OptionHandler() {
         return true
     }
 
-    private fun attemptMake(drink: PouredDrink, player: Player, node: Node) {
+    private fun attemptMake(
+        drink: PouredDrink,
+        player: Player,
+        node: Node,
+    ) {
         if (!inInventory(player, Items.COCKTAIL_GLASS_2026)) {
             player.dialogueInterpreter.sendDialogue("You need a glass to pour this into.")
             return
@@ -71,57 +79,64 @@ class PourMixerPlugin : OptionHandler() {
         player.skills.addExperience(Skills.COOKING, 50.0)
     }
 
-    internal enum class PouredDrink(val product: Int, val requiredItems: Array<Item>) {
+    internal enum class PouredDrink(
+        val product: Int,
+        val requiredItems: Array<Item>,
+    ) {
         FRUIT_BLAST(
             product = 9514,
-            requiredItems = arrayOf(Item(Items.LEMON_SLICES_2106))
+            requiredItems = arrayOf(Item(Items.LEMON_SLICES_2106)),
         ),
         PINE_PUNCH(
             product = 9512,
-            requiredItems = arrayOf(
-                Item(Items.LIME_CHUNKS_2122),
-                Item(Items.PINEAPPLE_CHUNKS_2116),
-                Item(Items.ORANGE_SLICES_2112)
-            )
+            requiredItems =
+                arrayOf(
+                    Item(Items.LIME_CHUNKS_2122),
+                    Item(Items.PINEAPPLE_CHUNKS_2116),
+                    Item(Items.ORANGE_SLICES_2112),
+                ),
         ),
         WIZ_BLIZZ(
             product = 9508,
-            requiredItems = arrayOf(Item(Items.PINEAPPLE_CHUNKS_2116), Item(Items.LIME_SLICES_2124))
+            requiredItems = arrayOf(Item(Items.PINEAPPLE_CHUNKS_2116), Item(Items.LIME_SLICES_2124)),
         ),
         SHORT_G_G(
             product = 9510,
-            requiredItems = arrayOf(Item(Items.LIME_SLICES_2124), Item(Items.EQUA_LEAVES_2128))
+            requiredItems = arrayOf(Item(Items.LIME_SLICES_2124), Item(Items.EQUA_LEAVES_2128)),
         ),
         DRUNK_DRAG(
             product = 9575,
-            requiredItems = arrayOf(
-                Item(Items.GIN_2019),
-                Item(Items.VODKA_2015),
-                Item(Items.DWELLBERRIES_2126),
-                Item(Items.PINEAPPLE_CHUNKS_2116),
-                Item(Items.POT_OF_CREAM_2130)
-            )
+            requiredItems =
+                arrayOf(
+                    Item(Items.GIN_2019),
+                    Item(Items.VODKA_2015),
+                    Item(Items.DWELLBERRIES_2126),
+                    Item(Items.PINEAPPLE_CHUNKS_2116),
+                    Item(Items.POT_OF_CREAM_2130),
+                ),
         ),
 
         CHOC_SAT(
             product = 9572,
-            requiredItems = arrayOf(
-                Item(Items.WHISKY_2017),
-                Item(Items.EQUA_LEAVES_2128),
-                Item(Items.BUCKET_OF_MILK_1927),
-                Item(Items.CHOCOLATE_DUST_1975),
-                Item(Items.POT_OF_CREAM_2130),
-                Item(Items.CHOCOLATE_BAR_1973)
-            )
+            requiredItems =
+                arrayOf(
+                    Item(Items.WHISKY_2017),
+                    Item(Items.EQUA_LEAVES_2128),
+                    Item(Items.BUCKET_OF_MILK_1927),
+                    Item(Items.CHOCOLATE_DUST_1975),
+                    Item(Items.POT_OF_CREAM_2130),
+                    Item(Items.CHOCOLATE_BAR_1973),
+                ),
         ),
         BLUR_SPEC(
             product = 9520,
-            requiredItems = arrayOf(
-                Item(Items.LEMON_CHUNKS_2104),
-                Item(Items.ORANGE_CHUNKS_2110),
-                Item(Items.EQUA_LEAVES_2128),
-                Item(Items.LIME_SLICES_2124)
-            )
+            requiredItems =
+                arrayOf(
+                    Item(Items.LEMON_CHUNKS_2104),
+                    Item(Items.ORANGE_CHUNKS_2110),
+                    Item(Items.EQUA_LEAVES_2128),
+                    Item(Items.LIME_SLICES_2124),
+                ),
         ),
     }
 }

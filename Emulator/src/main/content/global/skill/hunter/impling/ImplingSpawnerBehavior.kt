@@ -3,8 +3,8 @@ package content.global.skill.hunter.impling
 import core.api.*
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.npc.NPCBehavior
-import core.tools.Log
 import core.game.world.map.path.ClipMaskSupplier
+import core.tools.Log
 import core.tools.secondsToTicks
 
 class ImplingSpawnerBehavior : NPCBehavior(*ImplingSpawner.getIds()) {
@@ -21,8 +21,9 @@ class ImplingSpawnerBehavior : NPCBehavior(*ImplingSpawner.getIds()) {
     }
 
     override fun onRespawn(self: NPC) {
-        if (!isPuroSpawner(self))
+        if (!isPuroSpawner(self)) {
             log(this::class.java, Log.ERR, "Non-puro spawner has respawned!")
+        }
         this.onCreation(self)
     }
 

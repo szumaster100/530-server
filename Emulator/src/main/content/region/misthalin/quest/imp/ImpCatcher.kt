@@ -1,9 +1,5 @@
 package content.region.misthalin.quest.imp
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.addItemOrDrop
 import core.api.inInventory
 import core.api.rewardXP
@@ -12,11 +8,17 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class ImpCatcher : Quest(Quests.IMP_CATCHER, 21, 20, 1, Vars.VARP_QUEST_IMP_CATCHER_PROGRESS_160, 0, 1, 2) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 11
         player ?: return
@@ -27,10 +29,13 @@ class ImpCatcher : Quest(Quests.IMP_CATCHER, 21, 20, 1, Vars.VARP_QUEST_IMP_CATC
         } else if (getStage(player) == 10) {
             line(player, "<str>I have spoken to Wizard Mizgog.", line++)
             line(player, "I need to collect some items by killing !!Imps??.", line++)
-            if (inInventory(player, Items.BLACK_BEAD_1474) && inInventory(player, Items.RED_BEAD_1470) && inInventory(
+            if (inInventory(player, Items.BLACK_BEAD_1474) &&
+                inInventory(player, Items.RED_BEAD_1470) &&
+                inInventory(
                     player,
-                    Items.WHITE_BEAD_1476
-                ) && inInventory(player, Items.YELLOW_BEAD_1472)
+                    Items.WHITE_BEAD_1476,
+                ) &&
+                inInventory(player, Items.YELLOW_BEAD_1472)
             ) {
                 line(player, "I have collected all the missing beads and need to return", line++)
                 line(player, "them to !!Wizard Mizgog??.", line++)
@@ -40,18 +45,18 @@ class ImpCatcher : Quest(Quests.IMP_CATCHER, 21, 20, 1, Vars.VARP_QUEST_IMP_CATC
             line(
                 player,
                 if (!inInventory(player, Items.BLACK_BEAD_1474)) "!!1 Black Bead??" else "<str>1 Black Bead",
-                line++
+                line++,
             )
             line(player, if (!inInventory(player, Items.RED_BEAD_1470)) "!!1 Red Bead??" else "<str>1 Red Bead", line++)
             line(
                 player,
                 if (!inInventory(player, Items.WHITE_BEAD_1476)) "!!1 White Bead??" else "<str>1 White Bead",
-                line++
+                line++,
             )
             line(
                 player,
                 if (!inInventory(player, Items.YELLOW_BEAD_1472)) "!!1 Yellow Bead??" else "<str>1 Yellow Bead",
-                line++
+                line++,
             )
         } else {
             line++

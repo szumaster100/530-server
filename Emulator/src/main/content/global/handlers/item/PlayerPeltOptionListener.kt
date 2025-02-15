@@ -1,22 +1,21 @@
 package content.global.handlers.item
 
-import org.rs.consts.Items
 import core.api.*
+import core.api.EquipmentSlot
 import core.game.interaction.IntType
 import core.game.interaction.InteractPlugin
 import core.game.interaction.InteractionListener
 import core.game.interaction.Option
 import core.game.node.Node
-import core.api.EquipmentSlot
 import core.game.node.entity.impl.Projectile
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.game.system.task.Pulse
 import core.game.world.map.path.Pathfinder
 import core.game.world.update.flag.context.Graphics
+import org.rs.consts.Items
 
 class PlayerPeltOptionListener : InteractionListener {
-
     override fun defineListeners() {
         onEquip(PELTABLES, ::setPlayerOps)
         onUnequip(PELTABLES, ::removePlayerOps)
@@ -27,18 +26,28 @@ class PlayerPeltOptionListener : InteractionListener {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    private fun setPlayerOps(player: Player, _node: Node): Boolean {
+    private fun setPlayerOps(
+        player: Player,
+        _node: Node,
+    ): Boolean {
         player.interaction.set(Option("Pelt", 0))
         return true
     }
 
     @Suppress("UNUSED_PARAMETER")
-    private fun removePlayerOps(player: Player, _node: Node): Boolean {
+    private fun removePlayerOps(
+        player: Player,
+        _node: Node,
+    ): Boolean {
         InteractPlugin.sendOption(player, 0, "null")
         return true
     }
 
-    private fun handlePeltInteraction(player: Player, node: Node, usedPeltable: Node? = null): Boolean {
+    private fun handlePeltInteraction(
+        player: Player,
+        node: Node,
+        usedPeltable: Node? = null,
+    ): Boolean {
         val peltable = usedPeltable?.asItem() ?: getPeltable(player) ?: return removePlayerOps(player, node)
         val gfx = getPeltableGfx(peltable.id)
 
@@ -61,10 +70,16 @@ class PlayerPeltOptionListener : InteractionListener {
         return true
     }
 
-    class PeltingPulse(val player: Player, val other: Player, val gfx: IntArray, val hitDelay: Int, val peltable: Int) :
-        Pulse() {
+    class PeltingPulse(
+        val player: Player,
+        val other: Player,
+        val gfx: IntArray,
+        val hitDelay: Int,
+        val peltable: Int,
+    ) : Pulse() {
         private val throwAnimation = getPeltableAnim(peltable)
         private var ticks = 0
+
         override fun pulse(): Boolean {
             when (ticks++) {
                 0 -> {

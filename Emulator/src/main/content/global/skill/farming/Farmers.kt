@@ -1,6 +1,9 @@
 package content.global.skill.farming
 
-enum class Farmers(val id: Int, val patches: Array<FarmingPatch>) {
+enum class Farmers(
+    val id: Int,
+    val patches: Array<FarmingPatch>,
+) {
     LYRA(2326, arrayOf(FarmingPatch.PORT_PHAS_ALLOTMENT_NW, FarmingPatch.PORT_PHAS_ALLOTMENT_SE)),
     ELSTAN(2323, arrayOf(FarmingPatch.S_FALADOR_ALLOTMENT_NW, FarmingPatch.S_FALADOR_ALLOTMENT_SE)),
     HESKEL(2340, arrayOf(FarmingPatch.N_FALADOR_TREE)),
@@ -24,7 +27,8 @@ enum class Farmers(val id: Int, val patches: Array<FarmingPatch>) {
     RHAZIEN(2337, arrayOf(FarmingPatch.ETCETERIA_BUSH)),
     TORRELL(2338, arrayOf(FarmingPatch.ARDOUGNE_BUSH)),
     YULF_SQUECKS(4561, arrayOf(FarmingPatch.ETCETERIA_SPIRIT_TREE)),
-    IMIAGO(8041, arrayOf(FarmingPatch.CALQUAT_TREE));
+    IMIAGO(8041, arrayOf(FarmingPatch.CALQUAT_TREE)),
+    ;
 
     companion object {
         @JvmField

@@ -3,10 +3,12 @@ package core.tools
 import kotlin.random.Random
 
 object RandomUtils {
-
     val random: Random = Random.Default
 
-    fun random(random: Random, i: Int): Int {
+    fun random(
+        random: Random,
+        i: Int,
+    ): Int {
         return random.nextInt(i + 1)
     }
 

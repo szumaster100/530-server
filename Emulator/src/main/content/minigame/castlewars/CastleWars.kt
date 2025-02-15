@@ -49,27 +49,29 @@ object CastleWars {
     const val castleWaterTap: Int = Scenery.TAP_4482
     const val cwSteppingStones: Int = Scenery.STEPPING_STONE_4411
 
-    val cwTableItemRewardMap = mapOf(
-        Scenery.TABLE_36573 to Items.TOOLKIT_4051,
-        Scenery.TABLE_36580 to Items.TOOLKIT_4051,
-        Scenery.TABLE_36574 to Items.ROCK_4043,
-        Scenery.TABLE_36581 to Items.ROCK_4043,
-        Scenery.TABLE_36575 to Items.BARRICADE_4053,
-        Scenery.TABLE_36582 to Items.BARRICADE_4053,
-        Scenery.TABLE_36576 to Items.CLIMBING_ROPE_4047,
-        Scenery.TABLE_36583 to Items.CLIMBING_ROPE_4047,
-        Scenery.TABLE_36577 to Items.EXPLOSIVE_POTION_4045,
-        Scenery.TABLE_36584 to Items.EXPLOSIVE_POTION_4045,
-        Scenery.TABLE_36578 to Items.BRONZE_PICKAXE_1265,
-        Scenery.TABLE_36585 to Items.BRONZE_PICKAXE_1265,
-        Scenery.TABLE_36579 to Items.BANDAGES_4049,
-        Scenery.TABLE_36586 to Items.BANDAGES_4049
-    )
+    val cwTableItemRewardMap =
+        mapOf(
+            Scenery.TABLE_36573 to Items.TOOLKIT_4051,
+            Scenery.TABLE_36580 to Items.TOOLKIT_4051,
+            Scenery.TABLE_36574 to Items.ROCK_4043,
+            Scenery.TABLE_36581 to Items.ROCK_4043,
+            Scenery.TABLE_36575 to Items.BARRICADE_4053,
+            Scenery.TABLE_36582 to Items.BARRICADE_4053,
+            Scenery.TABLE_36576 to Items.CLIMBING_ROPE_4047,
+            Scenery.TABLE_36583 to Items.CLIMBING_ROPE_4047,
+            Scenery.TABLE_36577 to Items.EXPLOSIVE_POTION_4045,
+            Scenery.TABLE_36584 to Items.EXPLOSIVE_POTION_4045,
+            Scenery.TABLE_36578 to Items.BRONZE_PICKAXE_1265,
+            Scenery.TABLE_36585 to Items.BRONZE_PICKAXE_1265,
+            Scenery.TABLE_36579 to Items.BANDAGES_4049,
+            Scenery.TABLE_36586 to Items.BANDAGES_4049,
+        )
 
-    val cwCastleBattlementsMap = mapOf(
-        Scenery.BATTLEMENTS_4446 to Scenery.BATTLEMENTS_36313,
-        Scenery.BATTLEMENTS_4447 to Scenery.BATTLEMENTS_36314
-    )
+    val cwCastleBattlementsMap =
+        mapOf(
+            Scenery.BATTLEMENTS_4446 to Scenery.BATTLEMENTS_36313,
+            Scenery.BATTLEMENTS_4447 to Scenery.BATTLEMENTS_36314,
+        )
 
     const val saradominTeamHoodedCloak: Int = Items.HOODED_CLOAK_4041
     const val zamorakTeamHoodedCloak: Int = Items.HOODED_CLOAK_4042
@@ -104,5 +106,4 @@ object CastleWars {
     const val gameTimeMinutes = 20
     const val gameCooldownMinutes = 5
     const val ropeAliveTicks = -1
-
 }

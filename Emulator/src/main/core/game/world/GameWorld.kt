@@ -3,10 +3,11 @@ package core.game.world
 import core.ServerConfig
 import core.ServerStore
 import core.api.*
+import core.auth.Auth
+import core.auth.AuthProvider
 import core.cache.Cache
 import core.cache.def.impl.SceneryDefinition
 import core.game.node.entity.player.Player
-import core.tools.Log
 import core.game.system.SystemManager
 import core.game.system.SystemState
 import core.game.system.config.ConfigParser
@@ -19,18 +20,15 @@ import core.game.world.repository.Repository
 import core.plugin.ClassScanner
 import core.plugin.type.StartupPlugin
 import core.storage.AccountStorageProvider
-import core.auth.Auth
-import core.auth.AuthProvider
+import core.tools.Log
 import core.tools.RandomFunction
 import core.worker.MajorUpdateWorker
+import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.function.Consumer
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList
-
 object GameWorld {
-
     @JvmStatic
     val worldPersists = ObjectArrayList<PersistWorld>()
 
@@ -94,7 +92,13 @@ object GameWorld {
             TaskExecutor.execute {
                 val player = Repository.players
                 try {
-                    player.stream().filter { obj: Player? -> Objects.nonNull(obj) }.filter { p: Player -> !p.isArtificial && p.isPlaying }.forEach { p: Player? -> Repository.disconnectionQueue.save(p!!, false) }
+                    player
+                        .stream()
+                        .filter { obj: Player? -> Objects.nonNull(obj) }
+                        .filter { p: Player ->
+                            !p.isArtificial &&
+                                p.isPlaying
+                        }.forEach { p: Player? -> Repository.disconnectionQueue.save(p!!, false) }
                 } catch (t: Throwable) {
                     t.printStackTrace()
                 }
@@ -119,7 +123,10 @@ object GameWorld {
     }
 
     @Throws(Throwable::class)
-    fun prompt(run: Boolean, directory: String?) {
+    fun prompt(
+        run: Boolean,
+        directory: String?,
+    ) {
         log(GameWorld::class.java, Log.FINE, "Prompting ${settings?.name} Game World...")
         Cache.init(ServerConfig.CACHE_PATH)
         Auth.configure()
@@ -161,6 +168,8 @@ object GameWorld {
         }
         return if (RegionManager.getObject(random_location) != null) {
             generateLocation()
-        } else random_location
+        } else {
+            random_location
+        }
     }
 }

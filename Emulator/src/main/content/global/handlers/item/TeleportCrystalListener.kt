@@ -1,21 +1,19 @@
 package content.global.handlers.item
 
-import org.rs.consts.Items
 import core.api.*
+import core.api.quest.hasRequirement
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.TeleportManager.TeleportType
 import core.game.node.item.Item
 import core.game.world.map.Location
-import core.api.quest.hasRequirement
 import core.game.world.map.zone.impl.WildernessZone
+import org.rs.consts.Items
 import org.rs.consts.Quests
 
 class TeleportCrystalListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(crystalIDs, IntType.ITEM, "activate") { player, node ->
             if (!hasRequirement(player, Quests.MOURNINGS_END_PART_I)) return@on true
             if (!WildernessZone.checkTeleport(player, 20)) {
@@ -40,15 +38,18 @@ class TeleportCrystalListener : InteractionListener {
     }
 
     companion object {
+        val crystalIDs =
+            intArrayOf(
+                Items.TP_CRYSTAL_4_6099,
+                Items.TP_CRYSTAL_3_6100,
+                Items.TP_CRYSTAL_2_6101,
+                Items.TP_CRYSTAL_1_6102,
+            )
 
-        val crystalIDs = intArrayOf(
-            Items.TP_CRYSTAL_4_6099,
-            Items.TP_CRYSTAL_3_6100,
-            Items.TP_CRYSTAL_2_6101,
-            Items.TP_CRYSTAL_1_6102
-        )
-
-        private fun degrade(player: Player, item: Item) {
+        private fun degrade(
+            player: Player,
+            item: Item,
+        ) {
             val id = item.id
             val newItem = item.id + 1
             if (id < 6102) {

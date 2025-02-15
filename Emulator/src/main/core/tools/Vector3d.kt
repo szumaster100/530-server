@@ -3,7 +3,6 @@ package core.tools
 import core.game.world.map.Location
 
 class Vector3d {
-
     var x: Double
 
     var y: Double
@@ -44,7 +43,10 @@ class Vector3d {
         return "($x, $y, $z)"
     }
 
-    fun add(v1: Vector3d, v2: Vector3d): Vector3d {
+    fun add(
+        v1: Vector3d,
+        v2: Vector3d,
+    ): Vector3d {
         this.x = v1.x + v2.x
         this.y = v1.y + v2.y
         this.z = v1.z + v2.z
@@ -58,7 +60,10 @@ class Vector3d {
         return this
     }
 
-    fun sub(v1: Vector3d, v2: Vector3d): Vector3d {
+    fun sub(
+        v1: Vector3d,
+        v2: Vector3d,
+    ): Vector3d {
         this.x = v1.x - v2.x
         this.y = v1.y - v2.y
         this.z = v1.z - v2.z
@@ -91,7 +96,10 @@ class Vector3d {
         return this
     }
 
-    fun cross(v1: Vector3d, v2: Vector3d): Vector3d {
+    fun cross(
+        v1: Vector3d,
+        v2: Vector3d,
+    ): Vector3d {
         this.x = v1.y * v2.z - v1.z * v2.y
         this.y = v1.z * v2.x - v1.x * v2.z
         this.z = v1.x * v2.y - v1.y * v2.x
@@ -115,8 +123,11 @@ class Vector3d {
     }
 
     companion object {
-
-        fun signedAngle(v1: Vector3d, v2: Vector3d, n: Vector3d): Double {
+        fun signedAngle(
+            v1: Vector3d,
+            v2: Vector3d,
+            n: Vector3d,
+        ): Double {
             return Math.atan2(Vector3d().cross(v1, v2).dot(n), v1.dot(v2))
         }
     }
@@ -134,7 +145,10 @@ class Vector3d {
         return result
     }
 
-    fun epsilonEquals(v1: Vector3d, epsilon: Double): Boolean {
+    fun epsilonEquals(
+        v1: Vector3d,
+        epsilon: Double,
+    ): Boolean {
         var diff: Double
 
         diff = this.x - v1.x

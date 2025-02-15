@@ -1,13 +1,15 @@
 package content.minigame.allfiredup
 
-import org.rs.consts.Items
 import core.api.*
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.game.system.task.Pulse
 import core.tools.colorize
+import org.rs.consts.Items
 
-class AFUSession(val player: Player? = null) : LogoutListener {
+class AFUSession(
+    val player: Player? = null,
+) : LogoutListener {
     private val beaconTimers = Array(14) { i -> BeaconTimer(0, AFUBeacon.values()[i]) }
     private val logInventories = Array(14) { Item(0, 0) }
     private val beaconWatched = Array(14) { false }
@@ -21,44 +23,48 @@ class AFUSession(val player: Player? = null) : LogoutListener {
                     setAttribute(player!!, "afu-pulse", this)
                     beaconTimers.forEach { timer ->
                         timer.ticks--
-                        if (timer.ticks == 300) timer.beacon.diminish(player).also {
-                            if (beaconWatched[timer.beacon.ordinal]) {
-                                beaconWatched[timer.beacon.ordinal] = false
-                                timer.ticks += (getTicks(logInventories[timer.beacon.ordinal].id) * 5)
-                                timer.beacon.light(player)
-                                sendMessage(
-                                    player,
-                                    colorize(
-                                        "%RThe ${
-                                            timer.beacon.name.lowercase().replace("_", " ")
-                                        } watcher has used your backup logs."
+                        if (timer.ticks == 300) {
+                            timer.beacon.diminish(player).also {
+                                if (beaconWatched[timer.beacon.ordinal]) {
+                                    beaconWatched[timer.beacon.ordinal] = false
+                                    timer.ticks += (getTicks(logInventories[timer.beacon.ordinal].id) * 5)
+                                    timer.beacon.light(player)
+                                    sendMessage(
+                                        player,
+                                        colorize(
+                                            "%RThe ${
+                                                timer.beacon.name.lowercase().replace("_", " ")
+                                            } watcher has used your backup logs.",
+                                        ),
                                     )
-                                )
-                            } else {
-                                sendMessage(
-                                    player,
-                                    colorize(
-                                        "%RThe ${
-                                            timer.beacon.name.lowercase().replace("_", " ")
-                                        } beacon is dying!"
+                                } else {
+                                    sendMessage(
+                                        player,
+                                        colorize(
+                                            "%RThe ${
+                                                timer.beacon.name.lowercase().replace("_", " ")
+                                            } beacon is dying!",
+                                        ),
                                     )
-                                )
+                                }
                             }
                         }
-                        if (timer.ticks == 0) timer.beacon.extinguish(player).also {
-                            sendMessage(
-                                player,
-                                colorize(
-                                    "%RThe ${
-                                        timer.beacon.name.lowercase().replace("_", " ")
-                                    } beacon has gone out!"
+                        if (timer.ticks == 0) {
+                            timer.beacon.extinguish(player).also {
+                                sendMessage(
+                                    player,
+                                    colorize(
+                                        "%RThe ${
+                                            timer.beacon.name.lowercase().replace("_", " ")
+                                        } beacon has gone out!",
+                                    ),
                                 )
-                            )
+                            }
                         }
                     }
                     return !isActive
                 }
-            }
+            },
         )
         setAttribute(player!!, "afu-session", this)
     }
@@ -71,7 +77,10 @@ class AFUSession(val player: Player? = null) : LogoutListener {
         isActive = false
     }
 
-    fun setLogs(beaconIndex: Int, logs: Item) {
+    fun setLogs(
+        beaconIndex: Int,
+        logs: Item,
+    ) {
         logInventories[beaconIndex] = logs
     }
 
@@ -81,14 +90,20 @@ class AFUSession(val player: Player? = null) : LogoutListener {
         beaconTimers[beaconIndex].ticks = ticks
     }
 
-    fun refreshTimer(beacon: AFUBeacon, logID: Int) {
+    fun refreshTimer(
+        beacon: AFUBeacon,
+        logID: Int,
+    ) {
         val ticks = getTicks(logID) * 5
         beaconTimers.forEach {
             if (it.beacon.ordinal == beacon.ordinal) it.ticks += ticks
         }
     }
 
-    fun setWatcher(index: Int, logs: Item) {
+    fun setWatcher(
+        index: Int,
+        logs: Item,
+    ) {
         beaconWatched[index] = true
         logInventories[index] = logs
     }
@@ -98,15 +113,16 @@ class AFUSession(val player: Player? = null) : LogoutListener {
     }
 
     fun getTicks(logID: Int): Int {
-        val ticks = when (logID) {
-            Items.LOGS_1511 -> 65
-            Items.OAK_LOGS_1521 -> 68
-            Items.WILLOW_LOGS_1519 -> 73
-            Items.MAPLE_LOGS_1517 -> 79
-            Items.YEW_LOGS_1515 -> 83
-            Items.MAGIC_LOGS_1513 -> 90
-            else -> 0
-        }
+        val ticks =
+            when (logID) {
+                Items.LOGS_1511 -> 65
+                Items.OAK_LOGS_1521 -> 68
+                Items.WILLOW_LOGS_1519 -> 73
+                Items.MAPLE_LOGS_1517 -> 79
+                Items.YEW_LOGS_1515 -> 83
+                Items.MAGIC_LOGS_1513 -> 90
+                else -> 0
+            }
         return ticks
     }
 
@@ -137,5 +153,8 @@ class AFUSession(val player: Player? = null) : LogoutListener {
         removeAttribute(player, "afu-session")
     }
 
-    internal class BeaconTimer(var ticks: Int, val beacon: AFUBeacon)
+    internal class BeaconTimer(
+        var ticks: Int,
+        val beacon: AFUBeacon,
+    )
 }

@@ -1,8 +1,5 @@
 package content.region.kandarin.quest.grail
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.kandarin.quest.grail.dialogue.*
 import core.api.*
 import core.api.quest.getQuestStage
@@ -20,10 +17,12 @@ import core.game.world.map.Direction
 import core.game.world.map.Location
 import core.game.world.map.zone.ZoneBorders
 import core.tools.secondsToTicks
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 class HolyGrailListener : InteractionListener {
     override fun defineListeners() {
-
         on(NPCs.BLACK_KNIGHT_TITAN_221, IntType.NPC, "talk-to") { player, _ ->
             openDialogue(player, BKTitanHGDialogue(false), NPCs.BLACK_KNIGHT_TITAN_221)
             return@on true
@@ -67,14 +66,20 @@ class HolyGrailListener : InteractionListener {
 
             var dest = Location.create(2962, 3505, 0)
             var direction =
-                "to the " + Direction.getDirection(player.location, dest).toString().lowercase().replace("_", " ")
+                "to the " +
+                    Direction
+                        .getDirection(player.location, dest)
+                        .toString()
+                        .lowercase()
+                        .replace("_", " ")
 
             var zoneInBuilding = ZoneBorders(Location.create(2959, 3504, 0), Location.create(2962, 3507, 0))
 
             if (zoneInBuilding.insideBorder(player)) {
                 direction = "at the sacks"
-            } else if (dest.getDistance(player.location) <= 10)
+            } else if (dest.getDistance(player.location) <= 10) {
                 direction = "to somewhere nearby"
+            }
 
             sendMessage(player, "The feather points $direction.")
             return@on true
@@ -85,8 +90,10 @@ class HolyGrailListener : InteractionListener {
             var zoneIsDiseased = ZoneBorders(Location.create(2741, 4650, 0), Location.create(2811, 4742, 0))
             var zoneIsHealthy = ZoneBorders(Location.create(2614, 4661, 0), Location.create(2698, 4746, 0))
 
-            if (!zoneCanTeleport.insideBorder(player) && !zoneIsDiseased.insideBorder(player) && !zoneIsHealthy.insideBorder(
-                    player
+            if (!zoneCanTeleport.insideBorder(player) &&
+                !zoneIsDiseased.insideBorder(player) &&
+                !zoneIsHealthy.insideBorder(
+                    player,
                 )
             ) {
                 sendDialogueLines(player, "The whistle makes no noise. It will not work in this location.")
@@ -110,8 +117,9 @@ class HolyGrailListener : InteractionListener {
         on(Items.HOLY_GRAIL_19, IntType.ITEM, "take") { player, grail ->
             player.faceLocation(grail.location)
 
-            if (grail.location.getDistance(player.location) >= 2)
+            if (grail.location.getDistance(player.location) >= 2) {
                 return@on false
+            }
 
             if (player.inventory.contains(Items.HOLY_GRAIL_19, 1)) {
                 sendDialogue(player, "You feel that taking more than one Holy Grail might be greedy...")
@@ -122,7 +130,7 @@ class HolyGrailListener : InteractionListener {
                 sendDialogueLines(
                     player,
                     "You feel that the Grail shouldn't be moved.",
-                    "You must complete some task here before you are worthy."
+                    "You must complete some task here before you are worthy.",
                 )
             } else {
                 addItem(player, Items.HOLY_GRAIL_19, 1)
@@ -158,7 +166,9 @@ class HolyGrailListener : InteractionListener {
         }
 
         on(HolyGrail.MERLIN_DOOR_ID, IntType.SCENERY, "open") { player, door ->
-            if (!door.location.equals(HolyGrail.MERLIN_DOOR_LOCATION_OPEN) && !door.location.equals(HolyGrail.MERLIN_DOOR_LOCATION_CLOSED)) {
+            if (!door.location.equals(HolyGrail.MERLIN_DOOR_LOCATION_OPEN) &&
+                !door.location.equals(HolyGrail.MERLIN_DOOR_LOCATION_CLOSED)
+            ) {
                 DoorActionHandler.handleDoor(player, door.asScenery())
                 return@on false
             }
@@ -169,11 +179,17 @@ class HolyGrailListener : InteractionListener {
             }
 
             val moveToX =
-                if (player.location.x <= HolyGrail.MERLIN_DOOR_LOCATION_CLOSED.x) HolyGrail.MERLIN_DOOR_LOCATION_OPEN.x else HolyGrail.MERLIN_DOOR_LOCATION_CLOSED.x
+                if (player.location.x <=
+                    HolyGrail.MERLIN_DOOR_LOCATION_CLOSED.x
+                ) {
+                    HolyGrail.MERLIN_DOOR_LOCATION_OPEN.x
+                } else {
+                    HolyGrail.MERLIN_DOOR_LOCATION_CLOSED.x
+                }
             DoorActionHandler.handleAutowalkDoor(
                 player,
                 door as Scenery,
-                Location.create(moveToX, HolyGrail.MERLIN_DOOR_LOCATION_OPEN.y, HolyGrail.MERLIN_DOOR_LOCATION_OPEN.z)
+                Location.create(moveToX, HolyGrail.MERLIN_DOOR_LOCATION_OPEN.y, HolyGrail.MERLIN_DOOR_LOCATION_OPEN.z),
             )
             return@on true
         }
@@ -188,22 +204,21 @@ class HolyGrailListener : InteractionListener {
             DoorActionHandler.handleAutowalkDoor(player, door as Scenery, Location.create(3106, moveToY, 2))
 
             if (getQuestStage(player, Quests.HOLY_GRAIL) == 30 && player.hasItem(Item(Items.HOLY_TABLE_NAPKIN_15, 1))) {
-
                 GroundItemManager.create(
                     GroundItem(
                         Item(Items.MAGIC_WHISTLE_16, 1),
                         Location.create(3107, 3359, 2),
                         secondsToTicks(60),
-                        player
-                    )
+                        player,
+                    ),
                 )
                 GroundItemManager.create(
                     GroundItem(
                         Item(Items.MAGIC_WHISTLE_16, 1),
                         Location.create(3107, 3359, 2),
                         secondsToTicks(60),
-                        player
-                    )
+                        player,
+                    ),
                 )
             }
 

@@ -1,9 +1,9 @@
 package content.global.activity.jobs.impl
 
-import org.rs.consts.Items
 import content.global.activity.jobs.Job
 import content.global.activity.jobs.JobType
 import core.game.node.entity.skill.Skills
+import org.rs.consts.Items
 
 enum class ProductionJobs(
     override val lower: Int,
@@ -11,9 +11,8 @@ enum class ProductionJobs(
     val lvlReq: Int,
     val itemId: Int,
     val skill: Int,
-    override val employer: Employers
+    override val employer: Employers,
 ) : Job {
-
     BRONZE_DAGGER(24, 24, 1, Items.BRONZE_DAGGER_1205, Skills.SMITHING, Employers.SMELTING_TUTOR),
     BRONZE_HELMS(22, 22, 1, Items.BRONZE_MED_HELM_1139, Skills.SMITHING, Employers.SMELTING_TUTOR),
     BRONZE_FULL_HELM(10, 10, 7, Items.BRONZE_FULL_HELM_1155, Skills.SMITHING, Employers.SMELTING_TUTOR),
@@ -83,7 +82,8 @@ enum class ProductionJobs(
     GOLD_BAR(9, 16, 40, Items.GOLD_BAR_2357, Skills.SMITHING, Employers.SMELTING_TUTOR),
 
     BONES(22, 28, 1, Items.BONES_526, 0, Employers.HANS),
-    ASHES(24, 26, 1, Items.ASHES_592, 0, Employers.AGGIE);
+    ASHES(24, 26, 1, Items.ASHES_592, 0, Employers.AGGIE),
+    ;
 
     override val type = JobType.PRODUCTION
 }

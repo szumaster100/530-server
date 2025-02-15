@@ -1,11 +1,11 @@
 package content.minigame.blastfurnace
 
-import org.rs.consts.Components
 import content.global.skill.smithing.smelting.Bar
 import core.api.animateInterface
 import core.api.submitIndividualPulse
 import core.game.interaction.InterfaceListener
 import core.game.system.task.Pulse
+import org.rs.consts.Components
 
 class BlastFurnaceInterfaceListener : InterfaceListener {
     override fun defineInterfaceListeners() {
@@ -25,11 +25,14 @@ class BlastFurnaceInterfaceListener : InterfaceListener {
                         animateInterface(player, 30, 4, anim)
                         return false
                     }
-                }
+                },
             )
             return@onOpen true
         }
-        onClose(Components.BLAST_FURNACE_TEMP_GAUGE_30) { player, _ -> player.pulseManager.clear(); return@onClose true }
+        onClose(Components.BLAST_FURNACE_TEMP_GAUGE_30) { player, _ ->
+            player.pulseManager.clear()
+            return@onClose true
+        }
 
         on(Components.BLAST_FURNACE_BAR_STOCK_28) { player, _, _, buttonID, _, _ ->
             val (isAll, bar) = getBarForButton(buttonID)

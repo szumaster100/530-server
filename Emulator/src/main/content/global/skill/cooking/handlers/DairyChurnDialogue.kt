@@ -1,17 +1,18 @@
 package content.global.skill.cooking.handlers
 
-import org.rs.consts.Components
-import org.rs.consts.Items
 import content.global.skill.cooking.data.DairyProduct
 import core.api.openChatbox
 import core.game.dialogue.Dialogue
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
 
 @Initializable
-class DairyChurnDialogue(player: Player? = null) : Dialogue(player) {
-
+class DairyChurnDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     private val ingredientId =
         arrayOf(Item(Items.BUCKET_OF_MILK_1927, 1), Item(Items.POT_OF_CREAM_2130, 1), Item(Items.PAT_OF_BUTTER_6697, 1))
 
@@ -23,7 +24,10 @@ class DairyChurnDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         var product: DairyProduct? = null
         var amount = 0
         when (buttonId) {

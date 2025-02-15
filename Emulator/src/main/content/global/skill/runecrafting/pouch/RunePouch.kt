@@ -1,22 +1,33 @@
 package content.global.skill.runecrafting.pouch
 
-import org.rs.consts.Items
 import core.api.*
 import core.game.global.action.DropListener
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import org.rs.consts.Items
 import java.util.*
 
-enum class RunePouch(val pouch: Int, val level: Int, private val capacity: Int, val totalCap: Int, val uses: Int) {
+enum class RunePouch(
+    val pouch: Int,
+    val level: Int,
+    private val capacity: Int,
+    val totalCap: Int,
+    val uses: Int,
+) {
     SMALL(Items.SMALL_POUCH_5509, 1, 3, 3, 0),
     MEDIUM(Items.MEDIUM_POUCH_5510, 25, 6, 9, 45),
     LARGE(Items.LARGE_POUCH_5512, 50, 9, 18, 29),
-    GIANT(Items.GIANT_POUCH_5514, 75, 12, 30, 10);
+    GIANT(Items.GIANT_POUCH_5514, 75, 12, 30, 10),
+    ;
 
     val decayedPouch = Item(pouch + 1)
 
-    fun action(player: Player, pouch: Item, option: String?) {
+    fun action(
+        player: Player,
+        pouch: Item,
+        option: String?,
+    ) {
         if (pouch.charge == 1000 && getDecay(player) > 0) {
             resetDecay(player)
         }
@@ -28,7 +39,10 @@ enum class RunePouch(val pouch: Int, val level: Int, private val capacity: Int, 
         }
     }
 
-    fun fill(player: Player, pouch: Item) {
+    fun fill(
+        player: Player,
+        pouch: Item,
+    ) {
         if (isFull(pouch, player)) {
             return
         }
@@ -40,7 +54,10 @@ enum class RunePouch(val pouch: Int, val level: Int, private val capacity: Int, 
         if (getStatLevel(player, Skills.RUNECRAFTING) < level) {
             sendMessage(
                 player,
-                "You need level " + level + " Runecrafting to fill a " + name.lowercase(Locale.getDefault()) + " pouch."
+                "You need level " + level + " Runecrafting to fill a " +
+                    name.lowercase(
+                        Locale.getDefault(),
+                    ) + " pouch.",
             )
             return
         }
@@ -55,7 +72,10 @@ enum class RunePouch(val pouch: Int, val level: Int, private val capacity: Int, 
         }
     }
 
-    fun empty(player: Player, pouch: Item) {
+    fun empty(
+        player: Player,
+        pouch: Item,
+    ) {
         if (isEmpty(pouch)) {
             sendMessage(player, "There are no essences in your pouch.")
             return
@@ -93,30 +113,53 @@ enum class RunePouch(val pouch: Int, val level: Int, private val capacity: Int, 
         return hit
     }
 
-    fun check(player: Player, item: Item) {
+    fun check(
+        player: Player,
+        item: Item,
+    ) {
         val amount = getEssence(item)
         sendMessage(
             player,
-            if (amount == 0) "There are no essences in this pouch." else "There " + (if (amount == 1) "is" else "are") + " " + amount + " " + getPouchEssenceName(
-                item,
-                amount
-            ) + " in this pouch."
+            if (amount ==
+                0
+            ) {
+                "There are no essences in this pouch."
+            } else {
+                "There " + (if (amount == 1) "is" else "are") + " " +
+                    amount +
+                    " " +
+                    getPouchEssenceName(
+                        item,
+                        amount,
+                    ) + " in this pouch."
+            },
         )
     }
 
-    fun drop(player: Player, item: Item) {
+    fun drop(
+        player: Player,
+        item: Item,
+    ) {
         onDrop(player, item)
         DropListener.drop(player, item)
     }
 
-    fun onDrop(player: Player, item: Item) {
+    fun onDrop(
+        player: Player,
+        item: Item,
+    ) {
         if (!isEmpty(item)) {
             resetCharge(item)
             sendMessage(player, "The contents of the pouch fell out as you dropped it!")
         }
     }
 
-    fun addEssence(player: Player, pouch: Item, essence: Item?, amount: Int) {
+    fun addEssence(
+        player: Player,
+        pouch: Item,
+        essence: Item?,
+        amount: Int,
+    ) {
         val remove = Item(essence!!.id, amount)
 
         if (!player.inventory.containsItem(remove)) {
@@ -140,18 +183,22 @@ enum class RunePouch(val pouch: Int, val level: Int, private val capacity: Int, 
         }
     }
 
-    fun decay(player: Player, pouch: Item) {
+    fun decay(
+        player: Player,
+        pouch: Item,
+    ) {
         incrementDecay(player)
 
         if (getDecay(player) >= uses) {
             var message = ""
             if (!isDecayed(pouch)) {
                 var decrementAmount = 0
-                decrementAmount = if (decayAmount > getEssence(pouch)) {
-                    decayAmount - (decayAmount - getEssence(pouch))
-                } else {
-                    getEssence(pouch) - (getEssence(pouch) - decayAmount)
-                }
+                decrementAmount =
+                    if (decayAmount > getEssence(pouch)) {
+                        decayAmount - (decayAmount - getEssence(pouch))
+                    } else {
+                        getEssence(pouch) - (getEssence(pouch) - decayAmount)
+                    }
                 incrementCharge(pouch, decrementAmount)
                 message = "Your pouch has decayed through use."
                 player.inventory.replace(Item(decayedPouch.id, pouch.amount, pouch.charge), pouch.slot)
@@ -164,7 +211,10 @@ enum class RunePouch(val pouch: Int, val level: Int, private val capacity: Int, 
         }
     }
 
-    fun repair(player: Player, pouch: Item) {
+    fun repair(
+        player: Player,
+        pouch: Item,
+    ) {
         if (isDecayed(pouch)) {
             player.inventory.replace(Item(this.pouch, pouch.amount, pouch.charge), pouch.slot)
         }
@@ -175,15 +225,24 @@ enum class RunePouch(val pouch: Int, val level: Int, private val capacity: Int, 
         player.getSavedData().globalData.getRcDecays()[ordinal - 1]++
     }
 
-    fun incrementCharge(pouch: Item, chargeIncrement: Int) {
+    fun incrementCharge(
+        pouch: Item,
+        chargeIncrement: Int,
+    ) {
         setHash(pouch, getPouchCharge(pouch) + chargeIncrement)
     }
 
-    fun decrementCharge(pouch: Item, chargeIncrement: Int) {
+    fun decrementCharge(
+        pouch: Item,
+        chargeIncrement: Int,
+    ) {
         setHash(pouch, getPouchCharge(pouch) - chargeIncrement)
     }
 
-    fun setCharge(pouch: Item, charge: Int) {
+    fun setCharge(
+        pouch: Item,
+        charge: Int,
+    ) {
         setHash(pouch, charge)
     }
 
@@ -195,7 +254,10 @@ enum class RunePouch(val pouch: Int, val level: Int, private val capacity: Int, 
         setHash(pouch, 1000)
     }
 
-    fun setHash(pouch: Item, charge: Int) {
+    fun setHash(
+        pouch: Item,
+        charge: Int,
+    ) {
         pouch.charge = charge
     }
 
@@ -211,7 +273,11 @@ enum class RunePouch(val pouch: Int, val level: Int, private val capacity: Int, 
         return getEssence(item) >= getCapacity(pouch.asItem())
     }
 
-    fun getAddAmount(pouch: Item, essence: Item?, player: Player): Int {
+    fun getAddAmount(
+        pouch: Item,
+        essence: Item?,
+        player: Player,
+    ): Int {
         val essyAmount = player.inventory.getAmount(essence)
         val pouchAmount = getEssence(pouch)
         val maxAdd = getCapacity(pouch) - pouchAmount
@@ -223,14 +289,21 @@ enum class RunePouch(val pouch: Int, val level: Int, private val capacity: Int, 
         return 0
     }
 
-    fun isValidEssence(pouch: Item, essence: Item?, player: Player?): Boolean {
+    fun isValidEssence(
+        pouch: Item,
+        essence: Item?,
+        player: Player?,
+    ): Boolean {
         if (isEmpty(pouch)) {
             return true
         }
         return getPouchEssenceName(pouch) == getEssenceName(essence)
     }
 
-    fun isFull(item: Item, player: Player): Boolean {
+    fun isFull(
+        item: Item,
+        player: Player,
+    ): Boolean {
         if (isFull(item)) {
             player.sendMessage("Your pouch is full.")
             return true
@@ -238,7 +311,10 @@ enum class RunePouch(val pouch: Int, val level: Int, private val capacity: Int, 
         return false
     }
 
-    fun getPouchEssenceName(item: Item, amount: Int): String {
+    fun getPouchEssenceName(
+        item: Item,
+        amount: Int,
+    ): String {
         return getPouchEssenceName(item) + (if (amount > 1) "s" else "")
     }
 
@@ -304,7 +380,14 @@ enum class RunePouch(val pouch: Int, val level: Int, private val capacity: Int, 
     }
 
     val decayAmount: Int
-        get() = if (this == GIANT) 3 else if (this == LARGE) 2 else 1
+        get() =
+            if (this == GIANT) {
+                3
+            } else if (this == LARGE) {
+                2
+            } else {
+                1
+            }
 
     fun isDecayed(pouch: Item): Boolean {
         return pouch.id == decayedPouch.id
@@ -313,7 +396,10 @@ enum class RunePouch(val pouch: Int, val level: Int, private val capacity: Int, 
     val isDecayable: Boolean
         get() = this != SMALL
 
-    fun hasDecay(player: Player, pouch: Item): Boolean {
+    fun hasDecay(
+        player: Player,
+        pouch: Item,
+    ): Boolean {
         return getDecay(player) > 0 || isDecayed(pouch)
     }
 

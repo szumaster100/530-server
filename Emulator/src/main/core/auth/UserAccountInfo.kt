@@ -20,14 +20,35 @@ class UserAccountInfo(
     var timePlayed: Long,
     var lastLogin: Long,
     var online: Boolean,
-    var joinDate: Timestamp
+    var joinDate: Timestamp,
 ) {
     companion object {
         val default = createDefault()
 
         @JvmStatic
         fun createDefault(): UserAccountInfo {
-            return UserAccountInfo(username = "", password = "", uid = 0, rights = 0, credits = 0, ip = "", lastUsedIp = "", muteEndTime = 0L, banEndTime = 0L, contacts = "", blocked = "", clanName = "", currentClan = "", clanReqs = "1,0,8,9", timePlayed = 0L, lastLogin = 0L, online = false, joinDate = Timestamp(System.currentTimeMillis())).also { it.setInitialReferenceValues() }
+            return UserAccountInfo(
+                username = "",
+                password = "",
+                uid = 0,
+                rights = 0,
+                credits = 0,
+                ip = "",
+                lastUsedIp = "",
+                muteEndTime = 0L,
+                banEndTime = 0L,
+                contacts = "",
+                blocked = "",
+                clanName = "",
+                currentClan = "",
+                clanReqs = "1,0,8,9",
+                timePlayed = 0L,
+                lastLogin = 0L,
+                online = false,
+                joinDate = Timestamp(System.currentTimeMillis()),
+            ).also {
+                it.setInitialReferenceValues()
+            }
         }
     }
 
@@ -67,7 +88,7 @@ class UserAccountInfo(
             timePlayed,
             lastLogin,
             online,
-            joinDate
+            joinDate,
         )
     }
 

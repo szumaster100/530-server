@@ -1,6 +1,5 @@
 package content.region.misthalin.quest.priest.dialogue
 
-import org.rs.consts.Quests
 import core.cache.def.impl.NPCDefinition
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
@@ -8,10 +7,12 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.plugin.Initializable
+import org.rs.consts.Quests
 
 @Initializable
-class DrezelDialogue(player: Player? = null) : Dialogue(player) {
-
+class DrezelDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         npc.name = "Drezel"
@@ -24,13 +25,13 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
             npc(
                 FaceAnim.HALF_GUILTY,
                 "How does it adventurer? Any luck in finding the key to",
-                "the cell or a way of stopping the vampire yet?"
+                "the cell or a way of stopping the vampire yet?",
             )
             stage = 600
         } else if (quest.getStage(player) == 15) {
             player(
                 FaceAnim.HALF_GUILTY,
-                "The key fitted the lock! You're free to leave now!"
+                "The key fitted the lock! You're free to leave now!",
             )
             stage = 701
         } else if (quest.getStage(player) == 16) {
@@ -38,14 +39,17 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                 FaceAnim.HALF_GUILTY,
                 "I poured the blessed water over the vampires coffin. I",
                 "think that should trap him in there long enough for you",
-                "to escape."
+                "to escape.",
             )
             stage = 800
         }
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         val quest = player.getQuestRepository().getQuest(Quests.PRIEST_IN_PERIL)
         when (stage) {
             0 -> {
@@ -53,7 +57,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "Oh! You do not appear to be on of those Zamorakians",
                     "who imprisoned me here! Who are you and why are",
-                    "you here?"
+                    "you here?",
                 )
                 stage = 1
             }
@@ -63,7 +67,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "My name's " + player.username + ". King Roald sent me to find",
                     "out what was going on at the temple. I take it you are",
-                    "Drezel?"
+                    "Drezel?",
                 )
                 stage = 2
             }
@@ -73,7 +77,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "That is right! Oh, praise be to Saradomin! All is not yet",
                     "lost! I feared that when those Zamorakians attacked this",
-                    "place and imprisoned"
+                    "place and imprisoned",
                 )
                 stage = 3
             }
@@ -83,7 +87,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "me up here, Misthalin would be doomed! If they should",
                     "manage to desecrate the holy river Salve we would be",
-                    "defenceless against Morytania!"
+                    "defenceless against Morytania!",
                 )
                 stage = 4
             }
@@ -96,7 +100,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
             5 -> {
                 npc(
                     FaceAnim.HALF_GUILTY,
-                    "Well, it is a long tale, and I am not sure we have time!"
+                    "Well, it is a long tale, and I am not sure we have time!",
                 )
                 stage = 6
             }
@@ -106,28 +110,29 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 7
             }
 
-            7 -> when (buttonId) {
-                1 -> {
-                    player(
-                        FaceAnim.HALF_GUILTY,
-                        "Tell me anyway. I'd like to know the full facts before",
-                        "acting any further."
-                    )
-                    stage = 8
-                }
+            7 ->
+                when (buttonId) {
+                    1 -> {
+                        player(
+                            FaceAnim.HALF_GUILTY,
+                            "Tell me anyway. I'd like to know the full facts before",
+                            "acting any further.",
+                        )
+                        stage = 8
+                    }
 
-                2 -> {
-                    player(FaceAnim.HALF_GUILTY, "You're right, we don't.")
-                    stage = 500
+                    2 -> {
+                        player(FaceAnim.HALF_GUILTY, "You're right, we don't.")
+                        stage = 500
+                    }
                 }
-            }
 
             8 -> {
                 npc(
                     FaceAnim.HALF_GUILTY,
                     "Ah, Saradomin has granted you wisdom I see. Well, the",
                     "story of the river Salve and of how it protects Misthalin",
-                    "is the story of this temple,"
+                    "is the story of this temple,",
                 )
                 stage = 9
             }
@@ -137,7 +142,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "and of the seven warrior priests who died here long ago,",
                     "from whom I am descended. Once long ago Misthalin",
-                    "did not have the borders that"
+                    "did not have the borders that",
                 )
                 stage = 10
             }
@@ -147,7 +152,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "it currently does. This entire area, as far West as",
                     "Varrock itself was under the control of an evil god.",
-                    "There was frequent skirmishing"
+                    "There was frequent skirmishing",
                 )
                 stage = 11
             }
@@ -158,7 +163,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     "along the borders, as the brave heroes of Varrock",
                     "fought to keep the evil creatures that now are trapped",
                     "on the eastern side of the River Salve from over",
-                    "running"
+                    "running",
                 )
                 stage = 12
             }
@@ -169,7 +174,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     "the human encampments, who worshipped Saradomin.",
                     "Then one day, Saradomin himself appeared to one of",
                     "our mighty heroes, whose name has been forgotten by",
-                    "history,"
+                    "history,",
                 )
                 stage = 13
             }
@@ -179,7 +184,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "and told him that should we be able to take the pass that",
                     "this temple now stands in, Saradomin would use his",
-                    "power to bless this river, and make it"
+                    "power to bless this river, and make it",
                 )
                 stage = 14
             }
@@ -189,7 +194,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "impassable to all creatures with evil in their hearts. This",
                     "unknown hero grouped together all of the mightiest",
-                    "fighters whose hearts were pure"
+                    "fighters whose hearts were pure",
                 )
                 stage = 15
             }
@@ -199,7 +204,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "that he could find, and the seven of them rode here to",
                     "make a final stand. The enemies swarmed across the",
-                    "Salve but they did not yield."
+                    "Salve but they did not yield.",
                 )
                 stage = 16
             }
@@ -209,7 +214,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "For ten days and nights they fought, never sleeping,",
                     "never eating, fuelled by their desire to make the world a",
-                    "better place for humans to live."
+                    "better place for humans to live.",
                 )
                 stage = 17
             }
@@ -219,7 +224,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "On the eleventh day they were to be joined by",
                     "reinforcements from a neighbouring encampment, but",
-                    "then those reinforcements arrived all they found"
+                    "then those reinforcements arrived all they found",
                 )
                 stage = 18
             }
@@ -229,7 +234,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "were the bodies of these seven brave but unknown",
                     "heroes, surrounded by the piles of the dead creatures of",
-                    "evil that had tried to defeat them."
+                    "evil that had tried to defeat them.",
                 )
                 stage = 19
             }
@@ -239,7 +244,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "The men were saddened at the loss of such pure and",
                     "mighty warriors, yet their sacrifice had not been in",
-                    "vain; for the water of the Salve"
+                    "vain; for the water of the Salve",
                 )
                 stage = 20
             }
@@ -249,7 +254,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "had indeed been filled with the power of Saradomin, and",
                     "the evil creatures of Morytania were trapped beyond",
-                    "the river banks forever, by their own evil."
+                    "the river banks forever, by their own evil.",
                 )
                 stage = 21
             }
@@ -259,7 +264,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "In memory of this brave sacrifice my ancestors built",
                     "this temple so that the land would always be free of the",
-                    "evil creatures"
+                    "evil creatures",
                 )
                 stage = 22
             }
@@ -269,7 +274,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "who wish to destroy it, and laid the bodies of those brave",
                     "warriors in tombs of honour below this temple with",
-                    "golden gifts on the tombs as marks of respect."
+                    "golden gifts on the tombs as marks of respect.",
                 )
                 stage = 23
             }
@@ -279,7 +284,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "They also built a statue on the river mouth so that all",
                     "who mighty try and cross into Misthalin from Morytania",
-                    "would know that these lands are protected"
+                    "would know that these lands are protected",
                 )
                 stage = 24
             }
@@ -289,7 +294,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "by the glory of Saradomin and that good will always",
                     "defeat evil, no matter how the odds are stacked against",
-                    "them."
+                    "them.",
                 )
                 stage = 25
             }
@@ -299,7 +304,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "Ok, I can see how the river protects the border, but I",
                     "can't see how anything could affect that from this",
-                    "temple."
+                    "temple.",
                 )
                 stage = 26
             }
@@ -309,7 +314,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "Well, as much as it saddens me to say so adventurer,",
                     "Lord Saradomin's presence has not been felt on the",
-                    "land for many years now, and even"
+                    "land for many years now, and even",
                 )
                 stage = 27
             }
@@ -319,7 +324,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "though all true Saradominists know that he watches over",
                     "us, his power upon the land is not as strong as it once",
-                    "was."
+                    "was.",
                 )
                 stage = 28
             }
@@ -329,7 +334,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "I fear that should those Zamorakians somehow pollute",
                     "the Salve and desecrate his blessing, his power might not",
-                    "be able to stop"
+                    "be able to stop",
                 )
                 stage = 29
             }
@@ -338,7 +343,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     FaceAnim.HALF_GUILTY,
                     "the army of evil that lurks to the east, longing for the",
-                    "opportunity to invade and destroy us all!"
+                    "opportunity to invade and destroy us all!",
                 )
                 stage = 30
             }
@@ -347,7 +352,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     FaceAnim.HALF_GUILTY,
                     "So what do you say adventurer? Will you aid me and",
-                    "all of Misthalin in foiling this Zamorakian plot?"
+                    "all of Misthalin in foiling this Zamorakian plot?",
                 )
                 stage = 31
             }
@@ -361,7 +366,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     FaceAnim.HALF_GUILTY,
                     "Well, let's just say if we cannot undo whatever damage",
-                    "has been done here the entire land is in grave peril!"
+                    "has been done here the entire land is in grave peril!",
                 )
                 stage = 501
             }
@@ -370,38 +375,39 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     FaceAnim.HALF_GUILTY,
                     "So what do you say adventurer? Will you aid me and",
-                    "all of Misthalin in foiling this Zamorakian plot?"
+                    "all of Misthalin in foiling this Zamorakian plot?",
                 )
                 stage = 31
             }
 
-            503 -> when (buttonId) {
-                1 -> {
-                    player(
-                        FaceAnim.HALF_GUILTY,
-                        "Yes, of course. Any threat to Misthalin must be",
-                        "neutralised immediately. So what can I do to help?"
-                    )
-                    stage = 506
-                }
+            503 ->
+                when (buttonId) {
+                    1 -> {
+                        player(
+                            FaceAnim.HALF_GUILTY,
+                            "Yes, of course. Any threat to Misthalin must be",
+                            "neutralised immediately. So what can I do to help?",
+                        )
+                        stage = 506
+                    }
 
-                2 -> {
-                    player(
-                        FaceAnim.HALF_GUILTY,
-                        "HA! NO! You can rot in there for all I care you",
-                        "stupid priest! All hail mighty Zamorak! Death to puny",
-                        "Misthalin!"
-                    )
-                    stage = 504
+                    2 -> {
+                        player(
+                            FaceAnim.HALF_GUILTY,
+                            "HA! NO! You can rot in there for all I care you",
+                            "stupid priest! All hail mighty Zamorak! Death to puny",
+                            "Misthalin!",
+                        )
+                        stage = 504
+                    }
                 }
-            }
 
             504 -> {
                 npc(
                     FaceAnim.HALF_GUILTY,
                     "Oooooh... I knew it was too good to be true... then",
                     "leave me to my fate villain, there's no need to taunt me",
-                    "as well as keeping me imprisoned."
+                    "as well as keeping me imprisoned.",
                 )
                 stage = 505
             }
@@ -412,7 +418,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "Well, the immediate problem is that I am trapped in this",
                     "cell. I know that the key to free me is nearby, for none",
-                    "of the Zamorakians"
+                    "of the Zamorakians",
                 )
                 stage = 507
             }
@@ -422,7 +428,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "who imprisoned me here were ever gone for long",
                     "periods of time. Should you find the key however, as",
-                    "you may have noticed,"
+                    "you may have noticed,",
                 )
                 stage = 508
             }
@@ -432,7 +438,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "there is a vampire in that coffin over there. I do not",
                     "know how they managed to find it, but it is one of the",
-                    "ones that somehow"
+                    "ones that somehow",
                 )
                 stage = 509
             }
@@ -442,7 +448,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "survived the battle here all those years ago, and is by",
                     "now quite, quite, mad. It has been trapped on this side",
-                    "of the river for centuries,"
+                    "of the river for centuries,",
                 )
                 stage = 510
             }
@@ -452,7 +458,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "and as those fiendish Zamorakians pointed out to me",
                     "with delight, as a descendant of one of those who",
-                    "trapped it here, it will recognise"
+                    "trapped it here, it will recognise",
                 )
                 stage = 511
             }
@@ -462,7 +468,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "the smell of my blood should I come anywhere near it.",
                     "It will of course then wake up and kill me, very",
-                    "probably slowly and painfully."
+                    "probably slowly and painfully.",
                 )
                 stage = 512
             }
@@ -470,7 +476,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
             512 -> {
                 player(
                     FaceAnim.HALF_GUILTY,
-                    "Maybe I could kill it somehow then while it is asleep?"
+                    "Maybe I could kill it somehow then while it is asleep?",
                 )
                 stage = 513
             }
@@ -480,7 +486,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "No adventurer, I do not think it would be wise for you",
                     "to wake it at all. As I say, it is little more than a wild",
-                    "animal, and must"
+                    "animal, and must",
                 )
                 stage = 514
             }
@@ -490,7 +496,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "be extremely powerful to have survived until today. I",
                     "suspect your best chance would be to incapacitate it",
-                    "somehow."
+                    "somehow.",
                 )
                 stage = 515
             }
@@ -499,7 +505,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                 player(
                     FaceAnim.HALF_GUILTY,
                     "Okay, find the key to your cell, and do something about",
-                    "the vampire."
+                    "the vampire.",
                 )
                 stage = 516
             }
@@ -509,7 +515,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "When you have done both of those I will be able to",
                     "inspect the damage which those Zamorakians have done",
-                    "to the purity of the Salve."
+                    "to the purity of the Salve.",
                 )
                 stage = 517
             }
@@ -519,7 +525,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "Depending on the severity of the damage, I may",
                     "require further assistance from you in restoring its",
-                    "purity."
+                    "purity.",
                 )
                 stage = 518
             }
@@ -527,7 +533,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
             518 -> {
                 player(
                     FaceAnim.HALF_GUILTY,
-                    "Okay, well first thing's first; let's get you out of here."
+                    "Okay, well first thing's first; let's get you out of here.",
                 )
                 stage = 519
             }
@@ -547,7 +553,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "Well don't give up adventurer! That key MUST be",
                     "around here somewhere! I know none of those",
-                    "Zamorakians ever got very far from this building!"
+                    "Zamorakians ever got very far from this building!",
                 )
                 stage = 602
             }
@@ -562,7 +568,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "I could hear them laughing about some gullible fool that",
                     "they tricked into killing the guard dog at the",
-                    "monument."
+                    "monument.",
                 )
                 stage = 604
             }
@@ -577,7 +583,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "Honestly, what kind of idiot would go around killing",
                     "things just because a stranger told them to? What kind",
-                    "of oafish, numb-skulled, dim-witted,"
+                    "of oafish, numb-skulled, dim-witted,",
                 )
                 stage = 606
             }
@@ -592,33 +598,34 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     FaceAnim.HALF_GUILTY,
                     "Well excellent work adventurer! Unfortunately, as you",
-                    "know, I cannot risk waking that vampire in the coffin."
+                    "know, I cannot risk waking that vampire in the coffin.",
                 )
                 stage = 702
             }
 
             702 ->
-                stage = if (player.inventory.contains(2953, 1)) {
-                    player(
-                        FaceAnim.HALF_GUILTY,
-                        "I have some water from the Salve. It seems to have",
-                        "been desecrated though. Do you think you could bless",
-                        "it for me?"
-                    )
-                    703
-                } else {
-                    player(
-                        FaceAnim.HALF_GUILTY,
-                        "Do you have any idea about dealing with vampire?"
-                    )
-                    730
-                }
+                stage =
+                    if (player.inventory.contains(2953, 1)) {
+                        player(
+                            FaceAnim.HALF_GUILTY,
+                            "I have some water from the Salve. It seems to have",
+                            "been desecrated though. Do you think you could bless",
+                            "it for me?",
+                        )
+                        703
+                    } else {
+                        player(
+                            FaceAnim.HALF_GUILTY,
+                            "Do you have any idea about dealing with vampire?",
+                        )
+                        730
+                    }
 
             703 -> {
                 npc(
                     FaceAnim.HALF_GUILTY,
                     "Yes, good thinking adventurer! Give it to me, I will bless",
-                    "it!"
+                    "it!",
                 )
                 stage = 704
             }
@@ -640,7 +647,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "well, the water of the salve should still have enough",
                     "power to work against the vampire despite what those",
-                    "Zamorakians might have done to it..."
+                    "Zamorakians might have done to it...",
                 )
                 stage = 731
             }
@@ -649,7 +656,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     FaceAnim.HALF_GUILTY,
                     "Maybe you should try and get hold of some from",
-                    "somewhere?"
+                    "somewhere?",
                 )
                 stage = 732
             }
@@ -660,7 +667,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "Excellent work adventurer! I am free at last! Let me",
                     "ensure that evil vampire is trapped for good. I will",
-                    "meet you down by the monument."
+                    "meet you down by the monument.",
                 )
                 stage = 801
             }
@@ -670,7 +677,7 @@ class DrezelDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.HALF_GUILTY,
                     "Look for me down there, I need to assess what damage",
                     "has been done to our holy barrier by those evil",
-                    "Zamorakians!"
+                    "Zamorakians!",
                 )
                 stage = 802
             }

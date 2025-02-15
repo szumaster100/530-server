@@ -18,9 +18,13 @@ import org.rs.consts.Quests
  * Represents the Harold dialogue.
  */
 @Initializable
-class HaroldDialogue(player: Player? = null) : Dialogue(player) {
-
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+class HaroldDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         if (isQuestInProgress(player!!, Quests.DEATH_PLATEAU, 10, 29)) {
             openDialogue(player!!, HaroldDialogue(), npc)
             return true
@@ -36,7 +40,11 @@ class HaroldDialogue(player: Player? = null) : Dialogue(player) {
                     player(FaceAnim.FRIENDLY, "I'll go and get you one.").also { stage = END_DIALOGUE }
                 } else {
                     sendMessage(player!!, "You give Harold an Asgarnian Ale.")
-                    sendItemDialogue(player!!, Items.ASGARNIAN_ALE_1905, "You give Harold an Asgarnian Ale.").also { stage++ }
+                    sendItemDialogue(
+                        player!!,
+                        Items.ASGARNIAN_ALE_1905,
+                        "You give Harold an Asgarnian Ale.",
+                    ).also { stage++ }
                 }
             }
             5 -> {

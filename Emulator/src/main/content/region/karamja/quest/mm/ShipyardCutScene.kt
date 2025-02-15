@@ -1,8 +1,5 @@
 package content.region.karamja.quest.mm
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.openOverlay
 import core.game.activity.Cutscene
 import core.game.component.Component
@@ -12,9 +9,13 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Direction
 import core.game.world.map.Location
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
-class ShipyardCutScene(player: Player) : Cutscene(player) {
-
+class ShipyardCutScene(
+    player: Player,
+) : Cutscene(player) {
     val interfaceId = Components.QUEST_COMPLETE_SCROLL_277
 
     override fun setup() {
@@ -48,7 +49,7 @@ class ShipyardCutScene(player: Player) : Cutscene(player) {
                             rotateCamera(48, 50)
                             return true
                         }
-                    }
+                    },
                 )
 
                 GameWorld.Pulser.submit(
@@ -59,7 +60,7 @@ class ShipyardCutScene(player: Player) : Cutscene(player) {
                             timedUpdate(4)
                             return true
                         }
-                    }
+                    },
                 )
             }
 
@@ -77,7 +78,7 @@ class ShipyardCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.FOREMAN_1470,
                     FaceAnim.WORRIED,
-                    "All this talk to Glough being replaced doesn't bode well for ... how shall i put this ... their morale."
+                    "All this talk to Glough being replaced doesn't bode well for ... how shall i put this ... their morale.",
                 )
                 timedUpdate(8)
             }
@@ -91,7 +92,7 @@ class ShipyardCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.FOREMAN_1470,
                     FaceAnim.WORRIED,
-                    "Those are all men with children to feed. Famished families. Worried wives. All of us relly on this shipyard."
+                    "Those are all men with children to feed. Famished families. Worried wives. All of us relly on this shipyard.",
                 )
                 timedUpdate(10)
             }
@@ -100,7 +101,7 @@ class ShipyardCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.FOREMAN_1470,
                     FaceAnim.WORRIED,
-                    "If something isn't done soon, there will be revolt. And i won't be able to stop it."
+                    "If something isn't done soon, there will be revolt. And i won't be able to stop it.",
                 )
                 timedUpdate(8)
             }
@@ -114,7 +115,7 @@ class ShipyardCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.FOREMAN_1470,
                     FaceAnim.WORRIED,
-                    "What something? You're always working on something. All we ever hear is bad news."
+                    "What something? You're always working on something. All we ever hear is bad news.",
                 )
                 timedUpdate(10)
             }
@@ -123,7 +124,7 @@ class ShipyardCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.FOREMAN_1470,
                     FaceAnim.WORRIED,
-                    "First Glough disappeared. Then news of a missing squad of the Royal Guard in our area. And what about that human sent by the King?"
+                    "First Glough disappeared. Then news of a missing squad of the Royal Guard in our area. And what about that human sent by the King?",
                 )
                 timedUpdate(14)
             }
@@ -132,7 +133,7 @@ class ShipyardCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.GLO_CARANOCK_1427,
                     FaceAnim.NEUTRAL,
-                    "The human means nothing. If it becomes too much trouble, I will simply have it ... removed. In the meantime, let it continue to search for what blasted 10th squad."
+                    "The human means nothing. If it becomes too much trouble, I will simply have it ... removed. In the meantime, let it continue to search for what blasted 10th squad.",
                 )
                 timedUpdate(14)
             }
@@ -141,7 +142,7 @@ class ShipyardCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.FOREMAN_1470,
                     FaceAnim.WORRIED,
-                    "I am still worried. What am I meant to tell the men?"
+                    "I am still worried. What am I meant to tell the men?",
                 )
                 timedUpdate(8)
             }
@@ -150,7 +151,7 @@ class ShipyardCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.GLO_CARANOCK_1427,
                     FaceAnim.NEUTRAL,
-                    "Stop worrying. I'm working on something - Glough left a few of his agents in the Gnome airforce."
+                    "Stop worrying. I'm working on something - Glough left a few of his agents in the Gnome airforce.",
                 )
                 timedUpdate(12)
             }
@@ -159,7 +160,7 @@ class ShipyardCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.GLO_CARANOCK_1427,
                     FaceAnim.NEUTRAL,
-                    "For now tell to you men to continue work on the battleships. Give me some time."
+                    "For now tell to you men to continue work on the battleships. Give me some time.",
                 )
                 timedUpdate(12)
             }
@@ -168,7 +169,7 @@ class ShipyardCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.FOREMAN_1470,
                     FaceAnim.WORRIED,
-                    "I hope you're right, Caranock, for your sake. My sake. For all of our sakes..."
+                    "I hope you're right, Caranock, for your sake. My sake. For all of our sakes...",
                 )
                 timedUpdate(12)
             }
@@ -183,11 +184,12 @@ class ShipyardCutScene(player: Player) : Cutscene(player) {
                     for (i in 0..17) {
                         when (i) {
                             3 -> player.packetDispatch.sendString("Monkey Madness: Chapter 2", interfaceId, i)
-                            9 -> player.packetDispatch.sendString(
-                                "In which our ${if (player.isMale) "hero fids himself" else "heroine finds herself"} engaging in severe",
-                                interfaceId,
-                                i
-                            )
+                            9 ->
+                                player.packetDispatch.sendString(
+                                    "In which our ${if (player.isMale) "hero fids himself" else "heroine finds herself"} engaging in severe",
+                                    interfaceId,
+                                    i,
+                                )
 
                             10 -> player.packetDispatch.sendString("quantity of monkey business.", interfaceId, i)
                             else -> player.packetDispatch.sendString("", interfaceId, i)

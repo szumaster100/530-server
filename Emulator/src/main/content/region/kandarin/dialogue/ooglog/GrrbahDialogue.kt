@@ -1,17 +1,21 @@
 package content.region.kandarin.dialogue.ooglog
 
-import org.rs.consts.NPCs
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
 import core.tools.START_DIALOGUE
+import org.rs.consts.NPCs
 
 @Initializable
-class GrrbahDialogue(player: Player? = null) : Dialogue(player) {
-
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+class GrrbahDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             START_DIALOGUE -> npcl(FaceAnim.CHILD_NORMAL, "Hi, human.").also { stage++ }
             1 -> playerl(FaceAnim.HALF_ASKING, "Hi, ogre! How are you today, little ogre?").also { stage++ }

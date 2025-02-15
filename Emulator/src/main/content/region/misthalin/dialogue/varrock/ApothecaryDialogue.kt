@@ -1,7 +1,5 @@
 package content.region.misthalin.dialogue.varrock
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.game.dialogue.Dialogue
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
@@ -10,10 +8,13 @@ import core.game.node.item.GroundItem
 import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
 import core.plugin.Initializable
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class ApothecaryDialogue(player: Player? = null) : Dialogue(player) {
-
+class ApothecaryDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         if (player.getQuestRepository().getQuest(Quests.ROMEO_JULIET).getStage(player) == 40) {
@@ -52,39 +53,43 @@ class ApothecaryDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             1 -> {
                 options(
                     "Can you make a strength potion?",
                     "Do you know a potion to make hair fall out?",
                     "Have you got any good potions to give away?",
-                    "Can you make a potion that makes it seem like I'm dead?"
+                    "Can you make a potion that makes it seem like I'm dead?",
                 )
                 stage = 2
             }
 
-            2 -> when (buttonId) {
-                1 -> {
-                    player("Can you make a strength potion?")
-                    stage = 10
-                }
+            2 ->
+                when (buttonId) {
+                    1 -> {
+                        player("Can you make a strength potion?")
+                        stage = 10
+                    }
 
-                2 -> {
-                    player("Do you know a potion to make hair fall out?")
-                    stage = 20
-                }
+                    2 -> {
+                        player("Do you know a potion to make hair fall out?")
+                        stage = 20
+                    }
 
-                3 -> {
-                    player("Have you got any good potions to give away?")
-                    stage = 140
-                }
+                    3 -> {
+                        player("Have you got any good potions to give away?")
+                        stage = 140
+                    }
 
-                4 -> {
-                    player("Can you make a potion that makes it seems like I'm dead?")
-                    stage = 40
+                    4 -> {
+                        player("Can you make a potion that makes it seems like I'm dead?")
+                        stage = 40
+                    }
                 }
-            }
 
             10 -> {
                 if (player.inventory.containItems(223, 225)) {
@@ -94,7 +99,7 @@ class ApothecaryDialogue(player: Player? = null) : Dialogue(player) {
                 }
                 npc(
                     "Yes, but the ingredients are a little hard to find. If you",
-                    "ever get them I will make it for you, for a fee."
+                    "ever get them I will make it for you, for a fee.",
                 )
                 stage = 11
             }
@@ -109,11 +114,12 @@ class ApothecaryDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 51
             }
 
-            51 -> if (player.inventory.remove(*POTION_ITEMS)) {
-                player.inventory.add(POTION)
-                end()
-                player.achievementDiaryManager.finishTask(player, DiaryType.VARROCK, 1, 0)
-            }
+            51 ->
+                if (player.inventory.remove(*POTION_ITEMS)) {
+                    player.inventory.add(POTION)
+                    end()
+                    player.achievementDiaryManager.finishTask(player, DiaryType.VARROCK, 1, 0)
+                }
 
             11 -> {
                 player("So what are the ingredients?")
@@ -154,7 +160,7 @@ class ApothecaryDialogue(player: Player? = null) : Dialogue(player) {
                     "What a strange and morbid request! I can as it happens.",
                     "The berry of the cadava bush, prepared properly, will",
                     "induce a coma so deep that you will seem to be dead. It's",
-                    "very dangerous."
+                    "very dangerous.",
                 )
                 stage = 41
             }
@@ -204,7 +210,7 @@ class ApothecaryDialogue(player: Player? = null) : Dialogue(player) {
             505 -> {
                 npc(
                     "Bring them here when you have them. But be careful.",
-                    "They are nasty."
+                    "They are nasty.",
                 )
                 stage = 506
             }

@@ -2,13 +2,13 @@ package core.game.bots.impl
 
 import core.game.bots.*
 import core.game.interaction.DestinationFlag
+import core.game.interaction.IntType
+import core.game.interaction.InteractionListeners
 import core.game.interaction.MovementPulse
+import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.world.map.zone.ZoneBorders
 import org.rs.consts.Items
-import core.game.interaction.IntType
-import core.game.interaction.InteractionListeners
-import core.game.node.entity.skill.Skills
 
 @PlayerCompatible
 @ScriptName("Draynor Willows")
@@ -53,15 +53,17 @@ class DraynorWillows : Script() {
                 } else {
                     val bank = scriptAPI.getNearestNode(2213, true)
                     if (bank != null) {
-                        bot.pulseManager.run(object : MovementPulse(bot, bank, DestinationFlag.OBJECT) {
-                            override fun pulse(): Boolean {
-                                bot.faceLocation(bank.location)
-                                logCount += bot.inventory.getAmount(Items.WILLOW_LOGS_1519)
-                                scriptAPI.bankItem(Items.WILLOW_LOGS_1519)
-                                state = State.CHOPPING
-                                return true
-                            }
-                        })
+                        bot.pulseManager.run(
+                            object : MovementPulse(bot, bank, DestinationFlag.OBJECT) {
+                                override fun pulse(): Boolean {
+                                    bot.faceLocation(bank.location)
+                                    logCount += bot.inventory.getAmount(Items.WILLOW_LOGS_1519)
+                                    scriptAPI.bankItem(Items.WILLOW_LOGS_1519)
+                                    state = State.CHOPPING
+                                    return true
+                                }
+                            },
+                        )
                     }
                 }
             }

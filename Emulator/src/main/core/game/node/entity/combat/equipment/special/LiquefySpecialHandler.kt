@@ -9,18 +9,26 @@ import core.plugin.Plugin
 import org.rs.consts.Items
 
 @Initializable
-class LiquefySpecialHandler : MeleeSwingHandler(), Plugin<Any> {
-
+class LiquefySpecialHandler :
+    MeleeSwingHandler(),
+    Plugin<Any> {
     override fun newInstance(arg: Any?): Plugin<Any> {
         CombatStyle.MELEE.swingHandler.register(Items.BRINE_SABRE_11037, this)
         return this
     }
 
-    override fun fireEvent(identifier: String?, vararg args: Any?): Any {
+    override fun fireEvent(
+        identifier: String?,
+        vararg args: Any?,
+    ): Any {
         return Unit
     }
 
-    override fun swing(entity: Entity?, victim: Entity?, state: BattleState?): Int {
+    override fun swing(
+        entity: Entity?,
+        victim: Entity?,
+        state: BattleState?,
+    ): Int {
         entity?.asPlayer()?.sendMessage("You need to be underwater to use this special attack.")
         entity?.asPlayer()?.settings?.isSpecialToggled = false
         return super.swing(entity, victim, state)

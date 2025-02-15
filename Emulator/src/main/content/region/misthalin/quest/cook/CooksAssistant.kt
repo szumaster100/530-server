@@ -1,22 +1,24 @@
 package content.region.misthalin.quest.cook
 
-import org.rs.consts.Components
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.*
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class CooksAssistant : Quest(Quests.COOKS_ASSISTANT, 15, 14, 1, Vars.VARP_QUEST_COOKS_ASSISTANT_PROGRESS_29, 0, 1, 2) {
-
     val MILK = 1927
     val FLOUR = 1933
     val EGG = 1944
 
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 12
         var stage = player?.questRepository?.getStage(Quests.COOKS_ASSISTANT)!!
@@ -29,8 +31,9 @@ class CooksAssistant : Quest(Quests.COOKS_ASSISTANT, 15, 14, 1, Vars.VARP_QUEST_
             line(player, "bring him the following ingredients:", line++)
             if (player.getAttribute(
                     "cooks_assistant:milk_submitted",
-                    false
-                ) || player.getAttribute("cooks_assistant:all_submitted", false)
+                    false,
+                ) ||
+                player.getAttribute("cooks_assistant:all_submitted", false)
             ) {
                 line(player, "---I have given the cook a bucket of milk./--", line++)
             } else if (inInventory(player, MILK, 1)) {
@@ -42,8 +45,9 @@ class CooksAssistant : Quest(Quests.COOKS_ASSISTANT, 15, 14, 1, Vars.VARP_QUEST_
             }
             if (player.getAttribute(
                     "cooks_assistant:flour_submitted",
-                    false
-                ) || player.getAttribute("cooks_assistant:all_submitted", false)
+                    false,
+                ) ||
+                player.getAttribute("cooks_assistant:all_submitted", false)
             ) {
                 line(player, "---I have given the cook a pot of flour./--", line++)
             } else if (inInventory(player, FLOUR, 1)) {
@@ -54,8 +58,9 @@ class CooksAssistant : Quest(Quests.COOKS_ASSISTANT, 15, 14, 1, Vars.VARP_QUEST_
             }
             if (player.getAttribute(
                     "cooks_assistant:egg_submitted",
-                    false
-                ) || player.getAttribute("cooks_assistant:all_submitted", false)
+                    false,
+                ) ||
+                player.getAttribute("cooks_assistant:all_submitted", false)
             ) {
                 line(player, "---I have given the cook an egg./--", line++)
             } else if (inInventory(player, EGG, 1)) {
@@ -67,14 +72,19 @@ class CooksAssistant : Quest(Quests.COOKS_ASSISTANT, 15, 14, 1, Vars.VARP_QUEST_
             }
             if (player.getAttribute(
                     "cooks_assistant:all_submitted",
-                    false
-                ) || (player.getAttribute(
-                    "cooks_assistant:milk_submitted",
-                    false
-                ) && player.getAttribute(
-                    "cooks_assistant:flour_submitted",
-                    false
-                ) && player.getAttribute("cooks_assistant:egg_submitted", false))
+                    false,
+                ) ||
+                (
+                    player.getAttribute(
+                        "cooks_assistant:milk_submitted",
+                        false,
+                    ) &&
+                        player.getAttribute(
+                            "cooks_assistant:flour_submitted",
+                            false,
+                        ) &&
+                        player.getAttribute("cooks_assistant:egg_submitted", false)
+                )
             ) {
                 line(player, "I should return to the !!Cook.??", line)
             }
@@ -99,7 +109,7 @@ class CooksAssistant : Quest(Quests.COOKS_ASSISTANT, 15, 14, 1, Vars.VARP_QUEST_
             player,
             "You have completed the ${Quests.COOKS_ASSISTANT} Quest!",
             Components.QUEST_COMPLETE_SCROLL_277,
-            4
+            4,
         )
         sendItemZoomOnInterface(player, Components.QUEST_COMPLETE_SCROLL_277, 5, 1891, 240)
         drawReward(player, "1 Quest Point", ln++)
@@ -111,7 +121,7 @@ class CooksAssistant : Quest(Quests.COOKS_ASSISTANT, 15, 14, 1, Vars.VARP_QUEST_
             "cooks_assistant:flour_submitted",
             "cooks_assistant:egg_submitted",
             "cooks_assistant:all_submitted",
-            "cooks_assistant:submitted_some_items"
+            "cooks_assistant:submitted_some_items",
         )
     }
 

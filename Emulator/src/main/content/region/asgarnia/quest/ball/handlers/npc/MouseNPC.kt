@@ -1,13 +1,12 @@
 package content.region.asgarnia.quest.ball.handlers.npc
 
-import org.rs.consts.NPCs
 import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.player.Player
 import core.game.world.GameWorld.ticks
 import core.game.world.map.Location
+import org.rs.consts.NPCs
 
 class MouseNPC : AbstractNPC {
-
     var player: Player? = null
     private var endTime = 0
 
@@ -16,7 +15,11 @@ class MouseNPC : AbstractNPC {
         endTime = (ticks + 4 / 0.6).toInt()
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return MouseNPC(id, location)
     }
 

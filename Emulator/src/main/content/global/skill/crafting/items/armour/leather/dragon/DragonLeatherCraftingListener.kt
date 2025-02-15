@@ -1,16 +1,14 @@
 package content.global.skill.crafting.items.armour.leather.dragon
 
-import org.rs.consts.Items
 import core.api.amountInInventory
 import core.api.skill.sendSkillDialogue
 import core.api.submitIndividualPulse
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.Items
 
 class DragonLeatherCraftingListener : InteractionListener {
-
     override fun defineListeners() {
-
         onUseWith(IntType.ITEM, DRAGON_LEATHER, Items.NEEDLE_1733) { player, used, with ->
             val index = IntArray(3)
 
@@ -41,7 +39,7 @@ class DragonLeatherCraftingListener : InteractionListener {
                     val item = DragonLeather.forId(id)
                     submitIndividualPulse(
                         entity = player,
-                        pulse = DragonLeatherCraftingPulse(player, null, item!!, amount)
+                        pulse = DragonLeatherCraftingPulse(player, null, item!!, amount),
                     )
                 }
                 calculateMaxAmount {
@@ -53,11 +51,12 @@ class DragonLeatherCraftingListener : InteractionListener {
     }
 
     companion object {
-        val DRAGON_LEATHER = intArrayOf(
-            Items.GREEN_D_LEATHER_1745,
-            Items.BLUE_D_LEATHER_2505,
-            Items.RED_DRAGON_LEATHER_2507,
-            Items.BLACK_D_LEATHER_2509
-        )
+        val DRAGON_LEATHER =
+            intArrayOf(
+                Items.GREEN_D_LEATHER_1745,
+                Items.BLUE_D_LEATHER_2505,
+                Items.RED_DRAGON_LEATHER_2507,
+                Items.BLACK_D_LEATHER_2509,
+            )
     }
 }

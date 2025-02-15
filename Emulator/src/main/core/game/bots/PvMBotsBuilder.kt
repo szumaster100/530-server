@@ -5,7 +5,6 @@ import content.minigame.pestcontrol.bots.PestControlNoviceBot
 import core.game.world.map.Location
 
 class PvMBotsBuilder {
-
     companion object {
         var botsSpawned = 0
 
@@ -25,6 +24,5 @@ class PvMBotsBuilder {
             botsSpawned++
             return PestControlNoviceBot(l!!)
         }
-
     }
 }

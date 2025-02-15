@@ -1,13 +1,13 @@
 package core.game.bots.impl
 
 import core.api.item.produceGroundItem
+import core.game.bots.Script
+import core.game.bots.SkillingBotAssembler
+import core.game.interaction.IntType
+import core.game.interaction.InteractionListeners
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import org.rs.consts.Items
-import core.game.bots.SkillingBotAssembler
-import core.game.bots.Script
-import core.game.interaction.IntType
-import core.game.interaction.InteractionListeners
 
 class NonBankingMiner : Script() {
     override fun tick() {

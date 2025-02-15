@@ -1,19 +1,17 @@
 package content.region.asgarnia.handlers
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Scenery
-import org.rs.consts.Sounds
 import core.api.*
 import core.game.global.action.DoorActionHandler
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.world.map.Location
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Scenery
+import org.rs.consts.Sounds
 
 class FaladorListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(POSTER, IntType.SCENERY, "look-at") { player, _ ->
             sendDialogue(player, "Looks like a generic wanted poster.")
             return@on true
@@ -56,21 +54,23 @@ class FaladorListener : InteractionListener {
 
         on(CASTLE_STAIRS, IntType.SCENERY, "climb-up", "climb-down") { player, node ->
             when (node.id) {
-                11729 -> if (getUsedOption(player) == "climb-up") {
-                    when (player.location.z) {
-                        0 -> teleport(player, Location(2956, 3338, 1))
-                        1 -> teleport(player, Location(2959, 3339, 2))
-                        2 -> teleport(player, Location(2959, 3338, 3))
+                11729 ->
+                    if (getUsedOption(player) == "climb-up") {
+                        when (player.location.z) {
+                            0 -> teleport(player, Location(2956, 3338, 1))
+                            1 -> teleport(player, Location(2959, 3339, 2))
+                            2 -> teleport(player, Location(2959, 3338, 3))
+                        }
                     }
-                }
 
-                11731 -> if (getUsedOption(player) == "climb-down") {
-                    when (player.location.z) {
-                        3 -> teleport(player, Location(2959, 3338, 2))
-                        2 -> teleport(player, Location(2959, 3339, 1))
-                        1 -> teleport(player, Location(2956, 3338, 0))
+                11731 ->
+                    if (getUsedOption(player) == "climb-down") {
+                        when (player.location.z) {
+                            3 -> teleport(player, Location(2959, 3338, 2))
+                            2 -> teleport(player, Location(2959, 3339, 1))
+                            1 -> teleport(player, Location(2956, 3338, 0))
+                        }
                     }
-                }
             }
             return@on true
         }

@@ -1,6 +1,5 @@
 package content.minigame.pestcontrol.dialogue
 
-import org.rs.consts.NPCs
 import content.global.travel.charter.Charter
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
@@ -8,48 +7,47 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.world.GameWorld.settings
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
-class SquireDialogue(player: Player? = null) : Dialogue(player) {
-
+class SquireDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         if (args.size == 3) {
             val type = args[1] as Int
             when (type) {
                 0 -> {
-
-                    interpreter.sendDialogues(
-                        3781,
-                        FaceAnim.HALF_GUILTY,
-                        "The Void Knight was killed, another of our Order has",
-                        "fallen and that Island is lost."
-                    )
-                        .also { stage = 110 }
+                    interpreter
+                        .sendDialogues(
+                            3781,
+                            FaceAnim.HALF_GUILTY,
+                            "The Void Knight was killed, another of our Order has",
+                            "fallen and that Island is lost.",
+                        ).also { stage = 110 }
                 }
 
                 1 -> {
-
                     val points = args[2] as String
-                    interpreter.sendDialogues(
-                        3781,
-                        FaceAnim.HAPPY,
-                        "Congratulations! You managed to destroy all the portals!",
-                        "We've awarded you $points Void Knight Commendation",
-                        "points. Please also accept these coins as a reward."
-                    )
-                        .also { stage = 100 }
+                    interpreter
+                        .sendDialogues(
+                            3781,
+                            FaceAnim.HAPPY,
+                            "Congratulations! You managed to destroy all the portals!",
+                            "We've awarded you $points Void Knight Commendation",
+                            "points. Please also accept these coins as a reward.",
+                        ).also { stage = 100 }
                 }
 
                 else -> {
-
-                    interpreter.sendDialogues(
-                        3781,
-                        FaceAnim.HALF_GUILTY,
-                        "Congratulations! You managed to destroy all the portals!",
-                        "However, you did not succeed in reaching the required",
-                        "amount of damage dealt we cannot grant you a reward."
-                    )
-                        .also { stage = 101 }
+                    interpreter
+                        .sendDialogues(
+                            3781,
+                            FaceAnim.HALF_GUILTY,
+                            "Congratulations! You managed to destroy all the portals!",
+                            "However, you did not succeed in reaching the required",
+                            "amount of damage dealt we cannot grant you a reward.",
+                        ).also { stage = 101 }
                 }
             }
             return true
@@ -65,14 +63,17 @@ class SquireDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 if (npc.id == 3781) {
                     interpreter.sendOptions(
                         "Select an Option",
                         "I'd like to go back to Port Sarim please.",
-                        "I'm fine thanks."
+                        "I'm fine thanks.",
                     )
                     stage = 500
                     return true
@@ -81,22 +82,23 @@ class SquireDialogue(player: Player? = null) : Dialogue(player) {
                     "Who are you?",
                     "Where does this ship go?",
                     "I'd like to go to your outpost.",
-                    "I'm fine thanks."
+                    "I'm fine thanks.",
                 )
                 stage = 1
             }
 
-            500 -> when (buttonId) {
-                1 -> {
-                    interpreter.sendDialogues(player, null, "I'd like to go back to Port Sarim please.")
-                    stage = 502
-                }
+            500 ->
+                when (buttonId) {
+                    1 -> {
+                        interpreter.sendDialogues(player, null, "I'd like to go back to Port Sarim please.")
+                        stage = 502
+                    }
 
-                2 -> {
-                    interpreter.sendDialogues(player, null, "I'm fine thanks.")
-                    stage = 501
+                    2 -> {
+                        interpreter.sendDialogues(player, null, "I'm fine thanks.")
+                        stage = 501
+                    }
                 }
-            }
 
             501 -> end()
             502 -> {
@@ -109,27 +111,28 @@ class SquireDialogue(player: Player? = null) : Dialogue(player) {
                 Charter.PEST_TO_PORT_SARIM.sail(player)
             }
 
-            1 -> when (buttonId) {
-                1 -> {
-                    interpreter.sendDialogues(player, FaceAnim.HALF_GUILTY, "Who are you?")
-                    stage = 10
-                }
+            1 ->
+                when (buttonId) {
+                    1 -> {
+                        interpreter.sendDialogues(player, FaceAnim.HALF_GUILTY, "Who are you?")
+                        stage = 10
+                    }
 
-                2 -> {
-                    interpreter.sendDialogues(player, FaceAnim.HALF_GUILTY, "Where does this ship go?")
-                    stage = 20
-                }
+                    2 -> {
+                        interpreter.sendDialogues(player, FaceAnim.HALF_GUILTY, "Where does this ship go?")
+                        stage = 20
+                    }
 
-                3 -> {
-                    interpreter.sendDialogues(player, FaceAnim.HALF_GUILTY, "I'd like to go to your outpost.")
-                    stage = 30
-                }
+                    3 -> {
+                        interpreter.sendDialogues(player, FaceAnim.HALF_GUILTY, "I'd like to go to your outpost.")
+                        stage = 30
+                    }
 
-                4 -> {
-                    interpreter.sendDialogues(player, FaceAnim.HALF_GUILTY, "I'm fine thanks.")
-                    stage = 40
+                    4 -> {
+                        interpreter.sendDialogues(player, FaceAnim.HALF_GUILTY, "I'm fine thanks.")
+                        stage = 40
+                    }
                 }
-            }
 
             10 -> {
                 interpreter.sendDialogues(npc, FaceAnim.HALF_GUILTY, "I'm a Squire for the Void Knights.")
@@ -146,7 +149,7 @@ class SquireDialogue(player: Player? = null) : Dialogue(player) {
                     npc,
                     FaceAnim.HALF_GUILTY,
                     "The Void Knights, they are great warriors of balance",
-                    "who do Guthix's work here in " + settings!!.name + "."
+                    "who do Guthix's work here in " + settings!!.name + ".",
                 )
                 stage = 13
             }
@@ -157,7 +160,7 @@ class SquireDialogue(player: Player? = null) : Dialogue(player) {
                     npc,
                     FaceAnim.HALF_GUILTY,
                     "To the Void Knight outpost. It's a small island just off",
-                    "Karamja."
+                    "Karamja.",
                 )
                 stage = 21
             }
@@ -167,17 +170,18 @@ class SquireDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 22
             }
 
-            22 -> when (buttonId) {
-                1 -> {
-                    interpreter.sendDialogues(player, FaceAnim.HALF_GUILTY, "I'd like to go to your outpost.")
-                    stage = 23
-                }
+            22 ->
+                when (buttonId) {
+                    1 -> {
+                        interpreter.sendDialogues(player, FaceAnim.HALF_GUILTY, "I'd like to go to your outpost.")
+                        stage = 23
+                    }
 
-                2 -> {
-                    interpreter.sendDialogues(player, FaceAnim.HALF_GUILTY, "That's nice.")
-                    stage = 200
+                    2 -> {
+                        interpreter.sendDialogues(player, FaceAnim.HALF_GUILTY, "That's nice.")
+                        stage = 200
+                    }
                 }
-            }
 
             23 -> {
                 interpreter.sendDialogues(npc, FaceAnim.HALF_GUILTY, "Certainly, right this way.")
@@ -201,39 +205,40 @@ class SquireDialogue(player: Player? = null) : Dialogue(player) {
                     "What's going on?",
                     "How do I repair things?",
                     "I want to leave.",
-                    "I'd better get back to it then."
+                    "I'd better get back to it then.",
                 )
                 stage = 700
             }
 
-            700 -> when (buttonId) {
-                1 -> {
-                    player("What's going on?")
-                    stage = 710
-                }
+            700 ->
+                when (buttonId) {
+                    1 -> {
+                        player("What's going on?")
+                        stage = 710
+                    }
 
-                2 -> {
-                    player("How do I repair things?")
-                    stage = 720
-                }
+                    2 -> {
+                        player("How do I repair things?")
+                        stage = 720
+                    }
 
-                3 -> {
-                    player("I want to leave.")
-                    stage = 730
-                }
+                    3 -> {
+                        player("I want to leave.")
+                        stage = 730
+                    }
 
-                4 -> {
-                    player("I'd better get back to it then.")
-                    stage = 740
+                    4 -> {
+                        player("I'd better get back to it then.")
+                        stage = 740
+                    }
                 }
-            }
 
             710 -> {
                 npc(
                     "This island is being invaded by outsiders and the Void",
                     "Knight over there is using a ritual to unsummon their",
                     "portals. We must defend the Void Knight at all costs.",
-                    "however if you get an opening you can destroy the portals."
+                    "however if you get an opening you can destroy the portals.",
                 )
                 stage = 711
             }
@@ -244,7 +249,7 @@ class SquireDialogue(player: Player? = null) : Dialogue(player) {
                     "There are trees on the island. You'll need to chop them",
                     "down for logs and use a hammer to repair the defences.",
                     "Be careful tough, the trees here don't grow back very",
-                    "fast so your consts are limited!"
+                    "fast so your consts are limited!",
                 )
                 stage = 721
             }
@@ -254,9 +259,10 @@ class SquireDialogue(player: Player? = null) : Dialogue(player) {
             740 -> end()
             100 -> {
                 interpreter.sendDialogue(
-                    BLUE + "You now have " + RED + "" + player.getSavedData().activityData.pestPoints + "" + BLUE + " Void Knight Commendation points!</col>",
+                    BLUE + "You now have " + RED + "" + player.getSavedData().activityData.pestPoints + "" + BLUE +
+                        " Void Knight Commendation points!</col>",
                     "You can speak to a Void Knight to exchange your points for",
-                    "rewards."
+                    "rewards.",
                 )
                 stage = 101
             }

@@ -27,73 +27,88 @@ class MajorUpdateWorker {
     var started = false
     val sequence = UpdateSequence()
     val sdf = SimpleDateFormat("HHmmss")
-    val worker = Thread {
-        Thread.currentThread().name = "Major Update Worker"
-        started = true
-        Thread.sleep(600L)
-        while (running) {
-            Grafana.startTick()
-            val start = System.currentTimeMillis()
-            Server.heartbeat()
+    val worker =
+        Thread {
+            Thread.currentThread().name = "Major Update Worker"
+            started = true
+            Thread.sleep(600L)
+            while (running) {
+                Grafana.startTick()
+                val start = System.currentTimeMillis()
+                Server.heartbeat()
 
-            if (Server.networkReachability == NetworkReachability.REACHABLE)
-                handleTickActions()
-            else
-                tickOffline()
-
-            for (player in Repository.players.filter { !it.isArtificial }) {
-                if (System.currentTimeMillis() - player.session.lastPing > 20000L) {
-                    player?.session?.lastPing = Long.MAX_VALUE
-                    player?.session?.disconnect()
-                }
-                if (!player.isActive && !Repository.disconnectionQueue.contains(player.name) && player.getAttribute("logged-in-fully", false)) {
-                    player?.session?.disconnect()
-                    log(MajorUpdateWorker::class.java, Log.WARN, "Manually disconnecting ${player.name} because they were set as inactive without being disconnected. This is bad.")
-                }
-            }
-
-            if (sdf.format(Date()).toInt() == 0) {
-
-                if (GameWorld.checkDay() == 1) {
-                    ServerStore.clearWeeklyEntries()
+                if (Server.networkReachability == NetworkReachability.REACHABLE) {
+                    handleTickActions()
+                } else {
+                    tickOffline()
                 }
 
-                ServerStore.clearDailyEntries()
-                if (ServerConfig.DAILY_RESTART) {
-                    for (player in Repository.players.filter { !it.isArtificial }) {
-                        player.packetDispatch.sendSystemUpdate(500)
+                for (player in Repository.players.filter { !it.isArtificial }) {
+                    if (System.currentTimeMillis() - player.session.lastPing > 20000L) {
+                        player?.session?.lastPing = Long.MAX_VALUE
+                        player?.session?.disconnect()
                     }
-                    sendNews(colorize("%RSERVER GOING DOWN FOR DAILY RESTART IN 5 MINUTES!"))
-                    ServerConfig.DAILY_RESTART = false
-                    submitWorldPulse(object : Pulse(100) {
-                        var counter = 0
-                        override fun pulse(): Boolean {
-                            counter++
-                            for (player in Repository.players.filter { !it.isArtificial }) {
-                                player.packetDispatch.sendSystemUpdate((5 - counter) * 100)
-                            }
-                            if (counter == 5) {
-                                exitProcess(0)
-                            }
-                            sendNews(colorize("%RSERVER GOING DOWN FOR DAILY RESTART IN ${5 - counter} MINUTE${if (counter < 4) "S" else ""}!"))
-                            return false
-                        }
-                    })
+                    if (!player.isActive &&
+                        !Repository.disconnectionQueue.contains(player.name) &&
+                        player.getAttribute("logged-in-fully", false)
+                    ) {
+                        player?.session?.disconnect()
+                        log(
+                            MajorUpdateWorker::class.java,
+                            Log.WARN,
+                            "Manually disconnecting ${player.name} because they were set as inactive without being disconnected. This is bad.",
+                        )
+                    }
                 }
+
+                if (sdf.format(Date()).toInt() == 0) {
+
+                    if (GameWorld.checkDay() == 1) {
+                        ServerStore.clearWeeklyEntries()
+                    }
+
+                    ServerStore.clearDailyEntries()
+                    if (ServerConfig.DAILY_RESTART) {
+                        for (player in Repository.players.filter { !it.isArtificial }) {
+                            player.packetDispatch.sendSystemUpdate(500)
+                        }
+                        sendNews(colorize("%RSERVER GOING DOWN FOR DAILY RESTART IN 5 MINUTES!"))
+                        ServerConfig.DAILY_RESTART = false
+                        submitWorldPulse(
+                            object : Pulse(100) {
+                                var counter = 0
+
+                                override fun pulse(): Boolean {
+                                    counter++
+                                    for (player in Repository.players.filter { !it.isArtificial }) {
+                                        player.packetDispatch.sendSystemUpdate((5 - counter) * 100)
+                                    }
+                                    if (counter == 5) {
+                                        exitProcess(0)
+                                    }
+                                    sendNews(
+                                        colorize(
+                                            "%RSERVER GOING DOWN FOR DAILY RESTART IN ${5 - counter} MINUTE${if (counter < 4) "S" else ""}!",
+                                        ),
+                                    )
+                                    return false
+                                }
+                            },
+                        )
+                    }
+                }
+
+                val end = System.currentTimeMillis()
+                Grafana.totalTickTime = (end - start).toInt()
+                Grafana.endTick()
+
+                Thread.sleep(max(600 - (end - start), 0))
             }
 
-            val end = System.currentTimeMillis()
-            Grafana.totalTickTime = (end - start).toInt()
-            Grafana.endTick()
-
-            Thread.sleep(max(600 - (end - start), 0))
+            log(this::class.java, Log.FINE, "Update worker stopped.")
         }
 
-        log(this::class.java, Log.FINE,  "Update worker stopped.")
-    }
-
-    fun tickOffline()
-    {
+    fun tickOffline() {
         Repository.disconnectionQueue.update()
         GameWorld.pulse()
     }

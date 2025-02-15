@@ -6,7 +6,6 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 
 object PlayerParser {
-
     @JvmStatic
     fun parse(player: Player): PlayerSaveParser? {
         return try {

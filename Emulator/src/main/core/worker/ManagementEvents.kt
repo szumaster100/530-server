@@ -1,17 +1,21 @@
 package core.worker
 
-import core.api.sendMessage
 import com.google.protobuf.Message
 import core.ServerConfig
+import core.api.sendMessage
+import core.auth.UserAccountInfo
 import core.game.system.communication.ClanEntry
 import core.game.system.communication.ClanRank
 import core.game.system.communication.ClanRepository
 import core.game.system.communication.CommunicationInfo
+import core.game.world.GameWorld
+import core.game.world.repository.Repository
 import core.net.packet.PacketRepository
 import core.net.packet.context.ContactContext
 import core.net.packet.context.MessageContext
 import core.net.packet.out.CommunicationMessage
 import core.net.packet.out.ContactPackets
+import core.tools.SystemLogger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -30,10 +34,6 @@ import proto.management.SendClanInfo
 import proto.management.SendClanInfo.ClanMember
 import proto.management.SendContactInfo
 import proto.management.SendContactInfo.Contact
-import core.auth.UserAccountInfo
-import core.tools.SystemLogger
-import core.game.world.GameWorld
-import core.game.world.repository.Repository
 import java.util.Deque
 import java.util.LinkedList
 import java.util.concurrent.BlockingDeque
@@ -45,16 +45,17 @@ object ManagementEvents {
     private val waitingOnClanInfo = HashMap<String, Deque<Message>>()
     private val hasRequestedClanInfo = HashMap<String, Boolean>()
 
-    val job = GlobalScope.launch {
-        while (isRunning) {
-            val event = withContext(Dispatchers.IO) { eventQueue.take() }
-            try {
-                handleEvent(event)
-                handleLoggingFor(event)
-            } catch (ignored: Exception) {
+    val job =
+        GlobalScope.launch {
+            while (isRunning) {
+                val event = withContext(Dispatchers.IO) { eventQueue.take() }
+                try {
+                    handleEvent(event)
+                    handleLoggingFor(event)
+                } catch (ignored: Exception) {
+                }
             }
         }
-    }
 
     private fun handleLoggingFor(event: Message) {
         when (event) {
@@ -79,13 +80,20 @@ object ManagementEvents {
 
     private fun handleEvent(event: Message) {
         when (event) {
-
             is PlayerStatusUpdate -> {
-                val notifiablePlayers = if (event.notifyFriendsOnly) {
-                    GameWorld.accountStorage.getOnlineFriends(event.username)
-                } else {
-                    Repository.playerNames.keys.toList()
-                }.filter { Repository.getPlayerByName(it)?.communication?.contacts?.containsKey(event.username) == true }
+                val notifiablePlayers =
+                    if (event.notifyFriendsOnly) {
+                        GameWorld.accountStorage.getOnlineFriends(event.username)
+                    } else {
+                        Repository.playerNames.keys.toList()
+                    }.filter {
+                        Repository
+                            .getPlayerByName(
+                                it,
+                            )?.communication
+                            ?.contacts
+                            ?.containsKey(event.username) == true
+                    }
 
                 for (playerName in notifiablePlayers) {
                     val p = Repository.getPlayerByName(playerName) ?: continue
@@ -120,20 +128,22 @@ object ManagementEvents {
 
                 PacketRepository.send(
                     ContactPackets::class.java,
-                    ContactContext(p, ContactContext.UPDATE_STATE_TYPE)
+                    ContactContext(p, ContactContext.UPDATE_STATE_TYPE),
                 )
 
                 p.communication.contacts.clear()
                 p.communication.blocked.clear()
 
                 for (contact in event.contactsList) {
-                    val c = core.game.system.communication.Contact(contact.username)
+                    val c =
+                        core.game.system.communication
+                            .Contact(contact.username)
                     p.communication.contacts[contact.username] = c
                     c.worldId = contact.world
                     c.rank = ClanRank.values()[contact.rank]
                     PacketRepository.send(
                         ContactPackets::class.java,
-                        ContactContext(p, contact.username, contact.world)
+                        ContactContext(p, contact.username, contact.world),
                     )
                 }
 
@@ -143,9 +153,8 @@ object ManagementEvents {
 
                 PacketRepository.send(
                     ContactPackets::class.java,
-                    ContactContext(p, ContactContext.IGNORE_LIST_TYPE)
+                    ContactContext(p, ContactContext.IGNORE_LIST_TYPE),
                 )
-
             }
 
             is FriendUpdate -> {
@@ -162,7 +171,7 @@ object ManagementEvents {
                 if (sender != null) {
                     PacketRepository.send(
                         CommunicationMessage::class.java,
-                        MessageContext(sender, event.receiver, event.rank, MessageContext.SEND_MESSAGE, event.message)
+                        MessageContext(sender, event.receiver, event.rank, MessageContext.SEND_MESSAGE, event.message),
                     )
                 }
 
@@ -174,8 +183,8 @@ object ManagementEvents {
                             event.sender,
                             event.rank,
                             MessageContext.RECEIVE_MESSAGE,
-                            event.message
-                        )
+                            event.message,
+                        ),
                     )
                 }
             }
@@ -275,7 +284,9 @@ object ManagementEvents {
                         initializeClanWith(info)
                     } else {
                         SystemLogger.logMS("Creating default server clan")
-                        if (GameWorld.settings!!.enable_default_clan && event.clanOwner == ServerConfig.SERVER_NAME.lowercase()) {
+                        if (GameWorld.settings!!.enable_default_clan &&
+                            event.clanOwner == ServerConfig.SERVER_NAME.lowercase()
+                        ) {
                             if (info == UserAccountInfo.createDefault()) {
                                 info.username = ServerConfig.SERVER_NAME.lowercase()
                                 info.password = ServerConfig.MS_SECRET_KEY
@@ -285,7 +296,7 @@ object ManagementEvents {
                             }
 
                             info.clanName = "Global"
-                            info.clanReqs = "-1,-1,7,7" //Any join, any message, owner kick, owner loot
+                            info.clanReqs = "-1,-1,7,7" // Any join, any message, owner kick, owner loot
                             GameWorld.accountStorage.update(info)
                             initializeClanWith(info)
                         }
@@ -314,12 +325,11 @@ object ManagementEvents {
                             event.sender,
                             event.rank,
                             MessageContext.CLAN_MESSAGE,
-                            event.message
-                        )
+                            event.message,
+                        ),
                     )
                 }
             }
-
         }
     }
 
@@ -360,7 +370,10 @@ object ManagementEvents {
         ClanRepository.getClans()[info.username] = c
     }
 
-    private fun queueUntilClanInfo(clanName: String, message: Message) {
+    private fun queueUntilClanInfo(
+        clanName: String,
+        message: Message,
+    ) {
         val queue = waitingOnClanInfo.getOrPut(clanName) { LinkedList() }
         queue.offer(message)
 

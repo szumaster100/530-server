@@ -1,7 +1,5 @@
 package content.region.kandarin.quest.chompybird
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.findLocalNPC
 import core.api.getAttribute
 import core.api.sendMessage
@@ -9,13 +7,19 @@ import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.player.Player
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
 class RantzNPC : AbstractNPC {
     constructor() : super(NPCs.RANTZ_1010, null, true)
     private constructor(id: Int, location: Location) : super(id, location)
 
-    override fun construct(id: Int, location: Location, vararg objects: Any?): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any?,
+    ): AbstractNPC {
         return RantzNPC(id, location)
     }
 

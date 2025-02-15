@@ -1,7 +1,6 @@
 package content.region.misthalin.quest.demon.cutscene
 
-import org.rs.consts.Items
-import org.rs.consts.Quests
+import core.api.MapArea
 import core.api.getAttribute
 import core.api.inEquipment
 import core.api.inInventory
@@ -9,11 +8,11 @@ import core.api.setAttribute
 import core.game.activity.ActivityManager
 import core.game.node.entity.Entity
 import core.game.node.entity.player.Player
-import core.api.MapArea
 import core.game.world.map.zone.ZoneBorders
+import org.rs.consts.Items
+import org.rs.consts.Quests
 
 class DemonSlayerCutscene : MapArea {
-
     override fun defineAreaBorders(): Array<ZoneBorders> {
         return arrayOf(ZoneBorders(3222, 3364, 3234, 3375))
     }

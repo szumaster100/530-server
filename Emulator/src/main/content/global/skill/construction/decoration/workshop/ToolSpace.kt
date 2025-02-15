@@ -1,7 +1,5 @@
 package content.global.skill.construction.decoration.workshop
 
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.api.*
 import core.cache.def.impl.ItemDefinition
 import core.cache.def.impl.SceneryDefinition
@@ -11,19 +9,38 @@ import core.game.interaction.OptionHandler
 import core.game.node.Node
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
+import core.plugin.ClassScanner.definePlugin
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner.definePlugin
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 @Initializable
 class ToolSpace : OptionHandler() {
-
-    private enum class ToolStore(val objectId: Int, vararg val tools: Int) {
+    private enum class ToolStore(
+        val objectId: Int,
+        vararg val tools: Int,
+    ) {
         TOOLSTORE_1(Scenery.TOOLS_13699, Items.SAW_8794, Items.CHISEL_1755, Items.HAMMER_2347, Items.SHEARS_1735),
         TOOLSTORE_2(Scenery.TOOLS_13700, Items.BUCKET_1925, Items.SPADE_952, Items.TINDERBOX_590),
         TOOLSTORE_3(Scenery.TOOLS_13701, Items.BROWN_APRON_1757, Items.GLASSBLOWING_PIPE_1785, Items.NEEDLE_1733),
-        TOOLSTORE_4(Scenery.TOOLS_13702, Items.AMULET_MOULD_1595, Items.NECKLACE_MOULD_1597, Items.RING_MOULD_1592, Items.HOLY_MOULD_1599, Items.TIARA_MOULD_5523),
-        TOOLSTORE_5(Scenery.TOOLS_13703, Items.RAKE_5341, Items.SPADE_952, Items.TROWEL_676, Items.SEED_DIBBER_5343, Items.WATERING_CAN_5331);
+        TOOLSTORE_4(
+            Scenery.TOOLS_13702,
+            Items.AMULET_MOULD_1595,
+            Items.NECKLACE_MOULD_1597,
+            Items.RING_MOULD_1592,
+            Items.HOLY_MOULD_1599,
+            Items.TIARA_MOULD_5523,
+        ),
+        TOOLSTORE_5(
+            Scenery.TOOLS_13703,
+            Items.RAKE_5341,
+            Items.SPADE_952,
+            Items.TROWEL_676,
+            Items.SEED_DIBBER_5343,
+            Items.WATERING_CAN_5331,
+        ),
+        ;
 
         companion object {
             @JvmStatic
@@ -47,11 +64,15 @@ class ToolSpace : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val `object` = node.asScenery()
         val n = ToolStore.forId(`object`.id)
 
-        if(player.houseManager.isBuildingMode && !player.isAdmin) {
+        if (player.houseManager.isBuildingMode && !player.isAdmin) {
             player.sendMessage("You can't do this in build mode.")
             return true
         }
@@ -64,7 +85,6 @@ class ToolSpace : OptionHandler() {
     }
 
     private inner class ToolDialogue : Dialogue {
-
         private var toolStore: ToolStore? = null
 
         internal constructor()
@@ -88,7 +108,10 @@ class ToolSpace : OptionHandler() {
             return true
         }
 
-        override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+        override fun handle(
+            interfaceId: Int,
+            buttonId: Int,
+        ): Boolean {
             when (stage) {
                 1 -> {
                     val item = Item(toolStore!!.tools[buttonId - 1], 1)

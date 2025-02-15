@@ -46,7 +46,12 @@ fun decantContainer(container: core.game.container.Container): Pair<List<Item>, 
         val potionType = Consumables.getConsumableById(item.id)?.consumable as? Potion ?: continue
         val matcher = doseRegex.matcher(item.name)
         if (!matcher.find()) continue
-        val dosage = matcher.group(1).replace("(", "").replace(")", "").toIntOrNull() ?: continue
+        val dosage =
+            matcher
+                .group(1)
+                .replace("(", "")
+                .replace(")", "")
+                .toIntOrNull() ?: continue
         doseCount[potionType] = (doseCount[potionType] ?: 0) + dosage
         toRemove.add(item)
     }
@@ -71,7 +76,10 @@ fun decantContainer(container: core.game.container.Container): Pair<List<Item>, 
  * @param npc The NPC whose shop should be opened.
  * @return True if the shop was successfully opened, false otherwise.
  */
-fun openNpcShop(player: Player, npc: Int): Boolean {
+fun openNpcShop(
+    player: Player,
+    npc: Int,
+): Boolean {
     val shop = Shops.shopsByNpc[npc]
 
     if (shop != null) {
@@ -180,7 +188,11 @@ fun getSlayerTip(player: Player): Array<out String> {
  * @param transformTo The id of the NPC to transform into.
  * @param restoreTicks The number of game ticks before the NPC reverts to its original form.
  */
-fun transformNpc(npc: NPC, transformTo: Int, restoreTicks: Int) {
+fun transformNpc(
+    npc: NPC,
+    transformTo: Int,
+    restoreTicks: Int,
+) {
     npc.transform(transformTo)
     Pulser.submit(
         object : Pulse(restoreTicks) {
@@ -188,9 +200,8 @@ fun transformNpc(npc: NPC, transformTo: Int, restoreTicks: Int) {
                 npc.reTransform()
                 return true
             }
-        }
+        },
     )
 }
-
 
 private class NPCInteractionAPI

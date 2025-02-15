@@ -5,8 +5,8 @@ import core.api.log
 import core.api.removeAttribute
 import core.game.interaction.InterfaceListener
 import core.game.node.entity.player.Player
-import core.tools.Log
 import core.game.system.task.Pulse
+import core.tools.Log
 
 class GenericItemSelect : InterfaceListener {
     val GENERIC_ITEM_SELECT_IFACE = 12
@@ -23,7 +23,7 @@ class GenericItemSelect : InterfaceListener {
                         super.stop()
                         player.interfaceManager.closeSingleTab()
                     }
-                }
+                },
             )
             return@onOpen true
         }
@@ -40,27 +40,32 @@ class GenericItemSelect : InterfaceListener {
         }
     }
 
-    private fun processResponse(player: Player, opcode: Int, slot: Int) {
+    private fun processResponse(
+        player: Player,
+        opcode: Int,
+        slot: Int,
+    ) {
         val callback = getAttribute<((Int, Int) -> Unit)?>(player, "itemselect-callback", null)
         if (callback == null) {
             log(this::class.java, Log.WARN, "${player.name} is trying to use an item select prompt with no callback!")
             return
         }
 
-        val optionIndex = when (opcode) {
-            155 -> 0
-            196 -> 1
-            124 -> 2
-            199 -> 3
-            234 -> 4
-            9 -> 10
-            else -> -1
-        }
+        val optionIndex =
+            when (opcode) {
+                155 -> 0
+                196 -> 1
+                124 -> 2
+                199 -> 3
+                234 -> 4
+                9 -> 10
+                else -> -1
+            }
         if (optionIndex == -1) {
             log(
                 this::class.java,
                 Log.WARN,
-                "${player.name} is clicking a right-click index that we don't know the opcode for yet, lol. Here's the opcode: $opcode"
+                "${player.name} is clicking a right-click index that we don't know the opcode for yet, lol. Here's the opcode: $opcode",
             )
             return
         }

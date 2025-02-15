@@ -4,7 +4,6 @@ import core.game.system.security.EncryptionManager
 import core.game.world.GameWorld.majorUpdateWorker
 
 object SystemManager {
-
     private var state = SystemState.TERMINATED
 
     val updater = SystemUpdate()

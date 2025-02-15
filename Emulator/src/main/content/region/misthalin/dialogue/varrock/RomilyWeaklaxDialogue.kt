@@ -1,7 +1,5 @@
 package content.region.misthalin.dialogue.varrock
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.removeAttribute
 import core.api.setAttribute
 import core.game.dialogue.Dialogue
@@ -11,17 +9,21 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.diary.DiaryType
 import core.game.node.item.Item
+import core.plugin.ClassScanner.definePlugin
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner.definePlugin
 import core.tools.RandomFunction
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
-class RomilyWeaklaxDialogue(player: Player? = null) : Dialogue(player) {
-
+class RomilyWeaklaxDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     private var pieId = 0
     private var pieAmt = 0
     private var pieReward: PieReward? = null
+
     override fun init() {
         super.init()
         definePlugin(RomilyWildPieHandler())
@@ -41,15 +43,19 @@ class RomilyWeaklaxDialogue(player: Player? = null) : Dialogue(player) {
             }
         }
         npc("Hello and welcome to my pie shop, how can I help you?")
-        stage = if (pieId != 0 && pieAmt != 0) {
-            2
-        } else {
-            0
-        }
+        stage =
+            if (pieId != 0 && pieAmt != 0) {
+                2
+            } else {
+                0
+            }
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             999 -> end()
             0 -> {
@@ -57,44 +63,46 @@ class RomilyWeaklaxDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 1
             }
 
-            1 -> when (buttonId) {
-                1 -> {
-                    player("I'd like to buy some pies.")
-                    stage = 10
-                }
+            1 ->
+                when (buttonId) {
+                    1 -> {
+                        player("I'd like to buy some pies.")
+                        stage = 10
+                    }
 
-                2 -> {
-                    player("Do you need any help?")
-                    stage = 20
-                }
+                    2 -> {
+                        player("Do you need any help?")
+                        stage = 20
+                    }
 
-                3 -> {
-                    player("I'm good thanks.")
-                    stage = 999
+                    3 -> {
+                        player("I'm good thanks.")
+                        stage = 999
+                    }
                 }
-            }
 
             2 -> {
                 options("I'd like to buy some pies.", "I've got those pies you wanted.", "I'm good thanks.")
                 stage = 1
             }
 
-            3 -> when (buttonId) {
-                1 -> {
-                    player("I'd like to buy some pies.")
-                    stage = 10
-                }
+            3 ->
+                when (buttonId) {
+                    1 -> {
+                        player("I'd like to buy some pies.")
+                        stage = 10
+                    }
 
-                2 -> {
-                    player("I've got those pies you wanted.")
-                    stage = 50
-                }
+                    2 -> {
+                        player("I've got those pies you wanted.")
+                        stage = 50
+                    }
 
-                3 -> {
-                    player("I'm good thanks.")
-                    stage = 999
+                    3 -> {
+                        player("I'm good thanks.")
+                        stage = 999
+                    }
                 }
-            }
 
             10 -> {
                 npc("Take a look.")
@@ -110,7 +118,7 @@ class RomilyWeaklaxDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "Actually I could, you see I'm running out of stock and I",
                     "don't have tme to bake any more pies. would you be",
-                    "willing to bake me some pies? I'll pay you well for them."
+                    "willing to bake me some pies? I'll pay you well for them.",
                 )
                 stage = 21
             }
@@ -120,17 +128,18 @@ class RomilyWeaklaxDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 22
             }
 
-            22 -> when (buttonId) {
-                1 -> {
-                    player("Sure, what do you need?")
-                    stage = 60
-                }
+            22 ->
+                when (buttonId) {
+                    1 -> {
+                        player("Sure, what do you need?")
+                        stage = 60
+                    }
 
-                2 -> {
-                    player("Sorry, I can't help you.")
-                    stage++
+                    2 -> {
+                        player("Sorry, I can't help you.")
+                        stage++
+                    }
                 }
-            }
 
             23 -> {
                 npc("Come back if you ever want to bake pies.")
@@ -143,7 +152,7 @@ class RomilyWeaklaxDialogue(player: Player? = null) : Dialogue(player) {
                 if (piesInInventory == 0) {
                     npc(
                         "Doesn't look like you have any of the",
-                        pieAmt.toString() + " " + Item(pieId).name + "s I requested."
+                        pieAmt.toString() + " " + Item(pieId).name + "s I requested.",
                     )
                     stage = 999
                 } else if (deficit == 0) {
@@ -182,11 +191,12 @@ class RomilyWeaklaxDialogue(player: Player? = null) : Dialogue(player) {
 
             102 -> {
                 npc("Now, was there anything else you needed?")
-                stage = if (pieId != 0 && pieAmt != 0) {
-                    2
-                } else {
-                    0
-                }
+                stage =
+                    if (pieId != 0 && pieAmt != 0) {
+                        2
+                    } else {
+                        0
+                    }
             }
         }
         return true
@@ -196,8 +206,10 @@ class RomilyWeaklaxDialogue(player: Player? = null) : Dialogue(player) {
         return intArrayOf(NPCs.ROMILY_WEAKLAX_3205)
     }
 
-    private enum class PieReward(var id: Int, var reward: Int) {
-
+    private enum class PieReward(
+        var id: Int,
+        var reward: Int,
+    ) {
         APPLE(Items.APPLE_PIE_2323, 84),
 
         REDBERRY(Items.REDBERRY_PIE_2325, 90),
@@ -208,7 +220,8 @@ class RomilyWeaklaxDialogue(player: Player? = null) : Dialogue(player) {
 
         FISH(Items.FISH_PIE_7188, 125),
 
-        ADMIRAL(Items.ADMIRAL_PIE_7198, 387);
+        ADMIRAL(Items.ADMIRAL_PIE_7198, 387),
+        ;
 
         companion object {
             fun forId(id: Int): PieReward? {
@@ -223,14 +236,16 @@ class RomilyWeaklaxDialogue(player: Player? = null) : Dialogue(player) {
     }
 
     class RomilyWildPieHandler : UseWithHandler(Items.WILD_PIE_7208) {
-
         override fun newInstance(arg: Any?): Plugin<Any> {
             addHandler(3205, NPC_TYPE, this)
             return this
         }
 
         override fun handle(event: NodeUsageEvent): Boolean {
-            if (!event.player.achievementDiaryManager.getDiary(DiaryType.VARROCK)!!.isComplete(2, 5)) {
+            if (!event.player.achievementDiaryManager
+                    .getDiary(DiaryType.VARROCK)!!
+                    .isComplete(2, 5)
+            ) {
                 event.player.dialogueInterpreter.open(3205, event.usedItem)
             }
             return true

@@ -7,7 +7,6 @@ import core.game.node.item.Item
 import org.rs.consts.Items
 
 object Thread {
-
     @JvmStatic
     fun isLastThread(player: Player): Boolean {
         return getThread(player)?.charge?.let { it >= 1004 } ?: false

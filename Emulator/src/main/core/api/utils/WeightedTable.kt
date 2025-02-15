@@ -17,7 +17,10 @@ class WeightedTable<T> : ArrayList<Pair<T?, Double>>() {
      * @param weight The weight associated with the item.
      * @return True if the item was successfully added, false otherwise.
      */
-    fun add(element: T?, weight: Double): Boolean {
+    fun add(
+        element: T?,
+        weight: Double,
+    ): Boolean {
         totalWeight += weight
         return super.add(Pair(element, weight))
     }
@@ -63,8 +66,11 @@ class WeightedTable<T> : ArrayList<Pair<T?, Double>>() {
      * @return The selected item, or null if the table is empty.
      */
     fun roll(): T? {
-        if (this.size == 1) return this[0].component1()
-        else if (this.size == 0) return null
+        if (this.size == 1) {
+            return this[0].component1()
+        } else if (this.size == 0) {
+            return null
+        }
 
         var shuffled = this.shuffled() // Shuffle to avoid bias
         var randWeight = RandomFunction.random(0.0, totalWeight)
@@ -78,7 +84,6 @@ class WeightedTable<T> : ArrayList<Pair<T?, Double>>() {
     }
 
     companion object {
-
         /**
          * Creates a new [WeightedTable] with the specified items and their weights.
          *

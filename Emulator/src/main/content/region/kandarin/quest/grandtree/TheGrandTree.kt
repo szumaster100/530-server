@@ -1,9 +1,5 @@
 package content.region.kandarin.quest.grandtree
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import content.region.kandarin.quest.grandtree.handlers.TheGrandTreeUtils
 import core.api.hasLevelStat
 import core.api.removeAttributes
@@ -14,11 +10,17 @@ import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class TheGrandTree : Quest(Quests.THE_GRAND_TREE, 71, 70, 5, Vars.VARP_QUEST_THE_GRAND_TREE_PROGRESS_150, 0, 1, 160) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 12
         player ?: return
@@ -27,7 +29,11 @@ class TheGrandTree : Quest(Quests.THE_GRAND_TREE, 71, 70, 5, Vars.VARP_QUEST_THE
         line++
         if (stage == 0) {
             line(player, "I must have:", line++)
-            line(player, if (hasLevelStat(player, Skills.AGILITY, 25)) "---Level 25 Agility./--" else "!!Level 25 Agility.??", line++)
+            line(
+                player,
+                if (hasLevelStat(player, Skills.AGILITY, 25)) "---Level 25 Agility./--" else "!!Level 25 Agility.??",
+                line++,
+            )
             line(player, "!!High enough combat to defeat a level 172 demon.??", line++)
             line++
         }
@@ -35,7 +41,12 @@ class TheGrandTree : Quest(Quests.THE_GRAND_TREE, 71, 70, 5, Vars.VARP_QUEST_THE
             line(player, "!!King Narnode Shareen?? suspects sabotage on the !!Grand Tree?? and", line++, stage > 10)
             line(player, "wants to confirm it by consulting with !!Hazelmere??.", line++, stage > 10)
             line++
-            line(player, "!!Hazelmere's dwelling?? is located on a !!towering hill??, on an !!island??", line++, stage > 10)
+            line(
+                player,
+                "!!Hazelmere's dwelling?? is located on a !!towering hill??, on an !!island??",
+                line++,
+                stage > 10,
+            )
             line(player, "!!east?? of !!Yanille??.", line++, stage > 10)
             line++
         }
@@ -49,7 +60,12 @@ class TheGrandTree : Quest(Quests.THE_GRAND_TREE, 71, 70, 5, Vars.VARP_QUEST_THE
             line++
         }
         if (stage >= 45) {
-            line(player, "!!Glough?? says the humans are going to !!invade!?? Report back to !!the king??.", line++, stage > 45)
+            line(
+                player,
+                "!!Glough?? says the humans are going to !!invade!?? Report back to !!the king??.",
+                line++,
+                stage > 45,
+            )
             line++
         }
         if (stage >= 46) {
@@ -108,7 +124,7 @@ class TheGrandTree : Quest(Quests.THE_GRAND_TREE, 71, 70, 5, Vars.VARP_QUEST_THE
             TheGrandTreeUtils.TWIG_0,
             TheGrandTreeUtils.TWIG_1,
             TheGrandTreeUtils.TWIG_2,
-            TheGrandTreeUtils.TWIG_3
+            TheGrandTreeUtils.TWIG_3,
         )
     }
 

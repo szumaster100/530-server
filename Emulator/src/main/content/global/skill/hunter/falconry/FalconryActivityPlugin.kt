@@ -1,7 +1,5 @@
 package content.global.skill.hunter.falconry
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.*
 import core.cache.def.impl.ItemDefinition
 import core.cache.def.impl.NPCDefinition
@@ -17,26 +15,38 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.world.map.Location
 import core.game.world.map.zone.ZoneBorders
-import core.plugin.Plugin
 import core.plugin.ClassScanner.definePlugin
+import core.plugin.Plugin
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 class FalconryActivityPlugin : ActivityPlugin(FALCONRY_ZONE, false, false, false) {
-
     override fun newInstance(p: Player): ActivityPlugin {
         return FalconryActivityPlugin()
     }
 
-    override fun start(player: Player, login: Boolean, vararg args: Any): Boolean {
+    override fun start(
+        player: Player,
+        login: Boolean,
+        vararg args: Any,
+    ): Boolean {
         setAttribute(player, "/save:$FALCONRY_ZONE", true)
         return super.start(player, login, *args)
     }
 
-    override fun leave(entity: Entity, logout: Boolean): Boolean {
+    override fun leave(
+        entity: Entity,
+        logout: Boolean,
+    ): Boolean {
         super.leave(entity, logout)
         return true
     }
 
-    override fun interact(e: Entity, target: Node, option: Option): Boolean {
+    override fun interact(
+        e: Entity,
+        target: Node,
+        option: Option,
+    ): Boolean {
         return false
     }
 
@@ -64,7 +74,10 @@ class FalconryActivityPlugin : ActivityPlugin(FALCONRY_ZONE, false, false, false
             return this
         }
 
-        override fun fireEvent(identifier: String, vararg args: Any): Any {
+        override fun fireEvent(
+            identifier: String,
+            vararg args: Any,
+        ): Any {
             val player = args[0] as Player
             if (identifier == "unequip") {
                 if (player.zoneMonitor.isInZone(FALCONRY_ZONE)) {
@@ -77,7 +90,11 @@ class FalconryActivityPlugin : ActivityPlugin(FALCONRY_ZONE, false, false, false
             return true
         }
 
-        override fun handle(player: Player, node: Node, option: String): Boolean {
+        override fun handle(
+            player: Player,
+            node: Node,
+            option: String,
+        ): Boolean {
             val npc = node as NPC
             when (option) {
                 "quick-falconry" -> {
@@ -117,7 +134,10 @@ class FalconryActivityPlugin : ActivityPlugin(FALCONRY_ZONE, false, false, false
             return false
         }
 
-        override fun isWalk(player: Player, node: Node): Boolean {
+        override fun isWalk(
+            player: Player,
+            node: Node,
+        ): Boolean {
             if (node.asNpc() is NPC) return node.id == NPCs.MATTHIAS_5093 || node.id == NPCs.GYR_FALCON_5094
             return false
         }

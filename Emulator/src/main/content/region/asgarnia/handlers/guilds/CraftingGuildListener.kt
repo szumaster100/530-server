@@ -1,8 +1,5 @@
 package content.region.asgarnia.handlers.guilds
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import core.api.anyInEquipment
 import core.api.hasLevelStat
 import core.api.inEquipment
@@ -15,11 +12,12 @@ import core.game.interaction.InteractionListener
 import core.game.node.entity.skill.Skills
 import core.game.world.map.Location
 import core.tools.END_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 class CraftingGuildListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(GUILD_DOORS, IntType.SCENERY, "open") { player, door ->
             if (player.location == Location.create(2933, 3289, 0)) {
                 if (!hasLevelStat(player, Skills.CRAFTING, 40)) {
@@ -42,21 +40,48 @@ class CraftingGuildListener : InteractionListener {
         }
     }
 
-    inner class CraftingGuildDoor(val it: Int) : DialogueFile() {
-
-        override fun handle(componentID: Int, buttonID: Int) {
-            npc = core.game.node.entity.npc.NPC(NPCs.MASTER_CRAFTER_805)
+    inner class CraftingGuildDoor(
+        val it: Int,
+    ) : DialogueFile() {
+        override fun handle(
+            componentID: Int,
+            buttonID: Int,
+        ) {
+            npc =
+                core.game.node.entity.npc
+                    .NPC(NPCs.MASTER_CRAFTER_805)
             when (it) {
-                0 -> when (stage) {
-                    0 -> npcl(FaceAnim.FRIENDLY, "Welcome to the Guild of Master Craftsmen.").also { stage = END_DIALOGUE }
-                }
-                1 -> when (stage) {
-                    0 -> npcl(FaceAnim.ASKING, "Where's your brown apron? You can't come in here unless you're wearing one.").also { stage++ }
-                    1 -> player(FaceAnim.SAD, "Err... I haven't got one.").also { stage = END_DIALOGUE }
-                }
-                2 -> when (stage) {
-                    0 -> npc(FaceAnim.NEUTRAL, "Sorry, only experienced crafters are allowed in here.", "You must be level 40 or above to enter.").also { stage = END_DIALOGUE }
-                }
+                0 ->
+                    when (stage) {
+                        0 ->
+                            npcl(FaceAnim.FRIENDLY, "Welcome to the Guild of Master Craftsmen.").also {
+                                stage =
+                                    END_DIALOGUE
+                            }
+                    }
+                1 ->
+                    when (stage) {
+                        0 ->
+                            npcl(
+                                FaceAnim.ASKING,
+                                "Where's your brown apron? You can't come in here unless you're wearing one.",
+                            ).also {
+                                stage++
+                            }
+                        1 -> player(FaceAnim.SAD, "Err... I haven't got one.").also { stage = END_DIALOGUE }
+                    }
+                2 ->
+                    when (stage) {
+                        0 ->
+                            npc(
+                                FaceAnim.NEUTRAL,
+                                "Sorry, only experienced crafters are allowed in here.",
+                                "You must be level 40 or above to enter.",
+                            ).also {
+                                stage =
+                                    END_DIALOGUE
+                            }
+                    }
             }
         }
     }

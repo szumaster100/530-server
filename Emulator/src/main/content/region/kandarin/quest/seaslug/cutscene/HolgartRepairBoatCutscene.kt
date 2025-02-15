@@ -1,16 +1,17 @@
 package content.region.kandarin.quest.seaslug.cutscene
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.*
 import core.api.quest.setQuestStage
 import core.game.activity.Cutscene
 import core.game.node.entity.player.Player
 import core.game.world.map.Direction
 import core.game.world.map.Location
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
-class HolgartRepairBoatCutscene(player: Player) : Cutscene(player) {
-
+class HolgartRepairBoatCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(Location.create(2716, 3300, 0))
         if (player.settings.isRunToggled) {

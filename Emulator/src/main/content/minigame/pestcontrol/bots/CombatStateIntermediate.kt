@@ -12,7 +12,9 @@ import core.game.world.map.path.Pathfinder
 import core.tools.RandomFunction
 import java.util.*
 
-class CombatStateIntermediate(val bot: PestControlIntermediateBot) {
+class CombatStateIntermediate(
+    val bot: PestControlIntermediateBot,
+) {
     private val Random = Random()
     val randomtype = Random().nextInt(100)
 
@@ -61,11 +63,14 @@ class CombatStateIntermediate(val bot: PestControlIntermediateBot) {
             if (bot.location.withinDistance(portal.location, 10) && portal.isActive) {
                 val spinners = ArrayList<NPC>()
                 RegionManager.getLocalNpcs(bot).forEach {
-                    if (it.name.lowercase(Locale.getDefault()) == "spinner" && it.location.withinDistance(
+                    if (it.name.lowercase(Locale.getDefault()) == "spinner" &&
+                        it.location.withinDistance(
                             bot.location,
-                            10
+                            10,
                         )
-                    ) spinners.add(it)
+                    ) {
+                        spinners.add(it)
+                    }
                 }
                 if (spinners.isNotEmpty()) {
                     bot.attack(spinners.random())
@@ -93,12 +98,16 @@ class CombatStateIntermediate(val bot: PestControlIntermediateBot) {
         }
     }
 
-    fun randomWalkTo(loc: Location, radius: Int) {
-        var newloc = loc.transform(
-            RandomFunction.random(radius, -radius),
-            RandomFunction.random(radius, -radius),
-            0
-        )
+    fun randomWalkTo(
+        loc: Location,
+        radius: Int,
+    ) {
+        var newloc =
+            loc.transform(
+                RandomFunction.random(radius, -radius),
+                RandomFunction.random(radius, -radius),
+                0,
+            )
         if (!bot.walkingQueue.isMoving) {
             walkToIterator(newloc)
         }
@@ -113,7 +122,7 @@ class CombatStateIntermediate(val bot: PestControlIntermediateBot) {
                 override fun pulse(): Boolean {
                     return true
                 }
-            }
+            },
         )
     }
 }

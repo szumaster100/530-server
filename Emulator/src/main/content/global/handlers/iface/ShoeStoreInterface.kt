@@ -1,9 +1,5 @@
 package content.global.handlers.iface
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Sounds
 import core.api.*
 import core.game.component.Component
 import core.game.component.ComponentDefinition
@@ -16,24 +12,32 @@ import core.game.node.item.Item
 import core.plugin.Initializable
 import core.plugin.Plugin
 import core.tools.END_DIALOGUE
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Sounds
 
 @Initializable
 class ShoeStoreInterface : ComponentPlugin() {
     private val paymentCheck = "yrsa-paid"
     private val previousColor = "yrsa-previous"
-    private val pictureId = intArrayOf(
-        Items.PICTURE_3680,
-        Items.PICTURE_3681,
-        Items.PICTURE_3682,
-        Items.PICTURE_3683,
-        Items.PICTURE_3684,
-        Items.PICTURE_3685
-    )
+    private val pictureId =
+        intArrayOf(
+            Items.PICTURE_3680,
+            Items.PICTURE_3681,
+            Items.PICTURE_3682,
+            Items.PICTURE_3683,
+            Items.PICTURE_3684,
+            Items.PICTURE_3685,
+        )
     private val selectButtonId = intArrayOf(15, 16, 17, 18, 19, 20)
     private val colorId = intArrayOf(0, 1, 2, 3, 4, 5)
     private val shopInterface = Components.YRSA_SHOE_STORE_200
 
-    override fun open(player: Player, component: Component?) {
+    override fun open(
+        player: Player,
+        component: Component?,
+    ) {
         component ?: return
         super.open(player, component)
 
@@ -51,7 +55,9 @@ class ShoeStoreInterface : ComponentPlugin() {
                 }
             }
         }
-        ) player.toggleWardrobe(true)
+        ) {
+            player.toggleWardrobe(true)
+        }
 
         component.setCloseEvent { p, _ ->
             p.toggleWardrobe(false)
@@ -76,19 +82,20 @@ class ShoeStoreInterface : ComponentPlugin() {
         opcode: Int,
         button: Int,
         slot: Int,
-        itemId: Int
+        itemId: Int,
     ): Boolean {
         player ?: return false
         when (button) {
             14 -> pay(player)
-            else -> when (component?.id) {
-                shopInterface -> {
-                    if (selectButtonId.contains(button)) {
-                        updateFeet(player, button)
-                        return true
+            else ->
+                when (component?.id) {
+                    shopInterface -> {
+                        if (selectButtonId.contains(button)) {
+                            updateFeet(player, button)
+                            return true
+                        }
                     }
                 }
-            }
         }
         return true
     }
@@ -114,7 +121,10 @@ class ShoeStoreInterface : ComponentPlugin() {
         setVarp(player, 261, 0)
     }
 
-    private fun updateFeet(player: Player, button: Int) {
+    private fun updateFeet(
+        player: Player,
+        button: Int,
+    ) {
         var subtractor = 0
         when (button) {
             15, 16, 17, 18, 19, 20 -> subtractor += 15
@@ -134,7 +144,10 @@ class ShoeStoreInterface : ComponentPlugin() {
     }
 
     class YrsaCloseEventDialogue : DialogueFile() {
-        override fun handle(componentID: Int, buttonID: Int) {
+        override fun handle(
+            componentID: Int,
+            buttonID: Int,
+        ) {
             npc = NPC(NPCs.YRSA_1301)
             when (stage) {
                 0 -> npcl(FaceAnim.FRIENDLY, "I think they suit you.").also { stage++ }

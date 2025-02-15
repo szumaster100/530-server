@@ -26,9 +26,37 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import org.rs.consts.*
 
 class SorceressGarden : InteractionListener {
-    private val GATES = intArrayOf(org.rs.consts.Scenery.GATE_21709, org.rs.consts.Scenery.GATE_21753, org.rs.consts.Scenery.GATE_21731, org.rs.consts.Scenery.GATE_21687)
-    private val SQIRK_TREES = intArrayOf(org.rs.consts.Scenery.SQ_IRK_TREE_21767, org.rs.consts.Scenery.SQ_IRK_TREE_21768, org.rs.consts.Scenery.SQ_IRK_TREE_21769, org.rs.consts.Scenery.SQ_IRK_TREE_21766)
-    private val HERBS_ITEMS = intArrayOf(Items.GRIMY_GUAM_199, Items.GRIMY_MARRENTILL_201, Items.GRIMY_TARROMIN_203, Items.GRIMY_HARRALANDER_205, Items.GRIMY_RANARR_207, Items.GRIMY_IRIT_209, Items.GRIMY_AVANTOE_211, Items.GRIMY_KWUARM_213, Items.GRIMY_CADANTINE_215, Items.GRIMY_DWARF_WEED_217, Items.GRIMY_TORSTOL_219, Items.GRIMY_LANTADYME_2485, Items.GRIMY_TOADFLAX_3049, Items.GRIMY_SNAPDRAGON_3051)
+    private val GATES =
+        intArrayOf(
+            org.rs.consts.Scenery.GATE_21709,
+            org.rs.consts.Scenery.GATE_21753,
+            org.rs.consts.Scenery.GATE_21731,
+            org.rs.consts.Scenery.GATE_21687,
+        )
+    private val SQIRK_TREES =
+        intArrayOf(
+            org.rs.consts.Scenery.SQ_IRK_TREE_21767,
+            org.rs.consts.Scenery.SQ_IRK_TREE_21768,
+            org.rs.consts.Scenery.SQ_IRK_TREE_21769,
+            org.rs.consts.Scenery.SQ_IRK_TREE_21766,
+        )
+    private val HERBS_ITEMS =
+        intArrayOf(
+            Items.GRIMY_GUAM_199,
+            Items.GRIMY_MARRENTILL_201,
+            Items.GRIMY_TARROMIN_203,
+            Items.GRIMY_HARRALANDER_205,
+            Items.GRIMY_RANARR_207,
+            Items.GRIMY_IRIT_209,
+            Items.GRIMY_AVANTOE_211,
+            Items.GRIMY_KWUARM_213,
+            Items.GRIMY_CADANTINE_215,
+            Items.GRIMY_DWARF_WEED_217,
+            Items.GRIMY_TORSTOL_219,
+            Items.GRIMY_LANTADYME_2485,
+            Items.GRIMY_TOADFLAX_3049,
+            Items.GRIMY_SNAPDRAGON_3051,
+        )
     private val HERB_DEFINITIONS = Int2ObjectOpenHashMap<HerbDefinition>()
     private val SEASON_DEFINITIONS = Int2ObjectOpenHashMap<SeasonDefinitions>()
 
@@ -46,12 +74,15 @@ class SorceressGarden : InteractionListener {
     }
 
     override fun defineListeners() {
-
         on(GATES, IntType.SCENERY, "open") { player, node ->
             val def = SEASON_DEFINITIONS[(node as Scenery).id]?.let { forGateId(it.gateId) }
             if (def != null) {
                 if (player.getSkills().getStaticLevel(Skills.THIEVING) < def.level) {
-                    sendItemDialogue(player, Items.HIGHWAYMAN_MASK_10692, "You need Thieving level of ${def.level} to pick the lock of this gate.")
+                    sendItemDialogue(
+                        player,
+                        Items.HIGHWAYMAN_MASK_10692,
+                        "You need Thieving level of ${def.level} to pick the lock of this gate.",
+                    )
                     return@on true
                 }
                 DoorActionHandler.handleAutowalkDoor(player, node.asScenery())
@@ -90,6 +121,7 @@ class SorceressGarden : InteractionListener {
             GameWorld.Pulser.submit(
                 object : Pulse(1, player) {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             1 -> animate(player, DRINK_ANIM)
@@ -114,7 +146,7 @@ class SorceressGarden : InteractionListener {
                         }
                         return false
                     }
-                }
+                },
             )
 
             return@on true
@@ -132,7 +164,10 @@ class SorceressGarden : InteractionListener {
         }
     }
 
-    private fun handleSqirkTreeInteraction(player: Player, def: SeasonDefinitions) {
+    private fun handleSqirkTreeInteraction(
+        player: Player,
+        def: SeasonDefinitions,
+    ) {
         player.lock()
         player.logoutListeners["garden"] = { it.location = def.respawn }
         animate(player, PICK_FRUIT)
@@ -142,6 +177,7 @@ class SorceressGarden : InteractionListener {
         GameWorld.Pulser.submit(
             object : Pulse(2, player) {
                 var counter = 0
+
                 override fun pulse(): Boolean {
                     when (counter) {
                         1 -> {
@@ -164,11 +200,15 @@ class SorceressGarden : InteractionListener {
                     counter++
                     return false
                 }
-            }
+            },
         )
     }
 
-    private fun handleHerbPicking(player: Player, scenery: Scenery, herbDef: HerbDefinition) {
+    private fun handleHerbPicking(
+        player: Player,
+        scenery: Scenery,
+        herbDef: HerbDefinition,
+    ) {
         player.lock()
         player.logoutListeners["garden"] = { it.location = herbDef.respawn }
         player.animate(ANIMATION)
@@ -177,6 +217,7 @@ class SorceressGarden : InteractionListener {
         GameWorld.Pulser.submit(
             object : Pulse(2, player) {
                 var counter = 0
+
                 override fun pulse(): Boolean {
                     when (counter) {
                         1 -> {
@@ -203,18 +244,22 @@ class SorceressGarden : InteractionListener {
                     counter++
                     return false
                 }
-            }
+            },
         )
     }
 
-    enum class HerbDefinition(val id: Int, val exp: Double, val respawn: Location) {
+    enum class HerbDefinition(
+        val id: Int,
+        val exp: Double,
+        val respawn: Location,
+    ) {
         WINTER(id = 21671, exp = 30.0, respawn = Location(2907, 5470, 0)),
         SPRING(id = 21668, exp = 40.0, respawn = Location(2916, 5473, 0)),
         AUTUMN(id = 21670, exp = 50.0, respawn = Location(2913, 5467, 0)),
-        SUMMER(id = 21669, exp = 60.0, respawn = Location(2910, 5476, 0));
+        SUMMER(id = 21669, exp = 60.0, respawn = Location(2910, 5476, 0)),
+        ;
 
         companion object {
-
             fun forId(id: Int): HerbDefinition? {
                 for (def in values()) {
                     if (def.id == id) {
@@ -226,14 +271,27 @@ class SorceressGarden : InteractionListener {
         }
     }
 
-    enum class SeasonDefinitions(val treeId: Int, val level: Int, val farmExp: Double, val exp: Double, val fruitId: Int, val juiceId: Int, val fruitAmt: Int, val boost: Int, val energy: Int, val osmanExp: Double, val gateId: Int, val respawn: Location) {
+    enum class SeasonDefinitions(
+        val treeId: Int,
+        val level: Int,
+        val farmExp: Double,
+        val exp: Double,
+        val fruitId: Int,
+        val juiceId: Int,
+        val fruitAmt: Int,
+        val boost: Int,
+        val energy: Int,
+        val osmanExp: Double,
+        val gateId: Int,
+        val respawn: Location,
+    ) {
         WINTER(21769, 1, 30.0, 70.0, 10847, 10851, 5, 0, 10, 350.0, 21709, Location(2907, 5470, 0)),
         SPRING(21767, 25, 40.0, 337.5, 10844, 10848, 4, 1, 20, 1350.0, 21753, Location(2916, 5473, 0)),
         AUTUMN(21768, 45, 50.0, 783.3, 10846, 10850, 3, 2, 30, 2350.0, 21731, Location(2913, 5467, 0)),
-        SUMMER(21766, 65, 60.0, 1500.0, 10845, 10849, 2, 3, 40, 3000.0, 21687, Location(2910, 5476, 0));
+        SUMMER(21766, 65, 60.0, 1500.0, 10845, 10849, 2, 3, 40, 3000.0, 21687, Location(2910, 5476, 0)),
+        ;
 
         companion object {
-
             @JvmStatic
             fun forFruitId(fruitId: Int): SeasonDefinitions? {
                 for (def in values()) {
@@ -268,7 +326,13 @@ class SorceressGarden : InteractionListener {
         }
     }
 
-    class SqirkJuicePlugin : UseWithHandler(Items.SPRING_SQIRK_10844, Items.SUMMER_SQIRK_10845, Items.AUTUMN_SQIRK_10846, Items.WINTER_SQIRK_10847) {
+    class SqirkJuicePlugin :
+        UseWithHandler(
+            Items.SPRING_SQIRK_10844,
+            Items.SUMMER_SQIRK_10845,
+            Items.AUTUMN_SQIRK_10846,
+            Items.WINTER_SQIRK_10847,
+        ) {
         override fun handle(event: NodeUsageEvent): Boolean {
             val item: Item = event.usedItem
             val with: Item = event.baseItem
@@ -312,7 +376,9 @@ class SorceressGarden : InteractionListener {
     }
 }
 
-class SqirkMakingDialogue(player: Player? = null) : Dialogue(player) {
+class SqirkMakingDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     private var dialogueId = 0
     private var definition: SorceressGarden.SeasonDefinitions? = null
 
@@ -320,17 +386,23 @@ class SqirkMakingDialogue(player: Player? = null) : Dialogue(player) {
         return intArrayOf(43382)
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (dialogueId) {
             0 -> end()
-            1 -> when (stage) {
-                0 -> {
-                    interpreter.sendDialogue("You need " + definition!!.fruitAmt + " sq'irks of this kind to fill a glass of juice.")
-                    stage = 1
-                }
+            1 ->
+                when (stage) {
+                    0 -> {
+                        interpreter.sendDialogue(
+                            "You need " + definition!!.fruitAmt + " sq'irks of this kind to fill a glass of juice.",
+                        )
+                        stage = 1
+                    }
 
-                1 -> end()
-            }
+                    1 -> end()
+                }
         }
         return true
     }
@@ -338,7 +410,12 @@ class SqirkMakingDialogue(player: Player? = null) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         dialogueId = args[0] as Int
         when (dialogueId) {
-            0 -> player(FaceAnim.THINKING, "I should get an empty beer glass to", "hold the juice before I squeeze the fruit.")
+            0 ->
+                player(
+                    FaceAnim.THINKING,
+                    "I should get an empty beer glass to",
+                    "hold the juice before I squeeze the fruit.",
+                )
             1 -> {
                 definition = SorceressGarden.SeasonDefinitions.forFruitId(args[1] as Int)
                 if (definition == null) end()

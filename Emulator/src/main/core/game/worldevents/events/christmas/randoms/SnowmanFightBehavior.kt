@@ -10,13 +10,19 @@ import core.game.worldevents.events.HolidayRandoms
 import core.tools.RandomFunction
 
 class SnowmanFightBehavior : NPCBehavior() {
-
-    override fun onDeathStarted(self: NPC, killer: Entity) {
+    override fun onDeathStarted(
+        self: NPC,
+        killer: Entity,
+    ) {
         val holidayRandomPlayer = getAttribute<Player?>(self, "holidayrandomplayer", null) ?: return
         HolidayRandoms.terminateEventNpc(holidayRandomPlayer)
     }
 
-    override fun beforeAttackFinalized(self: NPC, victim: Entity, state: BattleState) {
+    override fun beforeAttackFinalized(
+        self: NPC,
+        victim: Entity,
+        state: BattleState,
+    ) {
         state.estimatedHit = RandomFunction.getRandom(1)
     }
 }

@@ -1,19 +1,23 @@
 package content.region.asgarnia.quest.death.dialogue
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
-import core.api.quest.getQuestStage
 import core.api.getScenery
+import core.api.quest.getQuestStage
 import core.api.sendDialogue
 import core.game.dialogue.DialogueFile
 import core.game.dialogue.FaceAnim
 import core.game.global.action.DoorActionHandler
 import core.game.node.entity.npc.NPC
 import core.tools.END_DIALOGUE
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
-class DoorPlateauDialogueFile(val door: Int) : DialogueFile() {
-
-    override fun handle(componentID: Int, buttonID: Int) {
+class DoorPlateauDialogueFile(
+    val door: Int,
+) : DialogueFile() {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         if (door == 1) {
             npc = NPC(NPCs.HAROLD_1078)
             when (stage) {
@@ -84,10 +88,11 @@ class DoorPlateauDialogueFile(val door: Int) : DialogueFile() {
             when (getQuestStage(player!!, Quests.DEATH_PLATEAU)) {
                 in 0..24 -> {
                     when (stage) {
-                        0 -> npcl(
-                            FaceAnim.FRIENDLY,
-                            "Where do you think you're going? This is private property!"
-                        ).also { stage = END_DIALOGUE }
+                        0 ->
+                            npcl(
+                                FaceAnim.FRIENDLY,
+                                "Where do you think you're going? This is private property!",
+                            ).also { stage = END_DIALOGUE }
                     }
                 }
 

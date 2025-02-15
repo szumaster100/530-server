@@ -1,15 +1,14 @@
 package content.region.kandarin.handlers.barbtraining.fishing
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import content.region.kandarin.handlers.barbtraining.BarbarianTraining
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 class BarbFishingListener : InteractionListener {
-
     private val fishCuttingIds =
         intArrayOf(Items.LEAPING_TROUT_11328, Items.LEAPING_SALMON_11330, Items.LEAPING_STURGEON_11332)
     private val barbFishingSpot = NPCs.FISHING_SPOT_1176

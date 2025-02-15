@@ -15,14 +15,18 @@ import core.game.world.map.zone.ZoneBuilder
 import core.game.world.map.zone.ZoneRestriction
 import core.plugin.Plugin
 
-class MageArenaMapZone : MapZone("mage arena", true, ZoneRestriction.RANDOM_EVENTS), Plugin<Any?> {
-
+class MageArenaMapZone :
+    MapZone("mage arena", true, ZoneRestriction.RANDOM_EVENTS),
+    Plugin<Any?> {
     override fun newInstance(arg: Any?): Plugin<Any?> {
         ZoneBuilder.configure(this)
         return this
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 
@@ -30,7 +34,10 @@ class MageArenaMapZone : MapZone("mage arena", true, ZoneRestriction.RANDOM_EVEN
         return super.enter(e)
     }
 
-    override fun leave(e: Entity, logout: Boolean): Boolean {
+    override fun leave(
+        e: Entity,
+        logout: Boolean,
+    ): Boolean {
         if (e is Player) {
             if (!logout) {
                 submitIndividualPulse(
@@ -44,7 +51,7 @@ class MageArenaMapZone : MapZone("mage arena", true, ZoneRestriction.RANDOM_EVEN
                             }
                             return true
                         }
-                    }
+                    },
                 )
                 return true
             }
@@ -58,7 +65,12 @@ class MageArenaMapZone : MapZone("mage arena", true, ZoneRestriction.RANDOM_EVEN
         return super.leave(e, logout)
     }
 
-    override fun continueAttack(e: Entity, target: Node, style: CombatStyle, message: Boolean): Boolean {
+    override fun continueAttack(
+        e: Entity,
+        target: Node,
+        style: CombatStyle,
+        message: Boolean,
+    ): Boolean {
         if (style != CombatStyle.MAGIC) {
             return false
         }

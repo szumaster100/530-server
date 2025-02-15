@@ -1,15 +1,18 @@
 package content.region.fremennik.handlers.neitiznot
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
 import core.api.*
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import org.rs.consts.Animations
+import org.rs.consts.Items
 
-class FremennikShieldPulse(player: Player?, node: Item, var amount: Int) : SkillPulse<Item>(player, null) {
-
+class FremennikShieldPulse(
+    player: Player?,
+    node: Item,
+    var amount: Int,
+) : SkillPulse<Item>(player, null) {
     val splitAnimation = Animations.HUMAN_SPLIT_LOGS_5755
     var ticks = 0
 
@@ -19,7 +22,7 @@ class FremennikShieldPulse(player: Player?, node: Item, var amount: Int) : Skill
                 Items.HAMMER_2347,
                 Items.ARCTIC_PINE_LOGS_10810,
                 Items.ROPE_954,
-                Items.BRONZE_NAILS_4819
+                Items.BRONZE_NAILS_4819,
             )
         ) {
             sendMessage(player, "You don't have required items in your inventory.")
@@ -57,7 +60,7 @@ class FremennikShieldPulse(player: Player?, node: Item, var amount: Int) : Skill
         if (player.inventory.remove(
                 Item(Items.ARCTIC_PINE_LOGS_10810, 2),
                 Item(Items.ROPE_954, 1),
-                Item(Items.BRONZE_NAILS_4819, 1)
+                Item(Items.BRONZE_NAILS_4819, 1),
             )
         ) {
             rewardXP(player, Skills.CRAFTING, 34.0)

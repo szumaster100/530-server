@@ -1,7 +1,5 @@
 package content.minigame.mta.room
 
-import org.rs.consts.Items
-import org.rs.consts.Music
 import content.minigame.mta.MTAType
 import content.minigame.mta.MTAZone
 import core.api.*
@@ -22,21 +20,26 @@ import core.game.world.map.RegionManager.getNpc
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.update.flag.context.Animation
 import core.tools.RandomFunction
+import org.rs.consts.Items
+import org.rs.consts.Music
 import java.util.*
 
-class AlchemistPlayground : MTAZone(
-    "Alchemists' Playground",
-    arrayOf(
-        Item(Items.COINS_8890),
-        Item(Items.LEATHER_BOOTS_6893),
-        Item(Items.ADAMANT_KITESHIELD_6894),
-        Item(Items.ADAMANT_MED_HELM_6895),
-        Item(Items.EMERALD_6896),
-        Item(Items.RUNE_LONGSWORD_6897)
-    )
-) {
-
-    override fun leave(entity: Entity, logout: Boolean): Boolean {
+class AlchemistPlayground :
+    MTAZone(
+        "Alchemists' Playground",
+        arrayOf(
+            Item(Items.COINS_8890),
+            Item(Items.LEATHER_BOOTS_6893),
+            Item(Items.ADAMANT_KITESHIELD_6894),
+            Item(Items.ADAMANT_MED_HELM_6895),
+            Item(Items.EMERALD_6896),
+            Item(Items.RUNE_LONGSWORD_6897),
+        ),
+    ) {
+    override fun leave(
+        entity: Entity,
+        logout: Boolean,
+    ): Boolean {
         if (entity is Player && PLAYERS.remove(entity)) {
             if (logout && entity.inventory.containsItem(COINS)) {
                 val deposit = entity.inventory.getAmount(COINS)
@@ -52,9 +55,13 @@ class AlchemistPlayground : MTAZone(
     override fun update(player: Player?) {
         sendString(
             player!!,
-            player.getSavedData().activityData.getPizazzPoints(type!!.ordinal).toString(),
+            player
+                .getSavedData()
+                .activityData
+                .getPizazzPoints(type!!.ordinal)
+                .toString(),
             type!!.overlay.id,
-            3
+            3,
         )
     }
 
@@ -77,7 +84,11 @@ class AlchemistPlayground : MTAZone(
         return super.enter(entity)
     }
 
-    override fun interact(e: Entity, target: Node, option: Option): Boolean {
+    override fun interact(
+        e: Entity,
+        target: Node,
+        option: Option,
+    ): Boolean {
         if (e is Player) {
             return when {
                 target.id == 10734 -> {
@@ -101,7 +112,10 @@ class AlchemistPlayground : MTAZone(
         return super.interact(e, target, option)
     }
 
-    private fun search(player: Player, scenery: Scenery) {
+    private fun search(
+        player: Player,
+        scenery: Scenery,
+    ) {
         val session = getSession(player)
         val item = session.getItem(scenery.id)
         if (scenery.id % 2 != 0) {
@@ -131,7 +145,7 @@ class AlchemistPlayground : MTAZone(
             player.teleport(Location(3363, 3302, 0))
             player.dialogueInterpreter.sendDialogue(
                 "You have been ejected from the arena! You were warned",
-                "not to deposit more than 12000 coins at once."
+                "not to deposit more than 12000 coins at once.",
             )
             return
         }
@@ -154,7 +168,7 @@ class AlchemistPlayground : MTAZone(
             player.dialogueInterpreter.sendDialogue(
                 "You've just deposited $deposit coins, earning you $earn Alchemist Pizazz",
                 "Points and $exp magic XP. So far you're taking $taking coins as a",
-                "a reward when you leave!"
+                "a reward when you leave!",
             )
         }
     }
@@ -166,10 +180,8 @@ class AlchemistPlayground : MTAZone(
     }
 
     class AlchemistSession(
-
-        val player: Player
+        val player: Player,
     ) {
-
         private var indexer = 0
 
         init {
@@ -234,24 +246,25 @@ class AlchemistPlayground : MTAZone(
         }
     }
 
-    enum class AlchemistItem(val item: Item) {
+    enum class AlchemistItem(
+        val item: Item,
+    ) {
         LEATHER_BOOTS(Item(Items.LEATHER_BOOTS_6893)),
         ADAMANT_KITESHIELD(Item(Items.ADAMANT_KITESHIELD_6894)),
         ADAMANT_HELM(Item(Items.ADAMANT_MED_HELM_6895)),
         EMERALD(Item(Items.EMERALD_6896)),
-        RUNE_LONGSWORD(Item(Items.RUNE_LONGSWORD_6897));
+        RUNE_LONGSWORD(Item(Items.RUNE_LONGSWORD_6897)),
+        ;
 
         var cost = 0
         val child: Int get() = 14 + ordinal
 
         companion object {
-
             fun forItem(id: Int) = values().find { it.item.id == id }
         }
     }
 
     companion object {
-
         var ZONE: AlchemistPlayground = AlchemistPlayground()
 
         val COINS: Item = Item(8890)
@@ -262,31 +275,34 @@ class AlchemistPlayground : MTAZone(
 
         var freeConvert: AlchemistItem? = null
 
-        private val PULSE: Pulse = object : Pulse(if (settings!!.isDevMode) 15 else 53) {
-            override fun pulse(): Boolean {
-                if (PLAYERS.isEmpty()) {
-                    return true
-                }
-                shufflePrices()
-                var forceChat = "The costs are changing!"
-                if (freeConvert == null && RandomFunction.random(3) < 3) {
-                    freeConvert = RandomFunction.getRandomElement(AlchemistItem.values())
-                    forceChat =
-                        "The " + freeConvert!!.item.name.lowercase(Locale.getDefault()) + " " + (if (freeConvert == AlchemistItem.LEATHER_BOOTS) "are" else "is") + " free to convert!"
-                } else if (freeConvert != null) {
-                    freeConvert = null
-                }
-                guardian!!.sendChat(forceChat)
-                for (p in PLAYERS) {
-                    if (p == null || !p.isActive) {
-                        continue
+        private val PULSE: Pulse =
+            object : Pulse(if (settings!!.isDevMode) 15 else 53) {
+                override fun pulse(): Boolean {
+                    if (PLAYERS.isEmpty()) {
+                        return true
                     }
-                    getSession(p).shuffleObjects()
-                    updateInterface(p)
+                    shufflePrices()
+                    var forceChat = "The costs are changing!"
+                    if (freeConvert == null && RandomFunction.random(3) < 3) {
+                        freeConvert = RandomFunction.getRandomElement(AlchemistItem.values())
+                        forceChat =
+                            "The " + freeConvert!!.item.name.lowercase(Locale.getDefault()) + " " +
+                            (if (freeConvert == AlchemistItem.LEATHER_BOOTS) "are" else "is") +
+                            " free to convert!"
+                    } else if (freeConvert != null) {
+                        freeConvert = null
+                    }
+                    guardian!!.sendChat(forceChat)
+                    for (p in PLAYERS) {
+                        if (p == null || !p.isActive) {
+                            continue
+                        }
+                        getSession(p).shuffleObjects()
+                        updateInterface(p)
+                    }
+                    return false
                 }
-                return false
             }
-        }
 
         fun shufflePrices() {
             val list: List<Int> = mutableListOf(1, 5, 8, 10, 15, 20, 30)
@@ -301,7 +317,13 @@ class AlchemistPlayground : MTAZone(
                 player.packetDispatch.sendInterfaceConfig(
                     194,
                     i.child,
-                    if (freeConvert == null) true else if (freeConvert == i) false else true
+                    if (freeConvert == null) {
+                        true
+                    } else if (freeConvert == i) {
+                        false
+                    } else {
+                        true
+                    },
                 )
                 player.packetDispatch.sendString(i.cost.toString() + "", 194, 9 + i.ordinal)
             }

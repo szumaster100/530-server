@@ -1,7 +1,7 @@
 package content.global.ame.gravedigger
 
-import org.rs.consts.Items
 import core.api.*
+import core.api.MapArea
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.Entity
@@ -9,27 +9,30 @@ import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.game.node.scenery.Scenery
 import core.game.world.map.Location
-import core.api.MapArea
 import core.game.world.map.zone.ZoneBorders
+import org.rs.consts.Items
 
-class GraveListener : InteractionListener, MapArea {
-    private val graves = listOf(
-        org.rs.consts.Scenery.GRAVE_12722 to org.rs.consts.Scenery.GRAVE_12726,
-        org.rs.consts.Scenery.GRAVE_12724 to org.rs.consts.Scenery.GRAVE_12727,
-        org.rs.consts.Scenery.GRAVE_12721 to org.rs.consts.Scenery.GRAVE_12728,
-        org.rs.consts.Scenery.GRAVE_12723 to org.rs.consts.Scenery.GRAVE_12729,
-        org.rs.consts.Scenery.GRAVE_12725 to org.rs.consts.Scenery.GRAVE_12730
-    )
-    private val graveLocations = listOf(
-        Location(1926, 4999, 0),
-        Location(1930, 4999, 0),
-        Location(1924, 4996, 0),
-        Location(1928, 4996, 0),
-        Location(1932, 4996, 0)
-    )
+class GraveListener :
+    InteractionListener,
+    MapArea {
+    private val graves =
+        listOf(
+            org.rs.consts.Scenery.GRAVE_12722 to org.rs.consts.Scenery.GRAVE_12726,
+            org.rs.consts.Scenery.GRAVE_12724 to org.rs.consts.Scenery.GRAVE_12727,
+            org.rs.consts.Scenery.GRAVE_12721 to org.rs.consts.Scenery.GRAVE_12728,
+            org.rs.consts.Scenery.GRAVE_12723 to org.rs.consts.Scenery.GRAVE_12729,
+            org.rs.consts.Scenery.GRAVE_12725 to org.rs.consts.Scenery.GRAVE_12730,
+        )
+    private val graveLocations =
+        listOf(
+            Location(1926, 4999, 0),
+            Location(1930, 4999, 0),
+            Location(1924, 4996, 0),
+            Location(1928, 4996, 0),
+            Location(1932, 4996, 0),
+        )
 
     override fun defineListeners() {
-
         on(GraveUtils.MAUSOLEUM, IntType.SCENERY, "deposit") { player, _ ->
             player.bank.openDepositBox()
             player.bank::refreshDepositBoxInterface
@@ -78,7 +81,7 @@ class GraveListener : InteractionListener, MapArea {
         location: Location,
         coffinIndex: Int,
         action: String,
-        item: Item? = null
+        item: Item? = null,
     ) {
         lock(player, 3)
         animate(player, GraveUtils.PICK_AND_DROP_ANIM)
@@ -100,7 +103,10 @@ class GraveListener : InteractionListener, MapArea {
         return arrayOf(ZoneBorders(1934, 4993, 1921, 5006))
     }
 
-    override fun areaLeave(entity: Entity, logout: Boolean) {
+    override fun areaLeave(
+        entity: Entity,
+        logout: Boolean,
+    ) {
         super.areaLeave(entity, logout)
         if (entity is Player) {
             removeAll(entity, GraveUtils.coffins)

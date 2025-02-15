@@ -1,6 +1,5 @@
 package content.minigame.pestcontrol
 
-import org.rs.consts.Animations
 import core.cache.def.impl.SceneryDefinition
 import core.game.activity.ActivityManager
 import core.game.bots.PvMBotsBuilder.Companion.createPestControlTestBot
@@ -20,9 +19,11 @@ import core.game.world.map.Location
 import core.game.world.map.RegionManager.getObject
 import core.game.world.update.flag.context.Animation
 import core.plugin.Plugin
+import org.rs.consts.Animations
 
-class PCObjectHandler : OptionHandler(), InteractionListener {
-
+class PCObjectHandler :
+    OptionHandler(),
+    InteractionListener {
     var PCnBotsSpawned: Boolean = false
 
     var PCiBotsSpawned: Boolean = false
@@ -31,7 +32,6 @@ class PCObjectHandler : OptionHandler(), InteractionListener {
 
     @Throws(Throwable::class)
     override fun newInstance(arg: Any?): Plugin<Any> {
-
         SceneryDefinition.forId(14227).handlers["option:repair"] = this
         SceneryDefinition.forId(14228).handlers["option:repair"] = this
         SceneryDefinition.forId(14229).handlers["option:repair"] = this
@@ -76,7 +76,11 @@ class PCObjectHandler : OptionHandler(), InteractionListener {
         return this
     }
 
-    private fun startActivity(p: Player, name: String, destination: Location) {
+    private fun startActivity(
+        p: Player,
+        name: String,
+        destination: Location,
+    ) {
         if (ActivityManager.start(p, name, false)) {
             p.packetDispatch.sendMessage("You board the lander.")
             p.properties.teleportLocation = destination
@@ -105,7 +109,11 @@ class PCObjectHandler : OptionHandler(), InteractionListener {
         }
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         var pestBotsAmount = 0
         var pestBots2Amount = 0
         val scenery = node as Scenery
@@ -174,7 +182,11 @@ class PCObjectHandler : OptionHandler(), InteractionListener {
         return false
     }
 
-    private fun handleTurretTower(player: Player, session: PestControlSession, scenery: Scenery) {
+    private fun handleTurretTower(
+        player: Player,
+        session: PestControlSession,
+        scenery: Scenery,
+    ) {
         val x = scenery.location.localX
         val y = scenery.location.localY
         if (x == 45 && y == 41) {
@@ -198,7 +210,12 @@ class PCObjectHandler : OptionHandler(), InteractionListener {
         }
     }
 
-    private fun repair(player: Player, session: PestControlSession, scenery: Scenery, newId: Int) {
+    private fun repair(
+        player: Player,
+        session: PestControlSession,
+        scenery: Scenery,
+        newId: Int,
+    ) {
         if (!player.inventory.contains(2347, 1)) {
             player.packetDispatch.sendMessage("You'll need a hammer to make any repairs!")
             return
@@ -218,26 +235,32 @@ class PCObjectHandler : OptionHandler(), InteractionListener {
     }
 
     companion object {
-        val GATES = intArrayOf(
-            14233,
-            14234,
-            14235,
-            14236,
-            14237,
-            14238,
-            14239,
-            14240,
-            14241,
-            14242,
-            14243,
-            14244,
-            14245,
-            14246,
-            14247,
-            14248
-        )
+        val GATES =
+            intArrayOf(
+                14233,
+                14234,
+                14235,
+                14236,
+                14237,
+                14238,
+                14239,
+                14240,
+                14241,
+                14242,
+                14243,
+                14244,
+                14245,
+                14246,
+                14247,
+                14248,
+            )
         val BARRICADES = intArrayOf(14227, 14228, 14229, 14230, 14231, 14232)
-        private fun handleGates(player: Player, session: PestControlSession, scenery: Scenery) {
+
+        private fun handleGates(
+            player: Player,
+            session: PestControlSession,
+            scenery: Scenery,
+        ) {
             val open = (scenery.id % 2) != 0
             val second = getSecondDoor(scenery) ?: return
             if (scenery.id > 14240 || second.id > 14240) {
@@ -252,22 +275,24 @@ class PCObjectHandler : OptionHandler(), InteractionListener {
                 session.barricades.remove(second)
 
                 var l = scenery.location.transform(direction.stepX, direction.stepY, 0)
-                var replacement = Scenery(
-                    scenery.id + (if (open) 1 else -1),
-                    l,
-                    0,
-                    if (open) rotation else ((direction.toInteger() + 3) % 4)
-                )
+                var replacement =
+                    Scenery(
+                        scenery.id + (if (open) 1 else -1),
+                        l,
+                        0,
+                        if (open) rotation else ((direction.toInteger() + 3) % 4),
+                    )
                 SceneryBuilder.replace(scenery, replacement)
                 session.barricades.add(replacement)
 
                 l = second.location.transform(direction.stepX, direction.stepY, 0)
-                replacement = Scenery(
-                    second.id + (if (open) 1 else -1),
-                    l,
-                    0,
-                    if (open) getRotation(second) else ((direction.toInteger() + 3) % 4)
-                )
+                replacement =
+                    Scenery(
+                        second.id + (if (open) 1 else -1),
+                        l,
+                        0,
+                        if (open) getRotation(second) else ((direction.toInteger() + 3) % 4),
+                    )
                 SceneryBuilder.replace(second, replacement)
                 session.barricades.add(replacement)
             }

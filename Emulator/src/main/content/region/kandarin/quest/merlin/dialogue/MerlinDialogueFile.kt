@@ -1,8 +1,5 @@
 package content.region.kandarin.quest.merlin.dialogue
 
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
-import org.rs.consts.Quests
 import content.region.kandarin.quest.merlin.handlers.MerlinUtils
 import core.api.*
 import core.api.quest.setQuestStage
@@ -13,10 +10,17 @@ import core.game.node.entity.npc.NPC
 import core.game.node.scenery.SceneryBuilder
 import core.game.world.map.Location
 import core.tools.END_DIALOGUE
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
+import org.rs.consts.Scenery
 
-class MerlinDialogueFile(val forced: Boolean) : DialogueFile() {
-
-    override fun handle(componentID: Int, buttonID: Int) {
+class MerlinDialogueFile(
+    val forced: Boolean,
+) : DialogueFile() {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         npc = NPC(NPCs.MERLIN_249)
 
         when (stage) {
@@ -28,7 +32,13 @@ class MerlinDialogueFile(val forced: Boolean) : DialogueFile() {
                     npcl(FaceAnim.HAPPY, "Thank you! Thank you! Thank you!")
                     stage++
                 } else {
-                    npcl(FaceAnim.NEUTRAL, "Excuse me for rushing off like this, but I must get back to my workroom.").also { stage = END_DIALOGUE }
+                    npcl(
+                        FaceAnim.NEUTRAL,
+                        "Excuse me for rushing off like this, but I must get back to my workroom.",
+                    ).also {
+                        stage =
+                            END_DIALOGUE
+                    }
                 }
             }
 
@@ -90,8 +100,8 @@ class MerlinDialogueFile(val forced: Boolean) : DialogueFile() {
             SceneryBuilder.add(
                 core.game.node.scenery.Scenery(
                     Scenery.GIANT_CRYSTAL_62,
-                    Location.create(2767, 3493, 2)
-                )
+                    Location.create(2767, 3493, 2),
+                ),
             )
         }
     }

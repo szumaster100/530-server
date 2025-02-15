@@ -1,7 +1,5 @@
 package content.global.skill.herblore.assistance
 
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import content.data.consumables.Consumables
 import core.api.*
 import core.api.interaction.decantContainer
@@ -9,9 +7,10 @@ import core.game.consumable.Potion
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.item.Item
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 
 class Decanting : InteractionListener {
-
     override fun defineListeners() {
         on(IntType.NPC, "decant") { player, node ->
             val (toRemove, toAdd) = decantContainer(player.inventory)
@@ -58,16 +57,15 @@ class Decanting : InteractionListener {
                     with.slot,
                     Item(potionUsed.ids[potionUsed.ids.size - totalDosage]),
                     with,
-                    Container.INVENTORY
+                    Container.INVENTORY,
                 )
-
             } else if (leftoverDose != 0) {
                 replaceSlot(
                     player,
                     used.slot,
                     Item(potionUsed.ids[potionUsed.ids.size - leftoverDose]),
                     used,
-                    Container.INVENTORY
+                    Container.INVENTORY,
                 )
             }
 
@@ -75,11 +73,12 @@ class Decanting : InteractionListener {
                 replaceSlot(player, used.slot, Item(Items.VIAL_229), used, Container.INVENTORY)
             }
 
-            val amountString = when {
-                totalDosage >= 4 -> "four"
-                totalDosage == 3 -> "three"
-                else -> "two"
-            }
+            val amountString =
+                when {
+                    totalDosage >= 4 -> "four"
+                    totalDosage == 3 -> "three"
+                    else -> "two"
+                }
 
             sendMessage(player, "You have combined the liquid into $amountString doses.")
             playAudio(player, Sounds.LIQUID_2401)

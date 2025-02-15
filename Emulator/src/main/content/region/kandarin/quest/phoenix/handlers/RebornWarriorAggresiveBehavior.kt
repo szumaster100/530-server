@@ -8,7 +8,6 @@ import core.game.world.map.Location
 import core.tools.RandomFunction
 
 class RebornWarriorAggresiveBehavior : NPCBehavior(*rebornWarriors) {
-
     override fun tick(self: NPC): Boolean {
         super.tick(self)
         if (RandomFunction.random(300) < 3) {
@@ -20,7 +19,8 @@ class RebornWarriorAggresiveBehavior : NPCBehavior(*rebornWarriors) {
                     0 -> {
                         visualize(self, 11133, 1990)
                         teleport(
-                            self, Location.getRandomLocation(self.location, 5, true)
+                            self,
+                            Location.getRandomLocation(self.location, 5, true),
                         )
                         return@queueScript delayScript(self, 6)
                     }

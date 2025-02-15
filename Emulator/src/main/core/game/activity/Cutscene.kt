@@ -2,21 +2,20 @@ package core.game.activity
 
 import core.ServerConfig
 import core.api.*
+import core.api.Event
+import core.api.ui.closeDialogue
+import core.api.ui.setMinimapState
 import core.api.utils.CameraShakeType
 import core.api.utils.PlayerCamera
 import core.game.component.Component
 import core.game.dialogue.FaceAnim
 import core.game.event.EventHook
-import core.api.Event
-import core.api.ui.closeDialogue
-import core.api.ui.setMinimapState
 import core.game.event.SelfDeathEvent
 import core.game.interaction.MovementPulse
 import core.game.node.entity.Entity
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.scenery.Scenery
-import core.tools.Log
 import core.game.system.task.Pulse
 import core.game.system.timer.impl.AntiMacro
 import core.game.world.GameWorld
@@ -26,9 +25,12 @@ import core.game.world.map.Region
 import core.game.world.map.RegionManager
 import core.game.world.map.build.DynamicRegion
 import core.game.world.map.path.Pathfinder
+import core.tools.Log
 import org.rs.consts.Components
 
-abstract class Cutscene(val player: Player) {
+abstract class Cutscene(
+    val player: Player,
+) {
     lateinit var region: Region
     lateinit var base: Location
     var exitLocation: Location = player.location.transform(0, 0, 0)
@@ -38,6 +40,7 @@ abstract class Cutscene(val player: Player) {
     private val addedNPCs = HashMap<Int, ArrayList<NPC>>()
 
     abstract fun setup()
+
     abstract fun runStage(stage: Int)
 
     fun loadRegion(regionId: Int) {
@@ -60,20 +63,31 @@ abstract class Cutscene(val player: Player) {
         player.interfaceManager.openOverlay(Component(Components.FADE_FROM_BLACK_170))
     }
 
-    fun teleport(entity: Entity, regionX: Int, regionY: Int, plane: Int = 0) {
+    fun teleport(
+        entity: Entity,
+        regionX: Int,
+        regionY: Int,
+        plane: Int = 0,
+    ) {
         val newLoc = base.transform(regionX, regionY, plane)
-        logCutscene("Teleporting ${entity.username} to coordinates: LOCAL[$regionX,$regionY,$plane] GLOBAL[${newLoc.x},${newLoc.y},$plane].")
+        logCutscene(
+            "Teleporting ${entity.username} to coordinates: LOCAL[$regionX,$regionY,$plane] GLOBAL[${newLoc.x},${newLoc.y},$plane].",
+        )
         entity.properties.teleportLocation = newLoc
     }
 
-    fun move(entity: Entity, regionX: Int, regionY: Int) {
+    fun move(
+        entity: Entity,
+        regionX: Int,
+        regionY: Int,
+    ) {
         logCutscene("Moving ${entity.username} to LOCAL[$regionX,$regionY].")
         entity.pulseManager.run(
             object : MovementPulse(entity, base.transform(regionX, regionY, 0), Pathfinder.SMART) {
                 override fun pulse(): Boolean {
                     return true
                 }
-            }
+            },
         )
     }
 
@@ -82,7 +96,7 @@ abstract class Cutscene(val player: Player) {
         expression: FaceAnim,
         message: String,
         onContinue: () -> Unit = { incrementStage() },
-        hide: Boolean = false
+        hide: Boolean = false,
     ) {
         logCutscene("Sending NPC dialogue update.")
         sendNPCDialogue(player, npcId, message, expression)
@@ -93,7 +107,7 @@ abstract class Cutscene(val player: Player) {
         npcId: Int,
         expression: FaceAnim,
         vararg message: String,
-        onContinue: () -> Unit = { incrementStage() }
+        onContinue: () -> Unit = { incrementStage() },
     ) {
         logCutscene("Sending NPC dialogue lines update.")
         sendNPCDialogueLines(player, npcId, expression, true, *message)
@@ -105,7 +119,10 @@ abstract class Cutscene(val player: Player) {
         closeDialogue(player)
     }
 
-    fun dialogueUpdate(message: String, onContinue: () -> Unit = { incrementStage() }) {
+    fun dialogueUpdate(
+        message: String,
+        onContinue: () -> Unit = { incrementStage() },
+    ) {
         logCutscene("Sending standard dialogue update.")
         sendDialogue(player, message)
         player.dialogueInterpreter.addAction { _, _ -> onContinue.invoke() }
@@ -114,25 +131,29 @@ abstract class Cutscene(val player: Player) {
     fun playerDialogueUpdate(
         expression: FaceAnim,
         message: String,
-        onContinue: () -> Unit = { incrementStage() }
+        onContinue: () -> Unit = { incrementStage() },
     ) {
         logCutscene("Sending player dialogue update")
         sendPlayerDialogue(player, message, expression)
         player.dialogueInterpreter.addAction { _, _ -> onContinue.invoke() }
     }
 
-    fun timedUpdate(ticks: Int, newStage: Int = -1) {
+    fun timedUpdate(
+        ticks: Int,
+        newStage: Int = -1,
+    ) {
         logCutscene("Executing timed updated for $ticks ticks.")
         GameWorld.Pulser.submit(
             object : Pulse(ticks) {
                 override fun pulse(): Boolean {
-                    if (newStage == -1)
+                    if (newStage == -1) {
                         incrementStage()
-                    else
+                    } else {
                         updateStage(newStage)
+                    }
                     return true
                 }
-            }
+            },
         )
     }
 
@@ -144,13 +165,23 @@ abstract class Cutscene(val player: Player) {
         return addedNPCs[id] ?: ArrayList()
     }
 
-    fun getObject(regionX: Int, regionY: Int, plane: Int = 0): Scenery? {
+    fun getObject(
+        regionX: Int,
+        regionY: Int,
+        plane: Int = 0,
+    ): Scenery? {
         val obj = RegionManager.getObject(base.transform(regionX, regionY, plane))
         logCutscene("Retrieving object at LOCAL[$regionX,$regionY], GOT: ${obj?.definition?.name ?: "null"}.")
         return obj
     }
 
-    fun addNPC(id: Int, regionX: Int, regionY: Int, direction: Direction, plane: Int = 0) {
+    fun addNPC(
+        id: Int,
+        regionX: Int,
+        regionY: Int,
+        direction: Direction,
+        plane: Int = 0,
+    ) {
         val npc = NPC(id)
         npc.isRespawn = false
         npc.isAggressive = false
@@ -162,7 +193,9 @@ abstract class Cutscene(val player: Player) {
         val npcs = addedNPCs[id] ?: ArrayList()
         npcs.add(npc)
         addedNPCs[id] = npcs
-        logCutscene("Added NPC $id at location LOCAL[$regionX,$regionY,$plane] GLOBAL[${npc.location.x},${npc.location.y},$plane]")
+        logCutscene(
+            "Added NPC $id at location LOCAL[$regionX,$regionY,$plane] GLOBAL[${npc.location.x},${npc.location.y},$plane]",
+        )
     }
 
     fun start() {
@@ -185,16 +218,23 @@ abstract class Cutscene(val player: Player) {
         player.properties.safeRespawn = player.location
         player.lock()
         player.hook(Event.SelfDeath, CUTSCENE_DEATH_HOOK)
-        player.logoutListeners["cutscene"] = { player -> player.location = exitLocation; player.getCutscene()?.end() }
+        player.logoutListeners["cutscene"] = { player ->
+            player.location = exitLocation
+            player.getCutscene()?.end()
+        }
         AntiMacro.pause(player)
     }
 
-    fun end(fade: Boolean = true, endActions: (() -> Unit)? = null) {
+    fun end(
+        fade: Boolean = true,
+        endActions: (() -> Unit)? = null,
+    ) {
         ended = true
         if (fade) fadeToBlack()
         GameWorld.Pulser.submit(
             object : Pulse() {
                 var tick: Int = 0
+
                 override fun pulse(): Boolean {
                     if (fade) {
                         when (tick++) {
@@ -203,7 +243,9 @@ abstract class Cutscene(val player: Player) {
                             16 -> return true
                             else -> return false
                         }
-                    } else player.properties.teleportLocation = exitLocation
+                    } else {
+                        player.properties.teleportLocation = exitLocation
+                    }
                     return true
                 }
 
@@ -224,11 +266,15 @@ abstract class Cutscene(val player: Player) {
                     try {
                         endActions?.invoke()
                     } catch (e: Exception) {
-                        log(this::class.java, Log.ERR, "There's some bad nasty code in ${this::class.java.simpleName} end actions!")
+                        log(
+                            this::class.java,
+                            Log.ERR,
+                            "There's some bad nasty code in ${this::class.java.simpleName} end actions!",
+                        )
                         e.printStackTrace()
                     }
                 }
-            }
+            },
         )
     }
 
@@ -237,6 +283,7 @@ abstract class Cutscene(val player: Player) {
         GameWorld.Pulser.submit(
             object : Pulse() {
                 var tick: Int = 0
+
                 override fun pulse(): Boolean {
                     when (tick++) {
                         0 -> player.properties.teleportLocation = exitLocation
@@ -267,12 +314,12 @@ abstract class Cutscene(val player: Player) {
                         log(
                             this::class.java,
                             Log.ERR,
-                            "There's some bad nasty code in ${this::class.java.simpleName} end actions!"
+                            "There's some bad nasty code in ${this::class.java.simpleName} end actions!",
                         )
                         e.printStackTrace()
                     }
                 }
-            }
+            },
         )
     }
 
@@ -282,6 +329,7 @@ abstract class Cutscene(val player: Player) {
         GameWorld.Pulser.submit(
             object : Pulse() {
                 var tick: Int = 0
+
                 override fun pulse(): Boolean {
                     when (tick++) {
                         8 -> player.properties.teleportLocation = exitLocation
@@ -310,25 +358,44 @@ abstract class Cutscene(val player: Player) {
                     try {
                         endActions?.invoke()
                     } catch (e: Exception) {
-                        log(this::class.java, Log.ERR, "There's some bad nasty code in ${this::class.java.simpleName} end actions!")
+                        log(
+                            this::class.java,
+                            Log.ERR,
+                            "There's some bad nasty code in ${this::class.java.simpleName} end actions!",
+                        )
                         e.printStackTrace()
                     }
                 }
-            }
+            },
         )
     }
 
-    fun moveCamera(regionX: Int, regionY: Int, height: Int = 300, speed: Int = 100) {
+    fun moveCamera(
+        regionX: Int,
+        regionY: Int,
+        height: Int = 300,
+        speed: Int = 100,
+    ) {
         val globalLoc = base.transform(regionX, regionY, 0)
         camera.panTo(globalLoc.x, globalLoc.y, height, speed)
     }
 
-    fun rotateCamera(regionX: Int, regionY: Int, height: Int = 300, speed: Int = 100) {
+    fun rotateCamera(
+        regionX: Int,
+        regionY: Int,
+        height: Int = 300,
+        speed: Int = 100,
+    ) {
         val globalLoc = base.transform(regionX, regionY, 0)
         camera.rotateTo(globalLoc.x, globalLoc.y, height, speed)
     }
 
-    fun rotateCameraBy(diffX: Int, diffY: Int, diffHeight: Int = 300, diffSpeed: Int = 100) {
+    fun rotateCameraBy(
+        diffX: Int,
+        diffY: Int,
+        diffHeight: Int = 300,
+        diffSpeed: Int = 100,
+    ) {
         camera.rotateBy(diffX, diffY, diffHeight, diffSpeed)
     }
 
@@ -337,7 +404,7 @@ abstract class Cutscene(val player: Player) {
         jitter: Int = 0,
         amplitude: Int = 0,
         frequency: Int = 128,
-        speed: Int = 2
+        speed: Int = 2,
     ) {
         camera.shake(cameraType.ordinal, jitter, amplitude, frequency, speed)
     }
@@ -366,8 +433,9 @@ abstract class Cutscene(val player: Player) {
     }
 
     fun logCutscene(message: String) {
-        if (ServerConfig.LOG_CUTSCENE)
+        if (ServerConfig.LOG_CUTSCENE) {
             log(this::class.java, Log.FINE, "$message")
+        }
     }
 
     fun clearNPCs() {
@@ -383,7 +451,10 @@ abstract class Cutscene(val player: Player) {
         const val ATTRIBUTE_CUTSCENE_STAGE = "cutscene:stage"
 
         object CUTSCENE_DEATH_HOOK : EventHook<SelfDeathEvent> {
-            override fun process(entity: Entity, event: SelfDeathEvent) {
+            override fun process(
+                entity: Entity,
+                event: SelfDeathEvent,
+            ) {
                 if (entity !is Player) return
                 entity.getCutscene()?.end() ?: entity.unhook(this)
             }

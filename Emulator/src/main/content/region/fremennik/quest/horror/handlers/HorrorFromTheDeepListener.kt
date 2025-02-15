@@ -1,9 +1,5 @@
 package content.region.fremennik.quest.horror.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
-import org.rs.consts.Quests
 import content.region.fremennik.quest.horror.dialogue.JossikDialogueFile
 import core.api.*
 import core.api.quest.getQuestStage
@@ -17,9 +13,12 @@ import core.game.interaction.QueueStrength
 import core.game.node.Node
 import core.game.node.entity.player.Player
 import core.game.system.task.Pulse
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
+import org.rs.consts.Scenery
 
 class HorrorFromTheDeepListener : InteractionListener {
-
     override fun defineListeners() {
         handleJossikInteraction()
         handleLighthouseDoorInteraction()
@@ -46,7 +45,11 @@ class HorrorFromTheDeepListener : InteractionListener {
                 }
 
                 getQuestStage(player, Quests.HORROR_FROM_THE_DEEP) < 20 -> {
-                    sendNPCDialogue(player, NPCs.LARRISSA_1336, "Please adventurer... We are both curious as to what has happened in that lighthouse, but you need to fix the bridge for me!")
+                    sendNPCDialogue(
+                        player,
+                        NPCs.LARRISSA_1336,
+                        "Please adventurer... We are both curious as to what has happened in that lighthouse, but you need to fix the bridge for me!",
+                    )
                 }
 
                 else -> {
@@ -57,7 +60,10 @@ class HorrorFromTheDeepListener : InteractionListener {
         }
     }
 
-    private fun handleDoorUnlock(player: Player, node: Node) {
+    private fun handleDoorUnlock(
+        player: Player,
+        node: Node,
+    ) {
         submitIndividualPulse(
             player,
             object : Pulse(2) {
@@ -72,7 +78,7 @@ class HorrorFromTheDeepListener : InteractionListener {
                     }
                     return true
                 }
-            }
+            },
         )
     }
 
@@ -97,7 +103,7 @@ class HorrorFromTheDeepListener : InteractionListener {
                         sendNPCDialogue(
                             player,
                             NPCs.LARRISSA_1336,
-                            "Please adventurer, do not let curiosity get the better of you! We have to fix the lighthouse before any accidents happen!"
+                            "Please adventurer, do not let curiosity get the better of you! We have to fix the lighthouse before any accidents happen!",
                         )
                     }
                 }
@@ -108,7 +114,6 @@ class HorrorFromTheDeepListener : InteractionListener {
     }
 
     private fun handleLighthouseMechanismFix() {
-
         onUseWith(IntType.SCENERY, Items.SWAMP_TAR_1939, Scenery.LIGHTING_MECHANISM_4588) { player, _, _ ->
             if (removeItem(player, Items.SWAMP_TAR_1939)) {
                 sendMessage(player, "You use the swamp tar to make the torch flammable again.")
@@ -126,11 +131,12 @@ class HorrorFromTheDeepListener : InteractionListener {
         onUseWith(
             IntType.SCENERY,
             Items.MOLTEN_GLASS_1775,
-            Scenery.LIGHTING_MECHANISM_4588
+            Scenery.LIGHTING_MECHANISM_4588,
         ) { player, item, mechanism ->
-            if (getAttribute(player, HorrorFromTheDeepUtils.LIGHTHOUSE_MECHANISM, 0) == 2 && removeItem(
+            if (getAttribute(player, HorrorFromTheDeepUtils.LIGHTHOUSE_MECHANISM, 0) == 2 &&
+                removeItem(
                     player,
-                    item.asItem()
+                    item.asItem(),
                 )
             ) {
                 replaceScenery(mechanism.asScenery(), Scenery.LIGHTING_MECHANISM_4587, 80)

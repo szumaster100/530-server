@@ -1,22 +1,22 @@
 package content.global.skill.construction.decoration.combatroom
 
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import content.global.skill.construction.BuildHotspot
 import core.api.*
+import core.api.EquipmentSlot
 import core.game.dialogue.DialogueFile
 import core.game.dialogue.IfTopic
 import core.game.dialogue.Topic
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.Node
-import core.api.EquipmentSlot
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class WeaponRackListener : InteractionListener {
-
-    private val sceneryIDs = intArrayOf(Scenery.GLOVE_RACK_13381, Scenery.WEAPONS_RACK_13382, Scenery.WEAPONS_RACK_13383)
+    private val sceneryIDs =
+        intArrayOf(Scenery.GLOVE_RACK_13381, Scenery.WEAPONS_RACK_13382, Scenery.WEAPONS_RACK_13383)
     private val boxingGlovesIDs = intArrayOf(Items.BOXING_GLOVES_7671, Items.BOXING_GLOVES_7673)
 
     override fun defineListeners() {
@@ -44,19 +44,27 @@ class WeaponRackListener : InteractionListener {
         return getItemFromEquipment(player, EquipmentSlot.HANDS) != null
     }
 
-    private inner class WeaponRackDialogue(player: Player, private val r: Node) : DialogueFile() {
-        override fun handle(componentID: Int, buttonID: Int) {
+    private inner class WeaponRackDialogue(
+        player: Player,
+        private val r: Node,
+    ) : DialogueFile() {
+        override fun handle(
+            componentID: Int,
+            buttonID: Int,
+        ) {
             when (stage) {
-                0 -> sendDialogueOptions(
-                    player!!,
-                    "What do you want to take?" + showTopics(
-                        Topic("Red boxing gloves", 1, true),
-                        Topic("Blue boxing gloves", 2, true),
-                        IfTopic("Wooden sword", 3, r.id != 13381, true),
-                        IfTopic("Wooden shield", 4, r.id != 13381, true),
-                        IfTopic("Pugel", 5, r.id == 13383, true)
+                0 ->
+                    sendDialogueOptions(
+                        player!!,
+                        "What do you want to take?" +
+                            showTopics(
+                                Topic("Red boxing gloves", 1, true),
+                                Topic("Blue boxing gloves", 2, true),
+                                IfTopic("Wooden sword", 3, r.id != 13381, true),
+                                IfTopic("Wooden shield", 4, r.id != 13381, true),
+                                IfTopic("Pugel", 5, r.id == 13383, true),
+                            ),
                     )
-                )
 
                 1 -> takeItem(player!!, Items.BOXING_GLOVES_7671, "You take boxing gloves from the rack.")
                 2 -> takeItem(player!!, Items.BOXING_GLOVES_7673, "You take boxing gloves from the rack.")
@@ -66,16 +74,24 @@ class WeaponRackListener : InteractionListener {
             }
         }
 
-        private fun takeItem(player: Player, itemId: Int, message: String) {
+        private fun takeItem(
+            player: Player,
+            itemId: Int,
+            message: String,
+        ) {
             end()
             addItem(player, itemId)
             sendMessage(player, message)
         }
 
-        private fun handleSpecialWeapon(player: Player, r: Node) {
-            if (getItemFromEquipment(player, EquipmentSlot.WEAPON) != null && getItemFromEquipment(
+        private fun handleSpecialWeapon(
+            player: Player,
+            r: Node,
+        ) {
+            if (getItemFromEquipment(player, EquipmentSlot.WEAPON) != null &&
+                getItemFromEquipment(
                     player,
-                    EquipmentSlot.SHIELD
+                    EquipmentSlot.SHIELD,
                 ) != null
             ) {
                 end()

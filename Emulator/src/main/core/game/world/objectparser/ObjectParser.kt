@@ -10,7 +10,6 @@ import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
 
 class ObjectParser : StartupListener {
-
     fun parseObjects() {
         if (ServerConfig.OBJECT_PARSER_PATH == null) return
         val f = File(ServerConfig.OBJECT_PARSER_PATH)
@@ -56,8 +55,8 @@ class ObjectParser : StartupListener {
                                     y,
                                     z,
                                     objType,
-                                    dir
-                                )
+                                    dir,
+                                ),
                             )
                         }
 
@@ -72,8 +71,8 @@ class ObjectParser : StartupListener {
                                     id,
                                     x,
                                     y,
-                                    z
-                                )
+                                    z,
+                                ),
                             )
                         }
                     }

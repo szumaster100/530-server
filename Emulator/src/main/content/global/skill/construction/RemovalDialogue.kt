@@ -32,15 +32,27 @@ class RemovalDialogue : Dialogue {
         room = player.houseManager.rooms[plane][pos[0]][pos[1]]
         sendDialogueOptions(
             player,
-            "Remove the " + (if (room != null) room!!.properties.name.lowercase().replace("_", " ") else "room") + "?",
+            "Remove the " + (
+                if (room != null) {
+                    room!!
+                        .properties.name
+                        .lowercase()
+                        .replace("_", " ")
+                } else {
+                    "room"
+                }
+            ) + "?",
             "Yes",
-            "No"
+            "No",
         )
         stage = 0
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         if (stage == 0) {
             if (buttonId == 1) {
                 if (plane == 0 && player.houseManager.hasRoomAt(1, pos[0], pos[1])) {

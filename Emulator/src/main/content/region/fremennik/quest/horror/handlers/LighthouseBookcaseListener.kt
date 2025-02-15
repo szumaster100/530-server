@@ -1,17 +1,21 @@
 package content.region.fremennik.quest.horror.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.Scenery
-import org.rs.consts.Quests
 import core.api.*
 import core.api.quest.isQuestComplete
 import core.game.dialogue.DialogueFile
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Scenery
 
-class LighthouseBookcaseListener : DialogueFile(), InteractionListener {
-
-    override fun handle(componentID: Int, buttonID: Int) {
+class LighthouseBookcaseListener :
+    DialogueFile(),
+    InteractionListener {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         when (stage) {
             0 -> handleInitialStage()
             1 -> showOptions()
@@ -22,14 +26,27 @@ class LighthouseBookcaseListener : DialogueFile(), InteractionListener {
     private fun handleInitialStage() {
         if (isQuestComplete(player!!, Quests.HORROR_FROM_THE_DEEP)) {
             end()
-            sendDialogue(player!!, "You have completed the Horror from the Deep quest. You probably don't need this book.")
+            sendDialogue(
+                player!!,
+                "You have completed the Horror from the Deep quest. You probably don't need this book.",
+            )
         } else {
-            sendDialogue(player!!, "There are three books here that look important... What would you like to do?").also { stage++ }
+            sendDialogue(
+                player!!,
+                "There are three books here that look important... What would you like to do?",
+            ).also { stage++ }
         }
     }
 
     private fun showOptions() {
-        options("Take the Lighthouse Manual", "Take the ancient Diary", "Take Jossik's Journal", "Take all three books").also { stage++ }
+        options(
+            "Take the Lighthouse Manual",
+            "Take the ancient Diary",
+            "Take Jossik's Journal",
+            "Take all three books",
+        ).also {
+            stage++
+        }
     }
 
     private fun handleItemSelection(buttonID: Int) {
@@ -62,7 +79,6 @@ class LighthouseBookcaseListener : DialogueFile(), InteractionListener {
     }
 
     override fun defineListeners() {
-
         on(Scenery.BOOKCASE_4617, IntType.SCENERY, "search") { player, node ->
             openDialogue(player, LighthouseBookcaseListener(), node.asScenery())
             return@on true

@@ -1,18 +1,16 @@
 package content.global.skill.construction.decoration.bedroom
 
-import org.rs.consts.Scenery
 import core.api.sendMessage
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.Scenery
 import java.text.SimpleDateFormat
 import java.util.*
 
 class ClockListener : InteractionListener {
-
     private val clockSpaceFurniture = intArrayOf(Scenery.CLOCK_13169, Scenery.CLOCK_13170, Scenery.CLOCK_13171)
 
     override fun defineListeners() {
-
         on(clockSpaceFurniture, IntType.SCENERY, "read") { player, node ->
             val format = SimpleDateFormat("mm")
             val minuteDisplay = format.format(Calendar.getInstance().time).toInt()

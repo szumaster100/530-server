@@ -1,7 +1,5 @@
 package content.region.misthalin.dialogue.wizardstower
 
-import org.rs.consts.NPCs
-import org.rs.consts.Sounds
 import core.api.*
 import core.game.dialogue.Dialogue
 import core.game.node.entity.impl.Projectile
@@ -12,23 +10,29 @@ import core.game.world.GameWorld
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
 import core.plugin.Initializable
+import org.rs.consts.NPCs
+import org.rs.consts.Sounds
 
 @Initializable
-class IsidorDialogue(player: Player? = null) : Dialogue(player) {
-
+class IsidorDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         npc("Oh, hello there! Can I do anything for you?")
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 player(
                     "I'm a friend of Explorer Jack and need teleporting",
                     "somewhere. The phrase is 'Ectosum glissendo'. Could",
-                    "you help me, please?"
+                    "you help me, please?",
                 )
                 stage = 1
             }
@@ -54,6 +58,7 @@ class IsidorDialogue(player: Player? = null) : Dialogue(player) {
                 GameWorld.Pulser.submit(
                     object : Pulse(1) {
                         var counter = 0
+
                         override fun pulse(): Boolean {
                             when (counter++) {
                                 0 -> {
@@ -61,8 +66,8 @@ class IsidorDialogue(player: Player? = null) : Dialogue(player) {
                                     player.graphics(
                                         Graphics(
                                             110,
-                                            150
-                                        )
+                                            150,
+                                        ),
                                     )
                                 }
 
@@ -71,8 +76,8 @@ class IsidorDialogue(player: Player? = null) : Dialogue(player) {
                                     player.graphics(
                                         Graphics(
                                             110,
-                                            150
-                                        )
+                                            150,
+                                        ),
                                     )
                                     unlock(player)
                                     return true
@@ -80,7 +85,7 @@ class IsidorDialogue(player: Player? = null) : Dialogue(player) {
                             }
                             return false
                         }
-                    }
+                    },
                 )
             }
 
@@ -97,4 +102,3 @@ class IsidorDialogue(player: Player? = null) : Dialogue(player) {
         return intArrayOf(NPCs.ISIDOR_8544)
     }
 }
-

@@ -67,7 +67,11 @@ fun isStunned(entity: Entity): Boolean {
  * @param source The entity responsible for applying the poison (e.g., attacker or source of poison).
  * @param severity The number of remaining hits for the poison effect.
  */
-fun applyPoison(entity: Entity, source: Entity, severity: Int) {
+fun applyPoison(
+    entity: Entity,
+    source: Entity,
+    severity: Int,
+) {
     if (hasTimerActive<PoisonImmunity>(entity)) {
         return
     }
@@ -88,7 +92,11 @@ fun applyPoison(entity: Entity, source: Entity, severity: Int) {
  * @param source The entity responsible for applying the disease (e.g., attacker or source of disease).
  * @param hits The number of remaining hits for the disease effect.
  */
-fun applyDisease(entity: Entity, source: Entity, hits: Int) {
+fun applyDisease(
+    entity: Entity,
+    source: Entity,
+    hits: Int,
+) {
     if (hasTimerActive<Disease>(entity)) {
         return
     }
@@ -108,11 +116,17 @@ fun applyDisease(entity: Entity, source: Entity, hits: Int) {
  * @param amount The amount to adjust the player's credits by. Positive values add credits, negative values subtract.
  * @return true if the update was successful, false if the resulting balance would be negative.
  */
-fun updateCredits(player: Player, amount: Int): Boolean {
+fun updateCredits(
+    player: Player,
+    amount: Int,
+): Boolean {
     val creds = getCredits(player) + amount
 
-    if (creds < 0) return false
-    else player.details.accountInfo.credits = creds
+    if (creds < 0) {
+        return false
+    } else {
+        player.details.accountInfo.credits = creds
+    }
 
     return true
 }

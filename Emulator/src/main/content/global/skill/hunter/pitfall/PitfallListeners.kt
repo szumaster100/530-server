@@ -1,8 +1,5 @@
 package content.global.skill.hunter.pitfall
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import content.global.skill.hunter.HunterManager
 import core.api.*
 import core.game.interaction.IntType
@@ -18,24 +15,26 @@ import core.game.world.map.Direction
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.tools.RandomFunction
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 import java.util.concurrent.TimeUnit
 
 class PitfallListeners : InteractionListener {
-
     private val knife = Items.KNIFE_946
     private val teasingStick = Items.TEASING_STICK_10029
     private val logs = Items.LOGS_1511
 
-    private val pitIds = listOf(
-        org.rs.consts.Scenery.PIT_19227,
-        org.rs.consts.Scenery.SPIKED_PIT_19228,
-        org.rs.consts.Scenery.COLLAPSED_TRAP_19231,
-        org.rs.consts.Scenery.COLLAPSED_TRAP_19232,
-        org.rs.consts.Scenery.COLLAPSED_TRAP_19233
-    )
+    private val pitIds =
+        listOf(
+            org.rs.consts.Scenery.PIT_19227,
+            org.rs.consts.Scenery.SPIKED_PIT_19228,
+            org.rs.consts.Scenery.COLLAPSED_TRAP_19231,
+            org.rs.consts.Scenery.COLLAPSED_TRAP_19232,
+            org.rs.consts.Scenery.COLLAPSED_TRAP_19233,
+        )
 
     override fun defineListeners() {
-
         setDest(IntType.SCENERY, pitIds.toIntArray(), "trap", "jump", "dismantle") { player, node ->
             val pit = node as Scenery
             var dst = getBestJumpSpot(player.location, pit)
@@ -65,20 +64,22 @@ class PitfallListeners : InteractionListener {
             setPitState(player, pit.location, 1)
             playAudio(player, Sounds.HUNTING_PLACEBRANCHES_2639)
 
-            val collapsePulse = object : Pulse(201, player) {
-                override fun pulse(): Boolean {
-                    val lastTimestamp = player.getAttribute(
-                        "pitfall:timestamp:${pit.location.x}:${pit.location.y}",
-                        System.currentTimeMillis()
-                    )
-                    if (System.currentTimeMillis() - lastTimestamp >= TimeUnit.MINUTES.toMillis(2)) {
-                        sendMessage(player, "Your pitfall trap has collapsed.")
-                        setPitState(player, pit.location, 0)
-                        player.incrementAttribute("pitfall:count", -1)
+            val collapsePulse =
+                object : Pulse(201, player) {
+                    override fun pulse(): Boolean {
+                        val lastTimestamp =
+                            player.getAttribute(
+                                "pitfall:timestamp:${pit.location.x}:${pit.location.y}",
+                                System.currentTimeMillis(),
+                            )
+                        if (System.currentTimeMillis() - lastTimestamp >= TimeUnit.MINUTES.toMillis(2)) {
+                            sendMessage(player, "Your pitfall trap has collapsed.")
+                            setPitState(player, pit.location, 0)
+                            player.incrementAttribute("pitfall:count", -1)
+                        }
+                        return true
                     }
-                    return true
                 }
-            }
             submitWorldPulse(collapsePulse)
             return@on true
         }
@@ -96,7 +97,7 @@ class PitfallListeners : InteractionListener {
                     ForceMovement.WALK_ANIMATION,
                     Animation(Animations.JUMP_WEREWOLF_1603),
                     dir,
-                    16
+                    16,
                 )
                 playAudio(player, Sounds.HUNTING_JUMP_2635)
 
@@ -118,21 +119,21 @@ class PitfallListeners : InteractionListener {
             goodFur = Items.LARUPIA_FUR_10095,
             badFur = Items.TATTY_LARUPIA_FUR_10093,
             name = "larupia",
-            xp = 180.0
+            xp = 180.0,
         )
         handleDismantlePit(
             pitId = org.rs.consts.Scenery.COLLAPSED_TRAP_19231,
             goodFur = Items.GRAAHK_FUR_10099,
             badFur = Items.TATTY_GRAAHK_FUR_10097,
             name = "graahk",
-            xp = 240.0
+            xp = 240.0,
         )
         handleDismantlePit(
             pitId = org.rs.consts.Scenery.COLLAPSED_TRAP_19233,
             goodFur = Items.KYATT_FUR_10103,
             badFur = Items.TATTY_KYATT_FUR_10101,
             name = "kyatt",
-            xp = 300.0
+            xp = 300.0,
         )
 
         on(Pitfall.BEAST_IDS, IntType.NPC, "tease") { player, node ->
@@ -153,7 +154,10 @@ class PitfallListeners : InteractionListener {
         }
     }
 
-    private fun getBestJumpSpot(src: Location, pit: Scenery): Location {
+    private fun getBestJumpSpot(
+        src: Location,
+        pit: Scenery,
+    ): Location {
         val locs = Pitfall.pitJumpSpots(pit.location)
         var dst = pit.location
         locs?.forEach { (loc, _) ->
@@ -170,7 +174,7 @@ class PitfallListeners : InteractionListener {
         pit: Scenery,
         src: Location,
         dst: Location,
-        dir: Direction
+        dir: Direction,
     ) {
         if (pitfallNpc.location.getDistance(src) < 3.0) {
             val lastPitLoc: Location? = pitfallNpc.getAttribute("last_pit_loc", null)
@@ -199,14 +203,23 @@ class PitfallListeners : InteractionListener {
         }
     }
 
-    private fun dismantlePit(player: Player, pit: Scenery) {
+    private fun dismantlePit(
+        player: Player,
+        pit: Scenery,
+    ) {
         playAudio(player, Sounds.HUNTING_TAKEBRANCHES_2649)
         removeAttribute(player, "pitfall:timestamp:${pit.location.x}:${pit.location.y}")
         player.incrementAttribute("pitfall:count", -1)
         setPitState(player, pit.location, 0)
     }
 
-    private fun handleDismantlePit(pitId: Int, goodFur: Int, badFur: Int, name: String, xp: Double) {
+    private fun handleDismantlePit(
+        pitId: Int,
+        goodFur: Int,
+        badFur: Int,
+        name: String,
+        xp: Double,
+    ) {
         on(pitId, IntType.SCENERY, "dismantle") { player, node ->
             lootCorpse(player, node as Scenery, xp, goodFur, badFur)
             sendMessage(player, "You've caught a $name!")
@@ -214,7 +227,13 @@ class PitfallListeners : InteractionListener {
         }
     }
 
-    private fun lootCorpse(player: Player, pit: Scenery, xp: Double, goodFur: Int, badFur: Int) {
+    private fun lootCorpse(
+        player: Player,
+        pit: Scenery,
+        xp: Double,
+        goodFur: Int,
+        badFur: Int,
+    ) {
         if (freeSlots(player) < 2) {
             sendMessage(player, "You don't have enough inventory space. You need 2 more free slots.")
             return
@@ -229,7 +248,11 @@ class PitfallListeners : InteractionListener {
         addItemOrDrop(player, furItem)
     }
 
-    private fun setPitState(player: Player, loc: Location, state: Int) {
+    private fun setPitState(
+        player: Player,
+        loc: Location,
+        state: Int,
+    ) {
         val pit = Pitfall.pitVarps[loc] ?: return
         setVarbit(player, pit.varbitId, state)
     }

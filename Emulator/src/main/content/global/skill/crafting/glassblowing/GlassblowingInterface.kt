@@ -1,7 +1,5 @@
 package content.global.skill.crafting.glassblowing
 
-import org.rs.consts.Components
-import org.rs.consts.Items
 import core.api.*
 import core.game.dialogue.InputType
 import core.game.interaction.IntType
@@ -9,9 +7,12 @@ import core.game.interaction.InteractionListener
 import core.game.interaction.InterfaceListener
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
+import org.rs.consts.Components
+import org.rs.consts.Items
 
-class GlassblowingInterface : InteractionListener, InterfaceListener {
-
+class GlassblowingInterface :
+    InteractionListener,
+    InterfaceListener {
     companion object {
         private const val OP_MAKE_ONE = 155
         private const val OP_MAKE_FIVE = 196
@@ -53,9 +54,10 @@ class GlassblowingInterface : InteractionListener, InterfaceListener {
                 OP_MAKE_ONE -> make(player, product, 1)
                 OP_MAKE_FIVE -> make(player, product, 5)
                 OP_MAKE_ALL -> make(player, product, amountInInventory(player, MOLTEN_GLASS))
-                OP_MAKE_X -> sendInputDialogue(player, InputType.AMOUNT, "Enter the amount:") { value ->
-                    make(player, product, Integer.parseInt(value.toString()))
-                }
+                OP_MAKE_X ->
+                    sendInputDialogue(player, InputType.AMOUNT, "Enter the amount:") { value ->
+                        make(player, product, Integer.parseInt(value.toString()))
+                    }
 
                 else -> return@on true
             }
@@ -64,7 +66,11 @@ class GlassblowingInterface : InteractionListener, InterfaceListener {
         }
     }
 
-    private fun make(player: Player, product: Glass, amount: Int) {
+    private fun make(
+        player: Player,
+        product: Glass,
+        amount: Int,
+    ) {
         closeInterface(player)
         submitIndividualPulse(player, GlassblowingPulse(player, product, amount))
     }

@@ -42,7 +42,12 @@ class ClanWarsActivityPlugin : ActivityPlugin("Clan wars", true, false, true) {
 
     var ticks = 0
     private var pulse: Pulse? = null
-    override fun start(player: Player, login: Boolean, vararg args: Any): Boolean {
+
+    override fun start(
+        player: Player,
+        login: Boolean,
+        vararg args: Any,
+    ): Boolean {
         val other = args[0] as Player
         firstClan = player.communication.clan
         secondClan = other.communication.clan
@@ -63,8 +68,8 @@ class ClanWarsActivityPlugin : ActivityPlugin("Clan wars", true, false, true) {
             SceneryBuilder.add(
                 Scenery(
                     28174 + offset,
-                    base.transform(x, 64, 0)
-                )
+                    base.transform(x, 64, 0),
+                ),
             )
         }
         Pulser.submit(
@@ -78,8 +83,8 @@ class ClanWarsActivityPlugin : ActivityPlugin("Clan wars", true, false, true) {
                             anim.setObject(scenery)
                             getRegionChunk(l).flag(
                                 AnimateSceneryUpdateFlag(
-                                    anim
-                                )
+                                    anim,
+                                ),
                             )
                         }
                     }
@@ -95,7 +100,7 @@ class ClanWarsActivityPlugin : ActivityPlugin("Clan wars", true, false, true) {
                                 }
                                 return true
                             }
-                        }
+                        },
                     )
                     super.setTicksPassed(250)
                     sendGameData()
@@ -104,7 +109,7 @@ class ClanWarsActivityPlugin : ActivityPlugin("Clan wars", true, false, true) {
                     }
                     return true
                 }
-            }.also { pulse = it }
+            }.also { pulse = it },
         )
     }
 
@@ -171,7 +176,11 @@ class ClanWarsActivityPlugin : ActivityPlugin("Clan wars", true, false, true) {
         p.packetDispatch.sendString(name, 265, 2)
     }
 
-    override fun teleport(e: Entity, type: Int, node: Node): Boolean {
+    override fun teleport(
+        e: Entity,
+        type: Int,
+        node: Node,
+    ): Boolean {
         if (type != -1 && type != 2 && e is Player) {
             e.packetDispatch.sendMessage("You can't teleport away from a war.")
             return false
@@ -187,7 +196,9 @@ class ClanWarsActivityPlugin : ActivityPlugin("Clan wars", true, false, true) {
             player.skullManager.isSkullCheckDisabled = true
             player.skullManager.isWilderness = true
             player.interfaceManager.openOverlay(Component(265))
-        } else if (e is content.global.skill.summoning.familiar.Familiar && e !is content.global.skill.summoning.pet.Pet) {
+        } else if (e is content.global.skill.summoning.familiar.Familiar &&
+            e !is content.global.skill.summoning.pet.Pet
+        ) {
             val familiar = e
             if (familiar.isCombatFamiliar) {
                 familiar.transform(familiar.originalId + 1)
@@ -196,30 +207,41 @@ class ClanWarsActivityPlugin : ActivityPlugin("Clan wars", true, false, true) {
         return true
     }
 
-    override fun death(e: Entity, killer: Entity): Boolean {
+    override fun death(
+        e: Entity,
+        killer: Entity,
+    ): Boolean {
         return if (e is Player) {
             enterViewingRoom(e)
-        } else false
+        } else {
+            false
+        }
     }
 
     fun enterViewingRoom(player: Player): Boolean {
         var destination: Location? = null
-        destination = if (player.communication.clan == firstClan) {
-            remove(player, firstClanPlayers)
-            base.transform(55 + RandomFunction.randomize(3), 51 + RandomFunction.randomize(11), 0)
-        } else if (player.communication.clan == secondClan) {
-            remove(player, secondClanPlayers)
-            base.transform(55 + RandomFunction.randomize(3), 66 + RandomFunction.randomize(11), 0)
-        } else {
-            return false
-        }
+        destination =
+            if (player.communication.clan == firstClan) {
+                remove(player, firstClanPlayers)
+                base.transform(55 + RandomFunction.randomize(3), 51 + RandomFunction.randomize(11), 0)
+            } else if (player.communication.clan == secondClan) {
+                remove(player, secondClanPlayers)
+                base.transform(55 + RandomFunction.randomize(3), 66 + RandomFunction.randomize(11), 0)
+            } else {
+                return false
+            }
         player.properties.teleportLocation = destination
         viewingPlayers.add(player)
         sendGameData()
         return true
     }
 
-    override fun continueAttack(e: Entity, target: Node, style: CombatStyle, message: Boolean): Boolean {
+    override fun continueAttack(
+        e: Entity,
+        target: Node,
+        style: CombatStyle,
+        message: Boolean,
+    ): Boolean {
         var e: Entity? = e
         var target: Node? = target
         if (e is content.global.skill.summoning.familiar.Familiar) {
@@ -251,14 +273,21 @@ class ClanWarsActivityPlugin : ActivityPlugin("Clan wars", true, false, true) {
         return true
     }
 
-    fun remove(player: Player, players: MutableList<Player>) {
+    fun remove(
+        player: Player,
+        players: MutableList<Player>,
+    ) {
         players.remove(player)
         if (!pulse!!.isRunning && players.isEmpty()) {
             finishWar()
         }
     }
 
-    override fun interact(e: Entity, target: Node, option: Option): Boolean {
+    override fun interact(
+        e: Entity,
+        target: Node,
+        option: Option,
+    ): Boolean {
         if (target is Scenery) {
             val `object` = target
             if (`object`.id == 28214 || `object`.id == 28140) {
@@ -269,7 +298,10 @@ class ClanWarsActivityPlugin : ActivityPlugin("Clan wars", true, false, true) {
         return false
     }
 
-    override fun leave(e: Entity, logout: Boolean): Boolean {
+    override fun leave(
+        e: Entity,
+        logout: Boolean,
+    ): Boolean {
         if (e is Player) {
             val player = e
             player.interfaceManager.closeOverlay()
@@ -287,7 +319,9 @@ class ClanWarsActivityPlugin : ActivityPlugin("Clan wars", true, false, true) {
             if (logout) {
                 e.setLocation(leaveLocation)
             }
-        } else if (e is content.global.skill.summoning.familiar.Familiar && e !is content.global.skill.summoning.pet.Pet) {
+        } else if (e is content.global.skill.summoning.familiar.Familiar &&
+            e !is content.global.skill.summoning.pet.Pet
+        ) {
             val familiar = e
             if (familiar.isCombatFamiliar) {
                 familiar.reTransform()
@@ -296,7 +330,10 @@ class ClanWarsActivityPlugin : ActivityPlugin("Clan wars", true, false, true) {
         return true
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         if (identifier == "join") {
             join(args[0] as Player)
             return true
@@ -356,27 +393,32 @@ class ClanWarsActivityPlugin : ActivityPlugin("Clan wars", true, false, true) {
     }
 
     companion object {
-        private val ATTACK_OPTION = Option("Attack", 0).setHandler(
-            object : OptionHandler() {
-                override fun handle(player: Player, node: Node, option: String): Boolean {
-                    player.properties.combatPulse.attack(node)
-                    return true
-                }
+        private val ATTACK_OPTION =
+            Option("Attack", 0).setHandler(
+                object : OptionHandler() {
+                    override fun handle(
+                        player: Player,
+                        node: Node,
+                        option: String,
+                    ): Boolean {
+                        player.properties.combatPulse.attack(node)
+                        return true
+                    }
 
-                override fun isWalk(): Boolean {
-                    return false
-                }
+                    override fun isWalk(): Boolean {
+                        return false
+                    }
 
-                @Throws(Throwable::class)
-                override fun newInstance(arg: Any?): Plugin<Any> {
-                    return this
-                }
+                    @Throws(Throwable::class)
+                    override fun newInstance(arg: Any?): Plugin<Any> {
+                        return this
+                    }
 
-                override fun isDelayed(player: Player): Boolean {
-                    return false
-                }
-            }
-        )
+                    override fun isDelayed(player: Player): Boolean {
+                        return false
+                    }
+                },
+            )
         private val leaveLocation: Location
             private get() {
                 var l = Location.create(3265 + RandomFunction.randomize(13), 3675 + RandomFunction.randomize(18), 0)

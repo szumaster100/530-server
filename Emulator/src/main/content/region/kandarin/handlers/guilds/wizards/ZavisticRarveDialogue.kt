@@ -14,8 +14,9 @@ import org.rs.consts.NPCs
  * Zavistic Rarve dialogue.
  */
 @Initializable
-class ZavisticRarveDialogue(player: Player? = null) : Dialogue(player) {
-
+class ZavisticRarveDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     /*
      * Info: Grand Secretary of the Wizards' Guild.
      */
@@ -23,14 +24,18 @@ class ZavisticRarveDialogue(player: Player? = null) : Dialogue(player) {
     override fun open(vararg args: Any?): Boolean {
         npc = args[0] as NPC
         end()
-        if (isQuestComplete(player, "Zogre Flesh Eaters"))
+        if (isQuestComplete(player, "Zogre Flesh Eaters")) {
             openDialogue(player, ZavisticRarveDefaultDialogue())
-        else
+        } else {
             openDialogue(player, ZavisticRarveDialogueFiles())
+        }
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         return true
     }
 

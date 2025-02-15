@@ -1,6 +1,5 @@
 package content.region.asgarnia.handlers.partyroom
 
-import org.rs.consts.Animations
 import core.api.animate
 import core.api.face
 import core.api.lock
@@ -14,15 +13,19 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld.Pulser
 import core.game.world.GameWorld.ticks
 import core.plugin.Plugin
+import org.rs.consts.Animations
 
 class DropPartyLeverHandler : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         SceneryDefinition.forId(26194).handlers["option:pull"] = this
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val scenery = node as Scenery
         if (player.getAttribute("delay:lever", -1) > ticks) return true
         setAttribute(player, "delay:picking", ticks + 3)
@@ -35,7 +38,7 @@ class DropPartyLeverHandler : OptionHandler() {
                     animate(player, Animations.HUMAN_PARTY_ROOM_LEVER_6933)
                     return true
                 }
-            }
+            },
         )
         return true
     }

@@ -1,25 +1,27 @@
 package content.region.kandarin.quest.tree
 
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.*
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class TreeGnomeVillage :
     Quest(Quests.TREE_GNOME_VILLAGE, 125, 124, 2, Vars.VARP_QUEST_TREE_GNOME_VILLAGE_PROGRESS_111, 0, 1, 9) {
-
     companion object {
         val mazeVillage = Location(2515, 3159, 0)
         val mazeEntrance = Location(2504, 3192, 0)
     }
 
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 12
         player ?: return

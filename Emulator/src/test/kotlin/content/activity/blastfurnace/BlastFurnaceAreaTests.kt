@@ -45,16 +45,18 @@ class BlastFurnaceAreaTests {
     }
 
     @Test fun getFeePriceReturnsExpectedValues() {
-        val testData = arrayOf(
-            Triple(false, 10, 2500),
-            Triple(true, 10, 1250),
-            Triple(false, 60, 0),
-            Triple(true, 60, 0),
-            Triple(false, 59, 2500),
-            Triple(true, 59, 1250)
-        )
-        for ((hasCharos, smithLevel, expected) in testData)
+        val testData =
+            arrayOf(
+                Triple(false, 10, 2500),
+                Triple(true, 10, 1250),
+                Triple(false, 60, 0),
+                Triple(true, 60, 0),
+                Triple(false, 59, 2500),
+                Triple(true, 59, 1250),
+            )
+        for ((hasCharos, smithLevel, expected) in testData) {
             Assertions.assertEquals(expected, BlastFurnace.getEntranceFee(hasCharos, smithLevel))
+        }
     }
 
     @Test fun enterWithFeeShouldKickPlayerOutAfter10Minutes() {

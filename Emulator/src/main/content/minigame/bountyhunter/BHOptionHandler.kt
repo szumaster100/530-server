@@ -25,7 +25,11 @@ class BHOptionHandler : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val scenery = node as Scenery
         val activity = player.getExtension<BountyHunterActivity>(BountyHunterActivity::class.java)
         when (scenery.id) {
@@ -69,7 +73,7 @@ class BHOptionHandler : OptionHandler() {
                             player.properties.teleportLocation = activity.type.exitLocation
                             return true
                         }
-                    }
+                    },
                 )
                 player.animate(Animation.create(7376))
                 return true

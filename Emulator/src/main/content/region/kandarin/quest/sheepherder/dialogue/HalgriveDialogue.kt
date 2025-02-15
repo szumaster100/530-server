@@ -1,19 +1,20 @@
 package content.region.kandarin.quest.sheepherder.dialogue
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.addItemOrDrop
+import core.api.hasAnItem
 import core.api.quest.finishQuest
 import core.api.quest.getQuestStage
-import core.api.hasAnItem
 import core.game.dialogue.Dialogue
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class HalgriveDialogue(player: Player? = null) : Dialogue(player) {
-
+class HalgriveDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any?): Boolean {
         if (getQuestStage(player, Quests.SHEEP_HERDER) < 10) {
             player("Hello. How are you?")
@@ -26,7 +27,10 @@ class HalgriveDialogue(player: Player? = null) : Dialogue(player) {
         }
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 npc("I've been better.")
@@ -38,24 +42,25 @@ class HalgriveDialogue(player: Player? = null) : Dialogue(player) {
                 stage++
             }
 
-            2 -> when (buttonId) {
-                1 -> {
-                    player("What's wrong?")
-                    stage = 10
-                }
+            2 ->
+                when (buttonId) {
+                    1 -> {
+                        player("What's wrong?")
+                        stage = 10
+                    }
 
-                2 -> {
-                    player("That's life for you.")
-                    stage = 108
+                    2 -> {
+                        player("That's life for you.")
+                        stage = 108
+                    }
                 }
-            }
 
             10 -> {
                 npc(
                     "You may or may not be aware, but a plague has",
                     "spread across Western Ardougne. Now, so far, our",
                     "efforts to contain it have been largely successful, for the",
-                    "most part."
+                    "most part.",
                 )
                 stage++
             }
@@ -65,7 +70,7 @@ class HalgriveDialogue(player: Player? = null) : Dialogue(player) {
                     "However, four sheep recently escaped from a farm near",
                     "the city. When they were found, we noticed that they",
                     "were strangely discoloured, so we asked the mourners",
-                    "to examine them."
+                    "to examine them.",
                 )
                 stage++
             }
@@ -80,7 +85,7 @@ class HalgriveDialogue(player: Player? = null) : Dialogue(player) {
                     "As the councillor responsible for public health and safety",
                     "here in East Ardougne I am looking for someone to",
                     "herd these sheep into a safe enclosure, kill them quickly",
-                    "and cleanly and then dispose of the remains hygienically"
+                    "and cleanly and then dispose of the remains hygienically",
                 )
                 stage++
             }
@@ -94,7 +99,7 @@ class HalgriveDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "Unfortunately nobody wants to risk catching the plague,",
                     "and I am unable to find someone willing to undertake",
-                    "this mission for me."
+                    "this mission for me.",
                 )
                 stage++
             }
@@ -104,24 +109,25 @@ class HalgriveDialogue(player: Player? = null) : Dialogue(player) {
                 stage++
             }
 
-            17 -> when (buttonId) {
-                1 -> {
-                    player("I can do that for you.")
-                    stage = 100
-                }
+            17 ->
+                when (buttonId) {
+                    1 -> {
+                        player("I can do that for you.")
+                        stage = 100
+                    }
 
-                2 -> {
-                    player("That's not a job for me.")
-                    stage = 108
+                    2 -> {
+                        player("That's not a job for me.")
+                        stage = 108
+                    }
                 }
-            }
 
             100 -> {
                 npc(
                     "Y-you will??? That is excellent news! Head to the",
                     "enclosure we have set up on Farmer Brumty's land to",
                     "the north of the city; the four infected sheep should still",
-                    "be somewhere in that vicinity. Before you will be allowed"
+                    "be somewhere in that vicinity. Before you will be allowed",
                 )
                 stage++
             }
@@ -130,7 +136,7 @@ class HalgriveDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "to enter the enclosure, however, you must ensure you",
                     "have some kind of protective clothing to prevent",
-                    "contagion."
+                    "contagion.",
                 )
                 stage++
             }
@@ -145,7 +151,7 @@ class HalgriveDialogue(player: Player? = null) : Dialogue(player) {
                     "Doctor Orbon wears it when conducting mercy",
                     "missions to the infected parts of the city. You should be",
                     "able to find him in the chapel just north of here. Please",
-                    "also take this poisoned sheep feed; we believe poisoning"
+                    "also take this poisoned sheep feed; we believe poisoning",
                 )
                 stage++
             }
@@ -154,7 +160,7 @@ class HalgriveDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "the sheep will minimise the risk of airborne",
                     "contamination, and is of course also more humane to",
-                    "the sheep."
+                    "the sheep.",
                 )
                 stage++
             }
@@ -175,7 +181,7 @@ class HalgriveDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "The poor creatures have developed strangely discoloured",
                     "wool and flesh. You should have no trouble spotting",
-                    "them."
+                    "them.",
                 )
                 stage++
             }
@@ -216,7 +222,7 @@ class HalgriveDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "Excellent work adventurer! Please let me reimburse",
                     "you the 100 gold it cost you to purchase your",
-                    "protective clothing."
+                    "protective clothing.",
                 )
                 stage++
             }
@@ -225,7 +231,7 @@ class HalgriveDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "And in recognition of your service to the public health",
                     "of Ardougne please accept this further 3000 coins as a",
-                    "reward."
+                    "reward.",
                 )
                 stage++
             }

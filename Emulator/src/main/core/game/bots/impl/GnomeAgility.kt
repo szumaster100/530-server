@@ -8,7 +8,6 @@ import core.game.world.map.zone.ZoneBorders
 @ScriptDescription("Start the script while standing front of the balancing log")
 @ScriptIdentifier("gnome_agility")
 class GnomeAgility : Script() {
-
     var state = State.INIT
     val startzone = ZoneBorders(2473, 3436, 2475, 3437, 0)
     val afterlog = ZoneBorders(2474, 3429, 2474, 3429, 0)
@@ -28,9 +27,7 @@ class GnomeAgility : Script() {
     var totalLaps = 0
 
     override fun tick() {
-
         when (state) {
-
             State.INIT -> {
                 overlay = scriptAPI.getOverlay()
                 overlay!!.init()
@@ -149,6 +146,6 @@ class GnomeAgility : Script() {
         BRANCHDOWN,
         SECONDNET,
         PIPE,
-        INIT
+        INIT,
     }
 }

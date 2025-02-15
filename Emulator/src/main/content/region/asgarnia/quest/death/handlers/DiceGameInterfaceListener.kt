@@ -1,10 +1,10 @@
 package content.region.asgarnia.quest.death.handlers
 
-import org.rs.consts.Components
 import core.api.*
 import core.game.interaction.InterfaceListener
 import core.game.node.entity.player.Player
 import core.game.system.task.Pulse
+import org.rs.consts.Components
 
 class DiceGameInterfaceListener : InterfaceListener {
     companion object {
@@ -27,18 +27,19 @@ class DiceGameInterfaceListener : InterfaceListener {
             player.setAttribute(ATTRIBUTE_PLAYER_DICE_1, 0)
             player.setAttribute(ATTRIBUTE_PLAYER_DICE_2, 0)
             player.setAttribute(ATTRIBUTE_WIN_STATE, false)
-            goldID = when (wager) {
-                1 -> GOLDSTACKS[0]
-                2 -> GOLDSTACKS[1]
-                3 -> GOLDSTACKS[2]
-                4 -> GOLDSTACKS[3]
-                5 -> GOLDSTACKS[4]
-                in 25..99 -> GOLDSTACKS[5]
-                in 100..249 -> GOLDSTACKS[6]
-                in 250..999 -> GOLDSTACKS[7]
-                in 1000..9999 -> GOLDSTACKS[8]
-                else -> GOLDSTACKS[9]
-            }
+            goldID =
+                when (wager) {
+                    1 -> GOLDSTACKS[0]
+                    2 -> GOLDSTACKS[1]
+                    3 -> GOLDSTACKS[2]
+                    4 -> GOLDSTACKS[3]
+                    5 -> GOLDSTACKS[4]
+                    in 25..99 -> GOLDSTACKS[5]
+                    in 100..249 -> GOLDSTACKS[6]
+                    in 250..999 -> GOLDSTACKS[7]
+                    in 1000..9999 -> GOLDSTACKS[8]
+                    else -> GOLDSTACKS[9]
+                }
             sendItemOnInterface(player, Components.DEATH_DICE_99, 7, goldID, wager)
             sendItemOnInterface(player, Components.DEATH_DICE_99, 8, goldID, wager)
             setComponentVisibility(player, Components.DEATH_DICE_99, 9, true)
@@ -70,10 +71,16 @@ class DiceGameInterfaceListener : InterfaceListener {
         }
     }
 
-    private fun onClose(deathDice99: Int, any: Any) {
+    private fun onClose(
+        deathDice99: Int,
+        any: Any,
+    ) {
     }
 
-    private fun preRoll(player: Player, triesRemaining: Int = 5) {
+    private fun preRoll(
+        player: Player,
+        triesRemaining: Int = 5,
+    ) {
         val h1 = (1..5).random()
         val h2 = (1..5).random()
         val p1 = (1..5).random()
@@ -89,7 +96,10 @@ class DiceGameInterfaceListener : InterfaceListener {
         }
     }
 
-    private fun submitRollPulse(player: Player, isNPCTurn: Boolean) {
+    private fun submitRollPulse(
+        player: Player,
+        isNPCTurn: Boolean,
+    ) {
         val roll1: Int
         val roll2: Int
 
@@ -97,23 +107,23 @@ class DiceGameInterfaceListener : InterfaceListener {
             roll1 = getAttribute<Int?>(
                 player,
                 ATTRIBUTE_HAROLD_DICE_1,
-                null
+                null,
             ) ?: return
             roll2 = getAttribute<Int?>(
                 player,
                 ATTRIBUTE_HAROLD_DICE_2,
-                null
+                null,
             ) ?: return
         } else {
             roll1 = getAttribute<Int?>(
                 player,
                 ATTRIBUTE_PLAYER_DICE_1,
-                null
+                null,
             ) ?: return
             roll2 = getAttribute<Int?>(
                 player,
                 ATTRIBUTE_PLAYER_DICE_2,
-                null
+                null,
             ) ?: return
         }
 
@@ -127,8 +137,8 @@ class DiceGameInterfaceListener : InterfaceListener {
                 component1,
                 component2,
                 roll1,
-                roll2
-            )
+                roll2,
+            ),
         )
     }
 
@@ -138,10 +148,11 @@ class DiceGameInterfaceListener : InterfaceListener {
         val component1: Int,
         val component2: Int,
         val roll1: Int,
-        val roll2: Int
+        val roll2: Int,
     ) : Pulse() {
         val DICEANIM = intArrayOf(42069, 1150, 1151, 1152, 1153, 1154, 1155)
         var counter = 0
+
         override fun pulse(): Boolean {
             when (counter++) {
                 1 -> {

@@ -1,8 +1,5 @@
 package content.region.desert.quest.deserttreasure.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import content.region.desert.quest.deserttreasure.DesertTreasure
 import core.api.*
 import core.game.interaction.InteractionListener
@@ -11,10 +8,12 @@ import core.game.node.entity.npc.NPC
 import core.game.world.map.Direction
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 class DiamondOfBloodListener : InteractionListener {
     override fun defineListeners() {
-
         onUseWith(ITEM, Items.SILVER_POT_4660, Items.SPICE_2007) { player, used, with ->
             sendMessage(player, "You add some spices to the pot.")
             if (removeItem(player, used) && removeItem(player, with)) {
@@ -83,9 +82,9 @@ class DiamondOfBloodListener : InteractionListener {
                 Items.SILVER_POT_4664,
                 Items.BLESSED_POT_4665,
                 Items.SILVER_POT_4666,
-                Items.BLESSED_POT_4667
+                Items.BLESSED_POT_4667,
             ),
-            Items.GARLIC_1550
+            Items.GARLIC_1550,
         ) { player, _, _ ->
             sendMessage(player, "You need to crush the garlic before adding it to the pot.")
             return@onUseWith true
@@ -116,7 +115,6 @@ class DiamondOfBloodListener : InteractionListener {
             queueScript(player, 1, QueueStrength.SOFT) { stage: Int ->
                 when (stage) {
                     0 -> {
-
                         spawnProjectile(Location(3570, 3402), Location(3570, 3405), 351, 0, 0, 0, 40, 0)
                         return@queueScript delayScript(player, 1)
                     }

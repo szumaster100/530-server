@@ -1,7 +1,5 @@
 package content.region.fremennik.handlers.neitiznot
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
 import content.data.items.SkillingTool
 import core.api.*
 import core.game.node.entity.player.Player
@@ -9,9 +7,14 @@ import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
+import org.rs.consts.Items
 
-class LogCuttingPulse(player: Player?, node: Item?, var amount: Int) : SkillPulse<Item?>(player, null) {
-
+class LogCuttingPulse(
+    player: Player?,
+    node: Item?,
+    var amount: Int,
+) : SkillPulse<Item?>(player, null) {
     private val arcticPineLog = Items.ARCTIC_PINE_LOGS_10810
     private val splitLog: Item = Item(Items.SPLIT_LOG_10812)
     private val splittingAnimation = Animation(Animations.HUMAN_SPLIT_LOGS_5755)

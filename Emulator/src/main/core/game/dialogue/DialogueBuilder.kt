@@ -26,8 +26,8 @@ abstract class DialogueBuilderFile : DialogueFile() {
                     if (!(clause.nodes[j] is OptionsDispatchNode)) {
                         clauseSb.append(
                             "$j ${
-                            clause.nodes[j].toString().replace("@indexPlus", "${j + 1}").replace("@index", "$j")
-                            }\n"
+                                clause.nodes[j].toString().replace("@indexPlus", "${j + 1}").replace("@index", "$j")
+                            }\n",
                         )
                     }
                 }
@@ -53,7 +53,10 @@ abstract class DialogueBuilderFile : DialogueFile() {
         }
     }
 
-    override fun handle(componentID: Int, buttonID: Int) {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         for ((i, clause) in data.iterator().withIndex()) {
             if (clause.predicate(player!!)) {
                 stage = clause.handle(this, componentID, buttonID, stage)
@@ -67,71 +70,122 @@ abstract class DialogueBuilderFile : DialogueFile() {
 }
 
 interface DialogueNode {
-
-    fun handle(df: DialogueFile, componentID: Int, buttonID: Int, stage: Int): Int
+    fun handle(
+        df: DialogueFile,
+        componentID: Int,
+        buttonID: Int,
+        stage: Int,
+    ): Int
 }
 
-class NpcLNode(val expression: FaceAnim, val value: String) : DialogueNode {
+class NpcLNode(
+    val expression: FaceAnim,
+    val value: String,
+) : DialogueNode {
     override fun toString(): String {
         return "[label=\"npcl(FacialExpression.${expression.name}, \\\"${value}\\\")\"]; @index -> @indexPlus;"
     }
 
-    override fun handle(df: DialogueFile, componentID: Int, buttonID: Int, stage: Int): Int {
+    override fun handle(
+        df: DialogueFile,
+        componentID: Int,
+        buttonID: Int,
+        stage: Int,
+    ): Int {
         df.npcl(expression, value)
         return stage + 1
     }
 }
 
-class NpcNode(val expression: FaceAnim, val values: Array<String>) : DialogueNode {
+class NpcNode(
+    val expression: FaceAnim,
+    val values: Array<String>,
+) : DialogueNode {
     override fun toString(): String {
         return "[label=\"npc(FacialExpression.${expression.name}, \\\"${values.contentDeepToString()}\\\")\"]; @index -> @indexPlus;"
     }
 
-    override fun handle(df: DialogueFile, componentID: Int, buttonID: Int, stage: Int): Int {
+    override fun handle(
+        df: DialogueFile,
+        componentID: Int,
+        buttonID: Int,
+        stage: Int,
+    ): Int {
         df.npc(expression, *values)
         return stage + 1
     }
 }
 
-class ItemNode(val item: Int, val values: Array<String>) : DialogueNode {
+class ItemNode(
+    val item: Int,
+    val values: Array<String>,
+) : DialogueNode {
     override fun toString(): String {
         return "[label=\"item($item, \\\"${values.contentDeepToString()}\\\")\"]; @index -> @indexPlus;"
     }
 
-    override fun handle(df: DialogueFile, componentID: Int, buttonID: Int, stage: Int): Int {
+    override fun handle(
+        df: DialogueFile,
+        componentID: Int,
+        buttonID: Int,
+        stage: Int,
+    ): Int {
         df.interpreter!!.sendItemMessage(item, *values)
         return stage + 1
     }
 }
 
-class PlayerLNode(val expression: FaceAnim, val value: String) : DialogueNode {
+class PlayerLNode(
+    val expression: FaceAnim,
+    val value: String,
+) : DialogueNode {
     override fun toString(): String {
         return "[label=\"playerl(FacialExpression.${expression.name}, \\\"${value}\\\")\"]; @index -> @indexPlus;"
     }
 
-    override fun handle(df: DialogueFile, componentID: Int, buttonID: Int, stage: Int): Int {
+    override fun handle(
+        df: DialogueFile,
+        componentID: Int,
+        buttonID: Int,
+        stage: Int,
+    ): Int {
         df.playerl(expression, value)
         return stage + 1
     }
 }
 
-class PlayerNode(val expression: FaceAnim, val values: Array<String>) : DialogueNode {
+class PlayerNode(
+    val expression: FaceAnim,
+    val values: Array<String>,
+) : DialogueNode {
     override fun toString(): String {
         return "[label=\"player(FacialExpression.${expression.name}, \\\"${values.contentDeepToString()}\\\")\"]; @index -> @indexPlus;"
     }
 
-    override fun handle(df: DialogueFile, componentID: Int, buttonID: Int, stage: Int): Int {
+    override fun handle(
+        df: DialogueFile,
+        componentID: Int,
+        buttonID: Int,
+        stage: Int,
+    ): Int {
         df.player(expression, *values)
         return stage + 1
     }
 }
 
-class BetweenStageNode(val f: (DialogueFile, Player, Int, Int) -> Unit) : DialogueNode {
+class BetweenStageNode(
+    val f: (DialogueFile, Player, Int, Int) -> Unit,
+) : DialogueNode {
     override fun toString(): String {
         return "[label=\"betweenstage(${(f as Object).getClass().getName()})\"]; @index -> @indexPlus"
     }
 
-    override fun handle(df: DialogueFile, componentID: Int, buttonID: Int, stage: Int): Int {
+    override fun handle(
+        df: DialogueFile,
+        componentID: Int,
+        buttonID: Int,
+        stage: Int,
+    ): Int {
         df.stage = stage + 1
         f(df, df.player!!, componentID, buttonID)
         df.handle(componentID, buttonID)
@@ -139,33 +193,57 @@ class BetweenStageNode(val f: (DialogueFile, Player, Int, Int) -> Unit) : Dialog
     }
 }
 
-class ManualStageNode(val f: (DialogueFile, Player, Int, Int) -> Unit) : DialogueNode {
+class ManualStageNode(
+    val f: (DialogueFile, Player, Int, Int) -> Unit,
+) : DialogueNode {
     override fun toString(): String {
         return "[label=\"manualstage(${(f as Object).getClass().getName()})\"]; @index -> @indexPlus"
     }
 
-    override fun handle(df: DialogueFile, componentID: Int, buttonID: Int, stage: Int): Int {
+    override fun handle(
+        df: DialogueFile,
+        componentID: Int,
+        buttonID: Int,
+        stage: Int,
+    ): Int {
         f(df, df.player!!, componentID, buttonID)
         return stage + 1
     }
 }
 
-class ManualStageWithGotoNode(val f: (DialogueFile, Player, Int, Int, Int) -> Int, g: (Int) -> Int) : DialogueNode {
+class ManualStageWithGotoNode(
+    val f: (DialogueFile, Player, Int, Int, Int) -> Int,
+    g: (Int) -> Int,
+) : DialogueNode {
     override fun toString(): String {
         return "[label=\"manualstagewithgoto(${(f as Object).getClass().getName()})\"]; @index -> @indexPlus"
     }
 
-    override fun handle(df: DialogueFile, componentID: Int, buttonID: Int, stage: Int): Int {
+    override fun handle(
+        df: DialogueFile,
+        componentID: Int,
+        buttonID: Int,
+        stage: Int,
+    ): Int {
         return f(df, df.player!!, componentID, buttonID, stage)
     }
 }
 
-class PlaceholderNode(val dbf: DialogueBuilderFile, val clauseIndex: Int, var targetStage: Int) : DialogueNode {
+class PlaceholderNode(
+    val dbf: DialogueBuilderFile,
+    val clauseIndex: Int,
+    var targetStage: Int,
+) : DialogueNode {
     override fun toString(): String {
         return "[label=\"placeholder($targetStage)\"]; @index -> $targetStage"
     }
 
-    override fun handle(df: DialogueFile, componentID: Int, buttonID: Int, stage: Int): Int {
+    override fun handle(
+        df: DialogueFile,
+        componentID: Int,
+        buttonID: Int,
+        stage: Int,
+    ): Int {
         df.stage = targetStage
         df.handle(componentID, buttonID)
         return df.stage
@@ -177,23 +255,40 @@ class PlaceholderNode(val dbf: DialogueBuilderFile, val clauseIndex: Int, var ta
     }
 }
 
-class GotoNode(val node: PlaceholderNode) : DialogueNode {
+class GotoNode(
+    val node: PlaceholderNode,
+) : DialogueNode {
     override fun toString(): String {
         return "[label=\"goto(${node.targetStage})\"]; @index -> ${node.targetStage}"
     }
 
-    override fun handle(df: DialogueFile, componentID: Int, buttonID: Int, stage: Int): Int {
+    override fun handle(
+        df: DialogueFile,
+        componentID: Int,
+        buttonID: Int,
+        stage: Int,
+    ): Int {
         df.stage = node.targetStage
         df.handle(componentID, buttonID)
         return df.stage
     }
 }
 
-class OptionEntry(val text: String, val nextStage: Int, val predicate: (Player) -> Boolean = { _ -> true })
+class OptionEntry(
+    val text: String,
+    val nextStage: Int,
+    val predicate: (Player) -> Boolean = { _ -> true },
+)
 
-class OptionsData(val header: String, val entries: ArrayList<OptionEntry>, var attr: String? = null)
+class OptionsData(
+    val header: String,
+    val entries: ArrayList<OptionEntry>,
+    var attr: String? = null,
+)
 
-class OptionsNode(var options: OptionsData) : DialogueNode {
+class OptionsNode(
+    var options: OptionsData,
+) : DialogueNode {
     override fun toString(): String {
         var ret = "[label=\"options(\\\"${options.header}\\\")\"]; "
         for (entry in options.entries) {
@@ -203,10 +298,20 @@ class OptionsNode(var options: OptionsData) : DialogueNode {
     }
 
     fun optionNames(player: Player): Array<String?> {
-        return options.entries.asSequence().filter({ it.predicate(player) }).map({ it.text }).toList().toTypedArray()
+        return options.entries
+            .asSequence()
+            .filter({ it.predicate(player) })
+            .map({ it.text })
+            .toList()
+            .toTypedArray()
     }
 
-    override fun handle(df: DialogueFile, componentID: Int, buttonID: Int, stage: Int): Int {
+    override fun handle(
+        df: DialogueFile,
+        componentID: Int,
+        buttonID: Int,
+        stage: Int,
+    ): Int {
         val tmp: Array<String?> = optionNames(df.player!!)
         if (DEBUG_DIALOGUE) {
             System.out.println("OptionsNode: ${tmp.size}")
@@ -221,7 +326,11 @@ class OptionsNode(var options: OptionsData) : DialogueNode {
             df.interpreter!!.sendOptions(options.header, *tmp)
             return stage + 1
         } else if (tmp.size == 1) {
-            val tmp: List<OptionEntry> = options.entries.asSequence().filter({ it.predicate(df.player!!) }).toList()
+            val tmp: List<OptionEntry> =
+                options.entries
+                    .asSequence()
+                    .filter({ it.predicate(df.player!!) })
+                    .toList()
             df.stage = tmp[0].nextStage
             df.handle(componentID, 0)
             return df.stage
@@ -231,13 +340,24 @@ class OptionsNode(var options: OptionsData) : DialogueNode {
     }
 }
 
-class OptionsDispatchNode(var options: OptionsData) : DialogueNode {
+class OptionsDispatchNode(
+    var options: OptionsData,
+) : DialogueNode {
     override fun toString(): String {
         return "[label=\"OptionsDispatchNode\"]"
     }
 
-    override fun handle(df: DialogueFile, componentID: Int, buttonID: Int, stage: Int): Int {
-        val tmp: List<OptionEntry> = options.entries.asSequence().filter({ it.predicate(df.player!!) }).toList()
+    override fun handle(
+        df: DialogueFile,
+        componentID: Int,
+        buttonID: Int,
+        stage: Int,
+    ): Int {
+        val tmp: List<OptionEntry> =
+            options.entries
+                .asSequence()
+                .filter({ it.predicate(df.player!!) })
+                .toList()
         if (DEBUG_DIALOGUE) {
             System.out.println("OptionsDispatchNode: ${tmp.size}")
         }
@@ -250,9 +370,16 @@ class OptionsDispatchNode(var options: OptionsData) : DialogueNode {
     }
 }
 
-class DialogueClause(val predicate: (player: Player) -> Boolean, val nodes: ArrayList<DialogueNode>) {
-
-    fun handle(df: DialogueFile, componentID: Int, buttonID: Int, stage: Int): Int {
+class DialogueClause(
+    val predicate: (player: Player) -> Boolean,
+    val nodes: ArrayList<DialogueNode>,
+) {
+    fun handle(
+        df: DialogueFile,
+        componentID: Int,
+        buttonID: Int,
+        stage: Int,
+    ): Int {
         if (stage < nodes.size) {
             return nodes[stage].handle(df, componentID, buttonID, stage)
         } else {
@@ -261,14 +388,20 @@ class DialogueClause(val predicate: (player: Player) -> Boolean, val nodes: Arra
     }
 }
 
-class DialogueOptionsBuilder(var target: DialogueBuilderFile, val clauseIndex: Int, var options: OptionsData) {
-
+class DialogueOptionsBuilder(
+    var target: DialogueBuilderFile,
+    val clauseIndex: Int,
+    var options: OptionsData,
+) {
     fun option(value: String): DialogueBuilder {
         options.entries.add(OptionEntry(value, target.data[clauseIndex].nodes.size))
         return DialogueBuilder(target, clauseIndex)
     }
 
-    fun optionIf(value: String, predicate: (Player) -> Boolean): DialogueBuilder {
+    fun optionIf(
+        value: String,
+        predicate: (Player) -> Boolean,
+    ): DialogueBuilder {
         options.entries.add(OptionEntry(value, target.data[clauseIndex].nodes.size, predicate))
         return DialogueBuilder(target, clauseIndex)
     }
@@ -283,9 +416,14 @@ class DialogueOptionsBuilder(var target: DialogueBuilderFile, val clauseIndex: I
     }
 }
 
-class BranchesData(val branches: HashMap<Int, Int>, val f: (Player) -> Int)
+class BranchesData(
+    val branches: HashMap<Int, Int>,
+    val f: (Player) -> Int,
+)
 
-class BranchNode(val branches: BranchesData) : DialogueNode {
+class BranchNode(
+    val branches: BranchesData,
+) : DialogueNode {
     override fun toString(): String {
         var ret = "[label=\"branch(\\\"${(branches.f as Object).getClass().getName()}\\\")\"]; "
         for (entry in branches.branches) {
@@ -294,22 +432,30 @@ class BranchNode(val branches: BranchesData) : DialogueNode {
         return ret
     }
 
-    override fun handle(df: DialogueFile, componentID: Int, buttonID: Int, stage: Int): Int {
+    override fun handle(
+        df: DialogueFile,
+        componentID: Int,
+        buttonID: Int,
+        stage: Int,
+    ): Int {
         df.stage = branches.branches[branches.f(df.player!!)] ?: END_DIALOGUE
         df.handle(componentID, buttonID)
         return df.stage
     }
 }
 
-class DialogueBranchBuilder(var target: DialogueBuilderFile, val clauseIndex: Int, var branches: BranchesData) {
-
+class DialogueBranchBuilder(
+    var target: DialogueBuilderFile,
+    val clauseIndex: Int,
+    var branches: BranchesData,
+) {
     fun onValue(value: Boolean): DialogueBuilder {
         return onValue(
             if (value) {
                 1
             } else {
                 0
-            }
+            },
         )
     }
 
@@ -320,21 +466,34 @@ class DialogueBranchBuilder(var target: DialogueBuilderFile, val clauseIndex: In
     }
 }
 
-class EndWithNode(val f: (DialogueFile, Player) -> Unit) : DialogueNode {
+class EndWithNode(
+    val f: (DialogueFile, Player) -> Unit,
+) : DialogueNode {
     override fun toString(): String {
         return "[label=\"endWith(${(f as Object).getClass().getName()})\"]"
     }
 
-    override fun handle(df: DialogueFile, componentID: Int, buttonID: Int, stage: Int): Int {
+    override fun handle(
+        df: DialogueFile,
+        componentID: Int,
+        buttonID: Int,
+        stage: Int,
+    ): Int {
         f(df, df.player!!)
         return END_DIALOGUE
     }
 }
 
-class DialogueBuilder(var target: DialogueBuilderFile, var clauseIndex: Int = -1) {
+class DialogueBuilder(
+    var target: DialogueBuilderFile,
+    var clauseIndex: Int = -1,
+) {
     companion object DialogueBuilderStatic {
         @JvmStatic
-        fun endWithNoop(df: DialogueFile, player: Player) {
+        fun endWithNoop(
+            df: DialogueFile,
+            player: Player,
+        ) {
         }
     }
 
@@ -348,7 +507,10 @@ class DialogueBuilder(var target: DialogueBuilderFile, var clauseIndex: Int = -1
         return onPredicate({ _ -> return@onPredicate true })
     }
 
-    fun onQuestStages(name: String, vararg stages: Int): DialogueBuilder {
+    fun onQuestStages(
+        name: String,
+        vararg stages: Int,
+    ): DialogueBuilder {
         return onPredicate { player ->
             val questStage = player.questRepository.getStage(name)
             return@onPredicate stages.contains(questStage)
@@ -360,7 +522,10 @@ class DialogueBuilder(var target: DialogueBuilderFile, var clauseIndex: Int = -1
         return this
     }
 
-    fun playerl(expression: FaceAnim, value: String): DialogueBuilder {
+    fun playerl(
+        expression: FaceAnim,
+        value: String,
+    ): DialogueBuilder {
         target.data[clauseIndex].nodes.add(PlayerLNode(expression, value))
         return this
     }
@@ -370,7 +535,10 @@ class DialogueBuilder(var target: DialogueBuilderFile, var clauseIndex: Int = -1
         return this
     }
 
-    fun player(expression: FaceAnim, vararg values: String): DialogueBuilder {
+    fun player(
+        expression: FaceAnim,
+        vararg values: String,
+    ): DialogueBuilder {
         target.data[clauseIndex].nodes.add(PlayerNode(expression, values as Array<String>))
         return this
     }
@@ -380,7 +548,10 @@ class DialogueBuilder(var target: DialogueBuilderFile, var clauseIndex: Int = -1
         return this
     }
 
-    fun npcl(expression: FaceAnim, value: String): DialogueBuilder {
+    fun npcl(
+        expression: FaceAnim,
+        value: String,
+    ): DialogueBuilder {
         target.data[clauseIndex].nodes.add(NpcLNode(expression, value))
         return this
     }
@@ -390,17 +561,26 @@ class DialogueBuilder(var target: DialogueBuilderFile, var clauseIndex: Int = -1
         return this
     }
 
-    fun npc(expression: FaceAnim, vararg values: String): DialogueBuilder {
+    fun npc(
+        expression: FaceAnim,
+        vararg values: String,
+    ): DialogueBuilder {
         target.data[clauseIndex].nodes.add(NpcNode(expression, values as Array<String>))
         return this
     }
 
-    fun item(item: Int, vararg values: String): DialogueBuilder {
+    fun item(
+        item: Int,
+        vararg values: String,
+    ): DialogueBuilder {
         target.data[clauseIndex].nodes.add(ItemNode(item, values as Array<String>))
         return this
     }
 
-    fun iteml(item: Int, value: String): DialogueBuilder {
+    fun iteml(
+        item: Int,
+        value: String,
+    ): DialogueBuilder {
         return item(item, *splitLines(value))
     }
 
@@ -434,7 +614,10 @@ class DialogueBuilder(var target: DialogueBuilderFile, var clauseIndex: Int = -1
         return this
     }
 
-    fun manualStageWithGoto(f: (DialogueFile, Player, Int, Int, Int) -> Int, g: (Int) -> Int): DialogueBuilder {
+    fun manualStageWithGoto(
+        f: (DialogueFile, Player, Int, Int, Int) -> Int,
+        g: (Int) -> Int,
+    ): DialogueBuilder {
         target.data[clauseIndex].nodes.add(ManualStageWithGotoNode(f, g))
         return this
     }
@@ -476,7 +659,10 @@ class DialogueBuilder(var target: DialogueBuilderFile, var clauseIndex: Int = -1
         return DialogueBranchBuilder(target, clauseIndex, branches)
     }
 
-    fun branchBoolAttribute(attrName: String, defaultVal: Boolean): DialogueBranchBuilder {
+    fun branchBoolAttribute(
+        attrName: String,
+        defaultVal: Boolean,
+    ): DialogueBranchBuilder {
         return branch({ player ->
             return@branch if (player.getAttribute(attrName, defaultVal)) {
                 1

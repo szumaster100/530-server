@@ -8,9 +8,9 @@ import core.game.interaction.OptionHandler
 import core.game.node.Node
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
-import core.tools.Log
 import core.plugin.Initializable
 import core.plugin.Plugin
+import core.tools.Log
 import java.util.concurrent.TimeUnit
 
 @Initializable
@@ -20,7 +20,11 @@ class HealthChecker : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player?, node: Node?, option: String?): Boolean {
+    override fun handle(
+        player: Player?,
+        node: Node?,
+        option: String?,
+    ): Boolean {
         player ?: return false
         node ?: return false
         val fPatch = FarmingPatch.forObject(node.asScenery())
@@ -28,7 +32,11 @@ class HealthChecker : OptionHandler() {
         val patch = fPatch.getPatchFor(player)
         val type = patch.patch.type
 
-        if (type != PatchType.BUSH_PATCH && type != PatchType.FRUIT_TREE_PATCH && type != PatchType.TREE_PATCH && type != PatchType.CACTUS_PATCH) {
+        if (type != PatchType.BUSH_PATCH &&
+            type != PatchType.FRUIT_TREE_PATCH &&
+            type != PatchType.TREE_PATCH &&
+            type != PatchType.CACTUS_PATCH
+        ) {
             sendMessage(player, "This shouldn't be happening. Please report this.")
             return true
         }
@@ -57,7 +65,7 @@ class HealthChecker : OptionHandler() {
                 patch.setCurrentState(patch.plantable!!.value + patch.plantable!!.stages + 3)
                 sendMessage(
                     player,
-                    "You examine the cactus for signs of disease and find that it is in perfect health."
+                    "You examine the cactus for signs of disease and find that it is in perfect health.",
                 )
             }
 

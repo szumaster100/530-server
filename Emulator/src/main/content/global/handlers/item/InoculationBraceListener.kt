@@ -1,6 +1,5 @@
 package content.global.handlers.item
 
-import org.rs.consts.Items
 import core.api.*
 import core.api.event.applyDisease
 import core.api.event.isDiseased
@@ -9,14 +8,15 @@ import core.game.interaction.InteractionListener
 import core.game.system.command.Privilege
 import core.game.system.timer.impl.Disease
 import core.game.world.repository.Repository
+import org.rs.consts.Items
 import kotlin.math.min
 
-class InoculationBraceListener : InteractionListener, Commands {
-
+class InoculationBraceListener :
+    InteractionListener,
+    Commands {
     private val maxProtection = 275
 
     override fun defineListeners() {
-
         on(Items.INOCULATION_BRACE_11088, IntType.ITEM, "operate") { player, node ->
             val remainingProtection = getCharge(node.asItem())
             sendMessage(player, "Your bracelet will protect you from $remainingProtection points of disease damage.")

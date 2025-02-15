@@ -13,19 +13,26 @@ import core.tools.secondsToTicks
 import org.json.simple.JSONObject
 import org.rs.consts.Sounds
 
-class PoisonImmunity : PersistTimer(
-    runInterval = 1,
-    identifier = "poison:immunity",
-    isSoft = true,
-    flags = arrayOf(TimerFlag.ClearOnDeath)
-) {
+class PoisonImmunity :
+    PersistTimer(
+        runInterval = 1,
+        identifier = "poison:immunity",
+        isSoft = true,
+        flags = arrayOf(TimerFlag.ClearOnDeath),
+    ) {
     var ticksRemaining = 0
 
-    override fun save(root: JSONObject, entity: Entity) {
+    override fun save(
+        root: JSONObject,
+        entity: Entity,
+    ) {
         root["ticksRemaining"] = ticksRemaining.toString()
     }
 
-    override fun parse(root: JSONObject, entity: Entity) {
+    override fun parse(
+        root: JSONObject,
+        entity: Entity,
+    ) {
         ticksRemaining = root["ticksRemaining"].toString().toInt()
     }
 

@@ -29,7 +29,11 @@ class GnomeCopterActivity : ActivityPlugin("Gnome copters", false, false, true) 
         return this
     }
 
-    override fun interact(e: Entity, target: Node, option: Option): Boolean {
+    override fun interact(
+        e: Entity,
+        target: Node,
+        option: Option,
+    ): Boolean {
         if (target is Scenery) {
             val `object` = target
             if (`object`.id == 30032) {
@@ -47,7 +51,10 @@ class GnomeCopterActivity : ActivityPlugin("Gnome copters", false, false, true) 
         return false
     }
 
-    override fun leave(e: Entity, logout: Boolean): Boolean {
+    override fun leave(
+        e: Entity,
+        logout: Boolean,
+    ): Boolean {
         if (logout && e.getAttribute("gc:flying", false)) {
             e.location = spawnLocation
             (e as Player).equipment.remove(COPTER_ITEM)
@@ -55,7 +62,10 @@ class GnomeCopterActivity : ActivityPlugin("Gnome copters", false, false, true) 
         return super.leave(e, logout)
     }
 
-    private fun flyGnomeCopter(player: Player, scenery: Scenery) {
+    private fun flyGnomeCopter(
+        player: Player,
+        scenery: Scenery,
+    ) {
         if (player.location != scenery.location.transform(0, 1, 0)) {
             return
         }
@@ -99,7 +109,7 @@ class GnomeCopterActivity : ActivityPlugin("Gnome copters", false, false, true) 
                             ForceMovement.WALK_ANIMATION,
                             Animation(8955),
                             Direction.NORTH,
-                            8
+                            8,
                         )
                         player.lock()
                     } else if (stage == 3) {
@@ -129,7 +139,7 @@ class GnomeCopterActivity : ActivityPlugin("Gnome copters", false, false, true) 
                     }
                     return false
                 }
-            }
+            },
         )
     }
 
@@ -168,7 +178,7 @@ class GnomeCopterActivity : ActivityPlugin("Gnome copters", false, false, true) 
                             player.location,
                             player.location.transform(0, -1, 0),
                             Animation(8959),
-                            8
+                            8,
                         )
                         player.lock(2)
                     } else if (stage == tick + 15) {
@@ -181,7 +191,7 @@ class GnomeCopterActivity : ActivityPlugin("Gnome copters", false, false, true) 
                     }
                     return false
                 }
-            }
+            },
         )
     }
 

@@ -1,6 +1,5 @@
 package content.global.ame.gravedigger
 
-import org.rs.consts.NPCs
 import content.data.RandomEvent
 import content.global.ame.RandomEventNPC
 import core.api.registerLogoutListener
@@ -10,9 +9,11 @@ import core.game.node.entity.npc.NPC
 import core.game.system.timer.impl.AntiMacro
 import core.game.world.map.Location
 import core.tools.RandomFunction
+import org.rs.consts.NPCs
 
-class LeoNPC(override var loot: WeightBasedTable? = null) : RandomEventNPC(NPCs.LEO_3508) {
-
+class LeoNPC(
+    override var loot: WeightBasedTable? = null,
+) : RandomEventNPC(NPCs.LEO_3508) {
     override fun init() {
         super.init()
         sendChat("Can I borrow you for a minute, ${player.username}?")

@@ -33,14 +33,20 @@ class VisualCommand : CommandPlugin() {
         return this
     }
 
-    override fun parse(player: Player?, name: String?, args: Array<String?>?): Boolean {
+    override fun parse(
+        player: Player?,
+        name: String?,
+        args: Array<String?>?,
+    ): Boolean {
         var location: Location? = null
         var scenery: Scenery? = null
         var o: Player? = null
         when (name) {
             "invisible", "invis", "seti" -> {
                 player!!.isInvisible = !player.isInvisible
-                player.sendMessage("You are now " + (if (player.isInvisible) "invisible" else "rendering") + " for other players.")
+                player.sendMessage(
+                    "You are now " + (if (player.isInvisible) "invisible" else "rendering") + " for other players.",
+                )
                 return true
             }
 
@@ -52,18 +58,27 @@ class VisualCommand : CommandPlugin() {
                 }
                 val names = arrayOf("Ahrim", "Dharok", "Guthan", "Karil", "Torag", "Verac")
                 player!!.savedData.activityData.barrowKills = 50
-                player.packetDispatch.sendMessage("Flagged all barrow brothers killed and 50 catacomb kills, current entrance: " + names[player.savedData.activityData.barrowTunnelIndex] + ".")
+                player.packetDispatch.sendMessage(
+                    "Flagged all barrow brothers killed and 50 catacomb kills, current entrance: " +
+                        names[player.savedData.activityData.barrowTunnelIndex] +
+                        ".",
+                )
                 return true
             }
 
             "1hko" -> {
                 player!!.setAttribute("1hko", !player.getAttribute("1hko", false))
                 player.packetDispatch.sendMessage(
-                    "1-hit KO mode " + if (player.getAttribute(
-                            "1hko",
-                            false
-                        )
-                    ) "on." else "off."
+                    "1-hit KO mode " +
+                        if (player.getAttribute(
+                                "1hko",
+                                false,
+                            )
+                        ) {
+                            "on."
+                        } else {
+                            "off."
+                        },
                 )
                 return true
             }
@@ -109,8 +124,8 @@ class VisualCommand : CommandPlugin() {
                     Graphics(
                         args[1]!!.toInt(),
                         if (args.size > 2) args[2]!!.toInt() else 0,
-                        if (args.size > 3) args[3]!!.toInt() else 0
-                    )
+                        if (args.size > 3) args[3]!!.toInt() else 0,
+                    ),
                 )
                 return true
             }
@@ -125,7 +140,7 @@ class VisualCommand : CommandPlugin() {
                 val height = if (args.size > 3) toInteger(args[3]!!) else 0
                 player!!.visualize(
                     Animation.create(animId),
-                    Graphics(gfxId, height)
+                    Graphics(gfxId, height),
                 )
                 return true
             }
@@ -141,7 +156,7 @@ class VisualCommand : CommandPlugin() {
                     args[1]!!.toInt(),
                     if (args.size > 5) args[5]!!.toInt() else 0,
                     if (args.size > 6) args[6]!!.toInt() else 0,
-                    location
+                    location,
                 )
                 return true
             }
@@ -158,7 +173,11 @@ class VisualCommand : CommandPlugin() {
                 npc.init()
                 npc.isWalks = args.size > 2
                 val npcString =
-                    "{" + npc.location.x + "," + npc.location.y + "," + npc.location.z + "," + (if (npc.isWalks) "1" else "0") + "," + npc.direction.ordinal + "}"
+                    "{" + npc.location.x + "," + npc.location.y + "," + npc.location.z + "," +
+                        (if (npc.isWalks) "1" else "0") +
+                        "," +
+                        npc.direction.ordinal +
+                        "}"
                 val clpbrd = Toolkit.getDefaultToolkit().systemClipboard
                 clpbrd.setContents(StringSelection(npcString), null)
                 println(npcString)
@@ -174,11 +193,12 @@ class VisualCommand : CommandPlugin() {
                 var sizeY = 3
                 if (args.size > 2) {
                     sizeX = toInteger(args[2]!!)
-                    sizeY = if (args.size > 3) {
-                        toInteger(args[3]!!)
-                    } else {
-                        sizeX
-                    }
+                    sizeY =
+                        if (args.size > 3) {
+                            toInteger(args[3]!!)
+                        } else {
+                            sizeX
+                        }
                 }
                 val aggressive = args.size > 4
                 var x = 0
@@ -227,11 +247,16 @@ class VisualCommand : CommandPlugin() {
                     player!!.debug("syntax error: x y id")
                     return true
                 }
-                location = if (args.size > 2) Location.create(
-                    args[1]!!.toInt(),
-                    args[2]!!.toInt(),
-                    player!!.location.z
-                ) else player!!.location
+                location =
+                    if (args.size > 2) {
+                        Location.create(
+                            args[1]!!.toInt(),
+                            args[2]!!.toInt(),
+                            player!!.location.z,
+                        )
+                    } else {
+                        player!!.location
+                    }
                 scenery = RegionManager.getObject(location)
                 if (scenery == null) {
                     player.debug("error: object not found in region cache.")
@@ -250,7 +275,11 @@ class VisualCommand : CommandPlugin() {
                 }
                 val componentId = toInteger(args[1]!!)
                 if (componentId < 0 || componentId > Cache.getInterfaceDefinitionsSize()) {
-                    player!!.debug("Invalid component id [id=" + componentId + ", max=" + Cache.getInterfaceDefinitionsComponentsSize(componentId) + "].")
+                    player!!.debug(
+                        "Invalid component id [id=" + componentId + ", max=" +
+                            Cache.getInterfaceDefinitionsComponentsSize(componentId) +
+                            "].",
+                    )
                     return true
                 }
                 player!!.interfaceManager.openComponent(componentId)
@@ -269,7 +298,10 @@ class VisualCommand : CommandPlugin() {
                 }
                 val hidden = if (args.size > 3) java.lang.Boolean.parseBoolean(args[3]) else true
                 player!!.packetDispatch.sendInterfaceConfig(toInteger(args[1]!!), toInteger(args[2]!!), hidden)
-                player.packetDispatch.sendMessage("Interface child (id=" + args[1] + ", child=" + args[2] + ") is " + if (hidden) "hidden." else "visible.")
+                player.packetDispatch.sendMessage(
+                    "Interface child (id=" + args[1] + ", child=" + args[2] + ") is " +
+                        if (hidden) "hidden." else "visible.",
+                )
                 return true
             }
 
@@ -281,6 +313,7 @@ class VisualCommand : CommandPlugin() {
                         object : Pulse(3, player) {
                             var pos = 32
                             var shift = 0
+
                             override fun pulse(): Boolean {
                                 for (i in 0..1999) {
                                     setVarp(player!!, i, pos shl shift)
@@ -292,18 +325,19 @@ class VisualCommand : CommandPlugin() {
                                 }
                                 return shift >= 32
                             }
-                        }
+                        },
                     )
                 } else {
                     submitWorldPulse(
                         object : Pulse(3, player) {
                             var pos = 0
+
                             override fun pulse(): Boolean {
                                 setVarp(player!!, cfg_index, value shl pos)
                                 player.sendMessage("$pos")
                                 return pos++ >= 32
                             }
-                        }
+                        },
                     )
                 }
                 return true
@@ -318,7 +352,7 @@ class VisualCommand : CommandPlugin() {
                             sendMessage(player, "${anim - 1}")
                             return false
                         }
-                    }
+                    },
                 )
             }
 
@@ -336,13 +370,14 @@ class VisualCommand : CommandPlugin() {
                 GameWorld.Pulser.submit(
                     object : Pulse(3, player) {
                         var id = st
+
                         override fun pulse(): Boolean {
 // 					PacketRepository.send(Interface.class, new InterfaceContext(player, 548, 77, id, false));
                             player!!.interfaceManager.openComponent(id)
                             player.debug("Interface id: $id")
                             return ++id >= en
                         }
-                    }
+                    },
                 )
                 return true
             }
@@ -353,13 +388,14 @@ class VisualCommand : CommandPlugin() {
                 GameWorld.Pulser.submit(
                     object : Pulse(3, player) {
                         var id = 0
+
                         override fun pulse(): Boolean {
 // 					PacketRepository.send(Interface.class, new InterfaceContext(player, 548, 77, id, false));
                             player!!.packetDispatch.sendInterfaceConfig(st, id, true)
                             player.debug("child id: $id")
                             return ++id >= en
                         }
-                    }
+                    },
                 )
                 return true
             }
@@ -370,6 +406,7 @@ class VisualCommand : CommandPlugin() {
                 GameWorld.Pulser.submit(
                     object : Pulse(1, player) {
                         var id = 0
+
                         override fun pulse(): Boolean {
 // 					PacketRepository.send(Interface.class, new InterfaceContext(player, 548, 77, id, false));
                             InterfaceContainer.generateItems(
@@ -379,14 +416,14 @@ class VisualCommand : CommandPlugin() {
                                 367,
                                 id,
                                 5,
-                                4
+                                4,
                             )
                             player?.packetDispatch?.sendInterfaceConfig(st, id, true)
                             // player?.packetDispatch?.sendString("ASDASDASD",st,id)
                             player?.debug("child id: $id")
                             return ++id >= en
                         }
-                    }
+                    },
                 )
                 return true
             }
@@ -434,6 +471,7 @@ class VisualCommand : CommandPlugin() {
                 GameWorld.Pulser.submit(
                     object : Pulse(3, player) {
                         var id = startId
+
                         override fun pulse(): Boolean {
                             val `object` = RegionManager.getObject(player!!.location)
                             if (`object` == null) {
@@ -444,7 +482,7 @@ class VisualCommand : CommandPlugin() {
                             player.debug("Animation id: $id")
                             return ++id >= endId
                         }
-                    }
+                    },
                 )
                 return true
             }
@@ -455,12 +493,13 @@ class VisualCommand : CommandPlugin() {
                 GameWorld.Pulser.submit(
                     object : Pulse(3, player) {
                         var id = start
+
                         override fun pulse(): Boolean {
                             player!!.animate(Animation.create(id))
                             player.debug("Animation id: $id")
                             return ++id >= end
                         }
-                    }
+                    },
                 )
                 return true
             }
@@ -471,15 +510,25 @@ class VisualCommand : CommandPlugin() {
                 GameWorld.Pulser.submit(
                     object : Pulse(3, player) {
                         var id = s
+
                         override fun pulse(): Boolean {
-                            Projectile.create(
-                                player!!.location, player.location.transform(0, 3, 0), id, 42, 36, 46, 75, 5, 11
-                            ).send()
+                            Projectile
+                                .create(
+                                    player!!.location,
+                                    player.location.transform(0, 3, 0),
+                                    id,
+                                    42,
+                                    36,
+                                    46,
+                                    75,
+                                    5,
+                                    11,
+                                ).send()
                             player.graphics(Graphics(id, 96))
                             player.debug("Graphics id: $id")
                             return ++id >= e
                         }
-                    }
+                    },
                 )
                 return true
             }

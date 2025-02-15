@@ -9,27 +9,43 @@ object InterfaceListeners {
     val slotSwitchListeners = HashMap<Int, (Player, Component, Int, Int) -> Boolean>()
 
     @JvmStatic
-    fun add(componentID: Int, buttonID: Int, handler: (Player, Component, Int, Int, Int, Int) -> Boolean) {
+    fun add(
+        componentID: Int,
+        buttonID: Int,
+        handler: (Player, Component, Int, Int, Int, Int) -> Boolean,
+    ) {
         buttonListeners["$componentID:$buttonID"] = handler
     }
 
     @JvmStatic
-    fun add(componentID: Int, handler: (Player, Component, Int, Int, Int, Int) -> Boolean) {
+    fun add(
+        componentID: Int,
+        handler: (Player, Component, Int, Int, Int, Int) -> Boolean,
+    ) {
         buttonListeners["$componentID"] = handler
     }
 
     @JvmStatic
-    fun addOpenListener(componentID: Int, handler: (Player, Component) -> Boolean) {
+    fun addOpenListener(
+        componentID: Int,
+        handler: (Player, Component) -> Boolean,
+    ) {
         openListeners["$componentID"] = handler
     }
 
     @JvmStatic
-    fun addCloseListener(componentID: Int, handler: (Player, Component) -> Boolean) {
+    fun addCloseListener(
+        componentID: Int,
+        handler: (Player, Component) -> Boolean,
+    ) {
         openListeners["close:$componentID"] = handler
     }
 
     @JvmStatic
-    fun get(componentID: Int, buttonID: Int): ((Player, Component, Int, Int, Int, Int) -> Boolean)? {
+    fun get(
+        componentID: Int,
+        buttonID: Int,
+    ): ((Player, Component, Int, Int, Int, Int) -> Boolean)? {
         return buttonListeners["$componentID:$buttonID"]
     }
 
@@ -49,30 +65,51 @@ object InterfaceListeners {
     }
 
     @JvmStatic
-    fun onSlotSwitch(componentID: Int, handler: (Player, Component, Int, Int) -> Boolean) {
+    fun onSlotSwitch(
+        componentID: Int,
+        handler: (Player, Component, Int, Int) -> Boolean,
+    ) {
         slotSwitchListeners[componentID] = handler
     }
 
     @JvmStatic
-    fun runSlotSwitch(player: Player, component: Component, sourceSlot: Int, destSlot: Int): Boolean {
+    fun runSlotSwitch(
+        player: Player,
+        component: Component,
+        sourceSlot: Int,
+        destSlot: Int,
+    ): Boolean {
         val method = slotSwitchListeners[component.id] ?: return false
         return method.invoke(player, component, sourceSlot, destSlot)
     }
 
     @JvmStatic
-    fun runOpen(player: Player, component: Component): Boolean {
+    fun runOpen(
+        player: Player,
+        component: Component,
+    ): Boolean {
         val method = getOpenListener(component.id) ?: return false
         return method.invoke(player, component)
     }
 
     @JvmStatic
-    fun runClose(player: Player, component: Component): Boolean {
+    fun runClose(
+        player: Player,
+        component: Component,
+    ): Boolean {
         val method = getCloseListener(component.id) ?: return true
         return method.invoke(player, component)
     }
 
     @JvmStatic
-    fun run(player: Player, component: Component, opcode: Int, buttonID: Int, slot: Int, itemID: Int): Boolean {
+    fun run(
+        player: Player,
+        component: Component,
+        opcode: Int,
+        buttonID: Int,
+        slot: Int,
+        itemID: Int,
+    ): Boolean {
         val method = get(component.id, buttonID) ?: get(component.id) ?: return false
         return method.invoke(player, component, opcode, buttonID, slot, itemID)
     }

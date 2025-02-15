@@ -5,8 +5,11 @@ import core.game.dialogue.InputType
 import core.game.node.entity.player.Player
 
 object RunScript {
-
-    fun processInput(player: Player, value: Any, script: ((Any) -> Boolean)) {
+    fun processInput(
+        player: Player,
+        value: Any,
+        script: ((Any) -> Boolean),
+    ) {
         if (value is Int && value <= 0) return
 
         val type = player.getAttribute("input-type", InputType.NUMERIC)
@@ -24,8 +27,9 @@ object RunScript {
             input = input.replace("k", "000").replace("m", "000000")
         }
 
-        if (type == InputType.NUMERIC || type == InputType.AMOUNT)
+        if (type == InputType.NUMERIC || type == InputType.AMOUNT) {
             input = input.toString().toIntOrNull() ?: input
+        }
 
         try {
             script(input)

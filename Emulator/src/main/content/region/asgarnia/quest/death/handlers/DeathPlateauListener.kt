@@ -1,8 +1,5 @@
 package content.region.asgarnia.quest.death.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.Scenery
-import org.rs.consts.Quests
 import content.region.asgarnia.quest.death.dialogue.DoorPlateauDialogueFile
 import core.api.*
 import core.api.item.produceGroundItem
@@ -12,21 +9,25 @@ import core.game.global.action.DoorActionHandler
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.item.GroundItemManager
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Scenery
 
 class DeathPlateauListener : InteractionListener {
-
     companion object {
-        val stoneBalls = intArrayOf(
-            Items.STONE_BALL_3109,
-            Items.STONE_BALL_3110,
-            Items.STONE_BALL_3111,
-            Items.STONE_BALL_3112,
-            Items.STONE_BALL_3113
-        )
-        val stoneMechanisms = intArrayOf(
-            Scenery.STONE_MECHANISM_3676,
-            Scenery.STONE_MECHANISM_3677
-        )
+        val stoneBalls =
+            intArrayOf(
+                Items.STONE_BALL_3109,
+                Items.STONE_BALL_3110,
+                Items.STONE_BALL_3111,
+                Items.STONE_BALL_3112,
+                Items.STONE_BALL_3113,
+            )
+        val stoneMechanisms =
+            intArrayOf(
+                Scenery.STONE_MECHANISM_3676,
+                Scenery.STONE_MECHANISM_3677,
+            )
     }
 
     override fun defineListeners() {
@@ -44,10 +45,8 @@ class DeathPlateauListener : InteractionListener {
 
         on(Scenery.DOOR_3745, SCENERY, "open") { player, node ->
             if (node.location == location(2823, 3555, 0)) {
-
                 openDialogue(player, DoorPlateauDialogueFile(2))
             } else if (node.location == location(2820, 3558, 0)) {
-
                 openDialogue(player, DoorPlateauDialogueFile(3))
             }
             return@on true
@@ -61,7 +60,7 @@ class DeathPlateauListener : InteractionListener {
         onUseWith(
             IntType.SCENERY,
             stoneBalls,
-            *stoneMechanisms
+            *stoneMechanisms,
         ) { player, used, with ->
             val stoneBall = used.asItem()
             val stoneMechanism = with.asScenery()

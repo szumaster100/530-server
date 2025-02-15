@@ -5,7 +5,10 @@ import core.game.consumable.ConsumableEffect
 import core.game.node.entity.combat.ImpactHandler
 import core.game.node.entity.player.Player
 
-class DamageEffect(val amt: Double, val isPercent: Boolean) : ConsumableEffect() {
+class DamageEffect(
+    val amt: Double,
+    val isPercent: Boolean,
+) : ConsumableEffect() {
     override fun activate(player: Player) {
         impact(player, -getHealthEffectValue(player), ImpactHandler.HitsplatType.NORMAL)
     }

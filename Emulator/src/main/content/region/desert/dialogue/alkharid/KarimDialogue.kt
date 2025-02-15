@@ -1,6 +1,5 @@
 package content.region.desert.dialogue.alkharid
 
-import org.rs.consts.NPCs
 import core.api.sendMessage
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
@@ -9,23 +8,29 @@ import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.NPCs
 
 @Initializable
-class KarimDialogue(player: Player? = null) : Dialogue(player) {
-
+class KarimDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         npcl(FaceAnim.HAPPY, "Would you like to buy a nice kebab? Only one gold.")
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> options("I think I'll give it a miss.", "Yes please.").also { stage++ }
-            1 -> when (buttonId) {
-                1 -> player(FaceAnim.HALF_GUILTY, "I think I'll give it a miss.").also { stage = END_DIALOGUE }
-                2 -> player(FaceAnim.HAPPY, "Yes please.").also { stage++ }
-            }
+            1 ->
+                when (buttonId) {
+                    1 -> player(FaceAnim.HALF_GUILTY, "I think I'll give it a miss.").also { stage = END_DIALOGUE }
+                    2 -> player(FaceAnim.HAPPY, "Yes please.").also { stage++ }
+                }
 
             2 -> {
                 end()

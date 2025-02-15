@@ -5,7 +5,6 @@ import core.game.node.entity.player.info.PlayerDetails
 import core.game.node.entity.player.info.login.PlayerParser
 
 object PlayerLoader {
-
     @JvmStatic
     fun getPlayerFile(name: String?): Player {
         val playerDetails = PlayerDetails(name)

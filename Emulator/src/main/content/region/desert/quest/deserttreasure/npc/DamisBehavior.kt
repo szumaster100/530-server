@@ -1,7 +1,5 @@
 package content.region.desert.quest.deserttreasure.npc
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.region.desert.quest.deserttreasure.DesertTreasure
 import core.api.*
 import core.api.interaction.transformNpc
@@ -14,12 +12,18 @@ import core.game.node.entity.npc.NPCBehavior
 import core.game.node.entity.player.Player
 import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 class DamisBehavior : NPCBehavior(NPCs.DAMIS_1974, NPCs.DAMIS_1975) {
-
     var clearTime = 0
 
-    override fun canBeAttackedBy(self: NPC, attacker: Entity, style: CombatStyle, shouldSendMessage: Boolean): Boolean {
+    override fun canBeAttackedBy(
+        self: NPC,
+        attacker: Entity,
+        style: CombatStyle,
+        shouldSendMessage: Boolean,
+    ): Boolean {
         if (attacker is Player) {
             if (attacker == getAttribute<Player?>(self, "target", null)) {
                 return true
@@ -42,12 +46,18 @@ class DamisBehavior : NPCBehavior(NPCs.DAMIS_1974, NPCs.DAMIS_1975) {
         return true
     }
 
-    override fun beforeDamageReceived(self: NPC, attacker: Entity, state: BattleState) {
+    override fun beforeDamageReceived(
+        self: NPC,
+        attacker: Entity,
+        state: BattleState,
+    ) {
         if (attacker is Player) {
-            if (state.estimatedHit + Integer.max(
+            if (state.estimatedHit +
+                Integer.max(
                     state.secondaryHit,
-                    0
-                ) >= self.skills.lifepoints && self.id == NPCs.DAMIS_1974
+                    0,
+                ) >= self.skills.lifepoints &&
+                self.id == NPCs.DAMIS_1974
             ) {
                 state.estimatedHit = self.skills.lifepoints + 1
                 state.secondaryHit = -1
@@ -64,14 +74,20 @@ class DamisBehavior : NPCBehavior(NPCs.DAMIS_1974, NPCs.DAMIS_1975) {
         }
     }
 
-    override fun beforeAttackFinalized(self: NPC, victim: Entity, state: BattleState) {
-
+    override fun beforeAttackFinalized(
+        self: NPC,
+        victim: Entity,
+        state: BattleState,
+    ) {
         if (self.id == NPCs.DAMIS_1975) {
             victim.skills.decrementPrayerPoints(5.0)
         }
     }
 
-    override fun onDeathFinished(self: NPC, killer: Entity) {
+    override fun onDeathFinished(
+        self: NPC,
+        killer: Entity,
+    ) {
         if (killer is Player) {
             if (self.id == NPCs.DAMIS_1975) {
                 if (DesertTreasure.getSubStage(killer, DesertTreasure.attributeShadowStage) == 3) {

@@ -1,6 +1,10 @@
 package content.minigame.gnomecook
 
-enum class GnomeCookingJob(val level: GnomeTipper.LEVEL, val npc_id: Int, val tip: String) {
+enum class GnomeCookingJob(
+    val level: GnomeTipper.LEVEL,
+    val npc_id: Int,
+    val tip: String,
+) {
     CPT_ERRDO(GnomeTipper.LEVEL.EASY, 3811, "at the top level of the Grand Tree."),
     DALILAH(GnomeTipper.LEVEL.EASY, 4588, "sitting in the Gnome Restaurant."),
     GULLUCK(GnomeTipper.LEVEL.EASY, 602, "on the third level of the Grand Tree."),
@@ -15,5 +19,5 @@ enum class GnomeCookingJob(val level: GnomeTipper.LEVEL, val npc_id: Int, val ti
     BOLREN(GnomeTipper.LEVEL.HARD, 469, "next to the Spirit Tree in Tree Gnome Village"),
     SCHEPBUR(GnomeTipper.LEVEL.HARD, 3817, "in the battlefield of Khazar, south of the river."),
     IMBLEWYN(GnomeTipper.LEVEL.HARD, 4586, "on the ground floor of the Magic Guild."),
-    ONGLEWIP(GnomeTipper.LEVEL.HARD, 4585, "in the Wizard's Tower south of Draynor.")
+    ONGLEWIP(GnomeTipper.LEVEL.HARD, 4585, "in the Wizard's Tower south of Draynor."),
 }

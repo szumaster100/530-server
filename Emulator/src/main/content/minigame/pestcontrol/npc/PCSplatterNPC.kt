@@ -1,6 +1,5 @@
 package content.minigame.pestcontrol.npc
 
-import org.rs.consts.NPCs
 import content.minigame.pestcontrol.PestControlSession
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.BattleState
@@ -17,9 +16,9 @@ import core.game.world.map.RegionManager.getLocalPlayers
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
 import core.tools.RandomFunction
+import org.rs.consts.NPCs
 
 class PCSplatterNPC : AbstractNPC {
-
     private var session: PestControlSession? = null
     private var exploding = false
 
@@ -53,7 +52,10 @@ class PCSplatterNPC : AbstractNPC {
         return mover is NPC
     }
 
-    override fun onImpact(entity: Entity, state: BattleState) {
+    override fun onImpact(
+        entity: Entity,
+        state: BattleState,
+    ) {
         super.onImpact(entity, state)
         if (session != null && state != null && entity is Player) {
             var total = 0
@@ -69,18 +71,24 @@ class PCSplatterNPC : AbstractNPC {
 
     override fun commenceDeath(killer: Entity) {
         exploding = true
-        visualize(Animation(3888, Priority.VERY_HIGH), Graphics.create(org.rs.consts.Graphics.SPLATTER_DAMAGE_WHITE_649 + (id - NPCs.SPLATTER_3727)))
+        visualize(
+            Animation(3888, Priority.VERY_HIGH),
+            Graphics.create(
+                org.rs.consts.Graphics.SPLATTER_DAMAGE_WHITE_649 + (id - NPCs.SPLATTER_3727),
+            ),
+        )
         Pulser.submit(
             object : Pulse(1, this) {
                 override fun pulse(): Boolean {
                     explode()
                     return true
                 }
-            }
+            },
         )
     }
 
     override fun finalizeDeath(killer: Entity) {}
+
     private fun explode() {
         val maximum = properties.currentCombatLevel / 3
         val minimum = maximum / 2
@@ -108,7 +116,11 @@ class PCSplatterNPC : AbstractNPC {
         clear()
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return PCSplatterNPC(id, location)
     }
 
@@ -118,7 +130,7 @@ class PCSplatterNPC : AbstractNPC {
             NPCs.SPLATTER_3728,
             NPCs.SPLATTER_3729,
             NPCs.SPLATTER_3730,
-            NPCs.SPLATTER_3731
+            NPCs.SPLATTER_3731,
         )
     }
 

@@ -4,5 +4,5 @@ enum class EvilTwinColors {
     RED,
     GREEN,
     BLUE,
-    YELLOW
+    YELLOW,
 }

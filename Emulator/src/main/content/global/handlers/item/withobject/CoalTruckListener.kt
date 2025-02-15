@@ -1,17 +1,19 @@
 package content.global.handlers.item.withobject
 
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.diary.DiaryType
 import core.game.node.item.Item
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class CoalTruckListener : InteractionListener {
-
-    private fun calculateAvailableSpace(player: Player, coalInTruck: Int): Int {
+    private fun calculateAvailableSpace(
+        player: Player,
+        coalInTruck: Int,
+    ): Int {
         return if (inEquipment(player, Items.SEERS_HEADBAND_1_14631)) {
             when {
                 isDiaryComplete(player, DiaryType.SEERS_VILLAGE, 2) -> 196 - coalInTruck
@@ -26,30 +28,32 @@ class CoalTruckListener : InteractionListener {
 
     private fun calculateMaxCoalCapacity(player: Player): Int {
         return when {
-            inEquipment(player, Items.SEERS_HEADBAND_1_14631) && isDiaryComplete(
-                player,
-                DiaryType.SEERS_VILLAGE,
-                2
-            ) -> 196
+            inEquipment(player, Items.SEERS_HEADBAND_1_14631) &&
+                isDiaryComplete(
+                    player,
+                    DiaryType.SEERS_VILLAGE,
+                    2,
+                ) -> 196
 
-            inEquipment(player, Items.SEERS_HEADBAND_1_14631) && isDiaryComplete(
-                player,
-                DiaryType.SEERS_VILLAGE,
-                1
-            ) -> 168
+            inEquipment(player, Items.SEERS_HEADBAND_1_14631) &&
+                isDiaryComplete(
+                    player,
+                    DiaryType.SEERS_VILLAGE,
+                    1,
+                ) -> 168
 
-            inEquipment(player, Items.SEERS_HEADBAND_1_14631) && isDiaryComplete(
-                player,
-                DiaryType.SEERS_VILLAGE,
-                0
-            ) -> 140
+            inEquipment(player, Items.SEERS_HEADBAND_1_14631) &&
+                isDiaryComplete(
+                    player,
+                    DiaryType.SEERS_VILLAGE,
+                    0,
+                ) -> 140
 
             else -> 120
         }
     }
 
     override fun defineListeners() {
-
         onUseWith(IntType.SCENERY, Items.COAL_453, Scenery.COAL_TRUCK_2114) { player, _, _ ->
             val coalInTruck = getAttribute(player, ATTRIBUTE_COAL_TRUCK_INVENTORY, 0)
             var coalInInventory = amountInInventory(player, Items.COAL_453)
@@ -89,7 +93,7 @@ class CoalTruckListener : InteractionListener {
             val availableSpace = calculateAvailableSpace(player, coalInTruck)
             sendDialogue(
                 player,
-                "There is currently $coalInTruck coal in the truck. The truck has space for $availableSpace more coal."
+                "There is currently $coalInTruck coal in the truck. The truck has space for $availableSpace more coal.",
             )
             return@on true
         }

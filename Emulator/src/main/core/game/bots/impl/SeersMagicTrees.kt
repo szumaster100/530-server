@@ -2,6 +2,8 @@ package core.game.bots.impl
 
 import core.game.bots.*
 import core.game.interaction.DestinationFlag
+import core.game.interaction.IntType
+import core.game.interaction.InteractionListeners
 import core.game.interaction.MovementPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
@@ -9,8 +11,6 @@ import core.game.world.map.Location
 import core.game.world.map.zone.ZoneBorders
 import core.tools.RandomFunction
 import org.rs.consts.Items
-import core.game.interaction.IntType
-import core.game.interaction.InteractionListeners
 
 @PlayerCompatible
 @ScriptName("Seers Magics")
@@ -55,16 +55,19 @@ class SeersMagicTrees : Script() {
 
             State.BANKING -> {
                 val bank = scriptAPI.getNearestNode(25808, true)
-                if (bank != null)
-                    bot.pulseManager.run(object : MovementPulse(bot, bank, DestinationFlag.OBJECT) {
-                        override fun pulse(): Boolean {
-                            bot.faceLocation(bank.location)
-                            logCounter += bot.inventory.getAmount(Items.MAGIC_LOGS_1513)
-                            scriptAPI.bankItem(Items.MAGIC_LOGS_1513)
-                            state = State.RETURN_TO_TREES
-                            return true
-                        }
-                    })
+                if (bank != null) {
+                    bot.pulseManager.run(
+                        object : MovementPulse(bot, bank, DestinationFlag.OBJECT) {
+                            override fun pulse(): Boolean {
+                                bot.faceLocation(bank.location)
+                                logCounter += bot.inventory.getAmount(Items.MAGIC_LOGS_1513)
+                                scriptAPI.bankItem(Items.MAGIC_LOGS_1513)
+                                state = State.RETURN_TO_TREES
+                                return true
+                            }
+                        },
+                    )
+                }
             }
 
             State.RETURN_TO_TREES -> {
@@ -106,7 +109,7 @@ class SeersMagicTrees : Script() {
         TELE_GE,
         SELL_GE,
         TELE_SEERS,
-        INIT
+        INIT,
     }
 
     override fun newInstance(): Script {

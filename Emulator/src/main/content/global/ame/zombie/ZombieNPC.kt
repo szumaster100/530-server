@@ -1,15 +1,16 @@
 package content.global.ame.zombie
 
-import org.rs.consts.NPCs
 import content.global.ame.RandomEventNPC
 import core.api.utils.WeightBasedTable
 import core.game.node.entity.Entity
 import core.game.node.entity.npc.NPC
+import org.rs.consts.NPCs
 import kotlin.math.max
 import kotlin.math.min
 
-class ZombieNPC(override var loot: WeightBasedTable? = null) : RandomEventNPC(NPCs.ZOMBIE_419) {
-
+class ZombieNPC(
+    override var loot: WeightBasedTable? = null,
+) : RandomEventNPC(NPCs.ZOMBIE_419) {
     val ids = (419..424).toList()
 
     override fun init() {
@@ -31,7 +32,11 @@ class ZombieNPC(override var loot: WeightBasedTable? = null) : RandomEventNPC(NP
             this.terminate()
         }
         super.tick()
-        if (!player.viewport.currentPlane.npcs.contains(this)) this.clear()
+        if (!player.viewport.currentPlane.npcs
+                .contains(this)
+        ) {
+            this.clear()
+        }
     }
 
     override fun talkTo(npc: NPC) {}

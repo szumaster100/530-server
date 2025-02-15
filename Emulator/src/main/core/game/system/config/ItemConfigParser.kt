@@ -5,15 +5,14 @@ import core.api.log
 import core.cache.def.impl.ItemDefinition
 import core.game.node.entity.impl.Animator
 import core.game.node.entity.player.link.audio.Audio
-import core.tools.Log
 import core.game.world.update.flag.context.Animation
+import core.tools.Log
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import java.io.FileReader
 
 class ItemConfigParser {
-
     companion object {
         const val TRADEABLE = "tradeable"
         const val LENDABLE = "lendable"
@@ -90,18 +89,30 @@ class ItemConfigParser {
 
                         "attack_audios" ->
                             configs[it.key.toString()] =
-                                it.value.toString().split(",").map { i -> Audio(i.toInt()) }.toTypedArray()
+                                it.value
+                                    .toString()
+                                    .split(",")
+                                    .map { i -> Audio(i.toInt()) }
+                                    .toTypedArray()
 
                         "attack_anims" ->
                             configs[it.key.toString()] =
-                                it.value.toString().split(",").map { i -> Animation(i.toInt(), Animator.Priority.HIGH) }
+                                it.value
+                                    .toString()
+                                    .split(",")
+                                    .map { i -> Animation(i.toInt(), Animator.Priority.HIGH) }
                                     .toTypedArray()
 
                         // int arrays
                         "absorb",
-                        "bonuses" ->
+                        "bonuses",
+                        ->
                             configs[it.key.toString()] =
-                                it.value.toString().split(",").map { i -> i.toInt() }.toIntArray()
+                                it.value
+                                    .toString()
+                                    .split(",")
+                                    .map { i -> i.toInt() }
+                                    .toIntArray()
 
                         // booleans
                         "fun_weapon",
@@ -115,7 +126,8 @@ class ItemConfigParser {
                         "hat",
                         "destroy",
                         "lendable",
-                        "tradeable" -> configs[it.key.toString()] = it.value.toString().toBoolean()
+                        "tradeable",
+                        -> configs[it.key.toString()] = it.value.toString().toBoolean()
 
                         "alchemizable" -> configs[it.key.toString()] = it.value.toString().toBoolean()
 
@@ -142,12 +154,14 @@ class ItemConfigParser {
                         "low_alchemy",
                         "high_alchemy",
                         "grand_exchange_price",
-                        "id" -> configs[it.key.toString()] = it.value.toString().toInt()
+                        "id",
+                        -> configs[it.key.toString()] = it.value.toString().toInt()
 
                         // Strings
                         "examine",
                         "destroy_message",
-                        "name" -> configs[it.key.toString()] = it.value.toString()
+                        "name",
+                        -> configs[it.key.toString()] = it.value.toString()
                     }
                 }
             }

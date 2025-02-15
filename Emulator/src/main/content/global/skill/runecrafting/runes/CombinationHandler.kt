@@ -10,8 +10,17 @@ import core.game.interaction.UseWithHandler
 import core.game.node.scenery.Scenery
 import core.plugin.Plugin
 
-class CombinationHandler : UseWithHandler(Talisman.AIR.item.id, Talisman.WATER.item.id, Talisman.EARTH.item.id, Talisman.FIRE.item.id, Rune.WATER.rune.id, Rune.EARTH.rune.id, Rune.AIR.rune.id, Rune.FIRE.rune.id) {
-
+class CombinationHandler :
+    UseWithHandler(
+        Talisman.AIR.item.id,
+        Talisman.WATER.item.id,
+        Talisman.EARTH.item.id,
+        Talisman.FIRE.item.id,
+        Rune.WATER.rune.id,
+        Rune.EARTH.rune.id,
+        Rune.AIR.rune.id,
+        Rune.FIRE.rune.id,
+    ) {
     override fun newInstance(arg: Any?): Plugin<Any> {
         for (altar in Altar.values()) {
             addHandler(altar.objs, OBJECT_TYPE, this)

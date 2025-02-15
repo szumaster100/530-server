@@ -13,7 +13,6 @@ import core.game.world.update.flag.context.Graphics
 import org.rs.consts.*
 
 class SlayerListener : InteractionListener {
-
     companion object {
         val NULL = -1
         private const val FADE_START = Components.FADE_TO_BLACK_115
@@ -23,17 +22,19 @@ class SlayerListener : InteractionListener {
         private const val STAIRS = Scenery.STAIRS_96
         private const val STAIRS_2 = Scenery.STAIRS_35121
         private const val CAVE_ENTRANCE = Scenery.CAVE_ENTRANCE_15767
-        private val CAVE_EXIT = intArrayOf(Scenery.CAVE_15811, Scenery.CAVE_15812, Scenery.CAVE_23157, Scenery.CAVE_23158)
-        private val SVENS_DIG_LOCATIONS = arrayOf(
-            Location(2749, 3733, 0),
-            Location(2748, 3733, 0),
-            Location(2747, 3733, 0),
-            Location(2747, 3734, 0),
-            Location(2747, 3735, 0),
-            Location(2747, 3736, 0),
-            Location(2748, 3736, 0),
-            Location(2749, 3736, 0)
-        )
+        private val CAVE_EXIT =
+            intArrayOf(Scenery.CAVE_15811, Scenery.CAVE_15812, Scenery.CAVE_23157, Scenery.CAVE_23158)
+        private val SVENS_DIG_LOCATIONS =
+            arrayOf(
+                Location(2749, 3733, 0),
+                Location(2748, 3733, 0),
+                Location(2747, 3733, 0),
+                Location(2747, 3734, 0),
+                Location(2747, 3735, 0),
+                Location(2747, 3736, 0),
+                Location(2748, 3736, 0),
+                Location(2749, 3736, 0),
+            )
     }
 
     override fun defineDestinationOverrides() {
@@ -63,11 +64,13 @@ class SlayerListener : InteractionListener {
 
                 2 -> {
                     playAudio(player, Sounds.STUNNED_2727)
-                    visualize(player, NULL,
+                    visualize(
+                        player,
+                        NULL,
                         Graphics(
                             org.rs.consts.Graphics.STUN_BIRDIES_ABOVE_HEAD_80,
-                            96
-                        )
+                            96,
+                        ),
                     )
                     sendMessage(player, "...And fall into a dark and slimy pit!")
                     return@queueScript stopExecuting(player)
@@ -113,16 +116,18 @@ class SlayerListener : InteractionListener {
 
         on(CAVE_EXIT, IntType.SCENERY, "exit") { player, node ->
             when (node.id) {
-                Scenery.CAVE_23157, Scenery.CAVE_23158 -> teleport(
-                    player,
-                    Location(2729, 3733, 0),
-                    TeleportManager.TeleportType.INSTANT
-                )
-                else -> teleport(
-                    player,
-                    Location(3749, 2973, 0),
-                    TeleportManager.TeleportType.INSTANT
-                )
+                Scenery.CAVE_23157, Scenery.CAVE_23158 ->
+                    teleport(
+                        player,
+                        Location(2729, 3733, 0),
+                        TeleportManager.TeleportType.INSTANT,
+                    )
+                else ->
+                    teleport(
+                        player,
+                        Location(3749, 2973, 0),
+                        TeleportManager.TeleportType.INSTANT,
+                    )
             }
             return@on true
         }

@@ -15,9 +15,8 @@ class BFBeltOre(
     val id: Int,
     val amount: Int,
     var location: Location,
-    var npcInstance: NPC? = null
+    var npcInstance: NPC? = null,
 ) {
-
     val state = BlastFurnace.getPlayerState(player)
 
     fun tick(): Boolean {

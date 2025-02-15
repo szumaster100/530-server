@@ -1,15 +1,14 @@
 package content.region.karamja.handlers.brimhaven
 
-import org.rs.consts.Components
 import core.api.inInventory
 import core.api.sendMessage
 import core.game.interaction.InterfaceListener
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.tools.StringUtils
+import org.rs.consts.Components
 
 class AgilityTicketInterface : InterfaceListener {
-
     override fun defineInterfaceListeners() {
         on(Components.AGILITYARENA_TRADE_6) { player, _, _, buttonID, _, _ ->
             var reward: Item? = null
@@ -63,7 +62,7 @@ class AgilityTicketInterface : InterfaceListener {
             if (reward != null && !inInventory(player, ARENA_TICKET, tickets)) {
                 sendMessage(
                     player,
-                    "${StringUtils.formatDisplayName(reward.name.replace("Clean", "").trim())} costs $tickets tickets."
+                    "${StringUtils.formatDisplayName(reward.name.replace("Clean", "").trim())} costs $tickets tickets.",
                 )
             }
             if (!inInventory(player, ARENA_TICKET, tickets)) return@on true
@@ -87,9 +86,9 @@ class AgilityTicketInterface : InterfaceListener {
                         player,
                         "You have been granted a ${
                             StringUtils.formatDisplayName(
-                                reward.name.replace("Clean", "").trim()
+                                reward.name.replace("Clean", "").trim(),
                             )
-                        }."
+                        }.",
                     )
                 }
             }

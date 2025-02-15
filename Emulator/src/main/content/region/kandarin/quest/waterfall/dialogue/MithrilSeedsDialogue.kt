@@ -11,8 +11,9 @@ import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
 
 @Initializable
-class MithrilSeedsDialogue(player: Player? = null) : Dialogue(player) {
-
+class MithrilSeedsDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     private var flower: Scenery? = null
 
     override fun open(vararg args: Any): Boolean {
@@ -21,31 +22,35 @@ class MithrilSeedsDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (interfaceId) {
-            228 -> when (buttonId) {
-                1 -> {
-                    player.lock(2)
-                    player.faceLocation(flower!!.getFaceLocation(player.location))
-                    player.animate(ANIMATION)
-                    Pulser.submit(
-                        object : Pulse(2, player, flower) {
-                            override fun pulse(): Boolean {
-                                val reward = Item(2460 + (flower!!.id - 2980 shl 1))
-                                if (reward == null || !player.inventory.hasSpaceFor(reward)) {
-                                    player.packetDispatch.sendMessage("Not enough space in your inventory.")
+            228 ->
+                when (buttonId) {
+                    1 -> {
+                        player.lock(2)
+                        player.faceLocation(flower!!.getFaceLocation(player.location))
+                        player.animate(ANIMATION)
+                        Pulser.submit(
+                            object : Pulse(2, player, flower) {
+                                override fun pulse(): Boolean {
+                                    val reward = Item(2460 + (flower!!.id - 2980 shl 1))
+                                    if (reward == null || !player.inventory.hasSpaceFor(reward)) {
+                                        player.packetDispatch.sendMessage("Not enough space in your inventory.")
+                                        return true
+                                    }
+                                    if (SceneryBuilder.remove(flower)) {
+                                        player.inventory.add(reward)
+                                        player.packetDispatch.sendMessage("You pick the flowers.")
+                                    }
                                     return true
                                 }
-                                if (SceneryBuilder.remove(flower)) {
-                                    player.inventory.add(reward)
-                                    player.packetDispatch.sendMessage("You pick the flowers.")
-                                }
-                                return true
-                            }
-                        }
-                    )
+                            },
+                        )
+                    }
                 }
-            }
         }
         end()
         return true

@@ -1,6 +1,5 @@
 package content.region.fremennik.quest.viking.handlers
 
-import org.rs.consts.Items
 import core.api.getAttribute
 import core.api.sendDialogue
 import core.api.sendMessage
@@ -12,15 +11,14 @@ import core.game.node.entity.player.Player
 import core.game.system.task.Pulse
 import core.game.world.GameWorld.Pulser
 import core.game.world.map.Location
+import org.rs.consts.Items
 import kotlin.math.abs
 import kotlin.math.atan2
 
 class HunterTalismanListener : InteractionListener {
-
     val TALISMAN = Items.HUNTERS_TALISMAN_3696
 
     override fun defineListeners() {
-
         on(TALISMAN, IntType.ITEM, "locate") { player, _ ->
             var locationString = getAttribute(player, "fremtrials:draugen-loc", "none")
             if (locationString == "none") {
@@ -43,8 +41,11 @@ class HunterTalismanListener : InteractionListener {
         }
     }
 
-    class DraugenPulse(val player: Player) : Pulse() {
+    class DraugenPulse(
+        val player: Player,
+    ) : Pulse() {
         var count = 0
+
         override fun pulse(): Boolean {
             when (count++) {
                 3 -> {
@@ -58,13 +59,14 @@ class HunterTalismanListener : InteractionListener {
         }
     }
 
-    val possibleLocations = listOf(
-        Location(2625, 3608),
-        Location(2602, 3628),
-        Location(2668, 3714),
-        Location(2711, 3602),
-        Location(2664, 3592)
-    )
+    val possibleLocations =
+        listOf(
+            Location(2625, 3608),
+            Location(2602, 3628),
+            Location(2668, 3714),
+            Location(2711, 3602),
+            Location(2664, 3592),
+        )
 
     fun Location.getDirection(entity: Entity): String {
         val loc: Location = this
@@ -106,7 +108,10 @@ class HunterTalismanListener : InteractionListener {
         return "Dunno. $angle"
     }
 
-    fun diff(x: Double, y: Double): Double {
+    fun diff(
+        x: Double,
+        y: Double,
+    ): Double {
         return abs(x - y)
     }
 }

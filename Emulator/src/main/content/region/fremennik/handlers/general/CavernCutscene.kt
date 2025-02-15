@@ -1,6 +1,5 @@
 package content.region.fremennik.handlers.general
 
-import org.rs.consts.NPCs
 import content.region.fremennik.handlers.general.GhostBouncerNPC.Companion.spawnGhostBouncer
 import core.api.location
 import core.api.removeAttribute
@@ -10,9 +9,11 @@ import core.game.activity.Cutscene
 import core.game.dialogue.FaceAnim
 import core.game.node.entity.player.Player
 import core.game.world.map.Direction
+import org.rs.consts.NPCs
 
-class CavernCutscene(player: Player) : Cutscene(player) {
-
+class CavernCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(location(1759, 4711, 0))
         if (player.settings.isRunToggled) {
@@ -51,11 +52,19 @@ class CavernCutscene(player: Player) : Cutscene(player) {
                 timedUpdate(1)
             }
 
-            5 -> playerDialogueUpdate(FaceAnim.ANGRY, "Khazard tricked me! This is no reward, he's trying to get me killed...AGAIN!")
+            5 ->
+                playerDialogueUpdate(
+                    FaceAnim.ANGRY,
+                    "Khazard tricked me! This is no reward, he's trying to get me killed...AGAIN!",
+                )
 
             6 -> {
                 end()
-                sendMessageWithDelay(player, "An evil prescence in the cave prevents your prayers from being heard.", 10)
+                sendMessageWithDelay(
+                    player,
+                    "An evil prescence in the cave prevents your prayers from being heard.",
+                    10,
+                )
                 removeAttribute(player, GeneralShadowUtils.GS_SEVERED_LEG)
                 spawnGhostBouncer(player)
                 unlock(player)

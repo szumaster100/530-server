@@ -14,7 +14,6 @@ import org.rs.consts.NPCs
 import org.rs.consts.Sounds
 
 class ZombieHolidayRandomNPC : HolidayRandomEventNPC(NPCs.ZOMBIE_2714) {
-
     override fun init() {
         super.init()
         this.isAggressive = false

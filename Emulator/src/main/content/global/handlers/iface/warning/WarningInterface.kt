@@ -1,8 +1,8 @@
 package content.global.handlers.iface.warning
 
-import org.rs.consts.*
 import content.global.skill.agility.AgilityHandler
 import core.api.*
+import core.api.quest.hasRequirement
 import core.game.dialogue.FaceAnim
 import core.game.global.action.ClimbActionHandler
 import core.game.global.action.ClimbActionHandler.climb
@@ -12,14 +12,12 @@ import core.game.node.entity.player.link.diary.DiaryType
 import core.game.node.item.Item
 import core.game.world.GameWorld
 import core.game.world.map.Location
-import core.api.quest.hasRequirement
 import core.game.world.map.RegionManager.getLocalNpcs
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.*
 
 class WarningInterface : InterfaceListener {
-
     override fun defineInterfaceListeners() {
-
         on(Components.CWS_DOOMSAYER_583) { player, _, _, buttonID, _, _ ->
             val warning = Warnings.values().find { it.buttonId == buttonID }
             warning?.let {
@@ -84,7 +82,7 @@ class WarningInterface : InterfaceListener {
                         ClimbActionHandler.climb(
                             player,
                             Animation(Animations.MULTI_BEND_OVER_827),
-                            Location.create(3168, 9572, 0)
+                            Location.create(3168, 9572, 0),
                         )
                     }
                     WarningManager.increment(player, componentID.id)
@@ -117,11 +115,12 @@ class WarningInterface : InterfaceListener {
                 20 -> WarningManager.toggle(player, componentID.id)
                 17 -> {
                     closeInterface(player)
-                    val targetScenery = if (player.location.x > 3443) {
-                        getScenery(3444, 3458, 0)!!
-                    } else {
-                        getScenery(3443, 3458, 0)!!
-                    }
+                    val targetScenery =
+                        if (player.location.x > 3443) {
+                            getScenery(3444, 3458, 0)!!
+                        } else {
+                            getScenery(3443, 3458, 0)!!
+                        }
                     DoorActionHandler.handleAutowalkDoor(player, targetScenery)
                     sendMessageWithDelay(player, "You walk into the gloomy atmosphere of Mort Myre.", 3)
                     WarningManager.increment(player, componentID.id)
@@ -142,14 +141,16 @@ class WarningInterface : InterfaceListener {
                     climb(player, Animation(Animations.USE_LADDER_828), Location(2668, 3427, 2))
                     val npc = getLocalNpcs(Location.create(2668, 3427, 2))
                     var dir = ""
-                    for (n in npc) if (n.id >= NPCs.TOWER_ADVISOR_684 && n.id <= NPCs.TOWER_ADVISOR_687) {
-                        when (n.id) {
-                            NPCs.TOWER_ADVISOR_684 -> dir = "north"
-                            NPCs.TOWER_ADVISOR_685 -> dir = "east"
-                            NPCs.TOWER_ADVISOR_686 -> dir = "south"
-                            NPCs.TOWER_ADVISOR_687 -> dir = "west"
+                    for (n in npc) {
+                        if (n.id >= NPCs.TOWER_ADVISOR_684 && n.id <= NPCs.TOWER_ADVISOR_687) {
+                            when (n.id) {
+                                NPCs.TOWER_ADVISOR_684 -> dir = "north"
+                                NPCs.TOWER_ADVISOR_685 -> dir = "east"
+                                NPCs.TOWER_ADVISOR_686 -> dir = "south"
+                                NPCs.TOWER_ADVISOR_687 -> dir = "west"
+                            }
+                            sendChat(n, "The $dir tower is occupied, get them!")
                         }
-                        sendChat(n, "The $dir tower is occupied, get them!")
                     }
                     WarningManager.increment(player, componentID.id)
                 }
@@ -169,7 +170,7 @@ class WarningInterface : InterfaceListener {
                             player,
                             NPCs.SHANTAY_GUARD_838,
                             "You need a Shantay pass to get through this gate. See Shantay, he will sell you one for a very reasonable price.",
-                            FaceAnim.NEUTRAL
+                            FaceAnim.NEUTRAL,
                         )
                     } else {
                         sendMessage(player, "You go through the gate.")
@@ -180,7 +181,7 @@ class WarningInterface : InterfaceListener {
                             player.location.transform(0, if (player.location.y > 3116) -2 else 2, 0),
                             null,
                             0.0,
-                            null
+                            null,
                         )
                     }
                 }
@@ -189,7 +190,7 @@ class WarningInterface : InterfaceListener {
                     closeInterface(player)
                     sendDialogue(
                         player,
-                        "You decide that your visit to the desert can be postponed. Perhaps indefinitely."
+                        "You decide that your visit to the desert can be postponed. Perhaps indefinitely.",
                     )
                 }
             }

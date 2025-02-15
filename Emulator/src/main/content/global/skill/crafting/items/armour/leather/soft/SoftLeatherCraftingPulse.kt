@@ -1,7 +1,5 @@
 package content.global.skill.crafting.items.armour.leather.soft
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
 import content.global.skill.crafting.items.armour.leather.Thread
 import core.api.*
 import core.game.node.entity.player.Player
@@ -10,17 +8,24 @@ import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.tools.StringUtils
+import org.rs.consts.Animations
+import org.rs.consts.Items
 
-class SoftLeatherCraftingPulse(player: Player?, node: Item?, val soft: SoftLeather, var amount: Int) :
-    SkillPulse<Item?>(player, node) {
-
+class SoftLeatherCraftingPulse(
+    player: Player?,
+    node: Item?,
+    val soft: SoftLeather,
+    var amount: Int,
+) : SkillPulse<Item?>(player, node) {
     private var ticks = 0
 
     override fun checkRequirements(): Boolean {
         if (getStatLevel(player, Skills.CRAFTING) < soft.level) {
             sendDialogue(
                 player,
-                "You need a crafting level of " + soft.level + " to make " + (if (StringUtils.isPlusN(soft.product.name)) "an" else "a" + " " + soft.product.name).lowercase() + "."
+                "You need a crafting level of " + soft.level + " to make " +
+                    (if (StringUtils.isPlusN(soft.product.name)) "an" else "a" + " " + soft.product.name).lowercase() +
+                    ".",
             )
             return false
         }
@@ -55,7 +60,9 @@ class SoftLeatherCraftingPulse(player: Player?, node: Item?, val soft: SoftLeath
             } else {
                 sendMessage(
                     player,
-                    "You make " + (if (StringUtils.isPlusN(soft.product.name)) "an " else "a ") + soft.product.name.lowercase() + "."
+                    "You make " + (if (StringUtils.isPlusN(soft.product.name)) "an " else "a ") +
+                        soft.product.name.lowercase() +
+                        ".",
                 )
             }
             val item = soft.product.id

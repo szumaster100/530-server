@@ -1,11 +1,11 @@
 package content.region.kandarin.quest.elementalquest2
 
+import core.game.node.entity.npc.NPC
+import core.game.world.map.Location
 import org.rs.consts.Components
 import org.rs.consts.Items
 import org.rs.consts.NPCs
 import org.rs.consts.Scenery
-import core.game.node.entity.npc.NPC
-import core.game.world.map.Location
 
 object EW2Utils {
     const val foundBook = "/save:ew2:book-found"

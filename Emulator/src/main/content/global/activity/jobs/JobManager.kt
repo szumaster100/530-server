@@ -1,6 +1,5 @@
 package content.global.activity.jobs
 
-import org.rs.consts.Items
 import content.global.activity.jobs.impl.BoneBuryingJobs
 import content.global.activity.jobs.impl.CombatJobs
 import content.global.activity.jobs.impl.ProductionJobs
@@ -15,9 +14,13 @@ import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.tools.StringUtils
 import org.json.simple.JSONObject
+import org.rs.consts.Items
 import java.lang.Integer.min
 
-class JobManager(val player: Player? = null) : LoginListener, PersistPlayer {
+class JobManager(
+    val player: Player? = null,
+) : LoginListener,
+    PersistPlayer {
     var job: Job? = null
     var jobAmount: Int = 0
     var jobOriginalAmount: Int = 0
@@ -39,12 +42,12 @@ class JobManager(val player: Player? = null) : LoginListener, PersistPlayer {
 
         val instance = getInstance(player)
 
-        val potentialJobs: List<Job> = (
+        val potentialJobs: List<Job> =
+            (
                 ProductionJobs.values().filter { hasLevelRequirement(it) } +
-                        BoneBuryingJobs.values() +
-                        CombatJobs.values()
-                )
-            .filter { job -> job.employer.npcId == npc.id }
+                    BoneBuryingJobs.values() +
+                    CombatJobs.values()
+            ).filter { job -> job.employer.npcId == npc.id }
 
         val job = potentialJobs.randomOrNull() ?: return
 
@@ -124,7 +127,10 @@ class JobManager(val player: Player? = null) : LoginListener, PersistPlayer {
         player.hook(
             Event.BoneBuried,
             object : EventHook<BoneBuryEvent> {
-                override fun process(entity: Entity, event: BoneBuryEvent) {
+                override fun process(
+                    entity: Entity,
+                    event: BoneBuryEvent,
+                ) {
                     if (entity !is Player) return
                     if (entity.isArtificial) return
 
@@ -139,12 +145,15 @@ class JobManager(val player: Player? = null) : LoginListener, PersistPlayer {
                         instance.jobAmount--
                     }
                 }
-            }
+            },
         )
         player.hook(
             Event.NPCKilled,
             object : EventHook<NPCKillEvent> {
-                override fun process(entity: Entity, event: NPCKillEvent) {
+                override fun process(
+                    entity: Entity,
+                    event: NPCKillEvent,
+                ) {
                     if (entity !is Player) return
                     if (entity.isArtificial) return
 
@@ -159,19 +168,23 @@ class JobManager(val player: Player? = null) : LoginListener, PersistPlayer {
                         instance.jobAmount--
                     }
                 }
-            }
+            },
         )
     }
 
-    override fun savePlayer(player: Player, save: JSONObject) {
+    override fun savePlayer(
+        player: Player,
+        save: JSONObject,
+    ) {
         val instance = getInstance(player)
-        val jobId: Int = instance.job?.let {
-            when (it.type) {
-                JobType.PRODUCTION -> ProductionJobs.values().indexOf(it)
-                JobType.COMBAT -> CombatJobs.values().indexOf(it)
-                JobType.BONE_BURYING -> BoneBuryingJobs.values().indexOf(it)
-            }
-        } ?: -1
+        val jobId: Int =
+            instance.job?.let {
+                when (it.type) {
+                    JobType.PRODUCTION -> ProductionJobs.values().indexOf(it)
+                    JobType.COMBAT -> CombatJobs.values().indexOf(it)
+                    JobType.BONE_BURYING -> BoneBuryingJobs.values().indexOf(it)
+                }
+            } ?: -1
 
         setAttribute(player, "/save:jobs:id", jobId)
         setAttribute(player, "/save:jobs:type", instance.job?.type?.ordinal ?: -1)
@@ -179,17 +192,21 @@ class JobManager(val player: Player? = null) : LoginListener, PersistPlayer {
         setAttribute(player, "/save:jobs:original_amount", instance.jobOriginalAmount)
     }
 
-    override fun parsePlayer(player: Player, data: JSONObject) {
+    override fun parsePlayer(
+        player: Player,
+        data: JSONObject,
+    ) {
         val instance = getInstance(player)
         val jobId = getAttribute(player, "jobs:id", -1)
         val jobType = getAttribute(player, "jobs:type", -1)
 
-        instance.job = when (JobType.values().getOrNull(jobType)) {
-            JobType.PRODUCTION -> ProductionJobs.values().getOrNull(jobId)
-            JobType.COMBAT -> CombatJobs.values().getOrNull(jobId)
-            JobType.BONE_BURYING -> BoneBuryingJobs.values().getOrNull(jobId)
-            else -> null
-        }
+        instance.job =
+            when (JobType.values().getOrNull(jobType)) {
+                JobType.PRODUCTION -> ProductionJobs.values().getOrNull(jobId)
+                JobType.COMBAT -> CombatJobs.values().getOrNull(jobId)
+                JobType.BONE_BURYING -> BoneBuryingJobs.values().getOrNull(jobId)
+                else -> null
+            }
         instance.jobAmount = getAttribute(player, "jobs:amount", -1)
         instance.jobOriginalAmount = getAttribute(player, "jobs:original_amount", -1)
     }

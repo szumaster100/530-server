@@ -1,7 +1,6 @@
 package content.global.skill.magic.spells
 
 object LunarSpells {
-
     const val BARBARIAN_TELEPORT = 0
     const val CURE_OTHER = 1
     const val FERTILE_SOIL = 2

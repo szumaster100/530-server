@@ -12,12 +12,15 @@ class CannonTimer : RSTimer(1, "dmc:timer") {
     var isFiring = false
 
     override fun run(entity: Entity): Boolean {
-        if (entity !is Player)
+        if (entity !is Player) {
             return false
-        if (!dmcHandler.cannon.isActive)
+        }
+        if (!dmcHandler.cannon.isActive) {
             return false
-        if (isFiring)
+        }
+        if (isFiring) {
             isFiring = dmcHandler.rotate()
+        }
         if (--ticksUntilDecay == 500) {
             sendMessage(entity, colorize("%RYour cannon is about to decay."))
         } else if (ticksUntilDecay == 0) {

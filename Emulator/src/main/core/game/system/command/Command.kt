@@ -4,11 +4,22 @@ import core.ServerConfig
 import core.game.node.entity.player.Player
 import core.game.world.GameWorld
 
-class Command(val name: String, val privilege: Privilege, val usage: String = "UNDOCUMENTED", val description: String = "UNDOCUMENTED", val handle: (Player, Array<String>) -> Unit) {
-
-    fun attemptHandling(player: Player, args: Array<String>?) {
+class Command(
+    val name: String,
+    val privilege: Privilege,
+    val usage: String = "UNDOCUMENTED",
+    val description: String = "UNDOCUMENTED",
+    val handle: (Player, Array<String>) -> Unit,
+) {
+    fun attemptHandling(
+        player: Player,
+        args: Array<String>?,
+    ) {
         args ?: return
-        if (player.rights.ordinal >= privilege.ordinal || GameWorld.settings?.isDevMode == true || ServerConfig.I_AM_A_CHEATER) {
+        if (player.rights.ordinal >= privilege.ordinal ||
+            GameWorld.settings?.isDevMode == true ||
+            ServerConfig.I_AM_A_CHEATER
+        ) {
             handle(player, args)
         }
     }
@@ -39,7 +50,6 @@ object CommandMapping {
 
         var lineCounter = 0
         for ((index, command) in getCommands().filter { it.privilege.ordinal <= rights }.withIndex()) {
-
             lineCounter += 2
             if (command.usage.isNotEmpty()) lineCounter++
             if (command.description.isNotEmpty()) lineCounter++

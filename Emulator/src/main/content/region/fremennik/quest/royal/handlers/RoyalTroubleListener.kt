@@ -1,20 +1,18 @@
 package content.region.fremennik.quest.royal.handlers
 
-import org.rs.consts.Items
 import core.api.addItem
 import core.api.inInventory
 import core.api.removeItem
 import core.api.sendMessage
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.Items
 
 class RoyalTroubleListener : InteractionListener {
-
     private val FIRE_REMAINS = intArrayOf(15206, 15207, 15208, 15209, 15210)
     private val ROCKS = 15213
 
     override fun defineListeners() {
-
         on(FIRE_REMAINS, IntType.SCENERY, "search") { player, node ->
             when (node.id) {
                 15206 -> {

@@ -8,8 +8,9 @@ import core.plugin.Initializable
 import core.plugin.Plugin
 
 @Initializable
-class Crandor : MapZone("crandor", true), Plugin<Any?> {
-
+class Crandor :
+    MapZone("crandor", true),
+    Plugin<Any?> {
     override fun newInstance(arg: Any?): Plugin<Any?> {
         ZoneBuilder.configure(this)
         return this
@@ -19,7 +20,10 @@ class Crandor : MapZone("crandor", true), Plugin<Any?> {
         return super.enter(entity)
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 

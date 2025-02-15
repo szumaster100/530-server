@@ -1,21 +1,19 @@
 package content.global.handlers.item.withitem
 
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Sounds
 import core.api.*
+import core.api.quest.hasRequirement
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.skill.Skills
-import core.api.quest.hasRequirement
 import core.game.node.item.Item
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Sounds
 
 class EnchantedWaterTiaraListener : InteractionListener {
-
     val tiaraIDs = intArrayOf(Items.WATER_TIARA_5531, Items.ENCHANTED_WATER_TIARA_11969)
 
     override fun defineListeners() {
-
         onUseWith(IntType.ITEM, Items.WATER_RUNE_555, *tiaraIDs) { player, used, with ->
             val tiara = with.asItem()
             val runeAmount = used.asItem().amount
@@ -40,7 +38,10 @@ class EnchantedWaterTiaraListener : InteractionListener {
                 setCharge(enchantedTiara, charges)
                 replaceSlot(player, tiara.slot, enchantedTiara)
                 removeItem(player, Item(used.asItem().id, charges / 1000 * 3))
-                sendDialogue(player, "You transform the Water Tiara into an Enchanted Water Tiara with $charges charges.")
+                sendDialogue(
+                    player,
+                    "You transform the Water Tiara into an Enchanted Water Tiara with $charges charges.",
+                )
                 return@onUseWith true
             }
 
@@ -75,7 +76,7 @@ class EnchantedWaterTiaraListener : InteractionListener {
                         addItemOrDrop(player, Items.WATER_RUNE_555, charges / 1000 * 3)
                         sendDialogue(
                             player,
-                            "The Enchanted Water Tiara has been destroyed and turned back into a Water Tiara. You recover ${charges / 1000 * 3} Water Runes."
+                            "The Enchanted Water Tiara has been destroyed and turned back into a Water Tiara. You recover ${charges / 1000 * 3} Water Runes.",
                         )
                         playAudio(player, Sounds.DESTROY_OBJECT_2381)
                     }

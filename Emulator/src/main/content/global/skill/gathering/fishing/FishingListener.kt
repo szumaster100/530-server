@@ -1,7 +1,6 @@
 package content.global.skill.gathering.fishing
 
 import content.data.GameAttributes
-import org.rs.consts.Items
 import content.global.handlers.item.equipment.gloves.FOGGlovesListener
 import content.region.misc.handlers.tutorial.TutorialStage
 import core.api.*
@@ -22,31 +21,42 @@ import core.game.system.command.sets.STATS_FISH
 import core.game.world.GameWorld
 import core.game.world.map.path.Pathfinder
 import core.tools.RandomFunction
+import org.rs.consts.Items
 import org.rs.consts.NPCs
 
 class FishingListener : InteractionListener {
-
     override fun defineListeners() {
         val spotIds = FishingSpot.values().flatMap { it.ids.toList() }.toIntArray()
 
         defineInteraction(
             IntType.NPC,
             spotIds,
-            "net", "lure", "bait", "harpoon", "cage", "fish",
+            "net",
+            "lure",
+            "bait",
+            "harpoon",
+            "cage",
+            "fish",
             persistent = true,
             allowedDistance = 1,
-            handler = ::handleFishing
+            handler = ::handleFishing,
         )
     }
 
-    private fun handleFishing(player: Player, node: Node, state: Int): Boolean {
+    private fun handleFishing(
+        player: Player,
+        node: Node,
+        state: Int,
+    ): Boolean {
         val npc = node as? NPC ?: return clearScripts(player)
         val spot = FishingSpot.forId(npc.id) ?: return clearScripts(player)
         val op = spot.getOptionByName(getUsedOption(player)) ?: return clearScripts(player)
 
         var forager: content.global.skill.summoning.familiar.Forager? = null
 
-        if (player.familiarManager.hasFamiliar() && player.familiarManager.familiar is content.global.skill.summoning.familiar.Forager) {
+        if (player.familiarManager.hasFamiliar() &&
+            player.familiarManager.familiar is content.global.skill.summoning.familiar.Forager
+        ) {
             forager = player.familiarManager.familiar as content.global.skill.summoning.familiar.Forager
         }
 
@@ -55,8 +65,15 @@ class FishingListener : InteractionListener {
         }
 
         if (!getAttribute(player, GameAttributes.TUTORIAL_COMPLETE, false)) {
-            if (getAttribute(player, TutorialStage.TUTORIAL_STAGE, -1) < 12 && !inInventory(player, Items.SMALL_FISHING_NET_303) && npc.id == NPCs.TUTORIAL_FISHING_SPOT_952) {
-                sendNPCDialogue(player, NPCs.SURVIVAL_EXPERT_943, "Hang on a minute! Let's first make sure you know how to make a fire to cook those.")
+            if (getAttribute(player, TutorialStage.TUTORIAL_STAGE, -1) < 12 &&
+                !inInventory(player, Items.SMALL_FISHING_NET_303) &&
+                npc.id == NPCs.TUTORIAL_FISHING_SPOT_952
+            ) {
+                sendNPCDialogue(
+                    player,
+                    NPCs.SURVIVAL_EXPERT_943,
+                    "Hang on a minute! Let's first make sure you know how to make a fire to cook those.",
+                )
             }
         }
 
@@ -67,9 +84,12 @@ class FishingListener : InteractionListener {
                 Pathfinder.find(it, dest).walk(it)
             }
             when (op.option) {
-                "cage" -> if (spot.name == "CAGE_HARPOON") {
-                    sendMessage(player, "You attempt to catch a lobster.")
-                } else sendMessage(player, "You attempt to catch a crayfish.")
+                "cage" ->
+                    if (spot.name == "CAGE_HARPOON") {
+                        sendMessage(player, "You attempt to catch a lobster.")
+                    } else {
+                        sendMessage(player, "You attempt to catch a crayfish.")
+                    }
 
                 "harpoon" -> sendMessage(player, "You start harpooning fish.")
                 "net" -> sendMessage(player, "You cast out your net...")
@@ -98,11 +118,12 @@ class FishingListener : InteractionListener {
                 sendMessage(player, "You catch an enormous" + getItemName(fish.id).lowercase().replace("raw", "") + "!")
                 addItemOrDrop(player, bigFishId, 1)
             } else {
-                var msg = when (fish) {
-                    in arrayOf(Fish.ANCHOVIE, Fish.SHRIMP, Fish.SEAWEED) -> "You catch some "
-                    in arrayOf(Fish.OYSTER) -> "You catch an "
-                    else -> "You catch a "
-                }
+                var msg =
+                    when (fish) {
+                        in arrayOf(Fish.ANCHOVIE, Fish.SHRIMP, Fish.SEAWEED) -> "You catch some "
+                        in arrayOf(Fish.OYSTER) -> "You catch an "
+                        else -> "You catch a "
+                    }
                 msg += getItemName(fish.id).lowercase().replace("raw ", "").replace("big ", "")
                 msg += if (fish == Fish.SHARK) "!" else "."
                 sendMessage(player, msg)
@@ -124,15 +145,31 @@ class FishingListener : InteractionListener {
         return keepRunning(player)
     }
 
-    private fun anim(player: Player, option: FishingOption) {
-        if (animationFinished(player))
+    private fun anim(
+        player: Player,
+        option: FishingOption,
+    ) {
+        if (animationFinished(player)) {
             animate(player, option.animation)
+        }
     }
 
-    private fun checkRequirements(player: Player, option: FishingOption, node: Node): Boolean {
+    private fun checkRequirements(
+        player: Player,
+        option: FishingOption,
+        node: Node,
+    ): Boolean {
         if (!inInventory(player, option.tool) && !hasBarbTail(player, option)) {
             var msg = "You need a "
-            msg += if (getItemName(option.tool).contains("net", true)) "net to " else "${getItemName(option.tool).lowercase()} to "
+            msg +=
+                if (getItemName(
+                        option.tool,
+                    ).contains("net", true)
+                ) {
+                    "net to "
+                } else {
+                    "${getItemName(option.tool).lowercase()} to "
+                }
             msg += if (option.option in arrayOf("lure", "bait")) "${option.option} these fish." else "catch these fish."
             sendDialogue(player, msg)
             return false
@@ -158,7 +195,10 @@ class FishingListener : InteractionListener {
         return node.isActive && node.location.withinDistance(player.location, 1)
     }
 
-    private fun hasBarbTail(player: Player, option: FishingOption): Boolean {
+    private fun hasBarbTail(
+        player: Player,
+        option: FishingOption,
+    ): Boolean {
         val bh = FishingOption.BARB_HARPOON.tool
         if (option == FishingOption.HARPOON || option == FishingOption.SHARK_HARPOON) {
             if (inInventory(player, bh) || inEquipment(player, bh)) return true

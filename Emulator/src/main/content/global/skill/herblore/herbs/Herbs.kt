@@ -4,7 +4,12 @@ import core.game.node.item.Item
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import org.rs.consts.Items
 
-enum class Herbs(@JvmField val herb: Item, val experience: Double, val level: Int, @JvmField val product: Item) {
+enum class Herbs(
+    @JvmField val herb: Item,
+    val experience: Double,
+    val level: Int,
+    @JvmField val product: Item,
+) {
     GUAM(Item(Items.GRIMY_GUAM_199), 2.5, 3, Item(Items.CLEAN_GUAM_249)),
     MARRENTILL(Item(Items.GRIMY_MARRENTILL_201), 3.8, 5, Item(Items.CLEAN_MARRENTILL_251)),
     TARROMIN(Item(Items.GRIMY_TARROMIN_203), 5.0, 11, Item(Items.CLEAN_TARROMIN_253)),
@@ -24,7 +29,8 @@ enum class Herbs(@JvmField val herb: Item, val experience: Double, val level: In
     ARDRIGAL(Item(Items.GRIMY_ARDRIGAL_1527), 2.5, 3, Item(Items.CLEAN_ARDRIGAL_1528)),
     SITO_FOIL(Item(Items.GRIMY_SITO_FOIL_1529), 2.5, 3, Item(Items.CLEAN_SITO_FOIL_1530)),
     VOLENCIA_MOSS(Item(Items.GRIMY_VOLENCIA_MOSS_1531), 2.5, 3, Item(Items.CLEAN_VOLENCIA_MOSS_1532)),
-    ROGUES_PUSE(Item(Items.GRIMY_ROGUES_PURSE_1533), 2.5, 3, Item(Items.CLEAN_ROGUES_PURSE_1534));
+    ROGUES_PUSE(Item(Items.GRIMY_ROGUES_PURSE_1533), 2.5, 3, Item(Items.CLEAN_ROGUES_PURSE_1534)),
+    ;
 
     companion object {
         private val herbMap = Int2ObjectOpenHashMap<Herbs>()

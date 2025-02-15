@@ -4,8 +4,10 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.tools.START_DIALOGUE
 
-class EmptyDialogue(player: Player? = null, val file: DialogueFile?) : Dialogue(player) {
-
+class EmptyDialogue(
+    player: Player? = null,
+    val file: DialogueFile?,
+) : Dialogue(player) {
     override fun newInstance(player: Player?): Dialogue {
         return EmptyDialogue(player, null)
     }
@@ -20,7 +22,10 @@ class EmptyDialogue(player: Player? = null, val file: DialogueFile?) : Dialogue(
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         return true
     }
 

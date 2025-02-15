@@ -1,6 +1,5 @@
 package content.region.morytania.quest.ahoy
 
-import org.rs.consts.NPCs
 import core.api.*
 import core.game.node.entity.Entity
 import core.game.node.entity.npc.AbstractNPC
@@ -8,10 +7,17 @@ import core.game.node.entity.player.Player
 import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
+import org.rs.consts.NPCs
 
-class GiantLobsterNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+class GiantLobsterNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return GiantLobsterNPC(id, location)
     }
 
@@ -40,7 +46,7 @@ class GiantLobsterNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id,
                         giantLobster.attack(player)
                         return true
                     }
-                }
+                },
             )
         }
     }

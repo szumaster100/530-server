@@ -13,8 +13,9 @@ import core.tools.END_DIALOGUE
 import org.rs.consts.NPCs
 
 @Initializable
-class MacawDialogue(player: Player? = null) : Dialogue(player) {
-
+class MacawDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     private var familiar: content.global.skill.summoning.familiar.Familiar? = null
 
     override fun open(vararg args: Any?): Boolean {
@@ -23,25 +24,31 @@ class MacawDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
-            0 -> when (buttonId) {
-                1 -> player(
-                    "I don't think you'll like the stuff. Besides, I think there",
-                    "is a law about feeding birds alcohol."
-                ).also { stage++ }
+            0 ->
+                when (buttonId) {
+                    1 ->
+                        player(
+                            "I don't think you'll like the stuff. Besides, I think there",
+                            "is a law about feeding birds alcohol.",
+                        ).also { stage++ }
 
-                2 -> {
-                    end()
-                    animate(player, 8013)
-                    content.global.skill.summoning.familiar.RemoteViewer.openDialogue(player, familiar)
-                }
+                    2 -> {
+                        end()
+                        animate(player, 8013)
+                        content.global.skill.summoning.familiar.RemoteViewer
+                            .openDialogue(player, familiar)
+                    }
 
-                3 -> {
-                    end()
-                    (familiar as content.global.skill.summoning.familiar.BurdenBeast?)!!.openInterface()
+                    3 -> {
+                        end()
+                        (familiar as content.global.skill.summoning.familiar.BurdenBeast?)!!.openInterface()
+                    }
                 }
-            }
 
             2 -> {
                 end()
@@ -65,24 +72,44 @@ class MacawDialogue(player: Player? = null) : Dialogue(player) {
 }
 
 class MacawDialogueFile : DialogueFile() {
-
-    override fun handle(componentID: Int, buttonID: Int) {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         npc = NPC(NPCs.MACAW_6851)
         when ((0..2).random()) {
-            0 -> when (stage) {
-                0 -> npcl(FaceAnim.CHILD_NORMAL, "Awk! Gimme the rum! Gimme the rum!").also { stage++ }
-                1 -> playerl(FaceAnim.FRIENDLY, "I don't think you'll like the stuff. Besides, I think there is a law about feeding birds alcohol.").also { stage = END_DIALOGUE }
-            }
+            0 ->
+                when (stage) {
+                    0 -> npcl(FaceAnim.CHILD_NORMAL, "Awk! Gimme the rum! Gimme the rum!").also { stage++ }
+                    1 ->
+                        playerl(
+                            FaceAnim.FRIENDLY,
+                            "I don't think you'll like the stuff. Besides, I think there is a law about feeding birds alcohol.",
+                        ).also {
+                            stage =
+                                END_DIALOGUE
+                        }
+                }
 
-            1 -> when (stage) {
-                0 -> npcl(FaceAnim.CHILD_NORMAL, "Awk! I'm a pirate! Awk! Yo, ho ho!").also { stage++ }
-                1 -> playerl(FaceAnim.FRIENDLY, "I'd best not keep you around any customs officers!").also { stage = END_DIALOGUE }
-            }
+            1 ->
+                when (stage) {
+                    0 -> npcl(FaceAnim.CHILD_NORMAL, "Awk! I'm a pirate! Awk! Yo, ho ho!").also { stage++ }
+                    1 ->
+                        playerl(FaceAnim.FRIENDLY, "I'd best not keep you around any customs officers!").also {
+                            stage =
+                                END_DIALOGUE
+                        }
+                }
 
-            2 -> when (stage) {
-                0 -> npcl(FaceAnim.CHILD_NORMAL, "Awk! Caw! Shiver me timbers!").also { stage++ }
-                1 -> playerl(FaceAnim.HALF_ASKING, "I wonder where you picked up all these phrases?").also { stage = END_DIALOGUE }
-            }
+            2 ->
+                when (stage) {
+                    0 -> npcl(FaceAnim.CHILD_NORMAL, "Awk! Caw! Shiver me timbers!").also { stage++ }
+                    1 ->
+                        playerl(FaceAnim.HALF_ASKING, "I wonder where you picked up all these phrases?").also {
+                            stage =
+                                END_DIALOGUE
+                        }
+                }
         }
     }
 }

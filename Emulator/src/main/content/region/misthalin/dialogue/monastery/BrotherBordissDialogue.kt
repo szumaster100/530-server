@@ -1,7 +1,5 @@
 package content.region.misthalin.dialogue.monastery
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.inInventory
 import core.game.component.Component
 import core.game.dialogue.Dialogue
@@ -9,10 +7,13 @@ import core.game.dialogue.FaceAnim
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
-class BrotherBordissDialogue(player: Player? = null) : Dialogue(player) {
-
+class BrotherBordissDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun npc(vararg messages: String?): Component {
         return npc(FaceAnim.OLD_NORMAL, *messages)
     }
@@ -29,22 +30,26 @@ class BrotherBordissDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             10 -> npc("I certainly can, for the price of", "1,500,000 coins.").also { stage++ }
             11 -> options("Okay, sounds great!", "No, thanks.").also { stage++ }
-            12 -> when (buttonId) {
-                1 ->
-                    if (inInventory(player, 995, 1500000)) {
-                        player("Okay, sounds great!")
-                        stage = 15
-                    } else {
-                        player("I'd like to, but I don't have the coin.")
-                        stage++
-                    }
+            12 ->
+                when (buttonId) {
+                    1 ->
+                        if (inInventory(player, 995, 1500000)) {
+                            player("Okay, sounds great!")
+                            stage = 15
+                        } else {
+                            player("I'd like to, but I don't have the coin.")
+                            stage++
+                        }
 
-                2 -> player("No, thanks").also { stage = 1000 }
-            }
+                    2 -> player("No, thanks").also { stage = 1000 }
+                }
 
             13 -> npc("That's a shame, then.").also { stage = 1000 }
             15 -> {
@@ -75,7 +80,7 @@ class BrotherBordissDialogue(player: Player? = null) : Dialogue(player) {
             Items.ARCANE_SIGIL_13746,
             Items.DIVINE_SIGIL_13748,
             Items.SPECTRAL_SIGIL_13752,
-            Items.ELYSIAN_SIGIL_13750
+            Items.ELYSIAN_SIGIL_13750,
         )) {
             if (inInventory(player, sigil, 1)) return Item(sigil)
         }

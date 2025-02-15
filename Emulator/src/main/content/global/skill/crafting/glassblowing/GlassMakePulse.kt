@@ -1,15 +1,18 @@
 package content.global.skill.crafting.glassblowing
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
 import core.api.*
 import core.game.event.ResourceProducedEvent
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.game.system.task.Pulse
+import org.rs.consts.Animations
+import org.rs.consts.Items
 
-class GlassMakePulse(private val player: Player, val product: Int, private var amount: Int) : Pulse() {
-
+class GlassMakePulse(
+    private val player: Player,
+    val product: Int,
+    private var amount: Int,
+) : Pulse() {
     override fun pulse(): Boolean {
         if (amount < 1) return true
 
@@ -26,7 +29,9 @@ class GlassMakePulse(private val player: Player, val product: Int, private var a
             addItem(player, Items.MOLTEN_GLASS_1775)
             rewardXP(player, Skills.CRAFTING, 20.0)
             player.dispatch(ResourceProducedEvent(product, amount, player))
-        } else return true
+        } else {
+            return true
+        }
 
         amount--
         delay = 3

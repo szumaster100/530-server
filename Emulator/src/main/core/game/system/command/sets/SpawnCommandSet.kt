@@ -11,20 +11,21 @@ import core.game.node.entity.npc.NPC
 import core.game.node.item.Item
 import core.game.node.scenery.Scenery
 import core.game.node.scenery.SceneryBuilder
-import core.tools.Log
 import core.game.system.command.CommandPlugin
 import core.game.system.command.Privilege
 import core.plugin.Initializable
+import core.tools.Log
 import java.io.File
 
 @Initializable
 class SpawnCommandSet : CommandSet(Privilege.ADMIN) {
-
     override fun defineCommands() {
-
         val npcLocations = mutableMapOf<Int, MutableList<String>>()
 
-        fun readJsonArrayFromFile(filePath: String, gson: Gson): JsonArray {
+        fun readJsonArrayFromFile(
+            filePath: String,
+            gson: Gson,
+        ): JsonArray {
             val file = File(filePath)
             return if (file.exists()) {
                 gson.fromJson(file.readText(), JsonArray::class.java) ?: JsonArray()
@@ -33,7 +34,11 @@ class SpawnCommandSet : CommandSet(Privilege.ADMIN) {
             }
         }
 
-        fun writeJsonArrayToFile(filePath: String, jsonArray: JsonArray, gson: Gson) {
+        fun writeJsonArrayToFile(
+            filePath: String,
+            jsonArray: JsonArray,
+            gson: Gson,
+        ) {
             val file = File(filePath)
             file.parentFile.mkdirs()
             file.writeText(gson.toJson(jsonArray))
@@ -47,13 +52,14 @@ class SpawnCommandSet : CommandSet(Privilege.ADMIN) {
 
             val npcId = CommandPlugin.toInteger(args[1])
 
-            val npc = NPC.create(npcId, player.location).apply {
-                setAttribute("spawned:npc", true)
-                isRespawn = false
-                direction = player.direction
-                init()
-                isWalks = args.size > 2
-            }
+            val npc =
+                NPC.create(npcId, player.location).apply {
+                    setAttribute("spawned:npc", true)
+                    isRespawn = false
+                    direction = player.direction
+                    init()
+                    isWalks = args.size > 2
+                }
 
             val locData = "{${npc.location.x},${npc.location.y},${npc.location.z},${if (npc.isWalks) "1" else "0"},${npc.direction.ordinal}}-"
 
@@ -67,10 +73,11 @@ class SpawnCommandSet : CommandSet(Privilege.ADMIN) {
             val gson: Gson = GsonBuilder().setPrettyPrinting().create()
 
             try {
-                val npcLogEntry = JsonObject().apply {
-                    addProperty("npc_id", npcId.toString())
-                    addProperty("loc_data", npcLocations[npcId]?.joinToString("") { it })
-                }
+                val npcLogEntry =
+                    JsonObject().apply {
+                        addProperty("npc_id", npcId.toString())
+                        addProperty("loc_data", npcLocations[npcId]?.joinToString("") { it })
+                    }
 
                 val existingData = readJsonArrayFromFile(filePath, gson)
                 existingData.add(npcLogEntry)
@@ -102,25 +109,44 @@ class SpawnCommandSet : CommandSet(Privilege.ADMIN) {
             player.inventory.add(item)
         }
 
-        define(name = "object", privilege = Privilege.MODERATOR, usage = "Spawn object with given ID at the player's location") { player, args ->
+        define(
+            name = "object",
+            privilege = Privilege.MODERATOR,
+            usage = "Spawn object with given ID at the player's location",
+        ) { player, args ->
             if (args.size < 2) {
                 reject(player, "syntax error: id (optional) type rotation or rotation")
                 return@define
             }
-            val scenery = if (args.size > 3) Scenery(
-                CommandPlugin.toInteger(
-                    args[1]
-                ), player.location, CommandPlugin.toInteger(args[2]), CommandPlugin.toInteger(args[3])
-            ) else if (args.size == 3) Scenery(
-                CommandPlugin.toInteger(args[1]),
-                player.location,
-                CommandPlugin.toInteger(args[2])
-            ) else Scenery(CommandPlugin.toInteger(args[1]), player.location)
+            val scenery =
+                if (args.size > 3) {
+                    Scenery(
+                        CommandPlugin.toInteger(
+                            args[1],
+                        ),
+                        player.location,
+                        CommandPlugin.toInteger(args[2]),
+                        CommandPlugin.toInteger(args[3]),
+                    )
+                } else if (args.size == 3) {
+                    Scenery(
+                        CommandPlugin.toInteger(args[1]),
+                        player.location,
+                        CommandPlugin.toInteger(args[2]),
+                    )
+                } else {
+                    Scenery(CommandPlugin.toInteger(args[1]), player.location)
+                }
             SceneryBuilder.add(scenery)
             log(this::class.java, Log.FINE, "object = $scenery")
         }
 
-        define(name = "objectgrid", privilege = Privilege.MODERATOR, usage = "::objectgrid", description = "Defines an object grid") { player, args ->
+        define(
+            name = "objectgrid",
+            privilege = Privilege.MODERATOR,
+            usage = "::objectgrid",
+            description = "Defines an object grid",
+        ) { player, args ->
             if (args.size != 5) {
                 reject(player, "Usage: objectgrid beginId endId type rotation")
                 return@define
@@ -133,25 +159,26 @@ class SpawnCommandSet : CommandSet(Privilege.ADMIN) {
                 SceneryBuilder.add(
                     Scenery(
                         29447 + i,
-                        player.location.transform(i, -1, 0)
-                    )
+                        player.location.transform(i, -1, 0),
+                    ),
                 )
             }
             for (i in beginId..endId) {
                 val j = i - beginId
-                val scenery = Scenery(
-                    i,
-                    player.location.transform(j % 10, j / 10, 0),
-                    type,
-                    rotation
-                )
+                val scenery =
+                    Scenery(
+                        i,
+                        player.location.transform(j % 10, j / 10, 0),
+                        type,
+                        rotation,
+                    )
                 SceneryBuilder.add(scenery)
                 if (j % 10 == 0) {
                     SceneryBuilder.add(
                         Scenery(
                             29447 + (j / 10) % 10,
-                            player.location.transform(-1, j / 10, 0)
-                        )
+                            player.location.transform(-1, j / 10, 0),
+                        ),
                     )
                 }
             }

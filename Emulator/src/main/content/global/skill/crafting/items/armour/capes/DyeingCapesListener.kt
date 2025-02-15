@@ -1,13 +1,12 @@
 package content.global.skill.crafting.items.armour.capes
 
-import org.rs.consts.Items
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.skill.Skills
+import org.rs.consts.Items
 
 class DyeingCapesListener : InteractionListener {
-
     companion object {
         private val DYES = Dyes.values().map { it.item.id }.toIntArray()
         private val CAPE = Capes.values().map { it.cape.id }.toIntArray()

@@ -1,14 +1,12 @@
 package content.region.asgarnia.quest.rd
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import content.region.asgarnia.dialogue.falador.KnightNotesDialogue
 import content.region.asgarnia.quest.rd.cutscene.FailTest
 import content.region.asgarnia.quest.rd.cutscene.FinishTest
 import content.region.asgarnia.quest.rd.handlers.*
 import core.api.*
+import core.api.MapArea
+import core.api.ui.closeDialogue
 import core.game.dialogue.FaceAnim
 import core.game.global.action.DoorActionHandler
 import core.game.interaction.IntType
@@ -19,14 +17,20 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.game.world.map.Location
-import core.api.MapArea
-import core.api.ui.closeDialogue
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.map.zone.ZoneRestriction
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
-class RecruitmentDriveListener : InteractionListener, MapArea {
-
-    override fun areaLeave(entity: Entity, logout: Boolean) {
+class RecruitmentDriveListener :
+    InteractionListener,
+    MapArea {
+    override fun areaLeave(
+        entity: Entity,
+        logout: Boolean,
+    ) {
         if (entity is Player) {
             val player = entity.asPlayer()
             RDUtils.resetPlayerState(player)
@@ -37,7 +41,7 @@ class RecruitmentDriveListener : InteractionListener, MapArea {
         return arrayOf(
             ZoneRestriction.RANDOM_EVENTS,
             ZoneRestriction.CANNON,
-            ZoneRestriction.FOLLOWERS
+            ZoneRestriction.FOLLOWERS,
         )
     }
 
@@ -46,7 +50,6 @@ class RecruitmentDriveListener : InteractionListener, MapArea {
     }
 
     override fun defineListeners() {
-
         on(Rooms.statueIDs, IntType.SCENERY, "touch") { player, node ->
             val correctStatue = getAttribute(player, "rd:statues", 0)
             if (node.id == Rooms.statueIDs[correctStatue]) {
@@ -57,7 +60,7 @@ class RecruitmentDriveListener : InteractionListener, MapArea {
                     FaceAnim.NEUTRAL,
                     false,
                     "Excellent work, ${player.name}.",
-                    "Please step through the portal to meet your next challenge."
+                    "Please step through the portal to meet your next challenge.",
                 )
             } else {
                 setAttribute(player, RecruitmentDrive.stageFail, true)
@@ -74,10 +77,11 @@ class RecruitmentDriveListener : InteractionListener, MapArea {
             return@on true
         }
 
-        val interactionWithNotes = mapOf(
-            Items.KNIGHTS_NOTES_11734 to KnightNotesDialogue(),
-            Items.KNIGHTS_NOTES_11735 to KnightNotesDialogue.BrokenKnightNotes()
-        )
+        val interactionWithNotes =
+            mapOf(
+                Items.KNIGHTS_NOTES_11734 to KnightNotesDialogue(),
+                Items.KNIGHTS_NOTES_11735 to KnightNotesDialogue.BrokenKnightNotes(),
+            )
         interactionWithNotes.forEach { (item, dialogue) ->
             onUseWith(IntType.NPC, item, NPCs.SIR_TIFFY_CASHIEN_2290) { player, _, with ->
                 openDialogue(player, dialogue, with)
@@ -213,7 +217,6 @@ class RecruitmentDriveListener : InteractionListener, MapArea {
     }
 
     override fun defineDestinationOverrides() {
-
         setDest(IntType.SCENERY, intArrayOf(Scenery.OPEN_DOOR_7345), "walk-through") { player, _ ->
             when {
                 inBorders(player, 2476, 4941, 2477, 4939) -> Location(2476, 4940, 0)
@@ -228,33 +231,63 @@ class RecruitmentDriveListener : InteractionListener, MapArea {
     }
 
     companion object {
-
         enum class Rooms(
             val npc: Int,
             val location: Location,
             val destination: Location,
             val portal: Int,
-            val door: Int
+            val door: Int,
         ) {
-            I(NPCs.SIR_SPISHYUS_2282, Location(2490, 4972), Location(2489, 4972), Scenery.PORTAL_7272, Scenery.DOOR_7274),
-            II(NPCs.LADY_TABLE_2283, Location(2460, 4979), Location(2459, 4979), Scenery.PORTAL_7288, Scenery.DOOR_7302),
+            I(
+                NPCs.SIR_SPISHYUS_2282,
+                Location(2490, 4972),
+                Location(2489, 4972),
+                Scenery.PORTAL_7272,
+                Scenery.DOOR_7274,
+            ),
+            II(
+                NPCs.LADY_TABLE_2283,
+                Location(2460, 4979),
+                Location(2459, 4979),
+                Scenery.PORTAL_7288,
+                Scenery.DOOR_7302,
+            ),
             III(
                 NPCs.SIR_KUAM_FERENTSE_2284,
                 Location(2455, 4964),
                 Location(2456, 4964),
                 Scenery.PORTAL_7315,
-                Scenery.DOOR_7317
+                Scenery.DOOR_7317,
             ),
-            IV(NPCs.SIR_TINLEY_2286, Location(2471, 4956), Location(2472, 4956), Scenery.PORTAL_7318, Scenery.DOOR_7320),
-            V(NPCs.SIR_REN_ITCHOOD_2287, Location(2439, 4956), Location(2440, 4956), Scenery.PORTAL_7321, Scenery.DOOR_7323),
-            VI(NPCs.MISS_CHEEVERS_2288, Location(2467, 4940), Location(2468, 4940), Scenery.PORTAL_7324, Scenery.DOOR_7326),
+            IV(
+                NPCs.SIR_TINLEY_2286,
+                Location(2471, 4956),
+                Location(2472, 4956),
+                Scenery.PORTAL_7318,
+                Scenery.DOOR_7320,
+            ),
+            V(
+                NPCs.SIR_REN_ITCHOOD_2287,
+                Location(2439, 4956),
+                Location(2440, 4956),
+                Scenery.PORTAL_7321,
+                Scenery.DOOR_7323,
+            ),
+            VI(
+                NPCs.MISS_CHEEVERS_2288,
+                Location(2467, 4940),
+                Location(2468, 4940),
+                Scenery.PORTAL_7324,
+                Scenery.DOOR_7326,
+            ),
             VII(
                 NPCs.MS_HYNN_TERPRETT_2289,
                 Location(2451, 4935),
                 Location(2451, 4936),
                 Scenery.PORTAL_7352,
-                Scenery.DOOR_7354
-            );
+                Scenery.DOOR_7354,
+            ),
+            ;
 
             companion object {
                 val index = values().associateBy { it.ordinal }
@@ -264,7 +297,10 @@ class RecruitmentDriveListener : InteractionListener, MapArea {
             }
         }
 
-        fun initRoomStage(player: Player, npc: Int) {
+        fun initRoomStage(
+            player: Player,
+            npc: Int,
+        ) {
             when (npc) {
                 NPCs.SIR_SPISHYUS_2282 -> openDialogue(player, SirSpishyusDialogueFile(1), NPC(npc))
                 NPCs.LADY_TABLE_2283 -> openDialogue(player, ObservationTest(1), NPC(npc))

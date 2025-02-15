@@ -2,8 +2,9 @@ package content.region.misthalin.handlers.museum
 
 import content.region.misthalin.dialogue.digsite.GateGuardDialogue
 import content.region.misthalin.handlers.museum.dialogue.*
-import org.rs.consts.*
 import core.api.*
+import core.api.MapArea
+import core.api.quest.isQuestComplete
 import core.game.global.action.ClimbActionHandler
 import core.game.global.action.DoorActionHandler
 import core.game.interaction.IntType
@@ -12,13 +13,14 @@ import core.game.interaction.InterfaceListener
 import core.game.node.entity.Entity
 import core.game.node.entity.player.Player
 import core.game.world.map.Location
-import core.api.MapArea
-import core.api.quest.isQuestComplete
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.*
 
-class MuseumListener : InteractionListener, InterfaceListener, MapArea {
-
+class MuseumListener :
+    InteractionListener,
+    InterfaceListener,
+    MapArea {
     override fun areaEnter(entity: Entity) {
         /*
          * Handles when a player enters the museum area.
@@ -29,7 +31,10 @@ class MuseumListener : InteractionListener, InterfaceListener, MapArea {
         }
     }
 
-    override fun areaLeave(entity: Entity, logout: Boolean) {
+    override fun areaLeave(
+        entity: Entity,
+        logout: Boolean,
+    ) {
         /*
          * Handles when a player leaves the museum area.
          */
@@ -51,15 +56,12 @@ class MuseumListener : InteractionListener, InterfaceListener, MapArea {
      */
 
     override fun defineListeners() {
-
-
         /*
          * Handles interactions with the plaques in the museum.
          */
 
         on(BUTTON_PLUS_PLAQUES, IntType.SCENERY, "study", "push") { player, node ->
             when (node.id) {
-
                 24605 -> openDialogue(player, TalkAboutLizards())
                 24606 -> openDialogue(player, TalkAboutTortoises())
                 24607 -> openDialogue(player, TalkAboutDragons())
@@ -138,17 +140,18 @@ class MuseumListener : InteractionListener, InterfaceListener, MapArea {
                 "Rock pick",
                 "Specimen brush",
                 "Leather gloves",
-                "Leather boots"
+                "Leather boots",
             )
             addDialogueAction(player) { _, button ->
-                val item: Int = when (button) {
-                    2 -> Items.TROWEL_676
-                    3 -> Items.ROCK_PICK_675
-                    4 -> Items.SPECIMEN_BRUSH_670
-                    5 -> Items.LEATHER_GLOVES_1059
-                    6 -> Items.LEATHER_BOOTS_1061
-                    else -> return@addDialogueAction
-                }
+                val item: Int =
+                    when (button) {
+                        2 -> Items.TROWEL_676
+                        3 -> Items.ROCK_PICK_675
+                        4 -> Items.SPECIMEN_BRUSH_670
+                        5 -> Items.LEATHER_GLOVES_1059
+                        6 -> Items.LEATHER_BOOTS_1061
+                        else -> return@addDialogueAction
+                    }
                 val name: String = getItemName(item).lowercase()
                 val word: String = if (name.startsWith("leather")) "pair of " else ""
                 if (!addItem(player, item)) {
@@ -192,7 +195,7 @@ class MuseumListener : InteractionListener, InterfaceListener, MapArea {
             intArrayOf(Scenery.MAP_24390, Scenery.MAP_24391, Scenery.MAP_24392),
             IntType.SCENERY,
             "look-at",
-            "take"
+            "take",
         ) { player, node ->
             if (getUsedOption(player) == "take") {
                 if (!addItem(player, Items.MUSEUM_MAP_11184)) {
@@ -211,7 +214,6 @@ class MuseumListener : InteractionListener, InterfaceListener, MapArea {
     }
 
     override fun defineInterfaceListeners() {
-
         /*
          * Handles opening the museum map interface.
          */
@@ -235,7 +237,7 @@ class MuseumListener : InteractionListener, InterfaceListener, MapArea {
                     in mapButtonsToSecondFloor -> "second"
                     in mapButtonsToTopFloor -> "top"
                     else -> return@on true
-                }
+                },
             )
             return@on true
         }
@@ -309,7 +311,10 @@ class MuseumListener : InteractionListener, InterfaceListener, MapArea {
         private val mapButtonsToSecondFloor = intArrayOf(42, 44, 152, 153)
         private val mapButtonsToTopFloor = intArrayOf(42, 44, 118, 119)
 
-        private fun updateVarbit(player: Player, value: Int) {
+        private fun updateVarbit(
+            player: Player,
+            value: Int,
+        ) {
             val currentVarbitValue = getVarbit(player, Vars.VARBIT_VARROCK_MUSEUM_CENSUS_5390)
             setVarbit(player, Vars.VARBIT_VARROCK_MUSEUM_CENSUS_5390, currentVarbitValue + value)
         }
@@ -318,7 +323,10 @@ class MuseumListener : InteractionListener, InterfaceListener, MapArea {
             setVarbit(player, Vars.VARBIT_VARROCK_MUSEUM_CENSUS_5390, 0)
         }
 
-        private fun showMapFloor(player: Player, floor: String) {
+        private fun showMapFloor(
+            player: Player,
+            floor: String,
+        ) {
             when (floor) {
                 "basement" -> {
                     setComponentVisibility(player, Components.VM_MUSEUM_MAP_527, 2, true)

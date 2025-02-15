@@ -1,16 +1,15 @@
 package content.region.misthalin.handlers.lumbridge
 
 import content.data.items.RepairItem
-import org.rs.consts.NPCs
 import content.region.misthalin.dialogue.lumbridge.BobDialogue
 import core.game.interaction.NodeUsageEvent
 import core.game.interaction.UseWithHandler
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.NPCs
 
 @Initializable
 class RepairItemHandler : UseWithHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any?> {
         registerHandlers()
         return this

@@ -1,14 +1,15 @@
 package content.global.ame.rivertroll
 
-import org.rs.consts.NPCs
 import content.global.ame.RandomEventNPC
 import core.api.utils.WeightBasedTable
 import core.game.node.entity.Entity
 import core.game.node.entity.npc.NPC
+import org.rs.consts.NPCs
 import java.lang.Integer.max
 
-class RiverTrollNPC(override var loot: WeightBasedTable? = null) : RandomEventNPC(NPCs.RIVER_TROLL_391) {
-
+class RiverTrollNPC(
+    override var loot: WeightBasedTable? = null,
+) : RandomEventNPC(NPCs.RIVER_TROLL_391) {
     val ids = (391..396).toList()
 
     override fun init() {
@@ -30,7 +31,11 @@ class RiverTrollNPC(override var loot: WeightBasedTable? = null) : RandomEventNP
             this.terminate()
         }
         super.tick()
-        if (!player.viewport.currentPlane.npcs.contains(this)) this.clear()
+        if (!player.viewport.currentPlane.npcs
+                .contains(this)
+        ) {
+            this.clear()
+        }
     }
 
     override fun talkTo(npc: NPC) {}

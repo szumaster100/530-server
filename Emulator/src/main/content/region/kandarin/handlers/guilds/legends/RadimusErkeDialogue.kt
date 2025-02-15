@@ -13,8 +13,9 @@ import org.rs.consts.NPCs
  *  Represents the Radimus Erke dialogue.
  */
 @Initializable
-class RadimusErkeDialogue(player: Player? = null) : Dialogue(player) {
-
+class RadimusErkeDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         npcl(FaceAnim.HALF_GUILTY, "Excuse me a moment won't you. Do feel free to explore the rest of the building.")
@@ -22,7 +23,10 @@ class RadimusErkeDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 end()

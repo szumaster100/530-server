@@ -9,46 +9,53 @@ import core.game.node.item.Item
 import core.plugin.Initializable
 
 @Initializable
-class BonzoDialogue(player: Player? = null) : Dialogue(player) {
-
+class BonzoDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
-        stage = if (args.size < 2) {
-            if (player.inventory.containsItem(FishingContest.FISHING_ROD)) {
-                npc("Roll up, roll up! Enter the great Hemenster", "Fishing Contest! Only 5gp entrance fee!")
-                0
+        stage =
+            if (args.size < 2) {
+                if (player.inventory.containsItem(FishingContest.FISHING_ROD)) {
+                    npc("Roll up, roll up! Enter the great Hemenster", "Fishing Contest! Only 5gp entrance fee!")
+                    0
+                } else {
+                    npc("Sorry, lad, but you need a fishing", "rod to compete.")
+                    100
+                }
             } else {
-                npc("Sorry, lad, but you need a fishing", "rod to compete.")
-                100
+                npc("Ok folks, time's up! Let's see who caught", "the biggest fish!")
+                1000
             }
-        } else {
-            npc("Ok folks, time's up! Let's see who caught", "the biggest fish!")
-            1000
-        }
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 options("I'll enter the competition please.", "No thanks, I'll just watch the fun.")
                 stage++
             }
 
-            1 -> when (buttonId) {
-                1 -> {
-                    player("I'll enter the competition please.")
-                    stage = if (player.getAttribute("fishing_competition:garlic-stuffed", false)) {
-                        50
-                    } else {
-                        10
+            1 ->
+                when (buttonId) {
+                    1 -> {
+                        player("I'll enter the competition please.")
+                        stage =
+                            if (player.getAttribute("fishing_competition:garlic-stuffed", false)) {
+                                50
+                            } else {
+                                10
+                            }
+                    }
+
+                    2 -> {
+                        player("No thanks, I'll just watch the fun.")
+                        stage = 100
                     }
                 }
-
-                2 -> {
-                    player("No thanks, I'll just watch the fun.")
-                    stage = 100
-                }
-            }
 
             10 -> {
                 npc("Marvelous!")
@@ -73,7 +80,7 @@ class BonzoDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "Ok, we've got all the fishermen! It's time",
                     "to roll! Ok, nearly everyone is in their",
-                    "place already. You fish in the spot by the"
+                    "place already. You fish in the spot by the",
                 )
                 stage++
             }
@@ -113,7 +120,7 @@ class BonzoDialogue(player: Player? = null) : Dialogue(player) {
                     "We have a new winner! The",
                     "heroic-looking person who was fishing",
                     "by the pipes has caught the biggest carp I've",
-                    "seen since Grandpa Jack used to compete!"
+                    "seen since Grandpa Jack used to compete!",
                 )
                 stage++
             }

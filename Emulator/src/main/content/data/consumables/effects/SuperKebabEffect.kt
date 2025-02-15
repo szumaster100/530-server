@@ -12,7 +12,6 @@ class SuperKebabEffect : ConsumableEffect() {
         }
 
         if (RandomFunction.nextInt(32) < 1) {
-
             val effect = SkillEffect(RandomFunction.nextInt(Skills.NUM_SKILLS), -1.0, 0.0)
             effect.activate(player)
         }

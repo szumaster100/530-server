@@ -12,15 +12,18 @@ import core.plugin.Plugin
 
 @Initializable
 class FiremakingHandler : OptionHandler() {
-
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         submitIndividualPulse(
             player,
             FiremakingPulse(
                 player,
                 (node as Item),
-                (node as GroundItem)
-            )
+                (node as GroundItem),
+            ),
         )
         return true
     }
@@ -31,7 +34,10 @@ class FiremakingHandler : OptionHandler() {
         return this
     }
 
-    override fun handleSelectionCallback(skill: Int, player: Player) {
+    override fun handleSelectionCallback(
+        skill: Int,
+        player: Player,
+    ) {
         super.handleSelectionCallback(skill, player)
     }
 }

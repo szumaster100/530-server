@@ -1,6 +1,5 @@
 package content.global.ame.frogs
 
-import org.rs.consts.NPCs
 import core.api.lock
 import core.api.queueScript
 import core.api.stopExecuting
@@ -9,25 +8,32 @@ import core.game.dialogue.FaceAnim
 import core.game.interaction.QueueStrength
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
-class FrogPrincessDialogue(player: Player? = null) : Dialogue(player) {
-
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+class FrogPrincessDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         val event = player!!.getAttribute(FrogUtils.ATTRIBUTE_FROG_TASK_FAIL, 0)
         if (event == 0) {
             when (stage) {
-                0 -> npc(
-                    FaceAnim.OLD_SAD,
-                    "${player!!.username}, you must help me! I have been turned",
-                    "into a frog by a well-meaning wizard who suffers from",
-                    "an unfortunate obsession with frogs."
-                ).also { stage++ }
+                0 ->
+                    npc(
+                        FaceAnim.OLD_SAD,
+                        "${player!!.username}, you must help me! I have been turned",
+                        "into a frog by a well-meaning wizard who suffers from",
+                        "an unfortunate obsession with frogs.",
+                    ).also { stage++ }
 
-                1 -> npc(
-                    FaceAnim.OLD_NORMAL,
-                    "The only thing that will restore my true form is a kiss."
-                ).also { stage++ }
+                1 ->
+                    npc(
+                        FaceAnim.OLD_NORMAL,
+                        "The only thing that will restore my true form is a kiss.",
+                    ).also { stage++ }
 
                 2 -> player(FaceAnim.LAUGH, "Excuses, excuses!", "Okay, if that's what you want...").also { stage++ }
                 3 -> {

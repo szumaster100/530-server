@@ -1,9 +1,5 @@
 package content.region.kandarin.quest.itgronigen.handlers
 
-import org.rs.consts.Animations
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.*
 import core.api.quest.setQuestStage
 import core.game.activity.Cutscene
@@ -12,9 +8,14 @@ import core.game.node.entity.player.Player
 import core.game.world.map.Direction
 import core.game.world.map.Location
 import core.tools.DARK_RED
+import org.rs.consts.Animations
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
-class ObservatoryCutscene(player: Player) : Cutscene(player) {
-
+class ObservatoryCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(END_LOCATION)
         if (player.settings.isRunToggled) {
@@ -99,7 +100,7 @@ class ObservatoryCutscene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     PROFESSOR,
                     FaceAnim.FRIENDLY,
-                    "${player.username}, I'm just going upstairs to finish off."
+                    "${player.username}, I'm just going upstairs to finish off.",
                 )
             }
 

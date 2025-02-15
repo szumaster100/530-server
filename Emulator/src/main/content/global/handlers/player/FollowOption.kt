@@ -12,14 +12,17 @@ import core.plugin.Plugin
 
 @Initializable
 class FollowOption : OptionHandler() {
-
     @Throws(Throwable::class)
     override fun newInstance(arg: Any?): Plugin<Any> {
         Option._P_FOLLOW.setHandler(this)
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val target = node as Player
         player.pulseManager.run(
             object : MovementPulse(player, target, DestinationFlag.FOLLOW_ENTITY) {
@@ -33,7 +36,7 @@ class FollowOption : OptionHandler() {
                     mover.face(null)
                 }
             },
-            PulseType.STANDARD
+            PulseType.STANDARD,
         )
         return true
     }

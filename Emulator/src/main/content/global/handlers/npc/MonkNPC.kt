@@ -1,7 +1,5 @@
 package content.global.handlers.npc
 
-import org.rs.consts.Animations
-import org.rs.consts.NPCs
 import core.api.animate
 import core.api.stopWalk
 import core.game.node.entity.Entity
@@ -12,11 +10,19 @@ import core.game.node.entity.npc.AbstractNPC
 import core.game.world.map.Location
 import core.plugin.Initializable
 import core.tools.RandomFunction
+import org.rs.consts.Animations
+import org.rs.consts.NPCs
 
 @Initializable
-class MonkNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+class MonkNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return MonkNPC(id, location)
     }
 
@@ -25,8 +31,14 @@ class MonkNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, locatio
     }
 
     private class CombatAction : MeleeSwingHandler() {
-        override fun swing(entity: Entity?, victim: Entity?, state: BattleState?): Int {
-            if (entity!!.getSkills().lifepoints != entity.getSkills().maximumLifepoints && RandomFunction.randomize(10) < 2) {
+        override fun swing(
+            entity: Entity?,
+            victim: Entity?,
+            state: BattleState?,
+        ): Int {
+            if (entity!!.getSkills().lifepoints != entity.getSkills().maximumLifepoints &&
+                RandomFunction.randomize(10) < 2
+            ) {
                 stopWalk(entity)
                 animate(entity, Animations.HANDS_TOGETHER_709)
                 entity.getSkills().heal(2)

@@ -1,20 +1,19 @@
 package content.global.handlers.iface.ge
 
-import org.rs.consts.Components
+import core.api.ContainerListener
 import core.api.getAttribute
 import core.api.openInterface
 import core.api.setAttribute
 import core.game.component.Component
 import core.game.container.Container
 import core.game.container.ContainerEvent
-import core.api.ContainerListener
 import core.game.container.access.InterfaceContainer
 import core.game.ge.GEItemSet
 import core.game.interaction.InterfaceListener
 import core.game.node.entity.player.Player
+import org.rs.consts.Components
 
 class ExchangeItemSets : InterfaceListener {
-
     override fun defineInterfaceListeners() {
         onClose(Components.EXCHANGE_ITEMSETS_645) { player, _ ->
             val listener = getAttribute<InventoryListener?>(player, "ge-listener", null)
@@ -37,12 +36,17 @@ class ExchangeItemSets : InterfaceListener {
         }
     }
 
-    private class InventoryListener(val player: Player) : ContainerListener {
+    private class InventoryListener(
+        val player: Player,
+    ) : ContainerListener {
         init {
             createContainers(player)
         }
 
-        override fun update(c: Container?, event: ContainerEvent?) {
+        override fun update(
+            c: Container?,
+            event: ContainerEvent?,
+        ) {
             createContainers(player)
         }
 
@@ -52,7 +56,8 @@ class ExchangeItemSets : InterfaceListener {
 
         private fun createContainers(player: Player) {
             setAttribute(
-                player, "container-key",
+                player,
+                "container-key",
                 InterfaceContainer.generateItems(
                     player,
                     player.inventory.toArray(),
@@ -60,8 +65,8 @@ class ExchangeItemSets : InterfaceListener {
                     Components.EXCHANGE_SETS_SIDE_644,
                     0,
                     7,
-                    4
-                )
+                    4,
+                ),
             )
 
             InterfaceContainer.generateItems(
@@ -71,7 +76,7 @@ class ExchangeItemSets : InterfaceListener {
                 Components.EXCHANGE_ITEMSETS_645,
                 16,
                 14,
-                10
+                10,
             )
         }
     }

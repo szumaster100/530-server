@@ -18,13 +18,16 @@ import core.tools.RandomFunction
 
 @Initializable
 class MithrilSeedsPlugin : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         ItemDefinition.forId(299).handlers["option:plant"] = this
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         if (player.getAttribute("delay:plant", -1) > ticks) {
             return true
         }
@@ -34,12 +37,14 @@ class MithrilSeedsPlugin : OptionHandler() {
         }
         player.animate(ANIMATION)
         player.inventory.remove(ITEM)
-        val scenery: Scenery = SceneryBuilder.add(
-            Scenery(
-                getFlower(if (RandomFunction.random(100) == 1) RARE else FLOWERS),
-                player.location
-            ), 100
-        )
+        val scenery: Scenery =
+            SceneryBuilder.add(
+                Scenery(
+                    getFlower(if (RandomFunction.random(100) == 1) RARE else FLOWERS),
+                    player.location,
+                ),
+                100,
+            )
         player.moveStep()
         player.lock(3)
         player.pulseManager.run(
@@ -49,7 +54,7 @@ class MithrilSeedsPlugin : OptionHandler() {
                     player.dialogueInterpreter.open(1 shl 16 or 1, scenery)
                     return true
                 }
-            }
+            },
         )
         setAttribute(player, "delay:plant", ticks + 3)
         player.packetDispatch.sendMessage("You open the small mithril case.")

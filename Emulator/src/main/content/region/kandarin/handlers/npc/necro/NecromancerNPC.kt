@@ -1,20 +1,23 @@
 package content.region.kandarin.handlers.npc.necro
 
-import org.rs.consts.NPCs
 import core.api.*
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.BattleState
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.npc.NPCBehavior
 import core.game.node.entity.player.Player
-import core.tools.SystemLogger
 import core.tools.RandomFunction
+import core.tools.SystemLogger
+import org.rs.consts.NPCs
 
 val necroId = intArrayOf(NPCs.INVRIGAR_THE_NECROMANCER_173, NPCs.NECROMANCER_194)
 
 class NecromancerNPC : NPCBehavior(*necroId) {
-
-    override fun afterDamageReceived(self: NPC, attacker: Entity, state: BattleState) {
+    override fun afterDamageReceived(
+        self: NPC,
+        attacker: Entity,
+        state: BattleState,
+    ) {
         if (attacker is Player) {
             handleZombieSummoning(attacker)
         }
@@ -32,7 +35,10 @@ class NecromancerNPC : NPCBehavior(*necroId) {
         }
     }
 
-    override fun onDeathFinished(self: NPC, killer: Entity) {
+    override fun onDeathFinished(
+        self: NPC,
+        killer: Entity,
+    ) {
         if (killer is Player && getAttribute(killer.asPlayer(), "necro:summoned_zombie", false)) {
             runTask(killer, 3) {
                 val zombie = findLocalNPC(killer, NPCs.SUMMONED_ZOMBIE_77)

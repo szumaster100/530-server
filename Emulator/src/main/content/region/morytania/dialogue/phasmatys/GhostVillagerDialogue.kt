@@ -1,7 +1,5 @@
 package content.region.morytania.dialogue.phasmatys
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.region.morytania.quest.ahoy.GhostsAhoyUtils
 import content.region.morytania.quest.ahoy.dialogue.GhostVillagerDialogueFile
 import core.api.getAttribute
@@ -13,11 +11,17 @@ import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
 import core.tools.START_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
-class GhostVillagerDialogue(player: Player? = null) : Dialogue(player) {
-
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+class GhostVillagerDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             START_DIALOGUE ->
                 if (!inEquipment(player, Items.GHOSTSPEAK_AMULET_552)) {
@@ -29,7 +33,7 @@ class GhostVillagerDialogue(player: Player? = null) : Dialogue(player) {
                     npc(
                         "Why are you wearing that bedsheet?",
                         "If you're trying to pretend to be one of us, you're",
-                        "not fooling anybody - you're not even green!"
+                        "not fooling anybody - you're not even green!",
                     ).also { stage = END_DIALOGUE }
                 } else if (inEquipment(player, Items.BEDSHEET_4285)) {
                     end()
@@ -40,9 +44,10 @@ class GhostVillagerDialogue(player: Player? = null) : Dialogue(player) {
                         1 -> npc("We do not talk to the warm-bloods.").also { stage = END_DIALOGUE }
                         2 -> npc("What do you want, mortal?").also { stage = END_DIALOGUE }
                         3 -> npc("Why did we have to listen to that maniacal priest?").also { stage = END_DIALOGUE }
-                        4 -> npc("Worship the Ectofuntus all you want, but", "don't bother us, human.").also {
-                            stage = END_DIALOGUE
-                        }
+                        4 ->
+                            npc("Worship the Ectofuntus all you want, but", "don't bother us, human.").also {
+                                stage = END_DIALOGUE
+                            }
                     }
                 }
 

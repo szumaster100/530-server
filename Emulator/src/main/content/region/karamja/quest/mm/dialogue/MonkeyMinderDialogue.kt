@@ -1,6 +1,5 @@
 package content.region.karamja.quest.mm.dialogue
 
-import org.rs.consts.Components
 import core.api.openOverlay
 import core.api.teleport
 import core.game.dialogue.DialogueFile
@@ -8,13 +7,21 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.tools.END_DIALOGUE
+import org.rs.consts.Components
 
 class MonkeyMinderDialogue : DialogueFile() {
-
-    override fun handle(componentID: Int, buttonID: Int) {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         when (stage) {
             0 -> playerl("Ook Ook!").also { stage++ }
-            1 -> npcl("Why do you monkeys keep trying to scape? Good thing I've caught you before you got away, you little scoundrel.").also { stage++ }
+            1 ->
+                npcl(
+                    "Why do you monkeys keep trying to scape? Good thing I've caught you before you got away, you little scoundrel.",
+                ).also {
+                    stage++
+                }
             2 -> playerl("Ook!").also { stage++ }
             3 -> npcl("Let's put you back in you cage where you belong...").also { stage++ }
             4 -> playerl("Ok!").also { stage++ }
@@ -33,7 +40,7 @@ class MonkeyMinderDialogue : DialogueFile() {
                             }
                             return true
                         }
-                    }
+                    },
                 )
             }
         }

@@ -1,7 +1,5 @@
 package content.global.ame.pinball
 
-import org.rs.consts.Components
-import org.rs.consts.NPCs
 import content.data.GameAttributes
 import content.data.RandomEvent
 import content.global.ame.RandomEventNPC
@@ -12,18 +10,31 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.link.TeleportManager
 import core.game.system.task.Pulse
 import core.game.system.timer.impl.AntiMacro
-import core.tools.RandomFunction
+import org.rs.consts.Components
+import org.rs.consts.NPCs
 
-class PinballNPC(override var loot: WeightBasedTable? = null) : RandomEventNPC(NPCs.MYSTERIOUS_OLD_MAN_410) {
-
+class PinballNPC(
+    override var loot: WeightBasedTable? = null,
+) : RandomEventNPC(NPCs.MYSTERIOUS_OLD_MAN_410) {
     override fun init() {
         super.init()
         submitWorldPulse(
             object : Pulse(1) {
                 var counter = 0
+
                 override fun pulse(): Boolean {
                     when (counter++) {
-                        0 -> sendChat("Good day, ${player.username.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }}, care for a quick game?")
+                        0 ->
+                            sendChat(
+                                "Good day, ${player.username.replaceFirstChar {
+                                    if (it.isLowerCase()) {
+                                        it.titlecase()
+                                    } else {
+                                        it
+                                            .toString()
+                                    }
+                                }}, care for a quick game?",
+                            )
                         3 -> {
                             setAttribute(player, RandomEvent.save(), player.location)
                             registerLogoutListener(player, RandomEvent.logout()) { p ->
@@ -50,14 +61,15 @@ class PinballNPC(override var loot: WeightBasedTable? = null) : RandomEventNPC(N
                     }
                     return false
                 }
-            }
+            },
         )
     }
 
     override fun talkTo(npc: NPC) {
-        if (!inBorders(player, PinballUtils.PINBALL_EVENT_ZONE_BORDERS))
+        if (!inBorders(player, PinballUtils.PINBALL_EVENT_ZONE_BORDERS)) {
             sendMessage(player, "He's busy right now.")
-        else
+        } else {
             openDialogue(player, PinballDialogue(), npc)
+        }
     }
 }

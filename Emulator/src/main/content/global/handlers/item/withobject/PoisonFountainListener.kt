@@ -1,15 +1,14 @@
 package content.global.handlers.item.withobject
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.system.task.Pulse
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class PoisonFountainListener : InteractionListener {
-
     override fun defineListeners() {
         onUseWith(IntType.SCENERY, Items.POISONED_FISH_FOOD_274, Scenery.FOUNTAIN_153) { player, used, _ ->
             if (getAttribute(player, "piranhas-killed", false)) {
@@ -27,6 +26,7 @@ class PoisonFountainListener : InteractionListener {
                 player,
                 object : Pulse(1) {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             1 -> sendMessage(player, "The piranhas start eating the food...")
@@ -38,7 +38,7 @@ class PoisonFountainListener : InteractionListener {
                         }
                         return false
                     }
-                }
+                },
             )
             return@onUseWith true
         }

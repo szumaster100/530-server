@@ -1,8 +1,6 @@
 package content.region.kandarin.quest.ikov.handlers
 
 import content.data.GameAttributes
-import org.rs.consts.NPCs
-import content.region.kandarin.quest.ikov.TempleOfIkov
 import core.api.*
 import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
@@ -13,13 +11,21 @@ import core.game.node.entity.combat.CombatStyle
 import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.player.Player
 import core.game.world.map.Location
+import org.rs.consts.NPCs
 import org.rs.consts.Quests
 
-class FireWarriorOfLesarkusNPC(id: Int = 0, val player: Player?, location: Location? = null) :
-    AbstractNPC(id, location) {
+class FireWarriorOfLesarkusNPC(
+    id: Int = 0,
+    val player: Player?,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
     var clearTime = 0
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return FireWarriorOfLesarkusNPC(id, null, location)
     }
 
@@ -36,7 +42,11 @@ class FireWarriorOfLesarkusNPC(id: Int = 0, val player: Player?, location: Locat
         }
     }
 
-    override fun isAttackable(entity: Entity, style: CombatStyle, message: Boolean): Boolean {
+    override fun isAttackable(
+        entity: Entity,
+        style: CombatStyle,
+        message: Boolean,
+    ): Boolean {
         val attackable = super.isAttackable(entity, style, message)
         val player = entity.asPlayer()
         return attackable
@@ -48,9 +58,7 @@ class FireWarriorOfLesarkusNPC(id: Int = 0, val player: Player?, location: Locat
         val opponent = this
         println(state.ammunition)
         if (state.ammunition != null && state.ammunition.itemId == 78) {
-
         } else {
-
             player.properties.combatPulse.stop()
             if (state.estimatedHit > -1) {
                 state.estimatedHit = 0
@@ -59,7 +67,12 @@ class FireWarriorOfLesarkusNPC(id: Int = 0, val player: Player?, location: Locat
                 state.secondaryHit = 0
             }
             runTask(player, 0) {
-                sendNPCDialogue(player, opponent.id, "Your puny weapons do nothing against me human! Come back when you can give me a real fight!", FaceAnim.ANGRY)
+                sendNPCDialogue(
+                    player,
+                    opponent.id,
+                    "Your puny weapons do nothing against me human! Come back when you can give me a real fight!",
+                    FaceAnim.ANGRY,
+                )
             }
         }
     }

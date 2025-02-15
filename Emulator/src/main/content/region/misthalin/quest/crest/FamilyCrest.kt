@@ -1,8 +1,5 @@
 package content.region.misthalin.quest.crest
 
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.addItem
 import core.api.getStatLevel
 import core.api.log
@@ -10,8 +7,11 @@ import core.api.setAttribute
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
-import core.tools.Log
 import core.plugin.Initializable
+import core.tools.Log
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 /* TODO:
  *  You can talk to Avan or Caleb to re-obtain their crest parts via the drop trick.
@@ -21,12 +21,14 @@ import core.plugin.Initializable
  */
 @Initializable
 class FamilyCrest : Quest(Quests.FAMILY_CREST, 59, 58, 1, Vars.VARP_QUEST_FAMILY_CREST_PROGRESS_148, 0, 1, 11) {
-
     override fun newInstance(`object`: Any?): Quest {
         return this
     }
 
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 11
         player ?: return
@@ -48,7 +50,12 @@ class FamilyCrest : Quest(Quests.FAMILY_CREST, 59, 58, 1, Vars.VARP_QUEST_FAMILY
         if (stage >= 11) {
             line(player, "I found !!Caleb?? at his house?? in !!Catherby??", line++, stage > 11)
             line(player, "and told him of my Quest for his father to restore his Family Crest.", line++, stage > 11)
-            line(player, "I gave !!Caleb?? the Swordfish, Bass, Tuna, Salmon and Shrimp he needed for his salad in return for his crest piece", line++, stage > 11)
+            line(
+                player,
+                "I gave !!Caleb?? the Swordfish, Bass, Tuna, Salmon and Shrimp he needed for his salad in return for his crest piece",
+                line++,
+                stage > 11,
+            )
         }
         if (stage >= 12) {
             line(player, "!!Caleb?? has told me to speak to the !!Gem trader??", line++, stage > 12)
@@ -58,7 +65,12 @@ class FamilyCrest : Quest(Quests.FAMILY_CREST, 59, 58, 1, Vars.VARP_QUEST_FAMILY
             line(player, "I found !!Avan?? by some gold rocks North of !!Al Kharid??.", line++, stage > 13)
         }
         if (stage >= 14) {
-            line(player, "!!Avan?? has asked me to find the perfect gold, he has heard of a !!dwarf??", line++, stage > 14)
+            line(
+                player,
+                "!!Avan?? has asked me to find the perfect gold, he has heard of a !!dwarf??",
+                line++,
+                stage > 14,
+            )
             line(player, "who might know where to get some", line++, stage > 14)
         }
         if (stage >= 15) {
@@ -76,10 +88,20 @@ class FamilyCrest : Quest(Quests.FAMILY_CREST, 59, 58, 1, Vars.VARP_QUEST_FAMILY
             line(player, "He soon recovered when I used an antipoison potion on him.", line++, stage > 18)
         }
         if (stage >= 19) {
-            line(player, "He has told me about the Demon !!Chronozon?? located in the !!Edgeville dungeon??", line++, stage > 19)
+            line(
+                player,
+                "He has told me about the Demon !!Chronozon?? located in the !!Edgeville dungeon??",
+                line++,
+                stage > 19,
+            )
         }
         if (stage >= 20) {
-            line(player, "I defeated the Demon !!Chronozon?? and obtained !!Johnathon??'s crest piece", line++, stage > 20)
+            line(
+                player,
+                "I defeated the Demon !!Chronozon?? and obtained !!Johnathon??'s crest piece",
+                line++,
+                stage > 20,
+            )
         }
         if (stage == 100) {
             line(player, "I took all three pieces of the crest back to !!Dimintheis?? in !!Varrock??", line++, true)
@@ -96,14 +118,18 @@ class FamilyCrest : Quest(Quests.FAMILY_CREST, 59, 58, 1, Vars.VARP_QUEST_FAMILY
 
     override fun hasRequirements(player: Player?): Boolean {
         if (player != null) {
-            if (player.skills.getLevel(Skills.CRAFTING) < 40)
+            if (player.skills.getLevel(Skills.CRAFTING) < 40) {
                 return false
-            if (player.skills.getLevel(Skills.SMITHING) < 40)
+            }
+            if (player.skills.getLevel(Skills.SMITHING) < 40) {
                 return false
-            if (player.skills.getLevel(Skills.MINING) < 40)
+            }
+            if (player.skills.getLevel(Skills.MINING) < 40) {
                 return false
-            if (player.skills.getLevel(Skills.MAGIC) < 59)
+            }
+            if (player.skills.getLevel(Skills.MAGIC) < 59) {
                 return false
+            }
             return true
         }
         return false
@@ -120,7 +146,11 @@ class FamilyCrest : Quest(Quests.FAMILY_CREST, 59, 58, 1, Vars.VARP_QUEST_FAMILY
         drawReward(player, "for the gauntlets", ln++)
 
         if (!addItem(player, Items.FAMILY_GAUNTLETS_778)) {
-            log(this::class.java, Log.ERR, "Failed to give gauntlets to ${player.username} at end of quest, this should not occur due to crest item removal needed to finish quest.")
+            log(
+                this::class.java,
+                Log.ERR,
+                "Failed to give gauntlets to ${player.username} at end of quest, this should not occur due to crest item removal needed to finish quest.",
+            )
         }
         setAttribute(player, "/save:family-crest:gauntlets", Items.FAMILY_GAUNTLETS_778)
     }

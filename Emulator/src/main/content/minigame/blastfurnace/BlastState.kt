@@ -17,7 +17,10 @@ class BlastState {
         private set
     var cokeInStove = 0
 
-    fun tick(pumping: Boolean, pedaling: Boolean) {
+    fun tick(
+        pumping: Boolean,
+        pedaling: Boolean,
+    ) {
         ticksElapsed++
 
         adjustStoveTemperature()
@@ -28,8 +31,11 @@ class BlastState {
     }
 
     private fun adjustStoveTemperature() {
-        if (cokeInStove > 0) stoveTemp = (stoveTemp + 1).coerceAtMost(100)
-        else stoveTemp = (stoveTemp - 1).coerceAtLeast(0)
+        if (cokeInStove > 0) {
+            stoveTemp = (stoveTemp + 1).coerceAtMost(100)
+        } else {
+            stoveTemp = (stoveTemp - 1).coerceAtLeast(0)
+        }
     }
 
     private fun adjustFurnaceTemperature(pumping: Boolean) {
@@ -39,23 +45,34 @@ class BlastState {
                 in 32..66 -> furnaceTemp += 2
                 in 67..100 -> furnaceTemp += 3
             }
-        } else furnaceTemp--
+        } else {
+            furnaceTemp--
+        }
 
         furnaceTemp = furnaceTemp.coerceAtLeast(0).coerceAtMost(100)
     }
 
-    private fun checkForBreakage(pedaling: Boolean, pumping: Boolean) {
+    private fun checkForBreakage(
+        pedaling: Boolean,
+        pumping: Boolean,
+    ) {
         if (disableBreaking) return
         if (pumping && (!potPipeBroken || !pumpPipeBroken)) {
             if (RandomFunction.roll(50) || forceBreaking) {
-                if (RandomFunction.nextBool()) potPipeBroken = true
-                else pumpPipeBroken = true
+                if (RandomFunction.nextBool()) {
+                    potPipeBroken = true
+                } else {
+                    pumpPipeBroken = true
+                }
             }
         }
 
         if (pedaling && (!beltBroken || !cogBroken)) {
-            if (RandomFunction.roll(50) || forceBreaking) beltBroken = true
-            else if (RandomFunction.roll(50) || forceBreaking) cogBroken = true
+            if (RandomFunction.roll(50) || forceBreaking) {
+                beltBroken = true
+            } else if (RandomFunction.roll(50) || forceBreaking) {
+                cogBroken = true
+            }
         }
     }
 

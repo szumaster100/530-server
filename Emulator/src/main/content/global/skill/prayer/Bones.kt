@@ -3,7 +3,11 @@ package content.global.skill.prayer
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import org.rs.consts.Items
 
-enum class Bones(val itemId: Int, val experience: Double, val bonemealId: Int? = null) {
+enum class Bones(
+    val itemId: Int,
+    val experience: Double,
+    val bonemealId: Int? = null,
+) {
     BONES(Items.BONES_2530, 4.5, Items.BONEMEAL_4255),
     BONES_2(Items.BONES_526, 4.5, Items.BONEMEAL_4256),
     WOLF_BONES(Items.WOLF_BONES_2859, 4.5, Items.BONEMEAL_4257),
@@ -28,7 +32,8 @@ enum class Bones(val itemId: Int, val experience: Double, val bonemealId: Int? =
     MARINATED_JOGRE_BONES(Items.MARINATED_J_BONES_3130, 18.0),
     RAW_PASTY_JOGRE_BONES(Items.PASTY_JOGRE_BONES_3131, 17.0),
     COOKED_PASTY_JOGRE_BONES(Items.PASTY_JOGRE_BONES_3132, 17.0),
-    MARINATED_JOGRE_BONES_BAD(Items.MARINATED_J_BONES_3133, 18.0);
+    MARINATED_JOGRE_BONES_BAD(Items.MARINATED_J_BONES_3133, 18.0),
+    ;
 
     companion object {
         private val bones = Int2ObjectOpenHashMap<Bones>()

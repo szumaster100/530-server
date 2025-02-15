@@ -1,15 +1,19 @@
 package content.global.skill.crafting.casting
 
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import core.api.*
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 
-class GemCuttingPulse(player: Player?, item: Item?, var amount: Int, val gem: Gem) : SkillPulse<Item?>(player, item) {
-
+class GemCuttingPulse(
+    player: Player?,
+    item: Item?,
+    var amount: Int,
+    val gem: Gem,
+) : SkillPulse<Item?>(player, item) {
     val ticks = 0
 
     init {

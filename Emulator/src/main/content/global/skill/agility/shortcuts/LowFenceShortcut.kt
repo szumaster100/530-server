@@ -1,7 +1,5 @@
 package content.global.skill.agility.shortcuts
 
-import org.rs.consts.Animations
-import org.rs.consts.Scenery
 import content.global.skill.agility.AgilityHandler
 import core.api.hasLevelDyn
 import core.api.queueScript
@@ -13,11 +11,11 @@ import core.game.interaction.QueueStrength
 import core.game.node.entity.skill.Skills
 import core.game.world.map.Direction
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
+import org.rs.consts.Scenery
 
 class LowFenceShortcut : InteractionListener {
-
     override fun defineListeners() {
-
         on(Scenery.LOW_FENCE_12776, IntType.SCENERY, "jump-over") { player, _ ->
             if (!hasLevelDyn(player, Skills.AGILITY, 25)) {
                 sendMessage(player, "You need an agility level of at least 25 to do this.")
@@ -33,7 +31,7 @@ class LowFenceShortcut : InteractionListener {
                     Animation(Animations.JUMP_OVER_OBSTACLE_6132),
                     10,
                     0.0,
-                    null
+                    null,
                 )
                 return@queueScript stopExecuting(player)
             }

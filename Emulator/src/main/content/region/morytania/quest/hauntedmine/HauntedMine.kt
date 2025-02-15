@@ -1,8 +1,5 @@
 package content.region.morytania.quest.hauntedmine
 
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.addItemOrDrop
 import core.api.getStatLevel
 import core.api.quest.isQuestComplete
@@ -10,10 +7,15 @@ import core.api.rewardXP
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 class HauntedMine : Quest(Quests.HAUNTED_MINE, 73, 72, 2, Vars.VARP_QUEST_HAUNTED_MINE_PROGRESS_382, 0, 1, 11) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 11
         if (stage == 0) {
@@ -21,9 +23,39 @@ class HauntedMine : Quest(Quests.HAUNTED_MINE, 73, 72, 2, Vars.VARP_QUEST_HAUNTE
             line(player, "!!Zealot??' outside the !!mines of Morytania??.", line++)
             line++
             line(player, "To complete this quest I need:", line++)
-            line(player, if (getStatLevel(player, Skills.AGILITY) >= 15) "---Level 15 Agility./--" else "!!Level 15 Agility.??", line++)
-            line(player, if (getStatLevel(player, Skills.CRAFTING) >= 35) "---35 Crafting./--" else "!!Level 35 Crafting.??", line++)
-            line(player, if (isQuestComplete(player, Quests.PRIEST_IN_PERIL) && isQuestComplete(player, Quests.NATURE_SPIRIT)) "---Access to Morytania./--" else "!!Access to Morytania.??", line++)
+            line(
+                player,
+                if (getStatLevel(player, Skills.AGILITY) >=
+                    15
+                ) {
+                    "---Level 15 Agility./--"
+                } else {
+                    "!!Level 15 Agility.??"
+                },
+                line++,
+            )
+            line(
+                player,
+                if (getStatLevel(player, Skills.CRAFTING) >=
+                    35
+                ) {
+                    "---35 Crafting./--"
+                } else {
+                    "!!Level 35 Crafting.??"
+                },
+                line++,
+            )
+            line(
+                player,
+                if (isQuestComplete(player, Quests.PRIEST_IN_PERIL) &&
+                    isQuestComplete(player, Quests.NATURE_SPIRIT)
+                ) {
+                    "---Access to Morytania./--"
+                } else {
+                    "!!Access to Morytania.??"
+                },
+                line++,
+            )
             line(player, "I must be able to !!defeat a level !!95 enemy??.", line++)
         }
 
@@ -50,4 +82,3 @@ class HauntedMine : Quest(Quests.HAUNTED_MINE, 73, 72, 2, Vars.VARP_QUEST_HAUNTE
         return this
     }
 }
-

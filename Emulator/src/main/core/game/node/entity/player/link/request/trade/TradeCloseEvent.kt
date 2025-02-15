@@ -10,8 +10,10 @@ import core.net.packet.context.ContainerContext
 import core.net.packet.out.ContainerPacket
 
 class TradeCloseEvent : CloseEvent {
-
-    override fun close(player: Player, component: Component): Boolean {
+    override fun close(
+        player: Player,
+        component: Component,
+    ): Boolean {
         val module = TradeModule.getExtension(player) ?: return true
 
         player.packetDispatch.sendRunScript(101, "")
@@ -41,8 +43,14 @@ class TradeCloseEvent : CloseEvent {
     private fun closeInterfaces(player: Player) {
         player.removeExtension(TradeModule::class.java)
         player.interfaceManager.closeSingleTab()
-        PacketRepository.send(ContainerPacket::class.java, ContainerContext(player, -1, 2, 24, emptyArray<Item>(), 27, false))
-        PacketRepository.send(ContainerPacket::class.java, ContainerContext(player, -1, 2, 23, emptyArray<Item>(), 27, false))
+        PacketRepository.send(
+            ContainerPacket::class.java,
+            ContainerContext(player, -1, 2, 24, emptyArray<Item>(), 27, false),
+        )
+        PacketRepository.send(
+            ContainerPacket::class.java,
+            ContainerContext(player, -1, 2, 23, emptyArray<Item>(), 27, false),
+        )
         player.packetDispatch.sendRunScript(101, "")
     }
 
@@ -58,5 +66,4 @@ class TradeCloseEvent : CloseEvent {
         module.isRetained = true
         player.inventory.addAll(module.container)
     }
-
 }

@@ -1,8 +1,5 @@
 package content.region.kandarin.quest.biohazard
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.*
 import core.api.quest.isQuestInProgress
 import core.api.quest.setQuestStage
@@ -11,10 +8,20 @@ import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.player.Player
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class MournerNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+class MournerNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return MournerNPC(id, location)
     }
 

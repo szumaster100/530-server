@@ -1,6 +1,5 @@
 package content.region.asgarnia.handlers.npc.trollheim
 
-import org.rs.consts.NPCs
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.CombatStyle
 import core.game.node.entity.combat.DeathTask
@@ -9,11 +8,18 @@ import core.game.node.entity.npc.agg.AggressiveBehavior
 import core.game.node.entity.npc.agg.AggressiveHandler
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
-class ThrowerTrollNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+class ThrowerTrollNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return ThrowerTrollNPC(id, location)
     }
 
@@ -23,7 +29,10 @@ class ThrowerTrollNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id,
             AggressiveHandler(
                 this,
                 object : AggressiveBehavior() {
-                    override fun canSelectTarget(entity: Entity, target: Entity): Boolean {
+                    override fun canSelectTarget(
+                        entity: Entity,
+                        target: Entity,
+                    ): Boolean {
                         if (!target.isActive || DeathTask.isDead(target)) {
                             return false
                         }
@@ -32,8 +41,8 @@ class ThrowerTrollNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id,
                         }
                         return true
                     }
-                }
-            )
+                },
+            ),
         )
         getAggressiveHandler().chanceRatio = 8
         getAggressiveHandler().radius = 7
@@ -48,6 +57,17 @@ class ThrowerTrollNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id,
     }
 
     override fun getIds(): IntArray {
-        return intArrayOf(NPCs.THROWER_TROLL_1101, NPCs.THROWER_TROLL_1102, NPCs.THROWER_TROLL_1103, NPCs.THROWER_TROLL_1104, NPCs.THROWER_TROLL_1105, NPCs.THROWER_TROLL_1130, NPCs.THROWER_TROLL_1131, NPCs.THROWER_TROLL_1132, NPCs.THROWER_TROLL_1133, NPCs.THROWER_TROLL_1134)
+        return intArrayOf(
+            NPCs.THROWER_TROLL_1101,
+            NPCs.THROWER_TROLL_1102,
+            NPCs.THROWER_TROLL_1103,
+            NPCs.THROWER_TROLL_1104,
+            NPCs.THROWER_TROLL_1105,
+            NPCs.THROWER_TROLL_1130,
+            NPCs.THROWER_TROLL_1131,
+            NPCs.THROWER_TROLL_1132,
+            NPCs.THROWER_TROLL_1133,
+            NPCs.THROWER_TROLL_1134,
+        )
     }
 }

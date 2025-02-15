@@ -1,10 +1,7 @@
 package content.global.skill.agility.grapple
 
-import org.rs.consts.Animations
-import org.rs.consts.Components
-import core.api.ui.restoreTabs
-import org.rs.consts.Items
 import core.api.*
+import core.api.ui.restoreTabs
 import core.api.ui.setMinimapState
 import core.cache.def.impl.SceneryDefinition
 import core.game.component.Component
@@ -20,6 +17,9 @@ import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Animations
+import org.rs.consts.Components
+import org.rs.consts.Items
 
 @Initializable
 class YanilleGrapple : OptionHandler() {
@@ -32,17 +32,26 @@ class YanilleGrapple : OptionHandler() {
             REQUIREMENTS.putIfAbsent(Skills.RANGE, 21)
             REQUIREMENTS.putIfAbsent(Skills.STRENGTH, 38)
             requirementsString =
-                "You need at least " + REQUIREMENTS[Skills.AGILITY] + " " + Skills.SKILL_NAME[Skills.AGILITY] + ", " + REQUIREMENTS[Skills.RANGE] + " " + Skills.SKILL_NAME[Skills.RANGE] + ", and " + REQUIREMENTS[Skills.STRENGTH] + " " + Skills.SKILL_NAME[Skills.STRENGTH] + " to use this shortcut."
+                "You need at least " + REQUIREMENTS[Skills.AGILITY] + " " + Skills.SKILL_NAME[Skills.AGILITY] + ", " +
+                REQUIREMENTS[Skills.RANGE] +
+                " " +
+                Skills.SKILL_NAME[Skills.RANGE] +
+                ", and " +
+                REQUIREMENTS[Skills.STRENGTH] +
+                " " +
+                Skills.SKILL_NAME[Skills.STRENGTH] +
+                " to use this shortcut."
         }
 
-        private val crossbowIds = intArrayOf(
-            Items.DORGESHUUN_CBOW_8880,
-            Items.MITH_CROSSBOW_9181,
-            Items.ADAMANT_CROSSBOW_9183,
-            Items.RUNE_CROSSBOW_9185,
-            Items.KARILS_CROSSBOW_4734,
-            Items.HUNTERS_CROSSBOW_10156
-        )
+        private val crossbowIds =
+            intArrayOf(
+                Items.DORGESHUUN_CBOW_8880,
+                Items.MITH_CROSSBOW_9181,
+                Items.ADAMANT_CROSSBOW_9183,
+                Items.RUNE_CROSSBOW_9185,
+                Items.KARILS_CROSSBOW_4734,
+                Items.HUNTERS_CROSSBOW_10156,
+            )
         private val grappleId = Items.MITH_GRAPPLE_9419
     }
 
@@ -52,17 +61,22 @@ class YanilleGrapple : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val destination: Location
         val current = player.location
         when (option) {
-            "jump" -> ForceMovement.run(
-                player,
-                current,
-                if (current.y < 3074) Location.create(2556, 3072, 0) else Location.create(2556, 3075, 0),
-                Animation(7268),
-                10
-            )
+            "jump" ->
+                ForceMovement.run(
+                    player,
+                    current,
+                    if (current.y < 3074) Location.create(2556, 3072, 0) else Location.create(2556, 3075, 0),
+                    Animation(7268),
+                    10,
+                )
 
             "grapple" -> {
                 destination = if (current.y < 3073) Location.create(2556, 3073, 1) else Location.create(2556, 3074, 1)
@@ -81,6 +95,7 @@ class YanilleGrapple : OptionHandler() {
                     object : Pulse(1, player) {
                         var counter = 1
                         var tab: Component? = null
+
                         override fun pulse(): Boolean {
                             when (counter++) {
                                 1 -> {
@@ -90,8 +105,8 @@ class YanilleGrapple : OptionHandler() {
                                         Animation(Animations.FIRE_CROSSBOW_TO_CLIMB_WALL_4455),
                                         Graphics(
                                             org.rs.consts.Graphics.MITHRIL_GRAPPLE_760,
-                                            100
-                                        )
+                                            100,
+                                        ),
                                     )
                                 }
 
@@ -117,7 +132,7 @@ class YanilleGrapple : OptionHandler() {
                             }
                             return false
                         }
-                    }
+                    },
                 )
             }
         }

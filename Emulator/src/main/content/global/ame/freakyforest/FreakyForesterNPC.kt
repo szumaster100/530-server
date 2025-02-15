@@ -1,7 +1,5 @@
 package content.global.ame.freakyforest
 
-import org.rs.consts.NPCs
-import org.rs.consts.Sounds
 import content.data.RandomEvent
 import content.global.ame.RandomEventNPC
 import core.api.*
@@ -11,9 +9,12 @@ import core.game.node.entity.npc.NPC
 import core.game.system.timer.impl.AntiMacro
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Graphics
+import org.rs.consts.NPCs
+import org.rs.consts.Sounds
 
-class FreakyForesterNPC(override var loot: WeightBasedTable? = null) : RandomEventNPC(NPCs.FREAKY_FORESTER_2458) {
-
+class FreakyForesterNPC(
+    override var loot: WeightBasedTable? = null,
+) : RandomEventNPC(NPCs.FREAKY_FORESTER_2458) {
     override fun init() {
         super.init()
         sendChat("Ah, ${player.username}, just the person I need!")

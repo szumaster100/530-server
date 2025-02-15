@@ -1,6 +1,5 @@
 package content.global.skill.hunter.imp
 
-import org.rs.consts.Items
 import core.api.closeInterface
 import core.api.replaceSlot
 import core.api.sendMessage
@@ -9,17 +8,16 @@ import core.game.node.item.Item
 import core.net.packet.PacketRepository
 import core.net.packet.context.ContainerContext
 import core.net.packet.out.ContainerPacket
+import org.rs.consts.Items
 
 class ImpInterface : InterfaceListener {
-
     private val impBoxComponent = 478
 
     override fun defineInterfaceListeners() {
-
         onOpen(impBoxComponent) { player, _ ->
             PacketRepository.send(
                 ContainerPacket::class.java,
-                ContainerContext(player, impBoxComponent, 61, 91, player.inventory, true)
+                ContainerContext(player, impBoxComponent, 61, 91, player.inventory, true),
             )
             return@onOpen true
         }

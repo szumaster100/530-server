@@ -2,8 +2,9 @@ package content.global.activity.jobs.impl
 
 import org.rs.consts.NPCs
 
-enum class Employers(val npcId: Int) {
-
+enum class Employers(
+    val npcId: Int,
+) {
     WOODCUTTING_TUTOR(NPCs.WOODCUTTING_TUTOR_4906),
 
     MAGIC_TUTOR(NPCs.MAGIC_TUTOR_4707),
@@ -38,5 +39,5 @@ enum class Employers(val npcId: Int) {
 
     GILLIE_GROATS(NPCs.GILLIE_GROATS_3807),
 
-    AGGIE(NPCs.AGGIE_922);
+    AGGIE(NPCs.AGGIE_922),
 }

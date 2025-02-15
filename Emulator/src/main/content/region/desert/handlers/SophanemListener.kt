@@ -1,8 +1,5 @@
 package content.region.desert.handlers
 
-import org.rs.consts.Components
-import org.rs.consts.Scenery
-import org.rs.consts.Quests
 import core.api.*
 import core.api.quest.hasRequirement
 import core.game.global.action.ClimbActionHandler
@@ -11,16 +8,17 @@ import core.game.interaction.InteractionListener
 import core.game.node.entity.player.link.TeleportManager
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Components
+import org.rs.consts.Quests
+import org.rs.consts.Scenery
 
 class SophanemListener : InteractionListener {
-
     companion object {
         private const val LADDER_UP = Scenery.LADDER_20277
         private const val LADDER_DOWN = Scenery.LADDER_20275
     }
 
     override fun defineListeners() {
-
         on(LADDER_UP, IntType.SCENERY, "climb-up") { player, _ ->
             ClimbActionHandler.climb(player, Animation(828), Location(3315, 2796, 0))
             return@on true

@@ -1,7 +1,5 @@
 package content.region.kandarin.quest.arena.handlers.npc
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.kandarin.quest.arena.dialogue.GeneralDialogue
 import core.api.*
 import core.api.quest.getQuestStage
@@ -13,11 +11,19 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class BouncerNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+class BouncerNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return BouncerNPC(id, location)
     }
 
@@ -44,7 +50,7 @@ class BouncerNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, loca
                         bouncer.attack(player)
                         return true
                     }
-                }
+                },
             )
         }
     }

@@ -1,6 +1,5 @@
 package content.minigame.gnomecook.crunchies
 
-import org.rs.consts.Items
 import core.api.inInventory
 import core.game.component.Component
 import core.game.component.ComponentDefinition
@@ -10,6 +9,7 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Items
 
 private const val TOAD_CRUNCHIES = 9538
 private const val SPICE_CRUNCHIES = 9540
@@ -19,14 +19,13 @@ private const val HALF_BAKED_CRUNCHY = 2201
 
 @Initializable
 class GnomeCrunchyInterface : ComponentPlugin() {
-
     override fun handle(
         player: Player?,
         component: Component?,
         opcode: Int,
         button: Int,
         slot: Int,
-        itemId: Int
+        itemId: Int,
     ): Boolean {
         player ?: return false
         when (button) {
@@ -38,7 +37,10 @@ class GnomeCrunchyInterface : ComponentPlugin() {
         return true
     }
 
-    private fun attemptMake(crunchy: HalfMadeCrunchy, player: Player) {
+    private fun attemptMake(
+        crunchy: HalfMadeCrunchy,
+        player: Player,
+    ) {
         var hasAll = true
 
         if (player.skills.getLevel(Skills.COOKING) < crunchy.reqLevel) {
@@ -70,7 +72,10 @@ class GnomeCrunchyInterface : ComponentPlugin() {
         player.interfaceManager.close()
     }
 
-    override fun open(player: Player?, component: Component?) {
+    override fun open(
+        player: Player?,
+        component: Component?,
+    ) {
         player ?: return
         component ?: return
         super.open(player, component)
@@ -86,10 +91,14 @@ class GnomeCrunchyInterface : ComponentPlugin() {
         return this
     }
 
-    internal enum class HalfMadeCrunchy(val product: Int, val reqLevel: Int, val requiredItems: Array<Item>) {
+    internal enum class HalfMadeCrunchy(
+        val product: Int,
+        val reqLevel: Int,
+        val requiredItems: Array<Item>,
+    ) {
         CHOCCHIP(9577, 16, arrayOf(Item(Items.CHOCOLATE_BAR_1973, 2))),
         SPICY(9579, 12, arrayOf(Item(Items.EQUA_LEAVES_2128, 2))),
         TOAD(9581, 10, arrayOf(Item(Items.TOADS_LEGS_2152, 2))),
-        WORM(9583, 14, arrayOf(Item(Items.EQUA_LEAVES_2128), Item(Items.KING_WORM_2162, 2)))
+        WORM(9583, 14, arrayOf(Item(Items.EQUA_LEAVES_2128), Item(Items.KING_WORM_2162, 2))),
     }
 }

@@ -1,19 +1,21 @@
 package content.global.skill.farming
 
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import core.api.*
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.game.system.task.Pulse
 import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 
 object PatchRaker {
-
     val RAKE_ANIM = getAnimation(Animations.RAKE_2273)
 
     @JvmStatic
-    fun rake(player: Player, patch: FarmingPatch) {
+    fun rake(
+        player: Player,
+        patch: FarmingPatch,
+    ) {
         val p = patch.getPatchFor(player)
         val patchName = p.patch.type.displayName()
         var firstRake = true
@@ -27,7 +29,6 @@ object PatchRaker {
                 override fun pulse(): Boolean {
                     var patchStage = patch.getPatchFor(player).getCurrentState()
                     if (firstRake || patchStage < 2) {
-
                         animate(player, RAKE_ANIM)
                         playAudio(player, Sounds.FARMING_RAKING_2442)
                         firstRake = false
@@ -45,7 +46,7 @@ object PatchRaker {
                     }
                     return patchStage >= 3
                 }
-            }
+            },
         )
     }
 }

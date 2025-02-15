@@ -1,8 +1,5 @@
 package content.global.skill.hunter.tracking
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import core.api.*
 import core.game.interaction.OptionHandler
 import core.game.node.Node
@@ -11,15 +8,17 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
 import core.game.node.scenery.Scenery
-import core.tools.Log
 import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import core.tools.Log
 import core.tools.RandomFunction
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 
 abstract class HunterTracking : OptionHandler() {
-
     var KEBBIT_ANIM = Animation(Animations.CATCH_KEBBIT_NOOSE_WAND_5257)
 
     val MISS_ANIM = Animation(Animations.USE_NOOSE_WAND_5255)
@@ -48,7 +47,10 @@ abstract class HunterTracking : OptionHandler() {
         return initialMap[objects.id]?.random()
     }
 
-    fun generateTrail(startobj: Scenery, player: Player) {
+    fun generateTrail(
+        startobj: Scenery,
+        player: Player,
+    ) {
         val trail = player.getAttribute(attribute, ArrayList<TrailDefinition>())
         val initialTrail = getInitialTrail(startobj)
         if (initialTrail == null) {
@@ -92,10 +94,13 @@ abstract class HunterTracking : OptionHandler() {
             val possibleTrails = ArrayList<TrailDefinition>()
             for (trail in linkingTrails) {
                 val invTrail = getTrailInverse(trail, false)
-                if (invTrail.type == TrailType.TUNNEL && previousTrail.endLocation.withinDistance(
+                if (invTrail.type == TrailType.TUNNEL &&
+                    previousTrail.endLocation.withinDistance(
                         invTrail.startLocation,
-                        5
-                    ) && previousTrail.endLocation != invTrail.startLocation && previousTrail.varbit != trail.varbit
+                        5,
+                    ) &&
+                    previousTrail.endLocation != invTrail.startLocation &&
+                    previousTrail.varbit != trail.varbit
                 ) {
                     possibleTrails.add(trail)
                 }
@@ -111,21 +116,26 @@ abstract class HunterTracking : OptionHandler() {
         return possibleTrails.random()
     }
 
-    fun getTrailInverse(trail: TrailDefinition, swapLocations: Boolean): TrailDefinition {
-        if (swapLocations) return TrailDefinition(
-            trail.varbit,
-            if (tunnelEntrances.contains(trail.startLocation)) TrailType.TUNNEL else TrailType.LINKING,
-            !trail.inverted,
-            trail.endLocation,
-            trail.startLocation,
-            trail.triggerObjectLocation
-        )
+    fun getTrailInverse(
+        trail: TrailDefinition,
+        swapLocations: Boolean,
+    ): TrailDefinition {
+        if (swapLocations) {
+            return TrailDefinition(
+                trail.varbit,
+                if (tunnelEntrances.contains(trail.startLocation)) TrailType.TUNNEL else TrailType.LINKING,
+                !trail.inverted,
+                trail.endLocation,
+                trail.startLocation,
+                trail.triggerObjectLocation,
+            )
+        }
         return TrailDefinition(
             trail.varbit,
             if (tunnelEntrances.contains(trail.startLocation)) TrailType.TUNNEL else TrailType.LINKING,
             !trail.inverted,
             trail.startLocation,
-            trail.endLocation
+            trail.endLocation,
         )
     }
 
@@ -153,7 +163,10 @@ abstract class HunterTracking : OptionHandler() {
         return false
     }
 
-    fun reward(player: Player, success: Boolean) {
+    fun reward(
+        player: Player,
+        success: Boolean,
+    ) {
         player.lock()
         player.animator.animate(if (success) KEBBIT_ANIM else MISS_ANIM)
         playAudio(player, Sounds.HUNTING_NOOSE_2637)
@@ -170,7 +183,7 @@ abstract class HunterTracking : OptionHandler() {
                     player.unlock()
                     return true
                 }
-            }
+            },
         )
     }
 
@@ -184,7 +197,11 @@ abstract class HunterTracking : OptionHandler() {
         }
     }
 
-    override fun handle(player: Player?, node: Node?, option: String?): Boolean {
+    override fun handle(
+        player: Player?,
+        node: Node?,
+        option: String?,
+    ): Boolean {
         node ?: return true
         player ?: return true
         val trail = player.getAttribute(attribute, ArrayList<TrailDefinition>())
@@ -193,15 +210,16 @@ abstract class HunterTracking : OptionHandler() {
             sendDialogue(player, "You search but find nothing.")
             return true
         }
-        val currentTrail = if (hasTrail(player)) {
-            if (currentIndex < trail.lastIndex) {
-                trail[currentIndex + 1]
+        val currentTrail =
+            if (hasTrail(player)) {
+                if (currentIndex < trail.lastIndex) {
+                    trail[currentIndex + 1]
+                } else {
+                    trail[currentIndex]
+                }
             } else {
-                trail[currentIndex]
+                TrailDefinition(0, TrailType.LINKING, false, Location(0, 0, 0), Location(0, 0, 0), Location(0, 0, 0))
             }
-        } else {
-            TrailDefinition(0, TrailType.LINKING, false, Location(0, 0, 0), Location(0, 0, 0), Location(0, 0, 0))
-        }
         when (option) {
             "attack" -> {
                 if (!hasNooseWand(player)) {
@@ -224,9 +242,13 @@ abstract class HunterTracking : OptionHandler() {
                     generateTrail(node.asScenery(), player)
                     updateTrail(player)
                 } else {
-                    if (currentTrail.triggerObjectLocation == node.location || (currentIndex == trail.lastIndex && currentTrail.endLocation.equals(
-                            node.location
-                        ))
+                    if (currentTrail.triggerObjectLocation == node.location ||
+                        (
+                            currentIndex == trail.lastIndex &&
+                                currentTrail.endLocation.equals(
+                                    node.location,
+                                )
+                        )
                     ) {
                         if (currentIndex == trail.lastIndex) {
                             sendDialogue(player, "It looks like something is moving around in there.")

@@ -1,6 +1,5 @@
 package content.global.ame.evilbob
 
-import org.rs.consts.Components
 import content.data.GameAttributes
 import core.api.closeInterface
 import core.api.openInterface
@@ -8,9 +7,11 @@ import core.api.setAttribute
 import core.api.ui.setMinimapState
 import core.game.activity.Cutscene
 import core.game.node.entity.player.Player
+import org.rs.consts.Components
 
-class ServantCutsceneN(player: Player) : Cutscene(player) {
-
+class ServantCutsceneN(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(player.location.transform(0, 0, 0))
         setAttribute(player, "${GameAttributes.RE_BOB_OBJ}-n", true)
@@ -51,8 +52,9 @@ class ServantCutsceneN(player: Player) : Cutscene(player) {
     }
 }
 
-class ServantCutsceneS(player: Player) : Cutscene(player) {
-
+class ServantCutsceneS(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(player.location.transform(0, 0, 0))
         setAttribute(player, "${GameAttributes.RE_BOB_OBJ}-s", true)
@@ -93,8 +95,9 @@ class ServantCutsceneS(player: Player) : Cutscene(player) {
     }
 }
 
-class ServantCutsceneE(player: Player) : Cutscene(player) {
-
+class ServantCutsceneE(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(player.location.transform(0, 0, 0))
         setAttribute(player, "${GameAttributes.RE_BOB_OBJ}-e", true)
@@ -135,8 +138,9 @@ class ServantCutsceneE(player: Player) : Cutscene(player) {
     }
 }
 
-class ServantCutsceneW(player: Player) : Cutscene(player) {
-
+class ServantCutsceneW(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(player.location.transform(0, 0, 0))
         setAttribute(player, "${GameAttributes.RE_BOB_OBJ}-w", true)

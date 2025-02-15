@@ -19,7 +19,7 @@ enum class Silver(
     val amount: Int,
     val level: Int,
     val experience: Double,
-    val strung: Int
+    val strung: Int,
 ) {
     HOLY(
         buttonId = BUTTON_UNBLESSED,
@@ -28,7 +28,7 @@ enum class Silver(
         amount = 1,
         level = 16,
         experience = 50.0,
-        strung = Items.UNBLESSED_SYMBOL_1716
+        strung = Items.UNBLESSED_SYMBOL_1716,
     ),
     UNHOLY(
         buttonId = BUTTON_UNHOLY,
@@ -37,7 +37,7 @@ enum class Silver(
         amount = 1,
         level = 17,
         experience = 50.0,
-        strung = Items.UNHOLY_SYMBOL_1724
+        strung = Items.UNHOLY_SYMBOL_1724,
     ),
     SICKLE(
         buttonId = BUTTON_SICKLE,
@@ -46,7 +46,7 @@ enum class Silver(
         amount = 1,
         level = 18,
         experience = 50.0,
-        strung = -1
+        strung = -1,
     ),
     TIARA(
         buttonId = BUTTON_TIARA,
@@ -55,7 +55,7 @@ enum class Silver(
         amount = 1,
         level = 23,
         experience = 52.5,
-        strung = -1
+        strung = -1,
     ),
     SILVTHRIL_CHAIN(
         buttonId = BUTTON_SILVTHRIL_CHAIN,
@@ -64,7 +64,7 @@ enum class Silver(
         amount = 1,
         level = 47,
         experience = 100.0,
-        strung = -1
+        strung = -1,
     ),
     LIGHTNING_ROD(
         buttonId = BUTTON_LIGHTNING_ROD,
@@ -73,7 +73,7 @@ enum class Silver(
         amount = 1,
         level = 20,
         experience = 50.0,
-        strung = -1
+        strung = -1,
     ),
     SILVTHRILL_ROD(
         buttonId = BUTTON_SILVTHRILL_ROD,
@@ -82,7 +82,7 @@ enum class Silver(
         amount = 1,
         level = 25,
         experience = 55.0,
-        strung = -1
+        strung = -1,
     ),
     CROSSBOW_BOLTS(
         buttonId = BUTTON_CROSSBOW_BOLTS,
@@ -91,7 +91,7 @@ enum class Silver(
         amount = 10,
         level = 21,
         experience = 50.0,
-        strung = -1
+        strung = -1,
     ),
     DEMONIC_SIGIL(
         buttonId = BUTTON_DEMONIC_SIGIL,
@@ -100,12 +100,14 @@ enum class Silver(
         amount = 1,
         level = 30,
         experience = 50.0,
-        strung = -1
-    );
+        strung = -1,
+    ),
+    ;
 
     companion object {
         @JvmStatic
         fun forId(itemId: Int): Silver? = values().find { it.required == itemId }
+
         @JvmStatic
         fun forButton(button: Int): Silver? = values().find { it.buttonId == button }
     }

@@ -7,12 +7,14 @@ import core.game.world.map.zone.ZoneBorders
 import org.rs.consts.NPCs
 
 class Quiz : MapArea {
-
     override fun defineAreaBorders(): Array<ZoneBorders> {
         return arrayOf(ZoneBorders(1954, 4763, 1950, 4770))
     }
 
-    override fun areaLeave(entity: Entity, logout: Boolean) {
+    override fun areaLeave(
+        entity: Entity,
+        logout: Boolean,
+    ) {
         if (entity is Player) {
             val player = entity.asPlayer()
             QuizMaster.cleanup(player)

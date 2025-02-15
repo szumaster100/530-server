@@ -1,6 +1,5 @@
 package content.global.skill.slayer.dungeon
 
-import org.rs.consts.Components
 import content.global.skill.slayer.SlayerEquipmentFlags
 import core.api.*
 import core.cache.def.impl.SceneryDefinition
@@ -15,37 +14,40 @@ import core.game.world.map.Location
 import core.game.world.map.zone.MapZone
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.map.zone.ZoneBuilder
+import core.plugin.ClassScanner
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner
 import core.tools.RandomFunction
+import org.rs.consts.Components
 
 @Initializable
-class SmokeDungeon : MapZone("smoke dungeon", true), Plugin<Any?> {
-
+class SmokeDungeon :
+    MapZone("smoke dungeon", true),
+    Plugin<Any?> {
     companion object {
         private val CHATS = arrayOf("*choke*", "*cough*")
         private val playersInDungeon = mutableSetOf<Player>()
         private const val DELAY = 20
 
-        private val pulse = object : Pulse(3) {
-            override fun pulse(): Boolean {
-                playersInDungeon.removeIf { player ->
-                    if (isPlayerAffected(player)) {
-                        applyEffect(player)
+        private val pulse =
+            object : Pulse(3) {
+                override fun pulse(): Boolean {
+                    playersInDungeon.removeIf { player ->
+                        if (isPlayerAffected(player)) {
+                            applyEffect(player)
+                        }
+                        !player.isActive
                     }
-                    !player.isActive
+                    return playersInDungeon.isEmpty()
                 }
-                return playersInDungeon.isEmpty()
             }
-        }
 
         private fun isPlayerAffected(player: Player): Boolean {
             return !player.interfaceManager.isOpened &&
-                    !player.interfaceManager.hasChatbox() &&
-                    !player.locks.isMovementLocked &&
-                    getDelay(player) < GameWorld.ticks &&
-                    !isProtected(player)
+                !player.interfaceManager.hasChatbox() &&
+                !player.locks.isMovementLocked &&
+                getDelay(player) < GameWorld.ticks &&
+                !isProtected(player)
         }
 
         private fun applyEffect(player: Player) {
@@ -90,7 +92,10 @@ class SmokeDungeon : MapZone("smoke dungeon", true), Plugin<Any?> {
         return true
     }
 
-    override fun leave(e: Entity, logout: Boolean): Boolean {
+    override fun leave(
+        e: Entity,
+        logout: Boolean,
+    ): Boolean {
         if (e is Player) {
             val player = e.asPlayer()
             closeOverlay(player)
@@ -100,7 +105,10 @@ class SmokeDungeon : MapZone("smoke dungeon", true), Plugin<Any?> {
         return super.leave(e, logout)
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any?): Any? = this
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any?,
+    ): Any? = this
 
     override fun configure() {
         register(ZoneBorders(3196, 9337, 3344, 9407))
@@ -114,7 +122,11 @@ class SmokeDungeon : MapZone("smoke dungeon", true), Plugin<Any?> {
             return this
         }
 
-        override fun handle(player: Player, node: Node, option: String): Boolean {
+        override fun handle(
+            player: Player,
+            node: Node,
+            option: String,
+        ): Boolean {
             when (node.id) {
                 36002 -> {
                     teleport(player, Location.create(3206, 9379, 0))

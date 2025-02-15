@@ -14,7 +14,6 @@ import core.plugin.Plugin
 
 @Initializable
 class AlKharidStairsPlugin : OptionHandler() {
-
     private val zekeStairsTop = Scenery(35645, Location(3284, 3190, 1), 2, 0)
     private val zekeDoorClosed =
         Scenery(27988, Location(3284, 3190, 1), 0, 2)
@@ -27,7 +26,11 @@ class AlKharidStairsPlugin : OptionHandler() {
     private val craftingDoorOpened =
         Scenery(27989, Location(3314, 3186, 1), 0, 0)
 
-    override fun handle(player: Player?, node: Node?, option: String?): Boolean {
+    override fun handle(
+        player: Player?,
+        node: Node?,
+        option: String?,
+    ): Boolean {
         player ?: return false
         node ?: return false
         option ?: return false

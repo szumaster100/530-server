@@ -19,33 +19,41 @@ object SystemLogger {
     }
 
     @JvmStatic
-    fun processLogEntry(clazz: Class<*>, log: Log, message: String) {
+    fun processLogEntry(
+        clazz: Class<*>,
+        log: Log,
+        message: String,
+    ) {
         when (log) {
             Log.DEBUG -> {
-                if (GameWorld.settings?.isDevMode != true)
+                if (GameWorld.settings?.isDevMode != true) {
                     return
+                }
                 val msg = TextColors.cyan("${getTime()}: [${clazz.simpleName}] $message")
                 t.println(msg)
             }
 
             Log.FINE -> {
-                if (ServerConfig.LOG_LEVEL < LogLevel.VERBOSE)
+                if (ServerConfig.LOG_LEVEL < LogLevel.VERBOSE) {
                     return
+                }
                 val msg = TextColors.gray("${getTime()}: [${clazz.simpleName}] $message")
                 t.println(msg)
             }
 
             Log.INFO -> {
-                if (ServerConfig.LOG_LEVEL < LogLevel.DETAILED)
+                if (ServerConfig.LOG_LEVEL < LogLevel.DETAILED) {
                     return
+                }
 
                 val msg = "${getTime()}: [${clazz.simpleName}] $message"
                 t.println(msg)
             }
 
             Log.WARN -> {
-                if (ServerConfig.LOG_LEVEL < LogLevel.CAUTIOUS)
+                if (ServerConfig.LOG_LEVEL < LogLevel.CAUTIOUS) {
                     return
+                }
 
                 val msg = TextColors.yellow("${getTime()}: [${clazz.simpleName}] $message")
                 t.println(msg)
@@ -85,19 +93,21 @@ object SystemLogger {
         }
     }
 
-    class CreateProgressListener: ProgressListener {
-        override fun notify(progress: Double, message: String?) {
+    class CreateProgressListener : ProgressListener {
+        override fun notify(
+            progress: Double,
+            message: String?,
+        ) {
             logCache(message.toString())
         }
     }
-
 }
 
 enum class LogLevel {
     SILENT,
     CAUTIOUS,
     DETAILED,
-    VERBOSE
+    VERBOSE,
 }
 
 enum class Log {
@@ -105,5 +115,5 @@ enum class Log {
     INFO,
     WARN,
     ERR,
-    DEBUG
+    DEBUG,
 }

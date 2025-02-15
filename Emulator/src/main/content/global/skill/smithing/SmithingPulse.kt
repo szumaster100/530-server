@@ -1,6 +1,5 @@
 package content.global.skill.smithing
 
-import core.api.quest.hasRequirement
 import core.api.quest.isQuestComplete
 import core.api.sendDialogue
 import core.cache.def.impl.ItemDefinition
@@ -17,8 +16,12 @@ import org.rs.consts.Animations
 import org.rs.consts.Quests
 import java.util.*
 
-class SmithingPulse(player: Player?, item: Item?, private val bar: Bars, private var amount: Int) :
-    SkillPulse<Item?>(player, item) {
+class SmithingPulse(
+    player: Player?,
+    item: Item?,
+    private val bar: Bars,
+    private var amount: Int,
+) : SkillPulse<Item?>(player, item) {
     override fun checkRequirements(): Boolean {
         if (!player.inventory.contains(bar.barType.barType, bar.smithingType.required * amount)) {
             amount = player.inventory.getAmount(Item(bar.barType.barType))
@@ -26,18 +29,24 @@ class SmithingPulse(player: Player?, item: Item?, private val bar: Bars, private
         player.interfaceManager.close()
         if (player.getSkills().getLevel(Skills.SMITHING) < bar.level) {
             player.dialogueInterpreter.sendDialogue(
-                "You need a Smithing level of " + bar.level + " to make a " + ItemDefinition.forId(
-                    bar.product
-                ).name + "."
+                "You need a Smithing level of " + bar.level + " to make a " +
+                    ItemDefinition
+                        .forId(
+                            bar.product,
+                        ).name + ".",
             )
             return false
         }
         if (!player.inventory.contains(bar.barType.barType, bar.smithingType.required)) {
             player.dialogueInterpreter.sendDialogue(
-                "You don't have enough " + ItemDefinition.forId(bar.barType.barType).name.lowercase(
-                    Locale.getDefault()
-                ) + "s to make a " + bar.smithingType.name.replace("TYPE_", "").replace("_", " ")
-                    .lowercase(Locale.getDefault()) + "."
+                "You don't have enough " +
+                    ItemDefinition.forId(bar.barType.barType).name.lowercase(
+                        Locale.getDefault(),
+                    ) + "s to make a " +
+                    bar.smithingType.name
+                        .replace("TYPE_", "")
+                        .replace("_", " ")
+                        .lowercase(Locale.getDefault()) + ".",
             )
             return false
         }
@@ -73,12 +82,14 @@ class SmithingPulse(player: Player?, item: Item?, private val bar: Bars, private
         player.getSkills().addExperience(Skills.SMITHING, bar.barType.experience * bar.smithingType.required, true)
         val message = if (isPlusN(ItemDefinition.forId(bar.product).name.lowercase(Locale.getDefault()))) "an" else "a"
         player.packetDispatch.sendMessage(
-            "You hammer the " + bar.barType.barName.lowercase(Locale.getDefault()).replace(
-                "smithing",
-                ""
-            ) + "and make " + message + " " + ItemDefinition.forId(bar.product).name.lowercase(
-                Locale.getDefault()
-            ) + "."
+            "You hammer the " +
+                bar.barType.barName.lowercase(Locale.getDefault()).replace(
+                    "smithing",
+                    "",
+                ) + "and make " + message + " " +
+                ItemDefinition.forId(bar.product).name.lowercase(
+                    Locale.getDefault(),
+                ) + ".",
         )
 
         if (bar == Bars.BLURITE_CROSSBOW_LIMBS && player.location.withinDistance(Location(3000, 3145, 0), 10)) {

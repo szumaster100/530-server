@@ -1,6 +1,5 @@
 package content.global.ame.lostandfound
 
-import org.rs.consts.Items
 import content.data.RandomEvent
 import core.api.*
 import core.api.ui.setMinimapState
@@ -11,9 +10,9 @@ import core.game.node.scenery.Scenery
 import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.tools.RandomFunction
+import org.rs.consts.Items
 
 object LostAndFoundUtils {
-
     val eventLocation = Location(2338, 4747, 0)
     const val essenceMineKey = "laf:essence-mine"
 
@@ -23,7 +22,10 @@ object LostAndFoundUtils {
         removeAttributes(player, essenceMineKey, RandomEvent.save())
     }
 
-    fun isOddAppendage(player: Player, scenery: Scenery): Boolean {
+    fun isOddAppendage(
+        player: Player,
+        scenery: Scenery,
+    ): Boolean {
         val index = scenery.getWrapper().id - 8994
         val current = scenery.getWrapper().getChild(player).id
         return (0..3).none { i ->
@@ -56,11 +58,10 @@ object LostAndFoundUtils {
                     player,
                     runes[0],
                     runes[1],
-                    "Abyssal Services apologize for any inconvenience. Please accept these runes as recompense."
+                    "Abyssal Services apologize for any inconvenience. Please accept these runes as recompense.",
                 )
             }
         } else {
-
             if (!GameWorld.settings!!.isMembers) {
                 addItemOrDrop(player, Items.RUNE_ESSENCE_1437, roll)
             } else {

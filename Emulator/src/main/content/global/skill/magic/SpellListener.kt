@@ -13,10 +13,10 @@ import core.game.world.GameWorld
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
 
-abstract class SpellListener(val bookName: String) : Listener {
-
+abstract class SpellListener(
+    val bookName: String,
+) : Listener {
     companion object {
-
         @JvmField
         val NPC = -1
 
@@ -36,7 +36,12 @@ abstract class SpellListener(val bookName: String) : Listener {
         val GROUND_ITEM = -6
     }
 
-    fun onCast(spellID: Int, type: Int, range: Int = 10, method: (player: Player, node: Node?) -> Unit) {
+    fun onCast(
+        spellID: Int,
+        type: Int,
+        range: Int = 10,
+        method: (player: Player, node: Node?) -> Unit,
+    ) {
         SpellListeners.add(spellID, type, bookName, range, method)
     }
 
@@ -45,7 +50,7 @@ abstract class SpellListener(val bookName: String) : Listener {
         type: Int,
         vararg ids: Int,
         range: Int = 10,
-        method: (player: Player, node: Node?) -> Unit
+        method: (player: Player, node: Node?) -> Unit,
     ) {
         SpellListeners.add(spellID, type, ids, bookName, range, method)
     }
@@ -54,7 +59,7 @@ abstract class SpellListener(val bookName: String) : Listener {
         player: Player,
         magicLevel: Int = 0,
         runes: Array<Item> = arrayOf(),
-        specialEquipment: IntArray = intArrayOf()
+        specialEquipment: IntArray = intArrayOf(),
     ) {
         if (player.getAttribute("magic-delay", 0) > GameWorld.ticks) {
             throw IllegalStateException("You are currently delayed from casting spells.")
@@ -83,7 +88,10 @@ abstract class SpellListener(val bookName: String) : Listener {
         }
     }
 
-    fun removeRunes(player: Player, removeAttr: Boolean = true) {
+    fun removeRunes(
+        player: Player,
+        removeAttr: Boolean = true,
+    ) {
         player.inventory.remove(*player.getAttribute("spell:runes", ArrayList<Item>()).toTypedArray())
         if (removeAttr) {
             player.removeAttribute("spell:runes")
@@ -91,7 +99,10 @@ abstract class SpellListener(val bookName: String) : Listener {
         }
     }
 
-    fun addXP(player: Player, amount: Double) {
+    fun addXP(
+        player: Player,
+        amount: Double,
+    ) {
         if (player.getAttribute("tablet-spell", false)) return
         player.skills.addExperience(Skills.MAGIC, amount)
     }
@@ -102,13 +113,16 @@ abstract class SpellListener(val bookName: String) : Listener {
         gfx: Graphics,
         soundID: Int = -1,
         delay: Int = 0,
-        global: Boolean = true
+        global: Boolean = true,
     ) {
         if (player.getAttribute("tablet-spell", false)) return
         player.visualize(anim, gfx)
         if (soundID != -1) {
-            if (global) playGlobalAudio(player.location, soundID, delay)
-            else playAudio(player, soundID, delay)
+            if (global) {
+                playGlobalAudio(player.location, soundID, delay)
+            } else {
+                playAudio(player, soundID, delay)
+            }
         }
     }
 
@@ -119,22 +133,34 @@ abstract class SpellListener(val bookName: String) : Listener {
         height: Int = 0,
         soundID: Int = -1,
         delay: Int = 0,
-        global: Boolean = true
+        global: Boolean = true,
     ) {
         if (player.getAttribute("tablet-spell", false)) return
         player.visualize(Animation(anim), Graphics(gfx, height))
         if (soundID != -1) {
-            if (global) playGlobalAudio(player.location, soundID, delay)
-            else playAudio(player, soundID, delay)
+            if (global) {
+                playGlobalAudio(player.location, soundID, delay)
+            } else {
+                playAudio(player, soundID, delay)
+            }
         }
     }
 
-    fun setDelay(player: Player, isTeleport: Boolean = false) {
-        if (!isTeleport) player.setAttribute("magic-delay", GameWorld.ticks + 3)
-        else player.setAttribute("magic-delay", GameWorld.ticks + 5)
+    fun setDelay(
+        player: Player,
+        isTeleport: Boolean = false,
+    ) {
+        if (!isTeleport) {
+            player.setAttribute("magic-delay", GameWorld.ticks + 3)
+        } else {
+            player.setAttribute("magic-delay", GameWorld.ticks + 5)
+        }
     }
 
-    fun setDelay(player: Player, delay: Int) {
+    fun setDelay(
+        player: Player,
+        delay: Int,
+    ) {
         setAttribute(player, "magic-delay", GameWorld.ticks + delay)
     }
 

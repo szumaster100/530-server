@@ -3,7 +3,6 @@ package content.global.handlers.npc
 import content.data.GameAttributes
 import core.api.*
 import core.game.interaction.InteractPlugin
-import core.game.node.entity.Entity
 import core.game.node.entity.combat.BattleState
 import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.npc.NPC
@@ -21,11 +20,18 @@ import org.rs.consts.NPCs
  *  In addition clockwork cats can chase clockwork mice, just like regular cats chase rats.
  */
 @Initializable
-class ToyMouseNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
+class ToyMouseNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
     var ownerUID: Int = -1
     var clearTime = 0
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return ToyMouseNPC(id, location)
     }
 
@@ -65,12 +71,15 @@ class ToyMouseNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, loc
                         setAttribute(player, GameAttributes.ITEM_TOY_MOUSE_RELEASE, player.details.uid)
                         return true
                     }
-                }
+                },
             )
         }
 
         @JvmStatic
-        fun removeMouse(player: Player, mouse: NPC) {
+        fun removeMouse(
+            player: Player,
+            mouse: NPC,
+        ) {
             val mouseInstance = mouseMap[player.details.uid]
             val m = findLocalNPC(player, NPCs.TOY_MOUSE_3597)
             mouse.clear()

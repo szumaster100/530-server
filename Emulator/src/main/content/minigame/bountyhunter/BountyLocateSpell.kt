@@ -17,16 +17,20 @@ import core.game.world.GameWorld
 import core.game.world.map.RegionManager.getTeleportLocation
 import core.plugin.Plugin
 
-class BountyLocateSpell : MagicSpell(
-    SpellBookManager.SpellBook.MODERN,
-    32,
-    45.0,
-    null,
-    null,
-    null,
-    arrayOf(Runes.AIR_RUNE.getItem(1), Runes.FIRE_RUNE.getItem(1), Runes.LAW_RUNE.getItem(1))
-) {
-    override fun cast(entity: Entity, target: Node): Boolean {
+class BountyLocateSpell :
+    MagicSpell(
+        SpellBookManager.SpellBook.MODERN,
+        32,
+        45.0,
+        null,
+        null,
+        null,
+        arrayOf(Runes.AIR_RUNE.getItem(1), Runes.FIRE_RUNE.getItem(1), Runes.LAW_RUNE.getItem(1)),
+    ) {
+    override fun cast(
+        entity: Entity,
+        target: Node,
+    ): Boolean {
         var target: Node? = target
         val activity = entity.getExtension<BountyHunterActivity>(BountyHunterActivity::class.java)
         val player = entity as Player
@@ -40,7 +44,9 @@ class BountyLocateSpell : MagicSpell(
             return true
         }
         if (hasTimerActive(player, "frozen") || isStunned(player)) {
-            player.packetDispatch.sendMessage("You can't use this when " + if (isStunned(player)) "stunned." else "frozen.")
+            player.packetDispatch.sendMessage(
+                "You can't use this when " + if (isStunned(player)) "stunned." else "frozen.",
+            )
             return true
         }
         val combat = player.inCombat()
@@ -72,7 +78,7 @@ class BountyLocateSpell : MagicSpell(
                         return true
                     }
                 },
-                PulseType.STANDARD
+                PulseType.STANDARD,
             )
             return true
         }

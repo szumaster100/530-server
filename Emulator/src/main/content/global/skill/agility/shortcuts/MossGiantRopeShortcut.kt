@@ -1,7 +1,5 @@
 package content.global.skill.agility.shortcuts
 
-import org.rs.consts.Scenery
-import org.rs.consts.Sounds
 import content.global.skill.agility.AgilityHandler
 import core.api.*
 import core.game.interaction.IntType
@@ -11,16 +9,21 @@ import core.game.node.entity.skill.Skills
 import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Scenery
+import org.rs.consts.Sounds
 
 class MossGiantRopeShortcut : InteractionListener {
-
     override fun defineDestinationOverrides() {
         setDest(IntType.SCENERY, ROPESWING, "swing-on") { _, node ->
-            return@setDest if (node.id == Scenery.ROPESWING_2322) Location.create(2709, 3209, 0) else Location.create(
-                2705,
-                3205,
-                0
-            )
+            return@setDest if (node.id == Scenery.ROPESWING_2322) {
+                Location.create(2709, 3209, 0)
+            } else {
+                Location.create(
+                    2705,
+                    3205,
+                    0,
+                )
+            }
         }
     }
 
@@ -48,7 +51,7 @@ class MossGiantRopeShortcut : InteractionListener {
                 50,
                 22.0,
                 "You skillfully swing across.",
-                1
+                1,
             )
             finishDiaryTask(player, DiaryType.KARAMJA, 0, 1)
             return@on true

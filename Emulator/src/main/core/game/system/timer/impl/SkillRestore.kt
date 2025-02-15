@@ -1,27 +1,28 @@
 package core.game.system.timer.impl
 
+import core.api.EquipmentSlot
+import core.api.Event
 import core.api.getDynLevel
 import core.api.getItemFromEquipment
 import core.api.getOrStartTimer
 import core.api.getStatLevel
 import core.game.event.EventHook
-import core.api.Event
 import core.game.event.PrayerActivatedEvent
 import core.game.event.PrayerDeactivatedEvent
 import core.game.node.entity.Entity
-import core.api.EquipmentSlot
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.prayer.PrayerType
 import core.game.node.entity.skill.Skills
 import core.game.system.timer.RSTimer
 import org.rs.consts.Items
 
-class SkillRestore : RSTimer(
-    runInterval = 1,
-    identifier = "skillrestore",
-    isAuto = true,
-    isSoft = true
-) {
+class SkillRestore :
+    RSTimer(
+        runInterval = 1,
+        identifier = "skillrestore",
+        isAuto = true,
+        isSoft = true,
+    ) {
     val ticksSinceLastRestore = IntArray(25)
     val restoreTicks = IntArray(25) { 100 }
 
@@ -37,8 +38,9 @@ class SkillRestore : RSTimer(
                     val max = getStatLevel(entity, i)
                     val current = getDynLevel(entity, i)
 
-                    if (current != max)
+                    if (current != max) {
                         skills.updateLevel(i, if (current < max) 1 else -1, max)
+                    }
                 }
                 ticksSinceLastRestore[i] = 0
             }
@@ -62,13 +64,18 @@ class SkillRestore : RSTimer(
         if (entity !is Player) return 1
 
         val gloves = getItemFromEquipment(entity, EquipmentSlot.HANDS)
-        if (gloves == null || gloves.id != Items.REGEN_BRACELET_11133)
+        if (gloves == null || gloves.id != Items.REGEN_BRACELET_11133) {
             return 1
-        else return 2
+        } else {
+            return 2
+        }
     }
 
     object PrayerActivatedHook : EventHook<PrayerActivatedEvent> {
-        override fun process(entity: Entity, event: PrayerActivatedEvent) {
+        override fun process(
+            entity: Entity,
+            event: PrayerActivatedEvent,
+        ) {
             val restore = getOrStartTimer<SkillRestore>(entity)
 
             when (event.type) {
@@ -91,7 +98,10 @@ class SkillRestore : RSTimer(
     }
 
     object PrayerDeactivatedHook : EventHook<PrayerDeactivatedEvent> {
-        override fun process(entity: Entity, event: PrayerDeactivatedEvent) {
+        override fun process(
+            entity: Entity,
+            event: PrayerDeactivatedEvent,
+        ) {
             val restore = getOrStartTimer<SkillRestore>(entity)
 
             when (event.type) {

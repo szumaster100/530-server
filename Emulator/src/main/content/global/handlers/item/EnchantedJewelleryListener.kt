@@ -1,6 +1,5 @@
 package content.global.handlers.item
 
-import org.rs.consts.Items
 import content.data.EnchantedJewellery
 import core.api.openDialogue
 import core.api.sendDialogueOptions
@@ -14,17 +13,27 @@ import core.game.node.entity.impl.PulseType
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.tools.START_DIALOGUE
+import org.rs.consts.Items
 
 class EnchantedJewelleryListener : InteractionListener {
-
     private val ids = EnchantedJewellery.idMap.keys.toIntArray()
 
     override fun defineListeners() {
-        on(ids, IntType.ITEM, "rub") { player, node -> handle(player, node, false); return@on true }
-        on(ids, IntType.ITEM, "operate") { player, node -> handle(player, node, true); return@on true }
+        on(ids, IntType.ITEM, "rub") { player, node ->
+            handle(player, node, false)
+            return@on true
+        }
+        on(ids, IntType.ITEM, "operate") { player, node ->
+            handle(player, node, true)
+            return@on true
+        }
     }
 
-    private fun handle(player: Player, node: Node, isEquipped: Boolean) {
+    private fun handle(
+        player: Player,
+        node: Node,
+        isEquipped: Boolean,
+    ) {
         player.pulseManager.clear(PulseType.STANDARD)
         val item = node.asItem()
 
@@ -40,7 +49,7 @@ class EnchantedJewelleryListener : InteractionListener {
         }
         sendMessage(
             player,
-            "You rub the ${jewellery.getJewelleryType(item).replace("combat bracelet", "bracelet", true)}..."
+            "You rub the ${jewellery.getJewelleryType(item).replace("combat bracelet", "bracelet", true)}...",
         )
         if (jewellery.options.isEmpty()) {
             jewellery.use(player, item, 0, isEquipped)
@@ -52,9 +61,12 @@ class EnchantedJewelleryListener : InteractionListener {
     class EnchantedJewelleryDialogueFile(
         private val jewellery: EnchantedJewellery,
         private val item: Item,
-        private val isEquipped: Boolean
+        private val isEquipped: Boolean,
     ) : DialogueFile() {
-        override fun handle(componentID: Int, buttonID: Int) {
+        override fun handle(
+            componentID: Int,
+            buttonID: Int,
+        ) {
             when (stage) {
                 START_DIALOGUE -> {
                     setTitle(player!!, jewellery.options.size)

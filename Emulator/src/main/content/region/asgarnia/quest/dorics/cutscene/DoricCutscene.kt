@@ -1,6 +1,5 @@
 package content.region.asgarnia.quest.dorics.cutscene
 
-import org.rs.consts.NPCs
 import core.api.animate
 import core.api.sendChat
 import core.api.setAttribute
@@ -8,8 +7,11 @@ import core.game.activity.Cutscene
 import core.game.node.entity.player.Player
 import core.game.world.map.Direction
 import core.game.world.map.Location
+import org.rs.consts.NPCs
 
-class DoricCutscene(player: Player) : Cutscene(player) {
+class DoricCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(Location(2952, 3450))
         loadRegion(11829)
@@ -46,7 +48,7 @@ class DoricCutscene(player: Player) : Cutscene(player) {
             4 -> {
                 sendChat(
                     getNPC(NPCs.DORIC_284)!!,
-                    "I guess your mother never taught you manners. Lucky for you, I'll do just that!"
+                    "I guess your mother never taught you manners. Lucky for you, I'll do just that!",
                 )
                 timedUpdate(5)
             }
@@ -91,7 +93,7 @@ class DoricCutscene(player: Player) : Cutscene(player) {
             12 -> {
                 sendChat(
                     getNPC(NPCs.DORIC_284)!!,
-                    "That's what I thought. Watch your mouth the next time you speak to me."
+                    "That's what I thought. Watch your mouth the next time you speak to me.",
                 )
                 timedUpdate(3)
             }

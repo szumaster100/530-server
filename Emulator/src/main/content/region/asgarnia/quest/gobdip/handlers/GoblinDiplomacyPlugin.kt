@@ -15,13 +15,12 @@ import core.game.node.entity.player.Player
 import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
 import core.game.world.GameWorld.ticks
-import core.plugin.Plugin
 import core.plugin.ClassScanner.definePlugin
+import core.plugin.Plugin
 import core.tools.StringUtils
 import java.util.*
 
 class GoblinDiplomacyPlugin : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         ItemDefinition.forId(288).handlers["option:wear"] = this
         for (`object` in CRATES) {
@@ -34,7 +33,11 @@ class GoblinDiplomacyPlugin : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val id = if (node is Item) node.getId() else node.id
         when (option) {
             "wear" -> player.packetDispatch.sendMessage("That armour is to small for a human.")
@@ -59,12 +62,14 @@ class GoblinDiplomacyPlugin : OptionHandler() {
         return false
     }
 
-    override fun isWalk(player: Player, node: Node): Boolean {
+    override fun isWalk(
+        player: Player,
+        node: Node,
+    ): Boolean {
         return node !is Item
     }
 
     class GoblinMailPlugin : UseWithHandler(1763, 1769, 1765, 1771, 1767, 1773, 4622, 11808, 6955) {
-
         override fun newInstance(arg: Any?): Plugin<Any> {
             addHandler(288, ITEM_TYPE, this)
             val ids = intArrayOf(1763, 1769, 1765, 1771, 1767, 1773, 4622, 11808, 6955)
@@ -92,7 +97,11 @@ class GoblinDiplomacyPlugin : OptionHandler() {
             return true
         }
 
-        fun handleDyeMix(player: Player, dye: Dyes?, event: NodeUsageEvent?) {
+        fun handleDyeMix(
+            player: Player,
+            dye: Dyes?,
+            event: NodeUsageEvent?,
+        ) {
             if (dye == null) {
                 player.packetDispatch.sendMessage("Those dyes dont mix together.")
                 return
@@ -100,10 +109,33 @@ class GoblinDiplomacyPlugin : OptionHandler() {
             if (player.inventory.remove(*dye.materials)) {
                 player.inventory.add(dye.product)
             }
-            player.packetDispatch.sendMessage("You mix the two dyes and make " + (if (StringUtils.isPlusN(dye.product.name.lowercase(Locale.getDefault()).replace("dye", "").trim { it <= ' ' })) "an " else "a ") + dye.product.name.lowercase(Locale.getDefault()).replace("dye", "").trim { it <= ' ' } + " one.")
+            player.packetDispatch.sendMessage(
+                "You mix the two dyes and make " +
+                    (
+                        if (StringUtils.isPlusN(
+                                dye.product.name.lowercase(Locale.getDefault()).replace("dye", "").trim {
+                                    it <=
+                                        ' '
+                                },
+                            )
+                        ) {
+                            "an "
+                        } else {
+                            "a "
+                        }
+                    ) +
+                    dye.product.name
+                        .lowercase(Locale.getDefault())
+                        .replace("dye", "")
+                        .trim { it <= ' ' } +
+                    " one.",
+            )
         }
 
-        enum class GoblinMail(val dye: Item, val product: Item) {
+        enum class GoblinMail(
+            val dye: Item,
+            val product: Item,
+        ) {
             RED(dye = Item(1763), product = Item(9054)),
             ORANGE(dye = Item(1769), product = Item(286)),
             YELLOW(dye = Item(1765), product = Item(9056)),
@@ -112,7 +144,8 @@ class GoblinDiplomacyPlugin : OptionHandler() {
             PURPLE(dye = Item(1773), product = Item(9058)),
             BLACK(dye = Item(4622), product = Item(9055)),
             WHITE(dye = Item(11808), product = Item(11791)),
-            PINK(dye = Item(6955), product = Item(9059));
+            PINK(dye = Item(6955), product = Item(9059)),
+            ;
 
             companion object {
                 @JvmStatic
@@ -127,18 +160,29 @@ class GoblinDiplomacyPlugin : OptionHandler() {
             }
         }
 
-        enum class Dyes(val product: Item, vararg materials: Item) {
+        enum class Dyes(
+            val product: Item,
+            vararg materials: Item,
+        ) {
             ORANGE(Item(1769), Item(1763), Item(1765)),
             GREEN(Item(1771), Item(1765), Item(1767)),
-            PURPLE(Item(1773), Item(1767), Item(1763));
+            PURPLE(Item(1773), Item(1767), Item(1763)),
+            ;
 
             val materials: Array<Item> = materials as Array<Item>
 
             companion object {
                 @JvmStatic
-                fun forItem(item: Item, second: Item): Dyes? {
+                fun forItem(
+                    item: Item,
+                    second: Item,
+                ): Dyes? {
                     for (dye in values()) {
-                        if (dye.materials[0].id == item.id && dye.materials[1].id == second.id || dye.materials[0].id == second.id && dye.materials[1].id == item.id) {
+                        if (dye.materials[0].id == item.id &&
+                            dye.materials[1].id == second.id ||
+                            dye.materials[0].id == second.id &&
+                            dye.materials[1].id == item.id
+                        ) {
                             return dye
                         }
                     }

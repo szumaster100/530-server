@@ -4,11 +4,7 @@ import content.data.GameAttributes
 import core.api.getAttribute
 import core.api.sendNPCDialogue
 import core.game.dialogue.FaceAnim
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.game.node.entity.Entity
-import core.game.node.entity.combat.BattleState
 import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
@@ -16,10 +12,12 @@ import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
 class GiantRatNPC : AbstractNPC {
-
     constructor() : super(0, null) {
         this.isAggressive = false
     }
@@ -34,7 +32,11 @@ class GiantRatNPC : AbstractNPC {
         getSkills().lifepoints = 5
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return GiantRatNPC(id, location)
     }
 
@@ -53,8 +55,13 @@ class GiantRatNPC : AbstractNPC {
             if (player.getQuestRepository().getQuest(Quests.WITCHS_POTION).isStarted(player)) {
                 GroundItemManager.create(Item(Items.RATS_TAIL_300), getLocation(), player)
             }
-            if(getAttribute(player, tutorialStage, -1) < 50) {
-                sendNPCDialogue(player, NPCs.COMBAT_INSTRUCTOR_944, "I admire your thirst for violence! Let's have a chat before you kill another one, though, eh?", FaceAnim.ANNOYED)
+            if (getAttribute(player, tutorialStage, -1) < 50) {
+                sendNPCDialogue(
+                    player,
+                    NPCs.COMBAT_INSTRUCTOR_944,
+                    "I admire your thirst for violence! Let's have a chat before you kill another one, though, eh?",
+                    FaceAnim.ANNOYED,
+                )
             }
         }
     }

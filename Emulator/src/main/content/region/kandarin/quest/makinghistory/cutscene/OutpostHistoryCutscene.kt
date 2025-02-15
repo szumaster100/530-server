@@ -1,6 +1,5 @@
 package content.region.kandarin.quest.makinghistory.cutscene
 
-import org.rs.consts.NPCs
 import content.region.kandarin.quest.makinghistory.dialogue.JorralDialogueExtension
 import core.api.face
 import core.api.openDialogue
@@ -9,8 +8,11 @@ import core.api.sendDialogue
 import core.game.activity.Cutscene
 import core.game.node.entity.player.Player
 import core.game.world.map.Direction
+import org.rs.consts.NPCs
 
-class OutpostHistoryCutscene(player: Player) : Cutscene(player) {
+class OutpostHistoryCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(player.location.transform(0, 0, 0))
         if (player.settings.isRunToggled) {

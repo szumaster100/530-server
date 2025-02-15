@@ -1,6 +1,5 @@
 package content.region.misthalin.quest.losttribe
 
-import org.rs.consts.*
 import content.data.items.SkillingTool
 import core.api.*
 import core.api.quest.getQuestStage
@@ -14,11 +13,10 @@ import core.game.node.item.Item
 import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.*
 
 class LostTribeListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(CHEST, IntType.SCENERY, "open") { player, _ ->
             if (getQuestStage(player, Quests.THE_LOST_TRIBE) == 47 && inInventory(player, Items.KEY_423, 1)) {
                 removeItem(player, Item(Items.KEY_423))
@@ -39,13 +37,15 @@ class LostTribeListener : InteractionListener {
             GameWorld.Pulser.submit(
                 object : Pulse() {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             0 -> player.animator.animate(Animation(Animations.PICK_POCKET_881))
                             3 -> {
-                                if (getQuestStage(player, Quests.THE_LOST_TRIBE) == 47 && !inInventory(
+                                if (getQuestStage(player, Quests.THE_LOST_TRIBE) == 47 &&
+                                    !inInventory(
                                         player,
-                                        Items.KEY_423
+                                        Items.KEY_423,
                                     )
                                 ) {
                                     addItemOrDrop(player, Items.KEY_423)
@@ -59,7 +59,7 @@ class LostTribeListener : InteractionListener {
                         }
                         return false
                     }
-                }
+                },
             )
             return@on true
         }
@@ -108,7 +108,7 @@ class LostTribeListener : InteractionListener {
                 sendItemDialogue(
                     player,
                     used.id,
-                    "I should probably figure out what happened, before vandalizing the castle more."
+                    "I should probably figure out what happened, before vandalizing the castle more.",
                 )
                 return@onUseWith false
             }
@@ -128,6 +128,7 @@ class LostTribeListener : InteractionListener {
             GameWorld.Pulser.submit(
                 object : Pulse() {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             0 -> {
@@ -150,7 +151,7 @@ class LostTribeListener : InteractionListener {
                         }
                         return false
                     }
-                }
+                },
             )
             return@onUseWith true
         }
@@ -164,14 +165,15 @@ class LostTribeListener : InteractionListener {
         private const val BOOKCASE = Scenery.BOOKCASE_6916
         private const val CHEST = Scenery.CHEST_6910
         private const val SIGMUND = NPCs.SIGMUND_2082
-        private val pickaxeIDs = intArrayOf(
-            Items.BRONZE_PICKAXE_1265,
-            Items.IRON_PICKAXE_1267,
-            Items.STEEL_PICKAXE_1269,
-            Items.MITHRIL_PICKAXE_1273,
-            Items.ADAMANT_PICKAXE_1271,
-            Items.RUNE_PICKAXE_1275
-        )
+        private val pickaxeIDs =
+            intArrayOf(
+                Items.BRONZE_PICKAXE_1265,
+                Items.IRON_PICKAXE_1267,
+                Items.STEEL_PICKAXE_1269,
+                Items.MITHRIL_PICKAXE_1273,
+                Items.ADAMANT_PICKAXE_1271,
+                Items.RUNE_PICKAXE_1275,
+            )
         private val rubbleIDs = intArrayOf(6898, Scenery.RUBBLE_6903, Scenery.SHELVES_6904, Scenery.HOLE_6905)
     }
 }

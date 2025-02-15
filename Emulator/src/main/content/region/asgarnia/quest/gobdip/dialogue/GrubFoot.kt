@@ -6,11 +6,16 @@ import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import org.rs.consts.Items
 
-enum class GrubFoot(val id: Int, val value: Int, val mail: Item) {
+enum class GrubFoot(
+    val id: Int,
+    val value: Int,
+    val mail: Item,
+) {
     NORMAL(4495, 1, Item(Items.GOBLIN_MAIL_288)),
     ORANGE(4497, 4, Item(Items.ORANGE_GOBLIN_MAIL_286)),
     BLUE(4498, 5, Item(Items.BLUE_GOBLIN_MAIL_287)),
-    BROWN(4496, 6, Item(Items.GOBLIN_MAIL_288));
+    BROWN(4496, 6, Item(Items.GOBLIN_MAIL_288)),
+    ;
 
     fun setConfig(player: Player?) {
         setVarp(player!!, 62, value)

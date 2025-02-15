@@ -5,5 +5,5 @@ enum class BuildHotspotType {
     RECURSIVE,
     LINKED,
     CREST,
-    STAIRCASE
+    STAIRCASE,
 }

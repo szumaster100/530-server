@@ -1,17 +1,16 @@
 package content.global.skill.cooking.handlers
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Scenery
-import org.rs.consts.Vars
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.item.Item
 import core.game.world.map.Location
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Scenery
+import org.rs.consts.Vars
 
 class FermentingListener : InteractionListener {
-
     val fermentingVat = 7437
     val valve = 7442
     val location = Location.create(2916, 10193, 1)
@@ -37,7 +36,6 @@ class FermentingListener : InteractionListener {
         onUseWith(IntType.SCENERY, Items.BARLEY_MALT_6008, Scenery.FERMENTING_VAT_7438) { player, used, with ->
             return@onUseWith true
         }
-
     }
 
     companion object {

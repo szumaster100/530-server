@@ -1,7 +1,5 @@
 package content.global.skill.cooking.handlers
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
 import core.api.forceWalk
 import core.api.getStatLevel
 import core.api.inInventory
@@ -11,10 +9,15 @@ import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.world.map.Location
+import org.rs.consts.Animations
+import org.rs.consts.Items
 
-class AppleMushPulse(player: Player?, item: Item?) : SkillPulse<Item?>(player, null) {
-
+class AppleMushPulse(
+    player: Player?,
+    item: Item?,
+) : SkillPulse<Item?>(player, null) {
     private var tick = 0
+
     override fun checkRequirements(): Boolean {
         if (getStatLevel(player, Skills.COOKING) < 14) {
             sendMessage(player, "You need a cooking level of 14 to do this.")

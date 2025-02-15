@@ -19,7 +19,7 @@ class AntiMacro :
     PersistTimer(
         runInterval = 0,
         identifier = "antimacro",
-        isAuto = true
+        isAuto = true,
     ),
     Commands {
     var paused = false
@@ -45,34 +45,46 @@ class AntiMacro :
     }
 
     override fun onRegister(entity: Entity) {
-        if (entity !is Player || entity.isArtificial)
+        if (entity !is Player || entity.isArtificial) {
             entity.timers.removeTimer(this)
-        if (entity is Player && entity.rights == Rights.ADMINISTRATOR)
+        }
+        if (entity is Player && entity.rights == Rights.ADMINISTRATOR) {
             paused = true
+        }
 
-        if (runInterval == 0)
+        if (runInterval == 0) {
             setNextExecution()
+        }
     }
 
-    override fun save(root: JSONObject, entity: Entity) {
+    override fun save(
+        root: JSONObject,
+        entity: Entity,
+    ) {
         root["ticksRemaining"] = (nextExecution - getWorldTicks()).toString()
     }
 
-    override fun parse(root: JSONObject, entity: Entity) {
+    override fun parse(
+        root: JSONObject,
+        entity: Entity,
+    ) {
         runInterval = (root["ticksRemaining"]?.toString()?.toIntOrNull() ?: 0)
         nextExecution = getWorldTicks() + runInterval
     }
 
     private fun canSpawn(entity: Entity): Boolean {
-        if (entity.zoneMonitor.isRestricted(ZoneRestriction.RANDOM_EVENTS))
+        if (entity.zoneMonitor.isRestricted(ZoneRestriction.RANDOM_EVENTS)) {
             return false
+        }
 
         val current = getAttribute<RandomEventNPC?>(entity, EVENT_NPC, null)
-        if (current != null)
+        if (current != null) {
             return false
+        }
 
-        if (paused)
+        if (paused) {
             return false
+        }
 
         return true
     }
@@ -93,13 +105,19 @@ class AntiMacro :
         val normalRandom = RandomEvents.getNonSkillRandom()
         val roll = RandomFunction.random(100)
 
-        if (roll >= 65 && skillBasedRandom != null && getWorldTicks() - entity.skills.lastXpGain < 250)
+        if (roll >= 65 && skillBasedRandom != null && getWorldTicks() - entity.skills.lastXpGain < 250) {
             return skillBasedRandom
+        }
         return normalRandom
     }
 
     override fun defineCommands() {
-        define("revent", Privilege.ADMIN, "::revent [-p] <lt>player name<gt> [-e <lt>event name<gt>]", "Spawns a random event for the target player.<br>Optional -e parameter to pass a specific event.") { player, args ->
+        define(
+            "revent",
+            Privilege.ADMIN,
+            "::revent [-p] <lt>player name<gt> [-e <lt>event name<gt>]",
+            "Spawns a random event for the target player.<br>Optional -e parameter to pass a specific event.",
+        ) { player, args ->
             if (args.size == 1) {
                 val possible = RandomEvents.values()
                 for (event in possible) {
@@ -110,8 +128,9 @@ class AntiMacro :
 
             val arg = parseCommandArgs(args.joinToString(" "))
             val target = Repository.getPlayerByName(arg.targetPlayer)
-            if (target == null)
+            if (target == null) {
                 reject(player, "Unable to find user ${arg.targetPlayer}.")
+            }
             if (target!!.rights == Rights.ADMINISTRATOR) {
                 unpause(target)
                 sendMessage(target, colorize("%RAntiMacro timer unpaused until next login."))
@@ -121,7 +140,10 @@ class AntiMacro :
         }
     }
 
-    data class CommandArgs(val targetPlayer: String, val targetEvent: RandomEvents?)
+    data class CommandArgs(
+        val targetPlayer: String,
+        val targetEvent: RandomEvents?,
+    )
 
     companion object {
         const val EVENT_NPC = "re-npc"
@@ -150,13 +172,19 @@ class AntiMacro :
             timer.paused = false
         }
 
-        fun forceEvent(player: Player, event: RandomEvents? = null) {
+        fun forceEvent(
+            player: Player,
+            event: RandomEvents? = null,
+        ) {
             val timer = getTimer<AntiMacro>(player) ?: return
             timer.nextExecution = getWorldTicks()
             timer.nextRandom = event
         }
 
-        fun parseCommandArgs(args: String, commandName: String = "revent"): CommandArgs {
+        fun parseCommandArgs(
+            args: String,
+            commandName: String = "revent",
+        ): CommandArgs {
             val tokens = args.split(" ")
             val modeTokens = arrayOf("-p", "-e")
 
@@ -168,10 +196,11 @@ class AntiMacro :
                 when (token) {
                     commandName -> continue
                     in modeTokens -> lastMode = token
-                    else -> when (lastMode) {
-                        "-p" -> userString += "$token "
-                        "-e" -> eventString += "$token "
-                    }
+                    else ->
+                        when (lastMode) {
+                            "-p" -> userString += "$token "
+                            "-e" -> eventString += "$token "
+                        }
                 }
             }
 
@@ -180,7 +209,10 @@ class AntiMacro :
 
             var event: RandomEvents? = null
 
-            try { event = RandomEvents.valueOf(eventName) } catch (_: Exception) {}
+            try {
+                event = RandomEvents.valueOf(eventName)
+            } catch (_: Exception) {
+            }
 
             return CommandArgs(username, event)
         }

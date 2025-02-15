@@ -1,6 +1,5 @@
 package content.region.kandarin.handlers
 
-import org.rs.consts.Items
 import core.api.sendDialogueLines
 import core.api.sendMessage
 import core.cache.def.impl.SceneryDefinition
@@ -16,14 +15,18 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld.Pulser
 import core.game.world.map.Direction
 import core.game.world.map.Location
+import core.plugin.ClassScanner.definePlugin
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner.definePlugin
+import org.rs.consts.Items
 
 @Initializable
 class BeehivePlugin : OptionHandler() {
-
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         if (!player.inventory.containsItem(REPELLANT)) {
             sendMessage(player, "The bees fly out of the hive and sting you!")
             player.impactHandler.manualHit(player, 2, ImpactHandler.HitsplatType.NORMAL, 1)
@@ -33,7 +36,7 @@ class BeehivePlugin : OptionHandler() {
                         sendMessage(player, "Maybe you can clear them out somehow.")
                         return true
                     }
-                }
+                },
             )
         } else {
             when (option) {
@@ -65,7 +68,10 @@ class BeehivePlugin : OptionHandler() {
         return this
     }
 
-    override fun getDestination(mover: Node, node: Node): Location {
+    override fun getDestination(
+        mover: Node,
+        node: Node,
+    ): Location {
         val west = node.centerLocation.transform(Direction.WEST, 1)
         val east = node.centerLocation.transform(Direction.EAST, 1)
         return if (mover.location.getDistance(east) <= mover.location.getDistance(west)) {
@@ -76,7 +82,6 @@ class BeehivePlugin : OptionHandler() {
     }
 
     private inner class MerlinCrystalItemHandler : UseWithHandler(REPELLANT.id, BUCKET.id) {
-
         private val OBJECTS = intArrayOf(68)
 
         override fun newInstance(arg: Any?): Plugin<Any> {
@@ -91,26 +96,32 @@ class BeehivePlugin : OptionHandler() {
             val useditem = event.usedItem
             val scenery = event.usedWith as Scenery
 
-            if (useditem != null && player.getAttribute(
+            if (useditem != null &&
+                player.getAttribute(
                     "cleared-beehives",
-                    false
-                ) && useditem.id == REPELLANT.id && scenery.id == 68
+                    false,
+                ) &&
+                useditem.id == REPELLANT.id &&
+                scenery.id == 68
             ) {
                 sendDialogueLines(
                     player,
-                    "You have already cleared the hive of its bees. You can now safely collect wax from the hive."
+                    "You have already cleared the hive of its bees. You can now safely collect wax from the hive.",
                 )
             }
 
-            if (useditem != null && useditem.id == REPELLANT.id && scenery.id == 68 && !player.getAttribute(
+            if (useditem != null &&
+                useditem.id == REPELLANT.id &&
+                scenery.id == 68 &&
+                !player.getAttribute(
                     "cleared-beehives",
-                    false
+                    false,
                 )
             ) {
                 sendDialogueLines(
                     player,
                     "You pour insect repellent on the beehive. You see the bees leaving the",
-                    "hive."
+                    "hive.",
                 )
                 player.setAttribute("cleared-beehives", true)
             }
@@ -124,7 +135,7 @@ class BeehivePlugin : OptionHandler() {
                 sendDialogueLines(
                     player,
                     "It would be dangerous to stick the bucket into the hive while the bees",
-                    "are still in it. Perhaps you can clear them out somehow."
+                    "are still in it. Perhaps you can clear them out somehow.",
                 )
             }
 

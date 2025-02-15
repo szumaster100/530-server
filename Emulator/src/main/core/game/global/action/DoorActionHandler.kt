@@ -1,6 +1,7 @@
 package core.game.global.action
 
 import core.api.*
+import core.api.quest.hasRequirement
 import core.game.node.entity.Entity
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.diary.DiaryType
@@ -15,14 +16,15 @@ import core.game.world.map.RegionManager.getObject
 import core.game.world.map.path.Pathfinder
 import org.rs.consts.Sounds
 import java.awt.Point
-import core.api.quest.hasRequirement
 
 object DoorActionHandler {
-
     private const val IN_USE_CHARGE = 88
 
     @JvmStatic
-    fun handleDoor(player: Player, scenery: Scenery) {
+    fun handleDoor(
+        player: Player,
+        scenery: Scenery,
+    ) {
         val second = if ((scenery.id == 1530 || scenery.id == 1531)) null else getSecondDoor(scenery, player)
         var o: Scenery? = null
         if (scenery is Constructed && (scenery.replaced.also { o = it }) != null) {
@@ -94,7 +96,7 @@ object DoorActionHandler {
     fun handleAutowalkDoor(
         entity: Entity,
         scenery: Scenery,
-        endLocation: Location = getEndLocation(entity, scenery)
+        endLocation: Location = getEndLocation(entity, scenery),
     ): Boolean {
         if (scenery.charge == IN_USE_CHARGE) {
             return false
@@ -158,41 +160,55 @@ object DoorActionHandler {
                     }
                     return true
                 }
-            }
+            },
         )
         return true
     }
 
     @JvmStatic
-    fun getEndLocation(entity: Entity, scenery: Scenery): Location {
+    fun getEndLocation(
+        entity: Entity,
+        scenery: Scenery,
+    ): Location {
         return getEndLocation(entity, scenery, false)
     }
 
     @JvmStatic
-    fun getEndLocation(entity: Entity, scenery: Scenery, isAutoWalk: Boolean?): Location {
+    fun getEndLocation(
+        entity: Entity,
+        scenery: Scenery,
+        isAutoWalk: Boolean?,
+    ): Location {
         var l = scenery.location
         when (scenery.rotation) {
-            0 -> if (entity.location.x >= l.x) {
-                l = l.transform(-1, 0, 0)
-            }
+            0 ->
+                if (entity.location.x >= l.x) {
+                    l = l.transform(-1, 0, 0)
+                }
 
-            1 -> if (entity.location.y <= l.y) {
-                l = l.transform(0, 1, 0)
-            }
+            1 ->
+                if (entity.location.y <= l.y) {
+                    l = l.transform(0, 1, 0)
+                }
 
-            2 -> if (entity.location.x <= l.x) {
-                l = l.transform(1, 0, 0)
-            }
+            2 ->
+                if (entity.location.x <= l.x) {
+                    l = l.transform(1, 0, 0)
+                }
 
-            else -> if (entity.location.y >= l.y) {
-                l = l.transform(0, -1, 0)
-            }
+            else ->
+                if (entity.location.y >= l.y) {
+                    l = l.transform(0, -1, 0)
+                }
         }
         return l
     }
 
     @JvmStatic
-    fun getDestination(entity: Entity, door: Scenery): Location {
+    fun getDestination(
+        entity: Entity,
+        door: Scenery,
+    ): Location {
         var l = door.location
         var rotation = door.rotation
         if (door is Constructed && door.getDefinition().hasAction("close")) {
@@ -220,33 +236,37 @@ object DoorActionHandler {
             }
         }
         when (rotation) {
-            0 -> if (entity.location.x < l.x) {
-                if (Pathfinder.find(entity, l.transform(-1, 0, 0)).isMoveNear) {
-                    return l.transform(0, 0, 0)
+            0 ->
+                if (entity.location.x < l.x) {
+                    if (Pathfinder.find(entity, l.transform(-1, 0, 0)).isMoveNear) {
+                        return l.transform(0, 0, 0)
+                    }
+                    return l.transform(-1, 0, 0)
                 }
-                return l.transform(-1, 0, 0)
-            }
 
-            1 -> if (entity.location.y > l.y) {
-                if (Pathfinder.find(entity, l.transform(0, 1, 0)).isMoveNear) {
-                    return l.transform(0, 0, 0)
+            1 ->
+                if (entity.location.y > l.y) {
+                    if (Pathfinder.find(entity, l.transform(0, 1, 0)).isMoveNear) {
+                        return l.transform(0, 0, 0)
+                    }
+                    return l.transform(0, 1, 0)
                 }
-                return l.transform(0, 1, 0)
-            }
 
-            2 -> if (entity.location.x > l.x) {
-                if (Pathfinder.find(entity, l.transform(1, 0, 0)).isMoveNear) {
-                    return l.transform(0, 0, 0)
+            2 ->
+                if (entity.location.x > l.x) {
+                    if (Pathfinder.find(entity, l.transform(1, 0, 0)).isMoveNear) {
+                        return l.transform(0, 0, 0)
+                    }
+                    return l.transform(1, 0, 0)
                 }
-                return l.transform(1, 0, 0)
-            }
 
-            3 -> if (entity.location.y < l.y) {
-                if (Pathfinder.find(entity, l.transform(0, -1, 0)).isMoveNear) {
-                    return l.transform(0, 0, 0)
+            3 ->
+                if (entity.location.y < l.y) {
+                    if (Pathfinder.find(entity, l.transform(0, -1, 0)).isMoveNear) {
+                        return l.transform(0, 0, 0)
+                    }
+                    return l.transform(0, -1, 0)
                 }
-                return l.transform(0, -1, 0)
-            }
         }
         return l
     }
@@ -259,7 +279,7 @@ object DoorActionHandler {
         secondReplaceId: Int,
         clip: Boolean,
         restoreTicks: Int,
-        fence: Boolean
+        fence: Boolean,
     ) {
         var `object` = scenery
         var second = second
@@ -310,7 +330,7 @@ object DoorActionHandler {
         replaceId: Int,
         secondReplaceId: Int,
         clip: Boolean,
-        restoreTicks: Int
+        restoreTicks: Int,
     ) {
         var replaceId = replaceId
         var secondReplaceId = secondReplaceId
@@ -357,7 +377,12 @@ object DoorActionHandler {
     }
 
     @JvmStatic
-    fun autowalkFence(entity: Entity, scenery: Scenery, replaceId: Int, secondReplaceId: Int): Boolean {
+    fun autowalkFence(
+        entity: Entity,
+        scenery: Scenery,
+        replaceId: Int,
+        secondReplaceId: Int,
+    ): Boolean {
         val second = getSecondDoor(scenery, entity)
         if (scenery.charge == IN_USE_CHARGE || second == null) {
             return false
@@ -393,7 +418,7 @@ object DoorActionHandler {
                     }
                     return true
                 }
-            }
+            },
         )
         return true
     }
@@ -421,16 +446,20 @@ object DoorActionHandler {
     }
 
     @JvmStatic
-    fun getSecondDoor(scenery: Scenery, entity: Entity?): Scenery? {
+    fun getSecondDoor(
+        scenery: Scenery,
+        entity: Entity?,
+    ): Scenery? {
         val location = scenery.location
         val player = if (entity is Player) entity else null
 
-        val directions = listOf(
-            location.transform(-1, 0, 0),
-            location.transform(1, 0, 0),
-            location.transform(0, -1, 0),
-            location.transform(0, 1, 0)
-        )
+        val directions =
+            listOf(
+                location.transform(-1, 0, 0),
+                location.transform(1, 0, 0),
+                location.transform(0, -1, 0),
+                location.transform(0, 1, 0),
+            )
 
         for (dir in directions) {
             val foundObject = getObject(dir)
@@ -442,7 +471,11 @@ object DoorActionHandler {
     }
 
     @JvmStatic
-    fun getRotation(scenery: Scenery, second: Scenery?, rp: Point): IntArray {
+    fun getRotation(
+        scenery: Scenery,
+        second: Scenery?,
+        rp: Point,
+    ): IntArray {
         if (second == null) {
             return intArrayOf((scenery.rotation + 1) % 4)
         }

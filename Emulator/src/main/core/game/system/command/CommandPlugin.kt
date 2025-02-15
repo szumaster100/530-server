@@ -5,14 +5,20 @@ import core.game.world.repository.Repository
 import core.plugin.Plugin
 
 abstract class CommandPlugin : Plugin<Any?> {
-
-    abstract fun parse(player: Player?, name: String?, args: Array<String?>?): Boolean
+    abstract fun parse(
+        player: Player?,
+        name: String?,
+        args: Array<String?>?,
+    ): Boolean
 
     fun validate(player: Player?): Boolean {
         return true
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any {
         return Unit
     }
 
@@ -23,7 +29,6 @@ abstract class CommandPlugin : Plugin<Any?> {
     }
 
     companion object {
-
         @JvmStatic
         fun toInteger(string: String): Int {
             return try {
@@ -37,7 +42,11 @@ abstract class CommandPlugin : Plugin<Any?> {
             return getArgumentLine(args, 1, args.size)
         }
 
-        fun getArgumentLine(args: Array<String?>, offset: Int, length: Int): String {
+        fun getArgumentLine(
+            args: Array<String?>,
+            offset: Int,
+            length: Int,
+        ): String {
             val sb = StringBuilder()
             for (i in offset until length) {
                 if (i != offset) {
@@ -49,7 +58,10 @@ abstract class CommandPlugin : Plugin<Any?> {
         }
 
         @JvmStatic
-        fun getTarget(name: String?, load: Boolean): Player? {
+        fun getTarget(
+            name: String?,
+            load: Boolean,
+        ): Player? {
             return Repository.getPlayerByName(name)
         }
 

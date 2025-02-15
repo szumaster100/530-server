@@ -1,8 +1,5 @@
 package content.global.skill.magic.spells.lunar
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import content.global.skill.farming.CompostBins
 import content.global.skill.farming.CompostType
 import content.global.skill.farming.FarmingPatch
@@ -13,11 +10,12 @@ import core.api.playGlobalAudio
 import core.api.sendGraphics
 import core.api.sendMessage
 import core.game.node.item.Item
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 
 class FertileSoilSpell : SpellListener("lunar") {
-
     override fun defineListeners() {
-
         onCast(LunarSpells.FERTILE_SOIL, OBJECT) { player, node ->
             node?.let {
                 if (CompostBins.forObjectID(node.id) != null) {
@@ -46,8 +44,8 @@ class FertileSoilSpell : SpellListener("lunar") {
                     arrayOf(
                         Item(Items.ASTRAL_RUNE_9075, 3),
                         Item(Items.NATURE_RUNE_561, 2),
-                        Item(Items.EARTH_RUNE_557, 15)
-                    )
+                        Item(Items.EARTH_RUNE_557, 15),
+                    ),
                 )
                 removeRunes(player, true)
                 animate(player, Animations.LUNAR_FERTILE_SOIL_4413)

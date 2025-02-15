@@ -3,7 +3,9 @@ package core.game.node.entity.player
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 
-class VarpManager(val player: Player) {
+class VarpManager(
+    val player: Player,
+) {
     fun save(root: JSONObject) {
     }
 

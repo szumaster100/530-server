@@ -1,6 +1,5 @@
 package content.minigame.blastfurnace
 
-import org.rs.consts.Items
 import content.global.skill.smithing.smelting.Bar
 import content.minigame.blastfurnace.BlastFurnace.Companion.getBarForOreId
 import content.minigame.blastfurnace.BlastFurnace.Companion.getNeededCoal
@@ -8,6 +7,7 @@ import content.minigame.blastfurnace.BlastUtils.BAR_LIMIT
 import core.game.node.item.Item
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
+import org.rs.consts.Items
 
 class BFOreContainer {
     private var coalRemaining = 0
@@ -25,7 +25,10 @@ class BFOreContainer {
         return coalRemaining
     }
 
-    fun addOre(id: Int, amount: Int): Int {
+    fun addOre(
+        id: Int,
+        amount: Int,
+    ): Int {
         if (id == Items.COAL_453) return addCoal(amount)
 
         var limit = BlastUtils.ORE_LIMIT
@@ -86,11 +89,12 @@ class BFOreContainer {
             val coalNeeded = getNeededCoal(bar)
 
             if (bar == Bar.BRONZE) {
-                val indexOfComplement = when (ores[i]) {
-                    Items.COPPER_ORE_436 -> indexOfOre(Items.TIN_ORE_438)
-                    Items.TIN_ORE_438 -> indexOfOre(Items.COPPER_ORE_436)
-                    else -> -1
-                }
+                val indexOfComplement =
+                    when (ores[i]) {
+                        Items.COPPER_ORE_436 -> indexOfOre(Items.TIN_ORE_438)
+                        Items.TIN_ORE_438 -> indexOfOre(Items.COPPER_ORE_436)
+                        else -> -1
+                    }
                 if (indexOfComplement == -1) {
                     newOres[oreIndex++] = ores[i]
                     continue
@@ -121,7 +125,10 @@ class BFOreContainer {
         return total
     }
 
-    fun takeBars(bar: Bar, amount: Int): Item? {
+    fun takeBars(
+        bar: Bar,
+        amount: Int,
+    ): Item? {
         val amt = amount.coerceAtMost(barAmounts[bar.ordinal])
         if (amt == 0) return null
 
@@ -129,18 +136,25 @@ class BFOreContainer {
         return Item(bar.product.id, amt)
     }
 
-    fun getAvailableSpace(ore: Int, level: Int = 99): Int {
+    fun getAvailableSpace(
+        ore: Int,
+        level: Int = 99,
+    ): Int {
         if (ore == Items.COAL_453) return BlastUtils.COAL_LIMIT - coalRemaining
 
         var freeSlots = 0
         val bar = getBarForOreId(ore, coalRemaining, level)!!
         val oreAmounts = HashMap<Int, Int>()
-        for (i in 0 until BlastUtils.ORE_LIMIT) if (ores[i] == -1) {
-            var oreLimit = BlastUtils.ORE_LIMIT
-            if (bar == Bar.BRONZE) oreLimit *= 2
-            freeSlots = oreLimit - i
-            break
-        } else oreAmounts[ores[i]] = (oreAmounts[ores[i]] ?: 0) + 1
+        for (i in 0 until BlastUtils.ORE_LIMIT) {
+            if (ores[i] == -1) {
+                var oreLimit = BlastUtils.ORE_LIMIT
+                if (bar == Bar.BRONZE) oreLimit *= 2
+                freeSlots = oreLimit - i
+                break
+            } else {
+                oreAmounts[ores[i]] = (oreAmounts[ores[i]] ?: 0) + 1
+            }
+        }
 
         val currentAmount = oreAmounts[ore] ?: 0
         freeSlots = (BlastUtils.ORE_LIMIT - currentAmount).coerceAtMost(freeSlots)
@@ -167,7 +181,6 @@ class BFOreContainer {
     }
 
     companion object {
-
         fun fromJson(root: JSONObject): BFOreContainer {
             val cont = BFOreContainer()
             val jsonOres = root["ores"] as? JSONArray ?: return cont

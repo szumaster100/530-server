@@ -1,9 +1,5 @@
 package content.region.kandarin.quest.makinghistory.handlers
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Scenery
-import org.rs.consts.Sounds
 import core.api.*
 import core.game.dialogue.DialogueFile
 import core.game.interaction.IntType
@@ -12,9 +8,12 @@ import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.game.world.map.Location
 import core.tools.END_DIALOGUE
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Scenery
+import org.rs.consts.Sounds
 
 class MakingHistoryListener : InteractionListener {
-
     private fun outpostScroll(player: Player) {
         val outpostScroll =
             arrayOf(
@@ -47,7 +46,8 @@ class MakingHistoryListener : InteractionListener {
         }
 
         onDig(Location(2440, 3145, 0)) { player ->
-            if (inInventory(player, Items.ENCHANTED_KEY_6754) && getVarbit(player, MakingHistoryUtils.ERIN_PROGRESS) >= 1
+            if (inInventory(player, Items.ENCHANTED_KEY_6754) &&
+                getVarbit(player, MakingHistoryUtils.ERIN_PROGRESS) >= 1
             ) {
                 sendDialogue(player, "You use the spade and find a chest. Wonder what's inside?")
                 addItemOrDrop(player, Items.CHEST_6759)
@@ -61,7 +61,7 @@ class MakingHistoryListener : InteractionListener {
                 sendDialogueLines(
                     player,
                     "You look in the chest and find a journal, and then you throw away",
-                    "the chest."
+                    "the chest.",
                 )
                 addItemOrDrop(player, Items.JOURNAL_6755)
                 setVarbit(player, MakingHistoryUtils.ERIN_PROGRESS, 4, true)
@@ -106,33 +106,39 @@ class MakingHistoryListener : InteractionListener {
             openDialogue(
                 player,
                 object : DialogueFile() {
-                    override fun handle(componentID: Int, buttonID: Int) {
+                    override fun handle(
+                        componentID: Int,
+                        buttonID: Int,
+                    ) {
                         when (stage) {
-                            0 -> options(
-                                "The Times of Lathas",
-                                "The History of the Outpost",
-                                "The Mysterious Adventurer"
-                            ).also { stage++ }
+                            0 ->
+                                options(
+                                    "The Times of Lathas",
+                                    "The History of the Outpost",
+                                    "The Mysterious Adventurer",
+                                ).also { stage++ }
 
-                            1 -> when (buttonID) {
-                                1 -> sendDialogue(
-                                    player,
-                                    "You pick up a new looking book: 'The Times of Lathas'. You skim over the heavy book. It talks about the heritage of the line of kings who carry the name Ardignas. They only came into power 68 years ago, but in which time there have been five kings, the current being King Lathas."
-                                ).also { stage = END_DIALOGUE }
+                            1 ->
+                                when (buttonID) {
+                                    1 ->
+                                        sendDialogue(
+                                            player,
+                                            "You pick up a new looking book: 'The Times of Lathas'. You skim over the heavy book. It talks about the heritage of the line of kings who carry the name Ardignas. They only came into power 68 years ago, but in which time there have been five kings, the current being King Lathas.",
+                                        ).also { stage = END_DIALOGUE }
 
-                                2 -> {
-                                    end()
-                                    HistoryoftheOutpost.openBook(player)
+                                    2 -> {
+                                        end()
+                                        HistoryoftheOutpost.openBook(player)
+                                    }
+
+                                    3 -> {
+                                        end()
+                                        TheMysteriousAdventurer.openBook(player)
+                                    }
                                 }
-
-                                3 -> {
-                                    end()
-                                    TheMysteriousAdventurer.openBook(player)
-                                }
-                            }
                         }
                     }
-                }
+                },
             )
             return@on true
         }

@@ -17,14 +17,19 @@ import org.rs.consts.Items
 import org.rs.consts.Sounds
 
 @Initializable
-class SunderSpecialHandler : MeleeSwingHandler(), Plugin<Any> {
-
+class SunderSpecialHandler :
+    MeleeSwingHandler(),
+    Plugin<Any> {
     override fun newInstance(arg: Any?): Plugin<Any> {
         CombatStyle.MELEE.swingHandler.register(Items.BARRELCHEST_ANCHOR_10887, this)
         return this
     }
 
-    override fun swing(entity: Entity?, victim: Entity?, state: BattleState?): Int {
+    override fun swing(
+        entity: Entity?,
+        victim: Entity?,
+        state: BattleState?,
+    ): Int {
         if (!(entity as Player).settings.drainSpecial(50)) {
             return -1
         }
@@ -54,13 +59,21 @@ class SunderSpecialHandler : MeleeSwingHandler(), Plugin<Any> {
         return 1
     }
 
-    override fun visualize(entity: Entity, victim: Entity?, state: BattleState?) {
-        entity.visualize(Animation(5870),
-            Graphics(org.rs.consts.Graphics.BARRELCHEST_ANCHOR_SPECIAL_1027)
+    override fun visualize(
+        entity: Entity,
+        victim: Entity?,
+        state: BattleState?,
+    ) {
+        entity.visualize(
+            Animation(5870),
+            Graphics(org.rs.consts.Graphics.BARRELCHEST_ANCHOR_SPECIAL_1027),
         )
     }
 
-    override fun fireEvent(identifier: String?, vararg args: Any?): Any? {
+    override fun fireEvent(
+        identifier: String?,
+        vararg args: Any?,
+    ): Any? {
         return null
     }
 }

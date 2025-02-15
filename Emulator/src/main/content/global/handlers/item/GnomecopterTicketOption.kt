@@ -1,7 +1,5 @@
 package content.global.handlers.item
 
-import org.rs.consts.Components
-import org.rs.consts.Items
 import core.api.sendString
 import core.cache.def.impl.ItemDefinition
 import core.game.component.Component
@@ -11,16 +9,21 @@ import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.plugin.Plugin
 import core.tools.RandomFunction
+import org.rs.consts.Components
+import org.rs.consts.Items
 
 @Initializable
 class GnomecopterTicketOption : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         ItemDefinition.forId(Items.GNOMECOPTER_TICKET_12843).handlers["option:read"] = this
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         player.interfaceManager.open(Component(Components.CARPET_TICKET_729))
         var info = "Gnomecopter ticket:"
         info += "<br>" + "Castle Wars"

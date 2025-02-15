@@ -16,7 +16,9 @@ import core.game.world.map.zone.ZoneRestriction
  */
 interface MapArea : ContentInterface {
     var zone: MapZone
-        get() = zoneMaps[this::class.java.simpleName + "MapArea"] ?: throw IllegalStateException("Zone not initialized.")
+        get() =
+            zoneMaps[this::class.java.simpleName + "MapArea"]
+                ?: throw IllegalStateException("Zone not initialized.")
         set(value) {
             zoneMaps[this::class.java.simpleName + "MapArea"] = value
         }
@@ -27,13 +29,28 @@ interface MapArea : ContentInterface {
 
     fun areaEnter(entity: Entity) {}
 
-    fun areaLeave(entity: Entity, logout: Boolean) {}
+    fun areaLeave(
+        entity: Entity,
+        logout: Boolean,
+    ) {}
 
-    fun entityStep(entity: Entity, location: Location, lastLocation: Location) {}
+    fun entityStep(
+        entity: Entity,
+        location: Location,
+        lastLocation: Location,
+    ) {}
 
-    fun interactBehavior(entity: Entity, target: Node, option: Option): Boolean = false
+    fun interactBehavior(
+        entity: Entity,
+        target: Node,
+        option: Option,
+    ): Boolean = false
 
-    fun useWithBehavior(player: Player?, used: Item?, with: Node?): Boolean = false
+    fun useWithBehavior(
+        player: Player?,
+        used: Item?,
+        with: Node?,
+    ): Boolean = false
 
     companion object {
         val zoneMaps = mutableMapOf<String, MapZone>()

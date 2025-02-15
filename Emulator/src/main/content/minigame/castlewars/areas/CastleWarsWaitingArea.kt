@@ -12,8 +12,9 @@ import core.game.world.map.zone.ZoneBorders
 import core.tools.ticksPerMinute
 import org.rs.consts.Components
 
-class CastleWarsWaitingArea : CastleWarsArea(), TickListener {
-
+class CastleWarsWaitingArea :
+    CastleWarsArea(),
+    TickListener {
     companion object {
         val zamorakWaitingRoom: ZoneBorders = ZoneBorders(2432, 9510, 2407, 9534, 0)
         val saradominWaitingRoom: ZoneBorders = ZoneBorders(2394, 9497, 2369, 9481, 0)
@@ -33,7 +34,7 @@ class CastleWarsWaitingArea : CastleWarsArea(), TickListener {
         super.areaEnter(player)
         registerTimer(
             player,
-            spawnTimer("teleblock", (CastleWars.gameCooldownMinutes + CastleWars.gameTimeMinutes) * 60 * 2)
+            spawnTimer("teleblock", (CastleWars.gameCooldownMinutes + CastleWars.gameTimeMinutes) * 60 * 2),
         )
 
         if (zamorakWaitingRoom.insideBorder(player.location)) {
@@ -45,33 +46,35 @@ class CastleWarsWaitingArea : CastleWarsArea(), TickListener {
         }
 
         var transformed = false
-        if (player.attributes[CastleWars.portalAttribute] == CastleWars.guthixName
-            && (hasGodItem(player, God.ZAMORAK) || hasGodItem(player, God.SARADOMIN))
+        if (player.attributes[CastleWars.portalAttribute] == CastleWars.guthixName &&
+            (hasGodItem(player, God.ZAMORAK) || hasGodItem(player, God.SARADOMIN))
         ) {
             player.appearance.transformNPC(CastleWars.sheep)
             sendDialogue(
                 player,
-                "I pity your faith in my brothers. I shall bless you with some time in the most holy of forms; maybe its wisdom will rub off on you and you'll see the error of your ways."
+                "I pity your faith in my brothers. I shall bless you with some time in the most holy of forms; maybe its wisdom will rub off on you and you'll see the error of your ways.",
             )
             transformed = true
         }
-        if (player.attributes[CastleWars.portalAttribute] == CastleWars.zamorakName
-            && hasGodItem(player, God.SARADOMIN) || hasGodItem(player, God.GUTHIX)
+        if (player.attributes[CastleWars.portalAttribute] == CastleWars.zamorakName &&
+            hasGodItem(player, God.SARADOMIN) ||
+            hasGodItem(player, God.GUTHIX)
         ) {
             player.appearance.transformNPC(CastleWars.imp)
             sendDialogue(
                 player,
-                "You're wearing objects of my ignorant brothers and you come to me? Such treachery must be rewarded! Enjoy some time in the most mischievous of forms."
+                "You're wearing objects of my ignorant brothers and you come to me? Such treachery must be rewarded! Enjoy some time in the most mischievous of forms.",
             )
             transformed = true
         }
-        if (player.attributes[CastleWars.portalAttribute] == CastleWars.saradominName
-            && hasGodItem(player, God.ZAMORAK) || hasGodItem(player, God.GUTHIX)
+        if (player.attributes[CastleWars.portalAttribute] == CastleWars.saradominName &&
+            hasGodItem(player, God.ZAMORAK) ||
+            hasGodItem(player, God.GUTHIX)
         ) {
             player.appearance.transformNPC(CastleWars.rabbit)
             sendDialogue(
                 player,
-                "You wear objects of my foolish brothers? Perhaps some time spent as the lowliest of forms will help you appreciate the gifts that I can bestow upon my followers."
+                "You wear objects of my foolish brothers? Perhaps some time spent as the lowliest of forms will help you appreciate the gifts that I can bestow upon my followers.",
             )
             transformed = true
         }
@@ -105,8 +108,10 @@ class CastleWarsWaitingArea : CastleWarsArea(), TickListener {
         for (player in waitingSaradominPlayers + waitingZamorakPlayers) {
             CastleWarsOverlay.sendLobbyUpdate(
                 player,
-                waitingSaradominPlayers.isNotEmpty() && waitingZamorakPlayers.isNotEmpty() || CastleWarsGameArea.ticksLeftInGame >= 0,
-                (nextStart - 1) / ticksPerMinute + 1
+                waitingSaradominPlayers.isNotEmpty() &&
+                    waitingZamorakPlayers.isNotEmpty() ||
+                    CastleWarsGameArea.ticksLeftInGame >= 0,
+                (nextStart - 1) / ticksPerMinute + 1,
             )
         }
 
@@ -114,5 +119,4 @@ class CastleWarsWaitingArea : CastleWarsArea(), TickListener {
             CastleWarsGameArea.startGame()
         }
     }
-
 }

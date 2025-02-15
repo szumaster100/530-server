@@ -1,9 +1,5 @@
 package content.region.kandarin.quest.tol
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.hasLevelStat
 import core.api.rewardXP
 import core.api.sendItemOnInterface
@@ -11,10 +7,16 @@ import core.api.setVarbit
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 class TowerOfLife : Quest(Quests.TOWER_OF_LIFE, 134, 133, 2, Vars.VARBIT_QUEST_TOWER_OF_LIFE_PROGRESS_3337, 0, 1, 18) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 11
         player ?: return
@@ -26,10 +28,14 @@ class TowerOfLife : Quest(Quests.TOWER_OF_LIFE, 134, 133, 2, Vars.VARBIT_QUEST_T
                 if (hasLevelStat(
                         player,
                         Skills.CONSTRUCTION,
-                        10
+                        10,
                     )
-                ) "---Level 10 Construction/--" else "!!Level 10 Construction??",
-                line++
+                ) {
+                    "---Level 10 Construction/--"
+                } else {
+                    "!!Level 10 Construction??"
+                },
+                line++,
             )
             line++
             line(player, "I can start this quest by talking to !!Effigy?? at the !!tower??", line++, false)

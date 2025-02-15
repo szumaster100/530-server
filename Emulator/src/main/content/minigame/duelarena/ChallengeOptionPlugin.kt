@@ -9,14 +9,17 @@ import core.plugin.Plugin
 import java.util.*
 
 class ChallengeOptionPlugin : OptionHandler() {
-
     @Throws(Throwable::class)
     override fun newInstance(arg: Any?): Plugin<Any> {
         DuelArenaActivity.CHALLENGE_OPTION.setHandler(this)
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val other = node as Player
         if (other.interfaceManager.isOpened || other.getExtension<Any?>(DuelSession::class.java) != null) {
             player.packetDispatch.sendMessage("Other player is busy at the moment.")
@@ -27,9 +30,13 @@ class ChallengeOptionPlugin : OptionHandler() {
                 other,
                 if (other.getAttribute<Boolean>(
                         "duel:staked",
-                        false
+                        false,
                     )
-                ) DuelArenaActivity.STAKE_REQUEST else DuelArenaActivity.FRIEND_REQUEST
+                ) {
+                    DuelArenaActivity.STAKE_REQUEST
+                } else {
+                    DuelArenaActivity.FRIEND_REQUEST
+                },
             )
             return true
         }

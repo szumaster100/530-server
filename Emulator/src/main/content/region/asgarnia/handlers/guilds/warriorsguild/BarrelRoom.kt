@@ -20,14 +20,15 @@ import core.game.world.map.zone.ZoneBorders
 import core.game.world.map.zone.ZoneBuilder
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
+import core.plugin.ClassScanner.definePlugin
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner.definePlugin
 import core.tools.RandomFunction
 
 @Initializable
-class BarrelRoom : MapZone("wg barrel", true), Plugin<Any> {
-
+class BarrelRoom :
+    MapZone("wg barrel", true),
+    Plugin<Any> {
     override fun configure() {
         super.register(ZoneBorders(2861, 3536, 2876, 3543))
     }
@@ -42,15 +43,25 @@ class BarrelRoom : MapZone("wg barrel", true), Plugin<Any> {
                     return this
                 }
 
-                override fun handle(player: Player, node: Node, option: String): Boolean {
+                override fun handle(
+                    player: Player,
+                    node: Node,
+                    option: String,
+                ): Boolean {
                     if (player.settings.runEnergy < 5) {
                         player.dialogueInterpreter.sendDialogue("You're too exhausted to continue. Take a break.")
                         return true
                     }
                     val helmId = player.equipment.getNew(EquipmentContainer.SLOT_HAT).id
                     val currentBarrel = player.getAttribute("barrel_count", 0)
-                    if (player.equipment[EquipmentContainer.SLOT_WEAPON] != null || player.equipment[EquipmentContainer.SLOT_SHIELD] != null || player.equipment[EquipmentContainer.SLOT_HANDS] != null || helmId != currentBarrel) {
-                        player.dialogueInterpreter.sendDialogue("To balance kegs you will need your head and hands free!")
+                    if (player.equipment[EquipmentContainer.SLOT_WEAPON] != null ||
+                        player.equipment[EquipmentContainer.SLOT_SHIELD] != null ||
+                        player.equipment[EquipmentContainer.SLOT_HANDS] != null ||
+                        helmId != currentBarrel
+                    ) {
+                        player.dialogueInterpreter.sendDialogue(
+                            "To balance kegs you will need your head and hands free!",
+                        )
                         return true
                     }
                     var id = currentBarrel + 1
@@ -86,20 +97,26 @@ class BarrelRoom : MapZone("wg barrel", true), Plugin<Any> {
                                 }
                                 return true
                             }
-                        }
+                        },
                     )
                     return true
                 }
-            }
+            },
         )
         return this
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 
-    override fun leave(e: Entity, logout: Boolean): Boolean {
+    override fun leave(
+        e: Entity,
+        logout: Boolean,
+    ): Boolean {
         if (e is Player && e.getAttribute("barrel_count", 0) > 0) {
             players.remove(e)
             removeBarrels(e)
@@ -110,34 +127,35 @@ class BarrelRoom : MapZone("wg barrel", true), Plugin<Any> {
     companion object {
         private val players: MutableList<Player> = ArrayList(20)
 
-        private val pulse: Pulse = object : Pulse(5) {
-            override fun pulse(): Boolean {
-                if (players.isEmpty()) {
-                    return true
-                }
-                val it = players.iterator()
-                while (it.hasNext()) {
-                    val player = it.next()
-                    player.settings.updateRunEnergy(5.0)
-                    if (player.locks.isMovementLocked) {
-                        continue
+        private val pulse: Pulse =
+            object : Pulse(5) {
+                override fun pulse(): Boolean {
+                    if (players.isEmpty()) {
+                        return true
                     }
-                    val barrels = (player.getAttribute("barrel_count", 8860) - 8859)
-                    val chance = (player.settings.runEnergy - (5 * barrels)).toInt()
-                    if (RandomFunction.randomize(100) > chance) {
-                        removeBarrels(player)
-                        player.sendChat("Ouch!")
-                        player.packetDispatch.sendMessage("Some of the barrels hit you on their way to the floor.")
-                        player.impactHandler.manualHit(player, 1, HitsplatType.NORMAL)
-                        player.visualize(Animation.create(4177), Graphics.create(689 - barrels))
-                        it.remove()
-                        continue
+                    val it = players.iterator()
+                    while (it.hasNext()) {
+                        val player = it.next()
+                        player.settings.updateRunEnergy(5.0)
+                        if (player.locks.isMovementLocked) {
+                            continue
+                        }
+                        val barrels = (player.getAttribute("barrel_count", 8860) - 8859)
+                        val chance = (player.settings.runEnergy - (5 * barrels)).toInt()
+                        if (RandomFunction.randomize(100) > chance) {
+                            removeBarrels(player)
+                            player.sendChat("Ouch!")
+                            player.packetDispatch.sendMessage("Some of the barrels hit you on their way to the floor.")
+                            player.impactHandler.manualHit(player, 1, HitsplatType.NORMAL)
+                            player.visualize(Animation.create(4177), Graphics.create(689 - barrels))
+                            it.remove()
+                            continue
+                        }
+                        player.getSavedData().activityData.updateWarriorTokens(barrels)
                     }
-                    player.getSavedData().activityData.updateWarriorTokens(barrels)
+                    return false
                 }
-                return false
             }
-        }
 
         private fun removeBarrels(player: Player) {
             if (player.locks.equipmentLock != null) {

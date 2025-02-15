@@ -48,8 +48,8 @@ class ClueRewardParser {
                     itemData["minAmount"].toString().toInt(),
                     itemData["maxAmount"].toString().toInt(),
                     itemData["weight"].toString().toDouble(),
-                    false
-                )
+                    false,
+                ),
             )
         }
 

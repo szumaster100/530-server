@@ -1,20 +1,23 @@
 package content.region.misthalin.quest.dragon.npc
 
-import org.rs.consts.NPCs
 import content.region.misthalin.quest.dragon.DragonSlayer
 import core.game.node.entity.Entity
 import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.player.Player
 import core.game.node.item.GroundItemManager
 import core.game.world.map.Location
+import org.rs.consts.NPCs
 
 class MazeDemonNPC : AbstractNPC {
-
     constructor() : super(0, null)
 
     private constructor(id: Int, location: Location) : super(id, location)
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return MazeDemonNPC(id, location)
     }
 

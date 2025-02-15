@@ -1,29 +1,51 @@
 package content.global.skill.slayer
 
-import org.rs.consts.Items
-import core.api.getItemFromEquipment
 import core.api.EquipmentSlot
+import core.api.getItemFromEquipment
 import core.game.node.entity.player.Player
+import org.rs.consts.Items
 
 object SlayerEquipmentFlags {
-
     private val blackMasks = (Items.BLACK_MASK_10_8901..Items.BLACK_MASK_8921).map { it }.toIntArray()
-    private val slayerItems = intArrayOf(Items.NOSE_PEG_4168, Items.EARMUFFS_4166, Items.FACE_MASK_4164, *blackMasks, Items.SPINY_HELMET_4551, Items.SLAYER_CAPET_9787, Items.SLAYER_CAPE_9786, Items.SLAYER_HELMET_13263, Items.WITCHWOOD_ICON_8923, Items.MIRROR_SHIELD_4156)
+    private val slayerItems =
+        intArrayOf(
+            Items.NOSE_PEG_4168,
+            Items.EARMUFFS_4166,
+            Items.FACE_MASK_4164,
+            *blackMasks,
+            Items.SPINY_HELMET_4551,
+            Items.SLAYER_CAPET_9787,
+            Items.SLAYER_CAPE_9786,
+            Items.SLAYER_HELMET_13263,
+            Items.WITCHWOOD_ICON_8923,
+            Items.MIRROR_SHIELD_4156,
+        )
 
     @JvmStatic
     fun updateFlags(player: Player) {
         var flags = 0
-        if (hasItem(player, Items.SLAYER_HELMET_13263)) flags = 0x1F
-        else if (hasItem(player, Items.NOSE_PEG_4168)) flags = 1
-        else if (hasItem(player, Items.EARMUFFS_4166)) flags = flags or (1 shl 1)
-        else if (hasItem(player, Items.FACE_MASK_4164)) flags = flags or (1 shl 2)
-        else if ((getItemFromEquipment(player, EquipmentSlot.HEAD)?.id ?: 0) in blackMasks) flags = flags or (1 shl 3)
-        else if (hasItem(player, Items.SPINY_HELMET_4551)) flags = flags or (1 shl 4)
+        if (hasItem(player, Items.SLAYER_HELMET_13263)) {
+            flags = 0x1F
+        } else if (hasItem(player, Items.NOSE_PEG_4168)) {
+            flags = 1
+        } else if (hasItem(player, Items.EARMUFFS_4166)) {
+            flags = flags or (1 shl 1)
+        } else if (hasItem(player, Items.FACE_MASK_4164)) {
+            flags = flags or (1 shl 2)
+        } else if ((getItemFromEquipment(player, EquipmentSlot.HEAD)?.id ?: 0) in blackMasks) {
+            flags = flags or (1 shl 3)
+        } else if (hasItem(player, Items.SPINY_HELMET_4551)) {
+            flags = flags or (1 shl 4)
+        }
 
-        if ((getItemFromEquipment(player, EquipmentSlot.NECK)?.id ?: 0) == Items.WITCHWOOD_ICON_8923) flags =
-            flags or (1 shl 7)
-        if ((getItemFromEquipment(player, EquipmentSlot.SHIELD)?.id ?: 0) == Items.MIRROR_SHIELD_4156) flags =
-            flags or (1 shl 8)
+        if ((getItemFromEquipment(player, EquipmentSlot.NECK)?.id ?: 0) == Items.WITCHWOOD_ICON_8923) {
+            flags =
+                flags or (1 shl 7)
+        }
+        if ((getItemFromEquipment(player, EquipmentSlot.SHIELD)?.id ?: 0) == Items.MIRROR_SHIELD_4156) {
+            flags =
+                flags or (1 shl 8)
+        }
 
         SlayerManager.getInstance(player).flags.equipmentFlags = flags
     }
@@ -67,12 +89,19 @@ object SlayerEquipmentFlags {
     fun getDamAccBonus(player: Player): Double {
         val isCape = SlayerManager.getInstance(player).flags.equipmentFlags == 0x3F
         val hasMask = hasBlackMask(player)
-        return if (hasMask) 1.15
-        else if (isCape) 1.075
-        else 1.0
+        return if (hasMask) {
+            1.15
+        } else if (isCape) {
+            1.075
+        } else {
+            1.0
+        }
     }
 
-    private fun hasItem(player: Player, id: Int): Boolean {
+    private fun hasItem(
+        player: Player,
+        id: Int,
+    ): Boolean {
         return (getItemFromEquipment(player, EquipmentSlot.HEAD)?.id ?: 0) == id
     }
 

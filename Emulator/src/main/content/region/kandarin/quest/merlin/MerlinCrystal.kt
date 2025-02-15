@@ -1,20 +1,22 @@
 package content.region.kandarin.quest.merlin
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import content.region.kandarin.quest.merlin.handlers.MerlinUtils
 import core.api.*
 import core.api.quest.updateQuestTab
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class MerlinCrystal : Quest(Quests.MERLINS_CRYSTAL, 87, 86, 6, Vars.VARP_QUEST_MERLIN_CRYSTAL_PROGRESS_14, 0, 1, 7) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         player ?: return
         var ln = 11
@@ -24,7 +26,7 @@ class MerlinCrystal : Quest(Quests.MERLINS_CRYSTAL, 87, 86, 6, Vars.VARP_QUEST_M
                 line(
                     player,
                     "<blue>I can start this quest by speaking to <red>King Arthur<blue> at<n> <red>Camelot Castle<blue>, just <red>North West of Catherby<n><blue>I must be able to defeat a <red>level 37 enemy",
-                    11
+                    11,
                 )
             }
 
@@ -179,7 +181,7 @@ class MerlinCrystal : Quest(Quests.MERLINS_CRYSTAL, 87, 86, 6, Vars.VARP_QUEST_M
             MerlinUtils.ATTR_STATE_CLAIM_EXCALIBUR,
             MerlinUtils.ATTR_STATE_TALK_LADY,
             MerlinUtils.ATTR_STATE_TALK_BEGGAR,
-            MerlinUtils.ATTR_STATE_TALK_CANDLE
+            MerlinUtils.ATTR_STATE_TALK_CANDLE,
         )
         updateQuestTab(player)
         setVarbit(player, Vars.VARBIT_SCENERY_MUSEUM_DISPLAY_9_3655, 1, true)

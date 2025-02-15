@@ -1,7 +1,5 @@
 package content.region.karamja.handlers
 
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import content.region.karamja.handlers.brimhaven.BrimhavenUtils
 import core.api.getAttribute
 import core.api.location
@@ -15,14 +13,15 @@ import core.game.node.entity.player.link.diary.DiaryType
 import core.game.node.entity.skill.Skills
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
-import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 class BrimhavenDungeonListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(ENTRANCE, IntType.SCENERY, "enter") { player, _ ->
-            if (!getAttribute(player, "saniboch:paid", false) || !player.achievementDiaryManager.getDiary(DiaryType.KARAMJA)!!.isComplete) {
+            if (!getAttribute(player, "saniboch:paid", false) ||
+                !player.achievementDiaryManager.getDiary(DiaryType.KARAMJA)!!.isComplete
+            ) {
                 sendNPCDialogue(player, NPCs.SANIBOCH_1595, "You can't go in there without paying!", FaceAnim.NEUTRAL)
             }
 
@@ -70,7 +69,7 @@ class BrimhavenDungeonListener : InteractionListener {
                     Location.create(2687, 9506, 0),
                     Animation.create(155),
                     0.0,
-                    null
+                    null,
                 )
             } else {
                 content.global.skill.agility.AgilityHandler.walk(
@@ -80,7 +79,7 @@ class BrimhavenDungeonListener : InteractionListener {
                     Location.create(2682, 9506, 0),
                     Animation.create(155),
                     0.0,
-                    null
+                    null,
                 )
             }
             return@on true
@@ -91,26 +90,30 @@ class BrimhavenDungeonListener : InteractionListener {
         private const val SANIBOCH_NPC = NPCs.SANIBOCH_1595
         private const val ENTRANCE = Scenery.DUNGEON_ENTRANCE_5083
         private const val EXIT = Scenery.EXIT_5084
-        private val VINES = intArrayOf(
-            Scenery.VINES_5103,
-            Scenery.VINES_5104,
-            Scenery.VINES_5105,
-            Scenery.VINES_5106,
-            Scenery.VINES_5107
-        )
-        private val STEPPING_STONES = intArrayOf(
-            Scenery.STEPPING_STONE_5110,
-            Scenery.STEPPING_STONE_5111
-        )
-        private val STAIRS = intArrayOf(
-            Scenery.STAIRS_5094,
-            Scenery.STAIRS_5096,
-            Scenery.STAIRS_5097,
-            Scenery.STAIRS_5098
-        )
-        private val LOGS = intArrayOf(
-            Scenery.LOG_BALANCE_5088,
-            Scenery.LOG_BALANCE_5090
-        )
+        private val VINES =
+            intArrayOf(
+                Scenery.VINES_5103,
+                Scenery.VINES_5104,
+                Scenery.VINES_5105,
+                Scenery.VINES_5106,
+                Scenery.VINES_5107,
+            )
+        private val STEPPING_STONES =
+            intArrayOf(
+                Scenery.STEPPING_STONE_5110,
+                Scenery.STEPPING_STONE_5111,
+            )
+        private val STAIRS =
+            intArrayOf(
+                Scenery.STAIRS_5094,
+                Scenery.STAIRS_5096,
+                Scenery.STAIRS_5097,
+                Scenery.STAIRS_5098,
+            )
+        private val LOGS =
+            intArrayOf(
+                Scenery.LOG_BALANCE_5088,
+                Scenery.LOG_BALANCE_5090,
+            )
     }
 }

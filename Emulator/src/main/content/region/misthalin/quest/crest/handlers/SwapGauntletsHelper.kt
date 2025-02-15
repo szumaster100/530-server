@@ -1,23 +1,25 @@
 package content.region.misthalin.quest.crest.handlers
 
-import org.rs.consts.Items
 import core.api.*
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
+import org.rs.consts.Items
 
 class SwapGauntletsHelper {
-
     companion object {
-
-        private val legalGauntlets = setOf(
-            Items.COOKING_GAUNTLETS_775,
-            Items.GOLDSMITH_GAUNTLETS_776,
-            Items.CHAOS_GAUNTLETS_777,
-            Items.FAMILY_GAUNTLETS_778
-        )
+        private val legalGauntlets =
+            setOf(
+                Items.COOKING_GAUNTLETS_775,
+                Items.GOLDSMITH_GAUNTLETS_776,
+                Items.CHAOS_GAUNTLETS_777,
+                Items.FAMILY_GAUNTLETS_778,
+            )
 
         @JvmStatic
-        fun swapGauntlets(player: Player, givingGauntletsId: Int): String {
+        fun swapGauntlets(
+            player: Player,
+            givingGauntletsId: Int,
+        ): String {
             if (givingGauntletsId !in legalGauntlets) {
                 throw IllegalArgumentException("givingGauntletsId not in list of legal gauntlets.")
             }
@@ -42,9 +44,10 @@ class SwapGauntletsHelper {
             if (!shouldBeFree && !inInventory(player, Items.COINS_995, fee)) {
                 return "You do not have enough coins."
             }
-            if ((shouldBeFree || removeItem(player, Item(Items.COINS_995, fee))) && removeItem(
+            if ((shouldBeFree || removeItem(player, Item(Items.COINS_995, fee))) &&
+                removeItem(
                     player,
-                    otherGauntlets
+                    otherGauntlets,
                 )
             ) {
                 addItem(player, givingGauntletsId)

@@ -8,8 +8,9 @@ import core.plugin.Initializable
 import core.plugin.Plugin
 
 @Initializable
-class FredFarmHouse : MapZone("freds-farm-house", true), Plugin<Any?> {
-
+class FredFarmHouse :
+    MapZone("freds-farm-house", true),
+    Plugin<Any?> {
     override fun configure() {
         register(ZoneBorders(3188, 3275, 3192, 3270))
     }
@@ -26,7 +27,10 @@ class FredFarmHouse : MapZone("freds-farm-house", true), Plugin<Any?> {
         return this
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 }

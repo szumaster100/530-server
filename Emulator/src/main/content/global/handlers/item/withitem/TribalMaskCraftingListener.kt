@@ -1,40 +1,42 @@
 package content.global.handlers.item.withitem
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import org.rs.consts.Animations
+import org.rs.consts.Items
 
 class TribalMaskCraftingListener : InteractionListener {
-
-    private val itemIDs = mapOf(
-        Items.TRIBAL_MASK_6335 to Items.BROODOO_SHIELD_10_6215,
-        Items.TRIBAL_MASK_6337 to Items.BROODOO_SHIELD_10_6237,
-        Items.TRIBAL_MASK_6339 to Items.BROODOO_SHIELD_10_6259
-    )
-    private val nailIDs = intArrayOf(
-        Items.BRONZE_NAILS_4819,
-        Items.IRON_NAILS_4820,
-        Items.STEEL_NAILS_1539,
-        Items.BLACK_NAILS_4821,
-        Items.MITHRIL_NAILS_4822,
-        Items.ADAMANTITE_NAILS_4823,
-        Items.RUNE_NAILS_4824
-    )
+    private val itemIDs =
+        mapOf(
+            Items.TRIBAL_MASK_6335 to Items.BROODOO_SHIELD_10_6215,
+            Items.TRIBAL_MASK_6337 to Items.BROODOO_SHIELD_10_6237,
+            Items.TRIBAL_MASK_6339 to Items.BROODOO_SHIELD_10_6259,
+        )
+    private val nailIDs =
+        intArrayOf(
+            Items.BRONZE_NAILS_4819,
+            Items.IRON_NAILS_4820,
+            Items.STEEL_NAILS_1539,
+            Items.BLACK_NAILS_4821,
+            Items.MITHRIL_NAILS_4822,
+            Items.ADAMANTITE_NAILS_4823,
+            Items.RUNE_NAILS_4824,
+        )
     private val snakeskinId = Items.SNAKESKIN_6289
 
     override fun defineListeners() {
         itemIDs.forEach { (maskId, shieldId) ->
             onUseWith(IntType.ITEM, Items.HAMMER_2347, maskId) { player, _, _ ->
-                val animation = when (maskId) {
-                    Items.TRIBAL_MASK_6335 -> Animations.CRAFT_SHIELD_GREEN_2410
-                    Items.TRIBAL_MASK_6337 -> Animations.CRAFT_SHIELD_ORANGE_2411
-                    Items.TRIBAL_MASK_6339 -> Animations.CRAFT_SHIELD_WHITE_2409
-                    else -> return@onUseWith false
-                }
+                val animation =
+                    when (maskId) {
+                        Items.TRIBAL_MASK_6335 -> Animations.CRAFT_SHIELD_GREEN_2410
+                        Items.TRIBAL_MASK_6337 -> Animations.CRAFT_SHIELD_ORANGE_2411
+                        Items.TRIBAL_MASK_6339 -> Animations.CRAFT_SHIELD_WHITE_2409
+                        else -> return@onUseWith false
+                    }
 
                 if (getStatLevel(player, Skills.CRAFTING) < 35) {
                     sendMessage(player, "You don't have the crafting level needed to do that.")

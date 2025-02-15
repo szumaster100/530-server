@@ -1,7 +1,5 @@
 package content.region.tirannwn.quest.roving_elves.handlers
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.tirannwn.quest.roving_elves.RovingElves
 import core.cache.def.impl.NPCDefinition
 import core.game.interaction.OptionHandler
@@ -13,18 +11,23 @@ import core.game.node.entity.player.Player
 import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
 import core.game.world.map.Location
-import core.plugin.Plugin
 import core.plugin.ClassScanner.definePlugin
+import core.plugin.Plugin
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 class MossGiantNPC : AbstractNPC {
-
     constructor() : super(0, null)
 
     constructor(id: Int, location: Location?) : super(id, location) {
         this.isAggressive = true
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return MossGiantNPC(id, location)
     }
 
@@ -48,11 +51,15 @@ class MossGiantNPC : AbstractNPC {
                     return this
                 }
 
-                override fun handle(player: Player, node: Node, option: String): Boolean {
+                override fun handle(
+                    player: Player,
+                    node: Node,
+                    option: String,
+                ): Boolean {
                     (node as NPC).attack(player)
                     return true
                 }
-            }
+            },
         )
         return super.newInstance(arg)
     }

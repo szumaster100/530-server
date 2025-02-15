@@ -10,8 +10,10 @@ import java.sql.Connection
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantLock
 
-class DatabaseManager(private val path: String, private val expectedTables: HashMap<String, String>? = null) {
-
+class DatabaseManager(
+    private val path: String,
+    private val expectedTables: HashMap<String, String>? = null,
+) {
     private var connection: Connection? = null
     private var connectionRefs = 0
     private var obtainConnectionLock = ReentrantLock()
@@ -46,7 +48,10 @@ class DatabaseManager(private val path: String, private val expectedTables: Hash
         }
     }
 
-    fun pruneOldData(daysToKeep: Int, timestampFieldName: String = "ts") {
+    fun pruneOldData(
+        daysToKeep: Int,
+        timestampFieldName: String = "ts",
+    ) {
         if (expectedTables?.isEmpty() != false) return
 
         val timeDiff = daysToKeep * 24 * 60 * 60

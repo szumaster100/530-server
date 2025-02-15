@@ -1,17 +1,15 @@
 package content.minigame.barbassault
 
-import org.rs.consts.Components
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import core.api.openInterface
 import core.api.sendDialogue
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.Components
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 open class BarbarianAssaultListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(NPCs.COMMANDER_CONNAD_5029, IntType.NPC, "get-rewards") { player, _ ->
             openInterface(player, Components.BARBASSAULT_REWARD_SHOP_491)
             return@on true

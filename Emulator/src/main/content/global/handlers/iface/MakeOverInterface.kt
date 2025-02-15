@@ -1,7 +1,5 @@
 package content.global.handlers.iface
 
-import org.rs.consts.Components
-import org.rs.consts.Items
 import core.api.*
 import core.api.ui.sendInterfaceConfig
 import core.game.component.Component
@@ -13,6 +11,8 @@ import core.game.node.entity.player.link.appearance.Gender
 import core.game.node.item.Item
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Components
+import org.rs.consts.Items
 
 private const val MALE_CHILD_ID = 90
 private const val FEMALE_CHILD_ID = 92
@@ -22,7 +22,10 @@ private val skincolorButtons = (93..100)
 
 @Initializable
 class MakeOverInterface : ComponentPlugin() {
-    override fun open(player: Player?, component: Component?) {
+    override fun open(
+        player: Player?,
+        component: Component?,
+    ) {
         component ?: return
         player ?: return
         super.open(player, component)
@@ -69,7 +72,7 @@ class MakeOverInterface : ComponentPlugin() {
         opcode: Int,
         button: Int,
         slot: Int,
-        itemId: Int
+        itemId: Int,
     ): Boolean {
         player ?: return false
         if (skincolorButtons.contains(button)) {
@@ -85,7 +88,10 @@ class MakeOverInterface : ComponentPlugin() {
         return true
     }
 
-    fun updateGender(player: Player, male: Boolean) {
+    fun updateGender(
+        player: Player,
+        male: Boolean,
+    ) {
         setAttribute(player, "mm-gender", if (male) Gender.MALE.ordinal else Gender.FEMALE.ordinal)
     }
 
@@ -96,9 +102,12 @@ class MakeOverInterface : ComponentPlugin() {
         if (newColor == player.appearance.skin.color && Gender.values()[newGender] == player.appearance.gender) {
             closeInterface(player)
         } else {
-            val currency = if (inInventory(player, Items.MAKEOVER_VOUCHER_5606)) {
-                Item(Items.MAKEOVER_VOUCHER_5606, 1)
-            } else Item(Items.COINS_995, 3000)
+            val currency =
+                if (inInventory(player, Items.MAKEOVER_VOUCHER_5606)) {
+                    Item(Items.MAKEOVER_VOUCHER_5606, 1)
+                } else {
+                    Item(Items.COINS_995, 3000)
+                }
 
             if (player.inventory.containsItem(currency)) {
                 setAttribute(player, "mm-paid", true)
@@ -110,7 +119,10 @@ class MakeOverInterface : ComponentPlugin() {
         }
     }
 
-    fun updateInterfaceConfigs(player: Player, button: Int) {
+    fun updateInterfaceConfigs(
+        player: Player,
+        button: Int,
+    ) {
         val old = player.getAttribute("mm-previous", 0)
         setAttribute(player, "mm-previous", button - skincolorButtons.first)
         sendInterfaceConfig(player, Components.MAKEOVER_MAGE_205, old + skincolorButtons.first, false)

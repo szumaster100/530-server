@@ -1,15 +1,18 @@
 package content.global.skill.hunter
 
-import org.rs.consts.Sounds
 import core.api.lock
 import core.api.playAudio
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.scenery.Scenery
+import org.rs.consts.Sounds
 
-class TrapDismantlePulse(player: Player?, node: Scenery?, wrapper: TrapWrapper) : SkillPulse<Scenery?>(player, node) {
-
+class TrapDismantlePulse(
+    player: Player?,
+    node: Scenery?,
+    wrapper: TrapWrapper,
+) : SkillPulse<Scenery?>(player, node) {
     val wrapper: TrapWrapper = wrapper
     val trap: Traps = wrapper.type
 
@@ -53,7 +56,11 @@ class TrapDismantlePulse(player: Player?, node: Scenery?, wrapper: TrapWrapper) 
         val itemCount = wrapper.items.size + (if (wrapper.type.settings.isObjectTrap) 0 else 1)
         val difference = itemCount - player.inventory.freeSlots()
         if (player.inventory.freeSlots() < itemCount) {
-            player.packetDispatch.sendMessage("You don't have enough inventory space. You need " + difference + " more free slot" + (if (difference > 1) "s" else "") + ".")
+            player.packetDispatch.sendMessage(
+                "You don't have enough inventory space. You need " + difference + " more free slot" +
+                    (if (difference > 1) "s" else "") +
+                    ".",
+            )
             return false
         }
         return true

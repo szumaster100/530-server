@@ -9,7 +9,6 @@ import org.json.simple.parser.JSONParser
 import java.io.FileReader
 
 class XteaParser {
-
     companion object {
         val REGION_XTEA = HashMap<Int, IntArray>()
         val DEFAULT_REGION_KEYS = intArrayOf(14881828, -6662814, 58238456, 146761213)

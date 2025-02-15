@@ -6,103 +6,126 @@ import core.game.node.entity.player.Player
 import core.plugin.Initializable
 
 @Initializable
-class SinisterStrangerDialogue(player: Player? = null) : Dialogue(player) {
-
+class SinisterStrangerDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         npc("...")
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 interpreter.sendOptions("Choose an option:", "...?", "Who are you?", "So... you like fishing?")
                 stage++
             }
 
-            1 -> when (buttonId) {
-                1 -> {
-                    player("...?")
-                    stage = 10
-                }
+            1 ->
+                when (buttonId) {
+                    1 -> {
+                        player("...?")
+                        stage = 10
+                    }
 
-                2 -> {
-                    player("Who are you?")
-                    stage = 20
-                }
+                    2 -> {
+                        player("Who are you?")
+                        stage = 20
+                    }
 
-                3 -> {
-                    player("So... you like fishing?")
-                    stage = 30
+                    3 -> {
+                        player("So... you like fishing?")
+                        stage = 30
+                    }
                 }
-            }
 
             2 -> {
-                interpreter.sendOptions("Choose an option:", "You're a vampire aren't you?", "Is it nice there?", "So you like fishing?")
+                interpreter.sendOptions(
+                    "Choose an option:",
+                    "You're a vampire aren't you?",
+                    "Is it nice there?",
+                    "So you like fishing?",
+                )
                 stage++
             }
 
-            3 -> when (buttonId) {
-                1 -> {
-                    player("You're a vampire aren't you?")
-                    stage = 21
-                }
+            3 ->
+                when (buttonId) {
+                    1 -> {
+                        player("You're a vampire aren't you?")
+                        stage = 21
+                    }
 
-                2 -> {
-                    player("Is it nice there?")
-                    stage = 50
-                }
+                    2 -> {
+                        player("Is it nice there?")
+                        stage = 50
+                    }
 
-                3 -> {
-                    player("So you like fishing?")
-                    stage = 30
+                    3 -> {
+                        player("So you like fishing?")
+                        stage = 30
+                    }
                 }
-            }
 
             4 -> {
-                interpreter.sendOptions("Choose an option:", "You're a vampire aren't you?", "So you like fishing?", "Well, good luck with the fishing.")
+                interpreter.sendOptions(
+                    "Choose an option:",
+                    "You're a vampire aren't you?",
+                    "So you like fishing?",
+                    "Well, good luck with the fishing.",
+                )
                 stage++
             }
 
-            5 -> when (buttonId) {
-                1 -> {
-                    player("You're a vampire aren't you?")
-                    stage = 21
-                }
+            5 ->
+                when (buttonId) {
+                    1 -> {
+                        player("You're a vampire aren't you?")
+                        stage = 21
+                    }
 
-                2 -> {
-                    player("So you like fishing?")
-                    stage = 30
-                }
+                    2 -> {
+                        player("So you like fishing?")
+                        stage = 30
+                    }
 
-                3 -> {
-                    player("Well, good luck with the fishing.")
-                    stage = 70
+                    3 -> {
+                        player("Well, good luck with the fishing.")
+                        stage = 70
+                    }
                 }
-            }
 
             6 -> {
-                interpreter.sendOptions("Choose an option:", "You're a vampire aren't you?", "If you get thirsty you should drink something.", "Well, good luck with the fishing.")
+                interpreter.sendOptions(
+                    "Choose an option:",
+                    "You're a vampire aren't you?",
+                    "If you get thirsty you should drink something.",
+                    "Well, good luck with the fishing.",
+                )
                 stage++
             }
 
-            7 -> when (buttonId) {
-                1 -> {
-                    player("You're a vampire aren't you?")
-                    stage = 21
-                }
+            7 ->
+                when (buttonId) {
+                    1 -> {
+                        player("You're a vampire aren't you?")
+                        stage = 21
+                    }
 
-                2 -> {
-                    player("If you get thirsty you should drink something.")
-                    stage = 40
-                }
+                    2 -> {
+                        player("If you get thirsty you should drink something.")
+                        stage = 40
+                    }
 
-                3 -> {
-                    player("Well, good luck with the fishing.")
-                    stage = 70
+                    3 -> {
+                        player("Well, good luck with the fishing.")
+                        stage = 70
+                    }
                 }
-            }
 
             9 -> end()
             10 -> {
@@ -126,7 +149,11 @@ class SinisterStrangerDialogue(player: Player? = null) : Dialogue(player) {
             }
 
             21 -> {
-                npc("Just because I can't stand ze smell ov garlic", "and I don't like bright sunlight doesn't", "necessarily mean I'm ein vampire!")
+                npc(
+                    "Just because I can't stand ze smell ov garlic",
+                    "and I don't like bright sunlight doesn't",
+                    "necessarily mean I'm ein vampire!",
+                )
                 stage = 9
             }
 

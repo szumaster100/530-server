@@ -1,10 +1,13 @@
 package content.global.skill.runecrafting.items
 
+import core.game.node.item.Item
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import org.rs.consts.Items
-import core.game.node.item.Item
 
-enum class Tiara(val item: Item, val experience: Double) {
+enum class Tiara(
+    val item: Item,
+    val experience: Double,
+) {
     AIR(Item(Items.AIR_TIARA_5527), 25.0),
     MIND(Item(Items.MIND_TIARA_5529), 27.5),
     WATER(Item(Items.WATER_TIARA_5531), 30.0),
@@ -16,7 +19,8 @@ enum class Tiara(val item: Item, val experience: Double) {
     NATURE(Item(Items.NATURE_TIARA_5541), 45.0),
     LAW(Item(Items.LAW_TIARA_5545), 47.5),
     DEATH(Item(Items.DEATH_TIARA_5547), 50.0),
-    BLOOD(Item(Items.BLOOD_TIARA_5549), 52.5);
+    BLOOD(Item(Items.BLOOD_TIARA_5549), 52.5),
+    ;
 
     val talisman: Talisman?
         get() = Talisman.values().find { it.name == name }

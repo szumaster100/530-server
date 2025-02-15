@@ -46,7 +46,13 @@ class Discord : TickListener {
         private var flushingPends = false
         private val removeList = ArrayList<Pair<String, String>>()
 
-        fun postNewOffer(isSale: Boolean, itemId: Int, value: Int, qty: Int, user: String) {
+        fun postNewOffer(
+            isSale: Boolean,
+            itemId: Int,
+            value: Int,
+            qty: Int,
+            user: String,
+        ) {
             if (ServerConfig.DISCORD_GE_WEBHOOK.isEmpty()) return
             GlobalScope.launch {
                 val offer = encodeOfferJson(isSale, itemId, value, qty, user)
@@ -58,7 +64,12 @@ class Discord : TickListener {
             }
         }
 
-        fun postOfferUpdate(isSale: Boolean, itemId: Int, value: Int, amtLeft: Int) {
+        fun postOfferUpdate(
+            isSale: Boolean,
+            itemId: Int,
+            value: Int,
+            amtLeft: Int,
+        ) {
             if (ServerConfig.DISCORD_GE_WEBHOOK.isEmpty()) return
             GlobalScope.launch {
                 val offer = encodeUpdateJson(isSale, itemId, value, amtLeft)
@@ -71,7 +82,10 @@ class Discord : TickListener {
         }
 
         @JvmStatic
-        fun postPlayerAlert(player: String, type: String) {
+        fun postPlayerAlert(
+            player: String,
+            type: String,
+        ) {
             if (ServerConfig.DISCORD_MOD_WEBHOOK.isEmpty()) return
             GlobalScope.launch {
                 val alert = encodeUserAlert(type, player)
@@ -83,7 +97,10 @@ class Discord : TickListener {
             }
         }
 
-        @JvmStatic fun sendToOpenRSC(player: String, type: String) {
+        @JvmStatic fun sendToOpenRSC(
+            player: String,
+            type: String,
+        ) {
             if (ServerConfig.DISCORD_OPENRSC_HOOK.isEmpty()) return
             GlobalScope.launch {
                 val alert = encodeUserAlert(type, player)
@@ -95,16 +112,22 @@ class Discord : TickListener {
             }
         }
 
-        private fun encodeUpdateJson(sale: Boolean, itemId: Int, value: Int, amtLeft: Int): String {
+        private fun encodeUpdateJson(
+            sale: Boolean,
+            itemId: Int,
+            value: Int,
+            amtLeft: Int,
+        ): String {
             val obj = JSONObject()
             val embeds = JSONArray()
             val embed = JSONObject()
 
-            val fields = arrayOf(
-                EmbedField("Item", getItemName(itemId), false),
-                EmbedField("Amount Remaining", "%,d".format(amtLeft), true),
-                EmbedField("Price", "%,d".format(value) + "gp", true),
-            )
+            val fields =
+                arrayOf(
+                    EmbedField("Item", getItemName(itemId), false),
+                    EmbedField("Amount Remaining", "%,d".format(amtLeft), true),
+                    EmbedField("Price", "%,d".format(value) + "gp", true),
+                )
 
             embed["title"] = if (sale) "Sell Offer Updated" else "Buy Offer Updated"
             embed["color"] = COLOR_OFFER_UPDATE
@@ -117,17 +140,24 @@ class Discord : TickListener {
             return obj.toJSONString()
         }
 
-        private fun encodeOfferJson(isSale: Boolean, itemId: Int, value: Int, qty: Int, user: String): String {
+        private fun encodeOfferJson(
+            isSale: Boolean,
+            itemId: Int,
+            value: Int,
+            qty: Int,
+            user: String,
+        ): String {
             val obj = JSONObject()
             val embeds = JSONArray()
             val embed = JSONObject()
 
-            val fields = arrayOf(
-                EmbedField("Player", user, false),
-                EmbedField("Item", getItemName(itemId), false),
-                EmbedField("Amount", "%,d".format(qty), true),
-                EmbedField("Price", "%,d".format(value) + "gp", true),
-            )
+            val fields =
+                arrayOf(
+                    EmbedField("Player", user, false),
+                    EmbedField("Item", getItemName(itemId), false),
+                    EmbedField("Amount", "%,d".format(qty), true),
+                    EmbedField("Price", "%,d".format(value) + "gp", true),
+                )
 
             embed["title"] = if (isSale) "New Sell Offer" else "New Buy Offer"
             embed["color"] = if (isSale) COLOR_NEW_SALE_OFFER else COLOR_NEW_BUY_OFFER
@@ -140,15 +170,19 @@ class Discord : TickListener {
             return obj.toJSONString()
         }
 
-        private fun encodeUserAlert(type: String, player: String): String {
+        private fun encodeUserAlert(
+            type: String,
+            player: String,
+        ): String {
             val obj = JSONObject()
             val embeds = JSONArray()
             val embed = JSONObject()
 
-            val fields = arrayOf(
-                EmbedField("Player", player, false),
-                EmbedField("Type", type, false)
-            )
+            val fields =
+                arrayOf(
+                    EmbedField("Player", player, false),
+                    EmbedField("Type", type, false),
+                )
 
             embed["title"] = "Player Alert"
             embed["fields"] = getFields(fields)
@@ -171,7 +205,11 @@ class Discord : TickListener {
             return arr
         }
 
-        data class EmbedField(val name: String, val value: String, val inline: Boolean)
+        data class EmbedField(
+            val name: String,
+            val value: String,
+            val inline: Boolean,
+        )
 
         fun getItemImage(id: Int): JSONObject {
             val obj = JSONObject()
@@ -179,7 +217,10 @@ class Discord : TickListener {
             return obj
         }
 
-        private fun sendJsonPost(url: String = ServerConfig.DISCORD_GE_WEBHOOK, data: String) {
+        private fun sendJsonPost(
+            url: String = ServerConfig.DISCORD_GE_WEBHOOK,
+            data: String,
+        ) {
             try {
                 val conn = URL(url).openConnection() as HttpURLConnection
                 conn.doOutput = true

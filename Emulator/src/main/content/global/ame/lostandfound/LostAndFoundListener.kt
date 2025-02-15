@@ -1,19 +1,17 @@
 package content.global.ame.lostandfound
 
-import org.rs.consts.Items
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.interaction.QueueStrength
 import core.game.node.entity.skill.Skills
 import core.tools.RandomFunction
+import org.rs.consts.Items
 
 class LostAndFoundListener : InteractionListener {
-
     private val sceneryIDs = (8998..9006).toIntArray()
 
     override fun defineListeners() {
-
         on(sceneryIDs, IntType.SCENERY, "operate") { player, node ->
             var magicLevel = getDynLevel(player, Skills.MAGIC)
             val randomRewardAmount = RandomFunction.random(8, 36)
@@ -24,17 +22,21 @@ class LostAndFoundListener : InteractionListener {
                     sendPlainDialogue(
                         player,
                         false,
-                        "The Abyssal Services Department apologises for the inconvenience."
+                        "The Abyssal Services Department apologises for the inconvenience.",
                     )
                     if (getAttribute(player, LostAndFoundUtils.essenceMineKey, false)) {
                         addItem(
                             player,
                             if (getStatLevel(
                                     player,
-                                    Skills.MINING
+                                    Skills.MINING,
                                 ) > 30
-                            ) Items.PURE_ESSENCE_7936 else Items.RUNE_ESSENCE_1436,
-                            randomRewardAmount
+                            ) {
+                                Items.PURE_ESSENCE_7936
+                            } else {
+                                Items.RUNE_ESSENCE_1436
+                            },
+                            randomRewardAmount,
                         )
                     }
                     return@queueScript stopExecuting(player)

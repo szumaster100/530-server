@@ -1,6 +1,5 @@
 package content.minigame.pestcontrol.npc
 
-import org.rs.consts.NPCs
 import content.minigame.pestcontrol.PestControlSession
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.*
@@ -14,6 +13,7 @@ import core.game.world.map.RegionManager.isTeleportPermitted
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
 import core.tools.RandomFunction
+import org.rs.consts.NPCs
 import java.util.*
 
 class PCShifterNPC : AbstractNPC {
@@ -49,7 +49,10 @@ class PCShifterNPC : AbstractNPC {
         return mover is NPC
     }
 
-    override fun onImpact(entity: Entity, state: BattleState) {
+    override fun onImpact(
+        entity: Entity,
+        state: BattleState,
+    ) {
         super.onImpact(entity, state)
         if (session != null && state != null && entity is Player) {
             var total = 0
@@ -86,7 +89,11 @@ class PCShifterNPC : AbstractNPC {
         return null
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return PCShifterNPC(id, location)
     }
 
@@ -101,19 +108,26 @@ class PCShifterNPC : AbstractNPC {
             NPCs.SHIFTER_3738,
             NPCs.SHIFTER_3739,
             NPCs.SHIFTER_3740,
-            NPCs.SHIFTER_3741
+            NPCs.SHIFTER_3741,
         )
     }
 
     companion object {
-        private val SWING_HANDLER: CombatSwingHandler = object : MeleeSwingHandler() {
-            override fun canSwing(entity: Entity, victim: Entity): InteractionType? {
-
-                return CombatStyle.RANGE.swingHandler.canSwing(entity, victim)
+        private val SWING_HANDLER: CombatSwingHandler =
+            object : MeleeSwingHandler() {
+                override fun canSwing(
+                    entity: Entity,
+                    victim: Entity,
+                ): InteractionType? {
+                    return CombatStyle.RANGE.swingHandler.canSwing(entity, victim)
+                }
             }
-        }
 
-        fun teleport(session: PestControlSession?, entity: Entity, destination: Location?) {
+        fun teleport(
+            session: PestControlSession?,
+            entity: Entity,
+            destination: Location?,
+        ) {
             if (destination == null || session != null && destination.regionId != session.region.id) {
                 return
             }
@@ -129,7 +143,7 @@ class PCShifterNPC : AbstractNPC {
                         Graphics.send(Graphics.create(org.rs.consts.Graphics.PEST_CONTROL_SPAWN_654), destination)
                         return true
                     }
-                }
+                },
             )
         }
     }

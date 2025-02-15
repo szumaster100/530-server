@@ -1,6 +1,5 @@
 package content.region.karamja.dialogue
 
-import org.rs.consts.NPCs
 import content.region.karamja.quest.mm.dialogue.GLOCaranockDialogue
 import core.api.openDialogue
 import core.api.sendDialogue
@@ -9,10 +8,12 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.NPCs
 
 @Initializable
-class CaranockDialogue(player: Player? = null) : Dialogue(player) {
-
+class CaranockDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         if (player.location.regionId == 11823) {
@@ -23,7 +24,10 @@ class CaranockDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         return true
     }
 

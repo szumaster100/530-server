@@ -32,7 +32,7 @@ fun calculateDragonFireMaxHit(
     maxDamage: Int,
     wyvern: Boolean = false,
     unprotectableDamage: Int = 0,
-    sendMessage: Boolean = false
+    sendMessage: Boolean = false,
 ): Int {
     val hasShield: Boolean
     val hasPotion: Boolean
@@ -46,11 +46,16 @@ fun calculateDragonFireMaxHit(
 
         if (sendMessage) {
             var message = "You are horribly burnt by the ${if (wyvern) "icy" else "fiery"} breath."
-            if (hasShield && hasPotion) message =
-                "Your potion and shield fully absorb the ${if (wyvern) "icy" else "fiery"} breath."
-            else if (hasShield) message = "Your shield absorbs most of the ${if (wyvern) "icy" else "fiery"} breath."
-            else if (hasPotion) message = "Your potion absorbs some of the fiery breath."
-            else if (hasPrayer) message = "Your prayer absorbs some of the ${if (wyvern) "icy" else "fiery"} breath."
+            if (hasShield && hasPotion) {
+                message =
+                    "Your potion and shield fully absorb the ${if (wyvern) "icy" else "fiery"} breath."
+            } else if (hasShield) {
+                message = "Your shield absorbs most of the ${if (wyvern) "icy" else "fiery"} breath."
+            } else if (hasPotion) {
+                message = "Your potion absorbs some of the fiery breath."
+            } else if (hasPrayer) {
+                message = "Your prayer absorbs some of the ${if (wyvern) "icy" else "fiery"} breath."
+            }
             sendMessage(entity, message)
         }
     } else {
@@ -62,8 +67,9 @@ fun calculateDragonFireMaxHit(
     }
 
     var effectiveDamage = maxDamage.toDouble()
-    if (hasPrayer && !hasShield && !hasPotion) effectiveDamage -= 0.6 * maxDamage
-    else {
+    if (hasPrayer && !hasShield && !hasPotion) {
+        effectiveDamage -= 0.6 * maxDamage
+    } else {
         if (hasShield) effectiveDamage -= 0.9 * maxDamage
         if (hasPotion) effectiveDamage -= 0.1 * maxDamage
     }
@@ -78,7 +84,10 @@ fun calculateDragonFireMaxHit(
  * @param wyvern If true, checks for protection against wyvern attacks; otherwise, checks for dragonfire protection.
  * @return True if the player has the appropriate shield for protection, otherwise false.
  */
-fun hasDragonfireShieldProtection(player: Player, wyvern: Boolean = false): Boolean {
+fun hasDragonfireShieldProtection(
+    player: Player,
+    wyvern: Boolean = false,
+): Boolean {
     val shield = getItemFromEquipment(player, EquipmentSlot.SHIELD) ?: return false
     return when (shield.id) {
         Items.ELEMENTAL_SHIELD_2890, Items.MIND_SHIELD_9731 -> wyvern

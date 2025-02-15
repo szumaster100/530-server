@@ -1,6 +1,5 @@
 package content.region.kandarin.quest.arena.cutscene
 
-import org.rs.consts.NPCs
 import content.region.kandarin.quest.arena.dialogue.HengradDialogue
 import core.api.face
 import core.api.location
@@ -10,8 +9,11 @@ import core.game.dialogue.FaceAnim
 import core.game.global.action.DoorActionHandler
 import core.game.node.entity.player.Player
 import core.game.world.map.Direction
+import org.rs.consts.NPCs
 
-class PrisonCutscene(player: Player) : Cutscene(player) {
+class PrisonCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(location(2600, 3142, 0))
         if (player.settings.isRunToggled) {
@@ -61,7 +63,7 @@ class PrisonCutscene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     KHAZARD_GUARD,
                     FaceAnim.FRIENDLY,
-                    "The General seems to have taken a liking to you. He'd normally kill imposters like you without a second thought."
+                    "The General seems to have taken a liking to you. He'd normally kill imposters like you without a second thought.",
                 )
             }
 

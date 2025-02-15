@@ -1,7 +1,5 @@
 package content.region.misthalin.quest.surok.handlers
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.amountInBank
 import core.api.amountInInventory
 import core.game.node.entity.Entity
@@ -11,11 +9,19 @@ import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class OutlawNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+class OutlawNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return OutlawNPC(id, location)
     }
 
@@ -29,7 +35,7 @@ class OutlawNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, locat
             NPCs.OUTLAW_5847,
             NPCs.OUTLAW_5848,
             NPCs.OUTLAW_5849,
-            NPCs.OUTLAW_5850
+            NPCs.OUTLAW_5850,
         )
     }
 
@@ -43,10 +49,12 @@ class OutlawNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, locat
             val player = killer.asPlayer()
             val quest = player.getQuestRepository().getQuest(Quests.WHAT_LIES_BELOW)
             if (quest.getStage(player) == 10) {
-                val amount = amountInInventory(player, WhatLiesBelowListener.RATS_PAPER) + amountInBank(
-                    player,
-                    WhatLiesBelowListener.RATS_PAPER
-                )
+                val amount =
+                    amountInInventory(player, WhatLiesBelowListener.RATS_PAPER) +
+                        amountInBank(
+                            player,
+                            WhatLiesBelowListener.RATS_PAPER,
+                        )
                 if (amount < 5) {
                     GroundItemManager.create(Item(WhatLiesBelowListener.RATS_PAPER), getLocation())
                 }

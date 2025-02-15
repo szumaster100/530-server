@@ -1,7 +1,5 @@
 package content.region.desert.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
@@ -11,11 +9,11 @@ import core.game.node.item.Item
 import core.game.world.map.RegionManager.getLocalPlayers
 import core.game.world.update.flag.context.Animation
 import core.tools.RandomFunction
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class KharidianDesertListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(CACTUS, IntType.SCENERY, "cut") { player, node ->
             if (!inInventory(player, KNIFE)) {
                 sendMessage(player, "You need a knife to cut this Cactus...")
@@ -45,7 +43,7 @@ class KharidianDesertListener : InteractionListener {
             replaceScenery(
                 node.asScenery(),
                 DRY_CACTUS,
-                SPAWN_DELAY + RandomFunction.random(getLocalPlayers(player).size / 2)
+                SPAWN_DELAY + RandomFunction.random(getLocalPlayers(player).size / 2),
             )
             return@on true
         }

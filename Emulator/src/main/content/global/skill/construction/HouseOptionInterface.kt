@@ -1,14 +1,12 @@
 package content.global.skill.construction
 
-import org.rs.consts.Components
 import core.api.openInterface
 import core.api.sendMessage
 import core.game.interaction.InterfaceListener
+import org.rs.consts.Components
 
 class HouseOptionInterface : InterfaceListener {
-
     override fun defineInterfaceListeners() {
-
         on(Components.POH_HOUSE_OPTIONS_398) { player, _, _, buttonID, _, _ ->
             when (buttonID) {
                 14 -> {

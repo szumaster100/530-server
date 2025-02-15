@@ -1,12 +1,12 @@
 package content.global.skill.gathering.fishing
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
 import core.api.*
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.game.world.update.flag.context.Animation
 import core.tools.RandomFunction
+import org.rs.consts.Animations
+import org.rs.consts.Items
 
 enum class FishingOption(
     val tool: Int,
@@ -14,7 +14,7 @@ enum class FishingOption(
     val animation: Animation,
     val bait: IntArray?,
     val option: String,
-    vararg val fish: Fish
+    vararg val fish: Fish,
 ) {
     CRAYFISH_CAGE(
         tool = Items.CRAYFISH_CAGE_13431,
@@ -22,7 +22,7 @@ enum class FishingOption(
         animation = Animation(Animations.USE_CRAYFISH_CAGE_10009),
         bait = null,
         option = "cage",
-        Fish.CRAYFISH
+        Fish.CRAYFISH,
     ),
     SMALL_NET(
         tool = Items.SMALL_FISHING_NET_303,
@@ -31,7 +31,7 @@ enum class FishingOption(
         bait = null,
         option = "net",
         Fish.SHRIMP,
-        Fish.ANCHOVIE
+        Fish.ANCHOVIE,
     ),
     BAIT(
         tool = Items.FISHING_ROD_307,
@@ -40,7 +40,7 @@ enum class FishingOption(
         bait = intArrayOf(Items.FISHING_BAIT_313),
         option = "bait",
         Fish.SARDINE,
-        Fish.HERRING
+        Fish.HERRING,
     ),
     LURE(
         tool = Items.FLY_FISHING_ROD_309,
@@ -50,7 +50,7 @@ enum class FishingOption(
         option = "lure",
         Fish.TROUT,
         Fish.SALMON,
-        Fish.RAINBOW_FISH
+        Fish.RAINBOW_FISH,
     ),
     PIKE_BAIT(
         tool = Items.FISHING_ROD_307,
@@ -58,7 +58,7 @@ enum class FishingOption(
         animation = Animation(Animations.ROD_FISHING_622),
         bait = intArrayOf(Items.FISHING_BAIT_313),
         option = "bait",
-        Fish.PIKE
+        Fish.PIKE,
     ),
     LOBSTER_CAGE(
         tool = Items.LOBSTER_POT_301,
@@ -66,7 +66,7 @@ enum class FishingOption(
         animation = Animation(619),
         bait = null,
         option = "cage",
-        Fish.LOBSTER
+        Fish.LOBSTER,
     ),
     FROGSPAWN_NET(
         tool = Items.SMALL_FISHING_NET_303,
@@ -75,7 +75,7 @@ enum class FishingOption(
         bait = null,
         option = "net",
         Fish.FROG_SPAWN,
-        Fish.SWAMP_WEED
+        Fish.SWAMP_WEED,
     ),
     HARPOON(
         tool = Items.HARPOON_311,
@@ -84,7 +84,7 @@ enum class FishingOption(
         bait = null,
         option = "harpoon",
         Fish.TUNA,
-        Fish.SWORDFISH
+        Fish.SWORDFISH,
     ),
     BARB_HARPOON(
         tool = Items.BARB_TAIL_HARPOON_10129,
@@ -93,7 +93,7 @@ enum class FishingOption(
         bait = null,
         option = "harpoon",
         Fish.TUNA,
-        Fish.SWORDFISH
+        Fish.SWORDFISH,
     ),
     BIG_NET(
         tool = Items.BIG_FISHING_NET_305,
@@ -101,7 +101,10 @@ enum class FishingOption(
         animation = Animation(Animations.NET_FISHING_620),
         bait = null,
         option = "net",
-        Fish.MACKEREL, Fish.COD, Fish.BASS, Fish.SEAWEED
+        Fish.MACKEREL,
+        Fish.COD,
+        Fish.BASS,
+        Fish.SEAWEED,
     ),
     SHARK_HARPOON(
         tool = Items.HARPOON_311,
@@ -109,7 +112,7 @@ enum class FishingOption(
         animation = Animation(Animations.HARPOON_FISHING_618),
         bait = null,
         option = "harpoon",
-        Fish.SHARK
+        Fish.SHARK,
     ),
     MONKFISH_NET(
         tool = Items.SMALL_FISHING_NET_303,
@@ -117,7 +120,7 @@ enum class FishingOption(
         animation = Animation(Animations.NET_FISHING_621),
         bait = null,
         option = "net",
-        Fish.MONKFISH
+        Fish.MONKFISH,
     ),
     MORT_MYRE_SWAMP_BAIT(
         tool = Items.FISHING_ROD_307,
@@ -125,7 +128,7 @@ enum class FishingOption(
         animation = Animation(Animations.ROD_FISHING_622),
         bait = intArrayOf(Items.FISHING_BAIT_313),
         option = "bait",
-        Fish.SLIMY_EEL
+        Fish.SLIMY_EEL,
     ),
     LUMBRIDGE_SWAMP_CAVES_BAIT(
         tool = Items.FISHING_ROD_307,
@@ -134,7 +137,7 @@ enum class FishingOption(
         bait = intArrayOf(Items.FISHING_BAIT_313),
         option = "bait",
         Fish.SLIMY_EEL,
-        Fish.CAVE_EEL
+        Fish.CAVE_EEL,
     ),
     KBWANJI_NET(
         tool = Items.SMALL_FISHING_NET_303,
@@ -142,7 +145,7 @@ enum class FishingOption(
         animation = Animation(Animations.NET_FISHING_621),
         bait = null,
         option = "net",
-        Fish.KARAMBWANJI
+        Fish.KARAMBWANJI,
     ),
     KARAMBWAN_VES(
         tool = Items.KARAMBWAN_VESSEL_3157,
@@ -150,7 +153,7 @@ enum class FishingOption(
         animation = Animation(Animations.FISHING_KARAMBWAN_1193),
         bait = intArrayOf((Items.RAW_KARAMBWANJI_3150)),
         option = "fish",
-        Fish.KARAMBWAN
+        Fish.KARAMBWAN,
     ),
     OILY_FISHING_ROD(
         tool = Items.OILY_FISHING_ROD_1585,
@@ -158,8 +161,9 @@ enum class FishingOption(
         animation = Animation(Animations.ROD_FISHING_622),
         bait = intArrayOf(Items.FISHING_BAIT_313),
         option = "bait",
-        Fish.LAVA_EEL
-    );
+        Fish.LAVA_EEL,
+    ),
+    ;
 
     companion object {
         @JvmStatic
@@ -210,7 +214,9 @@ enum class FishingOption(
     }
 
     fun hasBait(player: Player): Boolean {
-        return if (bait == null) true else {
+        return if (bait == null) {
+            true
+        } else {
             var anyBait = false
             for (b in bait) {
                 anyBait = anyBait || inInventory(player, b)

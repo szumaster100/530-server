@@ -1,8 +1,5 @@
 package content.region.asgarnia.quest.ball.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.asgarnia.quest.ball.handlers.npc.MouseNPC
 import core.api.*
 import core.cache.def.impl.ItemDefinition
@@ -19,18 +16,32 @@ import core.game.node.entity.player.link.TeleportManager
 import core.game.node.item.Item
 import core.game.node.scenery.Scenery
 import core.game.world.map.Location
+import core.plugin.ClassScanner.definePlugin
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner.definePlugin
 import core.tools.RandomFunction
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
 class WitchHousePlugin : OptionHandler() {
-
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val quest = player.getQuestRepository().getQuest(Quests.WITCHS_HOUSE)
         val id =
-            if (node is Item) node.getId() else if (node is Scenery) node.id else if (node is NPC) node.id else node.id
+            if (node is Item) {
+                node.getId()
+            } else if (node is Scenery) {
+                node.id
+            } else if (node is NPC) {
+                node.id
+            } else {
+                node.id
+            }
         val readBook = getAttribute(player, "readWitchsBook", false)
         val magnetAttached = getAttribute(player, "attached_magnet", false)
         when (id) {
@@ -61,7 +72,7 @@ class WitchHousePlugin : OptionHandler() {
                                 addItem(player, item)
                                 sendMessage(
                                     player,
-                                    "You find a pair of leather gloves in the bottom of one of the boxes!"
+                                    "You find a pair of leather gloves in the bottom of one of the boxes!",
                                 )
                                 return true
                             }
@@ -70,7 +81,7 @@ class WitchHousePlugin : OptionHandler() {
                                 addItem(player, item)
                                 sendMessage(
                                     player,
-                                    "You find a pair of leather boots in the bottom of one of the boxes!"
+                                    "You find a pair of leather boots in the bottom of one of the boxes!",
                                 )
                                 return true
                             }
@@ -119,7 +130,7 @@ class WitchHousePlugin : OptionHandler() {
                     sendDialogueLines(
                         player,
                         "Strange... I can't see any kind of lock or handle to",
-                        "open this door..."
+                        "open this door...",
                     )
                 }
 
@@ -149,7 +160,7 @@ class WitchHousePlugin : OptionHandler() {
                     sendDialogueLines(
                         player,
                         "You search for the secret compartment mentioned in the diary.",
-                        "Inside it you find a small key. You take the key."
+                        "Inside it you find a small key. You take the key.",
                     )
                 } else {
                     sendMessage(player, "You search the fountain but find nothing.")
@@ -190,14 +201,12 @@ class WitchHousePlugin : OptionHandler() {
     }
 
     class WitchHouseUseWithHandler : UseWithHandler(CHEESE.id) {
-
         override fun newInstance(arg: Any?): Plugin<Any> {
             addHandler(org.rs.consts.Scenery.MOUSE_HOLE_15518, OBJECT_TYPE, this)
             addHandler(
                 NPCs.MOUSE_901,
                 NPC_TYPE,
                 object : UseWithHandler(2410) {
-
                     override fun newInstance(arg: Any?): Plugin<Any> {
                         addHandler(NPCs.MOUSE_901, NPC_TYPE, this)
                         return this
@@ -208,20 +217,23 @@ class WitchHousePlugin : OptionHandler() {
                         val useditem = event.usedItem
                         val npc = event.usedWith as NPC
                         checkNotNull(useditem)
-                        if (useditem.id == MAGNET.id && npc.id == 901 && player.getAttribute<Any?>("mouse_out") != null) {
+                        if (useditem.id == MAGNET.id &&
+                            npc.id == 901 &&
+                            player.getAttribute<Any?>("mouse_out") != null
+                        ) {
                             sendDialogueLines(
                                 player,
                                 "You attach a magnet to the mouse's harness. The mouse finishes",
                                 "the cheese and runs back into its hole. You hear some odd noises",
                                 "from inside the walls. There is a strange whirring noise from above",
-                                "the door frame."
+                                "the door frame.",
                             )
                             removeAttribute(player, "mouse_out")
                             if (removeItem(player, MAGNET)) setAttribute(player, "attached_magnet", true)
                         }
                         return true
                     }
-                }
+                },
             )
             return this
         }

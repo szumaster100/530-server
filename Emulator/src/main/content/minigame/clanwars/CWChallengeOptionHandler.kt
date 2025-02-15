@@ -11,28 +11,36 @@ import core.game.system.communication.ClanRank
 import core.plugin.Plugin
 
 class CWChallengeOptionHandler : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         OPTION.setHandler(this)
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         player.requestManager.request((node as Player), REQUEST_TYPE)
         return true
     }
 
     companion object {
-
         val OPTION = Option("Challenge", 0)
         private val REQUEST_TYPE: RequestType =
             object : RequestType("Sending challenge request...", ":clanreq:", CWChallengeOptionHandler.module) {
-                override fun canRequest(player: Player?, target: Player?): Boolean {
+                override fun canRequest(
+                    player: Player?,
+                    target: Player?,
+                ): Boolean {
                     if (player!!.communication.clan == null) {
                         player.packetDispatch.sendMessage("You have to be in a clan to challenge players.")
                         return false
                     }
-                    if (player.communication.clan.getRank(player).ordinal < ClanRank.CAPTAIN.ordinal) {
+                    if (player.communication.clan
+                            .getRank(player)
+                            .ordinal < ClanRank.CAPTAIN.ordinal
+                    ) {
                         player.packetDispatch.sendMessage("Your clan rank is not high enough to challenge other clans.")
                         return false
                     }
@@ -44,8 +52,13 @@ class CWChallengeOptionHandler : OptionHandler() {
                         player.packetDispatch.sendMessage("This player is not in a clan.")
                         return false
                     }
-                    if (target.communication.clan.getRank(target).ordinal < ClanRank.CAPTAIN.ordinal) {
-                        player.packetDispatch.sendMessage("This player's clan rank is not high enough to accept challenges.")
+                    if (target.communication.clan
+                            .getRank(target)
+                            .ordinal < ClanRank.CAPTAIN.ordinal
+                    ) {
+                        player.packetDispatch.sendMessage(
+                            "This player's clan rank is not high enough to accept challenges.",
+                        )
                         return false
                     }
                     if (target.communication.clan.clanWar != null) {
@@ -60,10 +73,14 @@ class CWChallengeOptionHandler : OptionHandler() {
                 }
             }
         private val module: RequestModule
-            private get() = object : RequestModule {
-                override fun open(player: Player?, target: Player?) {
-                    ActivityManager.start(player, "Clan wars", false, target)
+            private get() =
+                object : RequestModule {
+                    override fun open(
+                        player: Player?,
+                        target: Player?,
+                    ) {
+                        ActivityManager.start(player, "Clan wars", false, target)
+                    }
                 }
-            }
     }
 }

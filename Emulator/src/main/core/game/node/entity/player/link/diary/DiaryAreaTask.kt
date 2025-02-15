@@ -8,10 +8,12 @@ class DiaryAreaTask(
     val zoneBorders: ZoneBorders,
     val diaryLevel: DiaryLevel,
     val taskId: Int,
-    private val condition: ((player: Player) -> Boolean)? = null
+    private val condition: ((player: Player) -> Boolean)? = null,
 ) {
-
-    fun whenSatisfied(player: Player, then: () -> Unit) {
+    fun whenSatisfied(
+        player: Player,
+        then: () -> Unit,
+    ) {
         var result = inBorders(player, zoneBorders)
 
         condition?.let {

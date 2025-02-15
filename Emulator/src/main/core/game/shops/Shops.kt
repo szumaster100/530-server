@@ -16,10 +16,12 @@ import core.game.interaction.InteractionListener
 import core.game.interaction.InterfaceListener
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
-import core.tools.Log
 import core.game.system.command.Privilege
 import core.game.world.GameWorld
+import core.tools.Log
 import core.tools.secondsToTicks
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
@@ -29,11 +31,12 @@ import org.rs.consts.NPCs
 import org.rs.consts.Quests
 import java.io.FileReader
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
-import it.unimi.dsi.fastutil.ints.IntOpenHashSet
-
-class Shops : StartupListener, TickListener, InteractionListener, InterfaceListener, Commands {
-
+class Shops :
+    StartupListener,
+    TickListener,
+    InteractionListener,
+    InterfaceListener,
+    Commands {
     companion object {
         @JvmStatic
         val personalizedShops = "world.personalized_shops"
@@ -47,7 +50,10 @@ class Shops : StartupListener, TickListener, InteractionListener, InterfaceListe
         private var lastPlayerStockClear = 0
 
         @JvmStatic
-        fun openId(player: Player, id: Int) {
+        fun openId(
+            player: Player,
+            id: Int,
+        ) {
             shopsById[id]?.openFor(player)
         }
 
@@ -55,7 +61,10 @@ class Shops : StartupListener, TickListener, InteractionListener, InterfaceListe
             log(this::class.java, Log.FINE, "[SHOPS] $msg")
         }
 
-        fun parseStock(stock: String, id: Int): List<ShopItem> {
+        fun parseStock(
+            stock: String,
+            id: Int,
+        ): List<ShopItem> {
             if (stock.isEmpty()) return emptyList()
 
             val items = mutableListOf<ShopItem>()
@@ -63,7 +72,12 @@ class Shops : StartupListener, TickListener, InteractionListener, InterfaceListe
 
             stock.split('-').forEach {
                 try {
-                    val tokens = it.replace("{", "").replace("}", "").split(",").toTypedArray()
+                    val tokens =
+                        it
+                            .replace("{", "")
+                            .replace("}", "")
+                            .split(",")
+                            .toTypedArray()
                     val itemId = tokens[0].toInt()
                     val amount = tokens[1].trim().toIntOrNull() ?: -1
                     val restockRate = tokens.getOrNull(2)?.toIntOrNull() ?: 100
@@ -141,9 +155,26 @@ class Shops : StartupListener, TickListener, InteractionListener, InterfaceListe
         on(NPCs.SIEGFRIED_ERKLE_933, IntType.NPC, "trade") { player, node ->
             val points = getQuestPoints(player)
             if (!GameWorld.settings!!.isMembers) {
-                sendNPCDialogueLines(player, NPCs.SIEGFRIED_ERKLE_933, FaceAnim.HALF_GUILTY, false, "I'm sorry but serves of this shop are only for the", "pleasure of those who are rightful members of the", "Legends Guild. I would get into serious trouble if I sold", "a non-member an item from this store.")
+                sendNPCDialogueLines(
+                    player,
+                    NPCs.SIEGFRIED_ERKLE_933,
+                    FaceAnim.HALF_GUILTY,
+                    false,
+                    "I'm sorry but serves of this shop are only for the",
+                    "pleasure of those who are rightful members of the",
+                    "Legends Guild. I would get into serious trouble if I sold",
+                    "a non-member an item from this store.",
+                )
             } else if (points < 40) {
-                sendNPCDialogueLines(player, NPCs.SIEGFRIED_ERKLE_933, FaceAnim.HALF_GUILTY, false, "I'm sorry but serves of this shop are only for the", "pleasure of those who are rightful members of the", "Legends Guild.")
+                sendNPCDialogueLines(
+                    player,
+                    NPCs.SIEGFRIED_ERKLE_933,
+                    FaceAnim.HALF_GUILTY,
+                    false,
+                    "I'm sorry but serves of this shop are only for the",
+                    "pleasure of those who are rightful members of the",
+                    "Legends Guild.",
+                )
             } else {
                 shopsByNpc[node.id]?.openFor(player)
             }
@@ -190,17 +221,28 @@ class Shops : StartupListener, TickListener, InteractionListener, InterfaceListe
             val price = shop.getBuyPrice(player, slot)
 
             when (opcode) {
-                opValue -> sendMessage(player, "${getItemName(if (isMainStock) shop.stock[slot].itemId else shop.playerStock[slot].id)}: This item currently costs ${price.amount} ${price.name.lowercase()}.")
+                opValue ->
+                    sendMessage(
+                        player,
+                        "${getItemName(
+                            if (isMainStock) shop.stock[slot].itemId else shop.playerStock[slot].id,
+                        )}: This item currently costs ${price.amount} ${price.name.lowercase()}.",
+                    )
 
                 buyOne -> shop.buy(player, slot, 1)
                 buyFive -> shop.buy(player, slot, 5)
                 buyTen -> shop.buy(player, slot, 10)
-                buyX -> sendInputDialogue(player, InputType.AMOUNT, "Enter the amount to buy:") { value ->
-                    val amt = value as Int
-                    shop.buy(player, slot, amt)
-                }
+                buyX ->
+                    sendInputDialogue(player, InputType.AMOUNT, "Enter the amount to buy:") { value ->
+                        val amt = value as Int
+                        shop.buy(player, slot, amt)
+                    }
 
-                opExamine -> sendMessage(player, itemDefinition(if (isMainStock) shop.stock[slot].itemId else shop.playerStock[slot].id).examine)
+                opExamine ->
+                    sendMessage(
+                        player,
+                        itemDefinition(if (isMainStock) shop.stock[slot].itemId else shop.playerStock[slot].id).examine,
+                    )
             }
 
             return@on true
@@ -209,7 +251,25 @@ class Shops : StartupListener, TickListener, InteractionListener, InterfaceListe
         onOpen(Components.SHOP_TEMPLATE_SIDE_621) { player, _ ->
             val settings = IfaceSettingsBuilder().enableOptions(0 until 9).build()
             player.packetDispatch.sendIfaceSettings(settings, 0, 621, 0, 28)
-            player.packetDispatch.sendRunScript(150, "IviiiIsssssssss", "", "", "", "", "Sell X", "Sell 10", "Sell 5", "Sell 1", "Value", -1, 0, 7, 4, 93, 621 shl 16)
+            player.packetDispatch.sendRunScript(
+                150,
+                "IviiiIsssssssss",
+                "",
+                "",
+                "",
+                "",
+                "Sell X",
+                "Sell 10",
+                "Sell 5",
+                "Sell 1",
+                "Value",
+                -1,
+                0,
+                7,
+                4,
+                93,
+                621 shl 16,
+            )
             return@onOpen true
         }
 
@@ -218,8 +278,11 @@ class Shops : StartupListener, TickListener, InteractionListener, InterfaceListe
             val listener = Shop.listenerInstances[player.details.uid] ?: return@onClose true
 
             if (getServerConfig().getBoolean(personalizedShops, false)
-            ) shop.stockInstances[player.details.uid]?.listeners?.remove(listener)
-            else shop.stockInstances[ServerConfig.SERVER_NAME.hashCode()]!!.listeners.remove(listener)
+            ) {
+                shop.stockInstances[player.details.uid]?.listeners?.remove(listener)
+            } else {
+                shop.stockInstances[ServerConfig.SERVER_NAME.hashCode()]!!.listeners.remove(listener)
+            }
 
             shop.playerStock.listeners.remove(listener)
             player.interfaceManager.closeSingleTab()
@@ -244,20 +307,30 @@ class Shops : StartupListener, TickListener, InteractionListener, InterfaceListe
             val (_, price) = shop.getSellPrice(player, slot)
             val def = itemDefinition(player.inventory[slot].id)
 
-            val valueMsg = when {
-                (price.amount == -1) || !def.hasShopCurrencyValue(price.id) || def.id in intArrayOf(Items.COINS_995, Items.TOKKUL_6529, Items.ARCHERY_TICKET_1464, Items.CASTLE_WARS_TICKET_4067) -> "This shop will not buy that item."
-                else -> "${player.inventory[slot].name}: This shop will buy this item for ${price.amount} ${price.name.lowercase()}."
-            }
+            val valueMsg =
+                when {
+                    (price.amount == -1) ||
+                        !def.hasShopCurrencyValue(price.id) ||
+                        def.id in
+                        intArrayOf(
+                            Items.COINS_995,
+                            Items.TOKKUL_6529,
+                            Items.ARCHERY_TICKET_1464,
+                            Items.CASTLE_WARS_TICKET_4067,
+                        ) -> "This shop will not buy that item."
+                    else -> "${player.inventory[slot].name}: This shop will buy this item for ${price.amount} ${price.name.lowercase()}."
+                }
 
             when (opcode) {
                 opValue -> sendMessage(player, valueMsg)
                 sellOne -> shop.sell(player, slot, 1)
                 sellFive -> shop.sell(player, slot, 5)
                 sellTen -> shop.sell(player, slot, 10)
-                sellX -> sendInputDialogue(player, InputType.AMOUNT, "Enter the amount to sell:") { value ->
-                    val amt = value as Int
-                    shop.sell(player, slot, amt)
-                }
+                sellX ->
+                    sendInputDialogue(player, InputType.AMOUNT, "Enter the amount to sell:") { value ->
+                        val amt = value as Int
+                        shop.sell(player, slot, amt)
+                    }
             }
 
             return@on true

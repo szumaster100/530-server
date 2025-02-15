@@ -1,8 +1,8 @@
 package content.global.skill.firemaking
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import org.rs.consts.Items
 import org.rs.consts.Scenery
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 
 enum class Log(
     val logId: Int,
@@ -10,7 +10,7 @@ enum class Log(
     val barbarianLevel: Int,
     val life: Int,
     val fireId: Int,
-    val xp: Double
+    val xp: Double,
 ) {
     NORMAL(Items.LOGS_1511, 1, 21, 180, Scenery.FIRE_2732, 40.0),
     PURPLE(Items.PURPLE_LOGS_10329, 1, 21, 200, Scenery.FIRE_20001, 50.0),
@@ -29,7 +29,8 @@ enum class Log(
     EUCALYPTUS(Items.EUCALYPTUS_LOGS_12581, 58, 68, 300, Scenery.FIRE_2732, 193.5),
     YEW(Items.YEW_LOGS_1515, 60, 80, 400, Scenery.FIRE_2732, 202.5),
     MAGIC(Items.MAGIC_LOGS_1513, 75, 95, 450, Scenery.FIRE_2732, 303.8),
-    CURSED_MAGIC(Items.CURSED_MAGIC_LOGS_13567, 82, 97, 650, Scenery.FIRE_2732, 303.8);
+    CURSED_MAGIC(Items.CURSED_MAGIC_LOGS_13567, 82, 97, 650, Scenery.FIRE_2732, 303.8),
+    ;
 
     companion object {
         var logMap: Int2ObjectOpenHashMap<Log> = Int2ObjectOpenHashMap()

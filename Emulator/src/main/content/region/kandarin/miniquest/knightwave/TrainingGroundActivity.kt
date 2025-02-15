@@ -1,11 +1,11 @@
 package content.region.kandarin.miniquest.knightwave
 
-import org.rs.consts.NPCs
 import content.data.GameAttributes
 import core.api.*
+import core.api.Event
+import core.api.MapArea
 import core.game.activity.ActivityManager
 import core.game.activity.ActivityPlugin
-import core.api.Event
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.BattleState
 import core.game.node.entity.combat.CombatStyle
@@ -18,12 +18,12 @@ import core.game.system.timer.impl.SkillRestore
 import core.game.world.GameWorld.Pulser
 import core.game.world.map.Direction
 import core.game.world.map.Location
-import core.api.MapArea
 import core.game.world.map.RegionManager.getLocalPlayers
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.map.zone.ZoneRestriction
-import core.plugin.Initializable
 import core.plugin.ClassScanner
+import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 object KnightWaveAttributes {
     const val KW_SPAWN = "knights-training:spawn"
@@ -34,7 +34,9 @@ object KnightWaveAttributes {
 }
 
 @Initializable
-class TrainingGroundActivity : ActivityPlugin(KnightWaveAttributes.ACTIVITY, true, false, true), MapArea {
+class TrainingGroundActivity :
+    ActivityPlugin(KnightWaveAttributes.ACTIVITY, true, false, true),
+    MapArea {
     private var activity: TrainingGroundActivity? = this
 
     init {
@@ -42,7 +44,10 @@ class TrainingGroundActivity : ActivityPlugin(KnightWaveAttributes.ACTIVITY, tru
         this.safeRespawn = Location.create(2750, 3507, 2)
     }
 
-    override fun death(entity: Entity, killer: Entity): Boolean {
+    override fun death(
+        entity: Entity,
+        killer: Entity,
+    ): Boolean {
         if (entity is Player) {
             entity.getProperties().teleportLocation = Location.create(2751, 3507, 2)
             return true
@@ -50,7 +55,10 @@ class TrainingGroundActivity : ActivityPlugin(KnightWaveAttributes.ACTIVITY, tru
         return false
     }
 
-    override fun areaLeave(entity: Entity, logout: Boolean) {
+    override fun areaLeave(
+        entity: Entity,
+        logout: Boolean,
+    ) {
         super.areaLeave(entity, logout)
         if (entity is Player) {
             removeAttributes(
@@ -58,7 +66,7 @@ class TrainingGroundActivity : ActivityPlugin(KnightWaveAttributes.ACTIVITY, tru
                 GameAttributes.PRAYER_LOCK,
                 KnightWaveAttributes.KW_SPAWN,
                 KnightWaveAttributes.KW_TIER,
-                KnightWaveAttributes.KW_BEGIN
+                KnightWaveAttributes.KW_BEGIN,
             )
             findLocalNPC(entity, KnightWavesNPC().id)?.let { poofClear(it) }
             clearLogoutListener(entity, KnightWaveAttributes.ACTIVITY)
@@ -66,7 +74,11 @@ class TrainingGroundActivity : ActivityPlugin(KnightWaveAttributes.ACTIVITY, tru
         }
     }
 
-    override fun start(player: Player?, login: Boolean, vararg args: Any?): Boolean {
+    override fun start(
+        player: Player?,
+        login: Boolean,
+        vararg args: Any?,
+    ): Boolean {
         return super.start(player, login, *args)
     }
 
@@ -83,8 +95,7 @@ class TrainingGroundActivity : ActivityPlugin(KnightWaveAttributes.ACTIVITY, tru
         }
     }
 
-    override fun defineAreaBorders(): Array<ZoneBorders> =
-        arrayOf(ZoneBorders(2752, 3502, 2764, 3513, 2, false))
+    override fun defineAreaBorders(): Array<ZoneBorders> = arrayOf(ZoneBorders(2752, 3502, 2764, 3513, 2, false))
 
     override fun newInstance(p: Player?): ActivityPlugin {
         ActivityManager.register(this)
@@ -98,7 +109,7 @@ class TrainingGroundActivity : ActivityPlugin(KnightWaveAttributes.ACTIVITY, tru
             ZoneRestriction.CANNON,
             ZoneRestriction.RANDOM_EVENTS,
             ZoneRestriction.FOLLOWERS,
-            ZoneRestriction.TELEPORT
+            ZoneRestriction.TELEPORT,
         )
     }
 
@@ -143,7 +154,11 @@ class TrainingGroundActivity : ActivityPlugin(KnightWaveAttributes.ACTIVITY, tru
             }
         }
 
-        override fun isAttackable(entity: Entity, style: CombatStyle, message: Boolean): Boolean {
+        override fun isAttackable(
+            entity: Entity,
+            style: CombatStyle,
+            message: Boolean,
+        ): Boolean {
             return player == entity
         }
 
@@ -178,7 +193,11 @@ class TrainingGroundActivity : ActivityPlugin(KnightWaveAttributes.ACTIVITY, tru
             }
         }
 
-        override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+        override fun construct(
+            id: Int,
+            location: Location,
+            vararg objects: Any,
+        ): AbstractNPC {
             return KnightWavesNPC(id, location, null)
         }
 
@@ -191,7 +210,7 @@ class TrainingGroundActivity : ActivityPlugin(KnightWaveAttributes.ACTIVITY, tru
                 NPCs.SIR_LUCAN_6173,
                 NPCs.SIR_GAWAIN_6172,
                 NPCs.SIR_KAY_6171,
-                NPCs.SIR_LANCELOT_6170
+                NPCs.SIR_LANCELOT_6170,
             )
         }
 
@@ -200,12 +219,18 @@ class TrainingGroundActivity : ActivityPlugin(KnightWaveAttributes.ACTIVITY, tru
         }
     }
 
-    class MerlinNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
+    class MerlinNPC(
+        id: Int = 0,
+        location: Location? = null,
+    ) : AbstractNPC(id, location) {
         private var cleanTime = 0
         private var player: Player? = null
 
-        override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+        override fun construct(
+            id: Int,
+            location: Location,
+            vararg objects: Any,
+        ): AbstractNPC {
             return MerlinNPC(id, location)
         }
 
@@ -215,13 +240,13 @@ class TrainingGroundActivity : ActivityPlugin(KnightWaveAttributes.ACTIVITY, tru
 
         override fun handleTickActions() {
             super.handleTickActions()
-            if (cleanTime++ > 300)
+            if (cleanTime++ > 300) {
                 removeAttributes(player!!, KnightWaveAttributes.KW_TIER, KnightWaveAttributes.KW_BEGIN)
+            }
             poofClear(this)
         }
 
         companion object {
-
             fun spawnMerlin(player: Player) {
                 val merlin = MerlinNPC(NPCs.MERLIN_213)
                 merlin.location = Location.create(2750, 3505, 2)
@@ -243,14 +268,16 @@ class TrainingGroundActivity : ActivityPlugin(KnightWaveAttributes.ACTIVITY, tru
                             openDialogue(player, MerlinDialogue())
                             return true
                         }
-                    }
+                    },
                 )
             }
         }
     }
 }
 
-enum class WaveTier(val id: Int) {
+enum class WaveTier(
+    val id: Int,
+) {
     I(NPCs.SIR_BEDIVERE_6177),
     II(NPCs.SIR_PELLEAS_6176),
     III(NPCs.SIR_TRISTRAM_6175),
@@ -259,9 +286,13 @@ enum class WaveTier(val id: Int) {
     VI(NPCs.SIR_GAWAIN_6172),
     VII(NPCs.SIR_KAY_6171),
     VIII(NPCs.SIR_LANCELOT_6170),
-    IX(-1);
+    IX(-1),
+    ;
 
-    fun transform(npc: TrainingGroundActivity.KnightWavesNPC, player: Player?) {
+    fun transform(
+        npc: TrainingGroundActivity.KnightWavesNPC,
+        player: Player?,
+    ) {
         val newType = next()
         npc.lock()
         npc.pulseManager.clear()
@@ -295,7 +326,7 @@ enum class WaveTier(val id: Int) {
                         else -> false
                     }
                 }
-            }
+            },
         )
     }
 
@@ -304,12 +335,10 @@ enum class WaveTier(val id: Int) {
     }
 
     companion object {
-
         fun forId(id: Int): WaveTier? {
             return values().find { it.id == id }
         }
 
         private val knightTypes = values()
     }
-
 }

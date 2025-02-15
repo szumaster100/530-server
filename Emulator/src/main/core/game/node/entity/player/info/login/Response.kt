@@ -1,7 +1,8 @@
 package core.game.node.entity.player.info.login
 
-enum class Response(private val opcode: Int) {
-
+enum class Response(
+    private val opcode: Int,
+) {
     UNEXPECTED_RESPONSE(0),
 
     COULD_NOT_DISPLAY_AD(1),
@@ -46,14 +47,14 @@ enum class Response(private val opcode: Int) {
 
     ERROR_LOADING_PROFILE(24),
 
-    BANNED(26);
+    BANNED(26),
+    ;
 
     fun opcode(): Int {
         return opcode // Returns the opcode of the response.
     }
 
     companion object {
-
         @JvmStatic
         fun get(opcode: Int): Response? {
             for (r in values()) {

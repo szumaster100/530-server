@@ -3,7 +3,9 @@ package core.game.node.entity.combat.spell
 import core.game.node.item.Item
 import org.rs.consts.Items
 
-enum class Runes(val id: Int) {
+enum class Runes(
+    val id: Int,
+) {
     AIR_RUNE(Items.AIR_RUNE_556),
     WATER_RUNE(Items.WATER_RUNE_555),
     EARTH_RUNE(Items.EARTH_RUNE_557),
@@ -21,7 +23,8 @@ enum class Runes(val id: Int) {
     SARADOMIN_STAFF(Items.SARADOMIN_STAFF_2415),
     GUTHIX_STAFF(Items.GUTHIX_STAFF_2416),
     ZAMORAK_STAFF(Items.ZAMORAK_STAFF_2417),
-    ZURIELS_STAFF(Items.ZURIELS_STAFF_13867);
+    ZURIELS_STAFF(Items.ZURIELS_STAFF_13867),
+    ;
 
     fun transform(): Item {
         return Item(id)
@@ -32,7 +35,6 @@ enum class Runes(val id: Int) {
     }
 
     companion object {
-
         fun forId(id: Int): Runes? {
             for (rune in values()) {
                 if (rune.id == id) {
@@ -42,7 +44,11 @@ enum class Runes(val id: Int) {
             return null
         }
 
-        fun isInfinite(rune: Runes?, weapon: Item?, vararg type: SpellType): Boolean {
+        fun isInfinite(
+            rune: Runes?,
+            weapon: Item?,
+            vararg type: SpellType,
+        ): Boolean {
             if (weapon == null || rune == null) {
                 return false
             }
@@ -58,7 +64,11 @@ enum class Runes(val id: Int) {
                     }
                 }
                 if (weapon.id == 13867 && rune == ZURIELS_STAFF && type.size == 1) {
-                    if (type[0] === SpellType.BARRAGE || type[0] === SpellType.BLITZ || type[0] === SpellType.RUSH || type[0] === SpellType.BURST) {
+                    if (type[0] === SpellType.BARRAGE ||
+                        type[0] === SpellType.BLITZ ||
+                        type[0] === SpellType.RUSH ||
+                        type[0] === SpellType.BURST
+                    ) {
                         return true
                     }
                 }
@@ -69,17 +79,21 @@ enum class Runes(val id: Int) {
                 }
             }
             if (rune == AIR_RUNE) {
-                if (weapon.id == Items.STAFF_OF_AIR_1381 || weapon.id == Items.AIR_BATTLESTAFF_1397)
+                if (weapon.id == Items.STAFF_OF_AIR_1381 || weapon.id == Items.AIR_BATTLESTAFF_1397) {
                     return true
+                }
             } else if (rune == WATER_RUNE) {
-                if (weapon.id == Items.STAFF_OF_WATER_1383 || weapon.id == Items.WATER_BATTLESTAFF_1395)
+                if (weapon.id == Items.STAFF_OF_WATER_1383 || weapon.id == Items.WATER_BATTLESTAFF_1395) {
                     return true
+                }
             } else if (rune == EARTH_RUNE) {
-                if (weapon.id == Items.STAFF_OF_EARTH_1385 || weapon.id == Items.EARTH_BATTLESTAFF_1399)
+                if (weapon.id == Items.STAFF_OF_EARTH_1385 || weapon.id == Items.EARTH_BATTLESTAFF_1399) {
                     return true
+                }
             } else if (rune == FIRE_RUNE) {
-                if (weapon.id == Items.STAFF_OF_FIRE_1387 || weapon.id == Items.FIRE_BATTLESTAFF_1393)
+                if (weapon.id == Items.STAFF_OF_FIRE_1387 || weapon.id == Items.FIRE_BATTLESTAFF_1393) {
                     return true
+                }
             }
             return false
         }

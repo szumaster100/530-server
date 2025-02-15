@@ -5,16 +5,15 @@ import core.api.log
 import core.cache.def.impl.DataMap
 import core.game.node.entity.player.link.music.MusicEntry
 import core.game.node.entity.player.link.music.MusicZone
-import core.tools.Log
 import core.game.world.map.RegionManager
 import core.game.world.map.zone.ZoneBorders
+import core.tools.Log
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import java.io.FileReader
 
 class MusicConfigLoader {
-
     // 1351 -> buttonID:songID
     // 1345 -> buttonID:songName (capitalized)
     // 1347 -> buttonID:songName (lowercase)
@@ -46,17 +45,35 @@ class MusicConfigLoader {
                 if (border.isEmpty()) {
                     continue
                 }
-                tokens = border.replace("{", "").replace("}", "").split(",").toTypedArray()
+                tokens =
+                    border
+                        .replace("{", "")
+                        .replace("}", "")
+                        .split(",")
+                        .toTypedArray()
                 borders = ZoneBorders(tokens[0].toInt(), tokens[1].toInt(), tokens[2].toInt(), tokens[3].toInt())
                 if (border.contains("[")) { // no exception borders
                     var exceptions: String? = ""
                     for (i in 4 until tokens.size) {
-                        exceptions += tokens[i] + if (!tokens[i].contains("]~")) "," else if (tokens[i].contains("[")) "," else ""
+                        exceptions +=
+                            tokens[i] +
+                            if (!tokens[i].contains("]~")) {
+                                ","
+                            } else if (tokens[i].contains("[")) {
+                                ","
+                            } else {
+                                ""
+                            }
                     }
                     tokens = exceptions!!.split("~".toRegex()).toTypedArray()
                     var e: Array<String>? = null
                     for (exception in tokens) {
-                        e = exception.replace("[", "").replace("]", "").split(",".toRegex()).toTypedArray()
+                        e =
+                            exception
+                                .replace("[", "")
+                                .replace("]", "")
+                                .split(",".toRegex())
+                                .toTypedArray()
                         borders.addException(ZoneBorders(e[0].toInt(), e[1].toInt(), e[2].toInt(), e[3].toInt()))
                     }
                     e = null

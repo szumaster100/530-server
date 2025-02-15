@@ -1,18 +1,21 @@
 package content.global.skill.herblore.herbs
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Quests
 import core.api.*
 import core.api.quest.isQuestComplete
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Quests
 
-class HerbTarPulse(player: Player?, node: Item?, val tar: Tars, private var amount: Int) :
-    SkillPulse<Item?>(player, node) {
-
+class HerbTarPulse(
+    player: Player?,
+    node: Item?,
+    val tar: Tars,
+    private var amount: Int,
+) : SkillPulse<Item?>(player, node) {
     override fun checkRequirements(): Boolean {
         if (!isQuestComplete(player, Quests.DRUIDIC_RITUAL)) {
             sendMessage(player, "You must complete the ${Quests.DRUIDIC_RITUAL} quest before you can use Herblore.")
@@ -42,17 +45,24 @@ class HerbTarPulse(player: Player?, node: Item?, val tar: Tars, private var amou
             delay = 4
             return false
         }
-        if (inInventory(player, Items.SWAMP_TAR_1939, 15) && inInventory(player, tar.ingredient) && removeItem(
+        if (inInventory(player, Items.SWAMP_TAR_1939, 15) &&
+            inInventory(player, tar.ingredient) &&
+            removeItem(
                 player,
-                Item(Items.SWAMP_TAR_1939, 15)
-            ) && removeItem(player, tar.ingredient)
+                Item(Items.SWAMP_TAR_1939, 15),
+            ) &&
+            removeItem(player, tar.ingredient)
         ) {
             addItem(player, tar.product, 15)
             rewardXP(player, Skills.HERBLORE, tar.experience)
             sendMessage(
                 player,
-                "You add the " + getItemName(tar.ingredient).lowercase().replace("clean", "")
-                    .trim { it <= ' ' } + " to the swamp tar.")
+                "You add the " +
+                    getItemName(tar.ingredient)
+                        .lowercase()
+                        .replace("clean", "")
+                        .trim { it <= ' ' } + " to the swamp tar.",
+            )
         } else {
             return true
         }

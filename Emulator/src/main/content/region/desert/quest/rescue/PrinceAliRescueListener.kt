@@ -1,17 +1,15 @@
 package content.region.desert.quest.rescue
 
-import org.rs.consts.Items
 import core.api.removeItem
 import core.api.replaceSlot
 import core.api.sendMessage
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.item.Item
+import org.rs.consts.Items
 
 class PrinceAliRescueListener : InteractionListener {
-
     override fun defineListeners() {
-
         onUseWith(IntType.ITEM, Items.YELLOW_DYE_1765, Items.WIG_2421) { player, used, with ->
             val itemUsed = used.asItem()
             val itemSlot = with.asItem().slot

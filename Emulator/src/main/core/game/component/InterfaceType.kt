@@ -6,7 +6,7 @@ enum class InterfaceType(
     @JvmField val fixedPaneId: Int,
     @JvmField val resizablePaneId: Int,
     @JvmField val fixedChildId: Int,
-    @JvmField val resizableChildId: Int
+    @JvmField val resizableChildId: Int,
 ) {
     DEFAULT(Components.TOPLEVEL_548, Components.TOPLEVEL_FULLSCREEN_746, 11, 6),
     OVERLAY(Components.TOPLEVEL_548, Components.TOPLEVEL_FULLSCREEN_746, 4, 5),
@@ -16,5 +16,5 @@ enum class InterfaceType(
     WINDOW_PANE(Components.TOPLEVEL_548, Components.TOPLEVEL_FULLSCREEN_746, 0, 0),
     CS_CHATBOX(Components.CHATTOP_752, Components.CHATTOP_752, 6, 6),
     CHATBOX(Components.CHATTOP_752, Components.CHATTOP_752, 8, 8),
-    OVERLAY_B(Components.TOPLEVEL_548, Components.TOPLEVEL_FULLSCREEN_746, 11, 3)
+    OVERLAY_B(Components.TOPLEVEL_548, Components.TOPLEVEL_FULLSCREEN_746, 11, 3),
 }

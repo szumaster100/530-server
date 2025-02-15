@@ -1,20 +1,18 @@
 package content.region.desert.handlers
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import content.region.desert.dialogue.pollnivneach.AliTheBarmanDialogue
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.item.Item
 import core.game.world.map.Location
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 class PollnivneahListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(CAMEL, IntType.NPC, "talk-to") { player, _ ->
             openDialogue(player, CAMEL)
             return@on true
@@ -51,7 +49,6 @@ class PollnivneahListener : InteractionListener {
     }
 
     override fun defineDestinationOverrides() {
-
         setDest(IntType.NPC, intArrayOf(BARMAN), "talk-to") { _, _ ->
             return@setDest Location.create(3361, 2956, 0)
         }

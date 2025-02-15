@@ -18,7 +18,9 @@ import org.rs.consts.Sounds
 import kotlin.random.Random
 import kotlin.reflect.full.createInstance
 
-abstract class RandomEventNPC(id: Int) : NPC(id) {
+abstract class RandomEventNPC(
+    id: Int,
+) : NPC(id) {
     lateinit var player: Player
     abstract var loot: WeightBasedTable?
     var spawnLocation: Location? = null
@@ -28,7 +30,11 @@ abstract class RandomEventNPC(id: Int) : NPC(id) {
     var timerPaused = false
     var ticksLeft = secondsToTicks(180)
 
-    open fun create(player: Player, loot: WeightBasedTable? = null, type: String = ""): RandomEventNPC {
+    open fun create(
+        player: Player,
+        loot: WeightBasedTable? = null,
+        type: String = "",
+    ): RandomEventNPC {
         val event = this::class.createInstance()
         if (event is PatternRecognitionNPC) event.type = type
         event.loot = loot
@@ -47,13 +53,16 @@ abstract class RandomEventNPC(id: Int) : NPC(id) {
     }
 
     open fun follow() {
-        pulseManager.run((object : MovementPulse(this, player, Pathfinder.DUMB) {
-            override fun pulse(): Boolean {
-                face(player)
-                return false
-            }
-        }),
-            PulseType.STANDARD
+        pulseManager.run(
+            (
+                object : MovementPulse(this, player, Pathfinder.DUMB) {
+                    override fun pulse(): Boolean {
+                        face(player)
+                        return false
+                    }
+                }
+            ),
+            PulseType.STANDARD,
         )
     }
 

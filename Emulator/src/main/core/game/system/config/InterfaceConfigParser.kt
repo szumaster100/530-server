@@ -24,14 +24,15 @@ class InterfaceConfigParser {
                 ComponentDefinition.getDefinitions()[id]!!.parse(
                     e["interfaceType"].toString(),
                     e["walkable"].toString(),
-                    e["tabIndex"].toString()
+                    e["tabIndex"].toString(),
                 )
             }
-            ComponentDefinition.getDefinitions()[id] = ComponentDefinition().parse(
-                e["interfaceType"].toString(),
-                e["walkable"].toString(),
-                e["tabIndex"].toString()
-            )
+            ComponentDefinition.getDefinitions()[id] =
+                ComponentDefinition().parse(
+                    e["interfaceType"].toString(),
+                    e["walkable"].toString(),
+                    e["tabIndex"].toString(),
+                )
             count++
         }
 

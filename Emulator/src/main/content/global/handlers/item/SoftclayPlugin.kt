@@ -1,6 +1,5 @@
 package content.global.handlers.item
 
-import org.rs.consts.Items
 import core.api.sendMessages
 import core.api.submitIndividualPulse
 import core.game.dialogue.SkillDialogueHandler
@@ -11,10 +10,10 @@ import core.game.node.item.Item
 import core.game.system.task.Pulse
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Items
 
 @Initializable
 class SoftclayPlugin : UseWithHandler(Items.CLAY_434) {
-
     private val clayId = Item(Items.CLAY_434)
     private val softClay = Item(Items.SOFT_CLAY_1761)
     private val bowlOfWater = Item(Items.BOWL_OF_WATER_1921)
@@ -33,26 +32,31 @@ class SoftclayPlugin : UseWithHandler(Items.CLAY_434) {
 
     override fun handle(event: NodeUsageEvent): Boolean {
         val player = event.player
-        val handler = object : SkillDialogueHandler(player, SkillDialogue.ONE_OPTION, softClay) {
-            override fun create(amount: Int, index: Int) {
-                submitIndividualPulse(
-                    player,
-                    object : Pulse(2, player) {
-                        var count = 0
-                        override fun pulse(): Boolean {
-                            if (!this@SoftclayPlugin.create(player, event)) {
-                                return true
-                            }
-                            return ++count >= amount
-                        }
-                    }
-                )
-            }
+        val handler =
+            object : SkillDialogueHandler(player, SkillDialogue.ONE_OPTION, softClay) {
+                override fun create(
+                    amount: Int,
+                    index: Int,
+                ) {
+                    submitIndividualPulse(
+                        player,
+                        object : Pulse(2, player) {
+                            var count = 0
 
-            override fun getAll(index: Int): Int {
-                return player.inventory.getAmount(clayId)
+                            override fun pulse(): Boolean {
+                                if (!this@SoftclayPlugin.create(player, event)) {
+                                    return true
+                                }
+                                return ++count >= amount
+                            }
+                        },
+                    )
+                }
+
+                override fun getAll(index: Int): Int {
+                    return player.inventory.getAmount(clayId)
+                }
             }
-        }
         if (player.inventory.getAmount(clayId) == 1) {
             create(player, event)
         } else {
@@ -61,7 +65,10 @@ class SoftclayPlugin : UseWithHandler(Items.CLAY_434) {
         return true
     }
 
-    private fun create(player: Player, event: NodeUsageEvent): Boolean {
+    private fun create(
+        player: Player,
+        event: NodeUsageEvent,
+    ): Boolean {
         var removeItem: Item? = null
         var returnItem: Item? = null
         if (event.usedItem.id == Items.BUCKET_OF_WATER_1929 || event.baseItem.id == Items.BUCKET_OF_WATER_1929) {

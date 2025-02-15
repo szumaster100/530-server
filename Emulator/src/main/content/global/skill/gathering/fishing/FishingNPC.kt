@@ -8,7 +8,6 @@ import core.tools.RandomFunction
 private val fishingSpots = FishingSpot.getAllIds()
 
 class FishingNPC : NPCBehavior(*fishingSpots) {
-
     override fun onCreation(self: NPC) {
         setAttribute(self, "fishing:spot", FishingSpots.forLocation(self.location))
         setAttribute(self, "fishing:switchdelay", 0)

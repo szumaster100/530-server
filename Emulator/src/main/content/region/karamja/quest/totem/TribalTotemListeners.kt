@@ -17,7 +17,6 @@ import org.rs.consts.*
 
 class TribalTotemListeners : InteractionListener {
     override fun defineListeners() {
-
         on(Scenery.DOOR_2706, IntType.SCENERY, "Open") { player, door ->
             if (player.questRepository.getStage(Quests.TRIBAL_TOTEM) >= 35) {
                 DoorActionHandler.handleAutowalkDoor(player, door.asScenery())
@@ -27,10 +26,17 @@ class TribalTotemListeners : InteractionListener {
         }
 
         on(Scenery.CRATE_2708, IntType.SCENERY, "Investigate") { player, _ ->
-            if (getQuestStage(player, Quests.TRIBAL_TOTEM) in 1..19 && !player.inventory.containsAtLeastOneItem(Items.ADDRESS_LABEL_1858)) {
-                sendDialogue(player, "There is a label on this crate. It says;$BLUE Lord Handelmort, Handelmort Mansion Ardogune.</col> You carefully peel it off and take it.")
+            if (getQuestStage(player, Quests.TRIBAL_TOTEM) in 1..19 &&
+                !player.inventory.containsAtLeastOneItem(Items.ADDRESS_LABEL_1858)
+            ) {
+                sendDialogue(
+                    player,
+                    "There is a label on this crate. It says;$BLUE Lord Handelmort, Handelmort Mansion Ardogune.</col> You carefully peel it off and take it.",
+                )
                 addItem(player, Items.ADDRESS_LABEL_1858, 1)
-            } else if (getQuestStage(player, Quests.TRIBAL_TOTEM) in 1..19 && player.inventory.containsAtLeastOneItem(Items.ADDRESS_LABEL_1858)) {
+            } else if (getQuestStage(player, Quests.TRIBAL_TOTEM) in 1..19 &&
+                player.inventory.containsAtLeastOneItem(Items.ADDRESS_LABEL_1858)
+            ) {
                 sendDialogue(player, "There was a label on this crate, but it's gone now since you took it!")
             } else {
                 openDialogue(player, QuestItem(Items.ADDRESS_LABEL_1858))
@@ -39,15 +45,21 @@ class TribalTotemListeners : InteractionListener {
         }
 
         on(Scenery.CRATE_2707, IntType.SCENERY, "Investigate") { player, _ ->
-            sendDialogue(player, "There is a label on this crate. It says; Senior Patents Clerk, Chamber of Invention, The Wizards' Tower, Misthalin. The crate is securely fastened shut and ready for delivery.")
+            sendDialogue(
+                player,
+                "There is a label on this crate. It says; Senior Patents Clerk, Chamber of Invention, The Wizards' Tower, Misthalin. The crate is securely fastened shut and ready for delivery.",
+            )
             return@on true
         }
 
         onUseWith(IntType.SCENERY, Items.ADDRESS_LABEL_1858, Scenery.CRATE_2707) { player, _, _ ->
-            if(getQuestStage(player, Quests.TRIBAL_TOTEM) < 20) {
+            if (getQuestStage(player, Quests.TRIBAL_TOTEM) < 20) {
                 sendDialogue(player, "You have already replaced the delivery address label.")
             } else {
-                sendDialogue(player, "You carefully place the delivery address label over the existing label, covering it completely.")
+                sendDialogue(
+                    player,
+                    "You carefully place the delivery address label over the existing label, covering it completely.",
+                )
                 removeItem(player, Items.ADDRESS_LABEL_1858)
                 setQuestStage(player, Quests.TRIBAL_TOTEM, 20)
             }
@@ -67,7 +79,10 @@ class TribalTotemListeners : InteractionListener {
             if (player.getAttribute("TT:StairsChecked", false)) {
                 ClimbActionHandler.climb(player, Animation(Animations.USE_LADDER_828), Location.create(2629, 3324, 1))
             } else {
-                sendMessage(player, "You set off a trap and the stairs give way under you, dropping you into the sewers.")
+                sendMessage(
+                    player,
+                    "You set off a trap and the stairs give way under you, dropping you into the sewers.",
+                )
                 player.teleport(Location.create(2641, 9721, 0))
             }
             return@on true
@@ -75,7 +90,10 @@ class TribalTotemListeners : InteractionListener {
 
         on(Scenery.STAIRS_2711, IntType.SCENERY, "Investigate") { player, _ ->
             if (player.getSkills().getStaticLevel(Skills.THIEVING) >= 21) {
-                sendDialogue(player, "Your trained senses as a thief enable you to see that there is a trap in these stairs. You make a note of its location for future reference when using these stairs")
+                sendDialogue(
+                    player,
+                    "Your trained senses as a thief enable you to see that there is a trap in these stairs. You make a note of its location for future reference when using these stairs",
+                )
                 setAttribute(player, "/save:TT:StairsChecked", true)
             } else {
                 sendDialogue(player, "You don't see anything out of place on these stairs.")

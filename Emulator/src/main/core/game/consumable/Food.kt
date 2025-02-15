@@ -9,7 +9,6 @@ import org.rs.consts.Animations
 import org.rs.consts.Sounds
 
 open class Food : Consumable {
-
     constructor(ids: IntArray?, effect: ConsumableEffect?, vararg messages: String?) : super(ids, effect, *messages) {
         animation = Animation(Animations.HUMAN_EATING_829)
     }
@@ -18,10 +17,13 @@ open class Food : Consumable {
         ids,
         effect,
         animation,
-        *messages
+        *messages,
     )
 
-    override fun sendDefaultMessages(player: Player, item: Item) {
+    override fun sendDefaultMessages(
+        player: Player,
+        item: Item,
+    ) {
         sendMessage(player, "You eat the " + getFormattedName(item) + ".")
     }
 

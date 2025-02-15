@@ -1,19 +1,20 @@
 package content.global.ame.pinball
 
-import org.rs.consts.Animations
-import org.rs.consts.Components
 import content.data.GameAttributes
 import core.api.*
+import core.api.MapArea
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.world.map.Direction
-import core.api.MapArea
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.map.zone.ZoneRestriction
 import core.tools.BLUE
+import org.rs.consts.Animations
+import org.rs.consts.Components
 
-class PinballListener : InteractionListener, MapArea {
-
+class PinballListener :
+    InteractionListener,
+    MapArea {
     init {
         PinballUtils.PINBALL_EVENT_MYSTERIOUS_OLD_MAN.init()
         PinballUtils.PINBALL_EVENT_MYSTERIOUS_OLD_MAN.isWalks = false
@@ -38,7 +39,7 @@ class PinballListener : InteractionListener, MapArea {
                     true,
                     "",
                     "Wrong post! Your score has been reset.",
-                    "Tag the post with the " + BLUE + "flashing rings" + "."
+                    "Tag the post with the " + BLUE + "flashing rings" + ".",
                 )
             } else {
                 setVarbit(player, score, score + 1)
@@ -82,7 +83,7 @@ class PinballListener : InteractionListener, MapArea {
             ZoneRestriction.TELEPORT,
             ZoneRestriction.FOLLOWERS,
             ZoneRestriction.FIRES,
-            ZoneRestriction.RANDOM_EVENTS
+            ZoneRestriction.RANDOM_EVENTS,
         )
     }
 }

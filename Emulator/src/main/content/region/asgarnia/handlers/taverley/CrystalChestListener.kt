@@ -1,19 +1,17 @@
 package content.region.asgarnia.handlers.taverley
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.tools.RandomFunction
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class CrystalChestListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(Scenery.CLOSED_CHEST_172, IntType.SCENERY, "open") { player, _ ->
             sendMessage(player, "This chest is securely locked shut.")
             return@on true
@@ -47,11 +45,26 @@ class CrystalChestListener : InteractionListener {
         }
     }
 
-    enum class Reward(val chance: Double, vararg items: Item) {
+    enum class Reward(
+        val chance: Double,
+        vararg items: Item,
+    ) {
         I(39.69, Item(Items.SPINACH_ROLL_1969, 1), Item(Items.COINS_995, 2000)),
         II(16.72, Item(Items.UNCUT_DRAGONSTONE_1631, 1)),
         III(10.57, Item(Items.RAW_SWORDFISH_371, 5), Item(Items.COINS_995, 1000)),
-        IV(7.73, Item(Items.AIR_RUNE_556, 50), Item(Items.WATER_RUNE_555, 50), Item(Items.EARTH_RUNE_557, 50), Item(Items.FIRE_RUNE_554, 50), Item(Items.MIND_RUNE_558, 50), Item(Items.BODY_RUNE_559, 50), Item(Items.CHAOS_RUNE_562, 10), Item(Items.COSMIC_RUNE_564, 10), Item(Items.DEATH_RUNE_560, 10), Item(Items.NATURE_RUNE_561, 10)),
+        IV(
+            7.73,
+            Item(Items.AIR_RUNE_556, 50),
+            Item(Items.WATER_RUNE_555, 50),
+            Item(Items.EARTH_RUNE_557, 50),
+            Item(Items.FIRE_RUNE_554, 50),
+            Item(Items.MIND_RUNE_558, 50),
+            Item(Items.BODY_RUNE_559, 50),
+            Item(Items.CHAOS_RUNE_562, 10),
+            Item(Items.COSMIC_RUNE_564, 10),
+            Item(Items.DEATH_RUNE_560, 10),
+            Item(Items.NATURE_RUNE_561, 10),
+        ),
         V(6.55, Item(Items.COAL_454, 100)),
         VI(4.23, Item(Items.RUBY_1603, 2), Item(Items.DIAMOND_1601, 2)),
         VII(3.67, Item(Items.TOOTH_HALF_OF_A_KEY_985, 1), Item(Items.COINS_995, 750)),
@@ -60,7 +73,8 @@ class CrystalChestListener : InteractionListener {
         X(2.75, Item(Items.IRON_ORE_441, 150)),
         XI(1.06, Item(Items.ADAMANT_SQ_SHIELD_1183, 1)),
         XII(0.26, Item(Items.RUNE_PLATELEGS_1079, 1)),
-        XIII(0.26, Item(Items.RUNE_PLATESKIRT_1093, 1));
+        XIII(0.26, Item(Items.RUNE_PLATESKIRT_1093, 1)),
+        ;
 
         val items: Array<Item> = items as Array<Item>
 

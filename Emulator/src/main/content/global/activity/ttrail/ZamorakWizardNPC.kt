@@ -1,6 +1,5 @@
 package content.global.activity.ttrail
 
-import org.rs.consts.NPCs
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.CombatStyle
 import core.game.node.entity.combat.spell.CombatSpell
@@ -10,9 +9,9 @@ import core.game.node.entity.player.link.SpellBookManager.SpellBook
 import core.game.world.map.Location
 import core.game.world.map.RegionManager.getSpawnLocation
 import core.plugin.Plugin
+import org.rs.consts.NPCs
 
 class ZamorakWizardNPC : AbstractNPC {
-
     var clueScroll: ClueScrollPlugin? = null
         private set
 
@@ -24,7 +23,11 @@ class ZamorakWizardNPC : AbstractNPC {
         this.isRespawn = false
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return ZamorakWizardNPC(id, location)
     }
 
@@ -59,7 +62,11 @@ class ZamorakWizardNPC : AbstractNPC {
         }
     }
 
-    override fun isAttackable(entity: Entity, style: CombatStyle, message: Boolean): Boolean {
+    override fun isAttackable(
+        entity: Entity,
+        style: CombatStyle,
+        message: Boolean,
+    ): Boolean {
         return (entity is Player && entity == player) || super.isAttackable(entity, style, message)
     }
 

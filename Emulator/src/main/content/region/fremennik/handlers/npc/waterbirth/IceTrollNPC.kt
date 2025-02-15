@@ -1,18 +1,21 @@
 package content.region.fremennik.handlers.npc.waterbirth
 
-import org.rs.consts.NPCs
 import core.api.findLocalNPC
 import core.game.node.entity.npc.AbstractNPC
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
 class IceTrollNPC : AbstractNPC {
-
     constructor() : super(NPCs.ICE_TROLL_MALE_5474, null, true)
     private constructor(id: Int, location: Location) : super(id, location)
 
-    override fun construct(id: Int, location: Location, vararg objects: Any?): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any?,
+    ): AbstractNPC {
         return IceTrollNPC(id, location)
     }
 

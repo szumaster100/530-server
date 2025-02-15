@@ -17,21 +17,22 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld.Pulser
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
+import core.plugin.ClassScanner
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner
 import core.tools.RandomFunction
 
 @Initializable
-class SpellbookSwapSpell : MagicSpell(
-    SpellBook.LUNAR,
-    96,
-    130.0,
-    null,
-    null,
-    null,
-    arrayOf(Item(Runes.LAW_RUNE.id, 1), Item(Runes.COSMIC_RUNE.id, 2), Item(Runes.ASTRAL_RUNE.id, 3))
-) {
+class SpellbookSwapSpell :
+    MagicSpell(
+        SpellBook.LUNAR,
+        96,
+        130.0,
+        null,
+        null,
+        null,
+        arrayOf(Item(Runes.LAW_RUNE.id, 1), Item(Runes.COSMIC_RUNE.id, 2), Item(Runes.ASTRAL_RUNE.id, 3)),
+    ) {
     private val ANIMATION = Animation(6299)
     private val Graphics = Graphics(org.rs.consts.Graphics.SPELLBOOK_SWAP_GFX_1062)
 
@@ -42,7 +43,10 @@ class SpellbookSwapSpell : MagicSpell(
         return this
     }
 
-    override fun cast(entity: Entity, target: Node): Boolean {
+    override fun cast(
+        entity: Entity,
+        target: Node,
+    ): Boolean {
         val player = entity as Player
         if (!super.meetsRequirements(player, true, true)) {
             return false
@@ -61,7 +65,7 @@ class SpellbookSwapSpell : MagicSpell(
                     }
                     return true
                 }
-            }
+            },
         )
         return true
     }
@@ -75,14 +79,18 @@ class SpellbookSwapSpell : MagicSpell(
     }
 }
 
-class SpellbookSwapDialogue(player: Player? = null) : Dialogue(player) {
-
+class SpellbookSwapDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         sendDialogueOptions(player, "Select a Spellbook:", "Ancient", "Modern")
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 var type = 0

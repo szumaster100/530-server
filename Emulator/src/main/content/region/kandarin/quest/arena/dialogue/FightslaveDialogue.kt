@@ -1,7 +1,5 @@
 package content.region.kandarin.quest.arena.dialogue
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.allInEquipment
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
@@ -9,17 +7,23 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
-class FightslaveDialogue(player: Player? = null) : Dialogue(player) {
-
+class FightslaveDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any?): Boolean {
         npc = args[0] as NPC
         playerl(FaceAnim.FRIENDLY, "Do you know of a Justin or Jeremy in this arena?")
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 ->
                 if (allInEquipment(player, Items.KHAZARD_HELMET_74, Items.KHAZARD_ARMOUR_75)) {

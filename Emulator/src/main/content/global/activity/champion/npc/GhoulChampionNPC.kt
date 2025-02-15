@@ -1,9 +1,5 @@
 package content.global.activity.champion.npc
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Vars
 import content.global.activity.champion.ChallengeListener
 import core.api.*
 import core.game.container.impl.EquipmentContainer
@@ -19,13 +15,23 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Vars
 
 @Initializable
-class GhoulChampionNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
+class GhoulChampionNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
     var clearTime = 0
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return GhoulChampionNPC(id, location)
     }
 
@@ -59,7 +65,7 @@ class GhoulChampionNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id
                         champion.attack(player)
                         return true
                     }
-                }
+                },
             )
         }
     }
@@ -71,8 +77,9 @@ class GhoulChampionNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id
             val i: Item = player.equipment[EquipmentContainer.SLOT_WEAPON].id.asItem()
             if (i.definition.getConfiguration(
                     ItemConfigParser.TWO_HANDED,
-                    false
-                ) == true && state.style == CombatStyle.MELEE
+                    false,
+                ) == true &&
+                state.style == CombatStyle.MELEE
             ) {
                 state.neutralizeHits()
                 state.estimatedHit = state.maximumHit

@@ -19,7 +19,6 @@ import java.io.FileWriter
 import javax.script.ScriptEngineManager
 
 class ServerStore : PersistWorld {
-
     override fun parse() {
         logStartup("Parsing server store...")
         val dir = File(ServerConfig.STORE_PATH!!)
@@ -66,12 +65,14 @@ class ServerStore : PersistWorld {
             scriptEngine.eval("result = JSON.stringify(JSON.parse(jsonString), null, 2)")
             val prettyPrintedJson = scriptEngine["result"] as String
 
-            FileWriter(path).use { it.write(prettyPrintedJson); it.flush() }
+            FileWriter(path).use {
+                it.write(prettyPrintedJson)
+                it.flush()
+            }
         }
     }
 
     companion object {
-
         val fileMap = Object2ObjectOpenHashMap<String, JSONObject>()
 
         var counter = 0
@@ -84,7 +85,10 @@ class ServerStore : PersistWorld {
             return fileMap[name]!!
         }
 
-        fun setArchive(name: String, data: JSONObject) {
+        fun setArchive(
+            name: String,
+            data: JSONObject,
+        ) {
             fileMap[name] = data
         }
 
@@ -101,7 +105,10 @@ class ServerStore : PersistWorld {
         }
 
         @JvmStatic
-        fun JSONObject.getInt(key: String, default: Int = 0): Int {
+        fun JSONObject.getInt(
+            key: String,
+            default: Int = 0,
+        ): Int {
             return when (val value = this[key]) {
                 is Long -> value.toInt()
                 is Double -> value.toInt()
@@ -141,22 +148,39 @@ class ServerStore : PersistWorld {
             return list
         }
 
-        fun JSONObject.addToList(key: String, value: Any) {
+        fun JSONObject.addToList(
+            key: String,
+            value: Any,
+        ) {
             val array = this.getOrPut(key) { JSONArray() } as JSONArray
             array.add(value)
         }
 
-        fun NPCItemFilename(npc: Int, item: Int, period: String = "daily"): String {
+        fun NPCItemFilename(
+            npc: Int,
+            item: Int,
+            period: String = "daily",
+        ): String {
             val itemName = getItemName(item).lowercase().replace(" ", "-")
             val npcName = NPC(npc).name.lowercase()
             return "$period-$npcName-$itemName"
         }
 
-        fun NPCItemMemory(npc: Int, item: Int, period: String = "daily"): JSONObject {
+        fun NPCItemMemory(
+            npc: Int,
+            item: Int,
+            period: String = "daily",
+        ): JSONObject {
             return getArchive(NPCItemFilename(npc, item, period))
         }
 
-        fun getNPCItemStock(npc: Int, item: Int, limit: Int, player: Player, period: String = "daily"): Int {
+        fun getNPCItemStock(
+            npc: Int,
+            item: Int,
+            limit: Int,
+            player: Player,
+            period: String = "daily",
+        ): Int {
             val itemMemory = NPCItemMemory(npc, item)
             val key = player.name
             var stock = limit - itemMemory.getInt(key)
@@ -164,14 +188,28 @@ class ServerStore : PersistWorld {
             return stock
         }
 
-        fun getNPCItemAmount(npc: Int, item: Int, limit: Int, player: Player, amount: Int, period: String = "daily"): Int {
+        fun getNPCItemAmount(
+            npc: Int,
+            item: Int,
+            limit: Int,
+            player: Player,
+            amount: Int,
+            period: String = "daily",
+        ): Int {
             val stock = getNPCItemStock(npc, item, limit, player, period)
             var realamount = minOf(amount, stock)
             realamount = maxOf(realamount, 0)
             return realamount
         }
 
-        fun addNPCItemAmount(npc: Int, item: Int, limit: Int, player: Player, amount: Int, period: String = "daily") {
+        fun addNPCItemAmount(
+            npc: Int,
+            item: Int,
+            limit: Int,
+            player: Player,
+            amount: Int,
+            period: String = "daily",
+        ) {
             val itemMemory = NPCItemMemory(npc, item, period)
             val key = player.name
             var realamount = itemMemory.getInt(key) + amount

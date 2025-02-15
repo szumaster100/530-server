@@ -9,8 +9,9 @@ import core.game.world.map.Location
 import core.plugin.Initializable
 
 @Initializable
-class TunnelEntranceDialogue(player: Player? = null) : Dialogue(player) {
-
+class TunnelEntranceDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     private var index = 0
 
     override fun open(vararg args: Any): Boolean {
@@ -19,7 +20,10 @@ class TunnelEntranceDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         if (stage++ == 0) {
             options("Yeah, I'm fearless!", "No way, that looks scary!")
             return true

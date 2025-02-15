@@ -1,12 +1,9 @@
 package content.global.ame.evilbob
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Sounds
 import content.data.GameAttributes
 import content.data.RandomEvent
 import core.api.*
+import core.api.MapArea
 import core.game.dialogue.FaceAnim
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
@@ -14,12 +11,16 @@ import core.game.interaction.QueueStrength
 import core.game.node.entity.Entity
 import core.game.world.GameWorld
 import core.game.world.map.Location
-import core.api.MapArea
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.map.zone.ZoneRestriction
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Sounds
 
-class EvilBobListener : InteractionListener, MapArea {
-
+class EvilBobListener :
+    InteractionListener,
+    MapArea {
     override fun defineListeners() {
         on(EvilBobUtils.evilBob, IntType.NPC, "talk-to") { player, node ->
             openDialogue(player, EvilBobDialogue(), node.asNpc())
@@ -32,14 +33,29 @@ class EvilBobListener : InteractionListener, MapArea {
         }
 
         on(EvilBobUtils.fishingSpot, IntType.SCENERY, "net") { player, _ ->
-            if (getAttribute(player, GameAttributes.RE_BOB_DIAL_INDEX, false) || getAttribute(player, GameAttributes.RE_BOB_COMPLETE, false)) {
-                sendDialogue(player, "You don't know if this is a good place to go fishing. Perhaps you should ask someone, like one of the human servants.")
+            if (getAttribute(player, GameAttributes.RE_BOB_DIAL_INDEX, false) ||
+                getAttribute(player, GameAttributes.RE_BOB_COMPLETE, false)
+            ) {
+                sendDialogue(
+                    player,
+                    "You don't know if this is a good place to go fishing. Perhaps you should ask someone, like one of the human servants.",
+                )
             } else if (!inInventory(player, Items.SMALL_FISHING_NET_303)) {
-                sendNPCDialogue(player, NPCs.SERVANT_2481, "You'll need a fishing net. There are plenty scattered around the beach.", FaceAnim.SAD)
+                sendNPCDialogue(
+                    player,
+                    NPCs.SERVANT_2481,
+                    "You'll need a fishing net. There are plenty scattered around the beach.",
+                    FaceAnim.SAD,
+                )
             } else if (freeSlots(player) == 0) {
                 sendDialogue(player, "You don't have enough space in your inventory.")
             } else if (getAttribute(player, GameAttributes.RE_BOB_SCORE, false)) {
-                sendNPCDialogue(player, NPCs.SERVANT_2481, "You've already got a fish. Come over here to uncook it, then serve it to Evil Bob.", FaceAnim.SAD)
+                sendNPCDialogue(
+                    player,
+                    NPCs.SERVANT_2481,
+                    "You've already got a fish. Come over here to uncook it, then serve it to Evil Bob.",
+                    FaceAnim.SAD,
+                )
             } else {
                 lock(player, 6)
                 animate(player, EvilBobUtils.fishAnim)
@@ -49,28 +65,40 @@ class EvilBobListener : InteractionListener, MapArea {
                         EvilBobUtils.northFishingZone.toString() -> {
                             if (inBorders(player, EvilBobUtils.northFishingZone)) {
                                 addItem(player, Items.FISHLIKE_THING_6202)
-                            } else addItem(player, Items.FISHLIKE_THING_6206)
+                            } else {
+                                addItem(player, Items.FISHLIKE_THING_6206)
+                            }
                         }
 
                         EvilBobUtils.southFishingZone.toString() -> {
                             if (inBorders(player, EvilBobUtils.southFishingZone)) {
                                 addItem(player, Items.FISHLIKE_THING_6202)
-                            } else addItem(player, Items.FISHLIKE_THING_6206)
+                            } else {
+                                addItem(player, Items.FISHLIKE_THING_6206)
+                            }
                         }
 
                         EvilBobUtils.eastFishingZone.toString() -> {
                             if (inBorders(player, EvilBobUtils.eastFishingZone)) {
                                 addItem(player, Items.FISHLIKE_THING_6202)
-                            } else addItem(player, Items.FISHLIKE_THING_6206)
+                            } else {
+                                addItem(player, Items.FISHLIKE_THING_6206)
+                            }
                         }
 
                         EvilBobUtils.westFishingZone.toString() -> {
                             if (inBorders(player, EvilBobUtils.westFishingZone)) {
                                 addItem(player, Items.FISHLIKE_THING_6202)
-                            } else addItem(player, Items.FISHLIKE_THING_6206)
+                            } else {
+                                addItem(player, Items.FISHLIKE_THING_6206)
+                            }
                         }
                     }
-                    sendItemDialogue(player, Items.FISHLIKE_THING_6202, "You catch a... what is this?? Is this a fish?? And it's cooked already??")
+                    sendItemDialogue(
+                        player,
+                        Items.FISHLIKE_THING_6202,
+                        "You catch a... what is this?? Is this a fish?? And it's cooked already??",
+                    )
                     resetAnimator(player)
                     setAttribute(player, GameAttributes.RE_BOB_SCORE, true)
                 }
@@ -138,7 +166,9 @@ class EvilBobListener : InteractionListener, MapArea {
                         else -> return@queueScript stopExecuting(player)
                     }
                 }
-            } else sendNPCDialogue(player, NPCs.EVIL_BOB_2479, "You're going nowhere, human!", FaceAnim.CHILD_NEUTRAL)
+            } else {
+                sendNPCDialogue(player, NPCs.EVIL_BOB_2479, "You're going nowhere, human!", FaceAnim.CHILD_NEUTRAL)
+            }
             return@on true
         }
     }

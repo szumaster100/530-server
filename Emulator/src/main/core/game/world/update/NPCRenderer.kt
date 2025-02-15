@@ -9,7 +9,6 @@ import core.net.packet.PacketHeader
 import java.nio.ByteBuffer
 
 object NPCRenderer {
-
     @JvmStatic
     fun render(player: Player) {
         val buffer = IoBuffer(32, PacketHeader.SHORT)
@@ -36,7 +35,13 @@ object NPCRenderer {
                     npc.aggressiveHandler.removeTolerance(player.index)
                 }
             } else if (npc.walkingQueue.runDir != -1) {
-                buffer.putBits(1, 1).putBits(2, 2).putBits(3, npc.walkingQueue.walkDir).putBits(3, npc.walkingQueue.runDir)
+                buffer
+                    .putBits(
+                        1,
+                        1,
+                    ).putBits(2, 2)
+                    .putBits(3, npc.walkingQueue.walkDir)
+                    .putBits(3, npc.walkingQueue.runDir)
                 flagMaskUpdate(player, buffer, maskBuffer, npc, false)
             } else if (npc.walkingQueue.walkDir != -1) {
                 buffer.putBits(1, 1).putBits(2, 1).putBits(3, npc.walkingQueue.walkDir)
@@ -62,7 +67,12 @@ object NPCRenderer {
             }
 
             // Update NPC info and add to local NPC list
-            buffer.putBits(15, npc.index).putBits(1, if (npc.properties.isTeleporting) 1 else 0).putBits(3, npc.direction.ordinal)
+            buffer
+                .putBits(
+                    15,
+                    npc.index,
+                ).putBits(1, if (npc.properties.isTeleporting) 1 else 0)
+                .putBits(3, npc.direction.ordinal)
             flagMaskUpdate(player, buffer, maskBuffer, npc, true)
             var offsetX = npc.location.x - player.location.x
             var offsetY = npc.location.y - player.location.y
@@ -96,7 +106,13 @@ object NPCRenderer {
         player.session.write(buffer)
     }
 
-    private fun flagMaskUpdate(player: Player, buffer: IoBuffer, maskBuffer: IoBuffer, npc: NPC, sync: Boolean) {
+    private fun flagMaskUpdate(
+        player: Player,
+        buffer: IoBuffer,
+        maskBuffer: IoBuffer,
+        npc: NPC,
+        sync: Boolean,
+    ) {
         if (npc.updateMasks.isUpdateRequired) {
             buffer.putBits(1, 1)
             writeMaskUpdates(player, maskBuffer, npc, sync)
@@ -105,7 +121,12 @@ object NPCRenderer {
         }
     }
 
-    fun writeMaskUpdates(player: Player?, maskBuffer: IoBuffer?, npc: NPC, sync: Boolean) {
+    fun writeMaskUpdates(
+        player: Player?,
+        maskBuffer: IoBuffer?,
+        npc: NPC,
+        sync: Boolean,
+    ) {
         if (sync) {
             npc.updateMasks.writeSynced(player, npc, maskBuffer!!, true)
         } else {

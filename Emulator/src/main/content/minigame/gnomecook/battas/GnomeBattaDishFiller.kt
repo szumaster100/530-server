@@ -1,11 +1,11 @@
 package content.minigame.gnomecook.battas
 
-import org.rs.consts.Items
 import core.game.interaction.NodeUsageEvent
 import core.game.interaction.UseWithHandler
 import core.game.node.item.Item
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Items
 
 private const val GIANNE_DOUGH = 2171
 private const val BATTA_MOULD = 2164
@@ -13,7 +13,6 @@ private const val RAW_CRUNCHIES = 2202
 
 @Initializable
 class GnomeBattaDishFiller : UseWithHandler(GIANNE_DOUGH) {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         addHandler(BATTA_MOULD, ITEM_TYPE, this)
         return this

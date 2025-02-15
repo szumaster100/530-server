@@ -1,7 +1,7 @@
 package content.global.skill.farming
 
-import org.rs.consts.Items
 import core.game.node.item.Item
+import org.rs.consts.Items
 
 enum class Plantable(
     val itemID: Int,
@@ -15,9 +15,8 @@ enum class Plantable(
     val applicablePatch: PatchType,
     val harvestItem: Int,
     val protectionItem: Item? = null,
-    val protectionFlower: Plantable? = null
+    val protectionFlower: Plantable? = null,
 ) {
-
     MARIGOLD_SEED(
         itemID = Items.MARIGOLD_SEED_5096,
         displayName = "marigold seed",
@@ -28,7 +27,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 2,
         applicablePatch = PatchType.FLOWER_PATCH,
-        harvestItem = Items.MARIGOLDS_6010
+        harvestItem = Items.MARIGOLDS_6010,
     ),
 
     ROSEMARY_SEED(
@@ -41,7 +40,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 11,
         applicablePatch = PatchType.FLOWER_PATCH,
-        harvestItem = Items.ROSEMARY_6014
+        harvestItem = Items.ROSEMARY_6014,
     ),
 
     NASTURTIUM_SEED(
@@ -54,7 +53,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 24,
         applicablePatch = PatchType.FLOWER_PATCH,
-        harvestItem = Items.NASTURTIUMS_6012
+        harvestItem = Items.NASTURTIUMS_6012,
     ),
 
     WOAD_SEED(
@@ -67,7 +66,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 25,
         applicablePatch = PatchType.FLOWER_PATCH,
-        harvestItem = Items.WOAD_LEAF_1793
+        harvestItem = Items.WOAD_LEAF_1793,
     ),
 
     LIMPWURT_SEED(
@@ -80,7 +79,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 26,
         applicablePatch = PatchType.FLOWER_PATCH,
-        harvestItem = Items.LIMPWURT_ROOT_225
+        harvestItem = Items.LIMPWURT_ROOT_225,
     ),
 
     WHITE_LILY_SEED(
@@ -93,7 +92,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 52,
         applicablePatch = PatchType.FLOWER_PATCH,
-        harvestItem = Items.WHITE_LILY_14583
+        harvestItem = Items.WHITE_LILY_14583,
     ),
 
     SCARECROW(
@@ -106,7 +105,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 23,
         applicablePatch = PatchType.FLOWER_PATCH,
-        harvestItem = Items.SCARECROW_6059
+        harvestItem = Items.SCARECROW_6059,
     ),
 
     POTATO_SEED(
@@ -121,7 +120,7 @@ enum class Plantable(
         applicablePatch = PatchType.ALLOTMENT,
         harvestItem = Items.POTATO_1942,
         protectionItem = Item(Items.COMPOST_6032, 2),
-        protectionFlower = MARIGOLD_SEED
+        protectionFlower = MARIGOLD_SEED,
     ),
 
     ONION_SEED(
@@ -136,7 +135,7 @@ enum class Plantable(
         applicablePatch = PatchType.ALLOTMENT,
         harvestItem = Items.ONION_1957,
         protectionItem = Item(Items.POTATOES10_5438),
-        protectionFlower = MARIGOLD_SEED
+        protectionFlower = MARIGOLD_SEED,
     ),
 
     CABBAGE_SEED(
@@ -151,7 +150,7 @@ enum class Plantable(
         applicablePatch = PatchType.ALLOTMENT,
         harvestItem = Items.CABBAGE_1965,
         protectionItem = Item(Items.ONIONS10_5458),
-        protectionFlower = ROSEMARY_SEED
+        protectionFlower = ROSEMARY_SEED,
     ),
 
     TOMATO_SEED(
@@ -166,7 +165,7 @@ enum class Plantable(
         applicablePatch = PatchType.ALLOTMENT,
         harvestItem = Items.TOMATO_1982,
         protectionItem = Item(Items.CABBAGES10_5478, 2),
-        protectionFlower = MARIGOLD_SEED
+        protectionFlower = MARIGOLD_SEED,
     ),
 
     SWEETCORN_SEED(
@@ -181,7 +180,7 @@ enum class Plantable(
         applicablePatch = PatchType.ALLOTMENT,
         harvestItem = Items.SWEETCORN_5986,
         protectionItem = Item(Items.JUTE_FIBRE_5931, 10),
-        protectionFlower = SCARECROW
+        protectionFlower = SCARECROW,
     ),
 
     STRAWBERRY_SEED(
@@ -195,7 +194,7 @@ enum class Plantable(
         requiredLevel = 31,
         applicablePatch = PatchType.ALLOTMENT,
         harvestItem = Items.STRAWBERRY_5504,
-        protectionItem = Item(Items.APPLES5_5386)
+        protectionItem = Item(Items.APPLES5_5386),
     ),
 
     WATERMELON_SEED(
@@ -210,7 +209,7 @@ enum class Plantable(
         applicablePatch = PatchType.ALLOTMENT,
         harvestItem = Items.WATERMELON_5982,
         protectionItem = Item(Items.CURRY_LEAF_5970, 10),
-        protectionFlower = NASTURTIUM_SEED
+        protectionFlower = NASTURTIUM_SEED,
     ),
 
     BARLEY_SEED(
@@ -224,7 +223,7 @@ enum class Plantable(
         requiredLevel = 3,
         applicablePatch = PatchType.HOPS_PATCH,
         harvestItem = Items.BARLEY_6006,
-        protectionItem = Item(Items.COMPOST_6032, 3)
+        protectionItem = Item(Items.COMPOST_6032, 3),
     ),
 
     HAMMERSTONE_SEED(
@@ -238,7 +237,7 @@ enum class Plantable(
         requiredLevel = 4,
         applicablePatch = PatchType.HOPS_PATCH,
         harvestItem = Items.HAMMERSTONE_HOPS_5994,
-        protectionItem = Item(Items.MARIGOLDS_6010)
+        protectionItem = Item(Items.MARIGOLDS_6010),
     ),
 
     ASGARNIAN_SEED(
@@ -252,7 +251,7 @@ enum class Plantable(
         requiredLevel = 8,
         applicablePatch = PatchType.HOPS_PATCH,
         harvestItem = Items.ASGARNIAN_HOPS_5996,
-        protectionItem = Item(Items.ONIONS10_5458)
+        protectionItem = Item(Items.ONIONS10_5458),
     ),
 
     JUTE_SEED(
@@ -266,7 +265,7 @@ enum class Plantable(
         requiredLevel = 13,
         applicablePatch = PatchType.HOPS_PATCH,
         harvestItem = Items.JUTE_FIBRE_5931,
-        protectionItem = Item(Items.BARLEY_MALT_6008, 6)
+        protectionItem = Item(Items.BARLEY_MALT_6008, 6),
     ),
 
     YANILLIAN_SEED(
@@ -280,7 +279,7 @@ enum class Plantable(
         requiredLevel = 16,
         applicablePatch = PatchType.HOPS_PATCH,
         harvestItem = Items.YANILLIAN_HOPS_5998,
-        protectionItem = Item(Items.TOMATOES5_5968)
+        protectionItem = Item(Items.TOMATOES5_5968),
     ),
 
     KRANDORIAN_SEED(
@@ -294,7 +293,7 @@ enum class Plantable(
         requiredLevel = 21,
         applicablePatch = PatchType.HOPS_PATCH,
         harvestItem = Items.KRANDORIAN_HOPS_6000,
-        protectionItem = Item(Items.CABBAGES10_5478, 3)
+        protectionItem = Item(Items.CABBAGES10_5478, 3),
     ),
 
     WILDBLOOD_SEED(
@@ -308,7 +307,7 @@ enum class Plantable(
         requiredLevel = 28,
         applicablePatch = PatchType.HOPS_PATCH,
         harvestItem = Items.WILDBLOOD_HOPS_6002,
-        protectionItem = Item(Items.NASTURTIUMS_6012)
+        protectionItem = Item(Items.NASTURTIUMS_6012),
     ),
 
     OAK_SAPLING(
@@ -322,7 +321,7 @@ enum class Plantable(
         requiredLevel = 15,
         applicablePatch = PatchType.TREE_PATCH,
         harvestItem = Items.OAK_ROOTS_6043,
-        protectionItem = Item(Items.TOMATOES5_5968)
+        protectionItem = Item(Items.TOMATOES5_5968),
     ),
 
     WILLOW_SAPLING(
@@ -336,7 +335,7 @@ enum class Plantable(
         requiredLevel = 30,
         applicablePatch = PatchType.TREE_PATCH,
         harvestItem = Items.WILLOW_ROOTS_6045,
-        protectionItem = Item(Items.APPLES5_5386)
+        protectionItem = Item(Items.APPLES5_5386),
     ),
 
     MAPLE_SAPLING(
@@ -350,7 +349,7 @@ enum class Plantable(
         requiredLevel = 45,
         applicablePatch = PatchType.TREE_PATCH,
         harvestItem = Items.MAPLE_ROOTS_6047,
-        protectionItem = Item(Items.ORANGES5_5396)
+        protectionItem = Item(Items.ORANGES5_5396),
     ),
 
     YEW_SAPLING(
@@ -364,7 +363,7 @@ enum class Plantable(
         requiredLevel = 60,
         applicablePatch = PatchType.TREE_PATCH,
         harvestItem = Items.YEW_ROOTS_6049,
-        protectionItem = Item(Items.CACTUS_SPINE_6016, 10)
+        protectionItem = Item(Items.CACTUS_SPINE_6016, 10),
     ),
 
     MAGIC_SAPLING(
@@ -378,7 +377,7 @@ enum class Plantable(
         requiredLevel = 75,
         applicablePatch = PatchType.TREE_PATCH,
         harvestItem = Items.MAGIC_ROOTS_6051,
-        protectionItem = Item(Items.COCONUT_5974, 25)
+        protectionItem = Item(Items.COCONUT_5974, 25),
     ),
 
     APPLE_SAPLING(
@@ -392,7 +391,7 @@ enum class Plantable(
         requiredLevel = 27,
         applicablePatch = PatchType.FRUIT_TREE_PATCH,
         harvestItem = Items.COOKING_APPLE_1955,
-        protectionItem = Item(Items.SWEETCORN_5986, 9)
+        protectionItem = Item(Items.SWEETCORN_5986, 9),
     ),
 
     BANANA_SAPLING(
@@ -406,7 +405,7 @@ enum class Plantable(
         requiredLevel = 33,
         applicablePatch = PatchType.FRUIT_TREE_PATCH,
         harvestItem = Items.BANANA_1963,
-        protectionItem = Item(Items.APPLES5_5386, 4)
+        protectionItem = Item(Items.APPLES5_5386, 4),
     ),
 
     ORANGE_SAPLING(
@@ -420,7 +419,7 @@ enum class Plantable(
         requiredLevel = 39,
         applicablePatch = PatchType.FRUIT_TREE_PATCH,
         harvestItem = Items.ORANGE_2108,
-        protectionItem = Item(Items.STRAWBERRIES5_5406, 3)
+        protectionItem = Item(Items.STRAWBERRIES5_5406, 3),
     ),
 
     CURRY_SAPLING(
@@ -434,7 +433,7 @@ enum class Plantable(
         requiredLevel = 42,
         applicablePatch = PatchType.FRUIT_TREE_PATCH,
         harvestItem = Items.CURRY_LEAF_5970,
-        protectionItem = Item(Items.BANANAS5_5416, 5)
+        protectionItem = Item(Items.BANANAS5_5416, 5),
     ),
 
     PINEAPPLE_SAPLING(
@@ -448,7 +447,7 @@ enum class Plantable(
         requiredLevel = 51,
         applicablePatch = PatchType.FRUIT_TREE_PATCH,
         harvestItem = Items.PINEAPPLE_2114,
-        protectionItem = Item(Items.WATERMELON_5982, 10)
+        protectionItem = Item(Items.WATERMELON_5982, 10),
     ),
 
     PAPAYA_SAPLING(
@@ -462,7 +461,7 @@ enum class Plantable(
         requiredLevel = 57,
         applicablePatch = PatchType.FRUIT_TREE_PATCH,
         harvestItem = Items.PAPAYA_FRUIT_5972,
-        protectionItem = Item(Items.PINEAPPLE_2114, 10)
+        protectionItem = Item(Items.PINEAPPLE_2114, 10),
     ),
 
     PALM_SAPLING(
@@ -476,7 +475,7 @@ enum class Plantable(
         requiredLevel = 68,
         applicablePatch = PatchType.FRUIT_TREE_PATCH,
         harvestItem = Items.COCONUT_5974,
-        protectionItem = Item(Items.PAPAYA_FRUIT_5972, 15)
+        protectionItem = Item(Items.PAPAYA_FRUIT_5972, 15),
     ),
 
     CALQUAT_TREE_SAPLING(
@@ -490,7 +489,7 @@ enum class Plantable(
         requiredLevel = 72,
         applicablePatch = PatchType.FRUIT_TREE_PATCH,
         harvestItem = Items.CALQUAT_FRUIT_5980,
-        protectionItem = Item(Items.POISON_IVY_BERRIES_6018, 8)
+        protectionItem = Item(Items.POISON_IVY_BERRIES_6018, 8),
     ),
 
     REDBERRY_SEED(
@@ -504,7 +503,7 @@ enum class Plantable(
         requiredLevel = 10,
         applicablePatch = PatchType.BUSH_PATCH,
         harvestItem = Items.REDBERRIES_1951,
-        protectionItem = Item(Items.CABBAGES10_5478, 4)
+        protectionItem = Item(Items.CABBAGES10_5478, 4),
     ),
 
     CADAVABERRY_SEED(
@@ -518,7 +517,7 @@ enum class Plantable(
         requiredLevel = 22,
         applicablePatch = PatchType.BUSH_PATCH,
         harvestItem = Items.CADAVA_BERRIES_753,
-        protectionItem = Item(Items.TOMATOES5_5968, 3)
+        protectionItem = Item(Items.TOMATOES5_5968, 3),
     ),
 
     DWELLBERRY_SEED(
@@ -532,7 +531,7 @@ enum class Plantable(
         requiredLevel = 36,
         applicablePatch = PatchType.BUSH_PATCH,
         harvestItem = Items.DWELLBERRIES_2126,
-        protectionItem = Item(Items.STRAWBERRIES5_5406, 3)
+        protectionItem = Item(Items.STRAWBERRIES5_5406, 3),
     ),
 
     JANGERBERRY_SEED(
@@ -546,7 +545,7 @@ enum class Plantable(
         requiredLevel = 48,
         applicablePatch = PatchType.BUSH_PATCH,
         harvestItem = Items.JANGERBERRIES_247,
-        protectionItem = Item(Items.WATERMELON_5982, 6)
+        protectionItem = Item(Items.WATERMELON_5982, 6),
     ),
 
     WHITEBERRY_SEED(
@@ -560,7 +559,7 @@ enum class Plantable(
         requiredLevel = 59,
         applicablePatch = PatchType.BUSH_PATCH,
         harvestItem = Items.WHITE_BERRIES_239,
-        protectionItem = null
+        protectionItem = null,
     ),
 
     POISON_IVY_SEED(
@@ -574,7 +573,7 @@ enum class Plantable(
         requiredLevel = 70,
         applicablePatch = PatchType.BUSH_PATCH,
         harvestItem = Items.POISON_IVY_BERRIES_6018,
-        protectionItem = null
+        protectionItem = null,
     ),
 
     GUAM_SEED(
@@ -587,7 +586,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 9,
         applicablePatch = PatchType.HERB_PATCH,
-        harvestItem = Items.GRIMY_GUAM_199
+        harvestItem = Items.GRIMY_GUAM_199,
     ),
 
     MARRENTILL_SEED(
@@ -600,7 +599,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 14,
         applicablePatch = PatchType.HERB_PATCH,
-        harvestItem = Items.GRIMY_MARRENTILL_201
+        harvestItem = Items.GRIMY_MARRENTILL_201,
     ),
 
     TARROMIN_SEED(
@@ -613,7 +612,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 19,
         applicablePatch = PatchType.HERB_PATCH,
-        harvestItem = Items.GRIMY_TARROMIN_203
+        harvestItem = Items.GRIMY_TARROMIN_203,
     ),
 
     HARRALANDER_SEED(
@@ -626,7 +625,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 26,
         applicablePatch = PatchType.HERB_PATCH,
-        harvestItem = Items.GRIMY_HARRALANDER_205
+        harvestItem = Items.GRIMY_HARRALANDER_205,
     ),
 
     RANARR_SEED(
@@ -639,7 +638,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 32,
         applicablePatch = PatchType.HERB_PATCH,
-        harvestItem = Items.GRIMY_RANARR_207
+        harvestItem = Items.GRIMY_RANARR_207,
     ),
 
     AVANTOE_SEED(
@@ -652,7 +651,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 50,
         applicablePatch = PatchType.HERB_PATCH,
-        harvestItem = Items.GRIMY_AVANTOE_211
+        harvestItem = Items.GRIMY_AVANTOE_211,
     ),
 
     TOADFLAX_SEED(
@@ -665,7 +664,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 38,
         applicablePatch = PatchType.HERB_PATCH,
-        harvestItem = Items.GRIMY_TOADFLAX_3049
+        harvestItem = Items.GRIMY_TOADFLAX_3049,
     ),
 
     IRIT_SEED(
@@ -678,7 +677,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 44,
         applicablePatch = PatchType.HERB_PATCH,
-        harvestItem = Items.GRIMY_IRIT_209
+        harvestItem = Items.GRIMY_IRIT_209,
     ),
 
     KWUARM_SEED(
@@ -691,7 +690,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 56,
         applicablePatch = PatchType.HERB_PATCH,
-        harvestItem = Items.GRIMY_KWUARM_213
+        harvestItem = Items.GRIMY_KWUARM_213,
     ),
 
     SNAPDRAGON_SEED(
@@ -704,7 +703,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 62,
         applicablePatch = PatchType.HERB_PATCH,
-        harvestItem = Items.GRIMY_SNAPDRAGON_3051
+        harvestItem = Items.GRIMY_SNAPDRAGON_3051,
     ),
 
     CADANTINE_SEED(
@@ -717,7 +716,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 67,
         applicablePatch = PatchType.HERB_PATCH,
-        harvestItem = Items.GRIMY_CADANTINE_215
+        harvestItem = Items.GRIMY_CADANTINE_215,
     ),
 
     LANTADYME_SEED(
@@ -730,7 +729,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 73,
         applicablePatch = PatchType.HERB_PATCH,
-        harvestItem = Items.GRIMY_LANTADYME_2485
+        harvestItem = Items.GRIMY_LANTADYME_2485,
     ),
 
     DWARF_WEED_SEED(
@@ -743,7 +742,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 79,
         applicablePatch = PatchType.HERB_PATCH,
-        harvestItem = Items.GRIMY_DWARF_WEED_217
+        harvestItem = Items.GRIMY_DWARF_WEED_217,
     ),
 
     TORSTOL_SEED(
@@ -756,7 +755,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 85,
         applicablePatch = PatchType.HERB_PATCH,
-        harvestItem = Items.GRIMY_TORSTOL_219
+        harvestItem = Items.GRIMY_TORSTOL_219,
     ),
 
     GOUT_TUBER(
@@ -769,7 +768,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 29,
         applicablePatch = PatchType.HERB_PATCH,
-        harvestItem = Items.GOUTWEED_3261
+        harvestItem = Items.GOUTWEED_3261,
     ),
 
     SPIRIT_WEED_SEED(
@@ -782,7 +781,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 36,
         applicablePatch = PatchType.HERB_PATCH,
-        harvestItem = Items.GRIMY_SPIRIT_WEED_12174
+        harvestItem = Items.GRIMY_SPIRIT_WEED_12174,
     ),
 
     BELLADONNA_SEED(
@@ -795,7 +794,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 63,
         applicablePatch = PatchType.BELLADONNA_PATCH,
-        harvestItem = Items.CAVE_NIGHTSHADE_2398
+        harvestItem = Items.CAVE_NIGHTSHADE_2398,
     ),
 
     MUSHROOM_SPORE(
@@ -808,7 +807,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 53,
         applicablePatch = PatchType.MUSHROOM_PATCH,
-        harvestItem = Items.MUSHROOM_6004
+        harvestItem = Items.MUSHROOM_6004,
     ),
 
     CACTUS_SEED(
@@ -821,7 +820,7 @@ enum class Plantable(
         checkHealthXP = 374.0,
         requiredLevel = 55,
         applicablePatch = PatchType.CACTUS_PATCH,
-        harvestItem = Items.CACTUS_SPINE_6016
+        harvestItem = Items.CACTUS_SPINE_6016,
     ),
 
     EVIL_TURNIP_SEED(
@@ -834,7 +833,7 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 42,
         applicablePatch = PatchType.EVIL_TURNIP_PATCH,
-        harvestItem = Items.EVIL_TURNIP_12134
+        harvestItem = Items.EVIL_TURNIP_12134,
     ),
 
     ENRICHED_SEED(
@@ -847,8 +846,8 @@ enum class Plantable(
         checkHealthXP = 0.0,
         requiredLevel = 65,
         applicablePatch = PatchType.SPECIAL_PATCH,
-        harvestItem = Items.ENRICHED_SNAPDRAGON_14487
-    )
+        harvestItem = Items.ENRICHED_SNAPDRAGON_14487,
+    ),
     ;
 
     constructor(
@@ -862,22 +861,22 @@ enum class Plantable(
         requiredLevel: Int,
         applicablePatch: PatchType,
         harvestItem: Int,
-        protectionFlower: Plantable
+        protectionFlower: Plantable,
     ) :
-            this(
-                itemID,
-                displayName,
-                value,
-                stages,
-                plantingXP,
-                harvestXP,
-                checkHealthXP,
-                requiredLevel,
-                applicablePatch,
-                harvestItem,
-                null,
-                protectionFlower
-            )
+        this(
+            itemID,
+            displayName,
+            value,
+            stages,
+            plantingXP,
+            harvestXP,
+            checkHealthXP,
+            requiredLevel,
+            applicablePatch,
+            harvestItem,
+            null,
+            protectionFlower,
+        )
 
     companion object {
         val plantables = values().associateBy { it.itemID }

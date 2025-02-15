@@ -1,13 +1,14 @@
 package content.region.desert.quest.deserttreasure.handlers
 
-import org.rs.consts.Components
 import core.api.closeInterface
 import core.api.openInterface
 import core.game.activity.Cutscene
 import core.game.node.entity.player.Player
+import org.rs.consts.Components
 
-class MirrorLookCutscene(player: Player) : Cutscene(player) {
-
+class MirrorLookCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(player.location.transform(0, 0, 0))
         loadRegion(13642)

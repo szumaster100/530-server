@@ -1,25 +1,25 @@
 package content.region.misthalin.handlers.draynor
 
+import core.game.world.map.Location
+import core.game.world.map.zone.ZoneBorders
 import org.rs.consts.Items
 import org.rs.consts.NPCs
 import org.rs.consts.Scenery
-import core.game.world.map.Location
-import core.game.world.map.zone.ZoneBorders
 
 object DraynorUtils {
-
     const val feedGuardAttribute = "/save:draynor:feed-tree-guard"
 
-    val treeGuardChat = arrayOf(
-        "Hey - gerroff me!",
-        "You'll blow my cover! I'm meant to be hidden!",
-        "Don't draw attention to me!",
-        "Will you stop that?",
-        "Watch what you're doing with that hatchet, you nit!",
-        "Ooooch!",
-        "Ow! That really hurt!",
-        "Oi!"
-    )
+    val treeGuardChat =
+        arrayOf(
+            "Hey - gerroff me!",
+            "You'll blow my cover! I'm meant to be hidden!",
+            "Don't draw attention to me!",
+            "Will you stop that?",
+            "Watch what you're doing with that hatchet, you nit!",
+            "Ooooch!",
+            "Ow! That really hurt!",
+            "Oi!",
+        )
 
     val draynorMarket = ZoneBorders(3074, 3245, 3086, 3255)
 

@@ -1,21 +1,19 @@
 package content.region.asgarnia.handlers.taverley
 
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.api.*
 import core.game.global.action.DoorActionHandler
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.npc.NPC
 import core.game.world.map.Location
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class TaverleyDungeonListener : InteractionListener {
-
     private val SUITS = intArrayOf(2143, 2144)
     private val ARMOUR_SUITS: Array<NPC?> = arrayOfNulls(2)
 
     override fun defineListeners() {
-
         on(Scenery.GATE_2623, IntType.SCENERY, "open") { player, node ->
             if (!inInventory(player, Items.DUSTY_KEY_1590)) {
                 sendMessage(player, "This gate seems to be locked.")

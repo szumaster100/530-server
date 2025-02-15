@@ -15,9 +15,7 @@ import org.rs.consts.Quests
 import org.rs.consts.Scenery
 
 class WizardsGuildListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(MAGIC_DOOR, IntType.SCENERY, "open") { player, node ->
             if (getDynLevel(player, Skills.MAGIC) < 66) {
                 sendPlayerDialogue(player, "You need a Magic level of at least 66 to enter.")
@@ -32,7 +30,11 @@ class WizardsGuildListener : InteractionListener {
          */
 
         on(GATE, IntType.SCENERY, "open") { player, _ ->
-            sendNPCDialogue(player, NPCs.WIZARD_FRUMSCONE_460, "You can't attack the Zombies in the room, my Zombies are for magic target practice only and should be attacked from the other side of the fence.")
+            sendNPCDialogue(
+                player,
+                NPCs.WIZARD_FRUMSCONE_460,
+                "You can't attack the Zombies in the room, my Zombies are for magic target practice only and should be attacked from the other side of the fence.",
+            )
             return@on true
         }
 

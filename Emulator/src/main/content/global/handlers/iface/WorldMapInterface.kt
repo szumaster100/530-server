@@ -2,13 +2,12 @@ package content.global.handlers.iface
 
 import core.api.getVarbit
 import core.api.setVarbit
-import org.rs.consts.Components
 import core.game.component.Component
 import core.game.interaction.InterfaceListener
 import core.game.node.entity.player.Player
+import org.rs.consts.Components
 
 class WorldMapInterface : InterfaceListener {
-
     companion object {
         private const val RESIZABLE_WINDOW = Components.TOPLEVEL_FULLSCREEN_746
         private const val REGULAR_WINDOW = Components.TOPLEVEL_548
@@ -39,5 +38,4 @@ class WorldMapInterface : InterfaceListener {
         keySort = (keySort + 1) % MAX_KEY_SORT_VALUE
         setVarbit(player, KEY_SORT_VARBIT, keySort)
     }
-
 }

@@ -12,7 +12,6 @@ import org.rs.consts.NPCs
 import org.rs.consts.Sounds
 
 class JackFrostHolidayRandomNPC : HolidayRandomEventNPC(NPCs.JACK_FROST_8517) {
-
     override fun init() {
         ticksLeft = minutesToTicks(1)
         spawnLocation = getPathableRandomLocalCoordinate(this, 3, player.location)
@@ -21,7 +20,9 @@ class JackFrostHolidayRandomNPC : HolidayRandomEventNPC(NPCs.JACK_FROST_8517) {
 
     override fun tick() {
         if (getWorldTicks() % 5 == 0) {
-            if (this.location.withinDistance(player.location, 1) || this.location.getDistance(player.location).toInt() > 3) {
+            if (this.location.withinDistance(player.location, 1) ||
+                this.location.getDistance(player.location).toInt() > 3
+            ) {
                 val path = Pathfinder.find(this, getPathableRandomLocalCoordinate(this, 3, player.location))
                 path.walk(this)
             } else {

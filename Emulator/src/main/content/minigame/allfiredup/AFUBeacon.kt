@@ -4,8 +4,8 @@ import core.api.getVarbit
 import core.api.log
 import core.api.setVarbit
 import core.game.node.entity.player.Player
-import core.tools.Log
 import core.game.world.map.Location
+import core.tools.Log
 
 enum class AFUBeacon(
     val title: String,
@@ -13,7 +13,7 @@ enum class AFUBeacon(
     val varbit: Int,
     val location: Location,
     val experience: Double,
-    val keeper: Int = 0
+    val keeper: Int = 0,
 ) {
     RIVER_SALVE("", 43, 5146, Location.create(3396, 3464, 0), 216.2, 8065),
     RAG_AND_BONE("", 43, 5147, Location.create(3343, 3510, 0), 235.8, 8066),
@@ -28,10 +28,10 @@ enum class AFUBeacon(
     TROLLHEIM("", 83, 5156, Location.create(2939, 3680, 0), 201.0, 8075),
     GWD("", 87, 5157, Location.create(2937, 3773, 0), 255.0, 8076),
     TEMPLE("", 89, 5158, Location.create(2946, 3836, 0), 198.9),
-    PLATEAU("", 92, 5159, Location.create(2964, 3931, 0), 147.9);
+    PLATEAU("", 92, 5159, Location.create(2964, 3931, 0), 147.9),
+    ;
 
     companion object {
-
         fun forLocation(location: Location): AFUBeacon {
             for (beacon in values()) {
                 if (beacon.location == location) return beacon
@@ -78,5 +78,5 @@ enum class BeaconState {
     FILLED,
     LIT,
     DYING,
-    WARNING
+    WARNING,
 }

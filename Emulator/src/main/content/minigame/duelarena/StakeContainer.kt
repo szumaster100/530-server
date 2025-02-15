@@ -11,9 +11,10 @@ import core.net.packet.PacketRepository
 import core.net.packet.context.ContainerContext
 import core.net.packet.out.ContainerPacket
 
-class StakeContainer(private val player: Player, val session: DuelSession) :
-    Container(28, ContainerType.DEFAULT, SortType.ID) {
-
+class StakeContainer(
+    private val player: Player,
+    val session: DuelSession,
+) : Container(28, ContainerType.DEFAULT, SortType.ID) {
     var listener: StakeListener? = null
     private var released = false
 
@@ -28,7 +29,10 @@ class StakeContainer(private val player: Player, val session: DuelSession) :
         PacketRepository.send(ContainerPacket::class.java, ContainerContext(player, -1, 2, 93, player.inventory, false))
     }
 
-    fun offer(slot: Int, amount: Int) {
+    fun offer(
+        slot: Int,
+        amount: Int,
+    ) {
         val item = player.inventory[slot] ?: return
         if (slot < 0 || slot > player.inventory.capacity() || amount < 1) {
             return
@@ -53,7 +57,10 @@ class StakeContainer(private val player: Player, val session: DuelSession) :
         }
     }
 
-    fun withdraw(slot: Int, amount: Int) {
+    fun withdraw(
+        slot: Int,
+        amount: Int,
+    ) {
         val item = get(slot) ?: return
         if (slot < 0 || slot > player.inventory.capacity() || amount < 1) {
             return
@@ -93,7 +100,10 @@ class StakeContainer(private val player: Player, val session: DuelSession) :
     }
 
     inner class StakeListener : ContainerListener {
-        override fun update(c: Container?, event: ContainerEvent?) {
+        override fun update(
+            c: Container?,
+            event: ContainerEvent?,
+        ) {
             InterfaceContainer.generateItems(player, c!!.toArray(), WITHDRAW_OPTIONS, 631, 103, 12, 3)
             InterfaceContainer.generateItems(
                 player,
@@ -102,37 +112,37 @@ class StakeContainer(private val player: Player, val session: DuelSession) :
                 631,
                 104,
                 12,
-                3
+                3,
             )
         }
 
         override fun refresh(c: Container?) {
             PacketRepository.send(
                 ContainerPacket::class.java,
-                ContainerContext(player, -1, 2, 93, player.inventory, false)
+                ContainerContext(player, -1, 2, 93, player.inventory, false),
             )
         }
     }
 
     companion object {
-        private val INVY_PARAMS = arrayOf<Any>(
-            "",
-            "",
-            "",
-            "Stake-X",
-            "Stake-All",
-            "Stake-10",
-            "Stake-5",
-            "Stake",
-            -1,
-            0,
-            7,
-            4,
-            93,
-            336 shl 16
-        )
+        private val INVY_PARAMS =
+            arrayOf<Any>(
+                "",
+                "",
+                "",
+                "Stake-X",
+                "Stake-All",
+                "Stake-10",
+                "Stake-5",
+                "Stake",
+                -1,
+                0,
+                7,
+                4,
+                93,
+                336 shl 16,
+            )
         private val WITHDRAW_OPTIONS = arrayOf("Remove-X", "Remove-All", "Remove-10", "Remove-5", "Remove")
         val OVERLAY = Component(336)
-
     }
 }

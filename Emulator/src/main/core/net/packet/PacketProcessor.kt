@@ -1,60 +1,60 @@
 package core.net.packet
 
-import core.game.event.ButtonClickEvent
+import content.global.handlers.iface.ge.StockMarket
+import content.global.skill.magic.SpellListener
+import content.global.skill.magic.SpellListeners
+import content.global.skill.magic.SpellUtils
+import content.global.skill.summoning.familiar.FamiliarSpecial
+import core.ServerConfig
 import core.api.getAttribute
+import core.api.log
 import core.api.sendMessage
 import core.api.tryPop
+import core.api.utils.Vector
 import core.cache.def.impl.ItemDefinition
 import core.cache.def.impl.NPCDefinition
 import core.cache.def.impl.SceneryDefinition
 import core.game.container.Container
 import core.game.container.impl.BankContainer
-import core.game.node.Node
-import core.game.node.entity.player.Player
-import core.game.node.entity.player.info.Rights
-import core.game.node.entity.player.info.login.LoginConfiguration
-import core.game.node.entity.player.link.SpellBookManager
-import core.game.node.entity.combat.spell.MagicSpell
-import content.global.skill.summoning.familiar.FamiliarSpecial
-import core.game.node.item.GroundItemManager
-import core.game.node.item.Item
-import core.game.node.scenery.Scenery
-import core.game.system.communication.ClanRank
-import core.game.system.communication.CommunicationInfo
-import core.game.system.task.Pulse
-import core.game.world.map.Location
-import core.game.world.map.RegionManager
-import core.game.world.update.flag.context.ChatMessage
-import core.game.world.update.flag.*
-import core.net.amsc.MSPacketRepository
-import core.net.packet.context.PlayerContext
-import core.net.packet.out.ClearMinimapFlag
-import proto.management.ClanMessage
-import proto.management.JoinClanRequest
-import proto.management.LeaveClanRequest
-import content.global.handlers.iface.ge.StockMarket
-import content.global.skill.magic.SpellListener
-import content.global.skill.magic.SpellListeners
-import content.global.skill.magic.SpellUtils
-import core.ServerConfig
-import core.api.log
-import core.game.interaction.*
-import core.game.node.entity.player.info.LogType
-import core.game.node.entity.player.info.PlayerMonitor
-import core.game.system.command.CommandSystem
-import core.game.system.communication.GlobalChat
-import core.game.world.GameWorld
-import core.game.world.repository.Repository
-import core.net.packet.`in`.Packet
-import core.net.packet.`in`.RunScript
-import core.tools.Log
-import core.worker.ManagementEvents
-import core.api.utils.Vector
+import core.game.event.ButtonClickEvent
 import core.game.ge.GrandExchange.Companion.getOfferStats
 import core.game.ge.GrandExchange.Companion.getRecommendedPrice
 import core.game.ge.GrandExchangeOffer
 import core.game.ge.PriceIndex
+import core.game.interaction.*
+import core.game.node.Node
+import core.game.node.entity.combat.spell.MagicSpell
+import core.game.node.entity.player.Player
+import core.game.node.entity.player.info.LogType
+import core.game.node.entity.player.info.PlayerMonitor
+import core.game.node.entity.player.info.Rights
+import core.game.node.entity.player.info.login.LoginConfiguration
+import core.game.node.entity.player.link.SpellBookManager
+import core.game.node.item.GroundItemManager
+import core.game.node.item.Item
+import core.game.node.scenery.Scenery
+import core.game.system.command.CommandSystem
+import core.game.system.communication.ClanRank
+import core.game.system.communication.CommunicationInfo
+import core.game.system.communication.GlobalChat
+import core.game.system.task.Pulse
+import core.game.world.GameWorld
+import core.game.world.map.Location
+import core.game.world.map.RegionManager
+import core.game.world.repository.Repository
+import core.game.world.update.flag.*
+import core.game.world.update.flag.context.ChatMessage
+import core.net.amsc.MSPacketRepository
+import core.net.packet.context.PlayerContext
+import core.net.packet.`in`.Packet
+import core.net.packet.`in`.RunScript
+import core.net.packet.out.ClearMinimapFlag
+import core.tools.Log
+import core.worker.ManagementEvents
 import org.rs.consts.Components
+import proto.management.ClanMessage
+import proto.management.JoinClanRequest
+import proto.management.LeaveClanRequest
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.lang.Math.min
@@ -82,7 +82,7 @@ object PacketProcessor {
                 process(pkt)
             } catch (e: Exception) {
                 e.printStackTrace(pw)
-                log(this::class.java, Log.ERR,  "Error Processing ${pkt::class.java.simpleName}: $sw")
+                log(this::class.java, Log.ERR, "Error Processing ${pkt::class.java.simpleName}: $sw")
             }
         }
     }
@@ -98,12 +98,14 @@ object PacketProcessor {
             is Packet.UseWithItem,
             is Packet.UseWithScenery,
             is Packet.UseWithGroundItem,
-            is Packet.UseWithPlayer -> processUseWith(pkt)
+            is Packet.UseWithPlayer,
+            -> processUseWith(pkt)
             is Packet.IfAction -> processIfAction(pkt)
             is Packet.CloseIface -> processCloseIface(pkt)
             is Packet.WorldspaceWalk,
             is Packet.MinimapWalk,
-            is Packet.InteractWalk -> processWalkPacket(pkt)
+            is Packet.InteractWalk,
+            -> processWalkPacket(pkt)
             is Packet.AddFriend -> CommunicationInfo.add(pkt.player, pkt.username)
             is Packet.RemoveFriend -> CommunicationInfo.remove(pkt.player, pkt.username, false)
             is Packet.AddIgnore -> CommunicationInfo.block(pkt.player, pkt.username)
@@ -112,18 +114,24 @@ object PacketProcessor {
             is Packet.ComponentPlayerAction,
             is Packet.ComponentNpcAction,
             is Packet.ComponentSceneryAction,
-            is Packet.ComponentGroundItemAction -> processComponentUseWith(pkt)
+            is Packet.ComponentGroundItemAction,
+            -> processComponentUseWith(pkt)
             is Packet.SlotSwitchSingleComponent,
-            is Packet.SlotSwitchMultiComponent -> processSlotSwitch(pkt)
+            is Packet.SlotSwitchMultiComponent,
+            -> processSlotSwitch(pkt)
             is Packet.TrackingMouseClick,
             is Packet.TrackingAfkTimeout,
             is Packet.TrackingFocus,
             is Packet.TrackingCameraPos,
-            is Packet.TrackingDisplayUpdate -> processTrackingPacket(pkt)
+            is Packet.TrackingDisplayUpdate,
+            -> processTrackingPacket(pkt)
             is Packet.PlayerPrefsUpdate -> {}
             is Packet.Ping -> pkt.player.session.lastPing = System.currentTimeMillis()
             is Packet.JoinClan -> {
-                if (pkt.clanName.isEmpty() && pkt.player.communication.currentClan.isNotEmpty()) {
+                if (pkt.clanName.isEmpty() &&
+                    pkt.player.communication.currentClan
+                        .isNotEmpty()
+                ) {
                     val builder = LeaveClanRequest.newBuilder()
                     builder.clanName = pkt.player.communication.currentClan
                     builder.username = pkt.player.name
@@ -144,11 +152,22 @@ object PacketProcessor {
                 val target = Repository.getPlayerByName(pkt.username) ?: return
                 clan.kick(pkt.player, target)
             }
-            is Packet.QuickChat -> QCRepository.sendQC(pkt.player, pkt.multiplier, pkt.offset, pkt.type, pkt.indexA, pkt.indexB, pkt.forClan)
+            is Packet.QuickChat ->
+                QCRepository.sendQC(
+                    pkt.player,
+                    pkt.multiplier,
+                    pkt.offset,
+                    pkt.type,
+                    pkt.indexA,
+                    pkt.indexB,
+                    pkt.forClan,
+                )
             is Packet.InputPromptResponse -> {
-                val script: ((Any) -> Boolean) = pkt.player.getAttribute<((Any) -> Boolean)?>("runscript", null) ?: return
-                if (pkt.player.locks.isInteractionLocked)
+                val script: ((Any) -> Boolean) =
+                    pkt.player.getAttribute<((Any) -> Boolean)?>("runscript", null) ?: return
+                if (pkt.player.locks.isInteractionLocked) {
                     return
+                }
                 try {
                     RunScript.processInput(pkt.player, pkt.response, script)
                 } finally {
@@ -165,22 +184,24 @@ object PacketProcessor {
                     sendMessage(pkt.player, "Invalid player name.")
                     return
                 }
-                if (pkt.target.equals(pkt.player.username, true)){
+                if (pkt.target.equals(pkt.player.username, true)) {
                     pkt.player.sendMessage("You can't report yourself!")
                 }
                 core.game.global.report.Rule.forId(pkt.rule)?.let {
-                    core.game.global.report.AbuseReport(
-                        pkt.player.name,
-                        pkt.target,
-                        it
-                    ).construct(pkt.player, pkt.modMute)
+                    core.game.global.report
+                        .AbuseReport(
+                            pkt.player.name,
+                            pkt.target,
+                            it,
+                        ).construct(pkt.player, pkt.modMute)
                 }
             }
             is Packet.TrackFinished -> {
-                if (pkt.player.musicPlayer.isLooping)
+                if (pkt.player.musicPlayer.isLooping) {
                     pkt.player.musicPlayer.replay()
-                else
+                } else {
                     pkt.player.musicPlayer.isPlaying = false
+                }
             }
             is Packet.GESetOfferItem -> {
                 val offer = pkt.player.getAttribute("ge-temp", GrandExchangeOffer())
@@ -205,27 +226,36 @@ object PacketProcessor {
                 CommandSystem.commandSystem.parse(pkt.player, pkt.commandLine)
             }
             is Packet.ChatMessage -> {
-                if (pkt.player.details.isMuted)
+                if (pkt.player.details.isMuted) {
                     pkt.player.sendMessage("You have been muted due to breaking a rule.")
-                else {
+                } else {
                     if (ServerConfig.ENABLE_GLOBALCHAT && pkt.message.startsWith("//")) {
-                        if (getAttribute(pkt.player, GlobalChat.ATTR_GLOBAL_MUTE, false))
+                        if (getAttribute(pkt.player, GlobalChat.ATTR_GLOBAL_MUTE, false)) {
                             return
+                        }
 
                         val messages = splitChatMessage(pkt.message.substring(2), pkt.player.name.length + 3, false)
                         for (message in messages) {
-                            if (message.isNotBlank())
+                            if (message.isNotBlank()) {
                                 GlobalChat.process(pkt.player.username, message, Rights.getChatIcon(pkt.player))
+                            }
                         }
                         return
-                    }
-                    else if (pkt.message.startsWith("/") && pkt.player.communication.clan != null) {
-                        val messages = splitChatMessage(pkt.message.substring(1), pkt.player.communication.clan.name.length + pkt.player.name.length, pkt.player.details.rights.ordinal != 0)
+                    } else if (pkt.message.startsWith("/") && pkt.player.communication.clan != null) {
+                        val messages =
+                            splitChatMessage(
+                                pkt.message.substring(1),
+                                pkt.player.communication.clan.name.length + pkt.player.name.length,
+                                pkt.player.details.rights.ordinal != 0,
+                            )
                         for (message in messages) {
                             if (message.isBlank()) continue
                             val builder = ClanMessage.newBuilder()
                             builder.sender = pkt.player.name
-                            builder.clanName = pkt.player.communication.clan.owner.lowercase().replace(" ", "_")
+                            builder.clanName =
+                                pkt.player.communication.clan.owner
+                                    .lowercase()
+                                    .replace(" ", "_")
                             builder.message = message
                             builder.rank = Rights.getChatIcon(pkt.player)
                             ManagementEvents.publish(builder.build())
@@ -242,10 +272,11 @@ object PacketProcessor {
                 pkt.player.settings.updateChatSettings(pkt.public, pkt.private, pkt.trade)
             }
             is Packet.PrivateMessage -> {
-                if (pkt.player.details.isMuted)
+                if (pkt.player.details.isMuted) {
                     pkt.player.sendMessage("You have been muted due to breaking a rule.")
-                else
+                } else {
                     CommunicationInfo.sendMessage(pkt.player, pkt.username, pkt.message)
+                }
                 PlayerMonitor.logPrivateChat(pkt.player, pkt.username, pkt.message)
             }
             is Packet.PacketCountUpdate -> {
@@ -261,10 +292,13 @@ object PacketProcessor {
                 player.debug("------------------------")
                 if (player.dialogueInterpreter.dialogue == null) {
                     player.interfaceManager.closeChatbox()
-                    player.dialogueInterpreter.actions.removeFirstOrNull()?.handle(player, pkt.child)
+                    player.dialogueInterpreter.actions
+                        .removeFirstOrNull()
+                        ?.handle(player, pkt.child)
                     val component = player.interfaceManager.getComponent(pkt.iface) ?: return
-                    if (!InterfaceListeners.run(player, component, pkt.opcode, pkt.child, pkt.slot, -1))
+                    if (!InterfaceListeners.run(player, component, pkt.opcode, pkt.child, pkt.slot, -1)) {
                         component.plugin?.handle(player, component, pkt.opcode, pkt.child, pkt.slot, -1)
+                    }
                     return
                 }
                 player.dialogueInterpreter.handle(pkt.iface, pkt.child)
@@ -278,8 +312,9 @@ object PacketProcessor {
                 val def = SceneryDefinition.forId(pkt.id) ?: return
                 pkt.player.debug("[SCENERY]---------------------")
                 pkt.player.debug("ID: ${pkt.id}")
-                if (def.configFile != null)
+                if (def.configFile != null) {
                     pkt.player.debug("Varbit: ${def.configFile.id}")
+                }
                 pkt.player.debug("------------------------------")
                 pkt.player.sendMessage(def.examine)
             }
@@ -287,18 +322,19 @@ object PacketProcessor {
                 val def = NPCDefinition.forId(pkt.id)
                 pkt.player.debug("[NPC]-------------------------")
                 pkt.player.debug("ID: ${pkt.id}")
-                if (def.configFileId != -1)
+                if (def.configFileId != -1) {
                     pkt.player.debug("Varbit: ${def.configFileId}")
+                }
                 pkt.player.debug("------------------------------")
                 pkt.player.sendMessage(def.examine)
             }
 
-            else -> log(this::class.java, Log.WARN,  "Unprocessed Packet: ${pkt::class.java.simpleName}")
+            else -> log(this::class.java, Log.WARN, "Unprocessed Packet: ${pkt::class.java.simpleName}")
         }
     }
 
     private fun processTrackingPacket(pkt: Packet) {
-        when(pkt) {
+        when (pkt) {
             is Packet.TrackingFocus -> {}
             is Packet.TrackingDisplayUpdate -> {
                 pkt.player.session.clientInfo.screenWidth = pkt.screenWidth
@@ -311,19 +347,18 @@ object PacketProcessor {
                 //     pkt.player.packetDispatch.sendLogout()
             }
             is Packet.TrackingCameraPos -> {
-                //TODO Refactor the player monitor to be actually useful and log this
+                // TODO Refactor the player monitor to be actually useful and log this
             }
             is Packet.TrackingMouseClick -> {
-                //TODO see above todo
-
+                // TODO see above todo
             }
             else -> {}
         }
     }
 
     private fun processSlotSwitch(pkt: Packet) {
-        //TODO refactor this to function as callbacks to InterfaceListeners, e.g. onSlotSwitch
-        //TODO See above TODO, I hate Arios. This was hardcoded in the packet decoder.
+        // TODO refactor this to function as callbacks to InterfaceListeners, e.g. onSlotSwitch
+        // TODO See above TODO, I hate Arios. This was hardcoded in the packet decoder.
         if (pkt is Packet.SlotSwitchMultiComponent) {
             if (pkt.destIface == 762) {
                 if (pkt.destChild == 73) {
@@ -333,7 +368,14 @@ object PacketProcessor {
                     val tabIndex = BankContainer.getArrayIndex(pkt.destChild)
                     if (tabIndex > -1) {
                         val secondSlot =
-                            if (tabIndex == 10) pkt.player.bank.freeSlot() else pkt.player.bank.tabStartSlot[tabIndex] + pkt.player.bank.getItemsInTab(tabIndex)
+                            if (tabIndex ==
+                                10
+                            ) {
+                                pkt.player.bank.freeSlot()
+                            } else {
+                                pkt.player.bank.tabStartSlot[tabIndex] +
+                                    pkt.player.bank.getItemsInTab(tabIndex)
+                            }
                         val inSlot: Item = pkt.player.bank.get(pkt.sourceSlot)
                         if (secondSlot == -1 && pkt.player.bank.remove(inSlot)) {
                             pkt.player.bank.add(inSlot)
@@ -355,8 +397,7 @@ object PacketProcessor {
             } else {
                 switchItem(pkt.sourceSlot, pkt.destSlot, pkt.player.inventory, false, pkt.player)
             }
-        }
-        else if (pkt is Packet.SlotSwitchSingleComponent) {
+        } else if (pkt is Packet.SlotSwitchSingleComponent) {
             val container = if (pkt.iface == 762) pkt.player.bank else pkt.player.inventory
             switchItem(pkt.sourceSlot, pkt.destSlot, container, pkt.isInsert, pkt.player)
         }
@@ -373,37 +414,36 @@ object PacketProcessor {
             player = pkt.player
             child = pkt.child
             iface = pkt.iface
-            target = GroundItemManager.get(pkt.itemId, Location.create(pkt.x, pkt.y, player.location.z), player) ?: return sendClearMinimap(player).also { sendMessage(player, "Too late!") }
+            target =
+                GroundItemManager.get(pkt.itemId, Location.create(pkt.x, pkt.y, player.location.z), player)
+                    ?: return sendClearMinimap(player).also { sendMessage(player, "Too late!") }
             targetId = pkt.itemId
             type = SpellListener.GROUND_ITEM
-        }
-        else if (pkt is Packet.ComponentPlayerAction) {
+        } else if (pkt is Packet.ComponentPlayerAction) {
             player = pkt.player
             child = pkt.child
             iface = pkt.iface
             target = Repository.players[pkt.otherIndex] ?: return sendClearMinimap(player)
             targetId = target.id
             type = SpellListener.PLAYER
-        }
-        else if (pkt is Packet.ComponentSceneryAction) {
+        } else if (pkt is Packet.ComponentSceneryAction) {
             player = pkt.player
             child = pkt.child
             iface = pkt.iface
             target = RegionManager.getObject(player.location.z, pkt.x, pkt.y) ?: return sendClearMinimap(player)
             targetId = pkt.sceneryId
             type = SpellListener.OBJECT
-        }
-        else if (pkt is Packet.ComponentNpcAction) {
-            if (pkt.npcIndex !in 1 until ServerConfig.MAX_NPCS)
+        } else if (pkt is Packet.ComponentNpcAction) {
+            if (pkt.npcIndex !in 1 until ServerConfig.MAX_NPCS) {
                 return sendClearMinimap(pkt.player)
+            }
             player = pkt.player
             child = pkt.child
             iface = pkt.iface
             target = Repository.npcs[pkt.npcIndex] ?: return sendClearMinimap(player)
             targetId = target.id
             type = SpellListener.NPC
-        }
-        else {
+        } else {
             if (pkt !is Packet.ComponentItemAction) return
             player = pkt.player
             child = pkt.child
@@ -413,20 +453,32 @@ object PacketProcessor {
             type = SpellListener.ITEM
         }
 
-        if (targetId != target.id)
+        if (targetId != target.id) {
             return
-        if (player.getAttribute("magic:delay", -1) > GameWorld.ticks)
+        }
+        if (player.getAttribute("magic:delay", -1) > GameWorld.ticks) {
             return
+        }
         val book = SpellUtils.getBookFromInterface(iface)
-        if (book != "none")
+        if (book != "none") {
             SpellListeners.run(child, type, book, player, target)
+        }
         when (iface) {
-            430,192,193 -> MagicSpell.castSpell(player, SpellBookManager.SpellBook.forInterface(iface)!!, child, target)
+            430, 192, 193 ->
+                MagicSpell.castSpell(
+                    player,
+                    SpellBookManager.SpellBook.forInterface(iface)!!,
+                    child,
+                    target,
+                )
             662 -> {
-                if (player.familiarManager.hasFamiliar())
-                    player.familiarManager.familiar.executeSpecialMove(FamiliarSpecial(target, iface, child, target as? Item))
-                else
+                if (player.familiarManager.hasFamiliar()) {
+                    player.familiarManager.familiar.executeSpecialMove(
+                        FamiliarSpecial(target, iface, child, target as? Item),
+                    )
+                } else {
                     player.sendMessage("You don't have a familiar.")
+                }
             }
         }
     }
@@ -441,23 +493,21 @@ object PacketProcessor {
             x = pkt.destX
             y = pkt.destY
             isRunning = pkt.isRun
-        }
-        else if (pkt is Packet.InteractWalk) {
+        } else if (pkt is Packet.InteractWalk) {
             player = pkt.player
             x = pkt.destX
             y = pkt.destY
             isRunning = pkt.isRun
-        }
-        else {
+        } else {
             if (pkt !is Packet.MinimapWalk) return
             player = pkt.player
             x = pkt.destX
             y = pkt.destY
             isRunning = pkt.isRun
-            //there's more data in this packet, we're just not using it
+            // there's more data in this packet, we're just not using it
         }
 
-        var loc = Location.create(x,y,player.location.z)
+        var loc = Location.create(x, y, player.location.z)
         var canWalk = !player.locks.isMovementLocked
 
         val vec = Vector.betweenLocs(player.location, loc)
@@ -466,18 +516,22 @@ object PacketProcessor {
             loc = player.location.transform(newVec)
         }
 
-        if (canWalk && player.interfaceManager.isOpened && !player.interfaceManager.opened.definition.isWalkable)
+        if (canWalk && player.interfaceManager.isOpened && !player.interfaceManager.opened.definition.isWalkable) {
             canWalk = canWalk && player.interfaceManager.close()
-        if (canWalk && player.interfaceManager.hasChatbox() && !player.interfaceManager.chatbox.definition.isWalkable)
+        }
+        if (canWalk && player.interfaceManager.hasChatbox() && !player.interfaceManager.chatbox.definition.isWalkable) {
             player.interfaceManager.closeChatbox()
+        }
 
         if (!canWalk || !player.dialogueInterpreter.close()) {
-            player.debug("[WALK ACTION]-- Action canceled. Either player is locked, interfaces can't close, or distance is beyond server pathfinding limit.")
+            player.debug(
+                "[WALK ACTION]-- Action canceled. Either player is locked, interfaces can't close, or distance is beyond server pathfinding limit.",
+            )
             return sendClearMinimap(player)
         }
 
         if (pkt is Packet.InteractWalk) {
-            //Arios did this, so we're replicating it for now. Probably wrong.
+            // Arios did this, so we're replicating it for now. Probably wrong.
             player.walkingQueue.isRunning = isRunning
             return
         }
@@ -486,26 +540,31 @@ object PacketProcessor {
         player.faceLocation(null)
         player.scripts.reset()
 
-        player.pulseManager.run(object : MovementPulse(player, loc, isRunning) {
-            override fun pulse(): Boolean {
-                if (isRunning)
-                    player.walkingQueue.isRunning = false
-                return true
-            }
-        })
+        player.pulseManager.run(
+            object : MovementPulse(player, loc, isRunning) {
+                override fun pulse(): Boolean {
+                    if (isRunning) {
+                        player.walkingQueue.isRunning = false
+                    }
+                    return true
+                }
+            },
+        )
     }
 
     private fun processCloseIface(pkt: Packet.CloseIface) {
         val player = pkt.player
         player.interfaceManager.close()
         if (player.getAttribute<Boolean>("logging_in") != null) {
-            GameWorld.Pulser.submit(object : Pulse() {
-                override fun pulse(): Boolean {
-                    player.removeAttribute("logging_in")
-                    LoginConfiguration.configureGameWorld(player)
-                    return true
-                }
-            })
+            GameWorld.Pulser.submit(
+                object : Pulse() {
+                    override fun pulse(): Boolean {
+                        player.removeAttribute("logging_in")
+                        LoginConfiguration.configureGameWorld(player)
+                        return true
+                    }
+                },
+            )
         }
         if (player.getAttribute<Any?>("worldMap:viewing") != null) {
             player.removeAttribute("worldMap:viewing")
@@ -521,19 +580,24 @@ object PacketProcessor {
         player.debug("Slot: ${pkt.slot}, ItemID: ${pkt.itemId}")
         player.debug("RCM Index: ${pkt.optIndex}, Op: ${pkt.opcode}")
         player.debug("-------------------------------------")
-        if (player.dialogueInterpreter.dialogue != null && pkt.opcode != 132 && pkt.iface != 64 && pkt.iface != 746)
+        if (player.dialogueInterpreter.dialogue != null && pkt.opcode != 132 && pkt.iface != 64 && pkt.iface != 746) {
             player.dialogueInterpreter.close()
-        if (player.locks.isComponentLocked)
+        }
+        if (player.locks.isComponentLocked) {
             return
-        if (player.zoneMonitor.clickButton(pkt.iface, pkt.child, pkt.slot, pkt.itemId, pkt.opcode))
+        }
+        if (player.zoneMonitor.clickButton(pkt.iface, pkt.child, pkt.slot, pkt.itemId, pkt.opcode)) {
             return
+        }
         val c = player.interfaceManager.getComponent(pkt.iface) ?: return
-        if (c.isHidden)
+        if (c.isHidden) {
             return
+        }
         val plugin = c.plugin
         player.dispatch(ButtonClickEvent(c.id, pkt.child))
-        if (!InterfaceListeners.run(player, c, pkt.opcode, pkt.child, pkt.slot, pkt.itemId))
+        if (!InterfaceListeners.run(player, c, pkt.opcode, pkt.child, pkt.slot, pkt.itemId)) {
             plugin?.handle(player, c, pkt.opcode, pkt.child, pkt.slot, pkt.itemId)
+        }
     }
 
     private fun processUseWith(pkt: Packet) {
@@ -554,8 +618,7 @@ object PacketProcessor {
             nodeId = node.id
             type = IntType.NPC
             player = pkt.player
-        }
-        else if (pkt is Packet.UseWithScenery) {
+        } else if (pkt is Packet.UseWithScenery) {
             item = pkt.player.inventory[pkt.slot] ?: return sendClearMinimap(pkt.player)
             node = RegionManager.getObject(pkt.player.location.z, pkt.x, pkt.y) ?: return sendClearMinimap(pkt.player)
             childNode = node.asScenery().getChild(pkt.player)
@@ -563,8 +626,7 @@ object PacketProcessor {
             nodeId = node.id
             type = IntType.SCENERY
             player = pkt.player
-        }
-        else if (pkt is Packet.UseWithItem) {
+        } else if (pkt is Packet.UseWithItem) {
             val containerUsed = getLikelyContainerForIface(pkt.player, pkt.usedIface) ?: return
             val containerWith = getLikelyContainerForIface(pkt.player, pkt.usedWithIface) ?: return
             item = containerUsed[pkt.usedSlot] ?: return
@@ -577,7 +639,9 @@ object PacketProcessor {
             val container = getLikelyContainerForIface(pkt.player, pkt.iface) ?: return
             item = container[pkt.slot] ?: return
             itemId = pkt.usedId
-            node = GroundItemManager.get(pkt.withId, Location.create(pkt.x, pkt.y, pkt.player.location.z), pkt.player) ?: return
+            node =
+                GroundItemManager.get(pkt.withId, Location.create(pkt.x, pkt.y, pkt.player.location.z), pkt.player)
+                    ?: return
             nodeId = pkt.withId
             type = IntType.GROUNDITEM
             player = pkt.player
@@ -592,30 +656,39 @@ object PacketProcessor {
             player = pkt.player
         }
 
-        if (item.id != itemId)
+        if (item.id != itemId) {
             return sendClearMinimap(player)
-        if (node.id != nodeId)
+        }
+        if (node.id != nodeId) {
             return sendClearMinimap(player)
+        }
 
-        if (player.locks.isInteractionLocked() || player.locks.isMovementLocked())
+        if (player.locks.isInteractionLocked() || player.locks.isMovementLocked()) {
             return sendClearMinimap(player)
+        }
 
         player.scripts.reset()
-        if (player.zoneMonitor.useWith(item, node))
+        if (player.zoneMonitor.useWith(item, node)) {
             return
-        if (InteractionListeners.run(item, node, type, player))
+        }
+        if (InteractionListeners.run(item, node, type, player)) {
             return
+        }
         if (childNode != null && childNode.id != node.id) {
-            if (InteractionListeners.run(item, childNode, type, player))
+            if (InteractionListeners.run(item, childNode, type, player)) {
                 return
+            }
         }
         val flipped = type == IntType.ITEM && item.id < node.id
-        val event = if (flipped)
-            NodeUsageEvent(player, 0, node, item)
-        else
-            NodeUsageEvent(player, 0, item, childNode ?: node)
-        if (PluginInteractionManager.handle(player, event))
+        val event =
+            if (flipped) {
+                NodeUsageEvent(player, 0, node, item)
+            } else {
+                NodeUsageEvent(player, 0, item, childNode ?: node)
+            }
+        if (PluginInteractionManager.handle(player, event)) {
             return
+        }
         UseWithHandler.run(event)
     }
 
@@ -632,12 +705,15 @@ object PacketProcessor {
             InteractPlugin.handleInvalidInteraction(player, item, Option.NULL)
             return sendClearMinimap(player)
         }
-        if (PluginInteractionManager.handle(player, item, option))
+        if (PluginInteractionManager.handle(player, item, option)) {
             return
-        if (InteractionListeners.run(item.id, IntType.GROUNDITEM, option.name, player, item))
+        }
+        if (InteractionListeners.run(item.id, IntType.GROUNDITEM, option.name, player, item)) {
             return
-        if (InteractionListeners.run(item.id, IntType.ITEM, option.name, player, item))
+        }
+        if (InteractionListeners.run(item.id, IntType.ITEM, option.name, player, item)) {
             return
+        }
         item.interaction.handle(player, option)
     }
 
@@ -648,8 +724,9 @@ object PacketProcessor {
         }
         player.scripts.reset()
         val other = Repository.players[pkt.otherIndex]
-        if (other == null || !other.isActive)
+        if (other == null || !other.isActive) {
             return sendClearMinimap(player)
+        }
         val option = other.interaction[pkt.optIndex] ?: return sendClearMinimap(player)
         if (!InteractionListeners.run(-1, IntType.PLAYER, option.name.lowercase(), player, other)) {
             other.interaction.handle(player, option)
@@ -661,11 +738,13 @@ object PacketProcessor {
         var scenery = RegionManager.getObject(player.location.z, pkt.x, pkt.y, pkt.id)
         var objId = pkt.id
 
-        //what follows is a series of hardcoded crimes against humanity
-        if (pkt.id == 6898)
+        // what follows is a series of hardcoded crimes against humanity
+        if (pkt.id == 6898) {
             scenery = Scenery(6898, Location(3219, 9618))
-        if (pkt.id == 6899)
+        }
+        if (pkt.id == 6899) {
             scenery = Scenery(6899, Location(3221, 9618))
+        }
 
         // Family crest levers don't have varps associated with them, so their state is validated with attributes
         // instead, and they always appear as their down/odd variant in the server's map
@@ -695,21 +774,26 @@ object PacketProcessor {
         player.debug("ID: ${wrapperChild.id}, Option: ${option.name}[${option.index}]")
         player.debug("Loc: ${scenery.location}, Dir: ${scenery.direction}")
         if (hasWrapper) {
-            player.debug("WrapperID: ${scenery.id}, ${scenery.definition.configFile?.let { "Varbit: ${it.id}"} ?: "Varp: ${scenery.definition.configId}"}")
+            player.debug(
+                "WrapperID: ${scenery.id}, ${scenery.definition.configFile?.let { "Varbit: ${it.id}"} ?: "Varp: ${scenery.definition.configId}"}",
+            )
         }
         player.debug("------------------------------------------------")
 
         player.scripts.reset()
-        if (InteractionListeners.run(wrapperChild.id, IntType.SCENERY, option.name, player, wrapperChild))
+        if (InteractionListeners.run(wrapperChild.id, IntType.SCENERY, option.name, player, wrapperChild)) {
             return
-        if (PluginInteractionManager.handle(player, wrapperChild))
+        }
+        if (PluginInteractionManager.handle(player, wrapperChild)) {
             return
+        }
         wrapperChild.interaction.handle(player, option)
     }
 
     private fun processNpcAction(pkt: Packet.NpcAction) {
-        if (pkt.npcIndex !in 1 until ServerConfig.MAX_NPCS)
+        if (pkt.npcIndex !in 1 until ServerConfig.MAX_NPCS) {
             return sendClearMinimap(pkt.player)
+        }
         val npc = Repository.npcs[pkt.npcIndex] ?: return sendClearMinimap(pkt.player)
 
         val wrapperChild = npc.getShownNPC(pkt.player)
@@ -732,29 +816,37 @@ object PacketProcessor {
         pkt.player.debug("---------------------------------")
 
         pkt.player.scripts.reset()
-        if (InteractionListeners.run(wrapperChild.id, IntType.NPC,option.name,pkt.player,npc))
+        if (InteractionListeners.run(wrapperChild.id, IntType.NPC, option.name, pkt.player, npc)) {
             return
-        if (PluginInteractionManager.handle(pkt.player, wrapperChild, option))
+        }
+        if (PluginInteractionManager.handle(pkt.player, wrapperChild, option)) {
             return
+        }
         npc.interaction.handle(pkt.player, option)
     }
 
     private fun processItemAction(pkt: Packet.ItemAction) {
         val container = getLikelyContainerForIface(pkt.player, pkt.iface) ?: return
-        if (pkt.slot !in 0 until container.capacity())
+        if (pkt.slot !in 0 until container.capacity()) {
             return
+        }
         val item = container.get(pkt.slot) ?: return
-        if (item.id != pkt.itemId)
+        if (item.id != pkt.itemId) {
             return
+        }
         val option = item.interaction[pkt.optIndex] ?: return
-        if (pkt.player.locks.isInteractionLocked)
+        if (pkt.player.locks.isInteractionLocked) {
             return
+        }
         item.interaction.handleItemOption(pkt.player, option, container)
         pkt.player.scripts.reset()
         pkt.player.debug("[ITEM INTERACT] ID: ${item.id}, Slot: ${pkt.slot}, Opt: ${option.name}")
     }
 
-    private fun getLikelyContainerForIface(player: Player, iface: Int) : Container? {
+    private fun getLikelyContainerForIface(
+        player: Player,
+        iface: Int,
+    ): Container? {
         return when (iface) {
             Components.INVENTORY_149 -> player.inventory
             Components.BANK_V2_MAIN_762 -> player.bank
@@ -767,8 +859,19 @@ object PacketProcessor {
         PacketRepository.send(ClearMinimapFlag::class.java, PlayerContext(player))
     }
 
-    fun switchItem(slot: Int, secondSlot: Int, container: Container?, insert: Boolean, player: Player) {
-        if (container == null || slot < 0 || slot >= container.toArray().size || secondSlot < 0 || secondSlot >= container.toArray().size) {
+    fun switchItem(
+        slot: Int,
+        secondSlot: Int,
+        container: Container?,
+        insert: Boolean,
+        player: Player,
+    ) {
+        if (container == null ||
+            slot < 0 ||
+            slot >= container.toArray().size ||
+            secondSlot < 0 ||
+            secondSlot >= container.toArray().size
+        ) {
             return
         }
         val item = container[slot]
@@ -795,19 +898,25 @@ object PacketProcessor {
         container.refresh()
     }
 
-    fun splitChatMessage(message: String, clanLength: Int, rankPresent: Boolean) : ArrayList<String> {
+    fun splitChatMessage(
+        message: String,
+        clanLength: Int,
+        rankPresent: Boolean,
+    ): ArrayList<String> {
         val messages = ArrayList<String>()
 
         val effectiveCutoff = BASE_CHAT_CUTOFF - (clanLength + if (rankPresent) 9 else 0)
         var counter = 0
         for (token in message.split(" ")) {
-            if (counter + token.length > effectiveCutoff)
+            if (counter + token.length > effectiveCutoff) {
                 break
+            }
             counter += token.length + 1
         }
         messages.add(message.substring(0, min(counter, message.length)))
-        if (counter < message.length)
+        if (counter < message.length) {
             messages.add(message.substring(counter, message.length))
+        }
 
         return messages
     }

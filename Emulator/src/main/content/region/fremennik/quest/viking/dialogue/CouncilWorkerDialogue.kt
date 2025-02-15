@@ -1,26 +1,31 @@
 package content.region.fremennik.quest.viking.dialogue
 
-import org.rs.consts.Items
-import org.rs.consts.Quests
 import core.api.addItem
-import core.api.quest.getQuestStage
 import core.api.inInventory
+import core.api.quest.getQuestStage
 import core.api.removeItem
 import core.game.dialogue.DialogueFile
 import core.tools.END_DIALOGUE
 import core.tools.START_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.Quests
 
 const val COUNCIL_WORKER = 1287
 
-class CouncilWorkerDialogue(val questStage: Int, var isBeerInteraction: Boolean = false, val beerId: Int? = null) :
-    DialogueFile() {
-
-    override fun handle(componentID: Int, buttonID: Int) {
-
+class CouncilWorkerDialogue(
+    val questStage: Int,
+    var isBeerInteraction: Boolean = false,
+    val beerId: Int? = null,
+) : DialogueFile() {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         if (isBeerInteraction) {
             when (stage) {
                 START_DIALOGUE -> {
-                    npc(COUNCIL_WORKER, "Oh, thank you much ${if (player!!.isMale) "sir" else "miss"}"); stage++
+                    npc(COUNCIL_WORKER, "Oh, thank you much ${if (player!!.isMale) "sir" else "miss"}")
+                    stage++
                 }
 
                 1 -> {
@@ -28,7 +33,7 @@ class CouncilWorkerDialogue(val questStage: Int, var isBeerInteraction: Boolean 
                         COUNCIL_WORKER,
                         "Ta very much like. That'll hit the spot nicely.. Here,",
                         "You can have this. I picked it up as a souvenir on me",
-                        "last holz."
+                        "last holz.",
                     )
                     if (beerId != null) {
                         if (removeItem(player!!, beerId)) {
@@ -44,22 +49,25 @@ class CouncilWorkerDialogue(val questStage: Int, var isBeerInteraction: Boolean 
             when (stage) {
                 START_DIALOGUE ->
                     if (getQuestStage(player!!, Quests.THE_FREMENNIK_TRIALS) > 0) {
-                        player("I know this is an odd question, but are you", "a member of the elder council?"); stage =
+                        player("I know this is an odd question, but are you", "a member of the elder council?")
+                        stage =
                             1
                     } else {
                         end()
                     }
 
                 1 -> {
-                    npc(COUNCIL_WORKER, "'fraid not, ${if (player!!.isMale) "sir" else "miss"}."); stage++
+                    npc(COUNCIL_WORKER, "'fraid not, ${if (player!!.isMale) "sir" else "miss"}.")
+                    stage++
                 }
 
                 2 -> {
                     npc(
                         COUNCIL_WORKER,
                         "Say, would you do me a favor? I'm quite parched.",
-                        "If you bring me a beer, I'll make it worthwhile."
-                    ); stage++
+                        "If you bring me a beer, I'll make it worthwhile.",
+                    )
+                    stage++
                 }
 
                 3 ->

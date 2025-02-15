@@ -7,11 +7,12 @@ import core.game.system.timer.PersistTimer
 import core.game.system.timer.RSTimer
 import core.game.system.timer.TimerFlag
 
-class Teleblock : PersistTimer(
-    runInterval = 1,
-    identifier = "teleblock",
-    flags = arrayOf(TimerFlag.ClearOnDeath)
-) {
+class Teleblock :
+    PersistTimer(
+        runInterval = 1,
+        identifier = "teleblock",
+        flags = arrayOf(TimerFlag.ClearOnDeath),
+    ) {
     override fun run(entity: Entity): Boolean {
         return false
     }

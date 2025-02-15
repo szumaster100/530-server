@@ -1,6 +1,5 @@
 package content.region.misthalin.handlers
 
-import org.rs.consts.Scenery
 import core.cache.def.impl.SceneryDefinition
 import core.game.global.action.ClimbActionHandler
 import core.game.interaction.OptionHandler
@@ -10,17 +9,21 @@ import core.game.world.map.Location
 import core.plugin.Initializable
 import core.plugin.Plugin
 import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 @Initializable
 class MonasteryPlugin : OptionHandler() {
-
     @Throws(Throwable::class)
     override fun newInstance(arg: Any?): Plugin<Any> {
         SceneryDefinition.forId(Scenery.LADDER_2641).handlers["option:climb-up"] = this
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         when (option) {
             "climb-up" -> {
                 when (node.id) {

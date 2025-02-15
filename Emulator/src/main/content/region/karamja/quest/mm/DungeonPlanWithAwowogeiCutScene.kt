@@ -1,7 +1,5 @@
 package content.region.karamja.quest.mm
 
-import org.rs.consts.Components
-import org.rs.consts.NPCs
 import core.game.activity.Cutscene
 import core.game.component.Component
 import core.game.dialogue.FaceAnim
@@ -10,9 +8,12 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Direction
 import core.game.world.map.Location
+import org.rs.consts.Components
+import org.rs.consts.NPCs
 
-class DungeonPlanWithAwowogeiCutScene(player: Player) : Cutscene(player) {
-
+class DungeonPlanWithAwowogeiCutScene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(player.location.transform(Location.create(2805, 2760, 0)))
         if (player.settings.isRunToggled) {
@@ -31,11 +32,12 @@ class DungeonPlanWithAwowogeiCutScene(player: Player) : Cutscene(player) {
                 player.interfaceManager.open(Component(Components.QUEST_COMPLETE_SCROLL_277))
                 for (i in 0..17) {
                     when (i) {
-                        9 -> player.packetDispatch.sendString(
-                            "Meanwhile, somewhere far below the Ape Atoll...",
-                            Components.QUEST_COMPLETE_SCROLL_277,
-                            i
-                        )
+                        9 ->
+                            player.packetDispatch.sendString(
+                                "Meanwhile, somewhere far below the Ape Atoll...",
+                                Components.QUEST_COMPLETE_SCROLL_277,
+                                i,
+                            )
 
                         else -> player.packetDispatch.sendString("", Components.QUEST_COMPLETE_SCROLL_277, i)
                     }
@@ -49,7 +51,7 @@ class DungeonPlanWithAwowogeiCutScene(player: Player) : Cutscene(player) {
                             rotateCamera(47, 15, 65)
                             return true
                         }
-                    }
+                    },
                 )
 
                 GameWorld.Pulser.submit(
@@ -60,7 +62,7 @@ class DungeonPlanWithAwowogeiCutScene(player: Player) : Cutscene(player) {
                             timedUpdate(4)
                             return true
                         }
-                    }
+                    },
                 )
             }
 
@@ -73,7 +75,7 @@ class DungeonPlanWithAwowogeiCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.AWOWOGEI_1448,
                     FaceAnim.NEUTRAL,
-                    "It is always dark here, Gnome. Why have you asked to see me in private?"
+                    "It is always dark here, Gnome. Why have you asked to see me in private?",
                 )
                 timedUpdate(4)
             }
@@ -92,7 +94,7 @@ class DungeonPlanWithAwowogeiCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.WAYDAR_1408,
                     FaceAnim.NEUTRAL,
-                    "The foot soldiers of the Royal Guard in your jail..."
+                    "The foot soldiers of the Royal Guard in your jail...",
                 )
                 timedUpdate(6)
             }
@@ -101,7 +103,7 @@ class DungeonPlanWithAwowogeiCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.GLO_CARANOCK_1427,
                     FaceAnim.NEUTRAL,
-                    "Would it not be easier if they were somehow just to ... die?"
+                    "Would it not be easier if they were somehow just to ... die?",
                 )
                 timedUpdate(6)
             }
@@ -110,7 +112,7 @@ class DungeonPlanWithAwowogeiCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.AWOWOGEI_1448,
                     FaceAnim.NEUTRAL,
-                    "Why would I want to do that? Your king would declare war on my island."
+                    "Why would I want to do that? Your king would declare war on my island.",
                 )
                 timedUpdate(6)
             }
@@ -119,7 +121,7 @@ class DungeonPlanWithAwowogeiCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.GLO_CARANOCK_1427,
                     FaceAnim.NEUTRAL,
-                    "I assure you he will not. We will lay the blame at the human's feet."
+                    "I assure you he will not. We will lay the blame at the human's feet.",
                 )
                 timedUpdate(4)
             }
@@ -128,7 +130,7 @@ class DungeonPlanWithAwowogeiCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.GLO_CARANOCK_1427,
                     FaceAnim.NEUTRAL,
-                    "Narnode will indeed declare war: not against you, but against humankind."
+                    "Narnode will indeed declare war: not against you, but against humankind.",
                 )
                 timedUpdate(4)
             }
@@ -137,7 +139,7 @@ class DungeonPlanWithAwowogeiCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.WAYDAR_1408,
                     FaceAnim.NEUTRAL,
-                    "You are of course welcome to your share of the profits."
+                    "You are of course welcome to your share of the profits.",
                 )
                 timedUpdate(6)
             }
@@ -146,7 +148,7 @@ class DungeonPlanWithAwowogeiCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.AWOWOGEI_3396,
                     FaceAnim.NEUTRAL,
-                    "Intriguing. I have recently secured an alliance with the northern monkeys, which may prove useful."
+                    "Intriguing. I have recently secured an alliance with the northern monkeys, which may prove useful.",
                 )
                 timedUpdate(4)
             }
@@ -160,7 +162,7 @@ class DungeonPlanWithAwowogeiCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.GLO_CARANOCK_1427,
                     FaceAnim.NEUTRAL,
-                    "Kill the foot soldiers and the rest of the 10th squad. My superior has sent you a few tricks which may prove useful."
+                    "Kill the foot soldiers and the rest of the 10th squad. My superior has sent you a few tricks which may prove useful.",
                 )
                 timedUpdate(4)
             }
@@ -174,7 +176,7 @@ class DungeonPlanWithAwowogeiCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.GLO_CARANOCK_1427,
                     FaceAnim.NEUTRAL,
-                    "High magic: the ability to summon the entire 10th squad to a single location. And - "
+                    "High magic: the ability to summon the entire 10th squad to a single location. And - ",
                 )
                 timedUpdate(4)
             }
@@ -188,7 +190,7 @@ class DungeonPlanWithAwowogeiCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.GLO_CARANOCK_1427,
                     FaceAnim.NEUTRAL,
-                    "Yes. And of course, you will also receive access to one of his 'pets'."
+                    "Yes. And of course, you will also receive access to one of his 'pets'.",
                 )
                 timedUpdate(4)
             }
@@ -197,7 +199,7 @@ class DungeonPlanWithAwowogeiCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.GLO_CARANOCK_1427,
                     FaceAnim.NEUTRAL,
-                    "You must be careful with these, as you have only one use of each. Ensure you set your trap well - none must survive lest they spread the truth."
+                    "You must be careful with these, as you have only one use of each. Ensure you set your trap well - none must survive lest they spread the truth.",
                 )
                 timedUpdate(6)
             }
@@ -216,7 +218,7 @@ class DungeonPlanWithAwowogeiCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.GLO_CARANOCK_1427,
                     FaceAnim.NEUTRAL,
-                    "Ignore ${if (player.isMale) "him" else "her"}. My colleague's official mission was to look after a human in the area, but don't worry: it is probably dead already."
+                    "Ignore ${if (player.isMale) "him" else "her"}. My colleague's official mission was to look after a human in the area, but don't worry: it is probably dead already.",
                 )
                 timedUpdate(6)
             }
@@ -230,7 +232,7 @@ class DungeonPlanWithAwowogeiCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.AWOWOGEI_1448,
                     FaceAnim.NEUTRAL,
-                    "Very well. I shall let you know when I have dealt with the Royal Guard."
+                    "Very well. I shall let you know when I have dealt with the Royal Guard.",
                 )
                 timedUpdate(6)
             }
@@ -244,7 +246,7 @@ class DungeonPlanWithAwowogeiCutScene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     NPCs.AWOWOGEI_1448,
                     FaceAnim.NEUTRAL,
-                    "With success to one of Glough's 'pets', I don't think I'll need it..."
+                    "With success to one of Glough's 'pets', I don't think I'll need it...",
                 )
                 timedUpdate(4)
                 end()

@@ -1,15 +1,21 @@
 package content.region.misthalin.quest.haunted
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.quest.isQuestComplete
 import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.player.Player
 import core.game.world.map.Location
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
-class ErnestNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
-    override fun construct(id: Int, location: Location, vararg objects: Any?): AbstractNPC {
+class ErnestNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any?,
+    ): AbstractNPC {
         return ErnestNPC(id, location)
     }
 

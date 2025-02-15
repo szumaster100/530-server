@@ -1,6 +1,5 @@
 package content.region.kandarin.quest.fishingcompo.dialogue
 
-import org.rs.consts.Quests
 import content.region.kandarin.quest.fishingcompo.FishingContest
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
@@ -8,10 +7,12 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.item.GroundItemManager
 import core.plugin.Initializable
+import org.rs.consts.Quests
 
 @Initializable
-class DwarfDialogue(player: Player? = null) : Dialogue(player) {
-
+class DwarfDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         val questStage = player.getQuestRepository().getStage("Fishing Contest")
@@ -20,18 +21,20 @@ class DwarfDialogue(player: Player? = null) : Dialogue(player) {
             stage = 1000
             return true
         }
-        if (player.inventory.containsItem(FishingContest.FISHING_TROPHY) && player.getAttribute(
+        if (player.inventory.containsItem(FishingContest.FISHING_TROPHY) &&
+            player.getAttribute(
                 "fishing_contest:won",
-                false
+                false,
             )
         ) {
             npc(FaceAnim.OLD_NORMAL, "Have you won yet?")
             stage = 2000
             return true
         }
-        if (player.getQuestRepository().getStage("Fishing Contest") >= 10 && !player.getAttribute(
+        if (player.getQuestRepository().getStage("Fishing Contest") >= 10 &&
+            !player.getAttribute(
                 "fishing_contest:won",
-                false
+                false,
             )
         ) {
             npc(FaceAnim.OLD_NORMAL, "Have you won yet?")
@@ -43,7 +46,7 @@ class DwarfDialogue(player: Player? = null) : Dialogue(player) {
                 FaceAnim.OLD_NORMAL,
                 "Welcome, oh great fishing champion!",
                 "Feel free to pop by and use",
-                "our tunnel any time!"
+                "our tunnel any time!",
             )
             stage = 2500
             return true
@@ -53,7 +56,10 @@ class DwarfDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> {
                 player("I was wondering what was down that tunnel?")
@@ -70,17 +76,18 @@ class DwarfDialogue(player: Player? = null) : Dialogue(player) {
                 stage++
             }
 
-            3 -> when (buttonId) {
-                1 -> {
-                    player("I didn't want to anyway.")
-                    stage = 10
-                }
+            3 ->
+                when (buttonId) {
+                    1 -> {
+                        player("I didn't want to anyway.")
+                        stage = 10
+                    }
 
-                2 -> {
-                    player("Why not?")
-                    stage = 21
+                    2 -> {
+                        player("Why not?")
+                        stage = 21
+                    }
                 }
-            }
 
             10 -> {
                 npc(FaceAnim.OLD_NORMAL, "Good. Because you can't.")
@@ -127,7 +134,7 @@ class DwarfDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.OLD_NORMAL,
                     "This is the home of the Mountain Dwarves.",
                     "How would you like it if I",
-                    "wanted to take a shortcut through your home?"
+                    "wanted to take a shortcut through your home?",
                 )
                 stage++
             }
@@ -136,34 +143,35 @@ class DwarfDialogue(player: Player? = null) : Dialogue(player) {
                 options(
                     "Ooh... is this a short cut to somewhere?",
                     "Oh, sorry, I hadn't realized it was private.",
-                    "If you were my friend I wouldn't mind it."
+                    "If you were my friend I wouldn't mind it.",
                 )
                 stage++
             }
 
-            23 -> when (buttonId) {
-                1 -> {
-                    player("Ooh... is this a short cut to somewhere?")
-                    stage = 30
-                }
+            23 ->
+                when (buttonId) {
+                    1 -> {
+                        player("Ooh... is this a short cut to somewhere?")
+                        stage = 30
+                    }
 
-                2 -> {
-                    player("Oh, sorry, I hadn't realized it was private.")
-                    stage = 40
-                }
+                    2 -> {
+                        player("Oh, sorry, I hadn't realized it was private.")
+                        stage = 40
+                    }
 
-                3 -> {
-                    player("If you were my friend I wouldn't mind it.")
-                    stage = 50
+                    3 -> {
+                        player("If you were my friend I wouldn't mind it.")
+                        stage = 50
+                    }
                 }
-            }
 
             30 -> {
                 npc(
                     FaceAnim.OLD_NORMAL,
                     "Well, it is a lot easier to go this way",
                     "to get past White Wolf Mountain than through",
-                    "those wolf filled passes."
+                    "those wolf filled passes.",
                 )
                 stage = 22
             }
@@ -199,7 +207,7 @@ class DwarfDialogue(player: Player? = null) : Dialogue(player) {
                     "My, we are the persistent one aren't we?",
                     "Well, there's a certain gold artefact we're after.",
                     "We dwarves are big fans of gold! This artefact",
-                    "is the first prize at the Hemenster fishing competition."
+                    "is the first prize at the Hemenster fishing competition.",
                 )
                 stage++
             }
@@ -210,7 +218,7 @@ class DwarfDialogue(player: Player? = null) : Dialogue(player) {
                     "Fortunately we have acquired a pass to enter",
                     "that competition... Unfortunately Dwarves don't",
                     "make good fisherman. Okay, I entrust you with our",
-                    "competition pass."
+                    "competition pass.",
                 )
                 stage++
             }
@@ -239,7 +247,7 @@ class DwarfDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     FaceAnim.OLD_NORMAL,
                     "Hmm. It's a good job they sent us spares.",
-                    "There you go. Try not to lose that one."
+                    "There you go. Try not to lose that one.",
                 )
                 player.inventory.add(FishingContest.FISHING_PASS)
                 stage++
@@ -265,7 +273,7 @@ class DwarfDialogue(player: Player? = null) : Dialogue(player) {
                     FaceAnim.OLD_NORMAL,
                     "Maybe we should talk to that old Jack",
                     "fella near the competition, everyone",
-                    "seems to be ranting about him."
+                    "seems to be ranting about him.",
                 )
                 stage = 100
             }

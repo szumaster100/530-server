@@ -8,7 +8,6 @@ import core.game.node.item.Item
 import core.plugin.Plugin
 
 class BirdNestOptionHandler : OptionHandler() {
-
     override fun newInstance(arg: Any?): Plugin<Any?>? {
         BirdNestDropTable.values().forEach { nest ->
             nest.nest.definition.handlers["option:search"] = this
@@ -16,7 +15,11 @@ class BirdNestOptionHandler : OptionHandler() {
         return null
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val item = node as Item
         BirdNestDropTable.forNest(item)!!.search(player, item)
         return true

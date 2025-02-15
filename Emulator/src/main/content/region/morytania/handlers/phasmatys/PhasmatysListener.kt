@@ -1,6 +1,5 @@
 package content.region.morytania.handlers.phasmatys
 
-import org.rs.consts.*
 import content.region.morytania.handlers.phasmatys.EnergyBarrierUtils.passGate
 import content.region.morytania.handlers.phasmatys.EnergyBarrierUtils.passGateAfterQuest
 import core.api.*
@@ -14,9 +13,9 @@ import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.tools.END_DIALOGUE
+import org.rs.consts.*
 
 class PhasmatysListener : InteractionListener {
-
     companion object {
         private val BOTH_BEDSHEET = intArrayOf(Items.BEDSHEET_4284, Items.BEDSHEET_4285)
         private const val CAPTAIN = Scenery.PIRATE_CAPTAIN_5287
@@ -49,11 +48,10 @@ class PhasmatysListener : InteractionListener {
     }
 
     override fun defineListeners() {
-
         on(CAPTAIN, IntType.SCENERY, "talk-to") { player, _ ->
             sendDialogue(
                 player,
-                "The pirate captain ignores you and continues to stare lifelessly at nothing, as he has clearly been dead for some time."
+                "The pirate captain ignores you and continues to stare lifelessly at nothing, as he has clearly been dead for some time.",
             )
             return@on true
         }
@@ -103,25 +101,32 @@ class PhasmatysListener : InteractionListener {
                 openDialogue(
                     player,
                     object : DialogueFile() {
-                        override fun handle(componentID: Int, buttonID: Int) {
+                        override fun handle(
+                            componentID: Int,
+                            buttonID: Int,
+                        ) {
                             npc = NPC(GHOST_GUARD)
                             when (stage) {
                                 0 -> {
-                                    if (isQuestComplete(player, Quests.GHOSTS_AHOY) && inEquipment(player, Items.GHOSTSPEAK_AMULET_552)
+                                    if (isQuestComplete(player, Quests.GHOSTS_AHOY) &&
+                                        inEquipment(player, Items.GHOSTSPEAK_AMULET_552)
                                     ) {
-                                        npcl(FaceAnim.FRIENDLY, "All visitors to Port Phasmatys must pay a toll charge of 2 Ectotokens. However, you have done the ghosts of our town a service that surpasses all value, so you may pass without charge.")
+                                        npcl(
+                                            FaceAnim.FRIENDLY,
+                                            "All visitors to Port Phasmatys must pay a toll charge of 2 Ectotokens. However, you have done the ghosts of our town a service that surpasses all value, so you may pass without charge.",
+                                        )
                                         stage = 7
                                     } else if (!inEquipment(player, Items.GHOSTSPEAK_AMULET_552)) {
                                         sendDialogue(
                                             player,
-                                            "The ghostly guards wail at you incomprehensibly, and though you cannot understand their exact words you understand their meaning - you may not pass the barriers of Port Phasmatys."
+                                            "The ghostly guards wail at you incomprehensibly, and though you cannot understand their exact words you understand their meaning - you may not pass the barriers of Port Phasmatys.",
                                         )
                                         stage = END_DIALOGUE
                                     } else {
                                         findLocalNPC(player, 1706)?.let { face(player, it, 1) }
                                         npcl(
                                             FaceAnim.FRIENDLY,
-                                            "All visitors to Port Phasmatys must pay a toll charge of 2 Ectotokens."
+                                            "All visitors to Port Phasmatys must pay a toll charge of 2 Ectotokens.",
                                         )
                                         stage = 1
                                     }
@@ -132,28 +137,31 @@ class PhasmatysListener : InteractionListener {
                                         options(
                                             "I would like to enter Port Phasmatys - here's 2 Ectotokens.",
                                             "I'm not paying you Ectotokens just to go through a gate.",
-                                            "Where can I get Ectotokens?"
+                                            "Where can I get Ectotokens?",
                                         ).also { stage++ }
                                     } else {
                                         options(
                                             "I don't have that many Ectotokens.",
-                                            "Where can I get Ectotokens?"
+                                            "Where can I get Ectotokens?",
                                         ).also { stage = 6 }
                                     }
                                 }
 
-                                2 -> when (buttonID) {
-                                    1 -> player(
-                                        "I would like to enter Port Phasmatys - here's",
-                                        "2 Ectotokens."
-                                    ).also { stage = 3 }
+                                2 ->
+                                    when (buttonID) {
+                                        1 ->
+                                            player(
+                                                "I would like to enter Port Phasmatys - here's",
+                                                "2 Ectotokens.",
+                                            ).also { stage = 3 }
 
-                                    2 -> player("I'm not paying you Ectotockens just to go through a gate.").also {
-                                        stage = 4
+                                        2 ->
+                                            player("I'm not paying you Ectotockens just to go through a gate.").also {
+                                                stage = 4
+                                            }
+
+                                        3 -> player("Where can I get Ectotokens?").also { stage = 5 }
                                     }
-
-                                    3 -> player("Where can I get Ectotokens?").also { stage = 5 }
-                                }
 
                                 3 -> {
                                     end()
@@ -161,15 +169,17 @@ class PhasmatysListener : InteractionListener {
                                 }
 
                                 4 -> npc("Sorry - it's Town Policy.").also { stage = END_DIALOGUE }
-                                5 -> npc(
-                                    "You need to go to the Temple and earn some.",
-                                    "Talk to the disciples - they will tell you how."
-                                ).also { stage = END_DIALOGUE }
+                                5 ->
+                                    npc(
+                                        "You need to go to the Temple and earn some.",
+                                        "Talk to the disciples - they will tell you how.",
+                                    ).also { stage = END_DIALOGUE }
 
-                                6 -> when (buttonID) {
-                                    1 -> player("I don't have that many Ectotokens.").also { stage = 4 }
-                                    2 -> player("Where can I get Ectotokens?").also { stage = 5 }
-                                }
+                                6 ->
+                                    when (buttonID) {
+                                        1 -> player("I don't have that many Ectotokens.").also { stage = 4 }
+                                        2 -> player("Where can I get Ectotokens?").also { stage = 5 }
+                                    }
 
                                 7 -> {
                                     end()
@@ -178,7 +188,7 @@ class PhasmatysListener : InteractionListener {
                             }
                         }
                     },
-                    node.asScenery()
+                    node.asScenery(),
                 )
             }
             return@on true
@@ -202,7 +212,7 @@ class PhasmatysListener : InteractionListener {
                         }
                         return !player.inventory.contains(1925, 1)
                     }
-                }
+                },
             )
             return@onUseWith true
         }

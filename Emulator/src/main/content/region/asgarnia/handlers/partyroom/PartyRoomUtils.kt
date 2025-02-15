@@ -1,8 +1,5 @@
 package content.region.asgarnia.handlers.partyroom
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.region.asgarnia.handlers.partyroom.PartyRoomOptionHandler.Companion.balloonManager
 import content.region.asgarnia.handlers.partyroom.PartyRoomOptionHandler.Companion.isDancing
 import core.api.*
@@ -13,17 +10,28 @@ import core.game.node.scenery.Scenery
 import core.game.system.task.Pulse
 import core.game.world.GameWorld.Pulser
 import core.game.world.map.Location
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 object PartyRoomUtils {
-
     private val isCluttered: Boolean
         get() = balloonManager.isCluttered
 
-    fun handleLever(player: Player, scenery: Scenery) {
+    fun handleLever(
+        player: Player,
+        scenery: Scenery,
+    ) {
         lock(player, 3)
         face(player, scenery.location)
         animate(player, Animations.HUMAN_PARTY_ROOM_LEVER_6933)
-        sendDialogueOptions(player, "Select an Option", "Ballon Bonanza (1000 coins).", "Nightly Dance (500 coins).", "No reward.")
+        sendDialogueOptions(
+            player,
+            "Select an Option",
+            "Ballon Bonanza (1000 coins).",
+            "Nightly Dance (500 coins).",
+            "No reward.",
+        )
         addDialogueAction(player) { player, buttonId ->
             when (buttonId) {
                 2 ->
@@ -87,7 +95,7 @@ object PartyRoomUtils {
                     count++
                     return false
                 }
-            }
+            },
         )
     }
 }

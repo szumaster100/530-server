@@ -1,9 +1,9 @@
 package content.region.asgarnia.quest.rd.handlers
 
-import org.rs.consts.NPCs
 import content.region.asgarnia.quest.rd.RecruitmentDrive
 import content.region.asgarnia.quest.rd.cutscene.FailTest
 import core.api.*
+import core.api.MapArea
 import core.game.dialogue.DialogueBuilder
 import core.game.dialogue.DialogueBuilderFile
 import core.game.dialogue.FaceAnim
@@ -12,39 +12,42 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.system.task.Pulse
 import core.game.world.map.Location
-import core.api.MapArea
 import core.game.world.map.zone.ZoneBorders
+import org.rs.consts.NPCs
 
-class PatienceTest(private val dialogueNum: Int = 0) : DialogueBuilderFile(), MapArea {
-
+class PatienceTest(
+    private val dialogueNum: Int = 0,
+) : DialogueBuilderFile(),
+    MapArea {
     companion object {
         const val patience = "rd:donotmove"
     }
 
     override fun create(builder: DialogueBuilder) {
-        builder.onPredicate { player ->
-            isInitialDialogue(player)
-        }.npc("Ah, welcome @name.", "I have but one clue for you to pass this room's puzzle:", "'Patience'.")
+        builder
+            .onPredicate { player ->
+                isInitialDialogue(player)
+            }.npc("Ah, welcome @name.", "I have but one clue for you to pass this room's puzzle:", "'Patience'.")
             .endWith { _, player ->
                 handlePatienceDialogue(player)
             }
 
-        builder.onPredicate { player -> isFailDialogue(player) }
+        builder
+            .onPredicate { player -> isFailDialogue(player) }
             .betweenStage { _, player, _, _ ->
                 setAttribute(player, RecruitmentDrive.stageFail, true)
-            }
-            .npc(
+            }.npc(
                 FaceAnim.SAD,
                 "No... I am very sorry.",
                 "Apparently you are not up to the challenge.",
                 "I will return you where you came from, better luck in the",
-                "future."
-            )
-            .endWith { _, player ->
+                "future.",
+            ).endWith { _, player ->
                 handleFailStage(player)
             }
 
-        builder.onPredicate { dialogueNum == 1 }
+        builder
+            .onPredicate { dialogueNum == 1 }
             .npc("Ah, @name, you have arrived.", "Speak to me to begin your task.")
             .endWith { _, player ->
                 setAttribute(player, patience, false)
@@ -52,11 +55,13 @@ class PatienceTest(private val dialogueNum: Int = 0) : DialogueBuilderFile(), Ma
     }
 
     private fun isInitialDialogue(player: Player): Boolean {
-        return dialogueNum == 0 && !getAttribute(player, patience, false) && !getAttribute(
-            player,
-            RecruitmentDrive.stageFail,
-            false
-        )
+        return dialogueNum == 0 &&
+            !getAttribute(player, patience, false) &&
+            !getAttribute(
+                player,
+                RecruitmentDrive.stageFail,
+                false,
+            )
     }
 
     private fun handlePatienceDialogue(player: Player) {
@@ -74,24 +79,27 @@ class PatienceTest(private val dialogueNum: Int = 0) : DialogueBuilderFile(), Ma
                                 FaceAnim.HAPPY,
                                 "Excellent work, @name.",
                                 "Please step through the portal to meet your next",
-                                "challenge."
+                                "challenge.",
                             )
                         }
                     }
                     return false
                 }
-            }
+            },
         )
     }
 
     private fun isFailDialogue(player: Player): Boolean {
-        return dialogueNum == 0 && (
-                getAttribute(player, patience, false) || getAttribute(
-                    player,
-                    RecruitmentDrive.stageFail,
-                    false
-                ) || dialogueNum == 2
-                )
+        return dialogueNum == 0 &&
+            (
+                getAttribute(player, patience, false) ||
+                    getAttribute(
+                        player,
+                        RecruitmentDrive.stageFail,
+                        false,
+                    ) ||
+                    dialogueNum == 2
+            )
     }
 
     fun handleFailStage(player: Player) {
@@ -108,7 +116,11 @@ class PatienceTest(private val dialogueNum: Int = 0) : DialogueBuilderFile(), Ma
         return arrayOf(ZoneBorders(2474, 4959, 2478, 4957))
     }
 
-    override fun entityStep(entity: Entity, location: Location, lastLocation: Location) {
+    override fun entityStep(
+        entity: Entity,
+        location: Location,
+        lastLocation: Location,
+    ) {
         if (entity is Player && getAttribute(entity, patience, false)) {
             setAttribute(entity, patience, false)
             setAttribute(entity, RecruitmentDrive.stageFail, true)

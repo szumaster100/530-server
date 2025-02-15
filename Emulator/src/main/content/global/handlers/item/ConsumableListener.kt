@@ -13,12 +13,14 @@ import core.game.node.item.Item
 import core.game.world.GameWorld
 
 class ConsumableListener : InteractionListener {
-
     override fun defineListeners() {
         on(IntType.ITEM, "eat", "drink", handler = ::handleConsumable)
     }
 
-    private fun handleConsumable(player: Player, node: Node): Boolean {
+    private fun handleConsumable(
+        player: Player,
+        node: Node,
+    ): Boolean {
         val consumable = Consumables.getConsumableById(node.id) ?: return true
 
         val food = getUsedOption(player) == "eat"
@@ -30,7 +32,9 @@ class ConsumableListener : InteractionListener {
                 player.clocks[Clocks.NEXT_CONSUME] = getWorldTicks() + 2
                 player.clocks[Clocks.NEXT_EAT] = getWorldTicks() + 2
                 delayAttack(player, 3)
-            } else if (player.clocks[Clocks.NEXT_CONSUME] < getWorldTicks() && player.clocks[Clocks.NEXT_EAT] < getWorldTicks()) {
+            } else if (player.clocks[Clocks.NEXT_CONSUME] < getWorldTicks() &&
+                player.clocks[Clocks.NEXT_EAT] < getWorldTicks()
+            ) {
                 consumable.consumable.consume(node as? Item ?: return true, player)
                 player.clocks[Clocks.NEXT_EAT] = getWorldTicks() + 2
                 delayAttack(player, 3)
@@ -40,7 +44,9 @@ class ConsumableListener : InteractionListener {
                 consumable.consumable.consume(node as? Item ?: return true, player)
                 player.clocks[Clocks.NEXT_CONSUME] = getWorldTicks() + 1
                 player.clocks[Clocks.NEXT_DRINK] = getWorldTicks() + 1
-            } else if (player.clocks[Clocks.NEXT_CONSUME] < getWorldTicks() && player.clocks[Clocks.NEXT_DRINK] < getWorldTicks()) {
+            } else if (player.clocks[Clocks.NEXT_CONSUME] < getWorldTicks() &&
+                player.clocks[Clocks.NEXT_DRINK] < getWorldTicks()
+            ) {
                 consumable.consumable.consume(node as? Item ?: return true, player)
                 player.clocks[Clocks.NEXT_DRINK] = getWorldTicks() + 1
             }

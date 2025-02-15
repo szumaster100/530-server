@@ -1,9 +1,5 @@
 package content.minigame.puropuro
 
-import org.rs.consts.Graphics
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
@@ -12,11 +8,13 @@ import core.game.node.item.Item
 import core.game.world.map.Direction
 import core.game.world.map.RegionManager.getObject
 import core.tools.RandomFunction
+import org.rs.consts.Components
+import org.rs.consts.Graphics
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class ImpetuousImpulsesListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(wheatSceneryIDs, IntType.SCENERY, "push-through") { player, node ->
             if (getStatLevel(player, Skills.HUNTER) < 17) {
                 sendMessage(player, "You need a Hunting level of at least 17 to enter the maze.")
@@ -25,7 +23,7 @@ class ImpetuousImpulsesListener : InteractionListener {
             if (anyInInventory(player, Items.MAGIC_BOX_10025, Items.IMP_IN_A_BOX2_10027, Items.IMP_IN_A_BOX1_10028)) {
                 sendDialogue(
                     player,
-                    "Something prevents you from entering. You think the portal is offended by your imp boxes. They are not popular on imp and impling planes."
+                    "Something prevents you from entering. You think the portal is offended by your imp boxes. They are not popular on imp and impling planes.",
                 )
                 return@on true
             }
@@ -126,13 +124,14 @@ class ImpetuousImpulsesListener : InteractionListener {
     }
 
     companion object {
-        val wheatSceneryIDs = intArrayOf(
-            Scenery.MAGICAL_WHEAT_25016,
-            Scenery.MAGICAL_WHEAT_25029,
-            Scenery.MAGICAL_WHEAT_25019,
-            Scenery.MAGICAL_WHEAT_25018,
-            Scenery.MAGICAL_WHEAT_25020,
-            Scenery.MAGICAL_WHEAT_25021
-        )
+        val wheatSceneryIDs =
+            intArrayOf(
+                Scenery.MAGICAL_WHEAT_25016,
+                Scenery.MAGICAL_WHEAT_25029,
+                Scenery.MAGICAL_WHEAT_25019,
+                Scenery.MAGICAL_WHEAT_25018,
+                Scenery.MAGICAL_WHEAT_25020,
+                Scenery.MAGICAL_WHEAT_25021,
+            )
     }
 }

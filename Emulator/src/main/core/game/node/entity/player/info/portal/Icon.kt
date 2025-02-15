@@ -2,9 +2,8 @@ package core.game.node.entity.player.info.portal
 
 enum class Icon(
     val id: Int,
-    val index: Int
+    val index: Int,
 ) {
-
     NOTHING(0, 0),
 
     GREEN(1, 5),
@@ -21,10 +20,10 @@ enum class Icon(
 
     PURPLE(7, 11),
 
-    BROWN(8, 12);
+    BROWN(8, 12),
+    ;
 
     companion object {
-
         @JvmStatic
         fun forId(id: Int): Icon {
             for (icon in values()) {

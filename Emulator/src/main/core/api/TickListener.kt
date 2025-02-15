@@ -14,7 +14,6 @@ package core.api
  *   with a [core.game.event.TickEvent].
  */
 interface TickListener : ContentInterface {
-
     /**
      * Called every game tick to update world events or other tick-based logic.
      */

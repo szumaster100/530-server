@@ -43,8 +43,8 @@ class DropTableParser {
                     this::class.java,
                     Log.ERR,
                     "Error parsing drop tables for NPC ${NPCDefinition.forId(ids[0].toInt()).name}: ${
-                    exceptionToString(e)
-                    }"
+                        exceptionToString(e)
+                    }",
                 )
             }
         }
@@ -52,7 +52,13 @@ class DropTableParser {
         log(this::class.java, Log.FINE, "Parsed $count drop tables.")
     }
 
-    private fun parseTable(data: JSONArray, destTable: NPCDropTable, isAlways: Boolean, isTertiary: Boolean = false, isCharms: Boolean = false) {
+    private fun parseTable(
+        data: JSONArray,
+        destTable: NPCDropTable,
+        isAlways: Boolean,
+        isTertiary: Boolean = false,
+        isCharms: Boolean = false,
+    ) {
         for (it in data) {
             val item = it as JSONObject
             val id = item["id"].toString().toInt()
@@ -65,9 +71,13 @@ class DropTableParser {
 
             val weight = item["weight"].toString().toDouble()
             val newItem = WeightedItem(id, minAmount, maxAmount, weight.toDouble(), isAlways)
-            if (isCharms) destTable.addToCharms(newItem)
-            else if (isTertiary) destTable.addToTertiary(newItem)
-            else destTable.add(newItem)
+            if (isCharms) {
+                destTable.addToCharms(newItem)
+            } else if (isTertiary) {
+                destTable.addToTertiary(newItem)
+            } else {
+                destTable.add(newItem)
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ package content.region.wilderness.handlers
 
 import content.global.skill.summoning.familiar.Familiar
 import content.region.wilderness.handlers.npc.CorporealBeastNPC
+import core.api.MapArea
 import core.api.TickListener
 import core.api.getAttribute
 import core.api.sendMessage
@@ -9,13 +10,13 @@ import core.api.setAttribute
 import core.game.node.entity.Entity
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
-import core.api.MapArea
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.map.zone.ZoneRestriction
 import core.tools.secondsToTicks
 
-class CorpController : MapArea, TickListener {
-
+class CorpController :
+    MapArea,
+    TickListener {
     companion object {
         var activePlayers = ArrayList<Player>()
         var corpBeast: NPC? = null
@@ -43,7 +44,10 @@ class CorpController : MapArea, TickListener {
         }
     }
 
-    override fun areaLeave(entity: Entity, logout: Boolean) {
+    override fun areaLeave(
+        entity: Entity,
+        logout: Boolean,
+    ) {
         if (entity is Player) {
             activePlayers.remove(entity)
         }

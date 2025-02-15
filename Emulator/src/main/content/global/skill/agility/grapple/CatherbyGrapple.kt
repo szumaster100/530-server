@@ -1,8 +1,5 @@
 package content.global.skill.agility.grapple
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Scenery
 import core.api.*
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
@@ -11,27 +8,31 @@ import core.game.node.entity.skill.Skills
 import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Scenery
 
 class CatherbyGrapple : InteractionListener {
-
     companion object {
         private val START_LOCATION: Location = Location.create(2866, 3429, 0)
         private val END_LOCATION: Location = Location.create(2869, 3430, 0)
 
-        private val REQUIREMENTS = hashMapOf(
-            Skills.AGILITY to 32,
-            Skills.RANGE to 35,
-            Skills.STRENGTH to 35
-        )
+        private val REQUIREMENTS =
+            hashMapOf(
+                Skills.AGILITY to 32,
+                Skills.RANGE to 35,
+                Skills.STRENGTH to 35,
+            )
 
-        private val crossbowIds = intArrayOf(
-            Items.DORGESHUUN_CBOW_8880,
-            Items.MITH_CROSSBOW_9181,
-            Items.ADAMANT_CROSSBOW_9183,
-            Items.RUNE_CROSSBOW_9185,
-            Items.KARILS_CROSSBOW_4734,
-            Items.HUNTERS_CROSSBOW_10156
-        )
+        private val crossbowIds =
+            intArrayOf(
+                Items.DORGESHUUN_CBOW_8880,
+                Items.MITH_CROSSBOW_9181,
+                Items.ADAMANT_CROSSBOW_9183,
+                Items.RUNE_CROSSBOW_9185,
+                Items.KARILS_CROSSBOW_4734,
+                Items.HUNTERS_CROSSBOW_10156,
+            )
         private val grappleId = Items.MITH_GRAPPLE_9419
     }
 
@@ -56,10 +57,11 @@ class CatherbyGrapple : InteractionListener {
                 sendDialogueLines(
                     player,
                     "You need at least " +
-                            REQUIREMENTS[Skills.AGILITY] + " " + Skills.SKILL_NAME[Skills.AGILITY] + ", " +
-                            REQUIREMENTS[Skills.RANGE] + " " + Skills.SKILL_NAME[Skills.RANGE] + ", ",
+                        REQUIREMENTS[Skills.AGILITY] + " " + Skills.SKILL_NAME[Skills.AGILITY] + ", " +
+                        REQUIREMENTS[Skills.RANGE] + " " + Skills.SKILL_NAME[Skills.RANGE] + ", ",
                     "and " +
-                            REQUIREMENTS[Skills.STRENGTH] + " " + Skills.SKILL_NAME[Skills.STRENGTH] + " to use this shortcut."
+                        REQUIREMENTS[Skills.STRENGTH] + " " + Skills.SKILL_NAME[Skills.STRENGTH] +
+                        " to use this shortcut.",
                 )
                 return@on true
             }
@@ -68,6 +70,7 @@ class CatherbyGrapple : InteractionListener {
             submitWorldPulse(
                 object : Pulse(2) {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             1 -> {
@@ -91,7 +94,7 @@ class CatherbyGrapple : InteractionListener {
                         }
                         return false
                     }
-                }
+                },
             )
 
             return@on true

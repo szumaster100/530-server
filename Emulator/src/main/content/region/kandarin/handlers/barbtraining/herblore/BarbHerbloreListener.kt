@@ -1,7 +1,5 @@
 package content.region.kandarin.handlers.barbtraining.herblore
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
 import content.region.kandarin.handlers.barbtraining.BarbarianTraining
 import core.api.*
 import core.game.interaction.IntType
@@ -9,9 +7,10 @@ import core.game.interaction.InteractionListener
 import core.game.node.Node
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
+import org.rs.consts.Animations
+import org.rs.consts.Items
 
 class BarbHerbloreListener : InteractionListener {
-
     override fun defineListeners() {
         for (potion in BarbarianMix.values()) {
             if (potion.isBoth) {
@@ -28,7 +27,11 @@ class BarbHerbloreListener : InteractionListener {
         }
     }
 
-    fun handle(player: Player, inputPotion: Node, egg: Node): Boolean {
+    fun handle(
+        player: Player,
+        inputPotion: Node,
+        egg: Node,
+    ): Boolean {
         val potion: BarbarianMix = BarbarianMix.forId(inputPotion.id) ?: return false
 
         if (!getAttribute(player, BarbarianTraining.HERBLORE_START, false)) {
@@ -61,7 +64,7 @@ class BarbHerbloreListener : InteractionListener {
             sendDialogueLines(
                 player,
                 "You feel you have learned more of barbarian ways. Otto might wish",
-                "to talk to you more."
+                "to talk to you more.",
             )
         }
 

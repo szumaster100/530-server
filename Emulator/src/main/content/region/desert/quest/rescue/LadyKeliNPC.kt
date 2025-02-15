@@ -1,14 +1,20 @@
 package content.region.desert.quest.rescue
 
-import org.rs.consts.NPCs
 import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.player.Player
 import core.game.world.GameWorld.ticks
 import core.game.world.map.Location
+import org.rs.consts.NPCs
 
-class LadyKeliNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+class LadyKeliNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return LadyKeliNPC(id, location)
     }
 

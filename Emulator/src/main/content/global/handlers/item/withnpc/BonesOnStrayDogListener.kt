@@ -1,7 +1,5 @@
 package content.global.handlers.item.withnpc
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.global.skill.prayer.Bones
 import core.api.getItemName
 import core.api.removeItem
@@ -11,15 +9,17 @@ import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.npc.NPC
 import core.game.node.item.Item
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 class BonesOnStrayDogListener : InteractionListener {
-
     override fun defineListeners() {
         val bones = Bones.array
         val dogs = intArrayOf(NPCs.STRAY_DOG_4766, NPCs.STRAY_DOG_4767, NPCs.STRAY_DOG_5917, NPCs.STRAY_DOG_5918)
 
         onUseWith(IntType.NPC, bones, *dogs) { player, used, with ->
-            used as Item; with as NPC
+            used as Item
+            with as NPC
             var woof = "Woof"
             if (removeItem(player, used)) {
                 sendMessage(player, "You feed the ${with.name.lowercase()} your ${getItemName(used.id).lowercase()}.")

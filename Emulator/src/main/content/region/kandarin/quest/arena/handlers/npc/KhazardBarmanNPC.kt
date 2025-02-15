@@ -1,10 +1,10 @@
 package content.region.kandarin.quest.arena.handlers.npc
 
-import org.rs.consts.NPCs
 import core.api.inBorders
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.npc.NPCBehavior
 import core.game.world.map.Location
+import org.rs.consts.NPCs
 
 class KhazardBarmanNPC : NPCBehavior(NPCs.KHAZARD_BARMAN_259) {
     override fun onCreation(self: NPC) {

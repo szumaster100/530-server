@@ -1,17 +1,20 @@
 package content.region.kandarin.handlers.barbtraining.smithing
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
 import core.api.*
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import org.rs.consts.Animations
+import org.rs.consts.Items
 import kotlin.math.min
 
-class BarbSmithingPulse(player: Player?, val weapon: BarbarianWeapon, var amount: Int, var button: Int) :
-    SkillPulse<Item>(player, null) {
-
+class BarbSmithingPulse(
+    player: Player?,
+    val weapon: BarbarianWeapon,
+    var amount: Int,
+    var button: Int,
+) : SkillPulse<Item>(player, null) {
     val hasta = weapon.hastaId
     val spear = weapon.spearId
 
@@ -59,11 +62,12 @@ class BarbSmithingPulse(player: Player?, val weapon: BarbarianWeapon, var amount
         }
 
         var index = button
-        if (player.inventory.remove(Item(weapon.requiredBar, 1)) && player.inventory.remove(
+        if (player.inventory.remove(Item(weapon.requiredBar, 1)) &&
+            player.inventory.remove(
                 Item(
                     weapon.requiredWood,
-                    1
-                )
+                    1,
+                ),
             )
         ) {
             sendMessage(player, "You make a ${getItemName(if (index == 0) spear else hasta)}.")

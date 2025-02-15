@@ -1,6 +1,5 @@
 package content.region.kandarin.quest.grail.dialogue
 
-import org.rs.consts.NPCs
 import core.api.sendDialogue
 import core.api.teleport
 import core.game.dialogue.DialogueFile
@@ -8,25 +7,35 @@ import core.game.dialogue.FaceAnim
 import core.game.node.entity.npc.NPC
 import core.game.world.map.Location
 import core.tools.END_DIALOGUE
+import org.rs.consts.NPCs
 
-class MaidenHGDialogue(var forced: Boolean) : DialogueFile() {
-
-    override fun handle(componentID: Int, buttonID: Int) {
+class MaidenHGDialogue(
+    var forced: Boolean,
+) : DialogueFile() {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         npc = NPC(NPCs.GRAIL_MAIDEN_210)
 
         if (forced) {
             when (stage) {
-                0 -> sendDialogue(player!!, "Ting-a-ling-a-ling!").also {
-                    var center = Location.create(2764, 4687, 0)
-                    var dist = center.location.getDistance(player!!.location)
+                0 ->
+                    sendDialogue(player!!, "Ting-a-ling-a-ling!").also {
+                        var center = Location.create(2764, 4687, 0)
+                        var dist = center.location.getDistance(player!!.location)
 
-                    if (dist <= 12) {
-                        stage++
-                    } else {
-                        stage = END_DIALOGUE
+                        if (dist <= 12) {
+                            stage++
+                        } else {
+                            stage = END_DIALOGUE
+                        }
                     }
-                }
-                1 -> npcl(FaceAnim.NEUTRAL, "Welcome to the Grail castle. You should come inside, it's cold out here.").also { stage++ }
+                1 ->
+                    npcl(
+                        FaceAnim.NEUTRAL,
+                        "Welcome to the Grail castle. You should come inside, it's cold out here.",
+                    ).also { stage++ }
                 2 -> {
                     sendDialogue(player!!, "Somehow you are now inside the castle.")
                     moveInsideCastle()

@@ -1,14 +1,14 @@
 package core.game.node.entity.combat
 
 import content.global.skill.slayer.SlayerEquipmentFlags.getDamAccBonus
+import core.api.EquipmentSlot
 import core.api.event.applyPoison
 import core.api.getItemFromEquipment
 import core.api.inEquipment
+import core.api.interaction.getSlayerTask
 import core.game.container.impl.EquipmentContainer
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.equipment.ArmourSet
-import core.api.EquipmentSlot
-import core.api.interaction.getSlayerTask
 import core.game.node.entity.combat.equipment.Weapon
 import core.game.node.entity.combat.equipment.WeaponInterface
 import core.game.node.entity.npc.NPC
@@ -19,13 +19,21 @@ import core.tools.RandomFunction
 import org.rs.consts.Items
 import kotlin.math.floor
 
-open class MeleeSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandler(CombatStyle.MELEE, *flags) {
-
-    override fun canSwing(entity: Entity, victim: Entity): InteractionType? {
+open class MeleeSwingHandler(
+    vararg flags: SwingHandlerFlag,
+) : CombatSwingHandler(CombatStyle.MELEE, *flags) {
+    override fun canSwing(
+        entity: Entity,
+        victim: Entity,
+    ): InteractionType? {
         var distance = if (usingHalberd(entity)) 2 else 1
         var type = InteractionType.STILL_INTERACT
         var goodRange = canMelee(entity, victim, distance)
-        if (!goodRange && victim.properties.combatPulse.getVictim() !== entity && victim.walkingQueue.isMoving && entity.size() == 1) {
+        if (!goodRange &&
+            victim.properties.combatPulse.getVictim() !== entity &&
+            victim.walkingQueue.isMoving &&
+            entity.size() == 1
+        ) {
             type = InteractionType.MOVE_INTERACT
             distance += if (entity.walkingQueue.isRunningBoth) 2 else 1
             goodRange = canMelee(entity, victim, distance)
@@ -37,7 +45,16 @@ open class MeleeSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandle
         val enemyRunning = victim.walkingQueue.runDir != -1
         // THX 4 fix tom <333.
         if (super.canSwing(entity, victim) != InteractionType.NO_INTERACT) {
-            val maxDistance = if (isRunning) if (enemyRunning) 3 else 4 else 2
+            val maxDistance =
+                if (isRunning) {
+                    if (enemyRunning) {
+                        3
+                    } else {
+                        4
+                    }
+                } else {
+                    2
+                }
             if (entity.walkingQueue.isMoving &&
                 entity.location.getDistance(victim.location) <= maxDistance
             ) {
@@ -50,7 +67,11 @@ open class MeleeSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandle
         return InteractionType.NO_INTERACT
     }
 
-    override fun swing(entity: Entity?, victim: Entity?, state: BattleState?): Int {
+    override fun swing(
+        entity: Entity?,
+        victim: Entity?,
+        state: BattleState?,
+    ): Int {
         var hit = 0
         state!!.style = CombatStyle.MELEE
         if (entity is Player) {
@@ -67,16 +88,29 @@ open class MeleeSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandle
         state.estimatedHit = hit
         if (victim != null) {
             if (state.estimatedHit > victim.skills.lifepoints) state.estimatedHit = victim.skills.lifepoints
-            if (state.estimatedHit + state.secondaryHit > victim.skills.lifepoints) state.secondaryHit -= ((state.estimatedHit + state.secondaryHit) - victim.skills.lifepoints)
+            if (state.estimatedHit + state.secondaryHit >
+                victim.skills.lifepoints
+            ) {
+                state.secondaryHit -=
+                    ((state.estimatedHit + state.secondaryHit) - victim.skills.lifepoints)
+            }
         }
         return 1
     }
 
-    override fun visualize(entity: Entity, victim: Entity?, state: BattleState?) {
+    override fun visualize(
+        entity: Entity,
+        victim: Entity?,
+        state: BattleState?,
+    ) {
         entity.animate(entity.properties.attackAnimation)
     }
 
-    override fun impact(entity: Entity?, victim: Entity?, state: BattleState?) {
+    override fun impact(
+        entity: Entity?,
+        victim: Entity?,
+        state: BattleState?,
+    ) {
         var targets = state!!.targets
         if (targets == null) {
             targets = arrayOf<BattleState?>(state)
@@ -93,11 +127,19 @@ open class MeleeSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandle
         }
     }
 
-    override fun visualizeImpact(entity: Entity?, victim: Entity?, state: BattleState?) {
+    override fun visualizeImpact(
+        entity: Entity?,
+        victim: Entity?,
+        state: BattleState?,
+    ) {
         victim!!.animate(victim.properties.defenceAnimation)
     }
 
-    override fun adjustBattleState(entity: Entity, victim: Entity, state: BattleState) {
+    override fun adjustBattleState(
+        entity: Entity,
+        victim: Entity,
+        state: BattleState,
+    ) {
         if (entity is Player) {
             if (state.estimatedHit > 0) {
                 val name = entity.equipment.getNew(3).name
@@ -118,43 +160,62 @@ open class MeleeSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandle
     }
 
     override fun calculateAccuracy(entity: Entity?): Int {
-
         entity ?: return 0
         var effectiveAttackLevel = entity.skills.getLevel(Skills.ATTACK).toDouble()
-        if (entity is Player && !flags.contains(SwingHandlerFlag.IGNORE_PRAYER_BOOSTS_ACCURACY))
+        if (entity is Player && !flags.contains(SwingHandlerFlag.IGNORE_PRAYER_BOOSTS_ACCURACY)) {
             effectiveAttackLevel =
                 floor(effectiveAttackLevel + (entity.prayer.getSkillBonus(Skills.ATTACK) * effectiveAttackLevel))
-        if (entity.properties.attackStyle.style == WeaponInterface.STYLE_ACCURATE) effectiveAttackLevel += 3
-        else if (entity.properties.attackStyle.style == WeaponInterface.STYLE_CONTROLLED) effectiveAttackLevel += 1
+        }
+        if (entity.properties.attackStyle.style == WeaponInterface.STYLE_ACCURATE) {
+            effectiveAttackLevel += 3
+        } else if (entity.properties.attackStyle.style == WeaponInterface.STYLE_CONTROLLED) {
+            effectiveAttackLevel += 1
+        }
         effectiveAttackLevel += 8
         effectiveAttackLevel *= getSetMultiplier(entity, Skills.ATTACK)
         effectiveAttackLevel = floor(effectiveAttackLevel)
 
-        if (!flags.contains(SwingHandlerFlag.IGNORE_STAT_BOOSTS_ACCURACY))
+        if (!flags.contains(SwingHandlerFlag.IGNORE_STAT_BOOSTS_ACCURACY)) {
             effectiveAttackLevel *= (entity.properties.bonuses[entity.properties.attackStyle.bonusType] + 64)
-        else effectiveAttackLevel *= 64
+        } else {
+            effectiveAttackLevel *= 64
+        }
 
-        val victimName = entity.properties.combatPulse.getVictim()?.name ?: "none"
+        val victimName =
+            entity.properties.combatPulse
+                .getVictim()
+                ?.name ?: "none"
 
         // attack bonus for specialized equipments (salve amulets, slayer equips)
         if (entity is Player) {
             val amuletId = getItemFromEquipment(entity, EquipmentSlot.NECK)?.id ?: 0
-            if ((amuletId == Items.SALVE_AMULET_4081 || amuletId == Items.SALVE_AMULETE_10588) && checkUndead(victimName)) {
+            if ((amuletId == Items.SALVE_AMULET_4081 || amuletId == Items.SALVE_AMULETE_10588) &&
+                checkUndead(victimName)
+            ) {
                 effectiveAttackLevel *= if (amuletId == Items.SALVE_AMULET_4081) 1.15 else 1.2
             } else if (getSlayerTask(entity)?.npcs?.contains(
-                    (entity.properties.combatPulse?.getVictim()?.id ?: 0)
+                    (
+                        entity.properties.combatPulse
+                            ?.getVictim()
+                            ?.id ?: 0
+                    ),
                 ) == true
             ) {
                 effectiveAttackLevel *= getDamAccBonus(entity) // Slayer Helm/ Black Mask/ Slayer cape
-                if (getSlayerTask(entity)?.dragon == true && inEquipment(entity, Items.DRAGON_SLAYER_GLOVES_12862))
+                if (getSlayerTask(entity)?.dragon == true && inEquipment(entity, Items.DRAGON_SLAYER_GLOVES_12862)) {
                     effectiveAttackLevel *= 1.1
+                }
             }
         }
 
         return floor(effectiveAttackLevel).toInt()
     }
 
-    override fun calculateHit(entity: Entity?, victim: Entity?, modifier: Double): Int {
+    override fun calculateHit(
+        entity: Entity?,
+        victim: Entity?,
+        modifier: Double,
+    ): Int {
         val level = entity!!.skills.getLevel(Skills.STRENGTH)
         var bonus = entity.properties.bonuses[11]
         var prayer = 1.0
@@ -168,19 +229,31 @@ open class MeleeSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandle
             cumulativeStr += 1.0
         }
 
-        if (flags.contains(SwingHandlerFlag.IGNORE_STAT_BOOSTS_DAMAGE))
+        if (flags.contains(SwingHandlerFlag.IGNORE_STAT_BOOSTS_DAMAGE)) {
             bonus = 0
+        }
 
         cumulativeStr *= getSetMultiplier(entity, Skills.STRENGTH)
 
-        if (entity is Player && getSlayerTask(entity)?.npcs?.contains((entity.properties.combatPulse?.getVictim()?.id ?: 0)) == true)
+        if (entity is Player &&
+            getSlayerTask(entity)?.npcs?.contains(
+                (
+                    entity.properties.combatPulse
+                        ?.getVictim()
+                        ?.id ?: 0
+                ),
+            ) == true
+        ) {
             cumulativeStr *= getDamAccBonus(entity)
+        }
 
         return ((1.3 + (cumulativeStr / 10) + (bonus / 80) + ((cumulativeStr * bonus) / 640)) * modifier).toInt()
     }
 
-    override fun calculateDefence(victim: Entity?, attacker: Entity?): Int {
-
+    override fun calculateDefence(
+        victim: Entity?,
+        attacker: Entity?,
+    ): Int {
         victim ?: return 0
         attacker ?: return 0
 
@@ -189,11 +262,19 @@ open class MeleeSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandle
                 var effectiveDefenceLevel = victim.skills.getLevel(Skills.DEFENCE).toDouble()
                 effectiveDefenceLevel =
                     floor(effectiveDefenceLevel + (victim.prayer.getSkillBonus(Skills.DEFENCE) * effectiveDefenceLevel))
-                if (victim.properties.attackStyle.style == WeaponInterface.STYLE_DEFENSIVE) effectiveDefenceLevel += 3
-                else if (victim.properties.attackStyle.style == WeaponInterface.STYLE_CONTROLLED) effectiveDefenceLevel += 1
+                if (victim.properties.attackStyle.style == WeaponInterface.STYLE_DEFENSIVE) {
+                    effectiveDefenceLevel += 3
+                } else if (victim.properties.attackStyle.style ==
+                    WeaponInterface.STYLE_CONTROLLED
+                ) {
+                    effectiveDefenceLevel += 1
+                }
                 effectiveDefenceLevel += 8
                 effectiveDefenceLevel = floor(effectiveDefenceLevel)
-                return floor(effectiveDefenceLevel * (victim.properties.bonuses[attacker.properties.attackStyle.bonusType + 5] + 64)).toInt()
+                return floor(
+                    effectiveDefenceLevel *
+                        (victim.properties.bonuses[attacker.properties.attackStyle.bonusType + 5] + 64),
+                ).toInt()
             }
 
             is NPC -> {
@@ -206,12 +287,17 @@ open class MeleeSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandle
         return 0
     }
 
-    override fun getSetMultiplier(e: Entity?, skillId: Int): Double {
+    override fun getSetMultiplier(
+        e: Entity?,
+        skillId: Int,
+    ): Double {
         if (e!!.properties.armourSet === ArmourSet.DHAROK && skillId == Skills.STRENGTH) {
-
             return 1.0 + (e!!.skills.maximumLifepoints - e.skills.lifepoints) * 0.01
         }
-        if (e is Player && e.isWearingVoid(CombatStyle.MELEE) && (skillId == Skills.ATTACK || skillId == Skills.STRENGTH)) {
+        if (e is Player &&
+            e.isWearingVoid(CombatStyle.MELEE) &&
+            (skillId == Skills.ATTACK || skillId == Skills.STRENGTH)
+        ) {
             return 1.1
         }
         return 1.0
@@ -229,20 +315,31 @@ open class MeleeSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandle
         }
         return if (ArmourSet.TORAG.isUsing(e)) {
             ArmourSet.TORAG
-        } else super.getArmourSet(e)
+        } else {
+            super.getArmourSet(e)
+        }
     }
 
     private fun checkUndead(name: String): Boolean {
         return (
-            name == "Zombie" || name.contains("rmoured") || name == "Ankou" || name == "Crawling Hand" || name == "Banshee" || name == "Ghost" || name == "Ghast" || name == "Mummy" || name.contains(
-                "Revenant"
-            ) ||
-                name == "Skeleton" || name == "Zogre" || name == "Spiritual Mage"
-            )
+            name == "Zombie" ||
+                name.contains("rmoured") ||
+                name == "Ankou" ||
+                name == "Crawling Hand" ||
+                name == "Banshee" ||
+                name == "Ghost" ||
+                name == "Ghast" ||
+                name == "Mummy" ||
+                name.contains(
+                    "Revenant",
+                ) ||
+                name == "Skeleton" ||
+                name == "Zogre" ||
+                name == "Spiritual Mage"
+        )
     }
 
     companion object {
-
         private fun usingHalberd(entity: Entity): Boolean {
             if (entity is Player) {
                 val weapon = entity.equipment[EquipmentContainer.SLOT_WEAPON]
@@ -255,7 +352,11 @@ open class MeleeSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandle
             return false
         }
 
-        fun canMelee(entity: Entity, victim: Entity?, distance: Int): Boolean {
+        fun canMelee(
+            entity: Entity,
+            victim: Entity?,
+            distance: Int,
+        ): Boolean {
             val e = entity.location
             if (victim == null) {
                 return false
@@ -284,14 +385,17 @@ open class MeleeSwingHandler(vararg flags: SwingHandlerFlag) : CombatSwingHandle
                 if (e == victim.location) {
                     return true
                 }
-                return victim.getSwingHandler(false).type == CombatStyle.MELEE && e.withinDistance(
-                    victim.location,
-                    1
-                ) && victim.properties.combatPulse.getVictim() === entity && entity.index < victim.index
+                return victim.getSwingHandler(false).type == CombatStyle.MELEE &&
+                    e.withinDistance(
+                        victim.location,
+                        1,
+                    ) &&
+                    victim.properties.combatPulse.getVictim() === entity &&
+                    entity.index < victim.index
             }
             return entity.centerLocation.withinDistance(
                 victim.centerLocation,
-                distance + (size shr 1) + (victim.size() shr 1)
+                distance + (size shr 1) + (victim.size() shr 1),
             )
         }
     }

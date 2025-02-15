@@ -11,7 +11,10 @@ import org.rs.consts.Components
 import java.text.NumberFormat
 import java.util.*
 
-class GERecords(private val player: Player? = null) : PersistPlayer, LoginListener {
+class GERecords(
+    private val player: Player? = null,
+) : PersistPlayer,
+    LoginListener {
     var history = arrayOfNulls<GrandExchangeOffer>(5)
     val offerRecords = arrayOfNulls<OfferRecord>(6)
 
@@ -20,8 +23,10 @@ class GERecords(private val player: Player? = null) : PersistPlayer, LoginListen
         player.setAttribute("ge-records", instance)
     }
 
-    override fun parsePlayer(player: Player, data: JSONObject) {
-
+    override fun parsePlayer(
+        player: Player,
+        data: JSONObject,
+    ) {
         val historyRaw = data["ge-history"]
         if (historyRaw != null) {
             val history = historyRaw as JSONArray
@@ -42,14 +47,17 @@ class GERecords(private val player: Player? = null) : PersistPlayer, LoginListen
         GEDatabase.run { conn ->
             val stmt = conn.createStatement()
             val offer_records =
-                stmt.executeQuery("SELECT * from player_offers where player_uid = ${player.details.uid} AND offer_state < 6")
+                stmt.executeQuery(
+                    "SELECT * from player_offers where player_uid = ${player.details.uid} AND offer_state < 6",
+                )
 
             while (offer_records.next()) {
                 val offer = GrandExchangeOffer.fromQuery(offer_records)
-                if (offer.index == -1)
+                if (offer.index == -1) {
                     needsIndex.push(offer)
-                else
+                } else {
                     instance.offerRecords[offer.index] = OfferRecord(offer.uid, offer.index)
+                }
             }
             stmt.close()
         }
@@ -64,19 +72,24 @@ class GERecords(private val player: Player? = null) : PersistPlayer, LoginListen
                 }
             }
 
-            while (needsIndex.isNotEmpty())
-            {
+            while (needsIndex.isNotEmpty()) {
                 val o = needsIndex.pop()
-                SystemLogger.logGE("[WARN] PLAYER HAD EXTRA OFFER - RECOMMEND IMMEDIATE REFUND OF CONTENTS -> OFFER UID: ${o.uid}")
-                SystemLogger.logGE("[WARN] AS PER ABOVE MESSAGE, REFUND CONTENTS OF OFFER AND MANUALLY SET offer_state = 6")
+                SystemLogger.logGE(
+                    "[WARN] PLAYER HAD EXTRA OFFER - RECOMMEND IMMEDIATE REFUND OF CONTENTS -> OFFER UID: ${o.uid}",
+                )
+                SystemLogger.logGE(
+                    "[WARN] AS PER ABOVE MESSAGE, REFUND CONTENTS OF OFFER AND MANUALLY SET offer_state = 6",
+                )
             }
         }
 
         instance.init()
     }
 
-    override fun savePlayer(player: Player, save: JSONObject) {
-
+    override fun savePlayer(
+        player: Player,
+        save: JSONObject,
+    ) {
         val history = JSONArray()
         getInstance(player).history.map {
             if (it != null) {
@@ -159,9 +172,19 @@ class GERecords(private val player: Player? = null) : PersistPlayer, LoginListen
                 continue
             }
             sendString(player!!, if (o.sell) "You sold" else "You bought", 643, 25 + i)
-            sendString(player, NumberFormat.getNumberInstance(Locale.US).format(o.completedAmount.toLong()), 643, 30 + i)
+            sendString(
+                player,
+                NumberFormat.getNumberInstance(Locale.US).format(o.completedAmount.toLong()),
+                643,
+                30 + i,
+            )
             sendString(player, ItemDefinition.forId(o.itemID).name, 643, 35 + i)
-            sendString(player, NumberFormat.getNumberInstance(Locale.US).format(o.totalCoinExchange.toLong()) + " gp", 643, 40 + i)
+            sendString(
+                player,
+                NumberFormat.getNumberInstance(Locale.US).format(o.totalCoinExchange.toLong()) + " gp",
+                643,
+                40 + i,
+            )
         }
     }
 
@@ -184,8 +207,9 @@ class GERecords(private val player: Player? = null) : PersistPlayer, LoginListen
 
     fun hasActiveOffer(): Boolean {
         for (i in offerRecords) {
-            if (i != null)
+            if (i != null) {
                 return true
+            }
         }
         return false
     }
@@ -204,7 +228,10 @@ class GERecords(private val player: Player? = null) : PersistPlayer, LoginListen
         return log
     }
 
-    data class OfferRecord(val uid: Long, val slot: Int)
+    data class OfferRecord(
+        val uid: Long,
+        val slot: Int,
+    )
 
     companion object {
         @JvmStatic

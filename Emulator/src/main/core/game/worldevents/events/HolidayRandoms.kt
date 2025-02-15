@@ -16,7 +16,9 @@ import org.json.simple.JSONObject
 import java.time.LocalDate
 import java.time.Month
 
-class HolidayRandoms : PersistTimer(0, "holiday", isAuto = true), Commands {
+class HolidayRandoms :
+    PersistTimer(0, "holiday", isAuto = true),
+    Commands {
     var paused = false
     var nextRandom: HolidayRandomEvents? = null
     var currentHoliday: String? = null
@@ -71,45 +73,62 @@ class HolidayRandoms : PersistTimer(0, "holiday", isAuto = true), Commands {
             "none" -> player.timers.removeTimer(this)
         }
 
-        if (runInterval == 0)
+        if (runInterval == 0) {
             setNextExecution()
+        }
     }
 
     fun checkIfHoliday(): String {
         val currentDate = LocalDate.now()
-        if ((!currentDate.isBefore(halloweenStartDate) && !currentDate.isAfter(halloweenEndDate)) || ServerConfig.FORCE_HALLOWEEN_EVENTS)
+        if ((!currentDate.isBefore(halloweenStartDate) && !currentDate.isAfter(halloweenEndDate)) ||
+            ServerConfig.FORCE_HALLOWEEN_EVENTS
+        ) {
             return "halloween"
+        }
 
-        if ((!currentDate.isBefore(christmasStartDate) && !currentDate.isAfter(christmasEndDate)) || ServerConfig.FORCE_CHRISTMAS_EVENTS)
+        if ((!currentDate.isBefore(christmasStartDate) && !currentDate.isAfter(christmasEndDate)) ||
+            ServerConfig.FORCE_CHRISTMAS_EVENTS
+        ) {
             return "christmas"
+        }
 
         return "none"
     }
 
-    override fun save(root: JSONObject, entity: Entity) {
+    override fun save(
+        root: JSONObject,
+        entity: Entity,
+    ) {
         root["ticksRemaining"] = (nextExecution - getWorldTicks()).toString()
     }
 
-    override fun parse(root: JSONObject, entity: Entity) {
+    override fun parse(
+        root: JSONObject,
+        entity: Entity,
+    ) {
         runInterval = (root["ticksRemaining"]?.toString()?.toIntOrNull() ?: 0)
         nextExecution = getWorldTicks() + runInterval
     }
 
     private fun canSpawn(entity: Entity): Boolean {
-        if (entity.zoneMonitor.isRestricted(ZoneRestriction.RANDOM_EVENTS) || getAttribute<RandomEventNPC?>(
+        if (entity.zoneMonitor.isRestricted(ZoneRestriction.RANDOM_EVENTS) ||
+            getAttribute<RandomEventNPC?>(
                 entity,
                 "re-npc",
-                null
+                null,
             ) != null
-        )
+        ) {
             return false
+        }
 
         val current = getAttribute<HolidayRandomEventNPC?>(entity, EVENT_NPC, null)
-        if (current != null)
+        if (current != null) {
             return false
+        }
 
-        if (paused || entity.inCombat())
+        if (paused || entity.inCombat()) {
             return false
+        }
 
         return true
     }
@@ -138,7 +157,12 @@ class HolidayRandoms : PersistTimer(0, "holiday", isAuto = true), Commands {
     }
 
     override fun defineCommands() {
-        define("hrevent", Privilege.ADMIN, "::hrevent [-p] <lt>player name<gt> [-e <lt>event name<gt>]", "Spawns a holiday random event for the target player.<br>Optional -e parameter to pass a specific event.") { player, args ->
+        define(
+            "hrevent",
+            Privilege.ADMIN,
+            "::hrevent [-p] <lt>player name<gt> [-e <lt>event name<gt>]",
+            "Spawns a holiday random event for the target player.<br>Optional -e parameter to pass a specific event.",
+        ) { player, args ->
             if (args.size == 1) {
                 val possible = HolidayRandomEvents.values()
                 for (event in possible) {
@@ -150,26 +174,34 @@ class HolidayRandoms : PersistTimer(0, "holiday", isAuto = true), Commands {
             val arg = parseCommandArgs(args.joinToString(" "))
             val target = Repository.getPlayerByName(arg.targetPlayer)
 
-            if (getTimer<HolidayRandoms>(player) == null)
+            if (getTimer<HolidayRandoms>(player) == null) {
                 reject(
                     player,
-                    "No holiday random events are active. To force a holiday's random events use ::forcehrevents"
+                    "No holiday random events are active. To force a holiday's random events use ::forcehrevents",
                 )
+            }
 
-            if (target == null)
+            if (target == null) {
                 reject(player, "Unable to find user ${arg.targetPlayer}.")
+            }
 
             forceEvent(target!!, arg.targetEvent)
         }
 
-        define("forcehrevents", Privilege.ADMIN, "::forcehrevents [eventname]", "Force enable holiday random events.") { player, args ->
+        define(
+            "forcehrevents",
+            Privilege.ADMIN,
+            "::forcehrevents [eventname]",
+            "Force enable holiday random events.",
+        ) { player, args ->
             if (args.size == 1) {
                 notify(player, "Holidays: halloween, christmas")
                 return@define
             }
             val event = args[1]
-            if (checkIfHoliday() != "none")
+            if (checkIfHoliday() != "none") {
                 reject(player, "Holiday randoms are already enabled: ${checkIfHoliday()}. Use ::stophrevents first.")
+            }
             ServerConfig.HOLIDAY_EVENT_RANDOMS = true
             when (event) {
                 "halloween" -> {
@@ -199,8 +231,9 @@ class HolidayRandoms : PersistTimer(0, "holiday", isAuto = true), Commands {
         }
 
         define("stophrevents", Privilege.ADMIN, "::stophrevents", "Stops all holiday random events.") { player, _ ->
-            if (checkIfHoliday() == "none" || !ServerConfig.HOLIDAY_EVENT_RANDOMS)
+            if (checkIfHoliday() == "none" || !ServerConfig.HOLIDAY_EVENT_RANDOMS) {
                 reject(player, "No holiday random events are currently active.")
+            }
             ServerConfig.HOLIDAY_EVENT_RANDOMS = false
             ServerConfig.FORCE_HALLOWEEN_EVENTS = false
             ServerConfig.FORCE_CHRISTMAS_EVENTS = false
@@ -214,7 +247,10 @@ class HolidayRandoms : PersistTimer(0, "holiday", isAuto = true), Commands {
         }
     }
 
-    data class CommandArgs(val targetPlayer: String, val targetEvent: HolidayRandomEvents?)
+    data class CommandArgs(
+        val targetPlayer: String,
+        val targetEvent: HolidayRandomEvents?,
+    )
 
     companion object {
         const val EVENT_NPC = "holiday-npc"
@@ -244,13 +280,19 @@ class HolidayRandoms : PersistTimer(0, "holiday", isAuto = true), Commands {
             removeTimer(player, timer)
         }
 
-        fun forceEvent(player: Player, event: HolidayRandomEvents? = null) {
+        fun forceEvent(
+            player: Player,
+            event: HolidayRandomEvents? = null,
+        ) {
             val timer = getTimer<HolidayRandoms>(player) ?: return
             timer.nextExecution = getWorldTicks()
             timer.nextRandom = event
         }
 
-        fun parseCommandArgs(args: String, commandName: String = "hrevent"): CommandArgs {
+        fun parseCommandArgs(
+            args: String,
+            commandName: String = "hrevent",
+        ): CommandArgs {
             val tokens = args.split(" ")
             val modeTokens = arrayOf("-p", "-e")
 
@@ -262,10 +304,11 @@ class HolidayRandoms : PersistTimer(0, "holiday", isAuto = true), Commands {
                 when (token) {
                     commandName -> continue
                     in modeTokens -> lastMode = token
-                    else -> when (lastMode) {
-                        "-p" -> userString += "$token "
-                        "-e" -> eventString += "$token "
-                    }
+                    else ->
+                        when (lastMode) {
+                            "-p" -> userString += "$token "
+                            "-e" -> eventString += "$token "
+                        }
                 }
             }
 

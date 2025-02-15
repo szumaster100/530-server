@@ -17,25 +17,25 @@ import org.rs.consts.Items
 import kotlin.math.min
 
 @Initializable
-class FletchingPlugin : UseWithHandler(
-    Items.BRONZE_DART_TIP_819,
-    Items.IRON_DART_TIP_820,
-    Items.STEEL_DART_TIP_821,
-    Items.MITHRIL_DART_TIP_822,
-    Items.ADAMANT_DART_TIP_823,
-    Items.RUNE_DART_TIP_824,
-    Items.DRAGON_DART_TIP_11232,
-    Items.BRONZE_BOLTS_UNF_9375,
-    Items.BLURITE_BOLTS_UNF_9376,
-    Items.IRON_BOLTS_UNF_9377,
-    Items.SILVER_BOLTS_UNF_9382,
-    Items.STEEL_BOLTS_UNF_9378,
-    Items.MITHRIL_BOLTS_UNF_9379,
-    Items.ADAMANT_BOLTS_UNF_9380,
-    Items.RUNITE_BOLTS_UNF_9381,
-    Items.BROAD_BOLTS_UNF_13279
-) {
-
+class FletchingPlugin :
+    UseWithHandler(
+        Items.BRONZE_DART_TIP_819,
+        Items.IRON_DART_TIP_820,
+        Items.STEEL_DART_TIP_821,
+        Items.MITHRIL_DART_TIP_822,
+        Items.ADAMANT_DART_TIP_823,
+        Items.RUNE_DART_TIP_824,
+        Items.DRAGON_DART_TIP_11232,
+        Items.BRONZE_BOLTS_UNF_9375,
+        Items.BLURITE_BOLTS_UNF_9376,
+        Items.IRON_BOLTS_UNF_9377,
+        Items.SILVER_BOLTS_UNF_9382,
+        Items.STEEL_BOLTS_UNF_9378,
+        Items.MITHRIL_BOLTS_UNF_9379,
+        Items.ADAMANT_BOLTS_UNF_9380,
+        Items.RUNITE_BOLTS_UNF_9381,
+        Items.BROAD_BOLTS_UNF_13279,
+    ) {
     companion object {
         val gemMap = mutableMapOf<Int, GemBolt>()
         val tipMap = mutableMapOf<Int, GemBolt>()
@@ -49,14 +49,15 @@ class FletchingPlugin : UseWithHandler(
     }
 
     override fun newInstance(arg: Any?): Plugin<Any> {
-        val feathers = intArrayOf(
-            Items.FEATHER_314,
-            Items.STRIPY_FEATHER_10087,
-            Items.RED_FEATHER_10088,
-            Items.BLUE_FEATHER_10089,
-            Items.YELLOW_FEATHER_10090,
-            Items.ORANGE_FEATHER_10091
-        )
+        val feathers =
+            intArrayOf(
+                Items.FEATHER_314,
+                Items.STRIPY_FEATHER_10087,
+                Items.RED_FEATHER_10088,
+                Items.BLUE_FEATHER_10089,
+                Items.YELLOW_FEATHER_10090,
+                Items.ORANGE_FEATHER_10091,
+            )
         feathers.forEach { addHandler(it, ITEM_TYPE, this) }
         return this
     }
@@ -72,23 +73,29 @@ class FletchingPlugin : UseWithHandler(
     private fun handleDart(event: NodeUsageEvent): Boolean {
         val dart = Dart.product[event.usedItem.id] ?: return false
 
-        val handler = object : SkillDialogueHandler(
-            event.player, SkillDialogue.MAKE_SET_ONE_OPTION, Item(dart.finished)
-        ) {
-            override fun create(amount: Int, index: Int) {
-                submitIndividualPulse(
-                    entity = event.player,
-                    pulse = DartPulse(event.player, event.usedItem, dart, amount)
-                )
-            }
+        val handler =
+            object : SkillDialogueHandler(
+                event.player,
+                SkillDialogue.MAKE_SET_ONE_OPTION,
+                Item(dart.finished),
+            ) {
+                override fun create(
+                    amount: Int,
+                    index: Int,
+                ) {
+                    submitIndividualPulse(
+                        entity = event.player,
+                        pulse = DartPulse(event.player, event.usedItem, dart, amount),
+                    )
+                }
 
-            override fun getAll(index: Int): Int {
-                return min(
-                    amountInInventory(player, event.usedItem.id),
-                    amountInInventory(player, event.usedWith.id)
-                )
+                override fun getAll(index: Int): Int {
+                    return min(
+                        amountInInventory(player, event.usedItem.id),
+                        amountInInventory(player, event.usedWith.id),
+                    )
+                }
             }
-        }
         handler.open()
         return true
     }
@@ -101,23 +108,29 @@ class FletchingPlugin : UseWithHandler(
 
         if (!hasFeather) return false
 
-        val handler = object : SkillDialogueHandler(
-            event.player, SkillDialogue.MAKE_SET_ONE_OPTION, Item(bolt.finished)
-        ) {
-            override fun create(amount: Int, index: Int) {
-                submitIndividualPulse(
-                    entity = event.player,
-                    pulse = BoltPulse(event.player, event.usedItem, bolt, Item(featherId), amount)
-                )
-            }
+        val handler =
+            object : SkillDialogueHandler(
+                event.player,
+                SkillDialogue.MAKE_SET_ONE_OPTION,
+                Item(bolt.finished),
+            ) {
+                override fun create(
+                    amount: Int,
+                    index: Int,
+                ) {
+                    submitIndividualPulse(
+                        entity = event.player,
+                        pulse = BoltPulse(event.player, event.usedItem, bolt, Item(featherId), amount),
+                    )
+                }
 
-            override fun getAll(index: Int): Int {
-                return min(
-                    amountInInventory(player, event.usedItem.id),
-                    amountInInventory(player, event.usedWith.id)
-                )
+                override fun getAll(index: Int): Int {
+                    return min(
+                        amountInInventory(player, event.usedItem.id),
+                        amountInInventory(player, event.usedWith.id),
+                    )
+                }
             }
-        }
         handler.open()
         return true
     }

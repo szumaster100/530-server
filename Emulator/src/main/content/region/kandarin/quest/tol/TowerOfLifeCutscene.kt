@@ -6,25 +6,30 @@ import core.game.dialogue.FaceAnim
 import core.game.node.entity.player.Player
 import core.game.world.GameWorld
 
-class TowerOfLifeCutscene(player: Player) : Cutscene(player) {
-
+class TowerOfLifeCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(player.location.transform(0, 0, 0))
         if (player.settings.isRunToggled) {
             player.settings.toggleRun()
         }
-
     }
 
     override fun runStage(stage: Int) {
         when (stage) {
-
             0 -> dialogueUpdate("What on " + GameWorld.settings!!.name + " is...")
             1 -> dialogueUpdate("It is time, my friends! The culmination of our work is complete!")
             2 -> dialogueUpdate("Long time indeed!")
             3 -> dialogueUpdate("Many hours we have worked!")
-            4 -> dialogueUpdate("A great many years of planning and preperation has brought us here, my fellow alchemists. Now we have... The Tower of Life! We can already create gold, we can already transform matter from one thing to")
-            5 -> dialogueUpdate("another, and now we have the ability to create life itself! We owe much to the power of Guthix, for without the life essence he left below the ground, we would never have been able to bring this tower alive!")
+            4 ->
+                dialogueUpdate(
+                    "A great many years of planning and preperation has brought us here, my fellow alchemists. Now we have... The Tower of Life! We can already create gold, we can already transform matter from one thing to",
+                )
+            5 ->
+                dialogueUpdate(
+                    "another, and now we have the ability to create life itself! We owe much to the power of Guthix, for without the life essence he left below the ground, we would never have been able to bring this tower alive!",
+                )
             6 -> dialogueUpdate("They're insane!")
             7 -> dialogueUpdate("It begins! The first day of creation!")
 
@@ -64,10 +69,11 @@ class TowerOfLifeCutscene(player: Player) : Cutscene(player) {
             40 -> dialogueUpdate("Run away!")
             41 -> dialogueUpdate("Flee for your lives!")
 
-            42 -> playerDialogueUpdate(
-                FaceAnim.FRIENDLY,
-                "They've run away. I must go confront those alchemists downstairs."
-            )
+            42 ->
+                playerDialogueUpdate(
+                    FaceAnim.FRIENDLY,
+                    "They've run away. I must go confront those alchemists downstairs.",
+                )
 
             43 -> setAttribute(player, TowerOfLifeUtils.TOL_CUTSCENE, true)
         }

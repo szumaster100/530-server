@@ -1,6 +1,5 @@
 package content.minigame.duelarena
 
-import org.rs.consts.Components
 import core.api.setAttribute
 import core.api.setVarp
 import core.game.component.Component
@@ -9,9 +8,9 @@ import core.game.component.ComponentPlugin
 import core.game.node.entity.player.Player
 import core.game.world.GameWorld
 import core.plugin.Plugin
+import org.rs.consts.Components
 
 class DuelComponentPlugin : ComponentPlugin() {
-
     @Throws(Throwable::class)
     override fun newInstance(arg: Any?): Plugin<Any> {
         ComponentDefinition.forId(Components.DUEL2_SELECT_TYPE_640)?.plugin = this
@@ -24,7 +23,7 @@ class DuelComponentPlugin : ComponentPlugin() {
         opcode: Int,
         button: Int,
         slot: Int,
-        itemId: Int
+        itemId: Int,
     ): Boolean {
         when (component.id) {
             Components.DUEL2_SELECT_TYPE_640 -> {
@@ -38,8 +37,10 @@ class DuelComponentPlugin : ComponentPlugin() {
                         }
                         if (player.getAttribute(
                                 "duel:staked",
-                                false
-                            ) && other.ironmanManager.isIronman && !GameWorld.settings!!.isDevMode
+                                false,
+                            ) &&
+                            other.ironmanManager.isIronman &&
+                            !GameWorld.settings!!.isDevMode
                         ) {
                             other.sendMessage("You can't accept a staked duel as an Ironman.")
                             player.sendMessage("You can't duel Ironman players.")

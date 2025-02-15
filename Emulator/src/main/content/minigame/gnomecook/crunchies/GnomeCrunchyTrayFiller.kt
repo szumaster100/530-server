@@ -12,7 +12,6 @@ private const val RAW_CRUNCHIES = 2202
 
 @Initializable
 class GnomeCrunchyTrayFiller : UseWithHandler(GIANNE_DOUGH) {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         addHandler(CRUNCHY_TRAY, ITEM_TYPE, this)
         return this

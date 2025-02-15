@@ -6,8 +6,10 @@ import core.net.packet.IoBuffer
 import core.net.packet.out.ClearScenery
 import core.net.packet.out.ConstructScenery
 
-class SceneryUpdateFlag(private val scenery: Scenery, private val remove: Boolean) : UpdateFlag<Any?>(null) {
-
+class SceneryUpdateFlag(
+    private val scenery: Scenery,
+    private val remove: Boolean,
+) : UpdateFlag<Any?>(null) {
     override fun write(buffer: IoBuffer) {
         if (remove) {
             ClearScenery.write(buffer, scenery)

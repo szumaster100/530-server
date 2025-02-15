@@ -1,11 +1,11 @@
 package content.region.kandarin.quest.elemental_workshop.book
 
-import org.rs.consts.Items
 import content.global.handlers.iface.BookInterface
 import content.region.kandarin.quest.elemental_workshop.handlers.EWUtils
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.player.Player
+import org.rs.consts.Items
 
 class SlashedBookHandler : InteractionListener {
     companion object {
@@ -13,7 +13,11 @@ class SlashedBookHandler : InteractionListener {
         private val CONTENTS = EWUtils.PAGES
 
         @Suppress("UNUSED_PARAMETER")
-        private fun display(player: Player, pageNum: Int, buttonID: Int): Boolean {
+        private fun display(
+            player: Player,
+            pageNum: Int,
+            buttonID: Int,
+        ): Boolean {
             BookInterface.pageSetup(player, BookInterface.FANCY_BOOK_3_49, TITLE, CONTENTS)
             return true
         }

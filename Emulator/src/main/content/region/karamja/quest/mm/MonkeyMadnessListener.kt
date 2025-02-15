@@ -1,15 +1,14 @@
 package content.region.karamja.quest.mm
 
-import org.rs.consts.*
 import content.region.karamja.dialogue.apeatoll.dungeon.ZooknockAfterBattleDialogueFile
 import content.region.karamja.dialogue.apeatoll.dungeon.ZooknockDialogue
 import content.region.karamja.dialogue.apeatoll.dungeon.ZooknockDialogueFile
 import content.region.karamja.quest.mm.dialogue.*
 import core.api.*
-import core.game.component.Component
 import core.api.IfaceSettingsBuilder
 import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
+import core.game.component.Component
 import core.game.global.action.DoorActionHandler
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
@@ -24,9 +23,9 @@ import core.net.packet.context.CameraContext
 import core.net.packet.context.ContainerContext
 import core.net.packet.out.CameraViewPacket
 import core.net.packet.out.ContainerPacket
+import org.rs.consts.*
 
 class MonkeyMadnessListener : InteractionListener {
-
     companion object {
         val mspeakAmuletUnstrung = Items.MSPEAK_AMULET_4022
         val monkeyMadnessPuzzleComponent = Components.TRAIL_PUZZLE_363
@@ -34,13 +33,13 @@ class MonkeyMadnessListener : InteractionListener {
     }
 
     override fun defineListeners() {
-
         on(intArrayOf(NPCs.ZOOKNOCK_1425, NPCs.ZOOKNOCK_1426), IntType.NPC, "talk-to") { player, npc ->
             if (getQuestStage(player, Quests.MONKEY_MADNESS) == 96) {
                 openDialogue(player, ZooknockAfterBattleDialogueFile(), npc)
-            } else if (getQuestStage(player, Quests.MONKEY_MADNESS) == 30 || getQuestStage(
+            } else if (getQuestStage(player, Quests.MONKEY_MADNESS) == 30 ||
+                getQuestStage(
                     player,
-                    Quests.MONKEY_MADNESS
+                    Quests.MONKEY_MADNESS,
                 ) == 31
             ) {
                 openDialogue(player, ZooknockDialogue(), npc)
@@ -63,7 +62,12 @@ class MonkeyMadnessListener : InteractionListener {
                 player.equipment.containsAtLeastOneItem(IntArray(4022 - 4021 + 1) { it + 4021 }) &&
                 getQuestStage(player, Quests.MONKEY_MADNESS) == 33
             ) {
-                openDialogue(player, content.region.karamja.quest.mm.dialogue.MonkeyDialogue(), npc)
+                openDialogue(
+                    player,
+                    content.region.karamja.quest.mm.dialogue
+                        .MonkeyDialogue(),
+                    npc,
+                )
             }
             return@on true
         }
@@ -106,19 +110,20 @@ class MonkeyMadnessListener : InteractionListener {
                 sendNPCDialogue(player, NPCs.KRUK_1441, "Open the gate! A monkey wishes to pass!")
 
                 var walkToY = 0
-                if (player.location.y > 2766)
+                if (player.location.y > 2766) {
                     walkToY = 2764
-                else
+                } else {
                     walkToY = 2768
+                }
 
                 DoorActionHandler.handleAutowalkDoor(
                     player,
                     core.game.node.scenery.Scenery(
                         4788,
                         Location.create(2721, 2766, 0),
-                        2
+                        2,
                     ),
-                    Location.create(2721, walkToY, 0)
+                    Location.create(2721, walkToY, 0),
                 )
             }
             return@on true
@@ -130,7 +135,6 @@ class MonkeyMadnessListener : InteractionListener {
             ) {
                 openDialogue(player, DaeroTrainingPostQuestDialogue(), npc)
             } else if (getAttribute(player, "mm:xp_reward", false)) {
-
             } else {
                 when (player.location.regionId) {
                     9782 -> openDialogue(player, DaeroDialogue(), npc)
@@ -171,14 +175,13 @@ class MonkeyMadnessListener : InteractionListener {
             player.interfaceManager.open(Component(monkeyMadnessPuzzleComponent))
             PacketRepository.send(
                 ContainerPacket::class.java,
-                ContainerContext(player, -1, -1, 140, puzzlePieces, 25, false)
+                ContainerContext(player, -1, -1, 140, puzzlePieces, 25, false),
             )
             return@on true
         }
 
         on(Scenery.REINITIALISATION_PANEL_4871, IntType.SCENERY, "Operate") { player, _ ->
             if (!getAttribute(player, "mm:puzzle:done", false)) {
-
                 val settings = IfaceSettingsBuilder().enableAllOptions().build()
                 player.packetDispatch.sendIfaceSettings(settings, 6, monkeyMadnessPuzzleComponent, 0, 25)
                 player.interfaceManager.open(Component(monkeyMadnessPuzzleComponent))
@@ -194,14 +197,13 @@ class MonkeyMadnessListener : InteractionListener {
 
                     PacketRepository.send(
                         ContainerPacket::class.java,
-                        ContainerContext(player, -1, -1, 140, shuffledInitialPuzzle, 25, false)
+                        ContainerContext(player, -1, -1, 140, shuffledInitialPuzzle, 25, false),
                     )
                 } else {
-
                     puzzlePieces = getAttribute(player, "mm:puzzle", puzzlePieces?.clone())
                     PacketRepository.send(
                         ContainerPacket::class.java,
-                        ContainerContext(player, -1, -1, 140, puzzlePieces, 25, false)
+                        ContainerContext(player, -1, -1, 140, puzzlePieces, 25, false),
                     )
                 }
             } else {
@@ -216,7 +218,7 @@ class MonkeyMadnessListener : InteractionListener {
                 sendItemDialogue(
                     player,
                     Items.MAMULET_MOULD_4020,
-                    "You need the M'amulet Mould in order to make a M'speak amulet"
+                    "You need the M'amulet Mould in order to make a M'speak amulet",
                 )
             } else {
                 animate(player, Animations.HUMAN_FURNACE_SMELT_3243)
@@ -265,15 +267,16 @@ class MonkeyMadnessListener : InteractionListener {
 
             PacketRepository.send(
                 CameraViewPacket::class.java,
-                CameraContext(player, CameraContext.CameraType.SHAKE, 4, 4, 0, 4, 4)
+                CameraContext(player, CameraContext.CameraType.SHAKE, 4, 4, 0, 4, 4),
             )
 
             teleport(player, Location.create(2705, 9175, 1))
 
             val localNpcs = getLocalNpcs(player.location, 10)
             localNpcs.forEach { npc: NPC ->
-                if (npc.name.equals("Jungle demon"))
+                if (npc.name.equals("Jungle demon")) {
                     npc.isAggressive = true
+                }
                 npc.attack(player)
 
                 if (DeathTask.isDead(npc)) {

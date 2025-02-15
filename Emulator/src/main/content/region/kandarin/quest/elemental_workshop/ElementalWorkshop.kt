@@ -1,8 +1,5 @@
 package content.region.kandarin.quest.elemental_workshop
 
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import content.region.kandarin.quest.elemental_workshop.handlers.EWUtils
 import core.api.*
 import core.game.node.entity.player.Player
@@ -11,15 +8,22 @@ import core.game.node.entity.skill.Skills
 import core.game.system.command.Privilege
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
-class ElementalWorkshop : Quest(Quests.ELEMENTAL_WORKSHOP_I, 52, 51, 1), Commands {
-
+class ElementalWorkshop :
+    Quest(Quests.ELEMENTAL_WORKSHOP_I, 52, 51, 1),
+    Commands {
     override fun newInstance(`object`: Any?): Quest {
         return this
     }
 
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         player ?: return
         var line = 11
@@ -28,11 +32,40 @@ class ElementalWorkshop : Quest(Quests.ELEMENTAL_WORKSHOP_I, 52, 51, 1), Command
             line(player, "!!book?? found in !!Seers village??.", line++)
             line++
             line(player, "Minimum requirements:", line++)
-            line(player, if (getStatLevel(player, Skills.MINING) >= 20) "---Level 20 Mining/--" else "!!Level 20 Mining??", line++)
-            line(player, if (getStatLevel(player, Skills.SMITHING) >= 20) "---Level 20 Smithing/--" else "!!Level 20 Smithing??", line++)
-            line(player, if (getStatLevel(player, Skills.CRAFTING) >= 20) "---Level 20 Crafting/--" else "!!Level 20 Crafting??", line++)
+            line(
+                player,
+                if (getStatLevel(player, Skills.MINING) >=
+                    20
+                ) {
+                    "---Level 20 Mining/--"
+                } else {
+                    "!!Level 20 Mining??"
+                },
+                line++,
+            )
+            line(
+                player,
+                if (getStatLevel(player, Skills.SMITHING) >=
+                    20
+                ) {
+                    "---Level 20 Smithing/--"
+                } else {
+                    "!!Level 20 Smithing??"
+                },
+                line++,
+            )
+            line(
+                player,
+                if (getStatLevel(player, Skills.CRAFTING) >=
+                    20
+                ) {
+                    "---Level 20 Crafting/--"
+                } else {
+                    "!!Level 20 Crafting??"
+                },
+                line++,
+            )
         } else {
-
             if (stage < 100) {
                 if (stage >= 1) {
                     line(player, "---I have found a battered book in a house in Seers Village./--", line++)
@@ -90,10 +123,16 @@ class ElementalWorkshop : Quest(Quests.ELEMENTAL_WORKSHOP_I, 52, 51, 1), Command
         removeAttributes(player, "got_needle", "got_leather")
     }
 
-    override fun getConfig(player: Player?, stage: Int): IntArray {
+    override fun getConfig(
+        player: Player?,
+        stage: Int,
+    ): IntArray {
         if (stage >= 100) return intArrayOf(Vars.VARP_QUEST_ELEMENTAL_WORKSHOP_299, 1048576)
-        if (stage > 0) return intArrayOf(Vars.VARP_QUEST_ELEMENTAL_WORKSHOP_299, 3)
-        else return intArrayOf(Vars.VARP_QUEST_ELEMENTAL_WORKSHOP_PROGRESS_299, 0)
+        if (stage > 0) {
+            return intArrayOf(Vars.VARP_QUEST_ELEMENTAL_WORKSHOP_299, 3)
+        } else {
+            return intArrayOf(Vars.VARP_QUEST_ELEMENTAL_WORKSHOP_PROGRESS_299, 0)
+        }
     }
 
     override fun defineCommands() {

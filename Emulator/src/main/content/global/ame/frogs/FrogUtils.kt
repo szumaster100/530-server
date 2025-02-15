@@ -1,9 +1,5 @@
 package content.global.ame.frogs
 
-import org.rs.consts.Animations
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.data.RandomEvent
 import core.api.*
 import core.api.ui.restoreTabs
@@ -14,6 +10,10 @@ import core.game.node.entity.player.Player
 import core.game.system.task.Pulse
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
+import org.rs.consts.Animations
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 object FrogUtils {
     const val ATTRIBUTE_FROG_RANDOM_EVENT = "frog:task"
@@ -41,12 +41,15 @@ object FrogUtils {
             ATTRIBUTE_FROG_RANDOM_EVENT,
             ATTRIBUTE_FROG_TASK_FAIL,
             RandomEvent.save(),
-            RandomEvent.logout()
+            RandomEvent.logout(),
         )
         unlock(player)
     }
 
-    fun kissTheFrog(player: Player, node: Node) {
+    fun kissTheFrog(
+        player: Player,
+        node: Node,
+    ) {
         val npc = node as NPC
         lock(player, 100)
         lockInteractions(player, 100)
@@ -54,6 +57,7 @@ object FrogUtils {
             player,
             object : Pulse() {
                 var counter = 0
+
                 override fun pulse(): Boolean {
                     when (counter++) {
                         1 -> {
@@ -69,7 +73,7 @@ object FrogUtils {
                         3 -> {
                             findLocalNPC(
                                 player,
-                                FROG_NPC
+                                FROG_NPC,
                             )!!.transform(if (player.isMale) FROG_PRINCESS_NPC else FROG_PRINCE_NPC)
                             visualize(npc, -1, Graphics(85, 100))
                         }
@@ -86,12 +90,13 @@ object FrogUtils {
 
                         6 -> visualize(npc, BLOW_KISS_ANIM, BLOW_KISS_GFX)
                         8 -> visualize(npc, BLOW_KISS_ANIM, BLOW_KISS_GFX)
-                        9 -> visualize(npc, BLOW_KISS_ANIM, BLOW_KISS_GFX).also {
-                            openInterface(
-                                player,
-                                Components.FADE_TO_BLACK_120
-                            )
-                        }
+                        9 ->
+                            visualize(npc, BLOW_KISS_ANIM, BLOW_KISS_GFX).also {
+                                openInterface(
+                                    player,
+                                    Components.FADE_TO_BLACK_120,
+                                )
+                            }
 
                         12 -> {
                             closeInterface(player)
@@ -104,7 +109,7 @@ object FrogUtils {
                     }
                     return false
                 }
-            }
+            },
         )
         return
     }

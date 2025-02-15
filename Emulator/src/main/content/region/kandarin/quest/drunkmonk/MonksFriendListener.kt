@@ -1,6 +1,5 @@
 package content.region.kandarin.quest.drunkmonk
 
-import org.rs.consts.NPCs
 import content.region.kandarin.quest.drunkmonk.dialogue.BrotherCedricDialogueFile
 import content.region.kandarin.quest.drunkmonk.dialogue.BrotherOmadDialogueFile
 import content.region.kandarin.quest.drunkmonk.dialogue.MonasteryMonkDialogueFile
@@ -8,9 +7,9 @@ import core.api.openDialogue
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.npc.NPC
+import org.rs.consts.NPCs
 
 class MonksFriendListener : InteractionListener {
-
     override fun defineListeners() {
         on(NPCs.BROTHER_CEDRIC_280, IntType.NPC, "talk-to") { player, _ ->
             openDialogue(player, BrotherCedricDialogueFile(), NPC(NPCs.BROTHER_CEDRIC_280))

@@ -2,8 +2,6 @@ package content.global.dialogue
 
 import core.api.item.produceGroundItem
 import core.api.sendMessage
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.setAttribute
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
@@ -14,21 +12,30 @@ import core.game.node.item.Item
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
 import core.tools.RandomFunction
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
-class ManDialogue(player: Player? = null) : Dialogue(player) {
-
+class ManDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
         if (npc == null) return false
-        if ((args.size > 1 && args[1] is Item) && (args[1] as Item) == Item(Items.CIDER_5763) && player.inventory.remove(Item(Items.CIDER_5763))) {
-
+        if ((args.size > 1 && args[1] is Item) &&
+            (args[1] as Item) == Item(Items.CIDER_5763) &&
+            player.inventory.remove(Item(Items.CIDER_5763))
+        ) {
             if (!player.achievementDiaryManager.getDiary(DiaryType.SEERS_VILLAGE)!!.isComplete(0, 6)) {
                 if (player.getAttribute("diary:seers:pub-cider", 0) >= 4) {
                     setAttribute(player, "/save:diary:seers:pub-cider", 5)
                     player.achievementDiaryManager.getDiary(DiaryType.SEERS_VILLAGE)!!.updateTask(player, 0, 6, true)
                 } else {
-                    setAttribute(player, "/save:diary:seers:pub-cider", player.getAttribute("diary:seers:pub-cider", 0) + 1)
+                    setAttribute(
+                        player,
+                        "/save:diary:seers:pub-cider",
+                        player.getAttribute("diary:seers:pub-cider", 0) + 1,
+                    )
                 }
             }
             npc("Ah, a glass of cider, that's very generous of you. I", "don't mind if I do. Thanks!").also {
@@ -42,7 +49,7 @@ class ManDialogue(player: Player? = null) : Dialogue(player) {
             stage = 0
         }
         val rand = RandomFunction.random(0, 1000)
-        if(rand == 1) {
+        if (rand == 1) {
             sendMessage(player, "Something drops out of Man's pocket onto the floor.")
             sendMessage(player, "It looks like a piece of paper.")
             produceGroundItem(player, Items.FLIER_956, 1, npc.location)
@@ -50,13 +57,20 @@ class ManDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> npc(FaceAnim.HALF_GUILTY, "I'm very well thank you.").also { stage = END_DIALOGUE }
             2 -> npc(FaceAnim.HALF_GUILTY, "Who are you?").also { stage = 6 }
             3 -> npc(FaceAnim.HALF_GUILTY, "I'm fine, how are you?").also { stage = 8 }
             4 -> npc(FaceAnim.HALF_GUILTY, "No, I don't want to buy anything!").also { stage = END_DIALOGUE }
-            5 -> npc(FaceAnim.HALF_GUILTY, "I think we need a new king. The one we've got isn't", "very good.").also { stage = END_DIALOGUE }
+            5 ->
+                npc(FaceAnim.HALF_GUILTY, "I think we need a new king. The one we've got isn't", "very good.").also {
+                    stage =
+                        END_DIALOGUE
+                }
             6 -> player(FaceAnim.HALF_GUILTY, "I'm a bold adventurer.").also { stage++ }
             7 -> npc(FaceAnim.HALF_GUILTY, "Ah, a very noble profession.").also { stage = END_DIALOGUE }
             8 -> player(FaceAnim.HALF_GUILTY, "Very well thank you.").also { stage = END_DIALOGUE }
@@ -114,7 +128,7 @@ class ManDialogue(player: Player? = null) : Dialogue(player) {
             NPCs.WOMAN_7882,
             NPCs.WOMAN_7883,
             NPCs.WOMAN_7884,
-            NPCs.WOMAN_7925
+            NPCs.WOMAN_7925,
         )
     }
 }

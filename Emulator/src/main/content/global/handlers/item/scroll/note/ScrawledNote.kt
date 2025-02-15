@@ -1,15 +1,14 @@
 package content.global.handlers.item.scroll.note
 
-import org.rs.consts.Components
-import org.rs.consts.Items
 import core.api.openInterface
 import core.api.sendString
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.player.Player
+import org.rs.consts.Components
+import org.rs.consts.Items
 
 class ScrawledNote : InteractionListener {
-
     companion object {
         private fun ScrawledNoteContent(player: Player) {
             val scrawledNoteContent =
@@ -24,7 +23,7 @@ class ScrawledNote : InteractionListener {
                     "",
                     "What have I done?",
                     "My spirit is overthrown by feelings of fear and evil.",
-                    "I feel helpless, and weak... from my teachings, I know -"
+                    "I feel helpless, and weak... from my teachings, I know -",
                 )
 
             sendString(player, scrawledNoteContent.joinToString("<br>"), Components.BLANK_SCROLL_222, 2)
@@ -35,7 +34,7 @@ class ScrawledNote : InteractionListener {
         on(Items.SCRAWLED_NOTE_717, IntType.ITEM, "read") { player, _ ->
             openInterface(player, Components.BLANK_SCROLL_222).also {
                 ScrawledNoteContent(
-                    player
+                    player,
                 )
             }
             return@on true

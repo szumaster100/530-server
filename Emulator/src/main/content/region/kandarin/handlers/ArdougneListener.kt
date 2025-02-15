@@ -1,8 +1,5 @@
 package content.region.kandarin.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.global.travel.charter.Charter
 import content.region.kandarin.dialogue.ardougne.CaptainBarnabyDialogue
 import content.region.kandarin.quest.grail.dialogue.GalahadHGDialogue
@@ -17,11 +14,12 @@ import core.game.node.entity.player.link.diary.DiaryType
 import core.game.node.item.Item
 import core.tools.END_DIALOGUE
 import core.tools.START_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 class ArdougneListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(NPCs.GALAHAD_218, IntType.NPC, "talk-to") { player, _ ->
 
             openDialogue(player, GalahadHGDialogue())
@@ -51,26 +49,32 @@ class ArdougneListener : InteractionListener {
             openDialogue(
                 player,
                 object : DialogueFile() {
-                    override fun handle(componentID: Int, buttonID: Int) {
+                    override fun handle(
+                        componentID: Int,
+                        buttonID: Int,
+                    ) {
                         npc = NPC(NPCs.CHARLIE_5138)
                         when (stage) {
-                            START_DIALOGUE -> playerl(
-                                FaceAnim.FRIENDLY,
-                                "Hey, I've got another ferret if you're interested?"
-                            ).also { stage++ }
+                            START_DIALOGUE ->
+                                playerl(
+                                    FaceAnim.FRIENDLY,
+                                    "Hey, I've got another ferret if you're interested?",
+                                ).also { stage++ }
 
-                            1 -> npcl(
-                                FaceAnim.NEUTRAL,
-                                "Er, oh! Well that's very kind of you, but we don't really need another ferret at the moment, "
-                            ).also { stage++ }
+                            1 ->
+                                npcl(
+                                    FaceAnim.NEUTRAL,
+                                    "Er, oh! Well that's very kind of you, but we don't really need another ferret at the moment, ",
+                                ).also { stage++ }
 
-                            2 -> npcl(
-                                FaceAnim.HALF_GUILTY,
-                                "I'm afraid. We're having enough trouble taming the one we've got."
-                            ).also { stage = END_DIALOGUE }
+                            2 ->
+                                npcl(
+                                    FaceAnim.HALF_GUILTY,
+                                    "I'm afraid. We're having enough trouble taming the one we've got.",
+                                ).also { stage = END_DIALOGUE }
                         }
                     }
-                }
+                },
             )
             return@onUseWith true
         }

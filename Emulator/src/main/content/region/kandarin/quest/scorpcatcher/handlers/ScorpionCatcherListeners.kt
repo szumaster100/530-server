@@ -1,7 +1,5 @@
 package content.region.kandarin.quest.scorpcatcher.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.region.kandarin.quest.scorpcatcher.ScorpionCatcher
 import content.region.kandarin.quest.scorpcatcher.dialogue.SeersDialogueFile
 import content.region.kandarin.quest.scorpcatcher.dialogue.ThormacDialogueFile
@@ -13,11 +11,11 @@ import core.game.node.item.Item
 import core.game.system.config.NPCConfigParser
 import core.game.system.task.Pulse
 import core.game.world.GameWorld
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 class ScorpionCatcherListeners : InteractionListener {
-
     override fun defineListeners() {
-
         val haveAlready = "You already have this scorpion in this cage."
         val catchMessage = "You catch a scorpion!"
 
@@ -253,12 +251,12 @@ class ScorpionCatcherListeners : InteractionListener {
     }
 
     companion object {
-
         fun getScorpionLocation(player: Player) {
             submitIndividualPulse(
                 player,
                 object : Pulse() {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             1 -> sendMessage(player, "The seer produces a small mirror.")
@@ -273,7 +271,7 @@ class ScorpionCatcherListeners : InteractionListener {
                         }
                         return false
                     }
-                }
+                },
             )
         }
 
@@ -282,6 +280,7 @@ class ScorpionCatcherListeners : InteractionListener {
                 player,
                 object : Pulse() {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             0 -> {
@@ -297,7 +296,7 @@ class ScorpionCatcherListeners : InteractionListener {
                         }
                         return false
                     }
-                }
+                },
             )
         }
     }

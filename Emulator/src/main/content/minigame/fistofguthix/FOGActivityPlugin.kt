@@ -7,7 +7,6 @@ import core.game.world.map.zone.ZoneBorders
 import core.plugin.ClassScanner.definePlugin
 
 class FOGActivityPlugin : ActivityPlugin("Fist of Guthix", false, true, true) {
-
     var round = 0
 
     @Throws(Throwable::class)

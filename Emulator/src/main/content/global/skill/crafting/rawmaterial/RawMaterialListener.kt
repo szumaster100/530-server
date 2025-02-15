@@ -1,8 +1,5 @@
 package content.global.skill.crafting.rawmaterial
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import core.api.*
 import core.api.skill.sendSkillDialogue
 import core.game.interaction.IntType
@@ -10,25 +7,28 @@ import core.game.interaction.InteractionListener
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.tools.RandomUtils
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 import kotlin.math.min
 
 class RawMaterialListener : InteractionListener {
-
     override fun defineListeners() {
-
         onUseWith(IntType.ITEM, Items.CHISEL_1755, *graniteIDs) { player, _, with ->
             setTitle(player, 2)
             sendDialogueOptions(
                 player,
                 "What would you like to do?",
                 "Split the block into smaller pieces.",
-                "Nothing."
+                "Nothing.",
             )
             addDialogueAction(player) { player, button ->
                 if (button <= 2) {
                     var amount = min(amountInInventory(player, with.id), amountInInventory(player, with.id))
                     submitIndividualPulse(player, GraniteCuttingPulse(player, Item(with.id), amount))
-                } else return@addDialogueAction
+                } else {
+                    return@addDialogueAction
+                }
             }
             return@onUseWith true
         }
@@ -67,14 +67,14 @@ class RawMaterialListener : InteractionListener {
                                 addItem(player, Items.LIMESTONE_BRICK_3420)
                                 sendMessage(
                                     player,
-                                    "You use the chisel on the limestone and carve it into a building block."
+                                    "You use the chisel on the limestone and carve it into a building block.",
                                 )
                             } else {
                                 rewardXP(player, Skills.CRAFTING, 1.5)
                                 addItem(player, Items.ROCK_968)
                                 sendMessage(
                                     player,
-                                    "You use the chisel on the limestone but fail to carve it into a building block."
+                                    "You use the chisel on the limestone but fail to carve it into a building block.",
                                 )
                             }
                         }

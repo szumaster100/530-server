@@ -1,9 +1,7 @@
 package content.minigame.fishingtrawler
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Music
 import core.api.*
+import core.api.MapArea
 import core.game.component.Component
 import core.game.node.entity.Entity
 import core.game.node.entity.npc.NPC
@@ -11,21 +9,23 @@ import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.game.node.scenery.Scenery
 import core.game.node.scenery.SceneryBuilder
-import core.tools.Log
 import core.game.system.command.sets.FISHING_TRAWLER_GAMES_WON
 import core.game.system.command.sets.FISHING_TRAWLER_SHIPS_SANK
 import core.game.system.command.sets.STATS_BASE
 import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
-import core.api.MapArea
 import core.game.world.map.build.DynamicRegion
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.map.zone.ZoneRestriction
 import core.game.world.update.flag.context.Animation
+import core.tools.Log
 import core.tools.RandomFunction
 import core.tools.secondsToTicks
 import core.tools.ticksToSeconds
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Music
 import java.util.concurrent.TimeUnit
 import kotlin.math.ceil
 import kotlin.random.Random
@@ -38,9 +38,12 @@ private const val HOLE_SOUTH_Y = 23
 private const val LEAKING_ID = 2167
 private const val PATCHED_ID = 2168
 
-class FishingTrawlerSession(val activity: FishingTrawlerActivity? = null) : MapArea {
+class FishingTrawlerSession(
+    val activity: FishingTrawlerActivity? = null,
+) : MapArea {
     constructor(region: DynamicRegion, activity: FishingTrawlerActivity) : this(activity) {
-        this.region = region; this.base = region.baseLocation
+        this.region = region
+        this.base = region.baseLocation
     }
 
     var players: ArrayList<Player> = ArrayList()
@@ -94,7 +97,10 @@ class FishingTrawlerSession(val activity: FishingTrawlerActivity? = null) : MapA
         GameWorld.Pulser.submit(SwapBoatPulse(players, newRegion))
     }
 
-    class SwapBoatPulse(val playerList: ArrayList<Player>, val newRegion: DynamicRegion) : Pulse(3) {
+    class SwapBoatPulse(
+        val playerList: ArrayList<Player>,
+        val newRegion: DynamicRegion,
+    ) : Pulse(3) {
         override fun pulse(): Boolean {
             val session: FishingTrawlerSession? = playerList[0].getAttribute("ft-session", null)
             session ?: return true
@@ -113,8 +119,11 @@ class FishingTrawlerSession(val activity: FishingTrawlerActivity? = null) : MapA
         }
     }
 
-    class TrawlerPulse(val session: FishingTrawlerSession) : Pulse() {
+    class TrawlerPulse(
+        val session: FishingTrawlerSession,
+    ) : Pulse() {
         var ticks = 0
+
         override fun pulse(): Boolean {
             ticks++
             session.timeLeft--
@@ -194,7 +203,10 @@ class FishingTrawlerSession(val activity: FishingTrawlerActivity? = null) : MapA
         hole_locations.addAll(tempLocationList)
     }
 
-    fun initMurphy(localX: Int, localY: Int) {
+    fun initMurphy(
+        localX: Int,
+        localY: Int,
+    ) {
         murphy = NPC(463)
         murphy?.isWalks = false
         murphy?.isPathBoundMovement = true
@@ -216,22 +228,23 @@ class FishingTrawlerSession(val activity: FishingTrawlerActivity? = null) : MapA
     }
 
     fun tickMurphy() {
-        var phrase = if (boatSank) {
-            arrayOf(
-                "No fishes for you today!",
-                "Keep your head above water, shipmate.",
-                "Arrrgh! We sunk!",
-                "You'll be joining Davy Jones!"
-            ).random()
-        } else if (waterAmount < 200) {
-            arrayOf("Blistering barnacles!", "Let's get a net full of fishes!").random()
-        } else {
-            arrayOf(
-                "We'll all end up in a watery grave!",
-                "My mother could bail better than that!",
-                "It's a fierce sea today traveller."
-            ).random()
-        }
+        var phrase =
+            if (boatSank) {
+                arrayOf(
+                    "No fishes for you today!",
+                    "Keep your head above water, shipmate.",
+                    "Arrrgh! We sunk!",
+                    "You'll be joining Davy Jones!",
+                ).random()
+            } else if (waterAmount < 200) {
+                arrayOf("Blistering barnacles!", "Let's get a net full of fishes!").random()
+            } else {
+                arrayOf(
+                    "We'll all end up in a watery grave!",
+                    "My mother could bail better than that!",
+                    "It's a fierce sea today traveller.",
+                ).random()
+            }
         if (getLeakingHoles() > 0 && RandomFunction.random(100) <= 15) {
             phrase = "The water is coming in matey!"
         }
@@ -251,7 +264,7 @@ class FishingTrawlerSession(val activity: FishingTrawlerActivity? = null) : MapA
             base.transform(33, 18, 0),
             base.transform(28, 16, 0),
             base.transform(28, 30, 0),
-            base.transform(34, 32, 0)
+            base.transform(34, 32, 0),
         )) {
             val npc = NPC(1179)
             npc.location = loc
@@ -271,15 +284,16 @@ class FishingTrawlerSession(val activity: FishingTrawlerActivity? = null) : MapA
                 Scenery(
                     LEAKING_ID,
                     holeLocation,
-                    if (holeLocation.y == HOLE_NORTH_Y) 1 else 3
-                )
-            ) && !SceneryBuilder.replace(
+                    if (holeLocation.y == HOLE_NORTH_Y) 1 else 3,
+                ),
+            ) &&
+            !SceneryBuilder.replace(
                 Scenery(2177, holeLocation),
                 Scenery(
                     LEAKING_ID,
                     holeLocation,
-                    if (holeLocation.y == HOLE_NORTH_Y) 1 else 3
-                )
+                    if (holeLocation.y == HOLE_NORTH_Y) 1 else 3,
+                ),
             )
         ) {
             maxHoles -= 1
@@ -290,11 +304,14 @@ class FishingTrawlerSession(val activity: FishingTrawlerActivity? = null) : MapA
         return maxHoles - hole_locations.size
     }
 
-    fun repairHole(player: Player, obj: Scenery) {
+    fun repairHole(
+        player: Player,
+        obj: Scenery,
+    ) {
         if (player.inventory.remove(Item(Items.SWAMP_PASTE_1941))) {
             SceneryBuilder.replace(
                 obj,
-                Scenery(PATCHED_ID, obj.location, obj.rotation)
+                Scenery(PATCHED_ID, obj.location, obj.rotation),
             )
             hole_locations.add(obj.location)
             if (RandomFunction.random(100) <= 30) {
@@ -324,7 +341,7 @@ class FishingTrawlerSession(val activity: FishingTrawlerActivity? = null) : MapA
             ((waterAmount / 500.0) * 100).toInt(),
             netRipped,
             fishAmount,
-            TimeUnit.SECONDS.toMinutes(ticksToSeconds(timeLeft).toLong()).toInt() + 1
+            TimeUnit.SECONDS.toMinutes(ticksToSeconds(timeLeft).toLong()).toInt() + 1,
         )
     }
 
@@ -337,7 +354,7 @@ class FishingTrawlerSession(val activity: FishingTrawlerActivity? = null) : MapA
             ZoneRestriction.CANNON,
             ZoneRestriction.FIRES,
             ZoneRestriction.RANDOM_EVENTS,
-            ZoneRestriction.TELEPORT
+            ZoneRestriction.TELEPORT,
         )
     }
 
@@ -346,7 +363,10 @@ class FishingTrawlerSession(val activity: FishingTrawlerActivity? = null) : MapA
         log(this::class.java, Log.FINE, "ENTERED FTZ")
     }
 
-    override fun areaLeave(entity: Entity, logout: Boolean) {
+    override fun areaLeave(
+        entity: Entity,
+        logout: Boolean,
+    ) {
         super.areaLeave(entity, logout)
         log(this::class.java, Log.FINE, "EXITED FTZ")
     }

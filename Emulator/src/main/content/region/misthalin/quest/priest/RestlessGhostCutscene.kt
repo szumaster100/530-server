@@ -1,8 +1,5 @@
 package content.region.misthalin.quest.priest
 
-import org.rs.consts.Animations
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.*
 import core.api.quest.finishQuest
 import core.api.ui.closeDialogue
@@ -11,9 +8,13 @@ import core.game.dialogue.FaceAnim
 import core.game.node.entity.player.Player
 import core.game.world.map.Direction
 import core.game.world.update.flag.context.Graphics
+import org.rs.consts.Animations
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
-class RestlessGhostCutscene(player: Player) : Cutscene(player) {
-
+class RestlessGhostCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(player.location.transform(0, 0, 0))
         loadRegion(12849)
@@ -39,7 +40,7 @@ class RestlessGhostCutscene(player: Player) : Cutscene(player) {
                     NPCs.RESTLESS_GHOST_457,
                     FaceAnim.HAPPY,
                     true,
-                    "Release! Thank you stranger.."
+                    "Release! Thank you stranger..",
                 )
                 timedUpdate(2)
             }
@@ -58,7 +59,7 @@ class RestlessGhostCutscene(player: Player) : Cutscene(player) {
                 visualize(
                     getNPC(NPCs.RESTLESS_GHOST_457)!!,
                     Animations.RESTLESS_GHOST_ASCENDS_4018,
-                    Graphics(org.rs.consts.Graphics.GREY_SWIVELS_604, 30)
+                    Graphics(org.rs.consts.Graphics.GREY_SWIVELS_604, 30),
                 )
                 timedUpdate(2)
             }
@@ -78,7 +79,7 @@ class RestlessGhostCutscene(player: Player) : Cutscene(player) {
                     endHeight = 30,
                     delay = 0,
                     speed = 90,
-                    angle = 0
+                    angle = 0,
                 )
                 rotateCamera(44, 54, 300, 1)
                 timedUpdate(3)
@@ -93,7 +94,7 @@ class RestlessGhostCutscene(player: Player) : Cutscene(player) {
                     endHeight = 100,
                     delay = 0,
                     speed = 60,
-                    angle = 10
+                    angle = 10,
                 )
                 rotateCameraBy(4, -4, 400, 1)
                 timedUpdate(2)

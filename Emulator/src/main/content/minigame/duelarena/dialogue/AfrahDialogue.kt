@@ -1,16 +1,17 @@
 package content.minigame.duelarena.dialogue
 
-import org.rs.consts.NPCs
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.NPCs
 
 @Initializable
-class AfrahDialogue(player: Player? = null) : Dialogue(player) {
-
+class AfrahDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     private val conversations = arrayOf(0, 4, 10, 11, 15, 17, 20, 22, 23, 24, 29, 32)
 
     override fun open(vararg args: Any): Boolean {
@@ -20,15 +21,19 @@ class AfrahDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> npc(FaceAnim.ASKING, "Ooh. This is exciting!").also { stage++ }
             1 -> player(FaceAnim.ASKING, "Yup!").also { stage = END_DIALOGUE }
-            2 -> npc(
-                FaceAnim.ASKING,
-                "I wouldn't want to be the poor guy that has to",
-                "clean up after the duels."
-            ).also { stage++ }
+            2 ->
+                npc(
+                    FaceAnim.ASKING,
+                    "I wouldn't want to be the poor guy that has to",
+                    "clean up after the duels.",
+                ).also { stage++ }
 
             3 -> player(FaceAnim.ASKING, "Me neither.").also { stage = END_DIALOGUE }
             4 -> npc(FaceAnim.ASKING, "My son just won his first duel!").also { stage++ }
@@ -46,9 +51,10 @@ class AfrahDialogue(player: Player? = null) : Dialogue(player) {
             16 -> player(FaceAnim.ASKING, "Me too!").also { stage = END_DIALOGUE }
             17 -> npc(FaceAnim.ASKING, "Did you know they think this place dates", "back to the second age?!")
             18 -> player(FaceAnim.ASKING, "Really?").also { stage++ }
-            19 -> npc(FaceAnim.ASKING, "Yeah. The guy at the information kiosk was telling me.").also {
-                stage = END_DIALOGUE
-            }
+            19 ->
+                npc(FaceAnim.ASKING, "Yeah. The guy at the information kiosk was telling me.").also {
+                    stage = END_DIALOGUE
+                }
 
             20 -> npc(FaceAnim.ANGRY, "Can't you see I'm watching the duels?").also { stage++ }
             21 -> player(FaceAnim.SAD, "I'm sorry!").also { stage = END_DIALOGUE }

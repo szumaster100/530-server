@@ -1,8 +1,5 @@
 package content.region.misc.handlers
 
-import org.rs.consts.Graphics
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import content.data.items.SkillingTool
 import core.api.*
 import core.game.interaction.IntType
@@ -10,23 +7,25 @@ import core.game.interaction.InteractionListener
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.system.task.Pulse
+import org.rs.consts.Graphics
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 import kotlin.math.ceil
 
 class EnchantedValleyListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(ENCHANTED_V_ROCK, IntType.SCENERY, "mine") { player, _ ->
             val tool: SkillingTool? = SkillingTool.getPickaxe(player)
             tool ?: sendMessage(
                 player,
-                "You lack an pickaxe which you have the Mining level to use."
+                "You lack an pickaxe which you have the Mining level to use.",
             ).also { return@on true }
             if (inBorders(player, 3023, 4491, 3029, 4494)) {
                 player.pulseManager.run(
                     object : Pulse() {
                         var counter = 0
                         val g = getGolem(player)
+
                         override fun pulse(): Boolean {
                             when (counter++) {
                                 0 -> animate(player, tool?.animation)
@@ -43,7 +42,7 @@ class EnchantedValleyListener : InteractionListener {
                             }
                             return false
                         }
-                    }
+                    },
                 )
             } else {
                 sendMessage(player, "Nothing interesting happens.")
@@ -55,12 +54,13 @@ class EnchantedValleyListener : InteractionListener {
             val tool: SkillingTool? = SkillingTool.getHatchet(player)
             tool ?: sendMessage(
                 player,
-                "You lack an axe which you have the Woodcutting level to use."
+                "You lack an axe which you have the Woodcutting level to use.",
             ).also { return@on true }
             player.pulseManager.run(
                 object : Pulse() {
                     var counter = 0
                     val n = getSpirit(player)
+
                     override fun pulse(): Boolean {
                         when (counter++) {
                             0 -> animate(player, tool?.animation)
@@ -75,7 +75,7 @@ class EnchantedValleyListener : InteractionListener {
                         }
                         return false
                     }
-                }
+                },
             )
             return@on true
         }
@@ -99,22 +99,24 @@ class EnchantedValleyListener : InteractionListener {
         private const val ENCHANTED_V_TREE = Scenery.TREE_16265
         private const val ENCHANTED_V_ROCK = Scenery.ROCKS_31060
 
-        private val TREE_SPIRIT_IDS = intArrayOf(
-            NPCs.TREE_SPIRIT_438,
-            NPCs.TREE_SPIRIT_439,
-            NPCs.TREE_SPIRIT_440,
-            NPCs.TREE_SPIRIT_441,
-            NPCs.TREE_SPIRIT_442,
-            NPCs.TREE_SPIRIT_443
-        )
+        private val TREE_SPIRIT_IDS =
+            intArrayOf(
+                NPCs.TREE_SPIRIT_438,
+                NPCs.TREE_SPIRIT_439,
+                NPCs.TREE_SPIRIT_440,
+                NPCs.TREE_SPIRIT_441,
+                NPCs.TREE_SPIRIT_442,
+                NPCs.TREE_SPIRIT_443,
+            )
 
-        private val ROCK_GOLEM_IDS = intArrayOf(
-            NPCs.ROCK_GOLEM_413,
-            NPCs.ROCK_GOLEM_414,
-            NPCs.ROCK_GOLEM_415,
-            NPCs.ROCK_GOLEM_416,
-            NPCs.ROCK_GOLEM_417,
-            NPCs.ROCK_GOLEM_418,
-        )
+        private val ROCK_GOLEM_IDS =
+            intArrayOf(
+                NPCs.ROCK_GOLEM_413,
+                NPCs.ROCK_GOLEM_414,
+                NPCs.ROCK_GOLEM_415,
+                NPCs.ROCK_GOLEM_416,
+                NPCs.ROCK_GOLEM_417,
+                NPCs.ROCK_GOLEM_418,
+            )
     }
 }

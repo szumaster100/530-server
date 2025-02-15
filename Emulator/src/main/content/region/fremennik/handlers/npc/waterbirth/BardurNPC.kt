@@ -1,16 +1,22 @@
 package content.region.fremennik.handlers.npc.waterbirth
 
-import org.rs.consts.NPCs
 import core.api.findLocalNPCs
 import core.game.node.entity.npc.AbstractNPC
 import core.game.world.map.Location
 import core.plugin.Initializable
 import core.tools.RandomFunction
+import org.rs.consts.NPCs
 
 @Initializable
-class BardurNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+class BardurNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return BardurNPC(id, location)
     }
 

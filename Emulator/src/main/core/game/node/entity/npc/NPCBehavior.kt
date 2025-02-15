@@ -11,8 +11,9 @@ import core.game.world.map.RegionManager
 import core.game.world.map.path.ClipMaskSupplier
 import core.game.world.map.path.Pathfinder
 
-open class NPCBehavior(vararg val ids: Int = intArrayOf()) : ContentInterface {
-
+open class NPCBehavior(
+    vararg val ids: Int = intArrayOf(),
+) : ContentInterface {
     companion object {
         private val idMap = HashMap<Int, NPCBehavior>()
         private val defaultBehavior = NPCBehavior()
@@ -22,13 +23,20 @@ open class NPCBehavior(vararg val ids: Int = intArrayOf()) : ContentInterface {
             return idMap[id] ?: defaultBehavior
         }
 
-        fun register(ids: IntArray, behavior: NPCBehavior) {
+        fun register(
+            ids: IntArray,
+            behavior: NPCBehavior,
+        ) {
             ids.forEach { idMap[it] = behavior }
         }
     }
 
     object StandardClipMaskSupplier : ClipMaskSupplier {
-        override fun getClippingFlag(z: Int, x: Int, y: Int): Int {
+        override fun getClippingFlag(
+            z: Int,
+            x: Int,
+            y: Int,
+        ): Int {
             return RegionManager.getClippingFlag(z, x, y)
         }
     }
@@ -37,11 +45,23 @@ open class NPCBehavior(vararg val ids: Int = intArrayOf()) : ContentInterface {
         return true
     }
 
-    open fun beforeDamageReceived(self: NPC, attacker: Entity, state: BattleState) {}
+    open fun beforeDamageReceived(
+        self: NPC,
+        attacker: Entity,
+        state: BattleState,
+    ) {}
 
-    open fun afterDamageReceived(self: NPC, attacker: Entity, state: BattleState) {}
+    open fun afterDamageReceived(
+        self: NPC,
+        attacker: Entity,
+        state: BattleState,
+    ) {}
 
-    open fun beforeAttackFinalized(self: NPC, victim: Entity, state: BattleState) {}
+    open fun beforeAttackFinalized(
+        self: NPC,
+        victim: Entity,
+        state: BattleState,
+    ) {}
 
     open fun onRemoval(self: NPC) {}
 
@@ -49,23 +69,45 @@ open class NPCBehavior(vararg val ids: Int = intArrayOf()) : ContentInterface {
 
     open fun onRespawn(self: NPC) {}
 
-    open fun onDeathStarted(self: NPC, killer: Entity) {}
+    open fun onDeathStarted(
+        self: NPC,
+        killer: Entity,
+    ) {}
 
-    open fun onDeathFinished(self: NPC, killer: Entity) {}
+    open fun onDeathFinished(
+        self: NPC,
+        killer: Entity,
+    ) {}
 
-    open fun onDropTableRolled(self: NPC, killer: Entity, drops: ArrayList<Item>) {}
+    open fun onDropTableRolled(
+        self: NPC,
+        killer: Entity,
+        drops: ArrayList<Item>,
+    ) {}
 
-    open fun canBeAttackedBy(self: NPC, attacker: Entity, style: CombatStyle, shouldSendMessage: Boolean): Boolean {
-        if (attacker is Player && !self.definition.hasAction("attack"))
+    open fun canBeAttackedBy(
+        self: NPC,
+        attacker: Entity,
+        style: CombatStyle,
+        shouldSendMessage: Boolean,
+    ): Boolean {
+        if (attacker is Player && !self.definition.hasAction("attack")) {
             return false
+        }
         return true
     }
 
-    open fun shouldIgnoreMultiRestrictions(self: NPC, victim: Entity): Boolean {
+    open fun shouldIgnoreMultiRestrictions(
+        self: NPC,
+        victim: Entity,
+    ): Boolean {
         return false
     }
 
-    open fun getSwingHandlerOverride(self: NPC, original: CombatSwingHandler): CombatSwingHandler {
+    open fun getSwingHandlerOverride(
+        self: NPC,
+        original: CombatSwingHandler,
+    ): CombatSwingHandler {
         return original
     }
 
@@ -77,7 +119,10 @@ open class NPCBehavior(vararg val ids: Int = intArrayOf()) : ContentInterface {
         return StandardClipMaskSupplier
     }
 
-    open fun getXpMultiplier(self: NPC, attacker: Entity): Double {
+    open fun getXpMultiplier(
+        self: NPC,
+        attacker: Entity,
+    ): Double {
         return 1.0
     }
 }

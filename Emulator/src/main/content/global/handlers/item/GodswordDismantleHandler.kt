@@ -1,6 +1,5 @@
 package content.global.handlers.item
 
-import org.rs.consts.Items
 import core.api.sendMessage
 import core.cache.def.impl.ItemDefinition
 import core.game.interaction.OptionHandler
@@ -9,10 +8,10 @@ import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Items
 
 @Initializable
 class GodswordDismantleHandler : OptionHandler() {
-
     private val bladeId = Item(Items.GODSWORD_BLADE_11690)
 
     override fun newInstance(arg: Any?): Plugin<Any> {
@@ -23,7 +22,11 @@ class GodswordDismantleHandler : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val item = node as Item
         if (item.slot < 0 || player.inventory.getNew(item.slot).id != item.id) {
             return true

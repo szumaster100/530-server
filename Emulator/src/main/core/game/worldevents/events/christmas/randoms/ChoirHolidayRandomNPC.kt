@@ -8,7 +8,6 @@ import core.tools.RandomFunction
 import org.rs.consts.NPCs
 
 class ChoirHolidayRandomNPC : HolidayRandomEventNPC(NPCs.ZANARIS_CHOIR_3312) {
-
     override fun init() {
         super.init()
         queueScript(this, 4, QueueStrength.SOFT) { stage: Int ->

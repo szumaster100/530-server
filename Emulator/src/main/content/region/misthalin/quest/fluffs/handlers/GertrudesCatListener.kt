@@ -1,6 +1,5 @@
 package content.region.misthalin.quest.fluffs.handlers
 
-import org.rs.consts.*
 import core.api.*
 import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
@@ -13,17 +12,17 @@ import core.game.world.map.Location
 import core.game.world.map.path.Path
 import core.game.world.map.path.Pathfinder
 import core.tools.RandomFunction
+import org.rs.consts.*
 
 class GertrudesCatListener : InteractionListener {
-
     private val CRATE = intArrayOf(Scenery.CRATE_767, Scenery.CRATE_2620)
 
     override fun defineListeners() {
-
         on(CRATE, IntType.SCENERY, "search") { player, node ->
-            if (getQuestStage(player, Quests.GERTRUDES_CAT) == 50 && hasAnItem(
+            if (getQuestStage(player, Quests.GERTRUDES_CAT) == 50 &&
+                hasAnItem(
                     player,
-                    Items.THREE_LITTLE_KITTENS_13236
+                    Items.THREE_LITTLE_KITTENS_13236,
                 ).container != null
             ) {
                 setQuestStage(player, Quests.GERTRUDES_CAT, 40)
@@ -85,7 +84,10 @@ class GertrudesCatListener : InteractionListener {
                 Pulser.submit(
                     object : Pulse(1) {
                         var count = 0
-                        val kitten = core.game.node.entity.npc.NPC.create(NPCs.KITTEN_761, player.location)
+                        val kitten =
+                            core.game.node.entity.npc.NPC
+                                .create(NPCs.KITTEN_761, player.location)
+
                         override fun pulse(): Boolean {
                             when (count) {
                                 0 -> {
@@ -109,7 +111,7 @@ class GertrudesCatListener : InteractionListener {
                             count++
                             return count == 6
                         }
-                    }
+                    },
                 )
             }
 

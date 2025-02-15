@@ -14,12 +14,15 @@ import org.rs.consts.NPCs
 import org.rs.consts.Scenery
 
 class Neitiznot : MapArea {
-
     override fun defineAreaBorders(): Array<ZoneBorders> {
         return arrayOf(getRegionBorders(9275), ZoneBorders(2313, 3786, 2331, 3802))
     }
 
-    override fun interactBehavior(entity: Entity, target: Node, option: Option): Boolean {
+    override fun interactBehavior(
+        entity: Entity,
+        target: Node,
+        option: Option,
+    ): Boolean {
         if (entity is Player) {
             val player = entity.asPlayer()
             when (target.id) {
@@ -28,20 +31,24 @@ class Neitiznot : MapArea {
                     return true
                 }
 
-                NPCs.THAKKRAD_SIGMUNDSON_5506 -> if (option.name == "Craft-goods") {
-                    player.dialogueInterpreter.open("thakkrad-yak")
-                    return true
-                }
+                NPCs.THAKKRAD_SIGMUNDSON_5506 ->
+                    if (option.name == "Craft-goods") {
+                        player.dialogueInterpreter.open("thakkrad-yak")
+                        return true
+                    }
             }
         }
         return false
     }
 
-    override fun useWithBehavior(player: Player?, used: Item?, with: Node?): Boolean {
+    override fun useWithBehavior(
+        player: Player?,
+        used: Item?,
+        with: Node?,
+    ): Boolean {
         if (with is NPC && with.id == NPCs.YAK_5529) {
             sendMessage(player!!, "The cow doesn't want that.")
         }
         return true
     }
-
 }

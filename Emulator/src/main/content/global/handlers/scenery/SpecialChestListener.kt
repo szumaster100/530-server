@@ -1,13 +1,12 @@
 package content.global.handlers.scenery
 
-import org.rs.consts.Scenery
 import core.api.replaceScenery
 import core.api.sendMessage
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
+import org.rs.consts.Scenery
 
 class SpecialChestListener : InteractionListener {
-
     override fun defineListeners() {
         // Zanaris chest interaction (Fairy bank).
         on(Scenery.OPEN_CHEST_12121, IntType.SCENERY, "shut") { _, node ->

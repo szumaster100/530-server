@@ -13,7 +13,12 @@ class StateRepository : StartupListener {
         val states = HashMap<String, State>()
 
         fun loadStateClasses() {
-            val result = ClassGraph().enableClassInfo().enableAnnotationInfo().acceptPackages("content").scan()
+            val result =
+                ClassGraph()
+                    .enableClassInfo()
+                    .enableAnnotationInfo()
+                    .acceptPackages("content")
+                    .scan()
             result.getClassesWithAnnotation("core.game.node.entity.state.PlayerState").forEach {
                 val key =
                     it.getAnnotationInfo("core.game.node.entity.state.PlayerState").parameterValues[0].value as String
@@ -25,7 +30,10 @@ class StateRepository : StartupListener {
         }
 
         @JvmStatic
-        fun forKey(key: String, player: Player): State? {
+        fun forKey(
+            key: String,
+            player: Player,
+        ): State? {
             val state = states[key]
             if (player.hasActiveState(key)) {
                 return states[key]

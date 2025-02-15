@@ -1,8 +1,5 @@
 package content.region.fremennik.handlers
 
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
-import org.rs.consts.Sounds
 import content.region.fremennik.dialogue.jatizso.LeftieRightieDialogue
 import core.api.*
 import core.game.dialogue.FaceAnim
@@ -13,11 +10,12 @@ import core.game.system.task.Pulse
 import core.game.world.map.Direction
 import core.game.world.map.Location
 import core.game.world.map.zone.ZoneBorders
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
+import org.rs.consts.Sounds
 
 class JatizsoListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(GATES_CLOSED, IntType.SCENERY, "open") { player, node ->
             if (NORTH_GATE_ZONE.insideBorder(player)) {
                 if (node.id == GATES_CLOSED.first()) {
@@ -72,10 +70,11 @@ class JatizsoListener : InteractionListener {
 
                     override fun pulse(): Boolean {
                         val npc = findLocalNPC(player, id) ?: return false
-                        val index = when (id) {
-                            NPCs.GUARD_5489 -> 0
-                            else -> 1
-                        }
+                        val index =
+                            when (id) {
+                                NPCs.GUARD_5489 -> 0
+                                else -> 1
+                            }
                         if (index == 1 && counter == 5) return true
                         sendChat(npc, LINES[index][counter])
                         if (npc.id != NPCs.GUARD_5489) counter++
@@ -97,7 +96,7 @@ class JatizsoListener : InteractionListener {
                             else -> NPCs.GUARD_5489
                         }
                     }
-                }
+                },
             )
             return@on true
         }
@@ -134,22 +133,23 @@ class JatizsoListener : InteractionListener {
         val GUARDS = intArrayOf(5491, 5492)
         val KING_CHEST = intArrayOf(21299, 21300)
 
-        val LINES = arrayOf(
+        val LINES =
             arrayOf(
-                "YOU WOULDN'T KNOW HOW TO FIGHT A TROLL IF IT CAME UP AND BIT YER ARM OFF",
-                "YAK LOVERS",
-                "CALL THAT A TOWN? I'VE SEEN BETTER HAMLETS!",
-                "AND YOUR FATHER SMELLED OF WINTERBERRIES!",
-                "WOODEN BRIDGES ARE RUBBISH!",
-                "OUR KING'S BETTER THAN YOUR BURGHER!"
-            ),
-            arrayOf(
-                "YOU WOULDN'T KNOW HOW TO SHAVE A YAK IF YOUR LIFE DEPENDED ON IT",
-                "MISERABLE LOSERS",
-                "YOUR MOTHER WAS A HAMSTER!",
-                "AT LEAST WE HAVE SOMETHING OTHER THAN SMELLY FISH!",
-                "AT LEAST WE CAN COOK!"
+                arrayOf(
+                    "YOU WOULDN'T KNOW HOW TO FIGHT A TROLL IF IT CAME UP AND BIT YER ARM OFF",
+                    "YAK LOVERS",
+                    "CALL THAT A TOWN? I'VE SEEN BETTER HAMLETS!",
+                    "AND YOUR FATHER SMELLED OF WINTERBERRIES!",
+                    "WOODEN BRIDGES ARE RUBBISH!",
+                    "OUR KING'S BETTER THAN YOUR BURGHER!",
+                ),
+                arrayOf(
+                    "YOU WOULDN'T KNOW HOW TO SHAVE A YAK IF YOUR LIFE DEPENDED ON IT",
+                    "MISERABLE LOSERS",
+                    "YOUR MOTHER WAS A HAMSTER!",
+                    "AT LEAST WE HAVE SOMETHING OTHER THAN SMELLY FISH!",
+                    "AT LEAST WE CAN COOK!",
+                ),
             )
-        )
     }
 }

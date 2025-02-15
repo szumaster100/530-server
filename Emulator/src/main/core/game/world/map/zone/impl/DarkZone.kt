@@ -2,11 +2,11 @@ package core.game.world.map.zone.impl
 
 import content.data.LightSource.Companion.forProductId
 import content.data.LightSource.Companion.getActiveLightSource
+import core.api.Event.UsedWith
 import core.api.getItemName
 import core.api.runTask
 import core.game.component.Component
 import core.game.event.EventHook
-import core.api.Event.UsedWith
 import core.game.event.UseWithEvent
 import core.game.interaction.Option
 import core.game.node.Node
@@ -22,7 +22,9 @@ import core.game.world.map.zone.ZoneBorders
 import org.rs.consts.Components
 import java.util.*
 
-class DarkZone : MapZone("Dark zone", true), EventHook<UseWithEvent> {
+class DarkZone :
+    MapZone("Dark zone", true),
+    EventHook<UseWithEvent> {
     override fun configure() {
         register(ZoneBorders(1728, 5120, 1791, 5247))
         registerRegion(12693)
@@ -33,7 +35,12 @@ class DarkZone : MapZone("Dark zone", true), EventHook<UseWithEvent> {
         register(ZoneBorders(3717, 9473, 3841, 9346))
     }
 
-    override fun continueAttack(e: Entity, target: Node, style: CombatStyle, message: Boolean): Boolean {
+    override fun continueAttack(
+        e: Entity,
+        target: Node,
+        style: CombatStyle,
+        message: Boolean,
+    ): Boolean {
         if (e is Player) {
             if (e.interfaceManager.overlay !== DARKNESS_OVERLAY) {
                 return true
@@ -43,21 +50,31 @@ class DarkZone : MapZone("Dark zone", true), EventHook<UseWithEvent> {
         return true
     }
 
-    override fun interact(e: Entity, target: Node, option: Option): Boolean {
+    override fun interact(
+        e: Entity,
+        target: Node,
+        option: Option,
+    ): Boolean {
         if (target is Item) {
             val s = forProductId(target.id)
             if (s != null) {
                 val name = option.name.lowercase(Locale.getDefault())
                 if (name == "drop") {
-                    (e as Player).packetDispatch.sendMessage("Dropping the " + s.getName() + " would leave you without a light source.")
+                    (e as Player).packetDispatch.sendMessage(
+                        "Dropping the " + s.getName() + " would leave you without a light source.",
+                    )
                     return true
                 }
                 if (name == "extinguish") {
-                    (e as Player).packetDispatch.sendMessage("Extinguishing the " + s.getName() + " would leave you without a light source.")
+                    (e as Player).packetDispatch.sendMessage(
+                        "Extinguishing the " + s.getName() + " would leave you without a light source.",
+                    )
                     return true
                 }
                 if (name == "destroy") {
-                    (e as Player).packetDispatch.sendMessage("Destroying the headband would leave you without a light source.")
+                    (e as Player).packetDispatch.sendMessage(
+                        "Destroying the headband would leave you without a light source.",
+                    )
                     return true
                 }
             }
@@ -79,7 +96,10 @@ class DarkZone : MapZone("Dark zone", true), EventHook<UseWithEvent> {
         return true
     }
 
-    override fun leave(e: Entity, logout: Boolean): Boolean {
+    override fun leave(
+        e: Entity,
+        logout: Boolean,
+    ): Boolean {
         if (e is Player) {
             e.interfaceManager.closeOverlay()
         }
@@ -111,51 +131,60 @@ class DarkZone : MapZone("Dark zone", true), EventHook<UseWithEvent> {
         }
     }
 
-    override fun process(entity: Entity, event: UseWithEvent) {
+    override fun process(
+        entity: Entity,
+        event: UseWithEvent,
+    ) {
         val isTinderbox = getItemName(event.used) == "Tinderbox" || getItemName(event.with) == "Tinderbox"
 
-        if (isTinderbox && entity is Player) runTask(entity, 2, 1) {
-            checkDarkArea(entity.asPlayer())
-            Unit
+        if (isTinderbox && entity is Player) {
+            runTask(entity, 2, 1) {
+                checkDarkArea(entity.asPlayer())
+                Unit
+            }
         }
     }
 
     companion object {
-        val DARKNESS_OVERLAY: Component = object : Component(Components.DARKNESS_DARK_96) {
-            override fun open(player: Player) {
-                var pulse = player.getExtension<Pulse>(DarkZone::class.java)
-                if (pulse != null && pulse.isRunning) {
-                    return
-                }
-                pulse = object : Pulse(2, player) {
-                    var count: Int = 0
+        val DARKNESS_OVERLAY: Component =
+            object : Component(Components.DARKNESS_DARK_96) {
+                override fun open(player: Player) {
+                    var pulse = player.getExtension<Pulse>(DarkZone::class.java)
+                    if (pulse != null && pulse.isRunning) {
+                        return
+                    }
+                    pulse =
+                        object : Pulse(2, player) {
+                            var count: Int = 0
 
-                    override fun pulse(): Boolean {
-                        if (count == 0) {
-                            player.packetDispatch.sendMessage("You hear tiny insects skittering over the ground...")
-                        } else if (count == 5) {
-                            player.packetDispatch.sendMessage("Tiny biting insects swarm all over you!")
-                        } else if (count > 5) {
-                            player.impactHandler.manualHit(player, 1, HitsplatType.NORMAL)
+                            override fun pulse(): Boolean {
+                                if (count == 0) {
+                                    player.packetDispatch.sendMessage(
+                                        "You hear tiny insects skittering over the ground...",
+                                    )
+                                } else if (count == 5) {
+                                    player.packetDispatch.sendMessage("Tiny biting insects swarm all over you!")
+                                } else if (count > 5) {
+                                    player.impactHandler.manualHit(player, 1, HitsplatType.NORMAL)
+                                }
+                                count++
+                                return false
+                            }
                         }
-                        count++
+                    Pulser.submit(pulse)
+                    player.addExtension(DarkZone::class.java, pulse)
+                    super.open(player)
+                }
+
+                override fun close(player: Player): Boolean {
+                    if (!super.close(player)) {
                         return false
                     }
+                    val pulse = player.getExtension<Pulse>(DarkZone::class.java)
+                    pulse?.stop()
+                    return true
                 }
-                Pulser.submit(pulse)
-                player.addExtension(DarkZone::class.java, pulse)
-                super.open(player)
             }
-
-            override fun close(player: Player): Boolean {
-                if (!super.close(player)) {
-                    return false
-                }
-                val pulse = player.getExtension<Pulse>(DarkZone::class.java)
-                pulse?.stop()
-                return true
-            }
-        }
 
         fun checkDarkArea(p: Player): Boolean {
             for (r in p.zoneMonitor.zones) {

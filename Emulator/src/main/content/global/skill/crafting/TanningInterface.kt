@@ -1,12 +1,11 @@
 package content.global.skill.crafting
 
-import org.rs.consts.Components
 import core.api.sendInputDialogue
 import core.game.interaction.InterfaceListener
 import core.game.node.item.Item
+import org.rs.consts.Components
 
 class TanningInterface : InterfaceListener {
-
     override fun defineInterfaceListeners() {
         on(Components.TANNER_324) { player, _, opcode, buttonID, _, _ ->
             var type: Tanning? = null
@@ -35,9 +34,10 @@ class TanningInterface : InterfaceListener {
                     }
                 }
 
-                199 -> sendInputDialogue(player, true, "Enter the amount:") { value: Any ->
-                    Tanning.tan(player, value as Int, product)
-                }
+                199 ->
+                    sendInputDialogue(player, true, "Enter the amount:") { value: Any ->
+                        Tanning.tan(player, value as Int, product)
+                    }
 
                 234 -> amount = player.inventory.getAmount(Item(type.item, 1))
             }

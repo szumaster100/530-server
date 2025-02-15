@@ -1,6 +1,5 @@
 package content.region.morytania.handlers.tarnslair.traps
 
-import org.rs.consts.Animations
 import core.api.*
 import core.cache.def.impl.SceneryDefinition
 import core.game.interaction.OptionHandler
@@ -12,10 +11,10 @@ import core.game.node.scenery.Scenery
 import core.plugin.Initializable
 import core.plugin.Plugin
 import core.tools.RandomFunction
+import org.rs.consts.Animations
 
 @Initializable
 class TrapHandler : OptionHandler() {
-
     private val buttonID = org.rs.consts.Scenery.FLOOR_20966
 
     override fun newInstance(arg: Any?): Plugin<Any> {
@@ -23,7 +22,11 @@ class TrapHandler : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val target = node as? Scenery ?: return false
         val chance = RandomFunction.getSkillSuccessChance(50.0, 100.0, getStatLevel(player, Skills.THIEVING))
 

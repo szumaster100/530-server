@@ -13,13 +13,11 @@ import core.game.node.entity.player.Player
 import core.tools.StringUtils
 
 class IncubatorHandler : InteractionListener {
-
     val eggIds = IncubatorEgg.values().map { it.egg.id }.toIntArray()
 
     val incubators = intArrayOf(28550, 28352, 28359)
 
     override fun defineListeners() {
-
         on(incubators, IntType.SCENERY, "inspect", handler = ::handleInspectOption)
 
         on(incubators, IntType.SCENERY, "take-egg", handler = ::handleTakeOption)
@@ -27,7 +25,11 @@ class IncubatorHandler : InteractionListener {
         onUseWith(IntType.SCENERY, eggIds, *incubators, handler = ::handleEggOnIncubator)
     }
 
-    fun handleEggOnIncubator(player: Player, used: Node, with: Node): Boolean {
+    fun handleEggOnIncubator(
+        player: Player,
+        used: Node,
+        with: Node,
+    ): Boolean {
         val egg = IncubatorEgg.forItem(used.asItem()) ?: return false
         val activeEgg = IncubatorTimer.getEggFor(player, player.location.regionId)
 
@@ -36,12 +38,16 @@ class IncubatorHandler : InteractionListener {
             return true
         }
 
-        if (removeItem(player, used.asItem()))
+        if (removeItem(player, used.asItem())) {
             IncubatorTimer.registerEgg(player, player.location.regionId, egg)
+        }
         return true
     }
 
-    fun handleInspectOption(player: Player, node: Node): Boolean {
+    fun handleInspectOption(
+        player: Player,
+        node: Node,
+    ): Boolean {
         val activeEgg = IncubatorTimer.getEggFor(player, player.location.regionId)
 
         if (activeEgg == null) {
@@ -54,15 +60,20 @@ class IncubatorHandler : InteractionListener {
             return true
         }
 
-        val creatureName = activeEgg.egg.product.name.lowercase()
+        val creatureName =
+            activeEgg.egg.product.name
+                .lowercase()
         sendMessage(
             player,
-            "There is currently ${if (StringUtils.isPlusN(creatureName)) "an" else "a"} $creatureName egg incubating."
+            "There is currently ${if (StringUtils.isPlusN(creatureName)) "an" else "a"} $creatureName egg incubating.",
         )
         return true
     }
 
-    fun handleTakeOption(player: Player, node: Node): Boolean {
+    fun handleTakeOption(
+        player: Player,
+        node: Node,
+    ): Boolean {
         val region = player.location.regionId
         val activeEgg = IncubatorTimer.getEggFor(player, region) ?: return false
 

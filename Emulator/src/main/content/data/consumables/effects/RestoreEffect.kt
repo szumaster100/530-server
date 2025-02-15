@@ -22,12 +22,32 @@ class RestoreEffect : ConsumableEffect {
     }
 
     val SKILLS: IntArray = intArrayOf(Skills.DEFENCE, Skills.ATTACK, Skills.STRENGTH, Skills.MAGIC, Skills.RANGE)
-    val ALL_SKILLS: IntArray = intArrayOf(
-        Skills.ATTACK, Skills.DEFENCE, Skills.STRENGTH, Skills.RANGE, Skills.PRAYER, Skills.MAGIC, Skills.COOKING,
-        Skills.WOODCUTTING, Skills.FLETCHING, Skills.FISHING, Skills.FIREMAKING, Skills.CRAFTING, Skills.SMITHING,
-        Skills.MINING, Skills.HERBLORE, Skills.AGILITY, Skills.THIEVING, Skills.SLAYER, Skills.FARMING,
-        Skills.RUNECRAFTING, Skills.HUNTER, Skills.CONSTRUCTION, Skills.SUMMONING
-    )
+    val ALL_SKILLS: IntArray =
+        intArrayOf(
+            Skills.ATTACK,
+            Skills.DEFENCE,
+            Skills.STRENGTH,
+            Skills.RANGE,
+            Skills.PRAYER,
+            Skills.MAGIC,
+            Skills.COOKING,
+            Skills.WOODCUTTING,
+            Skills.FLETCHING,
+            Skills.FISHING,
+            Skills.FIREMAKING,
+            Skills.CRAFTING,
+            Skills.SMITHING,
+            Skills.MINING,
+            Skills.HERBLORE,
+            Skills.AGILITY,
+            Skills.THIEVING,
+            Skills.SLAYER,
+            Skills.FARMING,
+            Skills.RUNECRAFTING,
+            Skills.HUNTER,
+            Skills.CONSTRUCTION,
+            Skills.SUMMONING,
+        )
 
     override fun activate(p: Player) {
         val sk = p.getSkills()

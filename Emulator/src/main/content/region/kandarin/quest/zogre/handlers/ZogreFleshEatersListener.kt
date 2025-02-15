@@ -1,6 +1,5 @@
 package content.region.kandarin.quest.zogre.handlers
 
-import org.rs.consts.*
 import content.region.kandarin.quest.zogre.dialogue.*
 import content.region.kandarin.quest.zogre.handlers.ZavisticRarveNPC.Companion.spawnWizard
 import core.api.*
@@ -15,9 +14,9 @@ import core.game.system.task.Pulse
 import core.game.world.map.Direction
 import core.game.world.map.Location
 import core.tools.BLUE
+import org.rs.consts.*
 
 class ZogreFleshEatersListener : InteractionListener {
-
     companion object {
         const val SITHIK = Scenery.SITHIK_INTS_6888
         const val SITHIK_OGRE = Scenery.SITHIK_INTS_6889
@@ -27,30 +26,31 @@ class ZogreFleshEatersListener : InteractionListener {
     }
 
     override fun defineListeners() {
-
         on(
             intArrayOf(Scenery.CRUSHED_BARRICADE_6881, Scenery.CRUSHED_BARRICADE_6882),
             IntType.SCENERY,
-            "climb-over"
+            "climb-over",
         ) { player, _ ->
             submitIndividualPulse(
                 player,
                 object : Pulse() {
                     var counter = 0
+
                     override fun pulse(): Boolean {
                         when (counter++) {
-                            0 -> forceMove(
-                                player,
-                                player.location,
-                                player.location.transform(
-                                    if (player.location.x < 2457) Direction.EAST else Direction.WEST,
-                                    2
-                                ),
-                                20,
-                                60,
-                                null,
-                                10980
-                            )
+                            0 ->
+                                forceMove(
+                                    player,
+                                    player.location,
+                                    player.location.transform(
+                                        if (player.location.x < 2457) Direction.EAST else Direction.WEST,
+                                        2,
+                                    ),
+                                    20,
+                                    60,
+                                    null,
+                                    10980,
+                                )
 
                             1 -> {
                                 resetAnimator(player)
@@ -59,7 +59,7 @@ class ZogreFleshEatersListener : InteractionListener {
                         }
                         return false
                     }
-                }
+                },
             )
             return@on true
         }
@@ -74,13 +74,15 @@ class ZogreFleshEatersListener : InteractionListener {
         }
 
         onUseWith(IntType.NPC, ZUtils.QUEST_ITEMS, NPCs.BARTENDER_739) { player, used, _ ->
-            if (getVarbit(player, Vars.VARBIT_QUEST_ZORGE_FLESH_EATERS_PROGRESS_487) >= 3) when (used.id) {
-                Items.DRAGON_INN_TANKARD_4811 -> openDialogue(player, BartenderDialogueFiles())
-                Items.BLACK_PRISM_4808 -> openDialogue(player, BartenderBlackPrismDialogueFile())
-                Items.TORN_PAGE_4809 -> openDialogue(player, BartenderTornPageDialogueFile())
-                ZUtils.UNREALIST_PORTRAIT -> openDialogue(player, BartenderWrongPortraitDialogueFile())
-                ZUtils.REALIST_PORTRAIT -> openDialogue(player, BartenderCorrectPortraitDialogueFile())
-                else -> sendMessage(player, "Nothing interesting happens.")
+            if (getVarbit(player, Vars.VARBIT_QUEST_ZORGE_FLESH_EATERS_PROGRESS_487) >= 3) {
+                when (used.id) {
+                    Items.DRAGON_INN_TANKARD_4811 -> openDialogue(player, BartenderDialogueFiles())
+                    Items.BLACK_PRISM_4808 -> openDialogue(player, BartenderBlackPrismDialogueFile())
+                    Items.TORN_PAGE_4809 -> openDialogue(player, BartenderTornPageDialogueFile())
+                    ZUtils.UNREALIST_PORTRAIT -> openDialogue(player, BartenderWrongPortraitDialogueFile())
+                    ZUtils.REALIST_PORTRAIT -> openDialogue(player, BartenderCorrectPortraitDialogueFile())
+                    else -> sendMessage(player, "Nothing interesting happens.")
+                }
             }
             return@onUseWith true
         }
@@ -116,7 +118,7 @@ class ZogreFleshEatersListener : InteractionListener {
             sendItemDialogue(
                 player,
                 Items.SIGNED_PORTRAIT_4816,
-                "You see an image of Sithik with a message underneath$BLUE'I, the bartender of the Dragon Inn, do swear that this is the true likeness of the wizzy who was talking to Brentle Vahn, my customer the other day.'"
+                "You see an image of Sithik with a message underneath$BLUE'I, the bartender of the Dragon Inn, do swear that this is the true likeness of the wizzy who was talking to Brentle Vahn, my customer the other day.'",
             )
             return@on true
         }
@@ -127,7 +129,7 @@ class ZogreFleshEatersListener : InteractionListener {
                     player,
                     NPCs.UGLUG_NAR_2039,
                     "Me's not got no glug-glugs to sell, yous bring me da sickies glug-glug den me's open da stufsies for ya.",
-                    FaceAnim.OLD_DEFAULT
+                    FaceAnim.OLD_DEFAULT,
                 )
             } else {
                 openNpcShop(player, NPCs.UGLUG_NAR_2039)
@@ -141,7 +143,7 @@ class ZogreFleshEatersListener : InteractionListener {
                     player,
                     NPCs.UGLUG_NAR_2039,
                     "Me's not got no glug-glugs to sell, yous bring me da sickies glug-glug den me's open da stufsies for ya.",
-                    FaceAnim.OLD_DEFAULT
+                    FaceAnim.OLD_DEFAULT,
                 )
             } else {
                 openDialogue(player, UglugNarDialogueFile())
@@ -158,11 +160,11 @@ class ZogreFleshEatersListener : InteractionListener {
                     getAttribute(player, ZUtils.TALK_WITH_ZAVISTIC_DONE, false) -> SithikDialogueFiles()
                     getVarbit(
                         player,
-                        Vars.VARBIT_QUEST_ZORGE_FLESH_EATERS_PROGRESS_487
+                        Vars.VARBIT_QUEST_ZORGE_FLESH_EATERS_PROGRESS_487,
                     ) == 0 -> SithikPermissionDialogueFile()
 
                     else -> SithikDialogueFiles()
-                }
+                },
             )
             return@on true
         }
@@ -172,9 +174,11 @@ class ZogreFleshEatersListener : InteractionListener {
                 player,
                 if (getVarbit(player, Vars.VARBIT_QUEST_SITHIK_OGRE_TRANSFORMATION_495) == 1 &&
                     getAttribute(player, ZUtils.TALK_WITH_SITHIK_OGRE_DONE, false)
-                )
+                ) {
                     SithikTalkAgainAfterTransformDialogueFile()
-                else SithikIntsAfterTransformDialogueFile()
+                } else {
+                    SithikIntsAfterTransformDialogueFile()
+                },
             )
             return@on true
         }
@@ -188,7 +192,7 @@ class ZogreFleshEatersListener : InteractionListener {
                         sendItemDialogue(
                             player,
                             item,
-                            "You find ${if (item == ZUtils.HAM_BOOK) "a book on Philosophy" else "a book on Necromancy"}."
+                            "You find ${if (item == ZUtils.HAM_BOOK) "a book on Philosophy" else "a book on Necromancy"}.",
                         )
                         addItemOrDrop(player, item, 1)
                     }
@@ -205,33 +209,45 @@ class ZogreFleshEatersListener : InteractionListener {
             if (getAttribute(player, ZUtils.ASK_SITHIK_AGAIN, false)) {
                 when {
                     hasBoth -> {
-                        if (needsSpace(1)) sendDialogue(player, "You need free inventory space.")
-                        else if (!inInventory(player, ZUtils.PORTRAI_BOOK)) {
+                        if (needsSpace(1)) {
+                            sendDialogue(player, "You need free inventory space.")
+                        } else if (!inInventory(player, ZUtils.PORTRAI_BOOK)) {
                             sendItemDialogue(player, ZUtils.PORTRAI_BOOK, "You find a book on portraiture.")
                             addItemOrDrop(player, ZUtils.PORTRAI_BOOK, 1)
-                        } else sendDialogue(player, "You search but find nothing.")
+                        } else {
+                            sendDialogue(player, "You search but find nothing.")
+                        }
                     }
 
                     inInventory(player, Items.CHARCOAL_973) -> {
-                        if (needsSpace(1)) sendDialogue(player, "You need free inventory space.")
-                        else sendItemDialogue(player, Items.PAPYRUS_970, "You find some papyrus.")
+                        if (needsSpace(1)) {
+                            sendDialogue(player, "You need free inventory space.")
+                        } else {
+                            sendItemDialogue(player, Items.PAPYRUS_970, "You find some papyrus.")
+                        }
                         addItemOrDrop(player, Items.PAPYRUS_970, 1)
                     }
 
                     inInventory(player, Items.PAPYRUS_970) -> {
-                        if (needsSpace(1)) sendDialogue(player, "You need free inventory space.")
-                        else sendItemDialogue(player, Items.CHARCOAL_973, "You find some charcoal.")
+                        if (needsSpace(1)) {
+                            sendDialogue(player, "You need free inventory space.")
+                        } else {
+                            sendItemDialogue(player, Items.CHARCOAL_973, "You find some charcoal.")
+                        }
                         addItemOrDrop(player, Items.CHARCOAL_973, 1)
                     }
 
                     else -> {
-                        if (needsSpace(3)) sendDialogue(player, "You need 3 free inventory spaces.")
-                        else sendDoubleItemDialogue(
-                            player,
-                            Items.CHARCOAL_973,
-                            Items.PAPYRUS_970,
-                            "You find some charcoal and papyrus."
-                        )
+                        if (needsSpace(3)) {
+                            sendDialogue(player, "You need 3 free inventory spaces.")
+                        } else {
+                            sendDoubleItemDialogue(
+                                player,
+                                Items.CHARCOAL_973,
+                                Items.PAPYRUS_970,
+                                "You find some charcoal and papyrus.",
+                            )
+                        }
                         addItemOrDrop(player, Items.CHARCOAL_973, 1)
                         addItemOrDrop(player, Items.PAPYRUS_970, 1)
                     }
@@ -248,7 +264,7 @@ class ZogreFleshEatersListener : InteractionListener {
                     player,
                     ZUtils.NECROMANCY_BOOK,
                     Items.TORN_PAGE_4809,
-                    "The torn page matches the book."
+                    "The torn page matches the book.",
                 )
                 setAttribute(player, "/save:${ZUtils.TORN_PAGE_ON_NECRO_BOOK}", true)
             }
@@ -258,33 +274,37 @@ class ZogreFleshEatersListener : InteractionListener {
         onUseWith(IntType.SCENERY, ZUtils.QUEST_ITEMS, SITHIK) { player, used, _ ->
             val item = used.id
             (
-                    when (item) {
-                        ZUtils.PORTRAI_BOOK -> SithikIntsPortraitureBookDialogueFile()
-                        ZUtils.HAM_BOOK -> SithikIntsHamBookDialogueFile()
-                        ZUtils.NECROMANCY_BOOK ->
-                            if (getAttribute(player, ZUtils.TORN_PAGE_ON_NECRO_BOOK, false)
-                            ) SithikIntsNecromancyBookDialogueFile() else null
+                when (item) {
+                    ZUtils.PORTRAI_BOOK -> SithikIntsPortraitureBookDialogueFile()
+                    ZUtils.HAM_BOOK -> SithikIntsHamBookDialogueFile()
+                    ZUtils.NECROMANCY_BOOK ->
+                        if (getAttribute(player, ZUtils.TORN_PAGE_ON_NECRO_BOOK, false)
+                        ) {
+                            SithikIntsNecromancyBookDialogueFile()
+                        } else {
+                            null
+                        }
 
-                        Items.TORN_PAGE_4809 -> SithikIntsTornPageDialogueFile()
-                        Items.BLACK_PRISM_4808 -> SithikIntsBlackPrismDialogueFile()
-                        Items.DRAGON_INN_TANKARD_4811 -> SithikIntsDragonTankardDialogueFile()
-                        Items.PAPYRUS_970 ->
-                            if (!inInventory(player, Items.CHARCOAL_973)) {
-                                sendDialogue(player, "You have no charcoal with which to sketch this subject.")
-                            } else {
-                                animate(player, Animations.HUMAN_PAINT_ON_ITEM_909)
-                                openDialogue(player, SithikIntsPortraitDialogueFile())
-                            }
+                    Items.TORN_PAGE_4809 -> SithikIntsTornPageDialogueFile()
+                    Items.BLACK_PRISM_4808 -> SithikIntsBlackPrismDialogueFile()
+                    Items.DRAGON_INN_TANKARD_4811 -> SithikIntsDragonTankardDialogueFile()
+                    Items.PAPYRUS_970 ->
+                        if (!inInventory(player, Items.CHARCOAL_973)) {
+                            sendDialogue(player, "You have no charcoal with which to sketch this subject.")
+                        } else {
+                            animate(player, Animations.HUMAN_PAINT_ON_ITEM_909)
+                            openDialogue(player, SithikIntsPortraitDialogueFile())
+                        }
 
-                        ZUtils.REALIST_PORTRAIT, ZUtils.UNREALIST_PORTRAIT -> SithikIntsUsedPortraitDialogueFile()
-                        ZUtils.SIGNED_PORTRAIT -> SithikIntsSignedPortraitDialogueFile()
-                        ZUtils.STRANGE_POTION -> SithikIntsStrangePotionDialogueFile()
-                        else -> null
-                    } ?: run {
-                        sendMessage(player, "Nothing interesting happens.")
-                        null
-                    }
-                    )?.let { openDialogue(player, it) }
+                    ZUtils.REALIST_PORTRAIT, ZUtils.UNREALIST_PORTRAIT -> SithikIntsUsedPortraitDialogueFile()
+                    ZUtils.SIGNED_PORTRAIT -> SithikIntsSignedPortraitDialogueFile()
+                    ZUtils.STRANGE_POTION -> SithikIntsStrangePotionDialogueFile()
+                    else -> null
+                } ?: run {
+                    sendMessage(player, "Nothing interesting happens.")
+                    null
+                }
+            )?.let { openDialogue(player, it) }
             return@onUseWith true
         }
 
@@ -295,7 +315,7 @@ class ZogreFleshEatersListener : InteractionListener {
                     player,
                     NPCs.SITHIK_INTS_2061,
                     "Hey! What do you think you're doing? Leave my tea alone!",
-                    FaceAnim.ANNOYED
+                    FaceAnim.ANNOYED,
                 )
             } else if (freeSlots(player) < 1) {
                 sendMessage(player, "You don't have enough inventory space.")

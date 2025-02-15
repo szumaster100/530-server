@@ -1,7 +1,5 @@
 package content.region.karamja.handlers.tzhaar
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.region.karamja.dialogue.tzhaar.TzhaarMejJalDialogue
 import core.cache.def.impl.NPCDefinition
 import core.game.dialogue.DialogueInterpreter
@@ -9,9 +7,11 @@ import core.game.interaction.OptionHandler
 import core.game.node.Node
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
+import core.plugin.ClassScanner
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
 class TzRekJadNPC : OptionHandler() {
@@ -22,17 +22,26 @@ class TzRekJadNPC : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         when (option) {
-            "exchange fire cape" -> player.dialogueInterpreter.open(
-                DialogueInterpreter.getDialogueKey(
-                    if (player.inventory.containsItem(
-                            Item(Items.FIRE_CAPE_6570)
-                        )
-                    ) "firecape-exchange" else "tzhaar-mej"
-                ),
-                node.asNpc()
-            )
+            "exchange fire cape" ->
+                player.dialogueInterpreter.open(
+                    DialogueInterpreter.getDialogueKey(
+                        if (player.inventory.containsItem(
+                                Item(Items.FIRE_CAPE_6570),
+                            )
+                        ) {
+                            "firecape-exchange"
+                        } else {
+                            "tzhaar-mej"
+                        },
+                    ),
+                    node.asNpc(),
+                )
         }
         return true
     }

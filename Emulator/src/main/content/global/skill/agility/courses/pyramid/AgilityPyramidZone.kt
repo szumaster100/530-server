@@ -11,7 +11,9 @@ import core.game.world.map.zone.ZoneBorders
 import core.game.world.map.zone.ZoneBuilder
 import core.plugin.Plugin
 
-class AgilityPyramidZone : MapZone("agility pyramid", true), Plugin<Any?> {
+class AgilityPyramidZone :
+    MapZone("agility pyramid", true),
+    Plugin<Any?> {
     @Throws(Throwable::class)
     override fun newInstance(arg: Any?): Plugin<Any?> {
         ZoneBuilder.configure(this)
@@ -27,7 +29,11 @@ class AgilityPyramidZone : MapZone("agility pyramid", true), Plugin<Any?> {
         return super.enter(e)
     }
 
-    override fun move(e: Entity, loc: Location, dest: Location): Boolean {
+    override fun move(
+        e: Entity,
+        loc: Location,
+        dest: Location,
+    ): Boolean {
         if (!e.locks.isMovementLocked && e is Player) {
             val hook = LOCATION_TRAPS[loc]
             if (hook != null) {
@@ -38,7 +44,10 @@ class AgilityPyramidZone : MapZone("agility pyramid", true), Plugin<Any?> {
         return super.move(e, loc, dest)
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 

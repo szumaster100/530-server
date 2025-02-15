@@ -1,7 +1,5 @@
 package content.region.kandarin.quest.merlin.dialogue
 
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
 import core.game.dialogue.DialogueFile
@@ -9,13 +7,17 @@ import core.game.dialogue.FaceAnim
 import core.game.dialogue.Topic
 import core.game.node.entity.npc.NPC
 import core.tools.END_DIALOGUE
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 class SirGawainDialogueFile : DialogueFile() {
-
     val STAGE_LE_FAYE_END = 20
     val STAGE_PROGRESS = 15
 
-    override fun handle(componentID: Int, buttonID: Int) {
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         npc = NPC(NPCs.SIR_GAWAIN_240)
 
         when (stage) {
@@ -36,7 +38,7 @@ class SirGawainDialogueFile : DialogueFile() {
             1 -> {
                 showTopics(
                     Topic(FaceAnim.NEUTRAL, "Good day.", END_DIALOGUE),
-                    Topic(FaceAnim.NEUTRAL, "Know you of any quests sir knight?", 2)
+                    Topic(FaceAnim.NEUTRAL, "Know you of any quests sir knight?", 2),
                 )
             }
 
@@ -49,14 +51,14 @@ class SirGawainDialogueFile : DialogueFile() {
                 showTopics(
                     Topic(FaceAnim.NEUTRAL, "Good day.", END_DIALOGUE),
                     Topic(FaceAnim.NEUTRAL, "Any ideas on how to get Merlin out of that crystal?", 11),
-                    Topic(FaceAnim.NEUTRAL, "Do you know how Merlin got trapped?", STAGE_PROGRESS)
+                    Topic(FaceAnim.NEUTRAL, "Do you know how Merlin got trapped?", STAGE_PROGRESS),
                 )
             }
 
             11 -> {
                 npcl(
                     FaceAnim.NEUTRAL,
-                    "I'm a little stumped myself. We've tried opening it with anything and everything!"
+                    "I'm a little stumped myself. We've tried opening it with anything and everything!",
                 )
                 stage = END_DIALOGUE
             }
@@ -74,7 +76,7 @@ class SirGawainDialogueFile : DialogueFile() {
             17 -> {
                 npc(
                     "She lives in her stronghold to the south of here,",
-                    "guarded by some renegade knights led by Sir Mordred."
+                    "guarded by some renegade knights led by Sir Mordred.",
                 )
                 setQuestStage(player!!, Quests.MERLINS_CRYSTAL, 20)
                 player!!.getQuestRepository().syncronizeTab(player)
@@ -84,7 +86,7 @@ class SirGawainDialogueFile : DialogueFile() {
             18 -> {
                 showTopics(
                     Topic(FaceAnim.NEUTRAL, "Any idea how to get into Moran Le Faye's stronghold?", STAGE_LE_FAYE_END),
-                    Topic(FaceAnim.NEUTRAL, "Thank you for the information.", 25)
+                    Topic(FaceAnim.NEUTRAL, "Thank you for the information.", 25),
                 )
             }
 
@@ -101,7 +103,7 @@ class SirGawainDialogueFile : DialogueFile() {
             30 -> {
                 showTopics(
                     Topic(FaceAnim.NEUTRAL, "Any idea how to get into Moran Le Faye's stronghold?", STAGE_LE_FAYE_END),
-                    Topic(FaceAnim.NEUTRAL, "Hello again.", END_DIALOGUE)
+                    Topic(FaceAnim.NEUTRAL, "Hello again.", END_DIALOGUE),
                 )
             }
 

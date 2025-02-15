@@ -1,8 +1,5 @@
 package content.region.desert.quest.deserttreasure.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import content.region.desert.quest.deserttreasure.DesertTreasure
 import core.api.*
 import core.api.quest.getQuestStage
@@ -18,6 +15,9 @@ import core.game.node.item.Item
 import core.game.system.timer.RSTimer
 import core.game.world.map.Location
 import core.tools.secondsToTicks
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 class DiamondOfSmokeListener : InteractionListener {
     companion object {
@@ -28,9 +28,9 @@ class DiamondOfSmokeListener : InteractionListener {
 
         fun checkAllTorchesLit(player: Player): Boolean {
             return getVarbit(player, DesertTreasure.varbitStandingTorchNorthEast) == 1 &&
-                    getVarbit(player, DesertTreasure.varbitStandingTorchSouthEast) == 1 &&
-                    getVarbit(player, DesertTreasure.varbitStandingTorchSouthWest) == 1 &&
-                    getVarbit(player, DesertTreasure.varbitStandingTorchNorthWest) == 1
+                getVarbit(player, DesertTreasure.varbitStandingTorchSouthEast) == 1 &&
+                getVarbit(player, DesertTreasure.varbitStandingTorchSouthWest) == 1 &&
+                getVarbit(player, DesertTreasure.varbitStandingTorchNorthWest) == 1
         }
     }
 
@@ -50,7 +50,7 @@ class DiamondOfSmokeListener : InteractionListener {
                     player,
                     "There seems to be no way to open this chest. Engraved where the",
                     "keyhole should be is a message:",
-                    "'Light the path, and find the key...'"
+                    "'Light the path, and find the key...'",
                 )
             }
             return@on true
@@ -58,10 +58,10 @@ class DiamondOfSmokeListener : InteractionListener {
 
         on(intArrayOf(Scenery.GATE_6451, Scenery.GATE_6452), SCENERY, "open") { player, node ->
             if (getQuestStage(player, DesertTreasure.questName) == 9) {
-
-                if (!getAttribute(player, DesertTreasure.attributeUnlockedGate, false) && inInventory(
+                if (!getAttribute(player, DesertTreasure.attributeUnlockedGate, false) &&
+                    inInventory(
                         player,
-                        Items.WARM_KEY_4656
+                        Items.WARM_KEY_4656,
                     )
                 ) {
                     if (removeItem(player, Items.WARM_KEY_4656)) {
@@ -75,7 +75,9 @@ class DiamondOfSmokeListener : InteractionListener {
                         getAttribute<NPC?>(player, DesertTreasure.attributeFareedInstance, null) == null
                     ) {
                         DoorActionHandler.handleAutowalkDoor(player, node.asScenery())
-                        val npc = core.game.node.entity.npc.NPC.create(NPCs.FAREED_1977, Location(3315, 9376, 0))
+                        val npc =
+                            core.game.node.entity.npc.NPC
+                                .create(NPCs.FAREED_1977, Location(3315, 9376, 0))
                         setAttribute(player, DesertTreasure.attributeFareedInstance, npc)
                         setAttribute(npc, "target", player)
                         npc.isRespawn = false
@@ -83,14 +85,15 @@ class DiamondOfSmokeListener : InteractionListener {
                         npc.attack(player)
                         sendChat(npc, "You dare trespass in my realm?")
                     } else if (DesertTreasure.getSubStage(player, DesertTreasure.attributeSmokeStage) >= 100) {
-                        if (!inInventory(player, Items.SMOKE_DIAMOND_4672) && !inBank(
+                        if (!inInventory(player, Items.SMOKE_DIAMOND_4672) &&
+                            !inBank(
                                 player,
-                                Items.SMOKE_DIAMOND_4672
+                                Items.SMOKE_DIAMOND_4672,
                             )
                         ) {
                             sendMessage(
                                 player,
-                                "The Diamond of Smoke seems to have mystically found its way back here..."
+                                "The Diamond of Smoke seems to have mystically found its way back here...",
                             )
                             GroundItemManager.create(Item(Items.SMOKE_DIAMOND_4672), Location(3315, 9376, 0), player)
                         }
@@ -111,7 +114,7 @@ class DiamondOfSmokeListener : InteractionListener {
             sendDialogueLines(
                 player,
                 "This hole leads to a maze of other passages. Without knowing where",
-                "you are headed, there's no chance of reaching anywhere interesting."
+                "you are headed, there's no chance of reaching anywhere interesting.",
             )
             return@on true
         }
@@ -120,7 +123,7 @@ class DiamondOfSmokeListener : InteractionListener {
             IntType.SCENERY,
             Items.TINDERBOX_590,
             Scenery.STANDING_TORCH_6406,
-            Scenery.STANDING_TORCH_6413
+            Scenery.STANDING_TORCH_6413,
         ) { player, used, with ->
             if (getDynLevel(player, Skills.FIREMAKING) < 50) {
                 sendMessage(player, "You need a firemaking level of 50 to light this torch.")
@@ -134,7 +137,7 @@ class DiamondOfSmokeListener : InteractionListener {
             removeTimer(player, timerIdentifierTorchNE)
             registerTimer(
                 player,
-                StandingTorchTimer(timerIdentifierTorchNE, DesertTreasure.varbitStandingTorchNorthEast)
+                StandingTorchTimer(timerIdentifierTorchNE, DesertTreasure.varbitStandingTorchNorthEast),
             )
             return@onUseWith true
         }
@@ -143,7 +146,7 @@ class DiamondOfSmokeListener : InteractionListener {
             IntType.SCENERY,
             Items.TINDERBOX_590,
             Scenery.STANDING_TORCH_6408,
-            Scenery.STANDING_TORCH_6414
+            Scenery.STANDING_TORCH_6414,
         ) { player, used, with ->
             if (getDynLevel(player, Skills.FIREMAKING) < 50) {
                 sendMessage(player, "You need a firemaking level of 50 to light this torch.")
@@ -157,7 +160,7 @@ class DiamondOfSmokeListener : InteractionListener {
             removeTimer(player, timerIdentifierTorchSE)
             registerTimer(
                 player,
-                StandingTorchTimer(timerIdentifierTorchSE, DesertTreasure.varbitStandingTorchSouthEast)
+                StandingTorchTimer(timerIdentifierTorchSE, DesertTreasure.varbitStandingTorchSouthEast),
             )
             return@onUseWith true
         }
@@ -166,7 +169,7 @@ class DiamondOfSmokeListener : InteractionListener {
             IntType.SCENERY,
             Items.TINDERBOX_590,
             Scenery.STANDING_TORCH_6410,
-            Scenery.STANDING_TORCH_6415
+            Scenery.STANDING_TORCH_6415,
         ) { player, used, with ->
             if (getDynLevel(player, Skills.FIREMAKING) < 50) {
                 sendMessage(player, "You need a firemaking level of 50 to light this torch.")
@@ -180,7 +183,7 @@ class DiamondOfSmokeListener : InteractionListener {
             removeTimer(player, timerIdentifierTorchSW)
             registerTimer(
                 player,
-                StandingTorchTimer(timerIdentifierTorchSW, DesertTreasure.varbitStandingTorchSouthWest)
+                StandingTorchTimer(timerIdentifierTorchSW, DesertTreasure.varbitStandingTorchSouthWest),
             )
             return@onUseWith true
         }
@@ -189,7 +192,7 @@ class DiamondOfSmokeListener : InteractionListener {
             IntType.SCENERY,
             Items.TINDERBOX_590,
             Scenery.STANDING_TORCH_6412,
-            Scenery.STANDING_TORCH_6416
+            Scenery.STANDING_TORCH_6416,
         ) { player, used, with ->
             if (getDynLevel(player, Skills.FIREMAKING) < 50) {
                 sendMessage(player, "You need a firemaking level of 50 to light this torch.")
@@ -203,7 +206,7 @@ class DiamondOfSmokeListener : InteractionListener {
             removeTimer(player, timerIdentifierTorchNW)
             registerTimer(
                 player,
-                StandingTorchTimer(timerIdentifierTorchNW, DesertTreasure.varbitStandingTorchNorthWest)
+                StandingTorchTimer(timerIdentifierTorchNW, DesertTreasure.varbitStandingTorchNorthWest),
             )
             return@onUseWith true
         }
@@ -212,30 +215,34 @@ class DiamondOfSmokeListener : InteractionListener {
 
 class StandingTorchTimer(
     private val timerIdentifier: String = "deserttreasureunknowntimer",
-    private val torchVarbit: Int = 0
+    private val torchVarbit: Int = 0,
 ) : RSTimer(secondsToTicks(150), timerIdentifier) {
     override fun run(entity: Entity): Boolean {
         if (entity is Player) {
             when (timerIdentifier) {
-                DiamondOfSmokeListener.timerIdentifierTorchNE -> sendMessage(
-                    entity,
-                    "The North-east torch burns out..."
-                )
+                DiamondOfSmokeListener.timerIdentifierTorchNE ->
+                    sendMessage(
+                        entity,
+                        "The North-east torch burns out...",
+                    )
 
-                DiamondOfSmokeListener.timerIdentifierTorchSE -> sendMessage(
-                    entity,
-                    "The South-east torch burns out..."
-                )
+                DiamondOfSmokeListener.timerIdentifierTorchSE ->
+                    sendMessage(
+                        entity,
+                        "The South-east torch burns out...",
+                    )
 
-                DiamondOfSmokeListener.timerIdentifierTorchSW -> sendMessage(
-                    entity,
-                    "The South-west torch burns out..."
-                )
+                DiamondOfSmokeListener.timerIdentifierTorchSW ->
+                    sendMessage(
+                        entity,
+                        "The South-west torch burns out...",
+                    )
 
-                DiamondOfSmokeListener.timerIdentifierTorchNW -> sendMessage(
-                    entity,
-                    "The North-west torch burns out..."
-                )
+                DiamondOfSmokeListener.timerIdentifierTorchNW ->
+                    sendMessage(
+                        entity,
+                        "The North-west torch burns out...",
+                    )
 
                 else -> sendMessage(entity, "The torch burns out...")
             }

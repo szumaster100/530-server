@@ -18,7 +18,6 @@ private const val UNFINISHED_CRUNCHY_WORM = 9584
 
 @Initializable
 class GnomeCrunchyCooker : UseWithHandler(9577, 9579, 9581, 9583, 2202) {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         addHandler(17131, OBJECT_TYPE, this)
         addHandler(2728, OBJECT_TYPE, this)
@@ -40,10 +39,15 @@ class GnomeCrunchyCooker : UseWithHandler(9577, 9579, 9581, 9583, 2202) {
         return true
     }
 
-    private fun cook(product: Int, raw: Item, player: Player) {
+    private fun cook(
+        product: Int,
+        raw: Item,
+        player: Player,
+    ) {
         GameWorld.Pulser.submit(
             object : Pulse() {
                 var counter = 0
+
                 override fun pulse(): Boolean {
                     when (counter++) {
                         0 -> player.lock().also { player.animator.animate(Animation(883)) }
@@ -62,7 +66,7 @@ class GnomeCrunchyCooker : UseWithHandler(9577, 9579, 9581, 9583, 2202) {
                     }
                     return false
                 }
-            }
+            },
         )
     }
 }

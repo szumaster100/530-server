@@ -17,16 +17,23 @@ import org.rs.consts.Items
 
 class EquipTests {
     companion object {
-        init { TestUtils.preTestSetup(); EquipHandler().defineListeners() }
+        init {
+            TestUtils.preTestSetup()
+            EquipHandler().defineListeners()
+        }
     }
 
     @Test fun equipShouldFireEquipListeners() {
         var didRun = false
-        val listener = object : InteractionListener {
-            override fun defineListeners() {
-                onEquip(4151) { _, _ -> didRun = true; return@onEquip true }
+        val listener =
+            object : InteractionListener {
+                override fun defineListeners() {
+                    onEquip(4151) { _, _ ->
+                        didRun = true
+                        return@onEquip true
+                    }
+                }
             }
-        }
         listener.defineListeners()
 
         val p = TestUtils.getMockPlayer("bill")
@@ -38,11 +45,15 @@ class EquipTests {
 
     @Test fun unequipShouldFireUnequipListeners() {
         var didRun = false
-        val listener = object : InteractionListener {
-            override fun defineListeners() {
-                onUnequip(4151) { _, _ -> didRun = true; return@onUnequip true }
+        val listener =
+            object : InteractionListener {
+                override fun defineListeners() {
+                    onUnequip(4151) { _, _ ->
+                        didRun = true
+                        return@onUnequip true
+                    }
+                }
             }
-        }
         listener.defineListeners()
 
         val p = TestUtils.getMockPlayer("bill")
@@ -54,11 +65,15 @@ class EquipTests {
 
     @Test fun equippingItemThatReplacesAnotherItemShouldCallUnequipListenersForTheReplacedItem() {
         var didRun = false
-        val listener = object : InteractionListener {
-            override fun defineListeners() {
-                onUnequip(4151) { _, _ -> didRun = true; return@onUnequip true }
+        val listener =
+            object : InteractionListener {
+                override fun defineListeners() {
+                    onUnequip(4151) { _, _ ->
+                        didRun = true
+                        return@onUnequip true
+                    }
+                }
             }
-        }
         listener.defineListeners()
 
         val p = TestUtils.getMockPlayer("bill")
@@ -78,7 +93,11 @@ class EquipTests {
         p.inventory.add(Item(Items.RUNE_SCIMITAR_1333))
 
         InteractionListeners.run(Items.RUNE_SCIMITAR_1333, IntType.ITEM, "equip", p, p.inventory[1])
-        Assertions.assertEquals(2000, p.inventory.getAmount(Items.BRONZE_DART_806), "\n" + p.inventory.toString() + "\n" + p.equipment.toString())
+        Assertions.assertEquals(
+            2000,
+            p.inventory.getAmount(Items.BRONZE_DART_806),
+            "\n" + p.inventory.toString() + "\n" + p.equipment.toString(),
+        )
     }
 
     @Test fun equippingItemThatUnequipsTwoItemsShouldBeAllowedWithOnlyOneInitiallyFreeSlot() {
@@ -148,14 +167,15 @@ class EquipTests {
     @Test fun graveDeathWithEquippedItemShouldFireUnequipHooks() {
         TestUtils.getMockPlayer("graveunequip").use { p ->
             var hookFired = false
-            val tempHook = object : InteractionListener {
-                override fun defineListeners() {
-                    onUnequip(Items.ABYSSAL_WHIP_4151) { player, node ->
-                        hookFired = true
-                        return@onUnequip true
+            val tempHook =
+                object : InteractionListener {
+                    override fun defineListeners() {
+                        onUnequip(Items.ABYSSAL_WHIP_4151) { player, node ->
+                            hookFired = true
+                            return@onUnequip true
+                        }
                     }
                 }
-            }
 
             tempHook.defineListeners()
             p.details.rights = Rights.REGULAR_PLAYER

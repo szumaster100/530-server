@@ -1,18 +1,21 @@
 package content.global.skill.hunter.impling
 
-import org.rs.consts.Components
 import core.api.*
 import core.game.node.entity.npc.NPC
 import core.game.system.command.Privilege
 import core.game.world.map.Location
 import core.tools.secondsToTicks
+import org.rs.consts.Components
 import kotlin.math.ceil
 import kotlin.math.min
 
-class ImplingController : TickListener, Commands {
+class ImplingController :
+    TickListener,
+    Commands {
     override fun tick() {
-        if (--nextCycle > getTicksBeforeNextCycleToDespawn())
+        if (--nextCycle > getTicksBeforeNextCycleToDespawn()) {
             return
+        }
         if (activeImplings.size > 0) {
             clearSomeImplings(min(activeImplings.size, implingsClearedPerTick))
             return
@@ -26,18 +29,22 @@ class ImplingController : TickListener, Commands {
             name = "implings",
             privilege = Privilege.ADMIN,
             usage = "::implings",
-            description = "Lists the currently active implings/spawners"
+            description = "Lists the currently active implings/spawners",
         ) { player, _ ->
-            for (i in 0..310)
+            for (i in 0..310) {
                 sendString(player, "", 275, i)
+            }
             sendString(player, "Implings", 275, 2)
             for ((index, impling) in activeImplings.withIndex()) {
                 var text = "This shouldn't be here -> ${impling.id}"
                 if (impling.id < 1028) {
                     val table = ImplingSpawner.forId(impling.id)
-                    if (table != null)
+                    if (table != null) {
                         text = table.name
-                } else text = impling.name
+                    }
+                } else {
+                    text = impling.name
+                }
                 sendString(player, "$text -> ${impling.location}", 275, index + 11)
             }
             openInterface(player, Components.QUESTJOURNAL_SCROLL_275)
@@ -66,7 +73,10 @@ class ImplingController : TickListener, Commands {
             }
         }
 
-        fun generateSpawnersAt(location: Location, type: ImplingSpawnTypes) {
+        fun generateSpawnersAt(
+            location: Location,
+            type: ImplingSpawnTypes,
+        ) {
             for (i in 0 until type.spawnRolls) {
                 val spawner = type.table.roll() ?: continue
                 if (spawner == ImplingSpawner.NULL) continue
@@ -80,12 +90,16 @@ class ImplingController : TickListener, Commands {
             return ceil(activeImplings.size / implingsClearedPerTick.toDouble()).toInt()
         }
 
-        fun deregister(impling: NPC, graceful: Boolean = false): Boolean {
+        fun deregister(
+            impling: NPC,
+            graceful: Boolean = false,
+        ): Boolean {
             activeImplings.remove(impling)
-            if (graceful)
+            if (graceful) {
                 poofClear(impling)
-            else
+            } else {
                 impling.clear()
+            }
             return true
         }
     }

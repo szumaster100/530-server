@@ -1,7 +1,5 @@
 package content.region.kandarin.dialogue.stronghold
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.minigame.gnomecook.GC_BASE_ATTRIBUTE
 import content.minigame.gnomecook.GC_TUT_FIN
 import content.minigame.gnomecook.GC_TUT_PROG
@@ -14,10 +12,13 @@ import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
-class BlurberryDialogue(player: Player? = null) : Dialogue(player) {
-
+class BlurberryDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     private var tutorialProgress = -1
     private var tutorialComplete = false
 
@@ -40,7 +41,10 @@ class BlurberryDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> player("Yes! What is it I need to do?").also { stage++ }
             1 -> npc(FaceAnim.OLD_NORMAL, "Well, I'd like to show you how to make", "a drink.").also { stage++ }
@@ -50,14 +54,15 @@ class BlurberryDialogue(player: Player? = null) : Dialogue(player) {
             5 -> npc(FaceAnim.OLD_NORMAL, "Here's everything you need.").also { stage++ }
             6 -> {
                 end()
-                val items = arrayOf(
-                    Item(Items.KNIFE_946),
-                    Item(Items.COCKTAIL_SHAKER_2025),
-                    Item(Items.COCKTAIL_GLASS_2026),
-                    Item(Items.PINEAPPLE_2114),
-                    Item(Items.LEMON_2102, 2),
-                    Item(Items.ORANGE_2108)
-                )
+                val items =
+                    arrayOf(
+                        Item(Items.KNIFE_946),
+                        Item(Items.COCKTAIL_SHAKER_2025),
+                        Item(Items.COCKTAIL_GLASS_2026),
+                        Item(Items.PINEAPPLE_2114),
+                        Item(Items.LEMON_2102, 2),
+                        Item(Items.ORANGE_2108),
+                    )
                 if (player.inventory.hasSpaceFor(*items)) {
                     player.inventory.add(*items)
                     setAttribute(player, "/save:$GC_BASE_ATTRIBUTE:$GC_TUT_PROG", 20)

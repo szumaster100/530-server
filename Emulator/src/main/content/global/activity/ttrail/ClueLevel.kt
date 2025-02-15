@@ -1,24 +1,28 @@
 package content.global.activity.ttrail
 
-import org.rs.consts.Items
+import core.api.IfaceSettingsBuilder
 import core.api.addItemOrDrop
 import core.game.component.Component
 import core.game.container.access.InterfaceContainer
-import core.api.IfaceSettingsBuilder
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.game.system.config.ClueRewardParser
 import core.game.world.GameWorld
 import core.tools.RandomFunction
+import org.rs.consts.Items
 
-enum class ClueLevel(val casketId: Int, val minSteps: Int, val maxSteps: Int) {
+enum class ClueLevel(
+    val casketId: Int,
+    val minSteps: Int,
+    val maxSteps: Int,
+) {
     EASY(Items.CASKET_2714, 1, 5),
     MEDIUM(Items.CASKET_2717, 1, 6),
     HARD(Items.CASKET_2720, 1, 8),
-    UNKNOWN(0, 0, 0);
+    UNKNOWN(0, 0, 0),
+    ;
 
     companion object {
-
         private fun getLevelForCasket(casket: Item): ClueLevel {
             return when (casket.id) {
                 Items.CASKET_2714 -> EASY
@@ -28,7 +32,10 @@ enum class ClueLevel(val casketId: Int, val minSteps: Int, val maxSteps: Int) {
             }
         }
 
-        fun open(player: Player, casket: Item?) {
+        fun open(
+            player: Player,
+            casket: Item?,
+        ) {
             if (casket == null || !player.inventory.containsItem(casket)) {
                 return
             }
@@ -59,15 +66,15 @@ enum class ClueLevel(val casketId: Int, val minSteps: Int, val maxSteps: Int) {
                     player.sendMessage("Well done, you've completed the Treasure Trail!")
                     player.sendMessage(
                         getChatColor(clueLevel) +
-                                "You have completed " +
-                                playerTrails.getCompletedClues(clueLevel) +
-                                " " +
-                                clueLevel.name.lowercase() +
-                                " clues."
+                            "You have completed " +
+                            playerTrails.getCompletedClues(clueLevel) +
+                            " " +
+                            clueLevel.name.lowercase() +
+                            " clues.",
                     )
 
                     player.sendMessage(
-                        "<col=990000>Your clue is worth approximately $rewardValue gold coins!</col>"
+                        "<col=990000>Your clue is worth approximately $rewardValue gold coins!</col>",
                     )
 
                     val clueIfaceSettings = IfaceSettingsBuilder().enableAllOptions().build()
@@ -79,7 +86,7 @@ enum class ClueLevel(val casketId: Int, val minSteps: Int, val maxSteps: Int) {
                         364,
                         4,
                         3,
-                        3
+                        3,
                     )
                 }
                 return
@@ -97,7 +104,10 @@ enum class ClueLevel(val casketId: Int, val minSteps: Int, val maxSteps: Int) {
             player.dialogueInterpreter.sendItemMessage(newClue, "You've found another clue!")
         }
 
-        fun rollLoot(player: Player, level: ClueLevel): List<Item> {
+        fun rollLoot(
+            player: Player,
+            level: ClueLevel,
+        ): List<Item> {
             val loot = ArrayList<Item>()
             var itemCount = RandomFunction.random(1, 6)
 

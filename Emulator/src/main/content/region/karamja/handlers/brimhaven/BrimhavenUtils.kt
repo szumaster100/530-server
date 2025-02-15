@@ -16,9 +16,10 @@ import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 
 object BrimhavenUtils {
-
-    fun getVineDestination(player: Player, node: Scenery): Location {
-
+    fun getVineDestination(
+        player: Player,
+        node: Scenery,
+    ): Location {
         if (node.rotation % 2 != 0) {
             if (player.location.x > node.location.x) {
                 return node.location.transform(-1, 0, 0)
@@ -33,7 +34,10 @@ object BrimhavenUtils {
         }
     }
 
-    fun handleStairs(node: Scenery, player: Player) {
+    fun handleStairs(
+        node: Scenery,
+        player: Player,
+    ) {
         when (node.id) {
             5094 -> ClimbActionHandler.climb(player, null, Location.create(2643, 9594, 2))
             5096 -> ClimbActionHandler.climb(player, null, Location.create(2649, 9591, 0))
@@ -42,22 +46,27 @@ object BrimhavenUtils {
         }
     }
 
-    fun handleSteppingStones(player: Player, node: Scenery) {
+    fun handleSteppingStones(
+        player: Player,
+        node: Scenery,
+    ) {
         if (player.skills.getLevel(Skills.AGILITY) < 12) {
             sendMessage(player, "You need an agility level of 12 to cross this.")
             return
         }
         player.lock(12)
-        val dir = AgilityHandler.forceWalk(
-            player,
-            -1,
-            player.location,
-            node.location,
-            Animation.create(769),
-            10,
-            0.0,
-            null
-        ).direction
+        val dir =
+            AgilityHandler
+                .forceWalk(
+                    player,
+                    -1,
+                    player.location,
+                    node.location,
+                    Animation.create(769),
+                    10,
+                    0.0,
+                    null,
+                ).direction
         val loc = player.location
 
         registerLogoutListener(player, "steppingstone") { p ->
@@ -68,14 +77,16 @@ object BrimhavenUtils {
             object : Pulse(3, player) {
                 var stage = if (dir == Direction.NORTH) -1 else 0
                 var direction = dir
+
                 override fun pulse(): Boolean {
                     val l = player.location
                     when (stage++) {
                         1 -> direction = Direction.get(direction.toInteger() + 1 and 3)
                         3 -> direction = Direction.get(direction.toInteger() - 1 and 3)
-                        5 -> if (direction == Direction.NORTH) {
-                            return true
-                        }
+                        5 ->
+                            if (direction == Direction.NORTH) {
+                                return true
+                            }
                     }
                     if (stage == 6) {
                         player.achievementDiaryManager.finishTask(player, DiaryType.KARAMJA, 1, 15)
@@ -88,7 +99,7 @@ object BrimhavenUtils {
                         Animation.create(769),
                         10,
                         0.0,
-                        null
+                        null,
                     )
                     return stage == 6
                 }
@@ -97,11 +108,14 @@ object BrimhavenUtils {
                     clearLogoutListener(player, "steppingstone")
                     super.stop()
                 }
-            }
+            },
         )
     }
 
-    fun handleVines(player: Player, node: Scenery) {
+    fun handleVines(
+        player: Player,
+        node: Scenery,
+    ) {
         val level: Int = 10 + (node.id - 5103) * 6
         if (player.skills.getLevel(Skills.WOODCUTTING) < level) {
             sendMessage(player, "You need a woodcutting level of $level to chop down this vine.")
@@ -125,7 +139,7 @@ object BrimhavenUtils {
                     }
                     return true
                 }
-            }
+            },
         )
     }
 }

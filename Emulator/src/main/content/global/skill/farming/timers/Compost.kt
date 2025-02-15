@@ -25,8 +25,9 @@ class Compost : PersistTimer(500, "farming:compost", isSoft = true) {
         for ((cBin, bin) in binMap) {
             if (bin.isReady() && !bin.isFinished) {
                 bin.finish()
-            } else if (bin.isDefaultState())
+            } else if (bin.isDefaultState()) {
                 removeList.add(cBin)
+            }
         }
         removeList.forEach { binMap.remove(it) }
         removeList.clear()
@@ -42,7 +43,10 @@ class Compost : PersistTimer(500, "farming:compost", isSoft = true) {
         return binMap.values
     }
 
-    override fun save(root: JSONObject, entity: Entity) {
+    override fun save(
+        root: JSONObject,
+        entity: Entity,
+    ) {
         val bins = JSONArray()
         for ((key, bin) in binMap) {
             val b = JSONObject()
@@ -53,7 +57,10 @@ class Compost : PersistTimer(500, "farming:compost", isSoft = true) {
         root.put("bins", bins)
     }
 
-    override fun parse(root: JSONObject, entity: Entity) {
+    override fun parse(
+        root: JSONObject,
+        entity: Entity,
+    ) {
         (root["bins"] as JSONArray).forEach {
             val bin = it as JSONObject
             val binOrdinal = bin["bin-ordinal"].toString().toInt()

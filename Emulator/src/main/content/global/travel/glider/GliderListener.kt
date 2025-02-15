@@ -1,22 +1,24 @@
 package content.global.travel.glider
 
 import core.api.*
-import org.rs.consts.Components
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.quest.isQuestComplete
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.interaction.InterfaceListener
+import org.rs.consts.Components
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
-class GliderListener : InteractionListener, InterfaceListener {
-
-    private val GNOME_PILOTS = intArrayOf(
-        NPCs.CAPTAIN_DALBUR_3809,
-        NPCs.CAPTAIN_BLEEMADGE_3810,
-        NPCs.CAPTAIN_ERRDO_3811,
-        NPCs.CAPTAIN_KLEMFOODLE_3812
-    )
+class GliderListener :
+    InteractionListener,
+    InterfaceListener {
+    private val GNOME_PILOTS =
+        intArrayOf(
+            NPCs.CAPTAIN_DALBUR_3809,
+            NPCs.CAPTAIN_BLEEMADGE_3810,
+            NPCs.CAPTAIN_ERRDO_3811,
+            NPCs.CAPTAIN_KLEMFOODLE_3812,
+        )
 
     override fun defineListeners() {
         on(GNOME_PILOTS, IntType.NPC, "glider") { player, _ ->

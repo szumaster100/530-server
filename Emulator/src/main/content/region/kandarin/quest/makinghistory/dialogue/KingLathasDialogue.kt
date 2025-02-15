@@ -1,8 +1,5 @@
 package content.region.kandarin.quest.makinghistory.dialogue
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.kandarin.quest.biohazard.dialogue.LathasDialogue
 import content.region.kandarin.quest.makinghistory.handlers.MakingHistoryUtils
 import core.api.*
@@ -14,16 +11,19 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class KingLathasDialogue(player: Player? = null) : Dialogue(player) {
-
+class KingLathasDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any?): Boolean {
         npc = args[0] as NPC
         val questStage = getQuestStage(player, Quests.BIOHAZARD)
         val progress = getVarbit(player, MakingHistoryUtils.PROGRESS)
         when {
-
             questStage in 16..100 -> {
                 end()
                 openDialogue(player, LathasDialogue())
@@ -40,7 +40,7 @@ class KingLathasDialogue(player: Player? = null) : Dialogue(player) {
             !inInventory(player, Items.LETTER_6757) -> {
                 playerl(
                     FaceAnim.FRIENDLY,
-                    "Excuse me sire, but I seem to have lost that letter you gave me."
+                    "Excuse me sire, but I seem to have lost that letter you gave me.",
                 ).also { stage = 14 }
             }
 
@@ -51,32 +51,39 @@ class KingLathasDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         npc = NPC(NPCs.KING_LATHAS_364)
         when (stage) {
             1 -> options("Jorral and the outpost", "West Ardougne").also { stage++ }
-            2 -> when (buttonId) {
-                1 -> playerl(FaceAnim.FRIENDLY, "Jorral and the outpost").also { stage++ }
-                2 -> playerl(FaceAnim.FRIENDLY, "West Ardougne").also { stage++ }
-            }
+            2 ->
+                when (buttonId) {
+                    1 -> playerl(FaceAnim.FRIENDLY, "Jorral and the outpost").also { stage++ }
+                    2 -> playerl(FaceAnim.FRIENDLY, "West Ardougne").also { stage++ }
+                }
 
-            3 -> playerl(
-                FaceAnim.FRIENDLY,
-                "Excuse me. I have been asked to hand you this from Jorral at the outpost."
-            ).also { stage++ }
+            3 ->
+                playerl(
+                    FaceAnim.FRIENDLY,
+                    "Excuse me. I have been asked to hand you this from Jorral at the outpost.",
+                ).also { stage++ }
 
             4 -> npcl(FaceAnim.FRIENDLY, "I see.").also { stage++ }
             5 -> sendDoubleItemDialogue(player, -1, Items.LETTER_6756, "The King reads the letter.").also { stage++ }
-            6 -> npcl(
-                FaceAnim.FRIENDLY,
-                "I had no idea that place had any value at all! All this about my great-grandfather and Jorral's plans to make it into a museum makes for a convincing case."
-            ).also { stage++ }
+            6 ->
+                npcl(
+                    FaceAnim.FRIENDLY,
+                    "I had no idea that place had any value at all! All this about my great-grandfather and Jorral's plans to make it into a museum makes for a convincing case.",
+                ).also { stage++ }
 
             7 -> playerl(FaceAnim.FRIENDLY, "I am sure he only wants what is best.").also { stage++ }
-            8 -> npcl(
-                FaceAnim.FRIENDLY,
-                "Very well, I will comply with his request. Take this letter back to him with my kind regards."
-            ).also { stage++ }
+            8 ->
+                npcl(
+                    FaceAnim.FRIENDLY,
+                    "Very well, I will comply with his request. Take this letter back to him with my kind regards.",
+                ).also { stage++ }
 
             9 -> playerl(FaceAnim.FRIENDLY, "Thank you.").also { stage++ }
             10 -> {

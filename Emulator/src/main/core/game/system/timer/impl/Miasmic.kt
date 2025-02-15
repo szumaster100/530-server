@@ -9,21 +9,24 @@ import core.game.system.timer.PersistTimer
 import core.game.system.timer.RSTimer
 import core.game.system.timer.TimerFlag
 
-class Miasmic : PersistTimer(
-    runInterval = 1,
-    identifier = "miasmic",
-    flags = arrayOf(TimerFlag.ClearOnDeath)
-) {
+class Miasmic :
+    PersistTimer(
+        runInterval = 1,
+        identifier = "miasmic",
+        flags = arrayOf(TimerFlag.ClearOnDeath),
+    ) {
     override fun run(entity: Entity): Boolean {
         registerTimer(entity, spawnTimer<MiasmicImmunity>(entity, 7))
         return false
     }
 
     override fun onRegister(entity: Entity) {
-        if (hasTimerActive<MiasmicImmunity>(entity))
+        if (hasTimerActive<MiasmicImmunity>(entity)) {
             removeTimer(entity, this)
-        if (hasTimerActive<Miasmic>(entity))
+        }
+        if (hasTimerActive<Miasmic>(entity)) {
             removeTimer(entity, this)
+        }
     }
 
     override fun getTimer(vararg args: Any): RSTimer {

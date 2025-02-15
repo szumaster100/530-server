@@ -10,7 +10,9 @@ import org.junit.jupiter.api.Test
 import org.rs.consts.Items
 
 class BFPlayerStateTests {
-    init { TestUtils.preTestSetup() }
+    init {
+        TestUtils.preTestSetup()
+    }
 
     @Test fun processOreIntoBarsShouldDoNothingIfBarsNotCooled() {
         TestUtils.getMockPlayer("bf-barsnotcooled").use { p ->

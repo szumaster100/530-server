@@ -1,19 +1,18 @@
 package content.region.morytania.handlers.abandonedmine
 
-import org.rs.consts.Items
-import org.rs.consts.Music
-import org.rs.consts.Scenery
+import core.api.MapArea
 import core.api.addItem
 import core.api.anyInInventory
 import core.api.removeAll
 import core.api.sendMessage
 import core.game.node.entity.Entity
 import core.game.node.entity.player.Player
-import core.api.MapArea
 import core.game.world.map.zone.ZoneBorders
+import org.rs.consts.Items
+import org.rs.consts.Music
+import org.rs.consts.Scenery
 
 class AbandonedMine : MapArea {
-
     val FUNGUS = intArrayOf(Scenery.GLOWING_FUNGUS_4932, Scenery.GLOWING_FUNGUS_4933)
 
     override fun defineAreaBorders(): Array<ZoneBorders> {
@@ -23,7 +22,7 @@ class AbandonedMine : MapArea {
             ZoneBorders.forRegion(11078),
             ZoneBorders.forRegion(11079),
             ZoneBorders.forRegion(10821),
-            ZoneBorders.forRegion(10822)
+            ZoneBorders.forRegion(10822),
         )
     }
 

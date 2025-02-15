@@ -1,6 +1,5 @@
 package content.global.activity.champion
 
-import org.rs.consts.*
 import content.data.GameAttributes
 import content.global.activity.champion.npc.EarthWarriorChampionNPC.Companion.spawnEarthWarriorChampion
 import content.global.activity.champion.npc.GhoulChampionNPC.Companion.spawnGhoulChampion
@@ -14,6 +13,7 @@ import content.global.activity.champion.npc.LesserDemonChampionNPC.Companion.spa
 import content.global.activity.champion.npc.SkeletonChampionNPC.Companion.spawnSkeletonChampion
 import content.global.activity.champion.npc.ZombieChampionNPC.Companion.spawnZombieChampion
 import core.api.*
+import core.api.MapArea
 import core.game.dialogue.FaceAnim
 import core.game.global.action.DoorActionHandler
 import core.game.interaction.IntType
@@ -22,11 +22,13 @@ import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.game.system.task.Pulse
 import core.game.world.map.Location
-import core.api.MapArea
 import core.game.world.map.zone.ZoneBorders
 import core.game.world.map.zone.ZoneRestriction
+import org.rs.consts.*
 
-class ChallengeListener : InteractionListener, MapArea {
+class ChallengeListener :
+    InteractionListener,
+    MapArea {
     val earthWarriorScroll = Items.CHAMPION_SCROLL_6798
     val ghoulScroll = Items.CHAMPION_SCROLL_6799
     val giantScroll = Items.CHAMPION_SCROLL_6800
@@ -41,17 +43,59 @@ class ChallengeListener : InteractionListener, MapArea {
 
     val blankScroll = Components.BLANK_SCROLL_222
 
-    private val impScrollContent = arrayOf("How about picking on someone your own size? I'll", "see you at the Champion's Guild.", "", "Champion of Imps")
-    private val goblinScrollContent = arrayOf("Fight me if you think you can human, I'll wait", "for you in the Champion's Guild.", "", "Champion of Goblins")
-    private val skeletonScrollContent = arrayOf("I'll be waiting at the Champions' Guild to collect", "your bones.", "", "Champion of Skeletons")
-    private val zombieScrollContent = arrayOf("You come to Champions' Guild, you fight me, I", "squish you, I get brains!", "", "Champion of Zombies")
-    private val giantScrollContent = arrayOf("Get yourself to the Champions' Guild, if you dare", "to face me puny human.", "", "Champion of Giants")
-    private val hobgoblinScrollContent = arrayOf("You won't defeat me, though you're welcome to", "try at the Champions' Guild.", "", "Champion of Hobgoblins")
-    private val ghoulScrollContent = arrayOf("Come and duel me at the Champions' Guild, I'll", "make sure nothing goes to waste.", "", "Champion of Ghouls")
-    private val earthWarriorScrollContent = arrayOf("I challenge you to a duel, come to the arena", "beneath the Champion's Guild and fight me if you", "dare.", "", "Champion of Earth Warriors")
-    private val jogreScrollContent = arrayOf("You think you can defeat me? Come to the", "Champion's Guild and prove it!", "", "Champion of Jogres")
-    private val lesserDemonScrollContent = arrayOf("Come to the Champion's Guild so I can banish", "you mortal!", "", "Champion of Lesser Demons")
-    private val mummiesScrollContent = arrayOf("I challenge you to a fight! Meet me at the", "Champions' Guild so we can wrap this up.", "", "Champion of Mummies")
+    private val impScrollContent =
+        arrayOf(
+            "How about picking on someone your own size? I'll",
+            "see you at the Champion's Guild.",
+            "",
+            "Champion of Imps",
+        )
+    private val goblinScrollContent =
+        arrayOf(
+            "Fight me if you think you can human, I'll wait",
+            "for you in the Champion's Guild.",
+            "",
+            "Champion of Goblins",
+        )
+    private val skeletonScrollContent =
+        arrayOf("I'll be waiting at the Champions' Guild to collect", "your bones.", "", "Champion of Skeletons")
+    private val zombieScrollContent =
+        arrayOf("You come to Champions' Guild, you fight me, I", "squish you, I get brains!", "", "Champion of Zombies")
+    private val giantScrollContent =
+        arrayOf("Get yourself to the Champions' Guild, if you dare", "to face me puny human.", "", "Champion of Giants")
+    private val hobgoblinScrollContent =
+        arrayOf(
+            "You won't defeat me, though you're welcome to",
+            "try at the Champions' Guild.",
+            "",
+            "Champion of Hobgoblins",
+        )
+    private val ghoulScrollContent =
+        arrayOf(
+            "Come and duel me at the Champions' Guild, I'll",
+            "make sure nothing goes to waste.",
+            "",
+            "Champion of Ghouls",
+        )
+    private val earthWarriorScrollContent =
+        arrayOf(
+            "I challenge you to a duel, come to the arena",
+            "beneath the Champion's Guild and fight me if you",
+            "dare.",
+            "",
+            "Champion of Earth Warriors",
+        )
+    private val jogreScrollContent =
+        arrayOf("You think you can defeat me? Come to the", "Champion's Guild and prove it!", "", "Champion of Jogres")
+    private val lesserDemonScrollContent =
+        arrayOf("Come to the Champion's Guild so I can banish", "you mortal!", "", "Champion of Lesser Demons")
+    private val mummiesScrollContent =
+        arrayOf(
+            "I challenge you to a fight! Meet me at the",
+            "Champions' Guild so we can wrap this up.",
+            "",
+            "Champion of Mummies",
+        )
 
     private val portcullisScenery = Scenery.PORTCULLIS_10553
     private val ladderID = Scenery.LADDER_10554
@@ -62,7 +106,6 @@ class ChallengeListener : InteractionListener, MapArea {
     private val regionID = 12696
 
     override fun defineListeners() {
-
         on(ChampionScrollsDropHandler.SCROLLS, IntType.ITEM, "read") { player, node ->
             updateAndReadScroll(player, node.asItem())
             return@on true
@@ -109,7 +152,7 @@ class ChallengeListener : InteractionListener, MapArea {
                 sendNPCDialogue(
                     player,
                     NPCs.LARXUS_3050,
-                    "You need to arrange a challenge with me before you enter the arena."
+                    "You need to arrange a challenge with me before you enter the arena.",
                 )
             } else {
                 lock(player, 3)
@@ -143,7 +186,8 @@ class ChallengeListener : InteractionListener, MapArea {
                                 removeItem(player, hobgoblinScroll) -> spawnHobgoblinChampion(player)
                                 removeItem(player, ghoulScroll) -> spawnGhoulChampion(player)
                                 removeItem(player, earthWarriorScroll) -> {
-                                    spawnEarthWarriorChampion(player); setAttribute(player, GameAttributes.PRAYER_LOCK, true)
+                                    spawnEarthWarriorChampion(player)
+                                    setAttribute(player, GameAttributes.PRAYER_LOCK, true)
                                 }
 
                                 removeItem(player, jogreScroll) -> spawnJogreChampion(player)
@@ -155,36 +199,44 @@ class ChallengeListener : InteractionListener, MapArea {
                         private fun handleFinalChampionSpawn(player: Player) {
                             if (getAttribute(player, "championsarena:boss", false)) {
                                 if (freeSlots(player) != 28) {
-                                    sendNPCDialogue(player, NPCs.LARXUS_3050, "His special rule is that no items in inventory can be brought to arena, only equipped items are allowed.")
+                                    sendNPCDialogue(
+                                        player,
+                                        NPCs.LARXUS_3050,
+                                        "His special rule is that no items in inventory can be brought to arena, only equipped items are allowed.",
+                                    )
                                     return
                                 }
                                 removeAttribute(player, "championsarena:boss")
                                 spawnFinalChampion(player)
                             }
                         }
-                    }
+                    },
                 )
             }
             return@on true
         }
     }
 
-    private fun updateAndReadScroll(player: Player, item: Item) {
+    private fun updateAndReadScroll(
+        player: Player,
+        item: Item,
+    ) {
         val id = item.id
         openInterface(player, blankScroll)
 
-        val scrollContentMap = mapOf(
-            impScroll          to impScrollContent,
-            goblinScroll       to goblinScrollContent,
-            skeletonScroll     to skeletonScrollContent,
-            zombieScroll       to zombieScrollContent,
-            giantScroll        to giantScrollContent,
-            hobgoblinScroll    to hobgoblinScrollContent,
-            ghoulScroll        to ghoulScrollContent,
-            earthWarriorScroll to earthWarriorScrollContent,
-            jogreScroll        to jogreScrollContent,
-            lesserDemonScroll  to lesserDemonScrollContent
-        )
+        val scrollContentMap =
+            mapOf(
+                impScroll to impScrollContent,
+                goblinScroll to goblinScrollContent,
+                skeletonScroll to skeletonScrollContent,
+                zombieScroll to zombieScrollContent,
+                giantScroll to giantScrollContent,
+                hobgoblinScroll to hobgoblinScrollContent,
+                ghoulScroll to ghoulScrollContent,
+                earthWarriorScroll to earthWarriorScrollContent,
+                jogreScroll to jogreScrollContent,
+                lesserDemonScroll to lesserDemonScrollContent,
+            )
 
         scrollContentMap[id]?.let { content ->
             sendString(player, content.joinToString("<br>"), blankScroll, 5)
@@ -206,14 +258,21 @@ class ChallengeListener : InteractionListener, MapArea {
     }
 
     companion object {
-
         fun isFinalBattle(player: Player) {
             val varbits = (1452..1461).toList()
             val allVarbitsSet = varbits.all { getVarbit(player, it) == 1 }
 
             if (allVarbitsSet) {
                 player.lock(1)
-                sendNPCDialogueLines(player, NPCs.LEON_DCOUR_3067, FaceAnim.NEUTRAL, false, "You have done well brave adventurer, but I would test", "your mettle now. You may arrange the fight with", "Larxus at your leisure.")
+                sendNPCDialogueLines(
+                    player,
+                    NPCs.LEON_DCOUR_3067,
+                    FaceAnim.NEUTRAL,
+                    false,
+                    "You have done well brave adventurer, but I would test",
+                    "your mettle now. You may arrange the fight with",
+                    "Larxus at your leisure.",
+                )
                 setAttribute(player, "/save:championsarena:boss", true)
             }
         }

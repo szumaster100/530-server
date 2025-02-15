@@ -114,7 +114,6 @@ class RandomEventTests {
     }
 
     @Test fun randomEventShouldNotSpawnInEventRestrictedArea() {
-
         TestUtils.getMockPlayer("antimacronospawninrestrictedzone").use { p ->
             val timer = getTimer<AntiMacro>(p) ?: Assertions.fail("AntiMacro timer was null!")
             TestUtils.advanceTicks(5, false)
@@ -206,16 +205,17 @@ class RandomEventTests {
     }
 
     @Test fun parseAntiMacroCommandArgsShouldReturnExpectedValues() {
-        val testData = arrayOf(
-            Triple("revent -p test", "test", null),
-            Triple("revent -p test ", "test", null),
-            Triple("revent -p test -e certer ", "test", RandomEvents.CERTER),
-            Triple("revent -p test_user -e Sandwich lady", "test_user", RandomEvents.SANDWICH_LADY),
-            Triple("revent -p test user -e sandwich Lady ", "test_user", RandomEvents.SANDWICH_LADY),
-            Triple("revent -e sandwich Lady -p test user ", "test_user", RandomEvents.SANDWICH_LADY),
-            Triple("revent test", "test", null),
-            Triple("revent test -e sAndwich Lady", "test", RandomEvents.SANDWICH_LADY)
-        )
+        val testData =
+            arrayOf(
+                Triple("revent -p test", "test", null),
+                Triple("revent -p test ", "test", null),
+                Triple("revent -p test -e certer ", "test", RandomEvents.CERTER),
+                Triple("revent -p test_user -e Sandwich lady", "test_user", RandomEvents.SANDWICH_LADY),
+                Triple("revent -p test user -e sandwich Lady ", "test_user", RandomEvents.SANDWICH_LADY),
+                Triple("revent -e sandwich Lady -p test user ", "test_user", RandomEvents.SANDWICH_LADY),
+                Triple("revent test", "test", null),
+                Triple("revent test -e sAndwich Lady", "test", RandomEvents.SANDWICH_LADY),
+            )
 
         for ((commandStr, expectedUser, expectedEvent) in testData) {
             val (resultUser, resultEvent) = AntiMacro.parseCommandArgs(commandStr, "revent")

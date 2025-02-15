@@ -1,6 +1,5 @@
 package content.global.skill.farming
 
-import org.rs.consts.Sounds
 import content.global.skill.summoning.familiar.npc.GiantEntNPC
 import core.api.*
 import core.cache.def.impl.SceneryDefinition
@@ -13,6 +12,7 @@ import core.game.system.task.Pulse
 import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Sounds
 import java.util.concurrent.TimeUnit
 
 @Initializable
@@ -31,7 +31,11 @@ class FruitAndBerryPicker : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player?, node: Node?, option: String?): Boolean {
+    override fun handle(
+        player: Player?,
+        node: Node?,
+        option: String?,
+    ): Boolean {
         player ?: return false
         node ?: return false
 
@@ -90,7 +94,7 @@ class FruitAndBerryPicker : OptionHandler() {
 
                     return patch.getFruitOrBerryCount() == 0
                 }
-            }
+            },
         )
 
         return true

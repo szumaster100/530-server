@@ -1,16 +1,19 @@
 package content.region.asgarnia.handlers.trollheim
 
-import org.rs.consts.Scenery
 import core.api.getRegionBorders
 import core.api.teleport
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.world.map.Location
+import org.rs.consts.Scenery
 
 class TrollheimListener : InteractionListener {
-
     override fun defineListeners() {
-        on(intArrayOf(Scenery.CAVE_ENTRANCE_3759, Scenery.CAVE_ENTRANCE_3735), IntType.SCENERY, "enter") { player, node ->
+        on(
+            intArrayOf(Scenery.CAVE_ENTRANCE_3759, Scenery.CAVE_ENTRANCE_3735),
+            IntType.SCENERY,
+            "enter",
+        ) { player, node ->
             if (node.id == Scenery.CAVE_ENTRANCE_3759) {
                 teleport(player, Location.create(2893, 10074, 0))
             } else {

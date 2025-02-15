@@ -1,6 +1,5 @@
 package content.region.kandarin.quest.elemental_workshop.handlers
 
-import org.rs.consts.NPCs
 import content.data.items.SkillingTool
 import core.api.sendDialogue
 import core.api.skill.getTool
@@ -13,9 +12,14 @@ import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
-class ElementalRockNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location), InteractionListener {
+class ElementalRockNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location),
+    InteractionListener {
     private val ELEMENTAL_ROCK_TRANSFORMATION_4865 = Animation(4865)
 
     override fun init() {
@@ -25,7 +29,11 @@ class ElementalRockNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id
         super.init()
     }
 
-    override fun construct(id: Int, location: Location?, vararg objects: Any?): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location?,
+        vararg objects: Any?,
+    ): AbstractNPC {
         return ElementalRockNPC(id, location)
     }
 
@@ -50,6 +58,7 @@ class ElementalRockNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id
             pulseManager.run(
                 object : Pulse() {
                     var count = 0
+
                     override fun pulse(): Boolean {
                         when (count) {
                             0 -> node.asNpc().animate(ELEMENTAL_ROCK_TRANSFORMATION_4865)
@@ -67,7 +76,7 @@ class ElementalRockNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id
                         count++
                         return false
                     }
-                }
+                },
             )
             return@on true
         }

@@ -1,19 +1,20 @@
 package core.game.bots.impl
 
 import content.global.skill.smithing.Bars
+import content.global.skill.smithing.SmithingPulse
+import core.game.bots.Script
+import core.game.bots.SkillingBotAssembler
 import core.game.interaction.DestinationFlag
 import core.game.interaction.MovementPulse
 import core.game.node.entity.skill.Skills
-import content.global.skill.smithing.SmithingPulse
 import core.game.node.item.Item
 import core.game.world.map.Location
 import core.tools.RandomFunction
 import org.rs.consts.Items
-import core.game.bots.SkillingBotAssembler
-import core.game.bots.Script
 
 class VarrockSmither : Script() {
     var state = State.SMITHING
+
     override fun tick() {
         when (state) {
             State.SMITHING -> {
@@ -22,28 +23,33 @@ class VarrockSmither : Script() {
                 }
                 val anvil = scriptAPI.getNearestNode("anvil", true)
                 if (anvil != null) {
-                    bot.pulseManager.run(object : MovementPulse(bot, anvil, DestinationFlag.OBJECT) {
-                        override fun pulse(): Boolean {
-                            bot.faceLocation(anvil.location)
-                            bot.pulseManager.run(SmithingPulse(bot, Item(2353), Bars.STEEL_ARROW_TIPS, 27))
-                            state = State.BANKING
-                            return true
-                        }
-                    })
+                    bot.pulseManager.run(
+                        object : MovementPulse(bot, anvil, DestinationFlag.OBJECT) {
+                            override fun pulse(): Boolean {
+                                bot.faceLocation(anvil.location)
+                                bot.pulseManager.run(SmithingPulse(bot, Item(2353), Bars.STEEL_ARROW_TIPS, 27))
+                                state = State.BANKING
+                                return true
+                            }
+                        },
+                    )
                 }
             }
 
             State.BANKING -> {
                 val bank = scriptAPI.getNearestNode("Bank booth")
-                if (bank != null)
-                    bot.pulseManager.run(object : MovementPulse(bot, bank, DestinationFlag.OBJECT) {
-                        override fun pulse(): Boolean {
-                            bot.faceLocation(bank.location)
-                            bot.inventory.clear()
-                            state = State.SMITHING
-                            return true
-                        }
-                    })
+                if (bank != null) {
+                    bot.pulseManager.run(
+                        object : MovementPulse(bot, bank, DestinationFlag.OBJECT) {
+                            override fun pulse(): Boolean {
+                                bot.faceLocation(bank.location)
+                                bot.inventory.clear()
+                                state = State.SMITHING
+                                return true
+                            }
+                        },
+                    )
+                }
             }
         }
     }
@@ -62,6 +68,6 @@ class VarrockSmither : Script() {
 
     enum class State {
         SMITHING,
-        BANKING
+        BANKING,
     }
 }

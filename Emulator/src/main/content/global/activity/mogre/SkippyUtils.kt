@@ -1,8 +1,8 @@
 package content.global.activity.mogre
 
+import core.game.world.map.zone.ZoneBorders
 import org.rs.consts.Animations
 import org.rs.consts.Vars
-import core.game.world.map.zone.ZoneBorders
 
 object SkippyUtils {
     const val SKIPPY_VARBIT = Vars.VARBIT_MINI_QUEST_MOGRE_AND_SKIPPY_1344

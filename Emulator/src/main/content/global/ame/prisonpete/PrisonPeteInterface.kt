@@ -1,12 +1,11 @@
 package content.global.ame.prisonpete
 
-import org.rs.consts.Components
 import core.api.sendAnimationOnInterface
 import core.api.sendModelOnInterface
 import core.game.interaction.InterfaceListener
+import org.rs.consts.Components
 
 class PrisonPeteInterface : InterfaceListener {
-
     private val modelIDs = intArrayOf(10734, 10735, 10736, 10737).random()
     private val animationIDs = intArrayOf(3048, 3049, 3050, 3051, 3052).random()
     private val rotatingAnimation = 3047

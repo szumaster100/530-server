@@ -1,25 +1,21 @@
 package content.global.skill.gathering.mining
 
 import content.data.GameAttributes
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import content.data.items.SkillingTool
 import content.global.activity.shootingstar.StarBonus
-import content.global.ame.pickaxehead.PickaxeHead
 import core.api.*
+import core.api.EquipmentSlot
+import core.api.movement.finishedMoving
 import core.game.event.ResourceProducedEvent
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.interaction.QueueStrength
 import core.game.node.Node
-import core.api.EquipmentSlot
-import core.api.movement.finishedMoving
 import core.game.node.entity.npc.drop.DropFrequency
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.diary.DiaryType
 import core.game.node.entity.skill.Skills
 import core.game.node.item.ChanceItem
-import core.game.node.item.GroundItemManager
 import core.game.node.item.Item
 import core.game.node.scenery.Scenery
 import core.game.node.scenery.SceneryBuilder
@@ -27,22 +23,19 @@ import core.game.system.command.sets.STATS_BASE
 import core.game.system.command.sets.STATS_ROCKS
 import core.game.system.task.Pulse
 import core.game.world.GameWorld
-import core.game.world.map.Location
-import core.game.world.map.path.Pathfinder
 import core.game.world.map.zone.ZoneBorders
-import core.tools.Log
 import core.tools.RandomFunction
-import core.tools.colorize
 import core.tools.prependArticle
+import org.rs.consts.Items
 
 class MiningListener : InteractionListener {
-
-    private val gemRewards = arrayOf(
-        ChanceItem(Items.UNCUT_SAPPHIRE_1623, 1, DropFrequency.COMMON),
-        ChanceItem(Items.UNCUT_EMERALD_1621, 1, DropFrequency.COMMON),
-        ChanceItem(Items.UNCUT_RUBY_1619, 1, DropFrequency.UNCOMMON),
-        ChanceItem(Items.UNCUT_DIAMOND_1617, 1, DropFrequency.RARE)
-    )
+    private val gemRewards =
+        arrayOf(
+            ChanceItem(Items.UNCUT_SAPPHIRE_1623, 1, DropFrequency.COMMON),
+            ChanceItem(Items.UNCUT_EMERALD_1621, 1, DropFrequency.COMMON),
+            ChanceItem(Items.UNCUT_RUBY_1619, 1, DropFrequency.UNCOMMON),
+            ChanceItem(Items.UNCUT_DIAMOND_1617, 1, DropFrequency.RARE),
+        )
 
     override fun defineListeners() {
         defineInteraction(
@@ -51,7 +44,7 @@ class MiningListener : InteractionListener {
             "mine",
             persistent = true,
             allowedDistance = 1,
-            handler = ::handleMining
+            handler = ::handleMining,
         )
 
         on(IntType.SCENERY, "prospect") { player, node ->
@@ -170,9 +163,13 @@ class MiningListener : InteractionListener {
         sendMessage(player, colorize("%RThe head of your pickaxe snaps off and goes flying!"))
         GroundItemManager.create(Item(pickHead), headSpawn, player)
     }
-    */
+     */
 
-    private fun handleMining(player: Player, node: Node, state: Int): Boolean {
+    private fun handleMining(
+        player: Player,
+        node: Node,
+        state: Int,
+    ): Boolean {
         val resource = MiningNode.forId(node.id)
         val tool = SkillingTool.getPickaxe(player)
         val isEssence = resource!!.id in intArrayOf(2491, 16684)
@@ -181,8 +178,9 @@ class MiningListener : InteractionListener {
         val isSandstone = resource.identifier == MiningNode.SANDSTONE.identifier
         val isMagicStone = resource.identifier == MiningNode.MAGIC_STONE_0.identifier
 
-        if (!finishedMoving(player))
+        if (!finishedMoving(player)) {
             return true
+        }
 
         if (state == 0) {
             if (!checkRequirements(player, resource, node)) {
@@ -198,8 +196,9 @@ class MiningListener : InteractionListener {
         }
 
         anim(player, resource, tool!!)
-        if (!checkReward(player, resource, tool))
+        if (!checkReward(player, resource, tool)) {
             return delayScript(player, getDelay())
+        }
 
         var reward = resource.reward
         var rewardAmount: Int
@@ -232,8 +231,12 @@ class MiningListener : InteractionListener {
                 reward = Items.PERFECT_GOLD_ORE_446
             }
 
-            val rewardName = if (reward == 446) getItemName(444).lowercase()
-            else getItemName(reward).lowercase()
+            val rewardName =
+                if (reward == 446) {
+                    getItemName(444).lowercase()
+                } else {
+                    getItemName(reward).lowercase()
+                }
 
             if (isGems) {
                 sendMessage(player, "You get ${prependArticle(rewardName)}.")
@@ -250,7 +253,6 @@ class MiningListener : InteractionListener {
             addItemOrDrop(player, reward, rewardAmount)
             var rocksMined = getAttribute(player, "$STATS_BASE:$STATS_ROCKS", 0)
             setAttribute(player, "/save:$STATS_BASE:$STATS_ROCKS", rocksMined + rewardAmount)
-
 
             if (!isEssence) {
                 var chance = 282
@@ -271,7 +273,7 @@ class MiningListener : InteractionListener {
                     if (freeSlots(player) == 0) {
                         sendMessage(
                             player,
-                            "You do not have enough space in your inventory, so you drop the gem on the floor."
+                            "You do not have enough space in your inventory, so you drop the gem on the floor.",
                         )
                     }
                     addItemOrDrop(player, gem.id)
@@ -287,7 +289,7 @@ class MiningListener : InteractionListener {
                         SceneryBuilder.add(Scenery(4027, node.location))
                         return true
                     }
-                }
+                },
             )
             node.isActive = false
             return false
@@ -299,7 +301,7 @@ class MiningListener : InteractionListener {
                 node.asScenery().transform(resource.emptyId + 4),
                 node.asScenery().transform(resource.emptyId),
                 25,
-                true
+                true,
             )
         } else if (!isEssence && resource!!.respawnRate != 0) {
             SceneryBuilder.replace(
@@ -308,9 +310,9 @@ class MiningListener : InteractionListener {
                     resource.emptyId,
                     node.getLocation(),
                     node.type,
-                    node.rotation
+                    node.rotation,
                 ),
-                resource.respawnDuration
+                resource.respawnDuration,
             )
             node.setActive(false)
             return true
@@ -318,28 +320,41 @@ class MiningListener : InteractionListener {
         return true
     }
 
-    private fun calculateRewardAmount(player: Player, isMiningEssence: Boolean, reward: Int): Int {
+    private fun calculateRewardAmount(
+        player: Player,
+        isMiningEssence: Boolean,
+        reward: Int,
+    ): Int {
         var amount = 1
 
         if (!isMiningEssence && player.achievementDiaryManager.getDiary(DiaryType.VARROCK)!!.level != -1) {
             when (reward) {
                 Items.CLAY_434, Items.COPPER_ORE_436, Items.TIN_ORE_438, Items.LIMESTONE_3211,
                 Items.BLURITE_ORE_668, Items.IRON_ORE_440, Items.ELEMENTAL_ORE_2892, Items.SILVER_ORE_442,
-                Items.COAL_453 -> if (player.achievementDiaryManager.armour >= 0 && RandomFunction.random(100) < 4) {
-                    amount += 1
-                    sendMessage(player, "The Varrock armour allows you to mine an additional ore.")
-                }
+                Items.COAL_453,
+                ->
+                    if (player.achievementDiaryManager.armour >= 0 && RandomFunction.random(100) < 4) {
+                        amount += 1
+                        sendMessage(player, "The Varrock armour allows you to mine an additional ore.")
+                    }
 
                 Items.GOLD_ORE_444, Items.GRANITE_500G_6979, Items.GRANITE_2KG_6981, Items.GRANITE_5KG_6983,
-                Items.MITHRIL_ORE_447 -> if (player.achievementDiaryManager.armour >= 1 && RandomFunction.random(100) < 3) {
-                    amount += 1
-                    sendMessage(player, "The Varrock armour allows you to mine an additional ore.")
-                }
+                Items.MITHRIL_ORE_447,
+                ->
+                    if (player.achievementDiaryManager.armour >= 1 &&
+                        RandomFunction.random(100) < 3
+                    ) {
+                        amount += 1
+                        sendMessage(player, "The Varrock armour allows you to mine an additional ore.")
+                    }
 
-                Items.ADAMANTITE_ORE_449 -> if (player.achievementDiaryManager.armour >= 2 && RandomFunction.random(100) < 2) {
-                    amount += 1
-                    sendMessage(player, "The Varrock armour allows you to mine an additional ore.")
-                }
+                Items.ADAMANTITE_ORE_449 ->
+                    if (player.achievementDiaryManager.armour >= 2 &&
+                        RandomFunction.random(100) < 2
+                    ) {
+                        amount += 1
+                        sendMessage(player, "The Varrock armour allows you to mine an additional ore.")
+                    }
             }
         }
 
@@ -358,7 +373,7 @@ class MiningListener : InteractionListener {
         resource: MiningNode,
         isMiningEssence: Boolean,
         isMiningGems: Boolean,
-        reward: Int
+        reward: Int,
     ): Int {
         var reward = reward
 
@@ -375,7 +390,11 @@ class MiningListener : InteractionListener {
         return reward
     }
 
-    private fun checkReward(player: Player, resource: MiningNode?, tool: SkillingTool): Boolean {
+    private fun checkReward(
+        player: Player,
+        resource: MiningNode?,
+        tool: SkillingTool,
+    ): Boolean {
         val level = 1 + getDynLevel(player, Skills.MINING) + getFamiliarBoost(player, Skills.MINING)
         val hostRatio = Math.random() * (100.0 * resource!!.rate)
         var toolRatio = tool.ratio
@@ -388,14 +407,22 @@ class MiningListener : InteractionListener {
         return 1
     }
 
-    fun anim(player: Player, resource: MiningNode?, tool: SkillingTool) {
+    fun anim(
+        player: Player,
+        resource: MiningNode?,
+        tool: SkillingTool,
+    ) {
         val isEssence = resource!!.id in intArrayOf(2491, 16684)
         if (animationFinished(player)) {
             animate(player, if (!isEssence) tool.animation else tool.animation + 6128, true)
         }
     }
 
-    fun checkRequirements(player: Player, resource: MiningNode, node: Node): Boolean {
+    fun checkRequirements(
+        player: Player,
+        resource: MiningNode,
+        node: Node,
+    ): Boolean {
         if (getDynLevel(player, Skills.MINING) < resource.level) {
             sendMessage(player, "You need a mining level of ${resource.level} to mine this rock.")
             return false

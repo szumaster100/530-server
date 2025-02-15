@@ -21,7 +21,7 @@ class LogBalanceShortcut : AgilityShortcut {
         experience: Double,
         start: Location,
         end: Location,
-        vararg options: String
+        vararg options: String,
     ) : super(ids, level, experience, *options) {
         this.start = start
         this.end = end
@@ -37,8 +37,8 @@ class LogBalanceShortcut : AgilityShortcut {
                 5.0,
                 Location(2598, 3477, 0),
                 Location.create(2603, 3477, 0),
-                "walk-across"
-            )
+                "walk-across",
+            ),
         )
         configure(
             LogBalanceShortcut(
@@ -47,8 +47,8 @@ class LogBalanceShortcut : AgilityShortcut {
                 1.0,
                 Location.create(2910, 3049, 0),
                 Location.create(2906, 3049, 0),
-                "cross"
-            )
+                "cross",
+            ),
         )
         configure(
             LogBalanceShortcut(
@@ -57,8 +57,8 @@ class LogBalanceShortcut : AgilityShortcut {
                 1.0,
                 Location.create(2290, 3232, 0),
                 Location.create(2290, 3239, 0),
-                "cross"
-            )
+                "cross",
+            ),
         )
         configure(
             LogBalanceShortcut(
@@ -67,8 +67,8 @@ class LogBalanceShortcut : AgilityShortcut {
                 1.0,
                 Location.create(2258, 3250, 0),
                 Location.create(2264, 3250, 0),
-                "cross"
-            )
+                "cross",
+            ),
         )
         configure(
             LogBalanceShortcut(
@@ -77,24 +77,33 @@ class LogBalanceShortcut : AgilityShortcut {
                 1.0,
                 Location.create(2202, 3237, 0),
                 Location.create(2196, 3237, 0),
-                "cross"
-            )
+                "cross",
+            ),
         )
         return this
     }
 
-    override fun run(player: Player, scenery: Scenery, option: String, failed: Boolean) {
+    override fun run(
+        player: Player,
+        scenery: Scenery,
+        option: String,
+        failed: Boolean,
+    ) {
         val distanceToStart = player.location.getDistance(start)
         val distanceToEnd = player.location.getDistance(end)
-        val destination = when {
-            distanceToStart < distanceToEnd -> end
-            distanceToStart > distanceToEnd -> start
-            else -> end
-        }
+        val destination =
+            when {
+                distanceToStart < distanceToEnd -> end
+                distanceToStart > distanceToEnd -> start
+                else -> end
+            }
         AgilityHandler.walk(player, -1, player.location, destination, Animation.create(155), experience, null)
     }
 
-    override fun getDestination(node: Node, n: Node): Location {
+    override fun getDestination(
+        node: Node,
+        n: Node,
+    ): Location {
         return if (node.location.getDistance(start) < node.location.getDistance(end)) start else end
     }
 }

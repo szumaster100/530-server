@@ -22,15 +22,16 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld.Pulser
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import core.plugin.ClassScanner.definePlugin
 import core.plugin.Initializable
 import core.plugin.Plugin
-import core.plugin.ClassScanner.definePlugin
 import core.tools.RandomFunction
 import kotlin.math.ceil
 
 @Initializable
-class ShotPutRoom(player: Player? = null) : Dialogue(player) {
-
+class ShotPutRoom(
+    player: Player? = null,
+) : Dialogue(player) {
     private var lowWeight = false
 
     override fun open(vararg args: Any): Boolean {
@@ -39,7 +40,10 @@ class ShotPutRoom(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (buttonId) {
             1 -> {
                 animate(player, Animation.create(4181))
@@ -70,24 +74,32 @@ class ShotPutRoom(player: Player? = null) : Dialogue(player) {
         init {
             definePlugin(
                 object : OptionHandler() {
-
-                    override fun handle(player: Player, node: Node, option: String): Boolean {
+                    override fun handle(
+                        player: Player,
+                        node: Node,
+                        option: String,
+                    ): Boolean {
                         val lowWeight = node.id == 15664
                         if (node is GroundItem) {
                             player.dialogueInterpreter.sendDialogues(
                                 4300,
                                 FaceAnim.FURIOUS,
                                 "Hey! You can't take that, it's guild property. Take one",
-                                "from the pile."
+                                "from the pile.",
                             )
                             return true
                         }
-                        if (player.equipment[EquipmentContainer.SLOT_WEAPON] != null || player.equipment[EquipmentContainer.SLOT_SHIELD] != null || player.equipment[EquipmentContainer.SLOT_HANDS] != null) {
+                        if (player.equipment[EquipmentContainer.SLOT_WEAPON] != null ||
+                            player.equipment[EquipmentContainer.SLOT_SHIELD] != null ||
+                            player.equipment[EquipmentContainer.SLOT_HANDS] != null
+                        ) {
                             player.dialogueInterpreter.sendDialogue("To throw the shot you need your hands free!")
                             return true
                         }
                         if (player.settings.runEnergy < 10) {
-                            player.dialogueInterpreter.sendDialogue("You're too exhausted to throw the shot at this time. Take a break.")
+                            player.dialogueInterpreter.sendDialogue(
+                                "You're too exhausted to throw the shot at this time. Take a break.",
+                            )
                             return true
                         }
                         player.lock(4)
@@ -99,12 +111,15 @@ class ShotPutRoom(player: Player? = null) : Dialogue(player) {
                                     player.dialogueInterpreter.open("shot_put", lowWeight)
                                     return true
                                 }
-                            }
+                            },
                         )
                         return true
                     }
 
-                    override fun getDestination(n: Node, node: Node): Location? {
+                    override fun getDestination(
+                        n: Node,
+                        node: Node,
+                    ): Location? {
                         if (node is Scenery) {
                             return node.getLocation().transform(0, -1, 0)
                         }
@@ -118,11 +133,16 @@ class ShotPutRoom(player: Player? = null) : Dialogue(player) {
                         ItemDefinition.forId(8859).handlers["option:take"] = this
                         return this
                     }
-                }
+                },
             )
         }
 
-        private fun throwShotPut(player: Player, delay: Int, lowWeight: Boolean, message: String) {
+        private fun throwShotPut(
+            player: Player,
+            delay: Int,
+            lowWeight: Boolean,
+            message: String,
+        ) {
             player.lock()
             var cost = if (lowWeight) 6 else 12
             if (player.getAttribute<Boolean>("hand_dust", false)) {
@@ -151,17 +171,18 @@ class ShotPutRoom(player: Player? = null) : Dialogue(player) {
                                 player.impactHandler.manualHit(player, 1, HitsplatType.NORMAL, 2)
                             }
                             val speed = 30 + (tiles * 10)
-                            val projectile = Projectile.create(
-                                loc,
-                                loc.transform(tiles, 0, 0).also { loc = it },
-                                690,
-                                40,
-                                0,
-                                if (getDelay() == 5) 5 else 12,
-                                speed,
-                                20,
-                                11
-                            )
+                            val projectile =
+                                Projectile.create(
+                                    loc,
+                                    loc.transform(tiles, 0, 0).also { loc = it },
+                                    690,
+                                    40,
+                                    0,
+                                    if (getDelay() == 5) 5 else 12,
+                                    speed,
+                                    20,
+                                    11,
+                                )
                             projectile.send()
                             setDelay(1 + ceil(tiles * 0.3).toInt())
                             thrown = true
@@ -174,13 +195,14 @@ class ShotPutRoom(player: Player? = null) : Dialogue(player) {
                             player.dialogueInterpreter.sendDialogues(
                                 if (lowWeight) 4299 else 4300,
                                 FaceAnim.HALF_GUILTY,
-                                "Well done. You threw the shot " + (tiles - 1) + " yard" + (if (tiles > 2) "s!" else "!")
+                                "Well done. You threw the shot " + (tiles - 1) + " yard" +
+                                    (if (tiles > 2) "s!" else "!"),
                             )
                         }
                         GroundItemManager.create(GroundItem(Item(if (lowWeight) 8858 else 8859), loc, 20, player))
                         return true
                     }
-                }
+                },
             )
         }
     }

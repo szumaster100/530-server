@@ -1,13 +1,12 @@
 package content.region.kandarin.quest.grandtree.handlers
 
-import org.rs.consts.*
 import content.global.handlers.iface.ScrollInterface
 import content.region.kandarin.quest.grandtree.dialogue.KingNarnodeUnderGroundDialogue
 import content.region.kandarin.quest.grandtree.dialogue.ShipyardWorkerGTDialogue
 import content.region.karamja.quest.mm.dialogue.KingNarnodeMMDialogue
 import core.api.*
-import core.api.quest.hasRequirement
 import core.api.quest.getQuestStage
+import core.api.quest.hasRequirement
 import core.api.quest.isQuestComplete
 import core.api.quest.setQuestStage
 import core.game.global.action.DoorActionHandler
@@ -21,9 +20,9 @@ import core.game.node.scenery.Scenery
 import core.game.node.scenery.SceneryBuilder
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.*
 
 class TheGrandTreeListener : InteractionListener {
-
     fun unlockTUZODoor(player: Player) {
         if (getAttribute(player, TheGrandTreeUtils.TWIG_0, false) &&
             getAttribute(player, TheGrandTreeUtils.TWIG_1, false) &&
@@ -31,7 +30,6 @@ class TheGrandTreeListener : InteractionListener {
             getAttribute(player, TheGrandTreeUtils.TWIG_3, false)
         ) {
             sendDialogue(player, "With a grinding of machinery, a trapdoor snaps open!")
-
         }
     }
 
@@ -45,11 +43,12 @@ class TheGrandTreeListener : InteractionListener {
         on(NPCs.KING_NARNODE_SHAREEN_670, IntType.NPC, "talk-to") { player, npc ->
             val aboveground = 9782
             when {
-                getQuestStage(player, Quests.THE_GRAND_TREE) == 100 -> openDialogue(
-                    player,
-                    KingNarnodeMMDialogue(),
-                    npc
-                )
+                getQuestStage(player, Quests.THE_GRAND_TREE) == 100 ->
+                    openDialogue(
+                        player,
+                        KingNarnodeMMDialogue(),
+                        npc,
+                    )
 
                 player.location.regionId == aboveground -> openDialogue(player, KingNarnodeUnderGroundDialogue(), npc)
                 player.location.regionId != aboveground -> openDialogue(player, KingNarnodeUnderGroundDialogue(), npc)
@@ -71,7 +70,7 @@ class TheGrandTreeListener : InteractionListener {
             ScrollInterface.scrollSetup(
                 player,
                 Components.MESSAGESCROLL_220,
-                TheGrandTreeUtils.INVASION_PLANS_SCROLL_CONTENT
+                TheGrandTreeUtils.INVASION_PLANS_SCROLL_CONTENT,
             )
             return@on true
         }
@@ -112,13 +111,14 @@ class TheGrandTreeListener : InteractionListener {
                 SceneryBuilder.replace(
                     Scenery(2436, Location(2482, 3462, 1)),
                     Scenery(2437, Location(2482, 3462, 1)),
-                    2
+                    2,
                 )
                 animate(player, 538)
                 sendItemDialogue(player, Items.INVASION_PLANS_794, "You found a scroll!")
                 addItemOrDrop(player, Items.INVASION_PLANS_794)
-                if (getQuestStage(player, Quests.THE_GRAND_TREE) < 60)
+                if (getQuestStage(player, Quests.THE_GRAND_TREE) < 60) {
                     setQuestStage(player, Quests.THE_GRAND_TREE, 60)
+                }
             } else {
                 sendDialogue(player, "The chest is locked.")
             }
@@ -170,9 +170,10 @@ class TheGrandTreeListener : InteractionListener {
             return@on true
         }
         on(2435, IntType.SCENERY, "search") { player, _ ->
-            if (getQuestStage(player, Quests.THE_GRAND_TREE) >= 47 && !inInventory(
+            if (getQuestStage(player, Quests.THE_GRAND_TREE) >= 47 &&
+                !inInventory(
                     player,
-                    Items.GLOUGHS_JOURNAL_785
+                    Items.GLOUGHS_JOURNAL_785,
                 )
             ) {
                 sendItemDialogue(player, Items.GLOUGHS_JOURNAL_785, "You've found Glough's Journal!")
@@ -190,11 +191,14 @@ class TheGrandTreeListener : InteractionListener {
                 return@on true
             }
 
-            if (node.location == TheGrandTreeUtils.ROOTS_LOCATION[getAttribute(
-                    player,
-                    TheGrandTreeUtils.DRACONIA_ROCK,
-                    1
-                )]
+            if (node.location ==
+                TheGrandTreeUtils.ROOTS_LOCATION[
+                    getAttribute(
+                        player,
+                        TheGrandTreeUtils.DRACONIA_ROCK,
+                        1,
+                    ),
+                ]
             ) {
                 sendItemDialogue(player, Item(Items.DACONIA_ROCK_793), "You've found a Daconia rock!")
                 addItemOrDrop(player, Items.DACONIA_ROCK_793)
@@ -213,7 +217,9 @@ class TheGrandTreeListener : InteractionListener {
                 } else {
                     DoorActionHandler.autowalkFence(
                         player,
-                        Scenery(2438, Location(2945, 3041, 0)), 2432, 2439
+                        Scenery(2438, Location(2945, 3041, 0)),
+                        2432,
+                        2439,
                     )
                 }
             } else {
@@ -226,11 +232,13 @@ class TheGrandTreeListener : InteractionListener {
         on(2451, IntType.SCENERY, "push") { player, roots ->
             if (hasRequirement(player, Quests.THE_GRAND_TREE)) {
                 val outsideMine =
-                    player.location == Location.create(2467, 9903, 0) || player.location == Location.create(
-                        2468,
-                        9903,
-                        0
-                    )
+                    player.location == Location.create(2467, 9903, 0) ||
+                        player.location ==
+                        Location.create(
+                            2468,
+                            9903,
+                            0,
+                        )
                 if (outsideMine) {
                     forceMove(player, player.location, player.location.transform(0, 2, 0), 25, 60, null, 819)
                 } else {
@@ -244,24 +252,29 @@ class TheGrandTreeListener : InteractionListener {
         }
     }
 
-    private fun scrollHandler(player: Player, item: Item) {
+    private fun scrollHandler(
+        player: Player,
+        item: Item,
+    ) {
         val id = item.id
 
         openInterface(player, Components.BLANK_SCROLL_222).also {
             when (id) {
-                TheGrandTreeUtils.HAZELMERE_SCROLL -> sendString(
-                    player,
-                    TheGrandTreeUtils.HAZELMERE_SCROLL_CONTENT.joinToString("<br>"),
-                    Components.BLANK_SCROLL_222,
-                    5
-                )
+                TheGrandTreeUtils.HAZELMERE_SCROLL ->
+                    sendString(
+                        player,
+                        TheGrandTreeUtils.HAZELMERE_SCROLL_CONTENT.joinToString("<br>"),
+                        Components.BLANK_SCROLL_222,
+                        5,
+                    )
 
-                TheGrandTreeUtils.LUMBER_ORDER_SCROLL -> sendString(
-                    player,
-                    TheGrandTreeUtils.LUMBER_ORDER_SCROLL_CONTENT.joinToString("<br>"),
-                    Components.BLANK_SCROLL_222,
-                    1
-                )
+                TheGrandTreeUtils.LUMBER_ORDER_SCROLL ->
+                    sendString(
+                        player,
+                        TheGrandTreeUtils.LUMBER_ORDER_SCROLL_CONTENT.joinToString("<br>"),
+                        Components.BLANK_SCROLL_222,
+                        1,
+                    )
             }
         }
     }

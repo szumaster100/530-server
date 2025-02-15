@@ -1,38 +1,40 @@
 package core.game.bots.impl
 
-import core.game.node.entity.skill.Skills
 import content.global.skill.fletching.Fletching
 import content.global.skill.fletching.FletchingPulse
-import core.game.node.item.Item
-import core.game.bots.SkillingBotAssembler
 import core.game.bots.Script
+import core.game.bots.SkillingBotAssembler
+import core.game.node.entity.skill.Skills
+import core.game.node.item.Item
 import org.rs.consts.Items
 
 class FletchingBankstander : Script() {
     var state = State.FLETCHING
+
     override fun tick() {
         val bank = scriptAPI.getNearestNode("Bank booth")
         bot.faceLocation(bank?.location)
-        state = when (state) {
-            State.FLETCHING -> {
-                bot.inventory.add(Item(Items.KNIFE_946))
-                bot.inventory.add(Item(Items.LOGS_1511, 27))
-                bot.pulseManager.run(
-                    FletchingPulse(
-                        bot,
-                        Item(Items.LOGS_1511),
-                        27,
-                        Fletching.FletchingItems.ARROW_SHAFT
+        state =
+            when (state) {
+                State.FLETCHING -> {
+                    bot.inventory.add(Item(Items.KNIFE_946))
+                    bot.inventory.add(Item(Items.LOGS_1511, 27))
+                    bot.pulseManager.run(
+                        FletchingPulse(
+                            bot,
+                            Item(Items.LOGS_1511),
+                            27,
+                            Fletching.FletchingItems.ARROW_SHAFT,
+                        ),
                     )
-                )
-                State.BANKING
-            }
+                    State.BANKING
+                }
 
-            State.BANKING -> {
-                bot.inventory.clear()
-                State.FLETCHING
+                State.BANKING -> {
+                    bot.inventory.clear()
+                    State.FLETCHING
+                }
             }
-        }
     }
 
     init {
@@ -47,6 +49,6 @@ class FletchingBankstander : Script() {
 
     enum class State {
         FLETCHING,
-        BANKING
+        BANKING,
     }
 }

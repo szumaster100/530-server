@@ -1,27 +1,31 @@
 package content.global.travel.glider
 
-import org.rs.consts.Components
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
-import core.api.quest.isQuestComplete
 import core.api.openInterface
+import core.api.quest.isQuestComplete
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
+import org.rs.consts.Components
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
-class GnomePilotDialogue(player: Player? = null) : Dialogue(player) {
-
+class GnomePilotDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any?): Boolean {
         npc = args[0] as NPC
         npc(FaceAnim.OLD_DEFAULT, "What do you want human?")
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             0 -> player(FaceAnim.HALF_GUILTY, "May you fly me somewhere on your glider?").also { stage++ }
             1 ->
@@ -44,7 +48,7 @@ class GnomePilotDialogue(player: Player? = null) : Dialogue(player) {
             NPCs.GNORMADIUM_AVLAFRIM_1800,
             NPCs.CAPTAIN_DALBUR_3809,
             NPCs.CAPTAIN_BLEEMADGE_3810,
-            NPCs.CAPTAIN_KLEMFOODLE_3812
+            NPCs.CAPTAIN_KLEMFOODLE_3812,
         )
     }
 }

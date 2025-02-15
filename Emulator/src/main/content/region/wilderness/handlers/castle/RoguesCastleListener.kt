@@ -1,8 +1,5 @@
 package content.region.wilderness.handlers.castle
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.Sounds
 import core.api.*
 import core.api.utils.WeightBasedTable
 import core.api.utils.WeightedItem
@@ -15,11 +12,12 @@ import core.game.node.item.Item
 import core.game.node.scenery.Scenery
 import core.game.system.task.Pulse
 import core.tools.RandomFunction
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 
 class RoguesCastleListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(JAIL_DOORS, IntType.SCENERY, "open") { player, _ ->
             sendMessage(player, "The door is locked.")
             return@on true
@@ -86,7 +84,7 @@ class RoguesCastleListener : InteractionListener {
                         sendMessage(player, "You ${if (success) "manage" else "fail"} to pick the lock on the chest.")
                         return true
                     }
-                }
+                },
             )
 
             return@on true
@@ -105,7 +103,7 @@ class RoguesCastleListener : InteractionListener {
                 addItemOrDrop(player, loot.id, loot.amount)
                 sendMessage(
                     player,
-                    "In the chest you find some ${loot.name.lowercase() + if (!loot.name.endsWith("s")) "s" else ""}!"
+                    "In the chest you find some ${loot.name.lowercase() + if (!loot.name.endsWith("s")) "s" else ""}!",
                 )
                 setCharge(scenery, 0)
                 rewardXP(player, Skills.THIEVING, 60.0)
@@ -122,7 +120,10 @@ class RoguesCastleListener : InteractionListener {
         private const val JAIL_DOORS = 38837
     }
 
-    fun openChest(player: Player, scenery: Scenery) {
+    fun openChest(
+        player: Player,
+        scenery: Scenery,
+    ) {
         animate(player, CHEST_ANIM)
         submitIndividualPulse(
             player,
@@ -130,37 +131,45 @@ class RoguesCastleListener : InteractionListener {
                 override fun pulse(): Boolean {
                     return true.also { replaceScenery(scenery, scenery.id + 1, 20) }
                 }
-            }
+            },
         )
     }
 
-    fun addLoot(player: Player, item: Item) {
+    fun addLoot(
+        player: Player,
+        item: Item,
+    ) {
         sendMessage(player, "You search the chest...")
         submitIndividualPulse(
             player,
             object : Pulse() {
                 override fun pulse(): Boolean {
-                    sendMessage(player, "... and find some ${item.name.lowercase() + if (!item.name.endsWith("s")) "s" else ""}!")
+                    sendMessage(
+                        player,
+                        "... and find some ${item.name.lowercase() + if (!item.name.endsWith("s")) "s" else ""}!",
+                    )
                     addItemOrDrop(player, item.id, item.amount)
                     return true
                 }
-            }
+            },
         )
     }
 
-    private val firstFloorLoot = WeightBasedTable.create(
-        WeightedItem(Items.COINS_995, 8, 25, 70.0),
-        WeightedItem(Items.NATURE_RUNE_561, 2, 3, 10.0),
-        WeightedItem(Items.BLOOD_RUNE_565, 2, 3, 10.0),
-        WeightedItem(Items.DEATH_RUNE_560, 3, 5, 10.0)
-    )
+    private val firstFloorLoot =
+        WeightBasedTable.create(
+            WeightedItem(Items.COINS_995, 8, 25, 70.0),
+            WeightedItem(Items.NATURE_RUNE_561, 2, 3, 10.0),
+            WeightedItem(Items.BLOOD_RUNE_565, 2, 3, 10.0),
+            WeightedItem(Items.DEATH_RUNE_560, 3, 5, 10.0),
+        )
 
-    private val secondFloorLoot = WeightBasedTable.create(
-        WeightedItem(Items.COINS_995, 4, 57, 75.0),
-        WeightedItem(Items.COINS_995, 107, 243, 5.0),
-        WeightedItem(Items.BLOOD_RUNE_565, 2, 5, 5.0),
-        WeightedItem(Items.GOLD_ORE_445, 1, 1, 5.0),
-        WeightedItem(Items.STEEL_MED_HELM_1141, 1, 1, 5.0),
-        WeightedItem(Items.STEEL_PLATELEGS_1069, 1, 1, 5.0)
-    )
+    private val secondFloorLoot =
+        WeightBasedTable.create(
+            WeightedItem(Items.COINS_995, 4, 57, 75.0),
+            WeightedItem(Items.COINS_995, 107, 243, 5.0),
+            WeightedItem(Items.BLOOD_RUNE_565, 2, 5, 5.0),
+            WeightedItem(Items.GOLD_ORE_445, 1, 1, 5.0),
+            WeightedItem(Items.STEEL_MED_HELM_1141, 1, 1, 5.0),
+            WeightedItem(Items.STEEL_PLATELEGS_1069, 1, 1, 5.0),
+        )
 }

@@ -1,6 +1,5 @@
 package content.minigame.magearena.npc
 
-import org.rs.consts.NPCs
 import content.minigame.magearena.KolodionSession
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.BattleState
@@ -16,10 +15,13 @@ import core.game.world.GameWorld.Pulser
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.tools.RandomFunction
+import org.rs.consts.NPCs
 
-class KolodionNPC(id: Int = 0, location: Location? = null, session: KolodionSession? = null) :
-    AbstractNPC(id, location) {
-
+class KolodionNPC(
+    id: Int = 0,
+    location: Location? = null,
+    session: KolodionSession? = null,
+) : AbstractNPC(id, location) {
     val session: KolodionSession?
     var type: KolodionType?
     var isCommenced: Boolean = false
@@ -68,11 +70,19 @@ class KolodionNPC(id: Int = 0, location: Location? = null, session: KolodionSess
         return SWING_HANDLER
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return KolodionNPC(id, location, null)
     }
 
-    override fun isAttackable(entity: Entity, style: CombatStyle, message: Boolean): Boolean {
+    override fun isAttackable(
+        entity: Entity,
+        style: CombatStyle,
+        message: Boolean,
+    ): Boolean {
         if (style != CombatStyle.MAGIC) {
             return false
         }
@@ -102,16 +112,20 @@ class KolodionNPC(id: Int = 0, location: Location? = null, session: KolodionSess
         val npcId: Int,
         val appearAnimation: Animation?,
         val graphcId: Int,
-        val appearMessage: String?
+        val appearMessage: String?,
     ) {
         HUMAN(NPCs.KOLODION_907, Animation(6941), -1, "You must prove yourself... now!"),
         OGRE(NPCs.KOLODION_908, Animation(6941), 188, "This is only the beginning; you can't beat me!"),
         SPIDER(NPCs.KOLODION_909, Animation(5324), 190, "Foolish mortal; I am unstoppable."),
         GHOST(NPCs.KOLODION_910, Animation(715), 188, "Now you feel it.. The dark energy."),
         DEMON(NPCs.KOLODION_911, Animation(4623), 190, "Aaaaaaaarrgghhhh! The power!"),
-        END(NPCs.KOLODION_906, Animation(6941), 188, null);
+        END(NPCs.KOLODION_906, Animation(6941), 188, null),
+        ;
 
-        fun transform(kolodion: KolodionNPC, player: Player) {
+        fun transform(
+            kolodion: KolodionNPC,
+            player: Player,
+        ) {
             val newType = next()
             kolodion.lock()
             kolodion.pulseManager.clear()
@@ -128,20 +142,22 @@ class KolodionNPC(id: Int = 0, location: Location? = null, session: KolodionSess
 
                     override fun pulse(): Boolean {
                         when (++counter) {
-                            1 -> if (newType != GHOST) {
-                                kolodion.animator.forceAnimation(kolodion.properties.deathAnimation)
-                            }
+                            1 ->
+                                if (newType != GHOST) {
+                                    kolodion.animator.forceAnimation(kolodion.properties.deathAnimation)
+                                }
 
-                            3 -> if (newType == GHOST) {
-                                kolodion.animator.forceAnimation(kolodion.properties.deathAnimation)
-                            }
+                            3 ->
+                                if (newType == GHOST) {
+                                    kolodion.animator.forceAnimation(kolodion.properties.deathAnimation)
+                                }
 
                             4 -> {
                                 player.packetDispatch.sendPositionedGraphic(
                                     newType.graphcId,
                                     0,
                                     0,
-                                    kolodion.getLocation()
+                                    kolodion.getLocation(),
                                 )
                                 if (newType.appearAnimation != null) {
                                     kolodion.animate(newType.appearAnimation)
@@ -179,7 +195,7 @@ class KolodionNPC(id: Int = 0, location: Location? = null, session: KolodionSess
                         }
                         return false
                     }
-                }
+                },
             )
         }
 
@@ -188,7 +204,6 @@ class KolodionNPC(id: Int = 0, location: Location? = null, session: KolodionSess
         }
 
         companion object {
-
             fun forId(id: Int): KolodionType? {
                 for (type in values()) {
                     if (type.npcId == id) {
@@ -201,15 +216,19 @@ class KolodionNPC(id: Int = 0, location: Location? = null, session: KolodionSess
     }
 
     companion object {
-
-        private val SWING_HANDLER: CombatSwingHandler = object : MagicSwingHandler() {
-            override fun impact(entity: Entity?, victim: Entity?, state: BattleState?) {
-                super.impact(entity, victim, state)
-                if (RandomFunction.random(10) < 4) {
-                    (entity as KolodionNPC?)!!.setRandomSpell()
+        private val SWING_HANDLER: CombatSwingHandler =
+            object : MagicSwingHandler() {
+                override fun impact(
+                    entity: Entity?,
+                    victim: Entity?,
+                    state: BattleState?,
+                ) {
+                    super.impact(entity, victim, state)
+                    if (RandomFunction.random(10) < 4) {
+                        (entity as KolodionNPC?)!!.setRandomSpell()
+                    }
                 }
             }
-        }
 
         private val SPELL_IDS = intArrayOf(41, 42, 43)
     }

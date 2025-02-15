@@ -14,8 +14,12 @@ import core.plugin.Initializable
 @Initializable
 class AudioCommandSet : CommandSet(Privilege.ADMIN) {
     override fun defineCommands() {
-
-        define(name = "playsong", privilege = Privilege.ADMIN, usage = "::playsong <lt>Song ID<gt>", description = "Plays the song with the given ID.") { player, args ->
+        define(
+            name = "playsong",
+            privilege = Privilege.ADMIN,
+            usage = "::playsong <lt>Song ID<gt>",
+            description = "Plays the song with the given ID.",
+        ) { player, args ->
             if (args.size < 2) {
                 reject(player, "Usage: ::playsong songID")
             }
@@ -27,7 +31,12 @@ class AudioCommandSet : CommandSet(Privilege.ADMIN) {
             notify(player, "Now playing song $id")
         }
 
-        define(name = "playjingle", privilege = Privilege.ADMIN, usage = "::playjingle <lt>jingle ID<gt>", description = "Plays the jingle with the given ID.") { player, args ->
+        define(
+            name = "playjingle",
+            privilege = Privilege.ADMIN,
+            usage = "::playjingle <lt>jingle ID<gt>",
+            description = "Plays the jingle with the given ID.",
+        ) { player, args ->
             if (args.size < 2) {
                 reject(player, "Usage: ::playjingle jingleID")
             }
@@ -48,26 +57,42 @@ class AudioCommandSet : CommandSet(Privilege.ADMIN) {
             }
         }
 
-        define(name = "allmusic", privilege = Privilege.ADMIN, usage = "::allmusic", description = "Unlocks all music tracks.") { player, _ ->
+        define(
+            name = "allmusic",
+            privilege = Privilege.ADMIN,
+            usage = "::allmusic",
+            description = "Unlocks all music tracks.",
+        ) { player, _ ->
             for (me in MusicEntry.getSongs().values) {
                 player.musicPlayer.unlock(me.id)
             }
         }
 
-        define(name = "audio", privilege = Privilege.ADMIN, usage = "::audio id <lt>loops[optional]</lt>", description = "Plays the audio with the given ID.") { player, args ->
+        define(
+            name = "audio",
+            privilege = Privilege.ADMIN,
+            usage = "::audio id <lt>loops[optional]</lt>",
+            description = "Plays the audio with the given ID.",
+        ) { player, args ->
             if (args.size < 2 || args.size > 3) reject(player, "Usage: ::audio id loops[optional]")
             val id = args[1].toInt()
             val loops = if (args.size > 2) args[2].toInt() else 1
             playAudio(player, id, 0, loops)
         }
 
-        define(name = "globalaudio", privilege = Privilege.ADMIN, usage = "::globalaudio id radius[max 15] location[player name or x y z]", description = "Play global audio by id, radius, and location") { player, args ->
+        define(
+            name = "globalaudio",
+            privilege = Privilege.ADMIN,
+            usage = "::globalaudio id radius[max 15] location[player name or x y z]",
+            description = "Play global audio by id, radius, and location",
+        ) { player, args ->
             if (args.size < 3) reject(player, "Usage: ::globalaudio id radius[max 15] location[player name or x y z]")
-            val loc = when (args.size) {
-                6 -> Location(args[3].toInt(), args[4].toInt(), args[5].toInt())
-                4 -> Repository.getPlayerByName(args[3])?.location
-                else -> null
-            }
+            val loc =
+                when (args.size) {
+                    6 -> Location(args[3].toInt(), args[4].toInt(), args[5].toInt())
+                    4 -> Repository.getPlayerByName(args[3])?.location
+                    else -> null
+                }
             if (loc == null) reject(player, "Invalid player name / location")
             val id = args[1].toInt()
             val radius = if (args[2].toInt() > 15) 15 else args[2].toInt()

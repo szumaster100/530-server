@@ -1,8 +1,5 @@
 package content.region.kandarin.quest.elena
 
-import org.rs.consts.Animations
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import core.api.*
 import core.api.quest.setQuestStage
 import core.game.activity.Cutscene
@@ -10,8 +7,13 @@ import core.game.dialogue.FaceAnim
 import core.game.node.entity.player.Player
 import core.game.world.map.Direction
 import core.game.world.map.Location
+import org.rs.consts.Animations
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
-class UndergroundCutscene(player: Player) : Cutscene(player) {
+class UndergroundCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(Location.create(2514, 9740, 0))
         if (player.settings.isRunToggled) {
@@ -23,7 +25,6 @@ class UndergroundCutscene(player: Player) : Cutscene(player) {
 
     override fun runStage(stage: Int) {
         when (stage) {
-
             0 -> {
                 fadeToBlack()
                 timedUpdate(5)
@@ -61,7 +62,7 @@ class UndergroundCutscene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     EDMOND,
                     FaceAnim.FRIENDLY,
-                    "Once you're in the city look for a man called Jethick, he's an old friend and should help you. Send"
+                    "Once you're in the city look for a man called Jethick, he's an old friend and should help you. Send",
                 )
                 sendChat(getNPC(EDMOND)!!, "Once you're in the city")
             }
@@ -85,7 +86,7 @@ class UndergroundCutscene(player: Player) : Cutscene(player) {
                 dialogueUpdate(
                     EDMOND,
                     FaceAnim.FRIENDLY,
-                    "him my regards, I Haven't seen him since before Elena was born."
+                    "him my regards, I Haven't seen him since before Elena was born.",
                 )
                 sendChat(getNPC(EDMOND)!!, "him my regards, I haven't")
             }

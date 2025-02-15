@@ -1,23 +1,20 @@
 package content.global.travel
 
-import org.rs.consts.Components
-import org.rs.consts.Scenery
 import core.api.*
-import core.api.ui.closeDialogue
 import core.cache.def.impl.SceneryDefinition
 import core.game.dialogue.DialogueFile
 import core.game.interaction.OptionHandler
 import core.game.node.Node
 import core.game.node.entity.player.Player
-import core.game.node.entity.player.link.TeleportManager
 import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Components
+import org.rs.consts.Scenery
 
 @Initializable
 class RellekkaBoat : OptionHandler() {
-
     companion object {
         private const val RELLEKKA_BOAT = Scenery.BOAT_21176
         private const val ICEBERG_BOAT = Scenery.BOAT_21175
@@ -29,7 +26,11 @@ class RellekkaBoat : OptionHandler() {
         return this
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         when (node.id) {
             RELLEKKA_BOAT -> handleEastCrabsBoat(player, option, node)
             ICEBERG_BOAT -> handleIcebergBoat(player, node)
@@ -37,7 +38,11 @@ class RellekkaBoat : OptionHandler() {
         return true
     }
 
-    private fun handleEastCrabsBoat(player: Player, option: String, node: Node) {
+    private fun handleEastCrabsBoat(
+        player: Player,
+        option: String,
+        node: Node,
+    ) {
         if (node.location != Location(2708, 3732)) {
             return
         }
@@ -47,7 +52,10 @@ class RellekkaBoat : OptionHandler() {
         }
     }
 
-    private fun handleIcebergBoat(player: Player, node: Node) {
+    private fun handleIcebergBoat(
+        player: Player,
+        node: Node,
+    ) {
         if (node.location == Location(2654, 3985, 1)) {
             sail(player, TravelDestination.ICEBERG_TO_RELLEKA)
         }
@@ -57,7 +65,10 @@ class RellekkaBoat : OptionHandler() {
         openDialogue(
             player,
             object : DialogueFile() {
-                override fun handle(componentID: Int, buttonID: Int) {
+                override fun handle(
+                    componentID: Int,
+                    buttonID: Int,
+                ) {
                     when (stage) {
                         0 -> {
                             setTitle(player, 2)
@@ -65,21 +76,25 @@ class RellekkaBoat : OptionHandler() {
                                 player,
                                 "Where would you like to travel?",
                                 "Iceberg",
-                                "Stay here"
+                                "Stay here",
                             ).also { stage++ }
                         }
 
-                        1 -> when (buttonID) {
-                            1 -> sail(player, TravelDestination.RELLEKKA_TO_ICEBERG)
-                            2 -> end()
-                        }
+                        1 ->
+                            when (buttonID) {
+                                1 -> sail(player, TravelDestination.RELLEKKA_TO_ICEBERG)
+                                2 -> end()
+                            }
                     }
                 }
-            }
+            },
         )
     }
 
-    fun sail(player: Player, destination: TravelDestination) {
+    fun sail(
+        player: Player,
+        destination: TravelDestination,
+    ) {
         if (!isDestinationValid(destination)) {
             return
         }
@@ -100,7 +115,7 @@ class RellekkaBoat : OptionHandler() {
                     completeJourney(player, destination)
                     return true
                 }
-            }
+            },
         )
     }
 
@@ -108,7 +123,10 @@ class RellekkaBoat : OptionHandler() {
         return TravelDestination.values().contains(destination)
     }
 
-    private fun completeJourney(player: Player, destination: TravelDestination) {
+    private fun completeJourney(
+        player: Player,
+        destination: TravelDestination,
+    ) {
         sendMessage(player, "The ship arrives at ${destination.destName}.")
         closeInterface(player)
         closeOverlay(player)
@@ -118,10 +136,13 @@ class RellekkaBoat : OptionHandler() {
     private fun TravelDestination.animationDuration(): Int {
         return animationDuration(getAnimation(this.shipAnim))
     }
-
 }
 
-enum class TravelDestination(val destName: String, val destinationLoc: Location, val shipAnim: Int) {
+enum class TravelDestination(
+    val destName: String,
+    val destinationLoc: Location,
+    val shipAnim: Int,
+) {
     ICEBERG_TO_RELLEKA("Rellekka", Location.create(2707, 3735, 0), 4652),
     RELLEKKA_TO_ICEBERG("Iceberg", Location.create(2659, 3988, 1), 4652),
 }

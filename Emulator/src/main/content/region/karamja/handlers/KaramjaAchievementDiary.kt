@@ -1,8 +1,5 @@
 package content.region.karamja.handlers
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import core.api.inBorders
 import core.game.event.InteractionEvent
 import core.game.event.NPCKillEvent
@@ -14,9 +11,11 @@ import core.game.node.entity.player.link.diary.DiaryEventHookBase
 import core.game.node.entity.player.link.diary.DiaryLevel
 import core.game.node.entity.player.link.diary.DiaryType
 import core.game.world.map.zone.ZoneBorders
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 class KaramjaAchievementDiary : DiaryEventHookBase(DiaryType.KARAMJA) {
-
     companion object {
         private const val ATTRIBUTE_SEAWEED_PICKED = "diary:karamja:seaweed-picked"
         private const val ATTRIBUTE_PALM_LEAF_PICKED = "diary:karamja:palm-leaf-picked"
@@ -30,18 +29,18 @@ class KaramjaAchievementDiary : DiaryEventHookBase(DiaryType.KARAMJA) {
         private val KET_ZEKS = arrayOf(NPCs.KET_ZEK_2743, NPCs.KET_ZEK_2744)
         private val METAL_DRAGONS = arrayOf(NPCs.BRONZE_DRAGON_1590, NPCs.IRON_DRAGON_1591, NPCs.STEEL_DRAGON_1592)
 
-        private val FRUIT_TREES = arrayOf(
-            Scenery.BANANA_TREE_7999,
-            Scenery.APPLE_TREE_7948,
-            Scenery.CURRY_TREE_8033,
-            Scenery.ORANGE_TREE_8064,
-            Scenery.PINEAPPLE_PLANT_7979,
-            Scenery.PALM_TREE_8091,
-            Scenery.PAPAYA_TREE_8118
-        )
+        private val FRUIT_TREES =
+            arrayOf(
+                Scenery.BANANA_TREE_7999,
+                Scenery.APPLE_TREE_7948,
+                Scenery.CURRY_TREE_8033,
+                Scenery.ORANGE_TREE_8064,
+                Scenery.PINEAPPLE_PLANT_7979,
+                Scenery.PALM_TREE_8091,
+                Scenery.PAPAYA_TREE_8118,
+            )
 
         object EasyTasks {
-
             const val PICK_5_BANANAS = 0
 
             const val TRAVEL_TO_MOSS_GIANTS_VIA_ROPESWING = 1
@@ -64,7 +63,6 @@ class KaramjaAchievementDiary : DiaryEventHookBase(DiaryType.KARAMJA) {
         }
 
         object MediumTasks {
-
             const val BRIMHAVEN_CLAIM_AGILITY_ARENA_TICKET = 0
 
             const val FIND_HIDDEN_WALL_BELOW_VOLCANO = 1
@@ -105,7 +103,6 @@ class KaramjaAchievementDiary : DiaryEventHookBase(DiaryType.KARAMJA) {
         }
 
         object HardTasks {
-
             const val FIGHT_PITS_BECOME_CHAMPION = 0
 
             const val FIGHT_CAVE_KILL_KET_ZEK = 1
@@ -129,51 +126,58 @@ class KaramjaAchievementDiary : DiaryEventHookBase(DiaryType.KARAMJA) {
     }
 
     override val areaTasks
-        get() = arrayOf(
-            DiaryAreaTask(
-                zoneBorders = CAIRN_ISLE_AREA,
-                diaryLevel = DiaryLevel.EASY,
-                taskId = EasyTasks.CAIRN_ISLE_VISIT
-            ),
-        )
+        get() =
+            arrayOf(
+                DiaryAreaTask(
+                    zoneBorders = CAIRN_ISLE_AREA,
+                    diaryLevel = DiaryLevel.EASY,
+                    taskId = EasyTasks.CAIRN_ISLE_VISIT,
+                ),
+            )
 
-    override fun onResourceProduced(player: Player, event: ResourceProducedEvent) {
+    override fun onResourceProduced(
+        player: Player,
+        event: ResourceProducedEvent,
+    ) {
         when (event.itemId) {
             6297 -> {
                 finishTask(
                     player = player,
                     level = DiaryLevel.MEDIUM,
-                    task = MediumTasks.COOK_SPIDER_ON_STICK
+                    task = MediumTasks.COOK_SPIDER_ON_STICK,
                 )
             }
         }
 
         when (player.viewport.region.id) {
-            10802 -> if (event.itemId == Items.GOLD_ORE_444) {
-                finishTask(
-                    player = player,
-                    level = DiaryLevel.EASY,
-                    task = EasyTasks.BRIMHAVEN_MINE_GOLD
-                )
-            }
+            10802 ->
+                if (event.itemId == Items.GOLD_ORE_444) {
+                    finishTask(
+                        player = player,
+                        level = DiaryLevel.EASY,
+                        task = EasyTasks.BRIMHAVEN_MINE_GOLD,
+                    )
+                }
 
-            11310, 11410 -> if (event.itemId == Items.UNCUT_RED_TOPAZ_1629) {
-                finishTask(
-                    player = player,
-                    level = DiaryLevel.MEDIUM,
-                    task = MediumTasks.MINE_RED_TOPAZ
-                )
-            }
+            11310, 11410 ->
+                if (event.itemId == Items.UNCUT_RED_TOPAZ_1629) {
+                    finishTask(
+                        player = player,
+                        level = DiaryLevel.MEDIUM,
+                        task = MediumTasks.MINE_RED_TOPAZ,
+                    )
+                }
 
-            11569 -> if (event.itemId == Items.BANANA_1963) {
-                progressIncrementalTask(
-                    player = player,
-                    level = DiaryLevel.EASY,
-                    task = EasyTasks.PICK_5_BANANAS,
-                    attribute = ATTRIBUTE_BANANA_PICKED,
-                    maxProgress = 5
-                )
-            }
+            11569 ->
+                if (event.itemId == Items.BANANA_1963) {
+                    progressIncrementalTask(
+                        player = player,
+                        level = DiaryLevel.EASY,
+                        task = EasyTasks.PICK_5_BANANAS,
+                        attribute = ATTRIBUTE_BANANA_PICKED,
+                        maxProgress = 5,
+                    )
+                }
         }
 
         when {
@@ -183,7 +187,7 @@ class KaramjaAchievementDiary : DiaryEventHookBase(DiaryType.KARAMJA) {
                         finishTask(
                             player = player,
                             level = DiaryLevel.EASY,
-                            task = EasyTasks.USE_FISHING_SPOTS_BANANA_PLANTATION
+                            task = EasyTasks.USE_FISHING_SPOTS_BANANA_PLANTATION,
                         )
                     }
                 }
@@ -195,7 +199,7 @@ class KaramjaAchievementDiary : DiaryEventHookBase(DiaryType.KARAMJA) {
                         finishTask(
                             player = player,
                             level = DiaryLevel.MEDIUM,
-                            task = MediumTasks.CUT_MAHOGANY_TREE
+                            task = MediumTasks.CUT_MAHOGANY_TREE,
                         )
                     }
 
@@ -203,7 +207,7 @@ class KaramjaAchievementDiary : DiaryEventHookBase(DiaryType.KARAMJA) {
                         finishTask(
                             player = player,
                             level = DiaryLevel.MEDIUM,
-                            task = MediumTasks.CUT_TEAK_TREE
+                            task = MediumTasks.CUT_TEAK_TREE,
                         )
                     }
                 }
@@ -211,35 +215,44 @@ class KaramjaAchievementDiary : DiaryEventHookBase(DiaryType.KARAMJA) {
         }
     }
 
-    override fun onNpcKilled(player: Player, event: NPCKillEvent) {
+    override fun onNpcKilled(
+        player: Player,
+        event: NPCKillEvent,
+    ) {
         when (player.viewport.region.id) {
-            10899, 10900 -> if (event.npc.id in METAL_DRAGONS) {
-                finishTask(
-                    player = player,
-                    level = DiaryLevel.HARD,
-                    task = HardTasks.BRIMHAVEN_DUNGEON_KILL_METAL_DRAGON
-                )
-            }
+            10899, 10900 ->
+                if (event.npc.id in METAL_DRAGONS) {
+                    finishTask(
+                        player = player,
+                        level = DiaryLevel.HARD,
+                        task = HardTasks.BRIMHAVEN_DUNGEON_KILL_METAL_DRAGON,
+                    )
+                }
 
-            11412 -> if (event.npc.id == NPCs.JOGRE_113) {
-                finishTask(
-                    player = player,
-                    level = DiaryLevel.EASY,
-                    task = EasyTasks.POTHOLE_DUNGEON_KILL_JOGRE
-                )
-            }
+            11412 ->
+                if (event.npc.id == NPCs.JOGRE_113) {
+                    finishTask(
+                        player = player,
+                        level = DiaryLevel.EASY,
+                        task = EasyTasks.POTHOLE_DUNGEON_KILL_JOGRE,
+                    )
+                }
 
-            else -> if (event.npc.id in KET_ZEKS) {
-                finishTask(
-                    player = player,
-                    level = DiaryLevel.HARD,
-                    task = HardTasks.FIGHT_CAVE_KILL_KET_ZEK
-                )
-            }
+            else ->
+                if (event.npc.id in KET_ZEKS) {
+                    finishTask(
+                        player = player,
+                        level = DiaryLevel.HARD,
+                        task = HardTasks.FIGHT_CAVE_KILL_KET_ZEK,
+                    )
+                }
         }
     }
 
-    override fun onPickedUp(player: Player, event: PickUpEvent) {
+    override fun onPickedUp(
+        player: Player,
+        event: PickUpEvent,
+    ) {
         when {
             inBorders(player, MAIN_ISLAND_AREA) -> {
                 if (event.itemId == Items.SEAWEED_401) {
@@ -248,7 +261,7 @@ class KaramjaAchievementDiary : DiaryEventHookBase(DiaryType.KARAMJA) {
                         level = DiaryLevel.EASY,
                         task = EasyTasks.PICK_5_SEAWEED,
                         attribute = ATTRIBUTE_SEAWEED_PICKED,
-                        maxProgress = 5
+                        maxProgress = 5,
                     )
                 }
 
@@ -258,47 +271,52 @@ class KaramjaAchievementDiary : DiaryEventHookBase(DiaryType.KARAMJA) {
                         level = DiaryLevel.HARD,
                         task = HardTasks.PICK_5_PALM_LEAVES,
                         attribute = ATTRIBUTE_PALM_LEAF_PICKED,
-                        maxProgress = 5
+                        maxProgress = 5,
                     )
                 }
             }
         }
     }
 
-    override fun onInteracted(player: Player, event: InteractionEvent) {
+    override fun onInteracted(
+        player: Player,
+        event: InteractionEvent,
+    ) {
         when (player.viewport.region.id) {
-            10644 -> if (event.target.id == Scenery.STAIRS_5097 && event.option == "walk-up") {
-                finishTask(
-                    player = player,
-                    level = DiaryLevel.EASY,
-                    task = MediumTasks.BRIMHAVEN_DUNGEON_CLIMB_STAIRS
-                )
-            }
+            10644 ->
+                if (event.target.id == Scenery.STAIRS_5097 && event.option == "walk-up") {
+                    finishTask(
+                        player = player,
+                        level = DiaryLevel.EASY,
+                        task = MediumTasks.BRIMHAVEN_DUNGEON_CLIMB_STAIRS,
+                    )
+                }
 
             11058 -> {
                 if (event.target.id == NPCs.HAJEDY_510 && event.option == "pay-fare") {
                     finishTask(
                         player = player,
                         level = DiaryLevel.MEDIUM,
-                        task = MediumTasks.USE_VIGROY_HAJEDY_CARTS
+                        task = MediumTasks.USE_VIGROY_HAJEDY_CARTS,
                     )
                 }
                 if (event.target.id in FRUIT_TREES) {
                     finishTask(
                         player = player,
                         level = DiaryLevel.MEDIUM,
-                        task = MediumTasks.BRIMHAVEN_GROW_HEALTHY_FRUIT_TREE
+                        task = MediumTasks.BRIMHAVEN_GROW_HEALTHY_FRUIT_TREE,
                     )
                 }
             }
 
-            11054, 11055 -> if (event.target.id == 19231) {
-                finishTask(
-                    player,
-                    DiaryLevel.MEDIUM,
-                    MediumTasks.TRAP_HORNED_GRAAHK
-                )
-            }
+            11054, 11055 ->
+                if (event.target.id == 19231) {
+                    finishTask(
+                        player,
+                        DiaryLevel.MEDIUM,
+                        MediumTasks.TRAP_HORNED_GRAAHK,
+                    )
+                }
         }
     }
 }

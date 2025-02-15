@@ -12,14 +12,21 @@ import org.rs.consts.Items
  * @property experience The experience gained from creating the item.
  * @property animation  The animation id used during fletch.
  */
-enum class Strings(private val indicator: Byte, val unfinished: Int, val product: Int, val level: Int, val experience: Double, val animation: Int) {
+enum class Strings(
+    private val indicator: Byte,
+    val unfinished: Int,
+    val product: Int,
+    val level: Int,
+    val experience: Double,
+    val animation: Int,
+) {
     SHORT_BOW(
         indicator = 1,
         unfinished = Items.SHORTBOW_U_50,
         product = Items.SHORTBOW_841,
         level = 5,
         experience = 5.0,
-        animation = 6678
+        animation = 6678,
     ),
     LONG_BOW(
         indicator = 1,
@@ -27,7 +34,7 @@ enum class Strings(private val indicator: Byte, val unfinished: Int, val product
         product = Items.LONGBOW_839,
         level = 10,
         experience = 10.0,
-        animation = 6684
+        animation = 6684,
     ),
     OAK_SHORTBOW(
         indicator = 1,
@@ -35,7 +42,7 @@ enum class Strings(private val indicator: Byte, val unfinished: Int, val product
         product = Items.OAK_SHORTBOW_843,
         level = 20,
         experience = 16.5,
-        animation = 6679
+        animation = 6679,
     ),
     OAK_LONGBOW(
         indicator = 1,
@@ -43,7 +50,7 @@ enum class Strings(private val indicator: Byte, val unfinished: Int, val product
         product = Items.OAK_LONGBOW_845,
         level = 25,
         experience = 25.0,
-        animation = 6685
+        animation = 6685,
     ),
     COMP_OGRE_BOW(
         indicator = 1,
@@ -51,7 +58,7 @@ enum class Strings(private val indicator: Byte, val unfinished: Int, val product
         product = Items.COMP_OGRE_BOW_4827,
         level = 30,
         experience = 40.0,
-        animation = 6685
+        animation = 6685,
     ),
     WILLOW_SHORTBOW(
         indicator = 1,
@@ -59,7 +66,7 @@ enum class Strings(private val indicator: Byte, val unfinished: Int, val product
         product = Items.WILLOW_SHORTBOW_849,
         level = 35,
         experience = 33.3,
-        animation = 6680
+        animation = 6680,
     ),
     WILLOW_LONGBOW(
         indicator = 1,
@@ -67,7 +74,7 @@ enum class Strings(private val indicator: Byte, val unfinished: Int, val product
         product = Items.WILLOW_LONGBOW_847,
         level = 40,
         experience = 41.5,
-        animation = 6686
+        animation = 6686,
     ),
     MAPLE_SHORTBOW(
         indicator = 1,
@@ -75,7 +82,7 @@ enum class Strings(private val indicator: Byte, val unfinished: Int, val product
         product = Items.MAPLE_SHORTBOW_853,
         level = 50,
         experience = 50.0,
-        animation = 6681
+        animation = 6681,
     ),
     MAPLE_LONGBOW(
         indicator = 1,
@@ -83,7 +90,7 @@ enum class Strings(private val indicator: Byte, val unfinished: Int, val product
         product = Items.MAPLE_LONGBOW_851,
         level = 55,
         experience = 58.3,
-        animation = 6687
+        animation = 6687,
     ),
     YEW_SHORTBOW(
         indicator = 1,
@@ -91,7 +98,7 @@ enum class Strings(private val indicator: Byte, val unfinished: Int, val product
         product = Items.YEW_SHORTBOW_857,
         level = 65,
         experience = 67.5,
-        animation = 6682
+        animation = 6682,
     ),
     YEW_LONGBOW(
         indicator = 1,
@@ -99,7 +106,7 @@ enum class Strings(private val indicator: Byte, val unfinished: Int, val product
         product = Items.YEW_LONGBOW_855,
         level = 70,
         experience = 75.0,
-        animation = 6688
+        animation = 6688,
     ),
     MAGIC_SHORTBOW(
         indicator = 1,
@@ -107,7 +114,7 @@ enum class Strings(private val indicator: Byte, val unfinished: Int, val product
         product = Items.MAGIC_SHORTBOW_861,
         level = 80,
         experience = 83.3,
-        animation = 6683
+        animation = 6683,
     ),
     MAGIC_LONGBOW(
         indicator = 1,
@@ -115,7 +122,7 @@ enum class Strings(private val indicator: Byte, val unfinished: Int, val product
         product = Items.MAGIC_LONGBOW_859,
         level = 85,
         experience = 91.5,
-        animation = 6689
+        animation = 6689,
     ),
     BRONZE_CBOW(
         indicator = 2,
@@ -123,7 +130,7 @@ enum class Strings(private val indicator: Byte, val unfinished: Int, val product
         product = Items.BRONZE_CROSSBOW_9174,
         level = 9,
         experience = 6.0,
-        animation = 6671
+        animation = 6671,
     ),
     BLURITE_CBOW(
         indicator = 2,
@@ -131,7 +138,7 @@ enum class Strings(private val indicator: Byte, val unfinished: Int, val product
         product = Items.BLURITE_CROSSBOW_9176,
         level = 24,
         experience = 16.0,
-        animation = 6672
+        animation = 6672,
     ),
     IRON_CBOW(
         indicator = 2,
@@ -139,7 +146,7 @@ enum class Strings(private val indicator: Byte, val unfinished: Int, val product
         product = Items.IRON_CROSSBOW_9177,
         level = 39,
         experience = 22.0,
-        animation = 6673
+        animation = 6673,
     ),
     STEEL_CBOW(
         indicator = 2,
@@ -147,7 +154,7 @@ enum class Strings(private val indicator: Byte, val unfinished: Int, val product
         product = Items.STEEL_CROSSBOW_9179,
         level = 46,
         experience = 27.0,
-        animation = 6674
+        animation = 6674,
     ),
     MITHIRIL_CBOW(
         indicator = 2,
@@ -155,7 +162,7 @@ enum class Strings(private val indicator: Byte, val unfinished: Int, val product
         product = Items.MITH_CROSSBOW_9181,
         level = 54,
         experience = 32.0,
-        animation = 6675
+        animation = 6675,
     ),
     ADAMANT_CBOW(
         indicator = 2,
@@ -163,7 +170,7 @@ enum class Strings(private val indicator: Byte, val unfinished: Int, val product
         product = Items.ADAMANT_CROSSBOW_9183,
         level = 61,
         experience = 41.0,
-        animation = 6676
+        animation = 6676,
     ),
     RUNITE_CBOW(
         indicator = 2,
@@ -171,14 +178,16 @@ enum class Strings(private val indicator: Byte, val unfinished: Int, val product
         product = Items.RUNE_CROSSBOW_9185,
         level = 69,
         experience = 50.0,
-        animation = 6677
-    );
+        animation = 6677,
+    ),
+    ;
 
-    val string: Int = when (indicator.toInt() and 0xFF) {
-        1 -> Items.BOW_STRING_1777
-        2 -> Items.CROSSBOW_STRING_9438
-        else -> 0
-    }
+    val string: Int =
+        when (indicator.toInt() and 0xFF) {
+            1 -> Items.BOW_STRING_1777
+            2 -> Items.CROSSBOW_STRING_9438
+            else -> 0
+        }
 
     companion object {
         val values = enumValues<Strings>()

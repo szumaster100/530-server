@@ -10,13 +10,13 @@ import core.plugin.Initializable
 
 @Initializable
 class SlayerTowerListener : InteractionListener {
-
     override fun defineListeners() {
         on(sceneryIDs, IntType.SCENERY, "open", "close") { player, node ->
             when (node.id) {
-                4490, 4487 -> handleAutowalkDoor(player, node.asScenery()).also {
-                    switchStatue()
-                }
+                4490, 4487 ->
+                    handleAutowalkDoor(player, node.asScenery()).also {
+                        switchStatue()
+                    }
             }
             return@on true
         }

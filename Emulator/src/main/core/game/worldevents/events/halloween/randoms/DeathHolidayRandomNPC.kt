@@ -11,7 +11,6 @@ import org.rs.consts.NPCs
 import org.rs.consts.Sounds
 
 class DeathHolidayRandomNPC : HolidayRandomEventNPC(NPCs.DEATH_2862) {
-
     override fun init() {
         super.init()
         playJingle(player, 337)

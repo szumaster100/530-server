@@ -1,9 +1,5 @@
 package content.region.desert.handlers
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import content.global.handlers.iface.warning.WarningManager
 import content.global.skill.agility.AgilityHandler
 import core.api.*
@@ -13,9 +9,12 @@ import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.item.Item
 import core.tools.DARK_RED
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 class ShantayPassListener : InteractionListener {
-
     companion object {
         private const val SHANTAY = NPCs.SHANTAY_836
         private const val SHANTAY_NPC = NPCs.SHANTAY_GUARD_838
@@ -23,23 +22,23 @@ class ShantayPassListener : InteractionListener {
         private const val SHANTAY_CHEST = Scenery.SHANTAY_CHEST_2693
         private const val JAIL_DOOR = Scenery.JAIL_DOOR_35401
         private const val COINS = Items.COINS_995
-        private val SHANTAY_SCENERY_IDS = intArrayOf(
-            Scenery.SHANTAY_PASS_35542,
-            Scenery.SHANTAY_PASS_35543,
-            Scenery.SHANTAY_PASS_35544,
-            Scenery.SHANTAY_PASS_35400
-        )
+        private val SHANTAY_SCENERY_IDS =
+            intArrayOf(
+                Scenery.SHANTAY_PASS_35542,
+                Scenery.SHANTAY_PASS_35543,
+                Scenery.SHANTAY_PASS_35544,
+                Scenery.SHANTAY_PASS_35400,
+            )
     }
 
     override fun defineListeners() {
-
         on(SHANTAY, IntType.NPC, "buy-pass") { player, _ ->
             if (freeSlots(player) == 0) {
                 sendNPCDialogue(
                     player,
                     SHANTAY,
                     "Sorry friend, you'll need more inventory space to buy a pass.",
-                    FaceAnim.NEUTRAL
+                    FaceAnim.NEUTRAL,
                 )
                 return@on true
             }
@@ -48,7 +47,7 @@ class ShantayPassListener : InteractionListener {
                     player,
                     SHANTAY,
                     "Sorry friend, the Shantay Pass is 5 gold coins. You don't seem to have enough money!",
-                    FaceAnim.NEUTRAL
+                    FaceAnim.NEUTRAL,
                 )
             } else {
                 sendItemDialogue(player, SHANTAY_PASS_TICKET, "You purchase a Shantay Pass.")
@@ -64,7 +63,7 @@ class ShantayPassListener : InteractionListener {
                 DARK_RED + "The Desert is a VERY Dangerous place. Do not enter if you are",
                 DARK_RED + "afraid of dying. Beware of high temperatures, and storms, robbers,",
                 DARK_RED + "and slavers. No responsibility is taken by Shantay if anything bad",
-                DARK_RED + "should happen to you in any circumstances whatsoever."
+                DARK_RED + "should happen to you in any circumstances whatsoever.",
             )
             return@on true
         }
@@ -79,7 +78,7 @@ class ShantayPassListener : InteractionListener {
                     player.location.transform(0, if (player.location.y > 3116) -2 else 2, 0),
                     null,
                     0.0,
-                    null
+                    null,
                 )
             } else {
                 if (!WarningManager.check(Components.CWS_WARNING_10_565)) {
@@ -90,7 +89,7 @@ class ShantayPassListener : InteractionListener {
                             player,
                             SHANTAY_NPC,
                             "You need a Shantay pass to get through this gate. See Shantay, he will sell you one for a very reasonable price.",
-                            FaceAnim.NEUTRAL
+                            FaceAnim.NEUTRAL,
                         )
                     } else {
                         sendMessage(player, "You go through the gate.")
@@ -101,7 +100,7 @@ class ShantayPassListener : InteractionListener {
                             player.location.transform(0, if (player.location.y > 3116) -2 else 2, 0),
                             null,
                             0.0,
-                            null
+                            null,
                         )
                     }
                 }
@@ -116,7 +115,7 @@ class ShantayPassListener : InteractionListener {
                         player,
                         SHANTAY_NPC,
                         "You need a Shantay pass to get through this gate. See Shantay, he will sell you one for a very reasonable price.",
-                        FaceAnim.NEUTRAL
+                        FaceAnim.NEUTRAL,
                     )
                     return@on true
                 }
@@ -133,7 +132,7 @@ class ShantayPassListener : InteractionListener {
                 player.location.transform(0, if (player.location.y > 3116) -2 else 2, 0),
                 null,
                 0.0,
-                null
+                null,
             )
             return@on true
         }
@@ -162,7 +161,6 @@ class ShantayPassListener : InteractionListener {
     }
 
     override fun defineDestinationOverrides() {
-
         setDest(IntType.SCENERY, SHANTAY_SCENERY_IDS, "look-at", "go-through", "quick-pass") { player, node ->
             if (node.id in intArrayOf(35543, 35544)) {
                 return@setDest node.location.transform(-1, if (player.location.y > node.location.y) 1 else -1, 0)

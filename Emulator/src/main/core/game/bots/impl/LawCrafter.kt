@@ -40,7 +40,9 @@ class LawCrafter : Script() {
 
         when (state) {
             State.INIT -> {
-                if (!bot.equipment.containsAtLeastOneItem(Items.LAW_TIARA_5545) || !ItemDefinition.canEnterEntrana(bot)) {
+                if (!bot.equipment.containsAtLeastOneItem(Items.LAW_TIARA_5545) ||
+                    !ItemDefinition.canEnterEntrana(bot)
+                ) {
                     bot.sendMessage("Please equip a law tiara first.")
                     bot.sendMessage("AND REMOVE ALL WEAPONS AND ARMOR.")
                     state = State.INVALID
@@ -91,7 +93,6 @@ class LawCrafter : Script() {
                     } else {
                         scriptAPI.walkTo(boatGuy.location)
                     }
-
                 } else {
                     scriptAPI.walkTo(boatNPC)
                 }
@@ -110,8 +111,9 @@ class LawCrafter : Script() {
             }
 
             State.RUNNING_TO_ALTER -> {
-                if (lawZone.insideBorder(bot))
+                if (lawZone.insideBorder(bot)) {
                     state = State.CRAFTING
+                }
 
                 val ruins = scriptAPI.getNearestNode(2459, true)
                 if (!ruinsZone.insideBorder(bot)) {
@@ -134,8 +136,9 @@ class LawCrafter : Script() {
 
                 val alter = scriptAPI.getNearestNode(2485, true)
                 scriptAPI.interact(bot, alter, "craft-rune")
-                if (bot.inventory.containsAtLeastOneItem(Item(Items.LAW_RUNE_563)))
+                if (bot.inventory.containsAtLeastOneItem(Item(Items.LAW_RUNE_563))) {
                     state = State.LEAVING_ALTER
+                }
             }
 
             State.LEAVING_ALTER -> {
@@ -157,7 +160,6 @@ class LawCrafter : Script() {
                     } else {
                         scriptAPI.walkTo(boatGuy.location)
                     }
-
                 } else {
                     scriptAPI.walkTo(returnNPC)
                 }
@@ -200,7 +202,6 @@ class LawCrafter : Script() {
         LEAVING_ALTER,
         RETURN_TO_BOAT_GUY,
         HALF_BANK,
-        INVALID
+        INVALID,
     }
-
 }

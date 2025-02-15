@@ -1,13 +1,12 @@
 package content.region.desert.quest.desertrescue
 
-import org.rs.consts.NPCs
 import core.game.node.entity.npc.AbstractNPC
 import core.game.world.GameWorld.ticks
 import core.game.world.map.Location
 import core.tools.RandomFunction
+import org.rs.consts.NPCs
 
 class MineSlaveNPC : AbstractNPC {
-
     private var delay = 0
 
     constructor() : super(0, null)
@@ -16,7 +15,11 @@ class MineSlaveNPC : AbstractNPC {
         delay = ticks + RandomFunction.random(20, 100)
     }
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return MineSlaveNPC(id, location)
     }
 
@@ -33,14 +36,15 @@ class MineSlaveNPC : AbstractNPC {
     }
 
     companion object {
-        private val CHATS = arrayOf(
-            "I'm sick of this place.",
-            "What I wouldn't give for a good nights rest.",
-            "I feel so weak I could faint.",
-            "I didn't want to be a miner anyway.",
-            "Ooh my back.",
-            "I'm rich in experience, poor in wealth.",
-            "I can' think straight, i'm so tired."
-        )
+        private val CHATS =
+            arrayOf(
+                "I'm sick of this place.",
+                "What I wouldn't give for a good nights rest.",
+                "I feel so weak I could faint.",
+                "I didn't want to be a miner anyway.",
+                "Ooh my back.",
+                "I'm rich in experience, poor in wealth.",
+                "I can' think straight, i'm so tired.",
+            )
     }
 }

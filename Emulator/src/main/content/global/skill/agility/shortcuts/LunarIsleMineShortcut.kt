@@ -1,8 +1,5 @@
 package content.global.skill.agility.shortcuts
 
-import org.rs.consts.Animations
-import org.rs.consts.Components
-import org.rs.consts.Scenery
 import content.global.skill.agility.AgilityHandler
 import core.api.*
 import core.api.ui.setMinimapState
@@ -13,9 +10,11 @@ import core.game.node.entity.player.Player
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.tools.DARK_RED
+import org.rs.consts.Animations
+import org.rs.consts.Components
+import org.rs.consts.Scenery
 
 class LunarIsleMineShortcut : InteractionListener {
-
     override fun defineListeners() {
         on(Scenery.CAVE_ENTRANCE_11399, IntType.SCENERY, "crawl-through") { player, _ ->
             if (player.location.x != 2335) {
@@ -25,11 +24,12 @@ class LunarIsleMineShortcut : InteractionListener {
                     player,
                     "${DARK_RED}Warning:</col>",
                     "If you leave any items in the cave, they probably won't remain when",
-                    "you return!"
+                    "you return!",
                 )
                 addDialogueAction(player) { player, button ->
-                    if (button == 4)
+                    if (button == 4) {
                         crawlingStart(player)
+                    }
                     return@addDialogueAction
                 }
             }
@@ -47,20 +47,28 @@ class LunarIsleMineShortcut : InteractionListener {
                     AgilityHandler.forceWalk(
                         player,
                         -1,
-                        if (player.location.x != 2335) Location(2341, 10356, 2) else Location(
-                            2335,
-                            10345,
-                            2
-                        ),
-                        if (player.location.x != 2335) Location(2335, 10345, 2) else Location(
-                            2341,
-                            10356,
-                            2
-                        ),
+                        if (player.location.x != 2335) {
+                            Location(2341, 10356, 2)
+                        } else {
+                            Location(
+                                2335,
+                                10345,
+                                2,
+                            )
+                        },
+                        if (player.location.x != 2335) {
+                            Location(2335, 10345, 2)
+                        } else {
+                            Location(
+                                2341,
+                                10356,
+                                2,
+                            )
+                        },
                         CRAWL_THROUGH,
                         40,
                         0.0,
-                        null
+                        null,
                     )
                     return@queueScript delayScript(player, 6)
                 }

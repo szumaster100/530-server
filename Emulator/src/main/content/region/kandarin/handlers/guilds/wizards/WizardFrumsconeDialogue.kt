@@ -11,15 +11,25 @@ import org.rs.consts.NPCs
  * Wizard Frumscone dialogue.
  */
 @Initializable
-class WizardFrumsconeDialogue(player: Player? = null) : Dialogue(player) {
-
+class WizardFrumsconeDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     override fun open(vararg args: Any?): Boolean {
         npc = args[0] as NPC
-        npc("Do you like my magic Zombies? Feel free to kill them,", "there's plenty more where these came from!").also { stage = END_DIALOGUE }
+        npc(
+            "Do you like my magic Zombies? Feel free to kill them,",
+            "there's plenty more where these came from!",
+        ).also {
+            stage =
+                END_DIALOGUE
+        }
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         return true
     }
 

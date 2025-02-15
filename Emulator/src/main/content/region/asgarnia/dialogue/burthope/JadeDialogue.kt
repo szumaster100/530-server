@@ -17,13 +17,24 @@ import org.rs.consts.NPCs
 /**
  * Represents the Jade dialogue.
  */
-class JadeDialogue(player: Player? = null) : Dialogue(player) {
-
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+class JadeDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         when (stage) {
             START_DIALOGUE ->
                 if (hasIronmanRestriction(player, IronmanMode.ULTIMATE)) {
-                    npcl(FaceAnim.NEUTRAL, "Greetings, warrior. I wish I could help you, but " + "our services are not available for Ultimate ${if (player.isMale) "Ironman" else "Ironwoman"}.").also { stage = END_DIALOGUE }
+                    npcl(
+                        FaceAnim.NEUTRAL,
+                        "Greetings, warrior. I wish I could help you, but " +
+                            "our services are not available for Ultimate ${if (player.isMale) "Ironman" else "Ironwoman"}.",
+                    ).also {
+                        stage =
+                            END_DIALOGUE
+                    }
                 } else {
                     npcl(FaceAnim.NEUTRAL, "Greetings warrior, how may I help you?").also {
                         if (hasAwaitingGrandExchangeCollections(player)) {
@@ -34,17 +45,30 @@ class JadeDialogue(player: Player? = null) : Dialogue(player) {
                     }
                 }
 
-            1 -> npcl(FaceAnim.NEUTRAL, "Before we go any further, I should inform you that you " + "have items ready for collection from the Grand Exchange.").also { stage++ }
-            2 -> showTopics(
-                Topic(FaceAnim.NEUTRAL, "I'd like to access my bank account, please.", 10),
-                Topic(FaceAnim.NEUTRAL, "I'd like to check my PIN settings.", 11),
-                Topic(FaceAnim.NEUTRAL, "I'd like to see my collection box.", 12),
-                Topic(FaceAnim.ASKING, "How long have you worked here?", 3)
-            )
+            1 ->
+                npcl(
+                    FaceAnim.NEUTRAL,
+                    "Before we go any further, I should inform you that you " +
+                        "have items ready for collection from the Grand Exchange.",
+                ).also { stage++ }
+            2 ->
+                showTopics(
+                    Topic(FaceAnim.NEUTRAL, "I'd like to access my bank account, please.", 10),
+                    Topic(FaceAnim.NEUTRAL, "I'd like to check my PIN settings.", 11),
+                    Topic(FaceAnim.NEUTRAL, "I'd like to see my collection box.", 12),
+                    Topic(FaceAnim.ASKING, "How long have you worked here?", 3),
+                )
 
             3 -> npcl(FaceAnim.FRIENDLY, "Oh, ever since the Guild opened. I like it here.").also { stage++ }
             4 -> playerl(FaceAnim.ASKING, "Why's that?").also { stage++ }
-            5 -> npcl(FaceAnim.FRIENDLY, "Well... What with all these warriors around, there's not much chance of my bank being robbed, is there?").also { stage = 2 }
+            5 ->
+                npcl(
+                    FaceAnim.FRIENDLY,
+                    "Well... What with all these warriors around, there's not much chance of my bank being robbed, is there?",
+                ).also {
+                    stage =
+                        2
+                }
             10 -> {
                 openBankAccount(player)
                 end()

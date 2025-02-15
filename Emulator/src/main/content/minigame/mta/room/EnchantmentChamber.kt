@@ -1,6 +1,5 @@
 package content.minigame.mta.room
 
-import org.rs.consts.*
 import content.minigame.mta.MTAZone
 import core.api.*
 import core.api.ui.sendInterfaceConfig
@@ -20,20 +19,24 @@ import core.game.world.map.Location
 import core.game.world.map.RegionManager.getNpc
 import core.game.world.map.zone.ZoneBorders
 import core.tools.RandomFunction
+import org.rs.consts.*
 
-class EnchantmentChamber : MTAZone(
-    "Enchantment Chamber",
-    arrayOf(
-        Item(Items.CUBE_6899),
-        Item(Items.CYLINDER_6898),
-        Item(Items.ICOSAHEDRON_6900),
-        Item(Items.PENTAMID_6901),
-        Item(Items.DRAGONSTONE_6903),
-        Item(Items.ORB_6902)
-    )
-) {
-
-    override fun leave(entity: Entity, logout: Boolean): Boolean {
+class EnchantmentChamber :
+    MTAZone(
+        "Enchantment Chamber",
+        arrayOf(
+            Item(Items.CUBE_6899),
+            Item(Items.CYLINDER_6898),
+            Item(Items.ICOSAHEDRON_6900),
+            Item(Items.PENTAMID_6901),
+            Item(Items.DRAGONSTONE_6903),
+            Item(Items.ORB_6902),
+        ),
+    ) {
+    override fun leave(
+        entity: Entity,
+        logout: Boolean,
+    ): Boolean {
         if (entity is Player) {
             PLAYERS.remove(entity)
             removeGroundSpawns(entity.asPlayer())
@@ -58,7 +61,11 @@ class EnchantmentChamber : MTAZone(
         return super.enter(entity)
     }
 
-    override fun interact(e: Entity, target: Node, option: Option): Boolean {
+    override fun interact(
+        e: Entity,
+        target: Node,
+        option: Option,
+    ): Boolean {
         if (e is Player) {
             when (target.id) {
                 in 10799..10802 -> Shapes.forId(target.id)?.take(e, target.asScenery())
@@ -75,12 +82,16 @@ class EnchantmentChamber : MTAZone(
         DSPAWNS[playerName]?.forEach { it.dropper = player } ?: run {
             val items = mutableListOf<GroundItem>()
             STONES.forEach { location ->
-                val item = object : GroundItem(Item(6903), location, player) {
-                    override fun isAutoSpawn() = true
-                    override fun isActive() = true
-                    override fun isRemainPrivate() = true
-                    override fun respawn() = Pulser.submit(getRespawnPulse(this))
-                }
+                val item =
+                    object : GroundItem(Item(6903), location, player) {
+                        override fun isAutoSpawn() = true
+
+                        override fun isActive() = true
+
+                        override fun isRemainPrivate() = true
+
+                        override fun respawn() = Pulser.submit(getRespawnPulse(this))
+                    }
                 items.add(item)
                 GroundItemManager.create(item)
             }
@@ -128,13 +139,20 @@ class EnchantmentChamber : MTAZone(
         register(ZoneBorders(3335, 9612, 3389, 9663, 0, true))
     }
 
-    enum class Shapes(val sceneryId: Int, val item: Item) {
+    enum class Shapes(
+        val sceneryId: Int,
+        val item: Item,
+    ) {
         CUBE(org.rs.consts.Scenery.CUBE_PILE_10799, Item(Items.CUBE_6899)),
         CYLINDER(org.rs.consts.Scenery.CYLINDER_PILE_10800, Item(Items.CYLINDER_6898)),
         ICOSAHEDRON(org.rs.consts.Scenery.ICOSAHEDRON_PILE_10801, Item(Items.ICOSAHEDRON_6900)),
-        PENTAMID(org.rs.consts.Scenery.PENTAMID_PILE_10802, Item(Items.PENTAMID_6901));
+        PENTAMID(org.rs.consts.Scenery.PENTAMID_PILE_10802, Item(Items.PENTAMID_6901)),
+        ;
 
-        fun take(player: Player, scenery: Scenery?) {
+        fun take(
+            player: Player,
+            scenery: Scenery?,
+        ) {
             if (!hasSpaceFor(player, item)) {
                 sendMessage(player, "You have no space left in your inventory.")
                 return
@@ -153,7 +171,6 @@ class EnchantmentChamber : MTAZone(
         val child: Int get() = 1 + ordinal
 
         companion object {
-
             fun forItem(item: Item): Shapes? = values().find { it.item.id == item.id }
 
             fun forId(id: Int): Shapes? = values().find { it.sceneryId == id }
@@ -163,37 +180,40 @@ class EnchantmentChamber : MTAZone(
     companion object {
         val ZONE = EnchantmentChamber()
         var BONUS_SHAPE = RandomFunction.getRandomElement(Shapes.values())
-        private val RUNES = arrayOf(Item(Items.DEATH_RUNE_560, 3), Item(Items.BLOOD_RUNE_565, 3), Item(Items.COSMIC_RUNE_564, 3))
-        private val STONES = arrayOf(
-            Location.create(3354, 9645, 0),
-            Location.create(3353, 9635, 0),
-            Location.create(3359, 9632, 0),
-            Location.create(3375, 9633, 0),
-            Location.create(3374, 9643, 0),
-            Location.create(3373, 9651, 0)
-        )
+        private val RUNES =
+            arrayOf(Item(Items.DEATH_RUNE_560, 3), Item(Items.BLOOD_RUNE_565, 3), Item(Items.COSMIC_RUNE_564, 3))
+        private val STONES =
+            arrayOf(
+                Location.create(3354, 9645, 0),
+                Location.create(3353, 9635, 0),
+                Location.create(3359, 9632, 0),
+                Location.create(3375, 9633, 0),
+                Location.create(3374, 9643, 0),
+                Location.create(3373, 9651, 0),
+            )
         private val ORB = Item(Items.ORB_6902)
         private val PLAYERS = mutableListOf<Player>()
         private var guardian: NPC? = null
         private val DSPAWNS = mutableMapOf<String, MutableList<GroundItem>>()
 
-        private val PULSE = object : Pulse(36) {
-            override fun pulse(): Boolean {
-                if (PLAYERS.isEmpty()) return true
+        private val PULSE =
+            object : Pulse(36) {
+                override fun pulse(): Boolean {
+                    if (PLAYERS.isEmpty()) return true
 
-                var newBonusShape: Shapes? = null
-                while (newBonusShape == null || newBonusShape == BONUS_SHAPE) {
-                    newBonusShape = RandomFunction.getRandomElement(Shapes.values())
+                    var newBonusShape: Shapes? = null
+                    while (newBonusShape == null || newBonusShape == BONUS_SHAPE) {
+                        newBonusShape = RandomFunction.getRandomElement(Shapes.values())
+                    }
+                    BONUS_SHAPE = newBonusShape
+                    PLAYERS.filter(Player::isActive).forEach(BONUS_SHAPE::setAsBonus)
+
+                    sendChat(
+                        guardian!!,
+                        "The bonus shape has changed to the ${BONUS_SHAPE.name.lowercase().replace('_', ' ')}.",
+                    )
+                    return false
                 }
-                BONUS_SHAPE = newBonusShape
-                PLAYERS.filter(Player::isActive).forEach(BONUS_SHAPE::setAsBonus)
-
-                sendChat(
-                    guardian!!,
-                    "The bonus shape has changed to the ${BONUS_SHAPE.name.lowercase().replace('_', ' ')}."
-                )
-                return false
             }
-        }
     }
 }

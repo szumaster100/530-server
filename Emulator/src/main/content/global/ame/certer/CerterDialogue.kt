@@ -1,6 +1,5 @@
 package content.global.ame.certer
 
-import org.rs.consts.Animations
 import content.data.GameAttributes
 import core.api.addItemOrDrop
 import core.api.animate
@@ -9,17 +8,31 @@ import core.game.dialogue.DialogueFile
 import core.game.node.entity.impl.PulseType
 import core.game.system.timer.impl.AntiMacro
 import core.tools.END_DIALOGUE
+import org.rs.consts.Animations
 
-class CerterDialogue(val initial: Boolean) : DialogueFile() {
-
+class CerterDialogue(
+    val initial: Boolean,
+) : DialogueFile() {
     val CERTER_INTERFACE = 184
-    override fun handle(componentID: Int, buttonID: Int) {
+
+    override fun handle(
+        componentID: Int,
+        buttonID: Int,
+    ) {
         if (initial && !player!!.getAttribute(GameAttributes.CERTER_REWARD, false)) {
             when (stage) {
-                0 -> npc(
-                    "Ah, hello, ${player!!.username.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }}. Could you",
-                    "please help me identify this?"
-                ).also { stage++ }
+                0 ->
+                    npc(
+                        "Ah, hello, ${player!!.username.replaceFirstChar {
+                            if (it.isLowerCase()) {
+                                it.titlecase()
+                            } else {
+                                it
+                                    .toString()
+                            }
+                        }}. Could you",
+                        "please help me identify this?",
+                    ).also { stage++ }
 
                 1 -> {
                     end()

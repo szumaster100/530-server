@@ -14,8 +14,11 @@ import core.plugin.Plugin
 
 @Initializable
 class FishingSpotInteraction : PluginInteraction() {
-
-    override fun handle(player: Player, npc: NPC, option: Option): Boolean {
+    override fun handle(
+        player: Player,
+        npc: NPC,
+        option: Option,
+    ): Boolean {
         val npcLocation = npc.location
         if (!player.getAttribute("fishing_contest:fee-paid", false)) {
             if (npcLocation == Location(2637, 3444, 0)) {
@@ -26,12 +29,12 @@ class FishingSpotInteraction : PluginInteraction() {
                                 3677,
                                 FaceAnim.NEUTRAL,
                                 "I think you will find that is",
-                                "my spot."
+                                "my spot.",
                             )
                             return true
                         }
                     },
-                    PulseType.STANDARD
+                    PulseType.STANDARD,
                 )
                 return true
             } else if (npcLocation.equals(2630, 3435, 0)) {
@@ -42,12 +45,12 @@ class FishingSpotInteraction : PluginInteraction() {
                                 225,
                                 FaceAnim.NEUTRAL,
                                 "Hey, you need to pay to enter the",
-                                "competition first! Only 5gp entrance fee!"
+                                "competition first! Only 5gp entrance fee!",
                             )
                             return true
                         }
                     },
-                    PulseType.STANDARD
+                    PulseType.STANDARD,
                 )
                 return true
             } else if (npcLocation == Location.create(2632, 3427, 0)) {
@@ -57,12 +60,12 @@ class FishingSpotInteraction : PluginInteraction() {
                             player.dialogueInterpreter.sendDialogues(
                                 228,
                                 FaceAnim.NEUTRAL,
-                                "I think you will find that is my spot."
+                                "I think you will find that is my spot.",
                             )
                             return true
                         }
                     },
-                    PulseType.STANDARD
+                    PulseType.STANDARD,
                 )
                 return true
             } else if (npcLocation == Location.create(2627, 3415, 0)) {
@@ -72,12 +75,12 @@ class FishingSpotInteraction : PluginInteraction() {
                             player.dialogueInterpreter.sendDialogues(
                                 228,
                                 FaceAnim.NEUTRAL,
-                                "I think you will find that is my spot."
+                                "I think you will find that is my spot.",
                             )
                             return true
                         }
                     },
-                    PulseType.STANDARD
+                    PulseType.STANDARD,
                 )
                 return true
             }
@@ -91,7 +94,10 @@ class FishingSpotInteraction : PluginInteraction() {
         return this
     }
 
-    override fun fireEvent(identifier: String, vararg args: Any): Any? {
+    override fun fireEvent(
+        identifier: String,
+        vararg args: Any,
+    ): Any? {
         return null
     }
 }

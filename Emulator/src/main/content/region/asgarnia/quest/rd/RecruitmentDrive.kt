@@ -1,8 +1,5 @@
 package content.region.asgarnia.quest.rd
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
 import core.api.*
 import core.api.quest.getQuestStage
 import core.api.quest.isQuestComplete
@@ -10,10 +7,12 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
 
 @Initializable
 class RecruitmentDrive : Quest(Quests.RECRUITMENT_DRIVE, 103, 102, 1, 496, 0, 1, 2) {
-
     companion object {
         const val stagePass = "rd:passedstage"
         const val stageFail = "rd:failedstage"
@@ -30,7 +29,10 @@ class RecruitmentDrive : Quest(Quests.RECRUITMENT_DRIVE, 103, 102, 1, 496, 0, 1,
         val stageArray = arrayOf(stage0, stage1, stage2, stage3, stage4)
     }
 
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 11
         var stage = getStage(player)
@@ -45,7 +47,7 @@ class RecruitmentDrive : Quest(Quests.RECRUITMENT_DRIVE, 103, 102, 1, 496, 0, 1,
                     player,
                     "with the ${Quests.DRUIDIC_RITUAL} Quest completed,",
                     line++,
-                    isQuestComplete(player, Quests.DRUIDIC_RITUAL)
+                    isQuestComplete(player, Quests.DRUIDIC_RITUAL),
                 )
             } else {
                 line(player, "I have to completed the !!${Quests.DRUIDIC_RITUAL} Quest??,", line++)
@@ -55,7 +57,7 @@ class RecruitmentDrive : Quest(Quests.RECRUITMENT_DRIVE, 103, 102, 1, 496, 0, 1,
                     player,
                     "and since I have completed the ${Quests.BLACK_KNIGHTS_FORTRESS}.",
                     line++,
-                    isQuestComplete(player, Quests.BLACK_KNIGHTS_FORTRESS)
+                    isQuestComplete(player, Quests.BLACK_KNIGHTS_FORTRESS),
                 )
             } else {
                 line(player, "and I have to completed the !!${Quests.BLACK_KNIGHTS_FORTRESS}??.", line++)

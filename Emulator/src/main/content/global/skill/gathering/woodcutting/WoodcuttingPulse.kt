@@ -1,8 +1,5 @@
 package content.global.skill.gathering.woodcutting
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Sounds
 import content.data.GameAttributes
 import content.data.items.SkillingTool
 import content.data.items.SkillingTool.Companion.getHatchet
@@ -24,17 +21,23 @@ import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.game.world.map.RegionManager.getLocalPlayers
 import core.tools.RandomFunction
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Sounds
 import java.util.stream.Collectors
 
-class WoodcuttingPulse(private val player: Player, private val node: Scenery) : Pulse(1, player, node) {
-
-    private val woodcuttingSounds = intArrayOf(
-        Sounds.WOODCUTTING_HIT_3038,
-        Sounds.WOODCUTTING_HIT_3039,
-        Sounds.WOODCUTTING_HIT_3040,
-        Sounds.WOODCUTTING_HIT_3041,
-        Sounds.WOODCUTTING_HIT_3042
-    )
+class WoodcuttingPulse(
+    private val player: Player,
+    private val node: Scenery,
+) : Pulse(1, player, node) {
+    private val woodcuttingSounds =
+        intArrayOf(
+            Sounds.WOODCUTTING_HIT_3038,
+            Sounds.WOODCUTTING_HIT_3039,
+            Sounds.WOODCUTTING_HIT_3040,
+            Sounds.WOODCUTTING_HIT_3041,
+            Sounds.WOODCUTTING_HIT_3042,
+        )
 
     private var resource: WoodcuttingNode? = null
     private var ticks = 0
@@ -88,7 +91,10 @@ class WoodcuttingPulse(private val player: Player, private val node: Scenery) : 
             return false
         }
         if (freeSlots(player) < 1) {
-            sendDialogue(player, "Your inventory is too full to hold any more " + getItemName(resource!!.reward).lowercase() + ".")
+            sendDialogue(
+                player,
+                "Your inventory is too full to hold any more " + getItemName(resource!!.reward).lowercase() + ".",
+            )
             return false
         }
         return true
@@ -97,7 +103,13 @@ class WoodcuttingPulse(private val player: Player, private val node: Scenery) : 
     fun animate() {
         if (!player.animator.isAnimating) {
             animate(player, getHatchet(player)!!.animation)
-            val playersAroundMe = getLocalPlayers(player, 2).stream().filter { p: Player -> p.username != player.username }.collect(Collectors.toList())
+            val playersAroundMe =
+                getLocalPlayers(player, 2)
+                    .stream()
+                    .filter { p: Player ->
+                        p.username !=
+                            player.username
+                    }.collect(Collectors.toList())
             val soundIndex = RandomFunction.random(0, woodcuttingSounds.size)
             for (p in playersAroundMe) playAudio(p!!, woodcuttingSounds[soundIndex])
         }
@@ -108,7 +120,18 @@ class WoodcuttingPulse(private val player: Player, private val node: Scenery) : 
             return false
         }
         if (node.id == 10041) {
-            sendNPCDialogue(player, NPCs.BANK_GUARD_2574, if (RandomFunction.random(2) == 1) "You'll blow my cover! I'm meant to be hidden!" else "Will you stop that?", FaceAnim.FURIOUS)
+            sendNPCDialogue(
+                player,
+                NPCs.BANK_GUARD_2574,
+                if (RandomFunction.random(2) ==
+                    1
+                ) {
+                    "You'll blow my cover! I'm meant to be hidden!"
+                } else {
+                    "Will you stop that?"
+                },
+                FaceAnim.FURIOUS,
+            )
             return true
         }
         if (!checkReward(getHatchet(player))) {
@@ -117,7 +140,17 @@ class WoodcuttingPulse(private val player: Player, private val node: Scenery) : 
 
         if (getHatchet(player)!!.id == Items.INFERNO_ADZE_13661 && RandomFunction.random(100) < 25) {
             sendMessage(player, "You chop some logs. The heat of the inferno adze incinerates them.")
-            Projectile.create(player, null, 1776, 35, 30, 20, 25).transform(player, Location(player.location.x + 2, player.location.y), true, 25, 25).send()
+            Projectile
+                .create(
+                    player,
+                    null,
+                    1776,
+                    35,
+                    30,
+                    20,
+                    25,
+                ).transform(player, Location(player.location.x + 2, player.location.y), true, 25, 25)
+                .send()
             rewardXP(player, Skills.WOODCUTTING, resource!!.experience)
             rewardXP(player, Skills.FIREMAKING, resource!!.experience)
             return rollDepletion()
@@ -133,11 +166,16 @@ class WoodcuttingPulse(private val player: Player, private val node: Scenery) : 
             rewardXP(player, Skills.WOODCUTTING, experience)
 
             if (resource == WoodcuttingNode.STANDARD_TREE_10) {
-                if (!getAttribute(player, GameAttributes.TUTORIAL_COMPLETE, false))
+                if (!getAttribute(player, GameAttributes.TUTORIAL_COMPLETE, false)) {
                     sendItemDialogue(player, Items.LOGS_1511, "You get some logs.")
+                }
 
-                if (getAttribute(player, GameAttributes.TUTORIAL_STAGE, -1) < 4)
-                    sendUnclosableDialogue(player, "You cannot cut down this tree yet. You must progress further in the tutorial.")
+                if (getAttribute(player, GameAttributes.TUTORIAL_STAGE, -1) < 4) {
+                    sendUnclosableDialogue(
+                        player,
+                        "You cannot cut down this tree yet. You must progress further in the tutorial.",
+                    )
+                }
             }
 
             if (resource == WoodcuttingNode.DRAMEN_TREE) {
@@ -164,9 +202,14 @@ class WoodcuttingPulse(private val player: Player, private val node: Scenery) : 
     }
 
     private fun rollDepletion(): Boolean {
-
         if (resource!!.respawnRate > 0) {
-            if (RandomFunction.roll(8) || resource!!.identifier.toInt() == 1 || resource!!.identifier.toInt() == 2 || resource!!.identifier.toInt() == 3 || resource!!.identifier.toInt() == 6 || resource!!.identifier.toInt() == 19) {
+            if (RandomFunction.roll(8) ||
+                resource!!.identifier.toInt() == 1 ||
+                resource!!.identifier.toInt() == 2 ||
+                resource!!.identifier.toInt() == 3 ||
+                resource!!.identifier.toInt() == 6 ||
+                resource!!.identifier.toInt() == 19
+            ) {
                 if (resource!!.isFarming) {
                     val fPatch = forObject(node.asScenery())
                     if (fPatch != null) {
@@ -196,21 +239,26 @@ class WoodcuttingPulse(private val player: Player, private val node: Scenery) : 
             amount = 0
         }
 
-        if (reward == 1511 && isDiaryComplete(player, DiaryType.SEERS_VILLAGE, 1) && player.viewport.region.id == 10806) {
+        if (reward == 1511 &&
+            isDiaryComplete(player, DiaryType.SEERS_VILLAGE, 1) &&
+            player.viewport.region.id == 10806
+        ) {
             amount = 2
         }
 
         return amount
     }
 
-    private fun calculateExperience(reward: Int, amount: Int): Double {
+    private fun calculateExperience(
+        reward: Int,
+        amount: Int,
+    ): Double {
         var amount = amount
         var experience = resource!!.experience
         if (player.location.regionId == 10300) {
             return 1.0
         }
         if (reward == 3239) {
-
             if (amount >= 1) {
                 experience = 275.2
             } else {
@@ -218,7 +266,11 @@ class WoodcuttingPulse(private val player: Player, private val node: Scenery) : 
             }
         }
 
-        if (reward == 1517 && player.achievementDiaryManager.getDiary(DiaryType.SEERS_VILLAGE)!!.isComplete(1) && player.equipment[EquipmentContainer.SLOT_HAT] != null && player.equipment[EquipmentContainer.SLOT_HAT].id == Items.SEERS_HEADBAND_1_14631) {
+        if (reward == 1517 &&
+            player.achievementDiaryManager.getDiary(DiaryType.SEERS_VILLAGE)!!.isComplete(1) &&
+            player.equipment[EquipmentContainer.SLOT_HAT] != null &&
+            player.equipment[EquipmentContainer.SLOT_HAT].id == Items.SEERS_HEADBAND_1_14631
+        ) {
             experience *= 1.10
         }
         return experience * amount

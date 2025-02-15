@@ -33,8 +33,12 @@ import org.rs.consts.NPCs
 
 @Initializable
 class TzhaarFightPitsPlugin : ActivityPlugin("fight pits", false, true, true, ZoneRestriction.CANNON) {
-
-    override fun continueAttack(e: Entity, target: Node, style: CombatStyle, message: Boolean): Boolean {
+    override fun continueAttack(
+        e: Entity,
+        target: Node,
+        style: CombatStyle,
+        message: Boolean,
+    ): Boolean {
         if (target is Player && !WAR_PLAYERS.contains(target)) {
             return false
         }
@@ -94,14 +98,21 @@ class TzhaarFightPitsPlugin : ActivityPlugin("fight pits", false, true, true, Zo
         }
     }
 
-    override fun death(e: Entity, killer: Entity): Boolean {
+    override fun death(
+        e: Entity,
+        killer: Entity,
+    ): Boolean {
         if (e is Player) {
             removeFromBattle(e)
         }
         return false
     }
 
-    override fun start(player: Player, login: Boolean, vararg args: Any): Boolean {
+    override fun start(
+        player: Player,
+        login: Boolean,
+        vararg args: Any,
+    ): Boolean {
         player.achievementDiaryManager.finishTask(player, DiaryType.KARAMJA, 0, 8)
         if (!login) {
             setAttribute(player, "fight_pits", true)
@@ -124,7 +135,10 @@ class TzhaarFightPitsPlugin : ActivityPlugin("fight pits", false, true, true, Zo
         return super.enter(e)
     }
 
-    override fun leave(e: Entity, logout: Boolean): Boolean {
+    override fun leave(
+        e: Entity,
+        logout: Boolean,
+    ): Boolean {
         if (WAR_PLAYERS.contains(e)) {
             removeFromBattle(e)
         }
@@ -139,7 +153,11 @@ class TzhaarFightPitsPlugin : ActivityPlugin("fight pits", false, true, true, Zo
         return super.leave(e, logout)
     }
 
-    override fun interact(e: Entity, target: Node, option: Option): Boolean {
+    override fun interact(
+        e: Entity,
+        target: Node,
+        option: Option,
+    ): Boolean {
         if (target is Scenery) {
             val o = target
             if (o.id == 9369) {
@@ -192,18 +210,19 @@ class TzhaarFightPitsPlugin : ActivityPlugin("fight pits", false, true, true, Zo
         private var tokkulAmount = 0
 
         private var lastVictor: Player? = null
-        private val PULSE: Pulse = object : Pulse(100) {
-            override fun pulse(): Boolean {
-                if (++minutes == 3) {
-                    startGameSession()
-                } else if (minutes == 4) {
-                    sendDialogue("FIGHT!")
-                } else if ((minutes - 0) > 4) {
-                    spawnWave()
+        private val PULSE: Pulse =
+            object : Pulse(100) {
+                override fun pulse(): Boolean {
+                    if (++minutes == 3) {
+                        startGameSession()
+                    } else if (minutes == 4) {
+                        sendDialogue("FIGHT!")
+                    } else if ((minutes - 0) > 4) {
+                        spawnWave()
+                    }
+                    return false
                 }
-                return false
             }
-        }
 
         private fun sendDialogue(string: String) {
             for (p in WAR_PLAYERS) {
@@ -245,18 +264,19 @@ class TzhaarFightPitsPlugin : ActivityPlugin("fight pits", false, true, true, Zo
                 }
 
                 3 -> for (p in WAR_PLAYERS) {
-                    val pl: Pulse = object : Pulse(1, p) {
-                        var count: Int = 0
+                    val pl: Pulse =
+                        object : Pulse(1, p) {
+                            var count: Int = 0
 
-                        override fun pulse(): Boolean {
-                            if (DeathTask.isDead(p)) {
-                                return true
+                            override fun pulse(): Boolean {
+                                if (DeathTask.isDead(p)) {
+                                    return true
+                                }
+                                p.impactHandler.manualHit(p, 1, HitsplatType.NORMAL)
+                                p.impactHandler.manualHit(p, 1, HitsplatType.NORMAL)
+                                return ++count == 100
                             }
-                            p.impactHandler.manualHit(p, 1, HitsplatType.NORMAL)
-                            p.impactHandler.manualHit(p, 1, HitsplatType.NORMAL)
-                            return ++count == 100
                         }
-                    }
                     p.setAttribute("fp_pulse", pl)
                     Pulser.submit(pl)
                 }
@@ -275,7 +295,6 @@ class TzhaarFightPitsPlugin : ActivityPlugin("fight pits", false, true, true, Zo
             var victor: String? = null
             if (lastVictor != null) {
                 victor = "Current Champion: $championName"
-
             }
             val size = (LOBBY_PLAYERS.size + WAR_PLAYERS.size) - 1
             if (!WAR_PLAYERS.isEmpty()) {
@@ -309,7 +328,9 @@ class TzhaarFightPitsPlugin : ActivityPlugin("fight pits", false, true, true, Zo
                 var count = 0
                 for (i in 5..22) {
                     var skill: Int
-                    if ((lastVictor!!.getSkills().getStaticLevel(i).also { skill = it }) > strength && skill > defence) {
+                    if ((lastVictor!!.getSkills().getStaticLevel(i).also { skill = it }) > strength &&
+                        skill > defence
+                    ) {
                         if (++count == 5) {
                             return "JalYt-Hur-" + lastVictor!!.username
                         }

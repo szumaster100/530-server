@@ -6,7 +6,9 @@ import org.junit.jupiter.api.Test
 
 class RegionTests {
     companion object {
-        init { TestUtils.preTestSetup(); }
+        init {
+            TestUtils.preTestSetup()
+        }
     }
 
     @Test fun testRegionLoad() {
@@ -41,7 +43,11 @@ class RegionTests {
         Region.load(base)
 
         val targetLoc = base.baseLocation.transform(23, 17, 0) // location of a bush
-        Assertions.assertEquals(36782, RegionManager.getObject(targetLoc)?.id ?: -1, "Object does not exist at expected location!")
+        Assertions.assertEquals(
+            36782,
+            RegionManager.getObject(targetLoc)?.id ?: -1,
+            "Object does not exist at expected location!",
+        )
     }
 
     @Test fun testObjectExistsInDynamicRegion() {
@@ -51,7 +57,11 @@ class RegionTests {
         Region.load(dynamic)
 
         val targetLoc = dynamic.baseLocation.transform(23, 17, 0)
-        Assertions.assertEquals(36782, RegionManager.getObject(targetLoc)?.id ?: -1, "Object does not exist at expected location!")
+        Assertions.assertEquals(
+            36782,
+            RegionManager.getObject(targetLoc)?.id ?: -1,
+            "Object does not exist at expected location!",
+        )
     }
 
     @Test fun testObjectExistsInCopiedChunk() {
@@ -63,7 +73,11 @@ class RegionTests {
         Assertions.assertEquals(null, RegionManager.getObject(targetLoc), "Object exists pre-copy?")
         val replacement = base.planes[0].getRegionChunk(2, 2)
         dynamic.replaceChunk(0, 2, 2, replacement.copy(dynamic.planes[0]), base)
-        Assertions.assertEquals(36782, RegionManager.getObject(targetLoc)?.id ?: -1, "Object does not exist at expected location!")
+        Assertions.assertEquals(
+            36782,
+            RegionManager.getObject(targetLoc)?.id ?: -1,
+            "Object does not exist at expected location!",
+        )
     }
 
     @Test fun testObjectExistsInCopiedChunkUsingBuildFlag() {
@@ -75,7 +89,11 @@ class RegionTests {
         Assertions.assertEquals(null, RegionManager.getObject(targetLoc), "Object exists pre-copy?")
         val replacement = base.planes[0].getRegionChunk(2, 2)
         dynamic.replaceChunk(0, 2, 2, replacement.copy(dynamic.planes[0]), base)
-        Assertions.assertEquals(36782, RegionManager.getObject(targetLoc)?.id ?: -1, "Object does not exist at expected location!")
+        Assertions.assertEquals(
+            36782,
+            RegionManager.getObject(targetLoc)?.id ?: -1,
+            "Object does not exist at expected location!",
+        )
     }
 
     @Test fun testObjectExistsInCopiedChunkCopiedIntoBlankRegion() {
@@ -88,7 +106,11 @@ class RegionTests {
         val targetLoc = dynamic.baseLocation.transform(23, 17, 0)
         val replacement = base.planes[0].getRegionChunk(2, 2)
         dynamic.replaceChunk(0, 2, 2, replacement.copy(dynamic.planes[0]), base)
-        Assertions.assertEquals(36782, RegionManager.getObject(targetLoc)?.id ?: -1, "Object does not exist at expected location!")
+        Assertions.assertEquals(
+            36782,
+            RegionManager.getObject(targetLoc)?.id ?: -1,
+            "Object does not exist at expected location!",
+        )
     }
 
     @Test fun testObjectExistsInCopiedChunkInLinkedRegion() {
@@ -102,6 +124,10 @@ class RegionTests {
         val replacement = base.planes[0].getRegionChunk(2, 2)
         dynamic.replaceChunk(0, 2, 2, replacement.copy(dynamic.planes[0]), base)
         base.link(dynamic)
-        Assertions.assertEquals(36782, RegionManager.getObject(targetLoc)?.id ?: -1, "Object does not exist at expected location!")
+        Assertions.assertEquals(
+            36782,
+            RegionManager.getObject(targetLoc)?.id ?: -1,
+            "Object does not exist at expected location!",
+        )
     }
 }

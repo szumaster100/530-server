@@ -1,7 +1,5 @@
 package content.global.skill.agility.grapple
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
 import core.api.*
 import core.cache.def.impl.SceneryDefinition
 import core.game.interaction.OptionHandler
@@ -21,10 +19,11 @@ import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Animations
+import org.rs.consts.Items
 
 @Initializable
 class KaramjaGrapple : OptionHandler() {
-
     companion object {
         private val REQUIREMENTS = HashMap<Int?, Int>()
         private var requirementsString: String? = null
@@ -36,17 +35,26 @@ class KaramjaGrapple : OptionHandler() {
             REQUIREMENTS.putIfAbsent(Skills.RANGE, 42)
             REQUIREMENTS.putIfAbsent(Skills.STRENGTH, 21)
             requirementsString =
-                "You need at least " + REQUIREMENTS[Skills.AGILITY] + " " + Skills.SKILL_NAME[Skills.AGILITY] + ", " + REQUIREMENTS[Skills.RANGE] + " " + Skills.SKILL_NAME[Skills.RANGE] + ", and " + REQUIREMENTS[Skills.STRENGTH] + " " + Skills.SKILL_NAME[Skills.STRENGTH] + " to use this shortcut."
+                "You need at least " + REQUIREMENTS[Skills.AGILITY] + " " + Skills.SKILL_NAME[Skills.AGILITY] + ", " +
+                REQUIREMENTS[Skills.RANGE] +
+                " " +
+                Skills.SKILL_NAME[Skills.RANGE] +
+                ", and " +
+                REQUIREMENTS[Skills.STRENGTH] +
+                " " +
+                Skills.SKILL_NAME[Skills.STRENGTH] +
+                " to use this shortcut."
         }
 
-        private val crossbowIds = intArrayOf(
-            Items.DORGESHUUN_CBOW_8880,
-            Items.MITH_CROSSBOW_9181,
-            Items.ADAMANT_CROSSBOW_9183,
-            Items.RUNE_CROSSBOW_9185,
-            Items.KARILS_CROSSBOW_4734,
-            Items.HUNTERS_CROSSBOW_10156
-        )
+        private val crossbowIds =
+            intArrayOf(
+                Items.DORGESHUUN_CBOW_8880,
+                Items.MITH_CROSSBOW_9181,
+                Items.ADAMANT_CROSSBOW_9183,
+                Items.RUNE_CROSSBOW_9185,
+                Items.KARILS_CROSSBOW_4734,
+                Items.HUNTERS_CROSSBOW_10156,
+            )
         private val grappleId = Items.MITH_GRAPPLE_9419
     }
 
@@ -55,7 +63,10 @@ class KaramjaGrapple : OptionHandler() {
         return this
     }
 
-    fun handleObjects(add: Boolean, player: Player) {
+    fun handleObjects(
+        add: Boolean,
+        player: Player,
+    ) {
         val current = player.location
         if (add) {
             if (current.y > 3134) {
@@ -64,40 +75,40 @@ class KaramjaGrapple : OptionHandler() {
                         1998,
                         Location.create(2874, 3141, 0),
                         10,
-                        0
-                    )
+                        0,
+                    ),
                 )
                 ROPES.add(
                     Scenery(
                         1998,
                         Location.create(2874, 3140, 0),
                         10,
-                        0
-                    )
+                        0,
+                    ),
                 )
                 ROPES.add(
                     Scenery(
                         1998,
                         Location.create(2874, 3139, 0),
                         10,
-                        0
-                    )
+                        0,
+                    ),
                 )
                 ROPES.add(
                     Scenery(
                         1998,
                         Location.create(2874, 3138, 0),
                         10,
-                        0
-                    )
+                        0,
+                    ),
                 )
                 ROPES.add(
                     Scenery(
                         1998,
                         Location.create(2874, 3137, 0),
                         10,
-                        0
-                    )
+                        0,
+                    ),
                 )
             } else {
                 ROPES.add(
@@ -105,48 +116,48 @@ class KaramjaGrapple : OptionHandler() {
                         1998,
                         Location.create(2874, 3128, 0),
                         10,
-                        0
-                    )
+                        0,
+                    ),
                 )
                 ROPES.add(
                     Scenery(
                         1998,
                         Location.create(2874, 3129, 0),
                         10,
-                        0
-                    )
+                        0,
+                    ),
                 )
                 ROPES.add(
                     Scenery(
                         1998,
                         Location.create(2874, 3130, 0),
                         10,
-                        0
-                    )
+                        0,
+                    ),
                 )
                 ROPES.add(
                     Scenery(
                         1998,
                         Location.create(2874, 3131, 0),
                         10,
-                        0
-                    )
+                        0,
+                    ),
                 )
                 ROPES.add(
                     Scenery(
                         1998,
                         Location.create(2874, 3132, 0),
                         10,
-                        0
-                    )
+                        0,
+                    ),
                 )
                 ROPES.add(
                     Scenery(
                         1998,
                         Location.create(2874, 3133, 0),
                         10,
-                        0
-                    )
+                        0,
+                    ),
                 )
             }
             for (rope in ROPES) {
@@ -160,7 +171,11 @@ class KaramjaGrapple : OptionHandler() {
         }
     }
 
-    override fun handle(player: Player, node: Node, option: String): Boolean {
+    override fun handle(
+        player: Player,
+        node: Node,
+        option: String,
+    ): Boolean {
         val current = player.location
         val startTree: Scenery?
         val endTree: Scenery?
@@ -191,6 +206,7 @@ class KaramjaGrapple : OptionHandler() {
                 Pulser.submit(
                     object : Pulse(0, player) {
                         var counter = 1
+
                         override fun pulse(): Boolean {
                             when (counter++) {
                                 1 -> {
@@ -198,12 +214,13 @@ class KaramjaGrapple : OptionHandler() {
                                     player.animate(Animation(Animations.FIRE_CROSSBOW_4230))
                                 }
 
-                                3 -> player.packetDispatch.sendPositionedGraphic(
-                                    67,
-                                    10,
-                                    0,
-                                    player.location.transform(direction, 5)
-                                )
+                                3 ->
+                                    player.packetDispatch.sendPositionedGraphic(
+                                        67,
+                                        10,
+                                        0,
+                                        player.location.transform(direction, 5),
+                                    )
 
                                 4 -> {
                                     SceneryBuilder.replace(startTree, startTree!!.transform(startTree.id + 1), 10)
@@ -215,12 +232,16 @@ class KaramjaGrapple : OptionHandler() {
                                     ForceMovement.run(
                                         player,
                                         player.location,
-                                        if (current.y > 3134) Location.create(2874, 3136) else Location.create(
-                                            2874,
-                                            3133
-                                        ),
+                                        if (current.y > 3134) {
+                                            Location.create(2874, 3136)
+                                        } else {
+                                            Location.create(
+                                                2874,
+                                                3133,
+                                            )
+                                        },
                                         Animation.create(4466),
-                                        ForceMovement.RUNNING_SPEED
+                                        ForceMovement.RUNNING_SPEED,
                                     )
                                     handleObjects(true, player)
                                 }
@@ -229,43 +250,62 @@ class KaramjaGrapple : OptionHandler() {
                                     ForceMovement.run(
                                         player,
                                         player.location,
-                                        if (current.y > 3134) Location.create(2875, 3136) else Location.create(
-                                            2875,
-                                            3133
-                                        ),
+                                        if (current.y > 3134) {
+                                            Location.create(2875, 3136)
+                                        } else {
+                                            Location.create(
+                                                2875,
+                                                3133,
+                                            )
+                                        },
                                         ForceMovement.WALK_ANIMATION,
-                                        ForceMovement.WALKING_SPEED
+                                        ForceMovement.WALKING_SPEED,
                                     )
                                     handleObjects(false, player)
                                 }
 
-                                15 -> ForceMovement.run(
-                                    player,
-                                    player.location,
-                                    if (current.y > 3134) Location.create(2875, 3133) else Location.create(2875, 3136),
-                                    RUN_ANIMATION,
-                                    ForceMovement.RUNNING_SPEED
-                                )
+                                15 ->
+                                    ForceMovement.run(
+                                        player,
+                                        player.location,
+                                        if (current.y >
+                                            3134
+                                        ) {
+                                            Location.create(2875, 3133)
+                                        } else {
+                                            Location.create(2875, 3136)
+                                        },
+                                        RUN_ANIMATION,
+                                        ForceMovement.RUNNING_SPEED,
+                                    )
 
-                                18 -> ForceMovement.run(
-                                    player,
-                                    player.location,
-                                    if (current.y > 3134) Location.create(2874, 3133) else Location.create(2874, 3136),
-                                    ForceMovement.WALK_ANIMATION,
-                                    ForceMovement.WALKING_SPEED
-                                )
+                                18 ->
+                                    ForceMovement.run(
+                                        player,
+                                        player.location,
+                                        if (current.y >
+                                            3134
+                                        ) {
+                                            Location.create(2874, 3133)
+                                        } else {
+                                            Location.create(2874, 3136)
+                                        },
+                                        ForceMovement.WALK_ANIMATION,
+                                        ForceMovement.WALKING_SPEED,
+                                    )
 
                                 21 -> {
                                     player.faceLocation(player.location.transform(direction))
                                     animate(player, Animation(Animations.FIRE_CROSSBOW_4230))
                                 }
 
-                                23 -> player.packetDispatch.sendPositionedGraphic(
-                                    67,
-                                    10,
-                                    0,
-                                    player.location.transform(direction, 5)
-                                )
+                                23 ->
+                                    player.packetDispatch.sendPositionedGraphic(
+                                        67,
+                                        10,
+                                        0,
+                                        player.location.transform(direction, 5),
+                                    )
 
                                 24 -> {
                                     SceneryBuilder.replace(islandTree, islandTree!!.transform(islandTree.id + 1), 10)
@@ -278,12 +318,16 @@ class KaramjaGrapple : OptionHandler() {
                                     ForceMovement.run(
                                         player,
                                         player.location,
-                                        if (current.y > 3134) Location.create(2874, 3127) else Location.create(
-                                            2874,
-                                            3142
-                                        ),
+                                        if (current.y > 3134) {
+                                            Location.create(2874, 3127)
+                                        } else {
+                                            Location.create(
+                                                2874,
+                                                3142,
+                                            )
+                                        },
                                         Animation.create(4466),
-                                        ForceMovement.RUNNING_SPEED
+                                        ForceMovement.RUNNING_SPEED,
                                     )
                                     handleObjects(true, player)
                                 }
@@ -297,14 +341,17 @@ class KaramjaGrapple : OptionHandler() {
                             }
                             return false
                         }
-                    }
+                    },
                 )
             }
         }
         return true
     }
 
-    override fun getDestination(moving: Node, destination: Node): Location {
+    override fun getDestination(
+        moving: Node,
+        destination: Node,
+    ): Location {
         return if (moving.location.y > 3134) {
             Location.create(2874, 3142, 0)
         } else {

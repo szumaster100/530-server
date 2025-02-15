@@ -153,7 +153,11 @@ class GlobalData {
         macroDisabled = data["macroDisabled"] as Boolean
     }
 
-    fun setSavedLocation(x: Int, y: Int, z: Int) {
+    fun setSavedLocation(
+        x: Int,
+        y: Int,
+        z: Int,
+    ) {
         savedX = x
         savedY = y
         savedH = z

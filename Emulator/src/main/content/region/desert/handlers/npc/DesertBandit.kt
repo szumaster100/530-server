@@ -1,7 +1,5 @@
 package content.region.desert.handlers.npc
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import content.data.God
 import core.api.hasGodItem
 import core.game.container.Container
@@ -12,10 +10,14 @@ import core.game.node.entity.player.Player
 import core.game.world.map.Location
 import core.game.world.map.RegionManager
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
-class DesertBandit(id: Int = NPCs.BANDIT_1926, location: Location? = null) : AbstractNPC(id, location) {
-
+class DesertBandit(
+    id: Int = NPCs.BANDIT_1926,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
     companion object {
         private val saradominSet = mutableSetOf<Int>()
         private val zamorakSet = mutableSetOf<Int>()
@@ -29,25 +31,24 @@ class DesertBandit(id: Int = NPCs.BANDIT_1926, location: Location? = null) : Abs
         init {
             val zamorakProvideProtectionItems = God.ZAMORAK.validItems
             val saradominProvideProtectionItems = God.SARADOMIN.validItems
-            val nonAffiliatedItems = intArrayOf(
-                Items.INITIATE_CUISSE_5576,
-                Items.INITIATE_HAUBERK_5575,
-                Items.INITIATE_SALLET_5574,
-
-                Items.PROSELYTE_CUISSE_9676,
-                Items.PROSELYTE_HAUBERK_9674,
-                Items.PROSELYTE_SALLET_9672,
-                Items.PROSELYTE_TASSET_9678,
-
-                Items.WHITE_BOOTS_6619,
-                Items.WHITE_CHAINBODY_6615,
-                Items.WHITE_FULL_HELM_6623,
-                Items.WHITE_GLOVES_6629,
-                Items.WHITE_KITESHIELD_6633,
-                Items.WHITE_PLATEBODY_6617,
-                Items.WHITE_PLATESKIRT_6627,
-                Items.WHITE_SQ_SHIELD_6631,
-            )
+            val nonAffiliatedItems =
+                intArrayOf(
+                    Items.INITIATE_CUISSE_5576,
+                    Items.INITIATE_HAUBERK_5575,
+                    Items.INITIATE_SALLET_5574,
+                    Items.PROSELYTE_CUISSE_9676,
+                    Items.PROSELYTE_HAUBERK_9674,
+                    Items.PROSELYTE_SALLET_9672,
+                    Items.PROSELYTE_TASSET_9678,
+                    Items.WHITE_BOOTS_6619,
+                    Items.WHITE_CHAINBODY_6615,
+                    Items.WHITE_FULL_HELM_6623,
+                    Items.WHITE_GLOVES_6629,
+                    Items.WHITE_KITESHIELD_6633,
+                    Items.WHITE_PLATEBODY_6617,
+                    Items.WHITE_PLATESKIRT_6627,
+                    Items.WHITE_SQ_SHIELD_6631,
+                )
 
             zamorakSet.addAll(zamorakProvideProtectionItems.toList())
             saradominSet.addAll(saradominProvideProtectionItems.toList())
@@ -58,7 +59,11 @@ class DesertBandit(id: Int = NPCs.BANDIT_1926, location: Location? = null) : Abs
 
     private val supportRange = 10
 
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return DesertBandit(id, location)
     }
 
@@ -101,7 +106,10 @@ class DesertBandit(id: Int = NPCs.BANDIT_1926, location: Location? = null) : Abs
         return false
     }
 
-    override fun onImpact(entity: Entity?, state: BattleState?) {
+    override fun onImpact(
+        entity: Entity?,
+        state: BattleState?,
+    ) {
         if (entity is Player) {
             RegionManager.getLocalNpcs(this, supportRange).forEach { npc ->
                 if (npc.id == NPCs.BANDIT_1926 && !npc.properties.combatPulse.isAttacking && npc != this) {

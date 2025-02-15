@@ -8,8 +8,9 @@ import core.game.activity.Cutscene
 import core.game.node.entity.player.Player
 import core.game.world.map.Direction
 
-class DagannothCutscene(player: Player) : Cutscene(player) {
-
+class DagannothCutscene(
+    player: Player,
+) : Cutscene(player) {
     override fun setup() {
         setExit(player.location.transform(0, 0, 0))
         if (player.settings.isRunToggled) {

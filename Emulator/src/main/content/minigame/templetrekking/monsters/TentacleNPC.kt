@@ -1,6 +1,5 @@
 package content.minigame.templetrekking.monsters
 
-import org.rs.consts.NPCs
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.BattleState
 import core.game.node.entity.npc.AbstractNPC
@@ -9,13 +8,21 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
-class TentacleNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, location) {
-
+class TentacleNPC(
+    id: Int = 0,
+    location: Location? = null,
+) : AbstractNPC(id, location) {
     val killCounter = "tentacle-kills"
     lateinit var player: Player
-    override fun construct(id: Int, location: Location, vararg objects: Any): AbstractNPC {
+
+    override fun construct(
+        id: Int,
+        location: Location,
+        vararg objects: Any,
+    ): AbstractNPC {
         return TentacleNPC(id, location)
     }
 
@@ -43,7 +50,7 @@ class TentacleNPC(id: Int = 0, location: Location? = null) : AbstractNPC(id, loc
                         tentacle.attack(player)
                         return true
                     }
-                }
+                },
             )
         }
     }

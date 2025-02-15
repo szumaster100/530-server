@@ -1,12 +1,14 @@
 package content.global.activity.oldman
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 import core.api.utils.WeightBasedTable
 import core.api.utils.WeightedItem
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
-enum class WomTaskReward(val npc: IntArray, val table: WeightBasedTable) {
-
+enum class WomTaskReward(
+    val npc: IntArray,
+    val table: WeightBasedTable,
+) {
     REWARD_TABLE(
         intArrayOf(NPCs.WISE_OLD_MAN_2253),
         WeightBasedTable.create(
@@ -75,9 +77,10 @@ enum class WomTaskReward(val npc: IntArray, val table: WeightBasedTable) {
             WeightedItem(Items.CADANTINE_SEED_5301, 1, 1, 5.0),
             WeightedItem(Items.LANTADYME_SEED_5302, 1, 1, 5.0),
             WeightedItem(Items.DWARF_WEED_SEED_5303, 1, 1, 3.0),
-            WeightedItem(Items.TORSTOL_SEED_5304, 1, 1, 5.0)
-        )
-    );
+            WeightedItem(Items.TORSTOL_SEED_5304, 1, 1, 5.0),
+        ),
+    ),
+    ;
 
     companion object {
         val rewardMap = HashMap<Int, WeightBasedTable>()

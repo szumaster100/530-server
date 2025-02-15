@@ -1,8 +1,5 @@
 package content.region.misthalin.handlers
 
-import org.rs.consts.Animations
-import org.rs.consts.Components
-import org.rs.consts.Scenery
 import core.api.*
 import core.game.global.action.ClimbActionHandler
 import core.game.global.action.DoorActionHandler
@@ -10,11 +7,12 @@ import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
+import org.rs.consts.Components
+import org.rs.consts.Scenery
 
 class EdgevilleListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(Scenery.POSTER_29586, IntType.SCENERY, "pull-back") { player, _ ->
             sendDialogue(player, "There appears to be a tunnel behind this poster.")
             teleport(player, Location(3140, 4230, 2))
@@ -54,7 +52,7 @@ class EdgevilleListener : InteractionListener {
         on(
             intArrayOf(Scenery.ROSES_9261, Scenery.ROSES_9262, Scenery.ROSES_30806),
             IntType.SCENERY,
-            "take-seed"
+            "take-seed",
         ) { player, node ->
             sendMessage(player, "There doesn't seem to be any seeds on this rosebush.")
             return@on true
@@ -84,7 +82,6 @@ class EdgevilleListener : InteractionListener {
                 openInterface(player, Components.WILDERNESS_WARNING_382)
                 setAttribute(player, "wildy-gate", node)
             } else {
-
                 DoorActionHandler.handleAutowalkDoor(player, node.asScenery())
             }
             return@on true

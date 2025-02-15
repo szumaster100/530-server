@@ -13,28 +13,39 @@ import core.game.world.repository.Repository
 import org.json.simple.JSONObject
 import org.rs.consts.Sounds
 
-class Poison : PersistTimer(
-    runInterval = 30,
-    identifier = "poison",
-    flags = arrayOf(TimerFlag.ClearOnDeath)
-) {
+class Poison :
+    PersistTimer(
+        runInterval = 30,
+        identifier = "poison",
+        flags = arrayOf(TimerFlag.ClearOnDeath),
+    ) {
     lateinit var damageSource: Entity
 
     var severity = 0
         set(value) {
             if (value != field - 1 && value % 10 == 8) {
-                (damageSource as? Player)?.debug("[PoisonTimer] Warning: Converting suspect Arios severity into true severity. If numbers look wrong, this could be why.")
+                (damageSource as? Player)?.debug(
+                    "[PoisonTimer] Warning: Converting suspect Arios severity into true severity. If numbers look wrong, this could be why.",
+                )
                 field = (value / 10) * 5
                 (damageSource as? Player)?.debug("[PoisonTimer] Warning: New Severity: $field.")
-            } else field = value
+            } else {
+                field = value
+            }
         }
 
-    override fun save(root: JSONObject, entity: Entity) {
+    override fun save(
+        root: JSONObject,
+        entity: Entity,
+    ) {
         root["source-uid"] = (damageSource as? Player)?.details?.uid ?: -1
         root["severity"] = severity.toString()
     }
 
-    override fun parse(root: JSONObject, entity: Entity) {
+    override fun parse(
+        root: JSONObject,
+        entity: Entity,
+    ) {
         val uid = root["source-uid"].toString().toInt()
         damageSource = Repository.getPlayerByUid(uid) ?: entity
         severity = root["severity"].toString().toInt()
@@ -45,8 +56,9 @@ class Poison : PersistTimer(
             sendMessage(entity, "You have been poisoned.")
             entity.debug("[Poison] -> Received for $severity severity.")
         }
-        if (damageSource is Player)
+        if (damageSource is Player) {
             (damageSource as? Player)?.debug("[Poison] -> Applied for $severity severity.")
+        }
     }
 
     override fun run(entity: Entity): Boolean {
@@ -61,10 +73,11 @@ class Poison : PersistTimer(
         entity.impactHandler.manualHit(
             damageSource,
             getDamageFromSeverity(severity--),
-            ImpactHandler.HitsplatType.POISON
+            ImpactHandler.HitsplatType.POISON,
         )
-        if (severity == 0 && entity is Player)
+        if (severity == 0 && entity is Player) {
             sendMessage(entity, "The poison has worn off.")
+        }
 
         return severity > 0
     }

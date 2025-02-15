@@ -8,14 +8,15 @@ import core.game.world.map.Location
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 
-class BFPlayerState(val player: Player) {
+class BFPlayerState(
+    val player: Player,
+) {
     var container = BFOreContainer()
     val oresOnBelt = ArrayList<BFBeltOre>()
     var barsNeedCooled = false
         private set
 
     fun processOresIntoBars(): Boolean {
-
         if (barsNeedCooled && getVarbit(player, DISPENSER_STATE) == 1) {
             setVarbit(player, DISPENSER_STATE, 2, true)
             return false
@@ -37,30 +38,28 @@ class BFPlayerState(val player: Player) {
     fun updateOres() {
         val toRemove = ArrayList<BFBeltOre>()
         for (ore in oresOnBelt) {
-
             if (ore.tick()) toRemove.add(ore)
         }
         oresOnBelt.removeAll(toRemove)
     }
 
     fun coolBars() {
-
         barsNeedCooled = false
         setVarbit(player, DISPENSER_STATE, 3, true)
     }
 
     fun checkBars() {
-
         if (getVarbit(player, DISPENSER_STATE) == 3) setVarbit(player, DISPENSER_STATE, 0, true)
     }
 
     fun hasBarsClaimable(): Boolean {
-
         return container.getTotalBarAmount() > 0
     }
 
-    fun claimBars(bar: Bar, amount: Int): Boolean {
-
+    fun claimBars(
+        bar: Bar,
+        amount: Int,
+    ): Boolean {
         if (barsNeedCooled) return false
 
         val maxAmt = amount.coerceAtMost(freeSlots(player))
@@ -94,7 +93,6 @@ class BFPlayerState(val player: Player) {
     }
 
     private fun getVarbitForBar(bar: Bar): Int {
-
         return when (bar) {
             Bar.BRONZE -> BRONZE_COUNT
             Bar.IRON -> IRON_COUNT

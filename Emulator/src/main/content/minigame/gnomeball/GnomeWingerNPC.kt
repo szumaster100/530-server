@@ -1,17 +1,5 @@
 package content.minigame.gnomeball
 
-import org.rs.consts.Animations
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import core.api.animate
-import core.api.getAttribute
-import core.api.setAttribute
-import core.api.spawnProjectile
-import core.game.global.action.EquipHandler
-import core.game.node.entity.npc.NPC
-import core.game.node.entity.npc.NPCBehavior
-import core.game.node.entity.player.Player
-import core.game.node.item.Item
 /*
 private class GnomeWingerNPC : NPCBehavior(NPCs.GNOME_WINGER_633) {
 

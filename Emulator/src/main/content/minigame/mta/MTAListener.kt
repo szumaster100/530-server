@@ -1,18 +1,16 @@
 package content.minigame.mta
 
-import org.rs.consts.NPCs
-import org.rs.consts.Scenery
 import core.api.getUsedOption
 import core.api.openDialogue
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.world.map.Direction
 import core.game.world.map.Location
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 class MTAListener : InteractionListener {
-
     override fun defineListeners() {
-
         on(NPCs.MAZE_GUARDIAN_3102, IntType.NPC, "talk-to") { player, node ->
             openDialogue(player, node.id, node)
             return@on true
@@ -23,7 +21,7 @@ class MTAListener : InteractionListener {
             openDialogue(
                 player,
                 NPCs.PIZZAZ_HAT_3096,
-                *if (option == "destroy") arrayOf(node, true, true) else arrayOf()
+                *if (option == "destroy") arrayOf(node, true, true) else arrayOf(),
             )
             return@on true
         }
@@ -43,11 +41,12 @@ class MTAListener : InteractionListener {
     }
 
     companion object {
-        val mtaTeleports = intArrayOf(
-            Scenery.TELEKINETIC_TP_10778,
-            Scenery.ENCHANTERS_TP_10779,
-            Scenery.ALCHEMISTS_TP_10780,
-            Scenery.GRAVEYARD_TP_10781
-        )
+        val mtaTeleports =
+            intArrayOf(
+                Scenery.TELEKINETIC_TP_10778,
+                Scenery.ENCHANTERS_TP_10779,
+                Scenery.ALCHEMISTS_TP_10780,
+                Scenery.GRAVEYARD_TP_10781,
+            )
     }
 }

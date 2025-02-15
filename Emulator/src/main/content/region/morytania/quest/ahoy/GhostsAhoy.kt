@@ -1,20 +1,22 @@
 package content.region.morytania.quest.ahoy
 
-import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import core.api.*
 import core.api.quest.isQuestComplete
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class GhostsAhoy : Quest(Quests.GHOSTS_AHOY, 68, 67, 2, Vars.VARBIT_QUEST_GHOST_AHOY_PROGRESS_217, 0, 1, 8) {
-
-    override fun drawJournal(player: Player, stage: Int) {
+    override fun drawJournal(
+        player: Player,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 11
         player ?: return
@@ -99,7 +101,19 @@ class GhostsAhoy : Quest(Quests.GHOSTS_AHOY, 68, 67, 2, Vars.VARBIT_QUEST_GHOST_
         drawReward(player, "Free passage into Port Phasmatys", ln)
         rewardXP(player, Skills.PRAYER, 2400.0)
         setVarbit(player, Vars.VARBIT_QUEST_GHOST_AHOY_PROGRESS_217, 8, true)
-        removeAttributes(player, GhostsAhoyUtils.shipFlag, GhostsAhoyUtils.shipBottom, GhostsAhoyUtils.shipSkull, GhostsAhoyUtils.rightShip, GhostsAhoyUtils.colorMatching, GhostsAhoyUtils.windSpeed, GhostsAhoyUtils.lastMapScrap, GhostsAhoyUtils.petitionsigns, GhostsAhoyUtils.petitionstart, GhostsAhoyUtils.petitioncomplete)
+        removeAttributes(
+            player,
+            GhostsAhoyUtils.shipFlag,
+            GhostsAhoyUtils.shipBottom,
+            GhostsAhoyUtils.shipSkull,
+            GhostsAhoyUtils.rightShip,
+            GhostsAhoyUtils.colorMatching,
+            GhostsAhoyUtils.windSpeed,
+            GhostsAhoyUtils.lastMapScrap,
+            GhostsAhoyUtils.petitionsigns,
+            GhostsAhoyUtils.petitionstart,
+            GhostsAhoyUtils.petitioncomplete,
+        )
     }
 
     override fun newInstance(`object`: Any?): Quest {

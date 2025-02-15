@@ -1,11 +1,11 @@
 package content.minigame.gnomecook.bowls
 
-import org.rs.consts.Items
 import core.game.interaction.NodeUsageEvent
 import core.game.interaction.UseWithHandler
 import core.game.node.item.Item
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Items
 
 private const val GNOME_BOWL_MOLD = 2166
 private const val GIANNE_DOUGH = 2171

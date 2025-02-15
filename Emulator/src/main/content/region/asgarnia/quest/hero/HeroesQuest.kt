@@ -1,8 +1,5 @@
 package content.region.asgarnia.quest.hero
 
-import org.rs.consts.Items
-import org.rs.consts.Quests
-import org.rs.consts.Vars
 import content.region.misthalin.quest.phoenixgang.ShieldofArrav
 import core.api.*
 import core.api.quest.getQuestPoints
@@ -12,10 +9,12 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class HeroesQuest : Quest(Quests.HEROES_QUEST, 75, 74, 1, Vars.VARP_QUEST_HEROES_QUEST_PROGRESS_188, 0, 1, 15) {
-
     companion object {
         const val questName = "Heroes' Quest"
         const val attributeGruborLetsYouIn = "/save:quest:heroesquest-gruborletsyouin"
@@ -26,10 +25,10 @@ class HeroesQuest : Quest(Quests.HEROES_QUEST, 75, 74, 1, Vars.VARP_QUEST_HEROES
 
         fun checkQuestsAreComplete(player: Player): Boolean {
             return isQuestComplete(player, Quests.SHIELD_OF_ARRAV) &&
-                    isQuestComplete(player, Quests.LOST_CITY) &&
-                    isQuestComplete(player, Quests.MERLINS_CRYSTAL) &&
-                    isQuestComplete(player, Quests.DRAGON_SLAYER) &&
-                    getQuestPoints(player) >= 55
+                isQuestComplete(player, Quests.LOST_CITY) &&
+                isQuestComplete(player, Quests.MERLINS_CRYSTAL) &&
+                isQuestComplete(player, Quests.DRAGON_SLAYER) &&
+                getQuestPoints(player) >= 55
         }
 
         fun isPhoenix(player: Player): Boolean {
@@ -50,18 +49,21 @@ class HeroesQuest : Quest(Quests.HEROES_QUEST, 75, 74, 1, Vars.VARP_QUEST_HEROES
                 isQuestComplete(player, Quests.LOST_CITY),
                 isQuestComplete(player, Quests.MERLINS_CRYSTAL),
                 isQuestComplete(player, Quests.DRAGON_SLAYER),
-                getQuestPoints(player) >= 55
+                getQuestPoints(player) >= 55,
             ).all { it }
         }
 
         fun allItemsInInventory(player: Player): Boolean {
             return inInventory(player, Items.FIRE_FEATHER_1583) &&
-                    inInventory(player, Items.LAVA_EEL_2149) &&
-                    inInventory(player, Items.THIEVES_ARMBAND_1579)
+                inInventory(player, Items.LAVA_EEL_2149) &&
+                inInventory(player, Items.THIEVES_ARMBAND_1579)
         }
     }
 
-    override fun drawJournal(player: Player?, stage: Int) {
+    override fun drawJournal(
+        player: Player?,
+        stage: Int,
+    ) {
         super.drawJournal(player, stage)
         var line = 12
         var stage = getStage(player)
@@ -80,7 +82,7 @@ class HeroesQuest : Quest(Quests.HEROES_QUEST, 75, 74, 1, Vars.VARP_QUEST_HEROES
                     player,
                     "!!The ${Quests.SHIELD_OF_ARRAV}??",
                     line++,
-                    isQuestComplete(player, Quests.SHIELD_OF_ARRAV)
+                    isQuestComplete(player, Quests.SHIELD_OF_ARRAV),
                 )
                 line(player, "!!The ${Quests.LOST_CITY}??", line++, isQuestComplete(player, Quests.LOST_CITY))
                 line(player, "!!${Quests.MERLINS_CRYSTAL}??", line++, isQuestComplete(player, Quests.MERLINS_CRYSTAL))
@@ -188,7 +190,6 @@ class HeroesQuest : Quest(Quests.HEROES_QUEST, 75, 74, 1, Vars.VARP_QUEST_HEROES
                 line(player, "!!Achietties?? and give them to her", line++)
             }
         } else {
-
             line(player, "I gave Achietties an Entranan Firebird Feather, A cooked", line++, true)
             line(player, "lava eel from a dangerous fishing spot and after some", line++, true)
             line(player, "difficulty, a Master Thief Armband.", line++, true)

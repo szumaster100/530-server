@@ -1,8 +1,5 @@
 package content.region.misthalin.quest.phoenixgang.dialogue
 
-import org.rs.consts.Items
-import org.rs.consts.NPCs
-import org.rs.consts.Quests
 import content.region.misthalin.quest.phoenixgang.ShieldofArrav
 import core.api.quest.getQuestStage
 import core.game.dialogue.Dialogue
@@ -12,8 +9,13 @@ import core.game.node.entity.player.link.diary.Diary
 import core.game.node.entity.player.link.diary.DiaryType
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.item.GroundItemManager
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
-class ReldoDialogue(player: Player? = null) : Dialogue(player) {
+class ReldoDialogue(
+    player: Player? = null,
+) : Dialogue(player) {
     private var knightSword: Quest? = null
     private var shieldArrav: Quest? = null
     private var isDiary = false
@@ -38,38 +40,45 @@ class ReldoDialogue(player: Player? = null) : Dialogue(player) {
         return true
     }
 
-    override fun handle(interfaceId: Int, buttonId: Int): Boolean {
+    override fun handle(
+        interfaceId: Int,
+        buttonId: Int,
+    ): Boolean {
         if (isDiary) {
-
             when (stage) {
                 999 -> end()
                 -1 -> {
-
-                    options("What is the Achievement Diary?", "What are the rewards?", "How do I claim the rewards?", "See you later.")
+                    options(
+                        "What is the Achievement Diary?",
+                        "What are the rewards?",
+                        "How do I claim the rewards?",
+                        "See you later.",
+                    )
                     stage++
                 }
 
-                0 -> when (buttonId) {
-                    1 -> {
-                        player("What is the Achievement Diary?")
-                        stage = 410
-                    }
+                0 ->
+                    when (buttonId) {
+                        1 -> {
+                            player("What is the Achievement Diary?")
+                            stage = 410
+                        }
 
-                    2 -> {
-                        player("What are the rewards?")
-                        stage = 420
-                    }
+                        2 -> {
+                            player("What are the rewards?")
+                            stage = 420
+                        }
 
-                    3 -> {
-                        player("How do I claim the rewards?")
-                        stage = 430
-                    }
+                        3 -> {
+                            player("How do I claim the rewards?")
+                            stage = 430
+                        }
 
-                    4 -> {
-                        player("See you later.")
-                        stage = 999
+                        4 -> {
+                            player("See you later.")
+                            stage = 999
+                        }
                     }
-                }
 
                 440 -> {
                     npc("Really? How extraordinary! Well, that certainly is a ", "worthy achievement indeed.")
@@ -91,7 +100,7 @@ class ReldoDialogue(player: Player? = null) : Dialogue(player) {
                     sendDialogue(
                         "Reldo takes the Varrock armour and attaches some more plate metal",
                         "to it, filling it out to look like a proper suit of armour. He etches",
-                        "some words into the armour, which glows slightly before fading."
+                        "some words into the armour, which glows slightly before fading.",
                     )
                     stage++
                 }
@@ -101,7 +110,7 @@ class ReldoDialogue(player: Player? = null) : Dialogue(player) {
                         "I have enhanced your body armour with a spell so that,",
                         "when using the Edgeville furnace, you'll have the chance",
                         "of smelting an extra bar up to mithril. It will also give",
-                        "you the chance of an extra ore when Mining up to"
+                        "you the chance of an extra ore when Mining up to",
                     )
                     stage++
                 }
@@ -115,7 +124,7 @@ class ReldoDialogue(player: Player? = null) : Dialogue(player) {
                     npc(
                         "Smithing can take time, so I have placed a small speed",
                         "enhancement on the armour. When you smith with this armour on, there is a chance that you will be able to",
-                        "smith faster each time and thus decrease the time it"
+                        "smith faster each time and thus decrease the time it",
                     )
                     stage++
                 }
@@ -128,7 +137,7 @@ class ReldoDialogue(player: Player? = null) : Dialogue(player) {
                 449 -> {
                     npc(
                         "I can also change your Varrock Teleport spell so that it",
-                        "takes you to the Grand Exchange, if you'd find that more convenient."
+                        "takes you to the Grand Exchange, if you'd find that more convenient.",
                     )
                     stage++
                 }
@@ -159,7 +168,7 @@ class ReldoDialogue(player: Player? = null) : Dialogue(player) {
                         "It's a diary that helps you keep track of particular",
                         "achievements. Here in Varrock it can help you",
                         "discover some quite useful things. Eventually, with",
-                        "enough exploration, the people of Varrock will reward"
+                        "enough exploration, the people of Varrock will reward",
                     )
                     stage++
                 }
@@ -179,7 +188,7 @@ class ReldoDialogue(player: Player? = null) : Dialogue(player) {
                         "Well, there's three different levels of Varrock Armour,",
                         "which match up with the three levels of difficulty. Each",
                         "has the same rewards as the previous level, and an",
-                        "additional one too... but I won't spoil your surprise."
+                        "additional one too... but I won't spoil your surprise.",
                     )
                     stage++
                 }
@@ -194,7 +203,7 @@ class ReldoDialogue(player: Player? = null) : Dialogue(player) {
                         "Just complete the tasks so they're all ticked off, then",
                         "you can claim your reward. Most of them are",
                         "straightforward; you might find some require quests to",
-                        "be started, if not finished."
+                        "be started, if not finished.",
                     )
                     stage++
                 }
@@ -261,7 +270,7 @@ class ReldoDialogue(player: Player? = null) : Dialogue(player) {
                     npc(
                         "The other day I filed a book about ancient goblin tribes.",
                         "It's somewhere on the west end of the library, I think.",
-                        "Maybe that will be of some use."
+                        "Maybe that will be of some use.",
                     )
                     player.getQuestRepository().getQuest(Quests.THE_LOST_TRIBE).setStage(player, 42)
                     stage++
@@ -281,134 +290,139 @@ class ReldoDialogue(player: Player? = null) : Dialogue(player) {
             return true
         }
         when (shieldArrav!!.getStage(player)) {
-            20 -> when (stage) {
-                0 -> {
-                    player("Ok. I've read the book. Do you know where I can find", "the Phoenix Gang?")
-                    stage = 1
-                }
-
-                1 -> {
-                    npc("No, I don't. I think I know someone who might", "however.")
-                    stage = 2
-                }
-
-                2 -> {
-                    npc(
-                        "If I were you I would talk to Baraeck, the fur trader in",
-                        "the market place. I've heard he has connections with the",
-                        "Phoenix Gang."
-                    )
-                    stage = 3
-                }
-
-                3 -> {
-                    player("Thanks, I'll try that!")
-                    stage = 4
-                }
-
-                4 -> {
-                    shieldArrav!!.setStage(player, 30)
-                    end()
-                }
-            }
-
-            10 -> when (stage) {
-                0 -> {
-                    player("About that book... where is it again?")
-                    stage = 1
-                }
-
-                1 -> {
-                    npc("I'm not sure where it is exactly... but I'm sure it's", "around here somewhere.")
-                    stage = 2
-                }
-
-                2 -> end()
-                14 -> end()
-                3 -> {
-                    interpreter.sendDialogue("You take the book from the bookcase.")
-                    stage = 4
-                }
-
-                4 -> {
-                    if (!player.inventory.add(ShieldofArrav.BOOK)) {
-                        GroundItemManager.create(ShieldofArrav.BOOK, player)
+            20 ->
+                when (stage) {
+                    0 -> {
+                        player("Ok. I've read the book. Do you know where I can find", "the Phoenix Gang?")
+                        stage = 1
                     }
-                    end()
-                }
-            }
 
-            0 -> when (stage) {
-                0 -> {
-                    options("I'm in search  of a quest.", "Do you have anything to trade?", "What do you do?")
-                    stage = 1
-                }
-
-                1 -> when (buttonId) {
                     1 -> {
-                        player("I'm in search of a quest.")
-                        stage = 10
+                        npc("No, I don't. I think I know someone who might", "however.")
+                        stage = 2
                     }
 
                     2 -> {
-                        player("Do you have anything to trade?")
-                        stage = 20
+                        npc(
+                            "If I were you I would talk to Baraeck, the fur trader in",
+                            "the market place. I've heard he has connections with the",
+                            "Phoenix Gang.",
+                        )
+                        stage = 3
                     }
 
                     3 -> {
-                        player("What do you do?")
-                        stage = 30
+                        player("Thanks, I'll try that!")
+                        stage = 4
+                    }
+
+                    4 -> {
+                        shieldArrav!!.setStage(player, 30)
+                        end()
                     }
                 }
 
-                30 -> {
-                    npc("I am the palace librarian.")
-                    stage = 31
+            10 ->
+                when (stage) {
+                    0 -> {
+                        player("About that book... where is it again?")
+                        stage = 1
+                    }
+
+                    1 -> {
+                        npc("I'm not sure where it is exactly... but I'm sure it's", "around here somewhere.")
+                        stage = 2
+                    }
+
+                    2 -> end()
+                    14 -> end()
+                    3 -> {
+                        interpreter.sendDialogue("You take the book from the bookcase.")
+                        stage = 4
+                    }
+
+                    4 -> {
+                        if (!player.inventory.add(ShieldofArrav.BOOK)) {
+                            GroundItemManager.create(ShieldofArrav.BOOK, player)
+                        }
+                        end()
+                    }
                 }
 
-                31 -> {
-                    player("Ah. That's why you're in the library then.")
-                    stage = 32
+            0 ->
+                when (stage) {
+                    0 -> {
+                        options("I'm in search  of a quest.", "Do you have anything to trade?", "What do you do?")
+                        stage = 1
+                    }
+
+                    1 ->
+                        when (buttonId) {
+                            1 -> {
+                                player("I'm in search of a quest.")
+                                stage = 10
+                            }
+
+                            2 -> {
+                                player("Do you have anything to trade?")
+                                stage = 20
+                            }
+
+                            3 -> {
+                                player("What do you do?")
+                                stage = 30
+                            }
+                        }
+
+                    30 -> {
+                        npc("I am the palace librarian.")
+                        stage = 31
+                    }
+
+                    31 -> {
+                        player("Ah. That's why you're in the library then.")
+                        stage = 32
+                    }
+
+                    32 -> {
+                        npc("Yes.")
+                        stage = 33
+                    }
+
+                    33 -> end()
+                    20 -> {
+                        npc("Only knowledge.")
+                        stage = 21
+                    }
+
+                    21 -> {
+                        player("How much do you want for that then?")
+                        stage = 22
+                    }
+
+                    22 -> {
+                        npc("No, sorry, that was just my little joke. I'm not the", "trading type.")
+                        stage = 23
+                    }
+
+                    23 -> {
+                        player("Ah well.")
+                        stage = 24
+                    }
+
+                    24 -> end()
+                    else -> handleQuest(buttonId)
                 }
 
-                32 -> {
-                    npc("Yes.")
-                    stage = 33
+            else ->
+                when (stage) {
+                    0 -> {
+                        options("Do you have anything to trade?", "What do you do?")
+                        stage = 1
+                    }
+
+                    else -> regular(buttonId)
                 }
-
-                33 -> end()
-                20 -> {
-                    npc("Only knowledge.")
-                    stage = 21
-                }
-
-                21 -> {
-                    player("How much do you want for that then?")
-                    stage = 22
-                }
-
-                22 -> {
-                    npc("No, sorry, that was just my little joke. I'm not the", "trading type.")
-                    stage = 23
-                }
-
-                23 -> {
-                    player("Ah well.")
-                    stage = 24
-                }
-
-                24 -> end()
-                else -> handleQuest(buttonId)
-            }
-
-            else -> when (stage) {
-                0 -> {
-                    options("Do you have anything to trade?", "What do you do?")
-                    stage = 1
-                }
-
-                else -> regular(buttonId)
-            }
         }
         return true
     }
@@ -428,7 +442,7 @@ class ReldoDialogue(player: Player? = null) : Dialogue(player) {
             12 -> {
                 npc(
                     "Ah yes. I know. If you look in a book called 'The Shield",
-                    "of Arrav', you'll find a quest in there."
+                    "of Arrav', you'll find a quest in there.",
                 )
                 stage = 13
             }
@@ -450,17 +464,18 @@ class ReldoDialogue(player: Player? = null) : Dialogue(player) {
 
     fun regular(buttonId: Int) {
         when (stage) {
-            1 -> when (buttonId) {
-                1 -> {
-                    player("Do you have anything to trade?")
-                    stage = 20
-                }
+            1 ->
+                when (buttonId) {
+                    1 -> {
+                        player("Do you have anything to trade?")
+                        stage = 20
+                    }
 
-                2 -> {
-                    player("What do you do?")
-                    stage = 30
+                    2 -> {
+                        player("What do you do?")
+                        stage = 30
+                    }
                 }
-            }
 
             30 -> {
                 npc("I am the palace librarian.")
@@ -509,22 +524,23 @@ class ReldoDialogue(player: Player? = null) : Dialogue(player) {
                 stage = 1
             }
 
-            1 -> when (buttonId) {
-                1 -> {
-                    player("Do you have anything to trade?")
-                    stage = 20
-                }
+            1 ->
+                when (buttonId) {
+                    1 -> {
+                        player("Do you have anything to trade?")
+                        stage = 20
+                    }
 
-                2 -> {
-                    player("What do you do?")
-                    stage = 30
-                }
+                    2 -> {
+                        player("What do you do?")
+                        stage = 30
+                    }
 
-                3 -> {
-                    player("What do you know about Imcando dwarves?")
-                    stage = 40
+                    3 -> {
+                        player("What do you know about Imcando dwarves?")
+                        stage = 40
+                    }
                 }
-            }
 
             30 -> {
                 npc("I am the palace librarian.")
@@ -572,7 +588,7 @@ class ReldoDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "Ah yes... for many hundreds of years they were the",
                     "world's most skilled smiths. They used secret smithing",
-                    "knowledge passed down from generation to generation."
+                    "knowledge passed down from generation to generation.",
                 )
                 stage = 42
             }
@@ -581,7 +597,7 @@ class ReldoDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "Unfortunately, about a century ago, the once thriving",
                     "race was wiped out during the barbarian invasions of",
-                    "that time."
+                    "that time.",
                 )
                 stage = 43
             }
@@ -595,7 +611,7 @@ class ReldoDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "I believe a few of them survived, but with the bulk of",
                     "their population destroyed their numbers have dwindled",
-                    "even further."
+                    "even further.",
                 )
                 stage = 45
             }
@@ -604,7 +620,7 @@ class ReldoDialogue(player: Player? = null) : Dialogue(player) {
                 npc(
                     "I believe I remember a couple living in Asgarnia near",
                     "the cliffs on the Asgarnian southern peninsula, but they",
-                    "DO tend to keep to themselves."
+                    "DO tend to keep to themselves.",
                 )
                 stage = 46
             }
@@ -614,7 +630,7 @@ class ReldoDialogue(player: Player? = null) : Dialogue(player) {
                     "They tend not to tell people that they're the",
                     "descendants of the Imcando, which is why people think",
                     "that the tribe has died out totally, but you may well",
-                    "have more luck talking to them if you bring them some"
+                    "have more luck talking to them if you bring them some",
                 )
                 stage = 47
             }
@@ -647,7 +663,7 @@ class ReldoDialogue(player: Player? = null) : Dialogue(player) {
             "What is the Achievement Diary?",
             "What are the rewards?",
             "How do I claim the rewards?",
-            "See you later."
+            "See you later.",
         )
         stage = 0
     }

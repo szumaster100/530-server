@@ -1,6 +1,5 @@
 package content.global.skill.crafting.glassblowing.lamps
 
-import org.rs.consts.Items
 import core.api.addItem
 import core.api.getStatLevel
 import core.api.sendMessage
@@ -10,18 +9,19 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Items
 
-private val itemIDs = intArrayOf(
-    Items.CANDLE_36,
-    Items.BLACK_CANDLE_38,
-    Items.OIL_LAMP_4525,
-    Items.LANTERN_LENS_4542,
-    Items.SAPPHIRE_1607
-)
+private val itemIDs =
+    intArrayOf(
+        Items.CANDLE_36,
+        Items.BLACK_CANDLE_38,
+        Items.OIL_LAMP_4525,
+        Items.LANTERN_LENS_4542,
+        Items.SAPPHIRE_1607,
+    )
 
 @Initializable
 class LanternCraftingHandler : UseWithHandler(*itemIDs) {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         addHandler(Items.CANDLE_LANTERN_4527, ITEM_TYPE, this)
         addHandler(Items.OIL_LANTERN_FRAME_4540, ITEM_TYPE, this)
@@ -40,7 +40,10 @@ class LanternCraftingHandler : UseWithHandler(*itemIDs) {
         }
     }
 
-    private fun craftCandleLantern(player: Player, event: NodeUsageEvent): Boolean {
+    private fun craftCandleLantern(
+        player: Player,
+        event: NodeUsageEvent,
+    ): Boolean {
         return when (event.usedWith.id) {
             36, 38 -> {
                 removeEventItems(player, event)
@@ -53,7 +56,10 @@ class LanternCraftingHandler : UseWithHandler(*itemIDs) {
         }
     }
 
-    private fun craftOilLantern(player: Player, event: NodeUsageEvent): Boolean {
+    private fun craftOilLantern(
+        player: Player,
+        event: NodeUsageEvent,
+    ): Boolean {
         return when (event.usedWith.id) {
             4525 -> {
                 removeEventItems(player, event)
@@ -66,7 +72,10 @@ class LanternCraftingHandler : UseWithHandler(*itemIDs) {
         }
     }
 
-    private fun craftBullseyeLantern(player: Player, event: NodeUsageEvent): Boolean {
+    private fun craftBullseyeLantern(
+        player: Player,
+        event: NodeUsageEvent,
+    ): Boolean {
         return when (event.usedWith.id) {
             4542 -> {
                 removeEventItems(player, event)
@@ -90,7 +99,10 @@ class LanternCraftingHandler : UseWithHandler(*itemIDs) {
         }
     }
 
-    private fun removeEventItems(player: Player, event: NodeUsageEvent) {
+    private fun removeEventItems(
+        player: Player,
+        event: NodeUsageEvent,
+    ) {
         player.inventory.remove(event.used.asItem())
         player.inventory.remove(event.usedWith.asItem())
     }

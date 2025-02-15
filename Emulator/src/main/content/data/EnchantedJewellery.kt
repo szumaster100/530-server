@@ -1,6 +1,5 @@
 package content.data
 
-import org.rs.consts.*
 import content.global.skill.magic.TeleportMethod
 import content.global.skill.slayer.SlayerManager
 import core.ServerConfig
@@ -17,27 +16,30 @@ import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
+import org.rs.consts.*
 
 enum class EnchantedJewellery(
     val options: Array<String>,
     val locations: Array<Location>,
     val crumbled: Boolean,
-    vararg val ids: Int
+    vararg val ids: Int,
 ) {
     RING_OF_SLAYING(
-        options = arrayOf(
-            "Sumona in Pollnivneach.",
-            "Morytania Slayer Tower.",
-            "Rellekka Slayer Caves.",
-            "Tarn's Lair",
-            "Nowhere. Give me a Slayer update."
-        ),
-        locations = arrayOf(
-            Location.create(3361, 2994, 0),
-            Location.create(3428, 3535, 0),
-            Location.create(2792, 3615, 0),
-            Location.create(3424, 9660, 0)
-        ),
+        options =
+            arrayOf(
+                "Sumona in Pollnivneach.",
+                "Morytania Slayer Tower.",
+                "Rellekka Slayer Caves.",
+                "Tarn's Lair",
+                "Nowhere. Give me a Slayer update.",
+            ),
+        locations =
+            arrayOf(
+                Location.create(3361, 2994, 0),
+                Location.create(3428, 3535, 0),
+                Location.create(2792, 3615, 0),
+                Location.create(3424, 9660, 0),
+            ),
         crumbled = true,
         Items.RING_OF_SLAYING8_13281,
         Items.RING_OF_SLAYING7_13282,
@@ -46,20 +48,22 @@ enum class EnchantedJewellery(
         Items.RING_OF_SLAYING4_13285,
         Items.RING_OF_SLAYING3_13286,
         Items.RING_OF_SLAYING2_13287,
-        Items.RING_OF_SLAYING1_13288
+        Items.RING_OF_SLAYING1_13288,
     ),
     RING_OF_DUELING(
-        options = arrayOf(
-            "Al Kharid Duel Arena.",
-            "Castle Wars Arena.",
-            "Fist of Guthix.",
-            "Nowhere."
-        ),
-        locations = arrayOf(
-            Location.create(3314, 3235, 0),
-            Location.create(2442, 3089, 0),
-            Location.create(1693, 5600, 0)
-        ),
+        options =
+            arrayOf(
+                "Al Kharid Duel Arena.",
+                "Castle Wars Arena.",
+                "Fist of Guthix.",
+                "Nowhere.",
+            ),
+        locations =
+            arrayOf(
+                Location.create(3314, 3235, 0),
+                Location.create(2442, 3089, 0),
+                Location.create(1693, 5600, 0),
+            ),
         crumbled = true,
         Items.RING_OF_DUELLING8_2552,
         Items.RING_OF_DUELLING7_2554,
@@ -68,28 +72,30 @@ enum class EnchantedJewellery(
         Items.RING_OF_DUELLING4_2560,
         Items.RING_OF_DUELLING3_2562,
         Items.RING_OF_DUELLING2_2564,
-        Items.RING_OF_DUELLING1_2566
+        Items.RING_OF_DUELLING1_2566,
     ),
     AMULET_OF_GLORY(
-        options = arrayOf(
-            "Edgeville.",
-            "Karamja.",
-            "Draynor Village.",
-            "Al-Kharid.",
-            "Nowhere."
-        ),
-        locations = arrayOf(
-            Location.create(3087, 3495, 0),
-            Location.create(2919, 3175, 0),
-            Location.create(3104, 3249, 0),
-            Location.create(3304, 3124, 0)
-        ),
+        options =
+            arrayOf(
+                "Edgeville.",
+                "Karamja.",
+                "Draynor Village.",
+                "Al-Kharid.",
+                "Nowhere.",
+            ),
+        locations =
+            arrayOf(
+                Location.create(3087, 3495, 0),
+                Location.create(2919, 3175, 0),
+                Location.create(3104, 3249, 0),
+                Location.create(3304, 3124, 0),
+            ),
         crumbled = false,
         Items.AMULET_OF_GLORY4_1712,
         Items.AMULET_OF_GLORY3_1710,
         Items.AMULET_OF_GLORY2_1708,
         Items.AMULET_OF_GLORY1_1706,
-        Items.AMULET_OF_GLORY_1704
+        Items.AMULET_OF_GLORY_1704,
     ),
     AMULET_OF_GLORY_T(
         options = AMULET_OF_GLORY.options,
@@ -99,23 +105,25 @@ enum class EnchantedJewellery(
         Items.AMULET_OF_GLORYT3_10356,
         Items.AMULET_OF_GLORYT2_10358,
         Items.AMULET_OF_GLORYT1_10360,
-        Items.AMULET_OF_GLORYT_10362
+        Items.AMULET_OF_GLORYT_10362,
     ),
     GAMES_NECKLACE(
-        options = arrayOf(
-            "Burthorpe Games Room.",
-            "Barbarian Outpost.",
-            "Clan Wars.",
-            "Wilderness Volcano.",
-            "Corporeal Beast."
-        ),
-        locations = arrayOf(
-            Location.create(2899, 3563, 0),
-            Location.create(2520, 3571, 0),
-            Location.create(3266, 3686, 0),
-            Location.create(3179, 3685, 0),
-            Location.create(2885, 4372, 2)
-        ),
+        options =
+            arrayOf(
+                "Burthorpe Games Room.",
+                "Barbarian Outpost.",
+                "Clan Wars.",
+                "Wilderness Volcano.",
+                "Corporeal Beast.",
+            ),
+        locations =
+            arrayOf(
+                Location.create(2899, 3563, 0),
+                Location.create(2520, 3571, 0),
+                Location.create(3266, 3686, 0),
+                Location.create(3179, 3685, 0),
+                Location.create(2885, 4372, 2),
+            ),
         crumbled = true,
         Items.GAMES_NECKLACE8_3853,
         Items.GAMES_NECKLACE7_3855,
@@ -124,7 +132,7 @@ enum class EnchantedJewellery(
         Items.GAMES_NECKLACE4_3861,
         Items.GAMES_NECKLACE3_3863,
         Items.GAMES_NECKLACE2_3865,
-        Items.GAMES_NECKLACE1_3867
+        Items.GAMES_NECKLACE1_3867,
     ),
     DIGSITE_PENDANT(
         options = arrayOf(),
@@ -134,58 +142,68 @@ enum class EnchantedJewellery(
         Items.DIGSITE_PENDANT_4_11193,
         Items.DIGSITE_PENDANT_3_11192,
         Items.DIGSITE_PENDANT_2_11191,
-        Items.DIGSITE_PENDANT_1_11190
+        Items.DIGSITE_PENDANT_1_11190,
     ),
     COMBAT_BRACELET(
-        options = arrayOf(
-            "Warriors' Guild",
-            "Champions' Guild",
-            "Monastery",
-            "Ranging Guild",
-            "Nowhere"
-        ),
-        locations = arrayOf(
-            Location.create(2878, 3546, 0),
-            Location.create(3191, 3365, 0),
-            Location.create(3051, 3489, 0),
-            Location.create(2657, 3439, 0)
-        ),
+        options =
+            arrayOf(
+                "Warriors' Guild",
+                "Champions' Guild",
+                "Monastery",
+                "Ranging Guild",
+                "Nowhere",
+            ),
+        locations =
+            arrayOf(
+                Location.create(2878, 3546, 0),
+                Location.create(3191, 3365, 0),
+                Location.create(3051, 3489, 0),
+                Location.create(2657, 3439, 0),
+            ),
         crumbled = false,
         Items.COMBAT_BRACELET4_11118,
         Items.COMBAT_BRACELET3_11120,
         Items.COMBAT_BRACELET2_11122,
         Items.COMBAT_BRACELET1_11124,
-        Items.COMBAT_BRACELET_11126
+        Items.COMBAT_BRACELET_11126,
     ),
     SKILLS_NECKLACE(
-        options = arrayOf(
-            "Fishing Guild.",
-            "Mining Guild.",
-            "Crafting Guild.",
-            "Cooking Guild.",
-            "Nowhere."
-        ),
-        locations = arrayOf(
-            Location.create(2611, 3392, 0),
-            Location.create(3016, 3338, 0),
-            Location.create(2933, 3290, 0),
-            Location.create(3143, 3442, 0)
-        ),
+        options =
+            arrayOf(
+                "Fishing Guild.",
+                "Mining Guild.",
+                "Crafting Guild.",
+                "Cooking Guild.",
+                "Nowhere.",
+            ),
+        locations =
+            arrayOf(
+                Location.create(2611, 3392, 0),
+                Location.create(3016, 3338, 0),
+                Location.create(2933, 3290, 0),
+                Location.create(3143, 3442, 0),
+            ),
         crumbled = false,
         Items.SKILLS_NECKLACE4_11105,
         Items.SKILLS_NECKLACE3_11107,
         Items.SKILLS_NECKLACE2_11109,
         Items.SKILLS_NECKLACE1_11111,
-        Items.SKILLS_NECKLACE_11113
+        Items.SKILLS_NECKLACE_11113,
     ),
     RING_OF_LIFE(
         options = arrayOf(),
         locations = arrayOf(Location.create(ServerConfig.HOME_LOCATION)),
         crumbled = true,
-        Items.RING_OF_LIFE_2570
-    );
+        Items.RING_OF_LIFE_2570,
+    ),
+    ;
 
-    fun use(player: Player, item: Item, buttonID: Int, isEquipped: Boolean) {
+    fun use(
+        player: Player,
+        item: Item,
+        buttonID: Int,
+        isEquipped: Boolean,
+    ) {
         if (buttonID >= locations.size) {
             if (isSlayerRing(item)) {
                 slayerProgressDialogue(player)
@@ -195,7 +213,12 @@ enum class EnchantedJewellery(
         attemptTeleport(player, item, buttonID, isEquipped)
     }
 
-    fun attemptTeleport(player: Player, item: Item, buttonID: Int, isEquipped: Boolean): Boolean {
+    fun attemptTeleport(
+        player: Player,
+        item: Item,
+        buttonID: Int,
+        isEquipped: Boolean,
+    ): Boolean {
         val itemIndex = getItemIndex(item)
         val nextJewellery = Item(getNext(itemIndex))
         if (!canTeleport(player, nextJewellery)) {
@@ -226,7 +249,7 @@ enum class EnchantedJewellery(
                     count++
                     return false
                 }
-            }
+            },
         )
         return true
     }
@@ -237,32 +260,39 @@ enum class EnchantedJewellery(
         nextID: Item,
         itemIndex: Int,
         isEquipped: Boolean,
-        location: Location
+        location: Location,
     ) {
-        val jewelleryName = when {
-            getItemName(item.id).contains("ring", true) -> "ring's"
-            getItemName(item.id).contains("combat", true) -> "bracelet's"
-            getItemName(item.id).contains("necklace", true) -> "necklace's"
-            else -> "amulet's"
-        }
+        val jewelleryName =
+            when {
+                getItemName(item.id).contains("ring", true) -> "ring's"
+                getItemName(item.id).contains("combat", true) -> "bracelet's"
+                getItemName(item.id).contains("necklace", true) -> "necklace's"
+                else -> "amulet's"
+            }
         val jewellery = nextID.name.replace("[^\\d-]|-(?=\\D)".toRegex(), "")
         if (isLastItemIndex(itemIndex)) {
             if (crumbled) crumbleJewellery(player, item, isEquipped)
         } else {
             replaceJewellery(player, item, nextID, isEquipped)
         }
-        val message = if (jewellery.isNotEmpty()) {
-            val number = jewellery.toInt()
-            "Your ${getJewelleryType(item)} has ${Util.convert(number)} uses left."
-        } else {
-            "You use your $jewelleryName last charge."
-        }
+        val message =
+            if (jewellery.isNotEmpty()) {
+                val number = jewellery.toInt()
+                "Your ${getJewelleryType(item)} has ${Util.convert(number)} uses left."
+            } else {
+                "You use your $jewelleryName last charge."
+            }
         sendMessage(player, message)
         unlock(player)
         player.dispatch(TeleportEvent(TeleportManager.TeleportType.NORMAL, TeleportMethod.JEWELRY, item, location))
     }
 
-    private fun replaceJewellery(player: Player, item: Item, nextID: Item, isEquipped: Boolean) {
+    private fun replaceJewellery(
+        player: Player,
+        item: Item,
+        nextID: Item,
+        isEquipped: Boolean,
+    ) {
         if (isEquipped) {
             replaceSlot(player, item.slot, nextID, item, Container.EQUIPMENT)
         } else {
@@ -270,7 +300,11 @@ enum class EnchantedJewellery(
         }
     }
 
-    private fun crumbleJewellery(player: Player, item: Item, isEquipped: Boolean) {
+    private fun crumbleJewellery(
+        player: Player,
+        item: Item,
+        isEquipped: Boolean,
+    ) {
         if (isEquipped) {
             removeItem(player, item, Container.EQUIPMENT)
         } else {
@@ -293,7 +327,7 @@ enum class EnchantedJewellery(
                 player,
                 slayerManager.master!!.npc,
                 "You need something new to hunt. Come and see me when you can and I'll give you a new task.",
-                FaceAnim.HALF_GUILTY
+                FaceAnim.HALF_GUILTY,
             )
             return
         }
@@ -303,12 +337,15 @@ enum class EnchantedJewellery(
             "You're currently assigned to kill ${getSlayerTaskName(player).lowercase()}'s; only ${
                 getSlayerTaskKillsRemaining(player)
             } more to go.",
-            FaceAnim.FRIENDLY
+            FaceAnim.FRIENDLY,
         )
         setVarp(player, 2502, slayerManager.flags.taskFlags shr 4)
     }
 
-    private fun canTeleport(player: Player, item: Item): Boolean {
+    private fun canTeleport(
+        player: Player,
+        item: Item,
+    ): Boolean {
         return player.zoneMonitor.teleport(1, item)
     }
 

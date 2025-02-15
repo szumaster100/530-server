@@ -1,16 +1,15 @@
 package content.minigame.gnomecook.battas
 
-import org.rs.consts.Items
 import core.game.interaction.NodeUsageEvent
 import core.game.interaction.UseWithHandler
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Items
 
 @Initializable
 class GnomeBattaGarnisher : UseWithHandler(9479, 9481, 9484, 9486) {
-
     override fun newInstance(arg: Any?): Plugin<Any> {
         addHandler(Items.EQUA_LEAVES_2128, ITEM_TYPE, this)
         addHandler(Items.GNOME_SPICE_2169, ITEM_TYPE, this)
