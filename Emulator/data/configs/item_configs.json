@@ -131973,16 +131973,6 @@
     "bonuses": "0,0,0,0,0,30,32,27,0,30,7,0,0,0,0"
   },
   {
-    "ge_buy_limit": "100",
-    "examine": "An enchanted ring with four teleport charges.",
-    "grand_exchange_price": "29800",
-    "durability": null,
-    "name": "Ring of wealth(4)",
-    "tradeable": "true",
-    "archery_ticket_price": "0",
-    "id": "14647"
-  },
-  {
     "examine": "A chunk of rock.",
     "name": "Rock",
     "id": "1480"
