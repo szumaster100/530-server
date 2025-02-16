@@ -1,8 +1,10 @@
 package content.region.asgarnia.quest.zep
 
-import core.api.*
 import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
+import core.api.removeItem
+import core.api.sendMessage
+import core.api.sendNPCDialogue
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.item.Item

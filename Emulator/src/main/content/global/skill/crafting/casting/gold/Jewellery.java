@@ -1,16 +1,15 @@
 package content.global.skill.crafting.casting.gold;
 
-import org.rs.consts.Components;
-import org.rs.consts.Items;
 import core.cache.def.impl.ItemDefinition;
 import core.game.node.entity.player.Player;
 import core.game.node.entity.skill.Skills;
 import core.game.node.item.Item;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import org.rs.consts.Components;
+import org.rs.consts.Items;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 

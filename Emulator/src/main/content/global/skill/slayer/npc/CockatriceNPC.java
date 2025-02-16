@@ -1,12 +1,12 @@
 package content.global.skill.slayer.npc;
 
-import org.rs.consts.NPCs;
 import content.global.skill.slayer.items.MirrorShieldHandler;
 import core.game.node.entity.combat.BattleState;
 import core.game.node.entity.combat.CombatSwingHandler;
 import core.game.node.entity.npc.AbstractNPC;
 import core.game.world.map.Location;
 import core.plugin.Initializable;
+import org.rs.consts.NPCs;
 
 @Initializable
 public class CockatriceNPC extends AbstractNPC {

@@ -1,8 +1,8 @@
 package content.global.skill.summoning.familiar.npc;
 
 import content.global.skill.crafting.casting.gold.Jewellery;
-import content.global.skill.firemaking.Log;
 import content.global.skill.firemaking.FiremakingPulse;
+import content.global.skill.firemaking.Log;
 import content.global.skill.summoning.familiar.Familiar;
 import content.global.skill.summoning.familiar.FamiliarSpecial;
 import core.game.interaction.NodeUsageEvent;

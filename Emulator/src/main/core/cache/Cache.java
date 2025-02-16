@@ -1,7 +1,8 @@
 package core.cache;
 
 import core.ServerConfig;
-import core.cache.def.impl.*;
+import core.cache.def.impl.ItemDefinition;
+import core.cache.def.impl.SceneryDefinition;
 import core.tools.Log;
 
 import java.io.File;

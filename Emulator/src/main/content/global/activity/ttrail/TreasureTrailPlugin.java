@@ -15,9 +15,9 @@ import core.game.node.item.Item;
 import core.game.node.item.ItemPlugin;
 import core.game.world.map.Location;
 import core.game.world.update.flag.context.Animation;
+import core.plugin.ClassScanner;
 import core.plugin.Initializable;
 import core.plugin.Plugin;
-import core.plugin.ClassScanner;
 
 @Initializable
 public final class TreasureTrailPlugin extends OptionHandler {

@@ -2,7 +2,9 @@ package content.global.skill.smithing
 
 import content.data.GameAttributes
 import content.region.misc.handlers.tutorial.TutorialStage
-import core.api.*
+import core.api.getAttribute
+import core.api.sendInputDialogue
+import core.api.submitIndividualPulse
 import core.api.ui.sendInterfaceConfig
 import core.game.interaction.InterfaceListener
 import core.game.node.item.Item

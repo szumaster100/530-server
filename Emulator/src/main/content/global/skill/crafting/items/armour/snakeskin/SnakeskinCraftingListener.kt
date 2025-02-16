@@ -1,7 +1,10 @@
 package content.global.skill.crafting.items.armour.snakeskin
 
-import core.api.*
+import core.api.amountInInventory
+import core.api.sendMessage
+import core.api.sendString
 import core.api.skill.sendSkillDialogue
+import core.api.submitIndividualPulse
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import org.rs.consts.Components

@@ -1,7 +1,7 @@
 package content.global.handlers.item.equipment;
 
-import org.rs.consts.Items;
 import core.api.StartupListener;
+import org.rs.consts.Items;
 
 import static core.Util.convertToIntegerArray;
 

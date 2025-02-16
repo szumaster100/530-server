@@ -1,9 +1,5 @@
 package content.global.skill.construction;
 
-import org.rs.consts.Components;
-import org.rs.consts.Music;
-import org.rs.consts.NPCs;
-import org.rs.consts.Sounds;
 import content.data.GameAttributes;
 import content.global.skill.construction.servants.Servant;
 import core.api.region.RegionSpecification;
@@ -12,7 +8,6 @@ import core.game.dialogue.FaceAnim;
 import core.game.node.entity.player.Player;
 import core.game.node.entity.skill.Skills;
 import core.game.node.scenery.Scenery;
-import core.tools.Log;
 import core.game.system.task.Pulse;
 import core.game.world.GameWorld;
 import core.game.world.map.*;
@@ -23,10 +18,15 @@ import core.game.world.update.flag.context.Animation;
 import core.net.packet.PacketRepository;
 import core.net.packet.context.MinimapStateContext;
 import core.net.packet.out.MinimapState;
+import core.tools.Log;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.rs.consts.Components;
+import org.rs.consts.Music;
+import org.rs.consts.NPCs;
+import org.rs.consts.Sounds;
 
 import java.awt.*;
 import java.nio.ByteBuffer;

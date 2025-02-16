@@ -1,8 +1,8 @@
 package content.global.skill.crafting.items.armour.capes;
 
-import org.rs.consts.Items;
 import core.game.node.item.Item;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import org.rs.consts.Items;
 
 public enum Capes {
     BLACK(Dyes.BLACK, new Item(Items.BLACK_CAPE_1019)),

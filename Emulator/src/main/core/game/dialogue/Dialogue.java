@@ -1,16 +1,15 @@
 package core.game.dialogue;
 
-import org.rs.consts.Components;
 import core.game.component.Component;
 import core.game.node.entity.Entity;
 import core.game.node.entity.npc.NPC;
 import core.game.node.entity.player.Player;
-import core.tools.Log;
 import core.plugin.Plugin;
 import core.plugin.PluginManifest;
 import core.plugin.PluginType;
-
+import core.tools.Log;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import org.rs.consts.Components;
 
 import static core.api.ContentAPIKt.log;
 import static core.game.dialogue.DialogueUtilsKt.splitLines;

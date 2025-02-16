@@ -2,8 +2,8 @@ package content.global.activity.ttrail;
 
 import core.game.node.entity.player.link.emote.Emotes;
 import core.game.world.map.zone.ZoneBorders;
-import core.plugin.Plugin;
 import core.plugin.ClassScanner;
+import core.plugin.Plugin;
 
 public final class EmoteCluePlugin extends EmoteClueScroll {
 

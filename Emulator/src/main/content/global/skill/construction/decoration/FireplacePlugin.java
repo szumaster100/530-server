@@ -1,6 +1,5 @@
 package content.global.skill.construction.decoration;
 
-import org.rs.consts.Items;
 import core.cache.def.impl.SceneryDefinition;
 import core.game.interaction.OptionHandler;
 import core.game.node.Node;
@@ -14,6 +13,7 @@ import core.game.world.GameWorld;
 import core.game.world.update.flag.context.Animation;
 import core.plugin.Initializable;
 import core.plugin.Plugin;
+import org.rs.consts.Items;
 
 @Initializable
 public final class FireplacePlugin extends OptionHandler {

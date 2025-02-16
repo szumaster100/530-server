@@ -1,10 +1,11 @@
 package content.region.asgarnia.quest.hero.dialogue
 
 import content.region.asgarnia.quest.hero.HeroesQuest
-import core.api.*
+import core.api.openDialogue
 import core.api.quest.finishQuest
 import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
+import core.api.removeItem
 import core.game.dialogue.Dialogue
 import core.game.dialogue.DialogueBuilder
 import core.game.dialogue.DialogueBuilderFile

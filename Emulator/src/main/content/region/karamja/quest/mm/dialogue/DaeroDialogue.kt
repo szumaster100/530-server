@@ -1,8 +1,10 @@
 package content.region.karamja.quest.mm.dialogue
 
-import core.api.*
+import core.api.openOverlay
 import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
+import core.api.sendItemDialogue
+import core.api.teleport
 import core.game.dialogue.DialogueFile
 import core.game.dialogue.FaceAnim
 import core.game.node.item.Item

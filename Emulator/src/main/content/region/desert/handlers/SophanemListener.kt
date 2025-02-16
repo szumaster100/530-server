@@ -1,7 +1,10 @@
 package content.region.desert.handlers
 
-import core.api.*
+import core.api.lock
+import core.api.openInterface
 import core.api.quest.hasRequirement
+import core.api.runTask
+import core.api.teleport
 import core.game.global.action.ClimbActionHandler
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener

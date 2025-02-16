@@ -2,7 +2,6 @@ package content.global.ame.drilldemon
 
 import content.data.GameAttributes
 import core.api.*
-import core.api.MapArea
 import core.game.dialogue.FaceAnim
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener

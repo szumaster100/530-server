@@ -1,9 +1,12 @@
 package content.region.desert.quest.deserttreasure.dialogue
 
 import content.region.desert.quest.deserttreasure.DesertTreasure
-import core.api.*
+import core.api.addItemOrDrop
+import core.api.inInventory
+import core.api.openDialogue
 import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
+import core.api.removeItem
 import core.game.dialogue.Dialogue
 import core.game.dialogue.DialogueBuilder
 import core.game.dialogue.DialogueBuilderFile

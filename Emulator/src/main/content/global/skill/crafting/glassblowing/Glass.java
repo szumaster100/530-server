@@ -1,7 +1,7 @@
 package content.global.skill.crafting.glassblowing;
 
-import org.rs.consts.Items;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import org.rs.consts.Items;
 
 public enum Glass {
     EMPTY_VIAL(38, Items.VIAL_229, 1, 33, 35.0),

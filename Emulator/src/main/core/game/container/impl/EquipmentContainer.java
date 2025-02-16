@@ -1,8 +1,8 @@
 package core.game.container.impl;
 
+import core.api.ContainerListener;
 import core.game.container.Container;
 import core.game.container.ContainerEvent;
-import core.api.ContainerListener;
 import core.game.interaction.InteractionListeners;
 import core.game.node.entity.combat.equipment.WeaponInterface;
 import core.game.node.entity.player.Player;

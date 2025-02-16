@@ -4,8 +4,8 @@ import core.game.node.entity.player.Player;
 import core.game.node.scenery.Constructed;
 import core.game.node.scenery.Scenery;
 import core.game.node.scenery.SceneryBuilder;
-import core.tools.Log;
 import core.game.world.map.*;
+import core.tools.Log;
 
 import static core.api.ContentAPIKt.log;
 

@@ -14,9 +14,9 @@ import core.game.system.task.Pulse;
 import core.game.world.GameWorld;
 import core.game.world.map.Direction;
 import core.game.world.map.Location;
+import core.plugin.ClassScanner;
 import core.plugin.Initializable;
 import core.plugin.Plugin;
-import core.plugin.ClassScanner;
 
 @Initializable
 public final class StaircasePlugin extends OptionHandler {

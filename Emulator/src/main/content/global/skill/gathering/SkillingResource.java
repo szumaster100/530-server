@@ -2,7 +2,6 @@ package content.global.skill.gathering;
 
 import core.ServerConfig;
 import core.game.node.entity.skill.Skills;
-import core.tools.SystemLogger;
 import core.game.world.repository.Repository;
 import core.game.world.update.flag.context.Animation;
 import org.rs.consts.Scenery;

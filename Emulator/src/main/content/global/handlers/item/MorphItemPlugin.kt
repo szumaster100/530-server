@@ -1,6 +1,9 @@
 package content.global.handlers.item
 
-import core.api.*
+import core.api.closeInterface
+import core.api.playAudio
+import core.api.removeTabs
+import core.api.toIntArray
 import core.api.ui.openSingleTab
 import core.cache.def.impl.ItemDefinition
 import core.game.component.Component

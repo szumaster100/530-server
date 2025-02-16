@@ -1,7 +1,10 @@
 package content.global.ame.quizmaster
 
 import content.data.GameAttributes
-import core.api.*
+import core.api.addItemOrBank
+import core.api.log
+import core.api.setAttribute
+import core.api.submitIndividualPulse
 import core.cache.def.impl.ItemDefinition
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
@@ -18,7 +21,6 @@ import core.tools.RandomFunction
 import org.rs.consts.Components
 import org.rs.consts.Items
 import org.rs.consts.NPCs
-import java.util.*
 
 /**
  * Handles the quiz master dialogue.

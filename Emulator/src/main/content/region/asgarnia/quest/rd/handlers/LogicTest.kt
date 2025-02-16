@@ -4,7 +4,6 @@ import content.region.asgarnia.quest.rd.RDUtils
 import content.region.asgarnia.quest.rd.RecruitmentDrive
 import content.region.asgarnia.quest.rd.cutscene.FailTest
 import core.api.*
-import core.api.EquipmentSlot
 import core.api.ui.closeDialogue
 import core.game.dialogue.DialogueBuilder
 import core.game.dialogue.DialogueBuilderFile

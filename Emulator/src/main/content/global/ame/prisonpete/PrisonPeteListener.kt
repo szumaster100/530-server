@@ -1,7 +1,6 @@
 package content.global.ame.prisonpete
 
 import core.api.*
-import core.api.MapArea
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.interaction.QueueStrength

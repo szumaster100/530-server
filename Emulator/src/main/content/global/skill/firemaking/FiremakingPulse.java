@@ -1,6 +1,5 @@
 package content.global.skill.firemaking;
 
-import org.rs.consts.Items;
 import core.api.Container;
 import core.game.event.LitFireEvent;
 import core.game.node.entity.player.Player;
@@ -15,6 +14,7 @@ import core.game.world.GameWorld;
 import core.game.world.map.RegionManager;
 import core.game.world.update.flag.context.Animation;
 import core.tools.RandomFunction;
+import org.rs.consts.Items;
 
 import static core.api.ContentAPIKt.inInventory;
 import static core.api.ContentAPIKt.replaceSlot;

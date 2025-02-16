@@ -1,8 +1,11 @@
 package content.region.desert.quest.deserttreasure.npc
 
 import content.region.desert.quest.deserttreasure.DesertTreasure
-import core.api.*
+import core.api.getAttribute
 import core.api.quest.getQuestStage
+import core.api.sendMessage
+import core.api.setAttribute
+import core.api.setVarbit
 import core.game.node.entity.Entity
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.npc.NPCBehavior

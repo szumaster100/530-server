@@ -1,9 +1,11 @@
 package content.global.handlers.npc
 
 import content.global.handlers.scenery.BankBoothListener
-import core.api.*
+import core.api.getScenery
+import core.api.hasSealOfPassage
 import core.api.interaction.openBankAccount
 import core.api.interaction.openGrandExchangeCollectionBox
+import core.api.openDialogue
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.Node

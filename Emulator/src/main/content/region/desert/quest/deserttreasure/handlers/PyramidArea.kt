@@ -1,7 +1,6 @@
 package content.region.desert.quest.deserttreasure.handlers
 
 import core.api.*
-import core.api.MapArea
 import core.game.interaction.QueueStrength
 import core.game.node.entity.Entity
 import core.game.node.entity.npc.NPC

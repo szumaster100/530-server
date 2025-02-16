@@ -1,6 +1,5 @@
 package content.global.handlers.iface;
 
-import org.rs.consts.Components;
 import core.game.component.Component;
 import core.game.component.ComponentDefinition;
 import core.game.component.ComponentPlugin;
@@ -13,6 +12,7 @@ import core.game.system.task.Pulse;
 import core.game.world.GameWorld;
 import core.plugin.Initializable;
 import core.plugin.Plugin;
+import org.rs.consts.Components;
 
 @Initializable
 public class CombatTabInterface extends ComponentPlugin {

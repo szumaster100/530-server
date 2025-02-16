@@ -1,9 +1,9 @@
 package content.global.skill.runecrafting.runes;
 
-import org.rs.consts.Items;
 import content.global.skill.runecrafting.items.Talisman;
 import content.global.skill.runecrafting.scenery.Altar;
 import core.game.node.item.Item;
+import org.rs.consts.Items;
 
 public enum CombinationRune {
     MIST(   new Item(Items.MIST_RUNE_4695), 6, 8.0, new Altar[]{Altar.WATER, Altar.AIR}, Rune.AIR, Rune.WATER),

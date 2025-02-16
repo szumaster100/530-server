@@ -1,7 +1,5 @@
 package content.global.skill.slayer.npc;
 
-import org.rs.consts.Animations;
-import org.rs.consts.Items;
 import content.global.skill.slayer.Tasks;
 import core.game.node.entity.combat.CombatStyle;
 import core.game.node.entity.combat.CombatSwingHandler;
@@ -13,6 +11,8 @@ import core.game.node.entity.npc.NPCBehavior;
 import core.game.node.entity.player.Player;
 import core.game.world.update.flag.context.Animation;
 import core.game.world.update.flag.context.Graphics;
+import org.rs.consts.Animations;
+import org.rs.consts.Items;
 
 public class SkeletalWyvernNPC extends NPCBehavior {
 

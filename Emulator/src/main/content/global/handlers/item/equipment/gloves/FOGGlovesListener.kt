@@ -1,7 +1,6 @@
 package content.global.handlers.item.equipment.gloves
 
 import core.api.*
-import core.api.EquipmentSlot
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.player.Player

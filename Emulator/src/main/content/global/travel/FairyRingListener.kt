@@ -1,8 +1,11 @@
 package content.global.travel
 
 import content.global.handlers.iface.FairyRingInterface
-import core.api.*
+import core.api.anyInEquipment
+import core.api.openInterface
 import core.api.quest.hasRequirement
+import core.api.sendMessage
+import core.api.teleport
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.player.Player

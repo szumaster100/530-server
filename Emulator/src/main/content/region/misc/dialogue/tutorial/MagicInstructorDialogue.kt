@@ -168,8 +168,7 @@ class MagicInstructorDialogue(
                         sendNPCDialogue(
                             player,
                             npc.id,
-                            "If all else fails, visit the " + GameWorld.settings!!.name +
-                                " website for a whole chestload of information on quests skills and minigames as well as a very good starter's guide.",
+                            "If all else fails, visit the " + GameWorld.settings!!.name + " website for a whole chestload of information on quests skills and minigames as well as a very good starter's guide.",
                         ).also { stage++ }
 
                     8 -> {

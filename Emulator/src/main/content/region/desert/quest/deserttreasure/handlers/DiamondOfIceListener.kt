@@ -2,7 +2,6 @@ package content.region.desert.quest.deserttreasure.handlers
 
 import content.region.desert.quest.deserttreasure.DesertTreasure
 import core.api.*
-import core.api.MapArea
 import core.api.quest.getQuestStage
 import core.game.dialogue.DialogueFile
 import core.game.dialogue.FaceAnim

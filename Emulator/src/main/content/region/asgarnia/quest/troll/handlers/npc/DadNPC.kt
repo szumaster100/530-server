@@ -1,9 +1,11 @@
 package content.region.asgarnia.quest.troll.handlers.npc
 
 import content.region.asgarnia.quest.troll.dialogue.DadDialogueFile
-import core.api.*
+import core.api.openDialogue
 import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
+import core.api.sendMessage
+import core.api.submitWorldPulse
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.BattleState
 import core.game.node.entity.combat.CombatStyle

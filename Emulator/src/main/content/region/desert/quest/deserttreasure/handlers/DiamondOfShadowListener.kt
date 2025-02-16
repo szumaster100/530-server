@@ -2,7 +2,6 @@ package content.region.desert.quest.deserttreasure.handlers
 
 import content.region.desert.quest.deserttreasure.DesertTreasure
 import core.api.*
-import core.api.MapArea
 import core.api.event.applyPoison
 import core.api.quest.getQuestStage
 import core.game.dialogue.DialogueFile

@@ -1,7 +1,6 @@
 package content.global.skill.smithing.smelting
 
 import core.api.*
-import core.api.EquipmentSlot
 import core.api.quest.isQuestComplete
 import core.game.container.impl.EquipmentContainer
 import core.game.event.ResourceProducedEvent
@@ -14,7 +13,10 @@ import core.game.world.map.Location
 import core.game.world.update.flag.context.Graphics
 import core.tools.RandomFunction
 import core.tools.StringUtils
-import org.rs.consts.*
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Sounds
 
 class SmeltingPulse : SkillPulse<Item?> {
     private val bar: Bar?

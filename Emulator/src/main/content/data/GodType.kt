@@ -10,7 +10,9 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.update.flag.context.Graphics
 import core.tools.StringUtils
-import org.rs.consts.*
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 enum class GodType(
     val cape: Item,

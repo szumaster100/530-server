@@ -1,10 +1,13 @@
 package content.region.asgarnia.quest.death.handlers
 
 import content.region.asgarnia.quest.death.dialogue.DoorPlateauDialogueFile
-import core.api.*
 import core.api.item.produceGroundItem
+import core.api.location
+import core.api.openDialogue
 import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
+import core.api.removeItem
+import core.api.sendMessage
 import core.game.global.action.DoorActionHandler
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener

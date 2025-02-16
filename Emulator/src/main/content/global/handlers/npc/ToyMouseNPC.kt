@@ -1,7 +1,9 @@
 package content.global.handlers.npc
 
 import content.data.GameAttributes
-import core.api.*
+import core.api.findLocalNPC
+import core.api.sendMessage
+import core.api.setAttribute
 import core.game.interaction.InteractPlugin
 import core.game.node.entity.combat.BattleState
 import core.game.node.entity.npc.AbstractNPC

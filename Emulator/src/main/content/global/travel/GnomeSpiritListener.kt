@@ -14,7 +14,10 @@ import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
 import core.tools.END_DIALOGUE
-import org.rs.consts.*
+import org.rs.consts.Animations
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
+import org.rs.consts.Scenery
 
 class GnomeSpiritTreeListener : InteractionListener {
     private val spiritTrees = intArrayOf(Scenery.SPIRIT_TREE_1317, Scenery.SPIRIT_TREE_1293, Scenery.SPIRIT_TREE_1294)

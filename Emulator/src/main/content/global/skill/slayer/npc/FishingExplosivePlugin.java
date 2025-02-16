@@ -1,8 +1,5 @@
 package content.global.skill.slayer.npc;
 
-import core.game.world.update.flag.context.Graphics;
-import org.rs.consts.Animations;
-import org.rs.consts.NPCs;
 import core.cache.def.impl.SceneryDefinition;
 import core.game.interaction.NodeUsageEvent;
 import core.game.interaction.OptionHandler;
@@ -25,9 +22,12 @@ import core.game.world.GameWorld;
 import core.game.world.map.Direction;
 import core.game.world.map.Location;
 import core.game.world.update.flag.context.Animation;
+import core.game.world.update.flag.context.Graphics;
 import core.plugin.Initializable;
 import core.plugin.Plugin;
 import core.tools.RandomFunction;
+import org.rs.consts.Animations;
+import org.rs.consts.NPCs;
 
 import static core.api.ContentAPIKt.*;
 

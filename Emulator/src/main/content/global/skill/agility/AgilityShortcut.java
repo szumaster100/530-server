@@ -1,6 +1,5 @@
 package content.global.skill.agility;
 
-import org.rs.consts.Items;
 import core.cache.def.impl.SceneryDefinition;
 import core.game.interaction.OptionHandler;
 import core.game.node.Node;
@@ -10,6 +9,7 @@ import core.game.node.scenery.Scenery;
 import core.game.world.map.Direction;
 import core.game.world.map.Location;
 import core.plugin.Plugin;
+import org.rs.consts.Items;
 
 import static core.api.ContentAPIKt.inEquipment;
 import static core.api.ContentAPIKt.sendMessage;

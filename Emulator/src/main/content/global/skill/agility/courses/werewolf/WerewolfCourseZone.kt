@@ -1,7 +1,6 @@
 package content.global.skill.agility.courses.werewolf
 
 import core.api.*
-import core.api.MapArea
 import core.game.node.entity.Entity
 import core.game.node.entity.player.Player
 import core.game.world.map.zone.ZoneBorders

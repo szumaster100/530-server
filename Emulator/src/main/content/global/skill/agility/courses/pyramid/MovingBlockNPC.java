@@ -1,6 +1,5 @@
 package content.global.skill.agility.courses.pyramid;
 
-import org.rs.consts.Sounds;
 import content.global.skill.agility.AgilityHandler;
 import core.game.node.entity.Entity;
 import core.game.node.entity.npc.AbstractNPC;
@@ -12,6 +11,7 @@ import core.game.world.map.Direction;
 import core.game.world.map.Location;
 import core.game.world.map.RegionManager;
 import core.game.world.update.flag.context.Animation;
+import org.rs.consts.Sounds;
 
 import static core.api.ContentAPIKt.playAudio;
 

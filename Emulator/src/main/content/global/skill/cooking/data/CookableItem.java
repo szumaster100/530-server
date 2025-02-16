@@ -1,7 +1,7 @@
 package content.global.skill.cooking.data;
 
-import org.rs.consts.Items;
 import core.game.node.item.Item;
+import org.rs.consts.Items;
 
 import java.util.HashMap;
 

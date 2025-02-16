@@ -2,7 +2,6 @@ package content.global.skill.construction.decoration.combatroom
 
 import content.global.skill.construction.BuildHotspot
 import core.api.*
-import core.api.EquipmentSlot
 import core.game.dialogue.DialogueFile
 import core.game.dialogue.IfTopic
 import core.game.dialogue.Topic

@@ -1,8 +1,11 @@
 package content.region.asgarnia.quest.dorics.dialogue
 
-import core.api.*
+import core.api.addItemOrDrop
+import core.api.inInventory
 import core.api.quest.finishQuest
 import core.api.quest.startQuest
+import core.api.removeItem
+import core.api.sendItemDialogue
 import core.game.dialogue.DialogueFile
 import core.game.dialogue.FaceAnim
 import core.game.dialogue.Topic

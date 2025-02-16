@@ -1,6 +1,8 @@
 package content.data.consumables.effects
 
-import core.api.*
+import core.api.getTimer
+import core.api.removeTimer
+import core.api.sendMessage
 import core.game.consumable.ConsumableEffect
 import core.game.node.entity.player.Player
 import core.game.system.timer.impl.Disease

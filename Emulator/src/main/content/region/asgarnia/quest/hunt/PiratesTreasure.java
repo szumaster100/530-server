@@ -1,15 +1,15 @@
 package content.region.asgarnia.quest.hunt;
 
-import org.rs.consts.Quests;
-import org.rs.consts.Vars;
 import content.region.asgarnia.quest.hunt.handlers.PiratesTreasurePlugin;
 import core.game.component.Component;
 import core.game.node.entity.player.Player;
 import core.game.node.entity.player.link.quest.Quest;
 import core.game.node.item.GroundItemManager;
 import core.game.node.item.Item;
-import core.plugin.Initializable;
 import core.plugin.ClassScanner;
+import core.plugin.Initializable;
+import org.rs.consts.Quests;
+import org.rs.consts.Vars;
 
 import static core.api.ContentAPIKt.removeAttribute;
 

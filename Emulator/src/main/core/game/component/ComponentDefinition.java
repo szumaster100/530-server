@@ -1,8 +1,8 @@
 package core.game.component;
 
-import java.sql.SQLException;
-
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+
+import java.sql.SQLException;
 
 public final class ComponentDefinition {
 

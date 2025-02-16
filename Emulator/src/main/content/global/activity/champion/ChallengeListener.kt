@@ -13,7 +13,6 @@ import content.global.activity.champion.npc.LesserDemonChampionNPC.Companion.spa
 import content.global.activity.champion.npc.SkeletonChampionNPC.Companion.spawnSkeletonChampion
 import content.global.activity.champion.npc.ZombieChampionNPC.Companion.spawnZombieChampion
 import core.api.*
-import core.api.MapArea
 import core.game.dialogue.FaceAnim
 import core.game.global.action.DoorActionHandler
 import core.game.interaction.IntType

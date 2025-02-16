@@ -4,7 +4,6 @@ import core.ServerStore
 import core.ServerStore.Companion.getBoolean
 import core.ServerStore.Companion.getInt
 import core.api.*
-import core.api.Event
 import core.api.utils.WeightBasedTable
 import core.api.utils.WeightedItem
 import core.game.event.EventHook

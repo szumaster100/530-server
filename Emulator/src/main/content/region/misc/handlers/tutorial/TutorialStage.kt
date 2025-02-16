@@ -3,7 +3,6 @@ package content.region.misc.handlers.tutorial
 import content.data.GameAttributes
 import core.ServerConfig
 import core.api.*
-import core.api.Event
 import core.api.ui.sendInterfaceConfig
 import core.api.ui.setMinimapState
 import core.game.component.Component

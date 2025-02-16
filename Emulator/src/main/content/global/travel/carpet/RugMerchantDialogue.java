@@ -1,27 +1,26 @@
 package content.global.travel.carpet;
 
+import content.global.skill.agility.AgilityHandler;
 import core.api.Container;
-
-import static core.api.ContentAPIKt.*;
-import static core.api.quest.QuestAPIKt.hasRequirement;
-import static core.tools.GlobalsKt.colorize;
-
 import core.game.container.impl.EquipmentContainer;
 import core.game.dialogue.Dialogue;
-import core.plugin.Initializable;
-import content.global.skill.agility.AgilityHandler;
 import core.game.node.entity.npc.NPC;
 import core.game.node.entity.player.Player;
 import core.game.node.item.Item;
 import core.game.system.task.Pulse;
-import kotlin.Unit;
 import core.game.world.GameWorld;
 import core.game.world.map.Location;
 import core.game.world.update.flag.context.Animation;
+import core.plugin.Initializable;
+import kotlin.Unit;
 import org.rs.consts.Animations;
 import org.rs.consts.Items;
 import org.rs.consts.Quests;
 import org.rs.consts.Sounds;
+
+import static core.api.ContentAPIKt.*;
+import static core.api.quest.QuestAPIKt.hasRequirement;
+import static core.tools.GlobalsKt.colorize;
 
 /**
  * The dialogue plugin used for the rug merchant.

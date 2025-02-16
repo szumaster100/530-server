@@ -2,7 +2,6 @@ package content.global.ame.eviltwin
 
 import content.data.GameAttributes
 import core.api.*
-import core.api.MapArea
 import core.game.component.Component
 import core.game.global.action.DoorActionHandler
 import core.game.interaction.IntType

@@ -1,7 +1,9 @@
 package content.global.ame.drilldemon
 
 import content.data.GameAttributes
-import core.api.*
+import core.api.getAttribute
+import core.api.sendItemDialogue
+import core.api.unlock
 import core.game.dialogue.DialogueFile
 import core.game.dialogue.FaceAnim
 import core.game.node.entity.npc.NPC

@@ -1,7 +1,9 @@
 package content.global.ame.quizmaster
 
 import content.global.ame.RandomEventNPC
-import core.api.*
+import core.api.face
+import core.api.findLocalNPC
+import core.api.runTask
 import core.api.utils.WeightBasedTable
 import core.game.node.entity.npc.NPC
 import core.game.system.task.Pulse

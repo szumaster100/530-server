@@ -4,7 +4,10 @@ import content.global.activity.jobs.JobManager
 import content.region.kandarin.handlers.barbtraining.BarbarianTraining
 import core.api.*
 import core.api.ui.closeDialogue
-import core.cache.def.impl.*
+import core.cache.def.impl.CS2Mapping
+import core.cache.def.impl.NPCDefinition
+import core.cache.def.impl.Struct
+import core.cache.def.impl.VarbitDefinition
 import core.game.node.entity.combat.ImpactHandler.HitsplatType
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.SpellBookManager
@@ -21,7 +24,6 @@ import core.tools.RED
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.rs.consts.Items
-import kotlin.collections.ArrayList
 
 @Initializable
 class DevelopmentCommandSet : CommandSet(Privilege.ADMIN) {

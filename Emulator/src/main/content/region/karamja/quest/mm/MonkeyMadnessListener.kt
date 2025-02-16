@@ -5,7 +5,6 @@ import content.region.karamja.dialogue.apeatoll.dungeon.ZooknockDialogue
 import content.region.karamja.dialogue.apeatoll.dungeon.ZooknockDialogueFile
 import content.region.karamja.quest.mm.dialogue.*
 import core.api.*
-import core.api.IfaceSettingsBuilder
 import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
 import core.game.component.Component

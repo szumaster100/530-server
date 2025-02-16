@@ -1,7 +1,5 @@
 package content.global.skill.magic.spells.modern;
 
-import core.game.world.update.flag.context.Graphics;
-import org.rs.consts.Items;
 import core.game.container.impl.EquipmentContainer;
 import core.game.node.Node;
 import core.game.node.entity.Entity;
@@ -15,8 +13,10 @@ import core.game.node.entity.player.Player;
 import core.game.node.entity.player.link.SpellBookManager.SpellBook;
 import core.game.node.entity.skill.Skills;
 import core.game.world.update.flag.context.Animation;
+import core.game.world.update.flag.context.Graphics;
 import core.plugin.Initializable;
 import core.plugin.Plugin;
+import org.rs.consts.Items;
 
 @Initializable
 public class MagicDartSpell extends CombatSpell {

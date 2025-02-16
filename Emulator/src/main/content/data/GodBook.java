@@ -1,9 +1,9 @@
 package content.data;
 
-import org.rs.consts.Items;
-import org.rs.consts.Quests;
 import core.game.node.entity.player.Player;
 import core.game.node.item.Item;
+import org.rs.consts.Items;
+import org.rs.consts.Quests;
 
 import static core.api.quest.QuestAPIKt.hasRequirement;
 

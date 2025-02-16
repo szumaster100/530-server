@@ -2,7 +2,6 @@ package content.global.skill.slayer
 
 import content.global.handlers.item.equipment.gloves.FOGGlovesListener
 import core.api.*
-import core.api.Event
 import core.cache.def.impl.NPCDefinition
 import core.game.event.EventHook
 import core.game.event.NPCKillEvent

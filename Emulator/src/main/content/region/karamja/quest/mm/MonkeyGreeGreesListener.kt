@@ -1,8 +1,6 @@
 package content.region.karamja.quest.mm
 
 import core.api.*
-import core.api.EquipmentSlot
-import core.api.MapArea
 import core.game.global.action.EquipHandler
 import core.game.interaction.InteractionListener
 import core.game.node.entity.Entity

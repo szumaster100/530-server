@@ -1,10 +1,12 @@
 package content.region.asgarnia.quest.hero
 
 import content.region.misthalin.quest.phoenixgang.ShieldofArrav
-import core.api.*
+import core.api.hasLevelStat
+import core.api.inInventory
 import core.api.quest.getQuestPoints
 import core.api.quest.getQuestStage
 import core.api.quest.isQuestComplete
+import core.api.rewardXP
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills

@@ -5,7 +5,6 @@ import content.region.asgarnia.quest.rd.cutscene.FailTest
 import content.region.asgarnia.quest.rd.cutscene.FinishTest
 import content.region.asgarnia.quest.rd.handlers.*
 import core.api.*
-import core.api.MapArea
 import core.api.ui.closeDialogue
 import core.game.dialogue.FaceAnim
 import core.game.global.action.DoorActionHandler

@@ -7,7 +7,10 @@ import core.cache.Indices
 import core.cache.def.impl.*
 import core.game.system.command.Privilege
 import core.plugin.Initializable
-import java.io.*
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileWriter
+import java.io.IOException
 import java.lang.reflect.Modifier
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible

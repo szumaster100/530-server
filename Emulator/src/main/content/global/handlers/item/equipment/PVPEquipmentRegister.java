@@ -1,7 +1,7 @@
 package content.global.handlers.item.equipment;
 
-import org.rs.consts.Items;
 import core.plugin.Plugin;
+import org.rs.consts.Items;
 
 import java.util.HashMap;
 

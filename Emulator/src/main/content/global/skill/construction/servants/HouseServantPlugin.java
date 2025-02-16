@@ -2,9 +2,9 @@ package content.global.skill.construction.servants;
 
 import core.game.interaction.NodeUsageEvent;
 import core.game.interaction.UseWithHandler;
+import core.plugin.ClassScanner;
 import core.plugin.Initializable;
 import core.plugin.Plugin;
-import core.plugin.ClassScanner;
 
 @Initializable
 public class HouseServantPlugin extends UseWithHandler {

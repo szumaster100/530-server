@@ -2,7 +2,6 @@ package content.global.ame.pinball
 
 import content.data.GameAttributes
 import core.api.*
-import core.api.MapArea
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.world.map.Direction

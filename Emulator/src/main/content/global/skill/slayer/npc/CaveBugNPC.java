@@ -1,11 +1,11 @@
 package content.global.skill.slayer.npc;
 
-import org.rs.consts.NPCs;
 import core.game.node.entity.Entity;
 import core.game.node.entity.npc.AbstractNPC;
 import core.game.node.entity.player.Player;
 import core.game.world.map.Location;
 import core.plugin.Initializable;
+import org.rs.consts.NPCs;
 
 @Initializable
 public class CaveBugNPC extends AbstractNPC {

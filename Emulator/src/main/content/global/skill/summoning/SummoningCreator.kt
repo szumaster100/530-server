@@ -10,7 +10,10 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.world.map.Location
 import core.game.world.map.RegionManager.getObject
-import org.rs.consts.*
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Sounds
 
 object SummoningCreator {
     private val POUCH_PARAMS =

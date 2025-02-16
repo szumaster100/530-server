@@ -16,7 +16,8 @@ import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
-import org.rs.consts.*
+import org.rs.consts.Items
+import org.rs.consts.Sounds
 
 enum class EnchantedJewellery(
     val options: Array<String>,

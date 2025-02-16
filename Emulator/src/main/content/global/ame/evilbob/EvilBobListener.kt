@@ -3,7 +3,6 @@ package content.global.ame.evilbob
 import content.data.GameAttributes
 import content.data.RandomEvent
 import core.api.*
-import core.api.MapArea
 import core.game.dialogue.FaceAnim
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener

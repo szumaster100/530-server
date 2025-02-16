@@ -1,9 +1,10 @@
 package content.region.karamja.handlers.shilo;
 
-import org.rs.consts.Items;
 import core.game.node.item.Item;
-import java.util.Map;
+import org.rs.consts.Items;
+
 import java.util.HashMap;
+import java.util.Map;
 
 public enum AntiqueItem {
 

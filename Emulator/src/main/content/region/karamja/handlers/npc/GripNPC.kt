@@ -1,9 +1,11 @@
 package content.region.karamja.handlers.npc
 
 import content.region.asgarnia.quest.hero.HeroesQuest
-import core.api.*
+import core.api.openDialogue
 import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
+import core.api.sendDialogueLines
+import core.api.sendPlayerDialogue
 import core.game.dialogue.DialogueFile
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.CombatStyle

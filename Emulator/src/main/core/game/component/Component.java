@@ -1,7 +1,7 @@
 package core.game.component;
 
-import core.game.container.Slot;
 import core.api.Container;
+import core.game.container.Slot;
 import core.game.interaction.InterfaceListeners;
 import core.game.node.entity.player.Player;
 import core.game.node.entity.player.link.InterfaceManager;

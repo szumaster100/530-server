@@ -1,6 +1,5 @@
 package content.global.skill.runecrafting.scenery;
 
-import org.rs.consts.Quests;
 import content.global.skill.runecrafting.items.Talisman;
 import content.global.skill.runecrafting.items.Tiara;
 import content.global.skill.runecrafting.runes.Rune;
@@ -8,6 +7,7 @@ import core.cache.def.impl.ItemDefinition;
 import core.game.node.entity.player.Player;
 import core.game.node.scenery.Scenery;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import org.rs.consts.Quests;
 
 import java.util.Arrays;
 

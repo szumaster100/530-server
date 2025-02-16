@@ -1,10 +1,6 @@
 package content.region.misc.handlers.tutorial
 
-import core.api.LogoutListener
-import core.api.MapArea
-import core.api.getAttribute
-import core.api.getRegionBorders
-import core.api.lockTeleport
+import core.api.*
 import core.game.component.Component
 import core.game.node.entity.Entity
 import core.game.node.entity.player.Player

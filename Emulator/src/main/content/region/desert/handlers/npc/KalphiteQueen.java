@@ -1,7 +1,7 @@
 package content.region.desert.handlers.npc;
 
-import core.api.utils.BossKillCounter;
 import content.region.kandarin.quest.mcannon.handlers.DMCHandler;
+import core.api.utils.BossKillCounter;
 import core.game.node.entity.Entity;
 import core.game.node.entity.combat.BattleState;
 import core.game.node.entity.combat.CombatStyle;

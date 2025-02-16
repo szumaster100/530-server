@@ -1,7 +1,7 @@
 package core.game.dialogue;
 
-import core.plugin.Initializable;
 import core.game.node.entity.player.Player;
+import core.plugin.Initializable;
 
 @Initializable
 public class SimpleDialoguePlugin extends Dialogue {

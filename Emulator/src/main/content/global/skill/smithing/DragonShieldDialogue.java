@@ -2,8 +2,8 @@ package content.global.skill.smithing;
 
 import core.api.Container;
 import core.game.dialogue.Dialogue;
-import core.game.node.entity.skill.Skills;
 import core.game.node.entity.player.Player;
+import core.game.node.entity.skill.Skills;
 import core.plugin.Initializable;
 import org.rs.consts.Items;
 

@@ -2,11 +2,14 @@ package content.global.skill.summoning.familiar.npc
 
 import content.global.skill.summoning.familiar.Familiar
 import content.global.skill.summoning.familiar.FamiliarSpecial
-import core.api.*
 import core.api.event.cureDisease
 import core.api.event.curePoison
 import core.api.event.isDiseased
 import core.api.event.isPoisoned
+import core.api.getStatLevel
+import core.api.playAudio
+import core.api.sendMessage
+import core.api.visualize
 import core.cache.def.impl.NPCDefinition
 import core.game.interaction.OptionHandler
 import core.game.node.Node
@@ -18,7 +21,10 @@ import core.game.world.update.flag.context.Graphics
 import core.plugin.ClassScanner.definePlugin
 import core.plugin.Initializable
 import core.plugin.Plugin
-import org.rs.consts.*
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Sounds
 
 @Initializable
 class UnicornStallionNPC(

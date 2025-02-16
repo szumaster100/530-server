@@ -1,6 +1,5 @@
 package content.region.asgarnia.quest.gobdip.handlers;
 
-import org.rs.consts.Quests;
 import content.region.asgarnia.quest.gobdip.dialogue.GrubFoot;
 import core.game.activity.ActivityManager;
 import core.game.activity.ActivityPlugin;
@@ -28,6 +27,7 @@ import core.net.packet.context.CameraContext.CameraType;
 import core.net.packet.out.CameraViewPacket;
 import core.tools.RandomFunction;
 import core.tools.StringUtils;
+import org.rs.consts.Quests;
 
 import static core.api.ContentAPIKt.setAttribute;
 import static core.api.ContentAPIKt.setVarbit;

@@ -1,11 +1,11 @@
 package content.global.skill.cooking.handlers;
 
-import org.rs.consts.Items;
-import org.rs.consts.Scenery;
 import core.game.interaction.NodeUsageEvent;
 import core.game.interaction.UseWithHandler;
 import core.plugin.Initializable;
 import core.plugin.Plugin;
+import org.rs.consts.Items;
+import org.rs.consts.Scenery;
 
 @Initializable
 public class MakeStewPlugin extends UseWithHandler {

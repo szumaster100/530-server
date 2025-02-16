@@ -1,11 +1,11 @@
 package core.cache.def.impl;
 
+import core.api.EquipmentSlot;
 import core.cache.Cache;
 import core.cache.def.Definition;
 import core.cache.misc.buffer.ByteBufferUtils;
 import core.game.container.Container;
 import core.game.interaction.OptionHandler;
-import core.api.EquipmentSlot;
 import core.game.node.entity.player.Player;
 import core.game.node.entity.skill.Skills;
 import core.game.node.item.Item;

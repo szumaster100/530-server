@@ -1,6 +1,5 @@
 package content.global.skill.construction.decoration;
 
-import org.rs.consts.Items;
 import core.game.interaction.NodeUsageEvent;
 import core.game.interaction.UseWithHandler;
 import core.game.node.entity.player.Player;
@@ -9,6 +8,7 @@ import core.game.node.scenery.Scenery;
 import core.game.world.update.flag.context.Animation;
 import core.plugin.Initializable;
 import core.plugin.Plugin;
+import org.rs.consts.Items;
 
 @Initializable
 public class BeerBarrelPlugin extends UseWithHandler {

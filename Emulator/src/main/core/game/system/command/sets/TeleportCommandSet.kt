@@ -1,7 +1,6 @@
 package core.game.system.command.sets
 
 import core.ServerConfig
-import core.api.getAttribute
 import core.game.node.entity.player.link.TeleportManager
 import core.game.system.command.Privilege
 import core.game.world.map.Location

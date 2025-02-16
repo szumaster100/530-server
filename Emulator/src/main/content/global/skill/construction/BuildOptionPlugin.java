@@ -8,10 +8,10 @@ import core.game.interaction.OptionHandler;
 import core.game.node.Node;
 import core.game.node.entity.player.Player;
 import core.game.node.scenery.Scenery;
-import core.tools.Log;
+import core.plugin.ClassScanner;
 import core.plugin.Initializable;
 import core.plugin.Plugin;
-import core.plugin.ClassScanner;
+import core.tools.Log;
 
 import static core.api.ContentAPIKt.log;
 

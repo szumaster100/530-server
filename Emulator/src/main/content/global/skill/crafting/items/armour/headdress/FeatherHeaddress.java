@@ -1,7 +1,7 @@
 package content.global.skill.crafting.items.armour.headdress;
 
-import org.rs.consts.Items;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import org.rs.consts.Items;
 
 public enum FeatherHeaddress {
 

@@ -1,8 +1,8 @@
 package content.global.activity.ttrail;
 
-import org.rs.consts.Items;
 import core.game.world.map.Location;
 import core.plugin.Plugin;
+import org.rs.consts.Items;
 
 public final class CoordinateCluePlugin extends CoordinateClueScroll {
 

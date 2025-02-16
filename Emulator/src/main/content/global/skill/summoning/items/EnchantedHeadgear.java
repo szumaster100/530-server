@@ -1,8 +1,8 @@
 package content.global.skill.summoning.items;
 
-import org.rs.consts.Items;
 import core.game.node.item.Item;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import org.rs.consts.Items;
 
 public enum EnchantedHeadgear {
     ANTLERS(new Item(Items.ANTLERS_12204), new Item(Items.ANTLERS_12204), new Item(Items.ANTLERS_CHARGED_12206), 40, 10),

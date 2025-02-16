@@ -1,7 +1,6 @@
 package content.global.handlers.item
 
 import core.api.*
-import core.api.EquipmentSlot
 import core.game.interaction.IntType
 import core.game.interaction.InteractPlugin
 import core.game.interaction.InteractionListener

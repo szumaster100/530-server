@@ -1,7 +1,5 @@
 package content.global.skill.magic.spells.modern;
 
-import core.game.world.update.flag.context.Graphics;
-import org.rs.consts.Sounds;
 import core.game.node.Node;
 import core.game.node.entity.Entity;
 import core.game.node.entity.combat.spell.MagicSpell;
@@ -12,8 +10,10 @@ import core.game.node.entity.player.link.SpellBookManager.SpellBook;
 import core.game.node.entity.player.link.audio.Audio;
 import core.game.node.item.Item;
 import core.game.world.update.flag.context.Animation;
+import core.game.world.update.flag.context.Graphics;
 import core.plugin.Initializable;
 import core.plugin.Plugin;
+import org.rs.consts.Sounds;
 
 import static core.api.ContentAPIKt.*;
 

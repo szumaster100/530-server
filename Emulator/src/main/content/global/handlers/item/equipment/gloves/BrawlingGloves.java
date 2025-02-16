@@ -1,7 +1,7 @@
 package content.global.handlers.item.equipment.gloves;
 
-import org.rs.consts.Items;
 import core.game.node.entity.skill.Skills;
+import org.rs.consts.Items;
 
 import java.util.HashMap;
 import java.util.Map;

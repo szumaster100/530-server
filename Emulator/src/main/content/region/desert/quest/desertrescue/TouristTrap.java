@@ -1,6 +1,5 @@
 package content.region.desert.quest.desertrescue;
 
-import org.rs.consts.*;
 import content.region.desert.quest.desertrescue.dialogue.*;
 import core.game.component.Component;
 import core.game.container.impl.EquipmentContainer;
@@ -12,8 +11,9 @@ import core.game.system.task.Pulse;
 import core.game.world.GameWorld;
 import core.game.world.map.Location;
 import core.game.world.map.zone.ZoneBorders;
-import core.plugin.Initializable;
 import core.plugin.ClassScanner;
+import core.plugin.Initializable;
+import org.rs.consts.*;
 
 import static core.api.ContentAPIKt.setVarp;
 

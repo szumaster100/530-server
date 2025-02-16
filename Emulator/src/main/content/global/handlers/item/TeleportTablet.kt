@@ -1,7 +1,6 @@
 package content.global.handlers.item
 
 import core.api.*
-import core.api.quest.hasRequirement
 import core.api.quest.isQuestComplete
 import core.cache.def.impl.ItemDefinition
 import core.game.interaction.IntType

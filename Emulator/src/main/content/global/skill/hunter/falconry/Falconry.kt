@@ -1,7 +1,9 @@
 package content.global.skill.hunter.falconry
 
-import core.api.*
 import core.api.MapArea
+import core.api.anyInEquipment
+import core.api.anyInInventory
+import core.api.removeAttribute
 import core.game.node.entity.Entity
 import core.game.node.entity.player.Player
 import core.game.world.map.zone.ZoneBorders

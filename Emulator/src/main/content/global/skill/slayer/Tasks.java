@@ -1,11 +1,10 @@
 package content.global.skill.slayer;
 
 import core.cache.def.impl.NPCDefinition;
+import core.game.node.entity.player.Player;
 
 import java.util.Arrays;
 import java.util.HashMap;
-
-import core.game.node.entity.player.Player;
 
 import static core.api.quest.QuestAPIKt.hasRequirement;
 

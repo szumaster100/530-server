@@ -1,15 +1,15 @@
 package core.game.container.impl;
 
-import org.rs.consts.Components;
 import content.global.skill.summoning.SummoningPouch;
+import core.api.ContainerListener;
 import core.game.container.Container;
 import core.game.container.ContainerEvent;
-import core.api.ContainerListener;
 import core.game.node.entity.player.Player;
 import core.game.node.item.Item;
 import core.net.packet.PacketRepository;
 import core.net.packet.context.ContainerContext;
 import core.net.packet.out.ContainerPacket;
+import org.rs.consts.Components;
 
 public final class InventoryListener implements ContainerListener {
 

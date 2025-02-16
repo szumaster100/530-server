@@ -4,7 +4,6 @@ import content.global.dialogue.BankDepositDialogue
 import content.global.dialogue.BankHelpDialogue
 import core.ServerConfig
 import core.api.*
-import core.api.IfaceSettingsBuilder
 import core.api.interaction.openBankAccount
 import core.game.component.Component
 import core.game.container.Container

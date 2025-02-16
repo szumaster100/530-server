@@ -1,6 +1,5 @@
 package content.global.handlers.scenery;
 
-import org.rs.consts.Sounds;
 import core.cache.def.impl.SceneryDefinition;
 import core.game.global.action.DoorActionHandler;
 import core.game.interaction.OptionHandler;
@@ -12,6 +11,7 @@ import core.game.world.map.Location;
 import core.game.world.map.RegionManager;
 import core.plugin.Initializable;
 import core.plugin.Plugin;
+import org.rs.consts.Sounds;
 
 import static core.api.ContentAPIKt.animate;
 import static core.api.ContentAPIKt.playAudio;

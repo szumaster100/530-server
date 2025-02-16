@@ -9,9 +9,9 @@ import core.game.node.entity.npc.AbstractNPC;
 import core.game.node.entity.npc.NPC;
 import core.game.node.entity.player.Player;
 import core.game.world.map.Location;
+import core.plugin.ClassScanner;
 import core.plugin.Initializable;
 import core.plugin.Plugin;
-import core.plugin.ClassScanner;
 import org.rs.consts.Items;
 
 import static core.api.ContentAPIKt.sendMessage;

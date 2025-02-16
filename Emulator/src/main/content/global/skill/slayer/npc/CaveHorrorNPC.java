@@ -1,6 +1,5 @@
 package content.global.skill.slayer.npc;
 
-import org.rs.consts.NPCs;
 import content.global.skill.slayer.SlayerEquipmentFlags;
 import core.game.node.entity.Entity;
 import core.game.node.entity.combat.*;
@@ -9,6 +8,7 @@ import core.game.node.entity.player.Player;
 import core.game.world.map.Location;
 import core.plugin.Initializable;
 import core.tools.RandomFunction;
+import org.rs.consts.NPCs;
 
 @Initializable
 public class CaveHorrorNPC extends AbstractNPC {

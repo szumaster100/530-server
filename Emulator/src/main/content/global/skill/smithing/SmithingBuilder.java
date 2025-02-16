@@ -3,8 +3,8 @@ package content.global.skill.smithing;
 import content.global.skill.smithing.smelting.Bar;
 import core.game.component.Component;
 import core.game.container.access.InterfaceContainer;
-import core.game.node.entity.skill.Skills;
 import core.game.node.entity.player.Player;
+import core.game.node.entity.skill.Skills;
 import core.game.node.item.Item;
 import core.tools.StringUtils;
 

@@ -3,7 +3,6 @@ package content.region.desert.quest.deserttreasure.npc
 import content.global.skill.magic.spells.modern.WaterSpell
 import content.region.desert.quest.deserttreasure.DesertTreasure
 import core.api.*
-import core.api.EquipmentSlot
 import core.game.container.impl.EquipmentContainer
 import core.game.global.action.EquipHandler
 import core.game.node.entity.Entity

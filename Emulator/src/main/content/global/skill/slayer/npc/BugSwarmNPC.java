@@ -1,13 +1,13 @@
 package content.global.skill.slayer.npc;
 
-import org.rs.consts.Items;
-import org.rs.consts.NPCs;
 import core.game.node.entity.combat.BattleState;
 import core.game.node.entity.npc.AbstractNPC;
 import core.game.node.entity.player.Player;
 import core.game.node.item.Item;
 import core.game.world.map.Location;
 import core.plugin.Initializable;
+import org.rs.consts.Items;
+import org.rs.consts.NPCs;
 
 @Initializable
 public class BugSwarmNPC extends AbstractNPC {

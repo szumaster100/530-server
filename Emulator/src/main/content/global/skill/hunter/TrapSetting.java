@@ -1,6 +1,5 @@
 package content.global.skill.hunter;
 
-import org.rs.consts.Sounds;
 import core.cache.def.impl.ItemDefinition;
 import core.cache.def.impl.SceneryDefinition;
 import core.game.node.Node;
@@ -17,6 +16,7 @@ import core.game.world.GameWorld;
 import core.game.world.map.Location;
 import core.game.world.update.flag.context.Animation;
 import core.tools.RandomFunction;
+import org.rs.consts.Sounds;
 
 import static core.api.ContentAPIKt.playAudio;
 

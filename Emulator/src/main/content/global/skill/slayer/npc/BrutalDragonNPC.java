@@ -1,6 +1,5 @@
 package content.global.skill.slayer.npc;
 
-import org.rs.consts.NPCs;
 import core.game.node.entity.Entity;
 import core.game.node.entity.combat.CombatStyle;
 import core.game.node.entity.combat.CombatSwingHandler;
@@ -14,6 +13,7 @@ import core.game.world.map.Location;
 import core.game.world.update.flag.context.Animation;
 import core.game.world.update.flag.context.Graphics;
 import core.plugin.Initializable;
+import org.rs.consts.NPCs;
 
 @Initializable
 public class BrutalDragonNPC extends AbstractNPC {
