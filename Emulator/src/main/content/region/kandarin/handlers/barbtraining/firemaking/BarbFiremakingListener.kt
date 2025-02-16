@@ -2,7 +2,7 @@ package content.region.kandarin.handlers.barbtraining.firemaking
 
 import content.region.kandarin.handlers.barbtraining.BarbarianTraining
 import core.api.getAttribute
-import core.api.sendMessage
+import core.api.sendDialogue
 import core.api.submitIndividualPulse
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
@@ -10,23 +10,10 @@ import org.rs.consts.Items
 
 class BarbFiremakingListener : InteractionListener {
     companion object {
-        val crystalEquipment =
-            intArrayOf(
-                Items.NEW_CRYSTAL_BOW_4212,
-                Items.CRYSTAL_BOW_FULL_4214,
-                Items.CRYSTAL_BOW_9_10_4215,
-                Items.CRYSTAL_BOW_8_10_4216,
-                Items.CRYSTAL_BOW_7_10_4217,
-                Items.CRYSTAL_BOW_6_10_4218,
-                Items.CRYSTAL_BOW_5_10_4219,
-                Items.CRYSTAL_BOW_4_10_4220,
-                Items.CRYSTAL_BOW_3_10_4221,
-                Items.CRYSTAL_BOW_2_10_4222,
-                Items.CRYSTAL_BOW_1_10_4223,
-                Items.NEW_CRYSTAL_SHIELD_4224,
-            )
         val tools =
             intArrayOf(
+                Items.OGRE_BOW_2883,
+                Items.COMP_OGRE_BOW_4827,
                 Items.TRAINING_BOW_9705,
                 Items.LONGBOW_839,
                 Items.SHORTBOW_841,
@@ -81,14 +68,25 @@ class BarbFiremakingListener : InteractionListener {
     override fun defineListeners() {
         onUseWith(IntType.ITEM, tools, *logs) { player, used, with ->
             if (getAttribute(player, BarbarianTraining.FM_START, false)) {
-                sendMessage(player, "You must begin the relevant section of Otto Godblessed's barbarian training.")
+                sendDialogue(
+                    player,
+                    "You must begin the relevant section of Otto Godblessed's barbarian training."
+                )
                 return@onUseWith false
             }
 
-            if (used.id in crystalEquipment.indices) {
-                sendMessage(
+            if (used.name.contains("CRYSTAL BOW", true) || used.name.contains("CRYSTAL SHIELD", true)) {
+                sendDialogue(
                     player,
                     "The bow resists all attempts to light the fire. It seems that the sentient tools of the elves don't approve of you burning down forests.",
+                )
+                return@onUseWith false
+            }
+
+            if(used.id == Items.COMP_OGRE_BOW_4827 || used.id == Items.OGRE_BOW_2883) {
+                sendDialogue(
+                    player,
+                    "This bow is vast, clumsy and most of a tree. You realise that this type of bow is useless for firelighting."
                 )
                 return@onUseWith false
             }
