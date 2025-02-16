@@ -17,7 +17,6 @@ import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.game.world.map.RegionManager
 import core.game.world.map.zone.ZoneBorders
-import core.game.world.update.flag.*
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 import java.io.File

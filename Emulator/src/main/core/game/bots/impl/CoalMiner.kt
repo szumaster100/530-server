@@ -1,6 +1,6 @@
 package core.game.bots.impl
 
-import core.api.*
+import core.api.amountInInventory
 import core.game.bots.*
 import core.game.interaction.DestinationFlag
 import core.game.interaction.IntType

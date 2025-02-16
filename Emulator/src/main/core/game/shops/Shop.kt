@@ -2,8 +2,6 @@ package core.game.shops
 
 import core.ServerConfig
 import core.api.*
-import core.api.ContainerListener
-import core.api.IfaceSettingsBuilder
 import core.api.item.itemDefinition
 import core.game.component.Component
 import core.game.container.Container

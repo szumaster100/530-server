@@ -19,8 +19,6 @@ import core.game.node.item.ChanceItem
 import core.game.node.item.Item
 import core.game.node.scenery.Scenery
 import core.game.node.scenery.SceneryBuilder
-import core.game.system.command.sets.STATS_BASE
-import core.game.system.command.sets.STATS_ROCKS
 import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.zone.ZoneBorders
@@ -251,9 +249,6 @@ class MiningListener : InteractionListener {
             }
 
             addItemOrDrop(player, reward, rewardAmount)
-            var rocksMined = getAttribute(player, "$STATS_BASE:$STATS_ROCKS", 0)
-            setAttribute(player, "/save:$STATS_BASE:$STATS_ROCKS", rocksMined + rewardAmount)
-
             if (!isEssence) {
                 var chance = 282
                 var altered = false

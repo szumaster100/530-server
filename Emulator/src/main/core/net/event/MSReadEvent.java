@@ -1,13 +1,9 @@
 package core.net.event;
 
-import core.tools.Log;
-import core.tools.SystemLogger;
 import core.net.IoReadEvent;
 import core.net.IoSession;
 
 import java.nio.ByteBuffer;
-
-import static core.api.ContentAPIKt.log;
 
 public final class MSReadEvent extends IoReadEvent {
 

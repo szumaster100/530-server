@@ -6,7 +6,6 @@ import core.net.lobby.WorldList;
 import core.net.registry.AccountRegister;
 import core.tools.Log;
 import core.tools.RandomFunction;
-import core.tools.SystemLogger;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;

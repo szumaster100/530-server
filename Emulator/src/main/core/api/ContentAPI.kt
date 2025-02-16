@@ -5,7 +5,6 @@ import content.data.God
 import core.ServerConfig
 import core.api.item.itemDefinition
 import core.api.movement.finishedMoving
-import core.api.utils.GlobalKillCounter
 import core.api.utils.PlayerCamera
 import core.api.utils.Vector
 import core.cache.def.impl.AnimationDefinition
@@ -3041,22 +3040,6 @@ fun sendItemSelect(
     player.packetDispatch.sendIfaceSettings(settings, 18, 12, 0, 28)
     setAttribute(player, "itemselect-callback", callback)
     setAttribute(player, "itemselect-keepalive", keepAlive)
-}
-
-/**
- * Announces a rare item drop for the player, if the item is rare.
- *
- * @param player The player receiving the rare item.
- * @param item The item being dropped.
- */
-fun announceIfRare(
-    player: Player,
-    item: Item,
-) {
-    if (item.definition.getConfiguration(ItemConfigParser.RARE_ITEM, false)) {
-        // sendNews("${player.username} has just received: ${item.amount} x ${item.name}.");
-        GlobalKillCounter.incrementRareDrop(player, item)
-    }
 }
 
 /**

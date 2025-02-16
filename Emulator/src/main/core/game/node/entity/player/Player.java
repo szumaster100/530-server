@@ -1,14 +1,12 @@
 package core.game.node.entity.player;
 
-import core.game.world.update.flag.context.Graphics;
-import org.rs.consts.Items;
-import org.rs.consts.Sounds;
 import content.global.handlers.item.equipment.EquipmentDegrade;
 import content.global.skill.construction.HouseManager;
 import content.global.skill.runecrafting.pouch.PouchManager;
 import content.global.skill.summoning.familiar.FamiliarManager;
 import core.GlobalStatistics;
 import core.ServerConfig;
+import core.api.EquipmentSlot;
 import core.cache.def.impl.ItemDefinition;
 import core.game.component.Component;
 import core.game.container.Container;
@@ -17,8 +15,8 @@ import core.game.container.impl.BankContainer;
 import core.game.container.impl.EquipmentContainer;
 import core.game.container.impl.InventoryListener;
 import core.game.dialogue.DialogueInterpreter;
-import core.game.ge.GrandExchangeOffer;
 import core.game.ge.GERecords;
+import core.game.ge.GrandExchangeOffer;
 import core.game.interaction.InteractPlugin;
 import core.game.interaction.InteractionListeners;
 import core.game.interaction.QueueStrength;
@@ -28,7 +26,6 @@ import core.game.node.entity.combat.CombatStyle;
 import core.game.node.entity.combat.CombatSwingHandler;
 import core.game.node.entity.combat.DeathTask;
 import core.game.node.entity.combat.ImpactHandler.HitsplatType;
-import core.api.EquipmentSlot;
 import core.game.node.entity.combat.equipment.special.ChinchompaSwingHandler;
 import core.game.node.entity.combat.equipment.special.SalamanderSwingHandler;
 import core.game.node.entity.combat.graves.Grave;
@@ -52,7 +49,6 @@ import core.game.node.entity.state.StateRepository;
 import core.game.node.item.GroundItem;
 import core.game.node.item.GroundItemManager;
 import core.game.node.item.Item;
-import core.tools.Log;
 import core.game.system.communication.CommunicationInfo;
 import core.game.system.task.Pulse;
 import core.game.world.GameWorld;
@@ -68,6 +64,7 @@ import core.game.world.update.UpdateSequence;
 import core.game.world.update.flag.EntityFlag;
 import core.game.world.update.flag.PlayerFlag;
 import core.game.world.update.flag.context.Animation;
+import core.game.world.update.flag.context.Graphics;
 import core.net.IoSession;
 import core.net.packet.PacketRepository;
 import core.net.packet.context.DynamicSceneContext;
@@ -77,12 +74,15 @@ import core.net.packet.out.BuildDynamicScene;
 import core.net.packet.out.SkillLevel;
 import core.net.packet.out.UpdateSceneGraph;
 import core.plugin.Plugin;
+import core.tools.Log;
 import core.tools.RandomFunction;
 import core.tools.StringUtils;
 import core.tools.TickUtilsKt;
 import core.worker.ManagementEvents;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
+import org.rs.consts.Items;
+import org.rs.consts.Sounds;
 import proto.management.ClanLeaveNotification;
 import proto.management.PlayerStatusUpdate;
 
@@ -93,112 +93,255 @@ import java.util.concurrent.TimeUnit;
 
 import static core.api.ContentAPIKt.*;
 import static core.api.utils.PermadeathKt.Permadeath;
-import static core.game.system.command.sets.StatsAttributeSetKt.STATS_BASE;
-import static core.game.system.command.sets.StatsAttributeSetKt.STATS_DEATHS;
 import static core.tools.GlobalsKt.colorize;
 
+/**
+ * Represents a player in the game.
+ */
 public class Player extends Entity {
 
+    /**
+     * Player details containing account-related information.
+     */
     private PlayerDetails details;
 
+    /**
+     * Flag indicating whether the player is inside a wardrobe.
+     */
     public boolean inWardrobe = false;
 
+    /**
+     * The player's starting location.
+     */
     public Location startLocation = null;
 
+    /**
+     * Flag indicating if the player is new (total level below 50).
+     */
     public boolean newPlayer = getSkills().getTotalLevel() < 50;
 
+    /**
+     * The player's drop log.
+     */
     public BankContainer dropLog = new BankContainer(this);
 
+    /**
+     * Manages equipment degradation for the player. */
     public EquipmentDegrade degrader = new EquipmentDegrade();
 
+    /**
+     * Manages pouches for storing resources. */
     public PouchManager pouchManager = new PouchManager(this);
 
+    /**
+     * Manages variable persistence for the player.
+     */
     public VarpManager varpManager = new VarpManager(this);
 
+    /**
+     *
+     * Stores player-specific variables.
+     */
     public HashMap<Integer, Integer> varpMap = new HashMap<>();
 
+    /**
+     * Stores variable states that should be saved.
+     */
     public HashMap<Integer, Boolean> saveVarp = new HashMap<>();
 
+    /**
+     * Stores various player states.
+     */
     public HashMap<String, State> states = new HashMap<>();
 
+    /**
+     * Stores functions to be executed when the player logs out.
+     */
     public HashMap<String, Function1<Player, Unit>> logoutListeners = new HashMap<>();
 
+    /**
+     * The player's inventory, limited to 28 slots.
+     */
     private final Container inventory = new Container(28).register(new InventoryListener(this));
 
+    /**
+     * The player's equipped items.
+     */
     private final EquipmentContainer equipment = new EquipmentContainer(this);
 
+    /**
+     * The player's primary and secondary banks.
+     */
     private final BankContainer bank = new BankContainer(this);
-
     private final BankContainer bankSecondary = new BankContainer(this);
 
+    /**
+     * Flag to determine if the secondary bank is in use.
+     */
     public boolean useSecondaryBank = false;
 
+    /**
+     * Containers for Blast Furnace resources.
+     */
     public final Container blastCoal = new Container(225, ContainerType.NEVER_STACK);
-
     public final Container blastOre = new Container(28, ContainerType.NEVER_STACK);
-
     public final Container blastBars = new Container(28, ContainerType.NEVER_STACK);
 
+    /**
+     * Handles packet dispatching for the player.
+     */
     private final PacketDispatch packetDispatch = new PacketDispatch(this);
 
+    /**
+     * Manages the player's spell book.
+     */
     private final SpellBookManager spellBookManager = new SpellBookManager();
 
+    /**
+     * Stores player rendering information.
+     */
     private final RenderInfo renderInfo = new RenderInfo(this);
 
+    /**
+     * Manages interface interactions.
+     */
     private final InterfaceManager interfaceManager = new InterfaceManager(this);
 
+    /**
+     * Handles the player's emotes.
+     */
     private final EmoteManager emoteManager = new EmoteManager(this);
 
+    /**
+     * Stores player-specific flags.
+     */
     private final PlayerFlag playerFlag = new PlayerFlag();
 
+    /**
+     * Manages the player's appearance.
+     */
     private final Appearance appearance = new Appearance(this);
 
+    /**
+     * Manages player settings.
+     */
     private final Settings settings = new Settings(this);
 
+    /**
+     * Manages player dialogues.
+     */
     private final DialogueInterpreter dialogueInterpreter = new DialogueInterpreter(this);
 
+    /**
+     * Manages hint icons displayed to the player.
+     */
     private final HintIconManager hintIconManager = new HintIconManager();
 
+    /**
+     * Handles player quest progress.
+     */
     public QuestRepository questRepository = new QuestRepository(this);
 
+    /**
+     * Manages the player's prayers.
+     */
     private final Prayer prayer = new Prayer(this);
 
+    /**
+     * Handles skull effects on the player.
+     */
     private final SkullManager skullManager = new SkullManager(this);
 
+    /**
+     * Manages the player's familiar (if any).
+     */
     private final FamiliarManager familiarManager = new FamiliarManager(this);
 
+    /**
+     * Stores persistent player data.
+     */
     public SavedData savedData = new SavedData(this);
 
+    /**
+     * Manages player requests (e.g., trades, duels).
+     */
     private final RequestManager requestManager = new RequestManager(this);
 
+    /**
+     * Handles the player's music playback.
+     */
     private final MusicPlayer musicPlayer = new MusicPlayer(this);
 
+    /**
+     * Manages the player's house.
+     */
     private final HouseManager houseManager = new HouseManager();
 
+    /**
+     * Handles the player's bank PIN system.
+     */
     private final BankPinManager bankPinManager = new BankPinManager(this);
 
+    /**
+     * Manages player diary progress.
+     */
     private final DiaryManager diaryManager = new DiaryManager(this);
 
+    /**
+     * Manages Ironman status and restrictions.
+     */
     private final IronmanManager ironmanManager = new IronmanManager(this);
 
+    /**
+     * Indicates whether the player is currently active.
+     */
     private boolean playing;
 
+    /**
+     * Indicates whether the player is invisible.
+     */
     private boolean invisible;
 
+    /**
+     * Indicates if the player is artificially created (e.g., NPC-like entities).
+     */
     protected boolean artificial;
 
+    /**
+     * Stores a custom state string.
+     */
     private String customState = "";
 
+    /**
+     * Tracks the player's archery target count.
+     */
     private int archeryTargets = 0;
 
+    /**
+     * Tracks the total number of archery shots.
+     */
     private int archeryTotal = 0;
 
+    /**
+     * The player's save file version.
+     */
     public int version = ServerConfig.CURRENT_SAVEFILE_VERSION;
 
+    /**
+     * Operation counts for player actions.
+     */
     public byte[] opCounts = new byte[255];
 
+    /**
+     * Count of invalid packets received.
+     */
     public int invalidPacketCount = 0;
 
+    /**
+     * Constructs a new player with the specified details.
+     *
+     * @param details The player's account details.
+     */
     public Player(PlayerDetails details) {
         super(details.getUsername(), ServerConfig.START_LOCATION);
         super.active = false;
@@ -207,6 +350,9 @@ public class Player extends Entity {
         this.direction = Direction.SOUTH;
     }
 
+    /**
+     * Initializes the player.
+     */
     @Override
     public void init() {
         if (!artificial)
@@ -220,6 +366,9 @@ public class Player extends Entity {
         setAttribute("logged-in-fully", true);
     }
 
+    /**
+     * Clears the player's state, handling disconnections and saving progress.
+     */
     @Override
     public void clear() {
         if (isArtificial()) {
@@ -231,6 +380,9 @@ public class Player extends Entity {
         details.save();
     }
 
+    /**
+     * Final cleanup when the player logs out or is removed.
+     */
     public void finishClear() {
         if (!isArtificial())
             GameWorld.getLogoutListeners().forEach((it) -> it.logout(this));
@@ -496,16 +648,12 @@ public class Player extends Entity {
             killer.setAttribute("/save:last-murder-news", getWorldTicks());
         }
         getPacketDispatch().sendMessage("Oh dear, you are dead!");
-        incrementAttribute("/save:" + STATS_BASE + ":" + STATS_DEATHS);
-
         packetDispatch.sendTempMusic(90);
         if (!getZoneMonitor().handleDeath(killer) && (!getProperties().isSafeZone() && getZoneMonitor().getType() != ZoneType.SAFE.getId()) && getDetails().getRights() != Rights.ADMINISTRATOR) {
 
             if (this.getIronmanManager().getMode().equals(IronmanMode.HARDCORE)) {
 
                 if (getAttributes().containsKey("permadeath")) {
-                    // String gender = this.isMale() ? "man " : "woman ";
-                    // Repository.sendNews("Permadeath Hardcore Iron" + gender + " " + this.getUsername() + " has fallen. Total Level: " + this.getSkills().getTotalLevel()); // Not enough room for XP
                     Permadeath(this);
                     return;
                 }

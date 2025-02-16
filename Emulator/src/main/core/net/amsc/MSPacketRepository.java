@@ -1,7 +1,7 @@
 package core.net.amsc;
 
 import core.game.node.entity.player.Player;
-import core.game.system.communication.*;
+import core.game.system.communication.ClanRank;
 import core.net.packet.IoBuffer;
 import core.net.packet.PacketHeader;
 

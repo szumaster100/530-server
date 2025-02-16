@@ -1,9 +1,8 @@
 package core.net.amsc;
 
-import core.tools.Log;
-import core.tools.SystemLogger;
 import core.net.IoEventHandler;
 import core.net.IoSession;
+import core.tools.Log;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;

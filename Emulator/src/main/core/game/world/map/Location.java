@@ -1,16 +1,15 @@
 package core.game.world.map;
 
+import core.api.utils.Vector;
 import core.game.interaction.DestinationFlag;
 import core.game.node.Node;
 import core.game.world.map.path.Path;
 import core.game.world.map.path.Pathfinder;
 import core.tools.RandomFunction;
 import org.jetbrains.annotations.NotNull;
-import core.api.utils.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.lang.Math;
 
 public final class Location extends Node {
 

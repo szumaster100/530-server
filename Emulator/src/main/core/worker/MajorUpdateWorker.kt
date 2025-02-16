@@ -4,7 +4,6 @@ import core.Server
 import core.ServerConfig
 import core.ServerStore
 import core.api.log
-import core.api.sendNews
 import core.api.submitWorldPulse
 import core.game.system.task.Pulse
 import core.game.world.GameWorld
@@ -15,7 +14,6 @@ import core.net.packet.PacketWriteQueue
 import core.plugin.type.Managers
 import core.tools.Log
 import core.tools.NetworkReachability
-import core.tools.colorize
 import core.tools.integration.grafana.Grafana
 import java.lang.Long.max
 import java.text.SimpleDateFormat
@@ -72,7 +70,6 @@ class MajorUpdateWorker {
                         for (player in Repository.players.filter { !it.isArtificial }) {
                             player.packetDispatch.sendSystemUpdate(500)
                         }
-                        sendNews(colorize("%RSERVER GOING DOWN FOR DAILY RESTART IN 5 MINUTES!"))
                         ServerConfig.DAILY_RESTART = false
                         submitWorldPulse(
                             object : Pulse(100) {
@@ -86,11 +83,6 @@ class MajorUpdateWorker {
                                     if (counter == 5) {
                                         exitProcess(0)
                                     }
-                                    sendNews(
-                                        colorize(
-                                            "%RSERVER GOING DOWN FOR DAILY RESTART IN ${5 - counter} MINUTE${if (counter < 4) "S" else ""}!",
-                                        ),
-                                    )
                                     return false
                                 }
                             },

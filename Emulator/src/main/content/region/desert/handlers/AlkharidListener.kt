@@ -12,8 +12,6 @@ import core.game.global.action.DoorActionHandler
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.item.Item
-import core.game.system.command.sets.STATS_ALKHARID_GATE
-import core.game.system.command.sets.STATS_BASE
 import org.rs.consts.Items
 import org.rs.consts.NPCs
 import org.rs.consts.Quests
@@ -36,7 +34,6 @@ class AlkharidListener : InteractionListener {
                         sendMessage(player, "You need 10 gold to pass through the gates.")
                     } else {
                         sendMessage(player, "You quickly pay the 10 gold toll and go through the gates.")
-                        player.incrementAttribute("/save:$STATS_BASE:$STATS_ALKHARID_GATE", 10)
                         DoorActionHandler.handleAutowalkDoor(player, node.asScenery())
                         return@on true
                     }

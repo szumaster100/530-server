@@ -133,7 +133,6 @@ object ServerConfigParser {
         ServerConfig.RSDT_DATA_PATH = data.getPath("paths.rare_seed_drop_table_path")
         ServerConfig.ASDT_DATA_PATH = data.getPath("paths.allotment_seed_drop_table_path")
         ServerConfig.SERVER_GE_NAME = data.getString("world.name_ge") ?: ServerConfig.SERVER_NAME
-        // Configuration.RULES_AND_INFO_ENABLED = data.getBoolean("world.show_rules", true)
         ServerConfig.BOTS_INFLUENCE_PRICE_INDEX = data.getBoolean("world.bots_influence_ge_price", true)
         ServerConfig.PRELOAD_MAP = data.getBoolean("server.preload_map", false)
         ServerConfig.REVENANT_POPULATION = data.getLong("world.revenant_population", 30L).toInt()
@@ -161,13 +160,11 @@ object ServerConfigParser {
         ServerConfig.GRAFANA_LOGGING = data.getBoolean("integrations.grafana_logging", false)
         ServerConfig.GRAFANA_TTL_DAYS = data.getLong("integrations.grafana_log_ttl_days", 7L).toInt()
         ServerConfig.BETTER_DFS = data.getBoolean("world.better_dfs", true)
-        // Configuration.NEW_PLAYER_ANNOUNCEMENT = data.getBoolean("world.new_player_announcement", true)
         ServerConfig.HOLIDAY_EVENT_RANDOMS = data.getBoolean("world.holiday_event_randoms", true)
         ServerConfig.FORCE_HALLOWEEN_EVENTS = data.getBoolean("world.force_halloween_randoms", false)
         ServerConfig.FORCE_CHRISTMAS_EVENTS = data.getBoolean("world.force_christmas_randoms", false)
         ServerConfig.FORCE_EASTER_EVENTS = data.getBoolean("world.force_easter_randoms", false)
         ServerConfig.RUNECRAFTING_FORMULA_REVISION = data.getLong("world.runecrafting_formula_revision", 581).toInt()
-        // Configuration.ENHANCED_DEEP_WILDERNESS = data.getBoolean("world.enhanced_deep_wilderness", false)
         ServerConfig.CONNECTIVITY_CHECK_URL = data.getString("server.connectivity_check_url", "https://google.com")
         ServerConfig.CONNECTIVITY_TIMEOUT = data.getLong("server.connectivity_timeout", 500L).toInt()
 

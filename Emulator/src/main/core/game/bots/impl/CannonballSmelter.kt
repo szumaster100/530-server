@@ -3,7 +3,8 @@ package core.game.bots.impl
 import content.global.skill.gathering.mining.MiningNode
 import content.global.skill.smithing.smelting.Bar
 import content.global.skill.smithing.smelting.SmeltingPulse
-import core.api.*
+import core.api.amountInBank
+import core.api.amountInInventory
 import core.game.bots.*
 import core.game.ge.GrandExchange
 import core.game.interaction.DestinationFlag

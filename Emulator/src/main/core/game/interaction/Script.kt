@@ -8,13 +8,7 @@ typealias InteractExecutor = (Player, Node, Int) -> Boolean
 typealias VoidExecutor = (Int) -> Boolean
 
 enum class QueueStrength {
-    WEAK,
-
-    NORMAL,
-
-    STRONG,
-
-    SOFT,
+    WEAK, NORMAL, STRONG, SOFT,
 }
 
 open class Script<T>(

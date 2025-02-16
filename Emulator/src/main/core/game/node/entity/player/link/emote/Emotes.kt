@@ -12,8 +12,10 @@ import core.game.world.map.Location
 import core.game.world.map.RegionManager.getLocalNpcs
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
-import org.rs.consts.*
 import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 enum class Emotes(
     val buttonId: Int,

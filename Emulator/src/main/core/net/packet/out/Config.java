@@ -1,8 +1,8 @@
 package core.net.packet.out;
 
-import core.net.packet.context.ConfigContext;
 import core.net.packet.IoBuffer;
 import core.net.packet.OutgoingPacket;
+import core.net.packet.context.ConfigContext;
 
 public class Config implements OutgoingPacket<ConfigContext> {
 

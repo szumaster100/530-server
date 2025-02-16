@@ -1,8 +1,8 @@
 package core.game.bots;
 
-import java.nio.ByteBuffer;
-
 import core.net.IoSession;
+
+import java.nio.ByteBuffer;
 
 public final class ArtificialSession extends IoSession {
 

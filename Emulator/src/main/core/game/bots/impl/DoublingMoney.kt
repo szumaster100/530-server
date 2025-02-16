@@ -15,7 +15,7 @@ import core.game.node.item.Item
 import core.game.world.ImmerseWorld
 import core.game.world.map.Location
 import core.game.world.map.RegionManager
-import core.game.world.update.flag.*
+import core.game.world.update.flag.EntityFlag
 import core.game.world.update.flag.context.ChatMessage
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
@@ -23,7 +23,7 @@ import org.json.simple.parser.JSONParser
 import org.rs.consts.Items
 import java.io.File
 import java.io.FileReader
-import java.util.Random
+import java.util.*
 import kotlin.math.min
 
 class DoublingMoney : Script() {

@@ -2,7 +2,6 @@ package core.net.packet.out;
 
 import core.game.node.entity.player.Player;
 import core.game.system.communication.Contact;
-import core.net.amsc.WorldCommunicator;
 import core.net.packet.IoBuffer;
 import core.net.packet.OutgoingPacket;
 import core.net.packet.PacketHeader;

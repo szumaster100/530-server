@@ -1,8 +1,8 @@
 package core.game.node.entity.player.link;
 
+import core.api.ContainerListener;
 import core.game.container.Container;
 import core.game.container.ContainerEvent;
-import core.api.ContainerListener;
 import core.game.node.entity.Entity;
 import core.game.node.entity.player.Player;
 import core.game.node.item.Item;

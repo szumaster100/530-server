@@ -2,7 +2,6 @@ package core.game.node.entity.npc;
 
 import content.global.skill.slayer.Tasks;
 import content.global.skill.summoning.familiar.Familiar;
-import core.api.utils.GlobalKillCounter;
 import core.api.utils.Vector;
 import core.cache.def.impl.NPCDefinition;
 import core.game.dialogue.Dialogue;
@@ -37,9 +36,6 @@ import core.game.world.update.flag.EntityFlags;
 import core.game.world.update.flag.context.Animation;
 import core.game.world.update.flag.context.Graphics;
 import core.tools.RandomFunction;
-
-import static core.game.system.command.sets.StatsAttributeSetKt.STATS_BASE;
-import static core.game.system.command.sets.StatsAttributeSetKt.STATS_ENEMIES_KILLED;
 
 public class NPC extends Entity {
     private int id;
@@ -424,10 +420,6 @@ public class NPC extends Entity {
             return;
         }
         Player p = !(killer instanceof Player) ? null : (Player) killer;
-        if (p != null) {
-            p.incrementAttribute("/save:" + STATS_BASE + ":" + STATS_ENEMIES_KILLED);
-            GlobalKillCounter.incrementKills(p, originalId);
-        }
         handleDrops(p, killer);
         if (!isRespawn())
             clear();

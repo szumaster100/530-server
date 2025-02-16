@@ -1,13 +1,12 @@
 package core.net.event;
 
-import core.tools.Log;
-import core.tools.SystemLogger;
 import core.game.world.GameWorld;
 import core.net.IoReadEvent;
 import core.net.IoSession;
 import core.net.amsc.ManagementServerState;
 import core.net.amsc.WorldCommunicator;
 import core.net.producer.MSEventProducer;
+import core.tools.Log;
 
 import java.nio.ByteBuffer;
 

@@ -1,9 +1,9 @@
 package core.net.event;
 
+import core.ServerConfig;
 import core.cache.misc.buffer.ByteBufferUtils;
 import core.net.IoSession;
 import core.net.IoWriteEvent;
-import core.ServerConfig;
 
 import java.nio.ByteBuffer;
 

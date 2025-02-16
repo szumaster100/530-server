@@ -15,8 +15,6 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.diary.DiaryType
 import core.game.node.entity.skill.Skills
 import core.game.node.scenery.Scenery
-import core.game.system.command.sets.STATS_BASE
-import core.game.system.command.sets.STATS_LOGS
 import core.game.system.task.Pulse
 import core.game.world.map.Location
 import core.game.world.map.RegionManager.getLocalPlayers
@@ -187,9 +185,6 @@ class WoodcuttingPulse(
 
             addItem(player, reward, rewardAmount)
             player.dispatch(ResourceProducedEvent(reward, rewardAmount, node, -1))
-            var cutLogs = getAttribute(player, "$STATS_BASE:$STATS_LOGS", 0)
-            setAttribute(player, "/save:$STATS_BASE:$STATS_LOGS", ++cutLogs)
-
             val chance = 282
             if (RandomFunction.random(chance) == chance / 2) {
                 if (!player.inventory.add(getRandomNest(false)!!.nest)) {

@@ -1,17 +1,18 @@
 package core.game.bots;
 
 import content.region.misc.handlers.tutorial.CharacterDesign;
-import core.game.node.entity.impl.PulseType;
 import core.ServerConfig;
 import core.game.container.impl.EquipmentContainer;
 import core.game.interaction.DestinationFlag;
 import core.game.interaction.MovementPulse;
 import core.game.node.Node;
 import core.game.node.entity.Entity;
+import core.game.node.entity.impl.PulseType;
 import core.game.node.entity.npc.NPC;
 import core.game.node.entity.player.Player;
 import core.game.node.entity.player.info.PlayerDetails;
 import core.game.node.entity.player.link.appearance.Gender;
+import core.game.node.entity.skill.Skills;
 import core.game.node.item.Item;
 import core.game.world.map.Direction;
 import core.game.world.map.Location;
@@ -22,7 +23,6 @@ import core.game.world.repository.Repository;
 import core.net.packet.context.MessageContext;
 import core.tools.RandomFunction;
 import core.tools.StringUtils;
-import core.game.node.entity.skill.Skills;
 
 import java.io.File;
 import java.io.FileNotFoundException;

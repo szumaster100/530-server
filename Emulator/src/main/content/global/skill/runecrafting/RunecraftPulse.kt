@@ -16,14 +16,14 @@ import core.game.node.entity.player.link.diary.DiaryType
 import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
-import core.game.system.command.sets.STATS_BASE
-import core.game.system.command.sets.STATS_RC
 import core.game.world.GameWorld.ticks
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
 import core.tools.RandomFunction
-import org.rs.consts.*
-import java.util.*
+import org.rs.consts.Animations
+import org.rs.consts.Items
+import org.rs.consts.Quests
+import org.rs.consts.Sounds
 import kotlin.math.max
 
 class RunecraftPulse(
@@ -117,7 +117,7 @@ class RunecraftPulse(
                     sendMessage(
                         player,
                         "You bind the temple's power into " +
-                            (if (combination) combo!!.rune.name.lowercase() else rune.rune.name.lowercase() + "s."),
+                                (if (combination) combo!!.rune.name.lowercase() else rune.rune.name.lowercase() + "s."),
                     )
                 }
         }
@@ -135,12 +135,11 @@ class RunecraftPulse(
 
             if (removeItem(player, item) && hasSpaceFor(player, i)) {
                 addItem(player, i.id, total)
-                player.incrementAttribute("/save:$STATS_BASE:$STATS_RC", amount)
                 sendMessage(
                     player,
                     "You bind the temple's power into " +
-                        (if (combination) combo!!.rune.name.lowercase() else rune.rune.name.lowercase()) +
-                        "s.",
+                            (if (combination) combo!!.rune.name.lowercase() else rune.rune.name.lowercase()) +
+                            "s.",
                 )
 
                 var xp = rune.experience * amount
@@ -167,7 +166,6 @@ class RunecraftPulse(
         } else {
             if (removeItem(player, item)) {
                 sendMessage(player, "You bind the temple's power into runes.")
-                player.incrementAttribute("/save:$STATS_BASE:$STATS_RC", amount)
                 for (i in 0 until amount) {
                     var rune: Rune? = null
                     while (rune == null) {

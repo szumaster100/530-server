@@ -1,12 +1,11 @@
 package core.net.event;
 
+import core.auth.AuthResponse;
 import core.game.node.entity.player.Player;
-import core.game.node.entity.player.info.login.Response;
 import core.net.EventProducer;
 import core.net.IoSession;
 import core.net.IoWriteEvent;
 import core.net.producer.GameEventProducer;
-import core.auth.AuthResponse;
 
 import java.nio.ByteBuffer;
 

@@ -1,6 +1,5 @@
 package content.minigame.barrows
 
-import core.api.announceIfRare
 import core.api.utils.BossKillCounter
 import core.api.utils.WeightBasedTable
 import core.api.utils.WeightedItem
@@ -67,7 +66,6 @@ object RewardChest {
         player.interfaceManager.open(Component(Components.TRAIL_REWARD_364))
         BossKillCounter.addToBarrowsCount(player)
         for (item in rewards) {
-            announceIfRare(player, item)
             if (!player.inventory.add(item)) {
                 GroundItemManager.create(item, player)
             }

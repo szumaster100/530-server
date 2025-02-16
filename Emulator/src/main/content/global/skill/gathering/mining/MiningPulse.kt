@@ -14,8 +14,6 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.ChanceItem
 import core.game.node.scenery.Scenery
 import core.game.node.scenery.SceneryBuilder
-import core.game.system.command.sets.STATS_BASE
-import core.game.system.command.sets.STATS_ROCKS
 import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
@@ -218,8 +216,6 @@ class MiningPulse(
             }
 
             addItemOrDrop(player, reward, rewardAmount)
-            var rocksMined = getAttribute(player, "$STATS_BASE:$STATS_ROCKS", 0)
-            setAttribute(player, "/save:$STATS_BASE:$STATS_ROCKS", rocksMined + rewardAmount)
 
             if (!isMiningEssence) {
                 var chance = 282

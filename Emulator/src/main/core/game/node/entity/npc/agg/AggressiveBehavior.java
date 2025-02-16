@@ -4,8 +4,8 @@ import core.game.node.entity.Entity;
 import core.game.node.entity.combat.DeathTask;
 import core.game.node.entity.npc.NPC;
 import core.game.node.entity.player.Player;
-import core.game.world.map.zone.impl.WildernessZone;
 import core.game.world.map.RegionManager;
+import core.game.world.map.zone.impl.WildernessZone;
 
 import java.util.ArrayList;
 import java.util.List;

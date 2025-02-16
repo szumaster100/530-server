@@ -1,7 +1,5 @@
 package core.game.node.item;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import core.game.bots.AIRepository;
 import core.game.node.entity.player.Player;
 import core.game.world.GameWorld;
@@ -11,6 +9,8 @@ import core.game.world.update.flag.chunk.ItemUpdateFlag;
 import core.net.packet.PacketRepository;
 import core.net.packet.context.BuildItemContext;
 import core.net.packet.out.UpdateGroundItemAmount;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 import java.util.ArrayList;
 import java.util.List;

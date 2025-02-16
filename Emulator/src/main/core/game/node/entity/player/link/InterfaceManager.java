@@ -8,7 +8,6 @@ import core.game.event.InterfaceCloseEvent;
 import core.game.event.InterfaceOpenEvent;
 import core.game.node.entity.combat.equipment.WeaponInterface;
 import core.game.node.entity.player.Player;
-import core.tools.Log;
 import core.game.world.GameWorld;
 import core.net.packet.PacketRepository;
 import core.net.packet.context.InterfaceContext;
@@ -16,10 +15,12 @@ import core.net.packet.context.WindowsPaneContext;
 import core.net.packet.out.CloseInterface;
 import core.net.packet.out.Interface;
 import core.net.packet.out.WindowsPane;
+import core.tools.Log;
 import org.rs.consts.Components;
 import org.rs.consts.Quests;
 
-import static core.api.ContentAPIKt.*;
+import static core.api.ContentAPIKt.log;
+import static core.api.ContentAPIKt.setVarp;
 import static core.api.quest.QuestAPIKt.isQuestComplete;
 
 public final class InterfaceManager {

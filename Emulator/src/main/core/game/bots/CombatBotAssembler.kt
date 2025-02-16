@@ -6,7 +6,6 @@ import core.game.world.map.Location
 import core.tools.RandomFunction
 import org.rs.consts.Items
 import java.util.*
-import kotlin.collections.ArrayList
 
 class CombatBotAssembler {
     enum class Type {

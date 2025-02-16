@@ -1,7 +1,6 @@
 package core.net.packet
 
 import content.global.skill.slayer.SlayerManager
-import core.api.*
 import core.api.interaction.getSlayerTask
 import core.cache.Cache
 import core.cache.def.impl.DataMap
@@ -11,7 +10,7 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.game.system.task.Pulse
 import core.game.world.GameWorld.Pulser
-import core.game.world.update.flag.*
+import core.game.world.update.flag.EntityFlag
 import core.game.world.update.flag.context.ChatMessage
 import core.net.packet.`in`.QCPacketType
 import core.worker.ManagementEvents.publish

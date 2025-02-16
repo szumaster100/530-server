@@ -2,7 +2,7 @@ package core.game.bots.impl
 
 import content.global.skill.crafting.spinning.Spinning
 import content.global.skill.crafting.spinning.SpinningPulse
-import core.api.*
+import core.api.freeSlots
 import core.game.bots.*
 import core.game.interaction.DestinationFlag
 import core.game.interaction.MovementPulse

@@ -1,5 +1,6 @@
 package core.net.packet.out;
 
+import core.game.bots.AIPlayer;
 import core.game.node.entity.player.Player;
 import core.game.system.communication.ClanRepository;
 import core.net.packet.IoBuffer;
@@ -7,7 +8,6 @@ import core.net.packet.OutgoingPacket;
 import core.net.packet.PacketHeader;
 import core.net.packet.context.MessageContext;
 import core.tools.StringUtils;
-import core.game.bots.AIPlayer;
 
 import java.util.Random;
 

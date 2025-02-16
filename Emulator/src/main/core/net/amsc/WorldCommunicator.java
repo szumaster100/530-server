@@ -1,12 +1,11 @@
 package core.net.amsc;
 
+import core.game.node.entity.player.info.login.LoginParser;
+import core.game.world.GameWorld;
 import core.net.EventProducer;
 import core.net.IoSession;
 import core.net.NioReactor;
 import core.net.producer.MSHSEventProducer;
-import core.game.node.entity.player.info.login.LoginParser;
-import core.tools.SystemLogger;
-import core.game.world.GameWorld;
 
 import java.io.IOException;
 import java.net.InetAddress;

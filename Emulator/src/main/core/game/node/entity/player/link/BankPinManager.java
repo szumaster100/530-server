@@ -1,6 +1,5 @@
 package core.game.node.entity.player.link;
 
-import org.rs.consts.Components;
 import content.global.handlers.iface.ge.StockMarket;
 import core.game.component.CloseEvent;
 import core.game.component.Component;
@@ -14,6 +13,7 @@ import core.net.packet.out.RepositionChild;
 import core.net.packet.out.StringPacket;
 import core.tools.RandomFunction;
 import org.json.simple.JSONObject;
+import org.rs.consts.Components;
 import org.rs.consts.Sounds;
 
 import java.util.ArrayList;

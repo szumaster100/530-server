@@ -1,9 +1,9 @@
 package core.net.packet.out;
 
 import core.game.node.entity.player.Player;
-import core.net.packet.context.DefaultContext;
 import core.net.packet.IoBuffer;
 import core.net.packet.OutgoingPacket;
+import core.net.packet.context.DefaultContext;
 
 public final class InterfaceSetAngle implements OutgoingPacket<DefaultContext> {
     @Override

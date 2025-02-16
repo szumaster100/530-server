@@ -1,8 +1,8 @@
 package core.game.bots;
 
-import core.game.node.entity.skill.Skills;
 import core.game.node.entity.player.Player;
 import core.game.node.entity.player.link.appearance.Gender;
+import core.game.node.entity.skill.Skills;
 import core.game.node.item.Item;
 import core.game.world.map.Location;
 import core.tools.RandomFunction;

@@ -3,7 +3,6 @@ package core.game.shops
 import content.global.skill.crafting.Tanning
 import core.ServerConfig
 import core.api.*
-import core.api.IfaceSettingsBuilder
 import core.api.item.itemDefinition
 import core.api.quest.getQuestPoints
 import core.api.quest.getQuestStage

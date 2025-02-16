@@ -1,6 +1,5 @@
 package core.game.node.entity.combat.equipment
 
-import core.game.node.entity.combat.equipment.Weapon.WeaponType
 import core.game.node.item.Item
 
 class Weapon

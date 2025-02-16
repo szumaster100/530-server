@@ -1,19 +1,19 @@
 package core.game.bots;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import core.game.consumable.Consumable;
 import content.data.consumables.Consumables;
-import core.game.node.entity.skill.Skills;
+import core.game.consumable.Consumable;
 import core.game.node.entity.Entity;
 import core.game.node.entity.npc.NPC;
 import core.game.node.entity.player.Player;
 import core.game.node.entity.player.link.prayer.PrayerType;
+import core.game.node.entity.skill.Skills;
 import core.game.node.item.Item;
 import core.game.world.map.Location;
 import core.game.world.map.RegionManager;
 import core.tools.RandomFunction;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PvMBots extends AIPlayer {
 

@@ -2,22 +2,19 @@ package core.game.world.map;
 
 import core.game.node.entity.player.Player;
 import core.game.node.item.GroundItem;
-import core.game.node.item.Item;
 import core.game.node.scenery.Constructed;
 import core.game.node.scenery.Scenery;
 import core.game.node.scenery.SceneryBuilder;
-import core.tools.Log;
-import core.tools.SystemLogger;
 import core.game.world.map.build.LandscapeParser;
 import core.net.packet.IoBuffer;
 import core.net.packet.out.ClearScenery;
 import core.net.packet.out.ConstructGroundItem;
 import core.net.packet.out.ConstructScenery;
-
-import static core.api.ContentAPIKt.log;
+import core.tools.Log;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
+import static core.api.ContentAPIKt.log;
 
 public class BuildRegionChunk extends RegionChunk {
 
