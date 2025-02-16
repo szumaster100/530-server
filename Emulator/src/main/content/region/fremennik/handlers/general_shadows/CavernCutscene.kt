@@ -1,6 +1,6 @@
-package content.region.fremennik.handlers.general
+package content.region.fremennik.handlers.general_shadows
 
-import content.region.fremennik.handlers.general.GhostBouncerNPC.Companion.spawnGhostBouncer
+import content.region.fremennik.handlers.general_shadows.GhostBouncerNPC.Companion.spawnGhostBouncer
 import core.api.location
 import core.api.removeAttribute
 import core.api.sendMessageWithDelay

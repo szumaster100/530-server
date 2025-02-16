@@ -1,4 +1,4 @@
-package content.region.fremennik.handlers.general
+package content.region.fremennik.handlers.general_shadows
 
 import core.api.*
 import core.api.quest.hasRequirement

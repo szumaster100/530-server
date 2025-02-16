@@ -1,4 +1,4 @@
-package content.region.fremennik.handlers.general
+package content.region.fremennik.handlers.general_shadows
 
 object GeneralShadowUtils {
     const val START_GENERAL_SHADOW = "/save:general-shadow:start"
