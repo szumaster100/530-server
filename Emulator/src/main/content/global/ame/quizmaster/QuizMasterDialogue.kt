@@ -91,7 +91,20 @@ class QuizMasterDialogue : Dialogue {
                     )
                     stage = 4
                 } else {
-                    npcl(FaceAnim.HAPPY, if (wrong) QuizMaster.WRONG.random() else QuizMaster.CORRECT.random())
+                    if (wrong) {
+                        npc(
+                            FaceAnim.NEUTRAL,
+                            QuizMaster.WRONG.random(),
+                            "You're supposed to pick the ODD ONE OUT.",
+                            "Now, let's start again..."
+                        )
+                    } else {
+                        npc(
+                            FaceAnim.HAPPY,
+                            QuizMaster.CORRECT.random(),
+                            "Okay, next question!"
+                        )
+                    }
                     stage = 2
                 }
             }

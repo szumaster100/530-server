@@ -1,6 +1,7 @@
 package content.global.ame.quizmaster
 
 import core.api.MapArea
+import core.api.removeTabs
 import core.game.node.entity.Entity
 import core.game.node.entity.player.Player
 import core.game.world.map.zone.ZoneBorders
@@ -25,8 +26,9 @@ class Quiz : MapArea {
         super.areaEnter(entity)
         if (entity is Player) {
             val player = entity.asPlayer()
-            player.dialogueInterpreter.open(NPCs.QUIZ_MASTER_2477)
             player.lock()
+            removeTabs(player, 0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14)
+            player.dialogueInterpreter.open(NPCs.QUIZ_MASTER_2477)
         }
     }
 }

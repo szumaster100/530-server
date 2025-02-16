@@ -18,25 +18,25 @@ object QuizMaster {
 
     val CORRECT =
         arrayOf(
-            "Hey, you're good at this! CORRECT! Okay, next question!",
-            "Absolutely RIGHT! Keep going for the win! Okay, next question!",
-            "Wow, you're a smart one! You're absolutely right! Okay, next question!",
+            "Hey, you're good at this! CORRECT!",
+            "Absolutely RIGHT! Keep going for the win!",
+            "Wow, you're a smart one! You're absolutely right!",
             "COR-RECT! Okay, next question!",
-            "DING DING DING That's RIGHT! Good for you! Okay, next question!",
-            "YES! You're RIGHT! Okay, next question!",
+            "DING DING DING That's RIGHT! Good for you!",
+            "YES! You're RIGHT!",
         )
 
     val WRONG =
         arrayOf(
-            "Huh...? Didn't you know that one? You're supposed to pick the ODD ONE OUT. Now, let's start again...",
-            "No. No, that's not right at all. You're supposed to pick the ODD ONE OUT. Now let's start again...",
-            "No, sorry, Try harder! You're supposed to pick the ODD ONE OUT. Now, let's start again...",
-            "Better luck next time! You're supposed to pick the ODD ONE OUT. Now, let's start again...",
-            "WRONG! That's just WRONG! You're supposed to pick the ODD ONE OUT. Now, let's start again...",
-            "WRONG! You're supposed to pick the ODD ONE OUT. Now, let's start again...",
-            "No, no, no... That's completely WRONG! You're supposed to pick the ODD ONE OUT. Now, let's start again...",
-            "Nope, that's not it. You're supposed to pick the ODD ONE OUT. Now, let's start again...",
-            "BZZZZZZZ! WRONG! You're supposed to pick the ODD ONE OUT. Now, let's start again...",
+            "Huh...? Didn't you know that one?",
+            "No. No, that's not right at all.",
+            "No, sorry, Try harder!",
+            "Better luck next time!",
+            "WRONG! That's just WRONG!",
+            "WRONG!",
+            "No, no, no... That's completely WRONG!",
+            "Nope, that's not it.",
+            "BZZZZZZZ! WRONG!",
         )
 
     fun cleanup(player: Player) {
