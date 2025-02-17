@@ -33,7 +33,7 @@ class MazeNPC(var type: String = "", override var loot: WeightBasedTable? = null
                     MazeInterface.initMaze(player)
                     teleport(player, MazeInterface.STARTING_POINTS.random())
                     AntiMacro.terminateEventNpc(player)
-                    sendGraphics(Graphics(1577, 0, 0), player.location)
+                    sendGraphics(Graphics(org.rs.consts.Graphics.NORMAL_TP_DOWNWARDS_1577, 0, 0), player.location)
                     animate(player,8941)
                     removeAttribute(player, MazeInterface.MAZE_ATTRIBUTE_CHESTS_OPEN)
                     return@queueScript stopExecuting(player)
