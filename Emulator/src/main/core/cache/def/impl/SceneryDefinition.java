@@ -505,6 +505,27 @@ public class SceneryDefinition extends Definition<Scenery> {
         return null;
     }
 
+    public void setOption(int slot, String option) {
+        if (slot < 0 || slot >= options.length) {
+            throw new IllegalArgumentException(": " + slot);
+        }
+        options[slot] = option;
+    }
+
+    public void removeOption(int slot) {
+        if (slot < 0 || slot >= options.length) {
+            throw new IllegalArgumentException("Wrong index: " + slot);
+        }
+        options[slot] = null;
+    }
+
+    public void printOptions() {
+        System.out.println("Options for object " + id + ":");
+        for (int i = 0; i < options.length; i++) {
+            System.out.println("Slot " + i + ": " + (options[i] != null ? options[i] : "No options"));
+        }
+    }
+
     public boolean isMirrored() {
         return mirrored;
     }

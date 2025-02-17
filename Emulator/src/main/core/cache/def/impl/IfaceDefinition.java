@@ -549,4 +549,56 @@ public class IfaceDefinition {
         }
     }
 
+    public static void addOption(int ifaceId, int childId, String newOption) {
+        IfaceDefinition component = forId(ifaceId, childId);
+        if (component == null) return;
+
+        if (component.ops == null) {
+            component.ops = new String[]{newOption};
+        } else {
+            String[] newOps = Arrays.copyOf(component.ops, component.ops.length + 1);
+            newOps[component.ops.length] = newOption;
+            component.ops = newOps;
+        }
+    }
+
+    public static void removeOption(int ifaceId, int childId, String optionToRemove) {
+        IfaceDefinition component = forId(ifaceId, childId);
+        if (component == null || component.ops == null) return;
+
+        component.ops = Arrays.stream(component.ops)
+                .filter(option -> !option.equals(optionToRemove))
+                .toArray(String[]::new);
+    }
+
+    public static void setText(int ifaceId, int childId, String newText) {
+        IfaceDefinition component = forId(ifaceId, childId);
+        if (component != null) {
+            component.text = newText;
+        }
+    }
+
+    public static void setColor(int ifaceId, int childId, int newColor) {
+        IfaceDefinition component = forId(ifaceId, childId);
+        if (component != null) {
+            component.color = newColor;
+        }
+    }
+
+    public static void setHidden(int ifaceId, int childId, boolean hidden) {
+        IfaceDefinition component = forId(ifaceId, childId);
+        if (component != null) {
+            component.hidden = hidden;
+        }
+    }
+
+    public static void updateComponent(int ifaceId, int childId, int newX, int newY, int newWidth, int newHeight) {
+        IfaceDefinition component = forId(ifaceId, childId);
+        if (component != null) {
+            component.baseX = newX;
+            component.baseY = newY;
+            component.baseWidth = newWidth;
+            component.baseHeight = newHeight;
+        }
+    }
 }
