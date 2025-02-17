@@ -1,5 +1,3 @@
-package kotlin
-
 import core.api.utils.PlayerStatsCounter
 import core.game.node.item.Item
 import org.junit.jupiter.api.AfterAll
