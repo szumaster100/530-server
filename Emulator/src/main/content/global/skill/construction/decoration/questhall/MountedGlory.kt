@@ -1,78 +1,72 @@
 package content.global.skill.construction.decoration.questhall
 
-import core.api.playGlobalAudio
-import core.api.teleport
+import core.api.*
+import core.api.ui.closeDialogue
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
-import core.game.node.Node
-import core.game.node.entity.player.Player
-import core.game.node.item.Item
-import core.game.node.scenery.Scenery
-import core.game.system.task.Pulse
+import core.game.node.entity.player.link.TeleportManager
 import core.game.world.map.Location
-import core.game.world.update.flag.context.Animation
-import core.game.world.update.flag.context.Graphics
-import org.rs.consts.Items
-import org.rs.consts.Sounds
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
+import org.rs.consts.Scenery
 
 class MountedGlory : InteractionListener {
-
-    val MOUNTED_GLORY = 13523
-
-    val TELEPORTS = arrayOf(
-        Location.create(3087, 3495, 0),
-        Location.create(2919, 3175, 0),
-        Location.create(3104, 3249, 0),
-        Location.create(3304, 3124, 0)
-    )
-
     override fun defineListeners() {
-        on(MOUNTED_GLORY, IntType.SCENERY, "Edgeville") { player, `object` ->
-            mountedGloryAction(player, `object`, 0)
-            return@on true
-        }
+        on(Scenery.AMULET_OF_GLORY_13523, IntType.SCENERY, "rub", "remove") { player, node ->
+            val option = getUsedOption(player)
+            when (option) {
+                "rub" -> {
+                    setTitle(player, 5)
+                    sendDialogueOptions(
+                        player,
+                        "Where would you like to teleport to?",
+                        "Edgeville",
+                        "Karamja",
+                        "Draynor Village",
+                        "Al Kharid",
+                        "Nowhere",
+                    )
+                    addDialogueAction(player) { player, button ->
+                        when (button) {
+                            2 ->
+                                teleport(
+                                    player,
+                                    Location.create(3087, 3495, 0),
+                                    TeleportManager.TeleportType.RANDOM_EVENT_OLD,
+                                )
 
-        on(MOUNTED_GLORY, IntType.SCENERY, "Karamja") { player, `object` ->
-            mountedGloryAction(player, `object`, 1)
-            return@on true
-        }
+                            3 ->
+                                teleport(
+                                    player,
+                                    Location.create(2919, 3175, 0),
+                                    TeleportManager.TeleportType.RANDOM_EVENT_OLD,
+                                )
 
-        on(MOUNTED_GLORY, IntType.SCENERY, "Draynor Village") { player, `object` ->
-            mountedGloryAction(player, `object`, 2)
-            return@on true
-        }
+                            4 ->
+                                teleport(
+                                    player,
+                                    Location.create(3081, 3250, 0),
+                                    TeleportManager.TeleportType.RANDOM_EVENT_OLD,
+                                )
 
-        on(MOUNTED_GLORY, IntType.SCENERY, "Al Kharid") { player, `object` ->
-            mountedGloryAction(player, `object`, 3)
-            return@on true
-        }
-    }
+                            5 ->
+                                teleport(
+                                    player,
+                                    Location.create(3304, 3124, 0),
+                                    TeleportManager.TeleportType.RANDOM_EVENT_OLD,
+                                )
 
-    private fun mountedGloryAction(player : Player, `object` : Node, int : Int) {
-        if (player.houseManager.isBuildingMode) {
-            player.dialogueInterpreter.open("con:removedec", `object` as Scenery)
-            return
-        }
-        if (!player.zoneMonitor.teleport(1, Item(Items.AMULET_OF_GLORY_1704))) {
-            return
-        }
-        Executors.newSingleThreadScheduledExecutor().schedule({
-            player.pulseManager.run(object : Pulse() {
-                var counter = 0
-                override fun pulse(): Boolean {
-                    when (counter++) {
-                        1 -> {
-                            player.lock(5)
-                            player.visualize(Animation(714), Graphics(308, 100, 50))
-                            playGlobalAudio(player.location, Sounds.TP_ALL_200)
+                            6 -> closeDialogue(player)
                         }
-                        4 -> player.animator.reset().also { teleport(player, TELEPORTS[int]) }
                     }
-                    return false
                 }
-            })
-        }, 0, TimeUnit.SECONDS)
+
+                else ->
+                    if (!player.houseManager.isBuildingMode) {
+                        sendMessage(player, "You have to be in building mode to do this.")
+                    } else {
+                        openDialogue(player, "con:removedec", node.asScenery())
+                    }
+            }
+            return@on true
+        }
     }
 }
