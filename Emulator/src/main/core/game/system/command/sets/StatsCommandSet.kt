@@ -84,7 +84,7 @@ val FAKE_CONTENT =
     )
 
 @Initializable
-class StatsCommandSet : CommandSet(Privilege.ADMIN) {
+class StatsCommandSet : CommandSet(Privilege.STANDARD) {
     companion object {
         @Suppress("UNUSED_PARAMETER")
         private fun display(
@@ -116,18 +116,21 @@ class StatsCommandSet : CommandSet(Privilege.ADMIN) {
                                     "Easy Clues: ${TreasureTrailManager.getInstance(queryPlayer).completedClues[0]}",
                                     i,
                                 )
+
                             68 ->
                                 sendLine(
                                     player,
                                     "Medium Clues: ${TreasureTrailManager.getInstance(queryPlayer).completedClues[1]}",
                                     i,
                                 )
+
                             69 ->
                                 sendLine(
                                     player,
                                     "Hard Clues: ${TreasureTrailManager.getInstance(queryPlayer).completedClues[2]}",
                                     i,
                                 )
+
                             70 -> sendLine(player, SPACER, i)
                             71 ->
                                 sendLine(
@@ -135,6 +138,7 @@ class StatsCommandSet : CommandSet(Privilege.ADMIN) {
                                     "Slayer Tasks: ${SlayerManager.getInstance(queryPlayer).flags.completedTasks}",
                                     i,
                                 )
+
                             72 -> sendLine(player, "Quest Points: ${queryPlayer.questRepository.points}", i)
                             73 ->
                                 sendLine(
@@ -142,35 +146,40 @@ class StatsCommandSet : CommandSet(Privilege.ADMIN) {
                                     "Ironman Mode: ${queryPlayer.ironmanManager.mode.name.lowercase()}",
                                     i,
                                 )
+
                             74 ->
                                 sendLine(
                                     player,
-                                    "Deaths: ${queryPlayer.getAttribute("$STATS_BASE:$STATS_DEATHS",0)}",
+                                    "Deaths: ${queryPlayer.getAttribute("$STATS_BASE:$STATS_DEATHS", 0)}",
                                     i,
                                 )
+
                             75 -> sendLine(player, SPACER, i)
                             76 ->
                                 sendLine(
                                     player,
-                                    "Logs Chopped: ${queryPlayer.getAttribute("$STATS_BASE:$STATS_LOGS",0)}",
+                                    "Logs Chopped: ${queryPlayer.getAttribute("$STATS_BASE:$STATS_LOGS", 0)}",
                                     i,
                                 )
+
                             77 ->
                                 sendLine(
                                     player,
-                                    "Rocks Mined: ${queryPlayer.getAttribute("$STATS_BASE:$STATS_ROCKS",0)}",
+                                    "Rocks Mined: ${queryPlayer.getAttribute("$STATS_BASE:$STATS_ROCKS", 0)}",
                                     i,
                                 )
+
                             78 ->
                                 sendLine(
                                     player,
-                                    "Fish Caught: ${queryPlayer.getAttribute("$STATS_BASE:$STATS_FISH",0)}",
+                                    "Fish Caught: ${queryPlayer.getAttribute("$STATS_BASE:$STATS_FISH", 0)}",
                                     i,
                                 )
+
                             79 ->
                                 sendLine(
                                     player,
-                                    "Essence Crafted: ${queryPlayer.getAttribute("$STATS_BASE:$STATS_RC",0)}",
+                                    "Essence Crafted: ${queryPlayer.getAttribute("$STATS_BASE:$STATS_RC", 0)}",
                                     i,
                                 )
 
@@ -181,30 +190,35 @@ class StatsCommandSet : CommandSet(Privilege.ADMIN) {
                                     "KBD KC: ${globalData.getBossCounters()[BossKillCounter.KING_BLACK_DRAGON.ordinal]}",
                                     i,
                                 )
+
                             83 ->
                                 sendLine(
                                     player,
                                     "TDs KC: ${globalData.getBossCounters()[BossKillCounter.TORMENTED_DEMONS.ordinal]}",
                                     i,
                                 )
+
                             84 ->
                                 sendLine(
                                     player,
                                     "Supreme KC: ${globalData.getBossCounters()[BossKillCounter.DAGANNOTH_SUPREME.ordinal]}",
                                     i,
                                 )
+
                             85 ->
                                 sendLine(
                                     player,
                                     "Rex KC: ${globalData.getBossCounters()[BossKillCounter.DAGANNOTH_REX.ordinal]}",
                                     i,
                                 )
+
                             86 ->
                                 sendLine(
                                     player,
                                     "Prime KC: ${globalData.getBossCounters()[BossKillCounter.DAGANNOTH_PRIME.ordinal]}",
                                     i,
                                 )
+
                             87 -> sendLine(player, "Barrows KC: ${globalData.getBarrowsLoots()}", i)
                             88 ->
                                 sendLine(
@@ -212,70 +226,93 @@ class StatsCommandSet : CommandSet(Privilege.ADMIN) {
                                     "Chaos Ele: ${globalData.getBossCounters()[BossKillCounter.CHAOS_ELEMENTAL.ordinal]}",
                                     i,
                                 )
+
                             89 ->
                                 sendLine(
                                     player,
                                     "Mole KC: ${globalData.getBossCounters()[BossKillCounter.GIANT_MOLE.ordinal]}",
                                     i,
                                 )
+
                             90 ->
                                 sendLine(
                                     player,
                                     "Sara KC: ${globalData.getBossCounters()[BossKillCounter.SARADOMIN.ordinal]}",
                                     i,
                                 )
+
                             91 ->
                                 sendLine(
                                     player,
                                     "Zammy KC: ${globalData.getBossCounters()[BossKillCounter.ZAMORAK.ordinal]}",
                                     i,
                                 )
+
                             92 ->
                                 sendLine(
                                     player,
                                     "Bandos KC: ${globalData.getBossCounters()[BossKillCounter.BANDOS.ordinal]}",
                                     i,
                                 )
+
                             93 ->
                                 sendLine(
                                     player,
                                     "Arma KC: ${globalData.getBossCounters()[BossKillCounter.ARMADYL.ordinal]}",
                                     i,
                                 )
+
                             94 ->
                                 sendLine(
                                     player,
                                     "Jad KC: ${globalData.getBossCounters()[BossKillCounter.JAD.ordinal]}",
                                     i,
                                 )
+
                             95 ->
                                 sendLine(
                                     player,
                                     "KQ KC: ${globalData.getBossCounters()[BossKillCounter.KALPHITE_QUEEN.ordinal]}",
                                     i,
                                 )
+
                             96 ->
                                 sendLine(
                                     player,
                                     "Corp KC: ${globalData.getBossCounters()[BossKillCounter.CORPOREAL_BEAST.ordinal]}",
                                     i,
                                 )
+
                             else -> sendLine(player, "", i)
                         }
                     }
+
                     1 -> {
                         when (i) {
-                            97 -> sendLine(player, "Turoths: ${PlayerStatsCounter.getKills(queryPlayer, TUROTH_IDS)}", i)
-                            68 -> sendLine(player, "Kurasks: ${PlayerStatsCounter.getKills(queryPlayer, KURASK_IDS)}", i)
+                            97 -> sendLine(
+                                player,
+                                "Turoths: ${PlayerStatsCounter.getKills(queryPlayer, TUROTH_IDS)}",
+                                i
+                            )
+
+                            68 -> sendLine(
+                                player,
+                                "Kurasks: ${PlayerStatsCounter.getKills(queryPlayer, KURASK_IDS)}",
+                                i
+                            )
+
                             69 ->
                                 sendLine(
                                     player,
-                                    "Leaf-bladed swords: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.LEAF_BLADED_SWORD_13290,
-                                    )}",
+                                    "Leaf-bladed swords: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.LEAF_BLADED_SWORD_13290,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             70 -> sendLine(player, SPACER, i)
                             71 ->
                                 sendLine(
@@ -283,15 +320,19 @@ class StatsCommandSet : CommandSet(Privilege.ADMIN) {
                                     "Gargoyles: ${PlayerStatsCounter.getKills(queryPlayer, GARGOYLE_IDS)}",
                                     i,
                                 )
+
                             72 ->
                                 sendLine(
                                     player,
-                                    "Granite mauls: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.GRANITE_MAUL_4153,
-                                    )}",
+                                    "Granite mauls: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.GRANITE_MAUL_4153,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             73 -> sendLine(player, SPACER, i)
                             74 ->
                                 sendLine(
@@ -299,41 +340,57 @@ class StatsCommandSet : CommandSet(Privilege.ADMIN) {
                                     "Spiritual mages: ${PlayerStatsCounter.getKills(queryPlayer, SPIRITUAL_MAGE_IDS)}",
                                     i,
                                 )
+
                             75 ->
                                 sendLine(
                                     player,
-                                    "Dragon boots: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.DRAGON_BOOTS_11732,
-                                    )}",
+                                    "Dragon boots: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.DRAGON_BOOTS_11732,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             76 -> sendLine(player, SPACER, i)
                             77 ->
                                 sendLine(
                                     player,
-                                    "Abyssal demons: ${PlayerStatsCounter.getKills(
-                                        queryPlayer,
-                                        NPCs.ABYSSAL_DEMON_1615,
-                                    )}",
+                                    "Abyssal demons: ${
+                                        PlayerStatsCounter.getKills(
+                                            queryPlayer,
+                                            intArrayOf(NPCs.ABYSSAL_DEMON_1615)
+                                        )
+                                    }",
                                     i,
                                 )
+
                             78 ->
                                 sendLine(
                                     player,
-                                    "Abyssal whips: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.ABYSSAL_WHIP_4151,
-                                    )}",
+                                    "Abyssal whips: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.ABYSSAL_WHIP_4151,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             79 -> sendLine(player, SPACER, i)
                             80 ->
                                 sendLine(
                                     player,
-                                    "Dark beasts: ${PlayerStatsCounter.getKills(queryPlayer, NPCs.DARK_BEAST_2783)}",
+                                    "Dark beasts: ${
+                                        PlayerStatsCounter.getKills(
+                                            queryPlayer,
+                                            intArrayOf(NPCs.DARK_BEAST_2783)
+                                        )
+                                    }",
                                     i,
                                 )
+
                             81 ->
                                 sendLine(
                                     player,
@@ -347,24 +404,28 @@ class StatsCommandSet : CommandSet(Privilege.ADMIN) {
                                     "Green Dragons: ${PlayerStatsCounter.getKills(queryPlayer, GREEN_DRAGON_IDS)}",
                                     i,
                                 )
+
                             83 ->
                                 sendLine(
                                     player,
                                     "Blue Dragons: ${PlayerStatsCounter.getKills(queryPlayer, BLUE_DRAGON_IDS)}",
                                     i,
                                 )
+
                             84 ->
                                 sendLine(
                                     player,
                                     "Red Dragons: ${PlayerStatsCounter.getKills(queryPlayer, RED_DRAGON_IDS)}",
                                     i,
                                 )
+
                             85 ->
                                 sendLine(
                                     player,
                                     "Black Dragons: ${PlayerStatsCounter.getKills(queryPlayer, BLACK_DRAGON_IDS)}",
                                     i,
                                 )
+
                             86 -> sendLine(player, SPACER, i)
                             87 ->
                                 sendLine(
@@ -372,267 +433,351 @@ class StatsCommandSet : CommandSet(Privilege.ADMIN) {
                                     "Bronze Dragons: ${PlayerStatsCounter.getKills(queryPlayer, BRONZE_DRAGON_IDS)}",
                                     i,
                                 )
+
                             88 ->
                                 sendLine(
                                     player,
                                     "Iron Dragons: ${PlayerStatsCounter.getKills(queryPlayer, IRON_DRAGON_IDS)}",
                                     i,
                                 )
+
                             89 ->
                                 sendLine(
                                     player,
                                     "Steel Dragons: ${PlayerStatsCounter.getKills(queryPlayer, STEEL_DRAGON_IDS)}",
                                     i,
                                 )
+
                             90 ->
                                 sendLine(
                                     player,
                                     "Mithril Dragons: ${PlayerStatsCounter.getKills(queryPlayer, MITHRIL_DRAGON_IDS)}",
                                     i,
                                 )
+
                             91 ->
                                 sendLine(
                                     player,
-                                    "Skeletal Wyverns: ${PlayerStatsCounter.getKills(queryPlayer, SKELETAL_WYVERN_IDS)}",
+                                    "Skeletal Wyverns: ${
+                                        PlayerStatsCounter.getKills(
+                                            queryPlayer,
+                                            SKELETAL_WYVERN_IDS
+                                        )
+                                    }",
                                     i,
                                 )
+
                             92 -> sendLine(player, SPACER, i)
                             93 ->
                                 sendLine(
                                     player,
-                                    "Draconic visages: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.DRACONIC_VISAGE_11286,
-                                    )}",
+                                    "Draconic visages: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.DRACONIC_VISAGE_11286,
+                                        )
+                                    }",
                                     i,
                                 )
 
                             else -> sendLine(player, "", i)
                         }
                     }
+
                     2 -> {
                         when (i) {
                             97 ->
                                 sendLine(
                                     player,
-                                    "Ahrim's hood: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.AHRIMS_HOOD_4708,
-                                    )}",
+                                    "Ahrim's hood: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.AHRIMS_HOOD_4708,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             68 ->
                                 sendLine(
                                     player,
-                                    "Ahrim's staff: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.AHRIMS_STAFF_4710,
-                                    )}",
+                                    "Ahrim's staff: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.AHRIMS_STAFF_4710,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             69 ->
                                 sendLine(
                                     player,
-                                    "Ahrim's robetop: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.AHRIMS_ROBETOP_4712,
-                                    )}",
+                                    "Ahrim's robetop: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.AHRIMS_ROBETOP_4712,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             70 ->
                                 sendLine(
                                     player,
-                                    "Ahrim's robeskirt: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.AHRIMS_ROBESKIRT_4714,
-                                    )}",
+                                    "Ahrim's robeskirt: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.AHRIMS_ROBESKIRT_4714,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             71 -> sendLine(player, SPACER, i)
                             72 ->
                                 sendLine(
                                     player,
-                                    "Dharok's helm: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.DHAROKS_HELM_4716,
-                                    )}",
+                                    "Dharok's helm: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.DHAROKS_HELM_4716,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             73 ->
                                 sendLine(
                                     player,
-                                    "Dharok's greataxe: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.DHAROKS_GREATAXE_4718,
-                                    )}",
+                                    "Dharok's greataxe: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.DHAROKS_GREATAXE_4718,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             74 ->
                                 sendLine(
                                     player,
-                                    "Dharok's platebody: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.DHAROKS_PLATEBODY_4720,
-                                    )}",
+                                    "Dharok's platebody: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.DHAROKS_PLATEBODY_4720,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             75 ->
                                 sendLine(
                                     player,
-                                    "Dharok's platelegs: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.DHAROKS_PLATELEGS_4722,
-                                    )}",
+                                    "Dharok's platelegs: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.DHAROKS_PLATELEGS_4722,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             76 -> sendLine(player, SPACER, i)
                             77 ->
                                 sendLine(
                                     player,
-                                    "Guthan's helm: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.GUTHANS_HELM_4724,
-                                    )}",
+                                    "Guthan's helm: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.GUTHANS_HELM_4724,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             78 ->
                                 sendLine(
                                     player,
-                                    "Guthan's warspear: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.GUTHANS_WARSPEAR_4726,
-                                    )}",
+                                    "Guthan's warspear: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.GUTHANS_WARSPEAR_4726,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             79 ->
                                 sendLine(
                                     player,
-                                    "Guthan's platebody: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.GUTHANS_PLATEBODY_4728,
-                                    )}",
+                                    "Guthan's platebody: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.GUTHANS_PLATEBODY_4728,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             80 ->
                                 sendLine(
                                     player,
-                                    "Guthan's chainskirt: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.GUTHANS_CHAINSKIRT_4730,
-                                    )}",
+                                    "Guthan's chainskirt: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.GUTHANS_CHAINSKIRT_4730,
+                                        )
+                                    }",
                                     i,
                                 )
 
                             82 ->
                                 sendLine(
                                     player,
-                                    "Karil's coif: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.KARILS_COIF_4732,
-                                    )}",
+                                    "Karil's coif: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.KARILS_COIF_4732,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             83 ->
                                 sendLine(
                                     player,
-                                    "Karil's crossbow: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.KARILS_CROSSBOW_4734,
-                                    )}",
+                                    "Karil's crossbow: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.KARILS_CROSSBOW_4734,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             84 ->
                                 sendLine(
                                     player,
-                                    "Karil's leathertop: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.KARILS_LEATHERTOP_4736,
-                                    )}",
+                                    "Karil's leathertop: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.KARILS_LEATHERTOP_4736,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             85 ->
                                 sendLine(
                                     player,
-                                    "Karil's leatherskirt: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.KARILS_LEATHERSKIRT_4738,
-                                    )}",
+                                    "Karil's leatherskirt: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.KARILS_LEATHERSKIRT_4738,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             86 -> sendLine(player, SPACER, i)
                             87 ->
                                 sendLine(
                                     player,
-                                    "Torag's helm: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.TORAGS_HELM_4745,
-                                    )}",
+                                    "Torag's helm: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.TORAGS_HELM_4745,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             88 ->
                                 sendLine(
                                     player,
-                                    "Torag's hammers: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.TORAGS_HAMMERS_4747,
-                                    )}",
+                                    "Torag's hammers: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.TORAGS_HAMMERS_4747,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             89 ->
                                 sendLine(
                                     player,
-                                    "Torag's platebody: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.TORAGS_PLATEBODY_4749,
-                                    )}",
+                                    "Torag's platebody: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.TORAGS_PLATEBODY_4749,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             90 ->
                                 sendLine(
                                     player,
-                                    "Torag's platelegs: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.TORAGS_PLATELEGS_4751,
-                                    )}",
+                                    "Torag's platelegs: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.TORAGS_PLATELEGS_4751,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             91 -> sendLine(player, SPACER, i)
                             92 ->
                                 sendLine(
                                     player,
-                                    "Verac's helm: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.VERACS_HELM_4753,
-                                    )}",
+                                    "Verac's helm: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.VERACS_HELM_4753,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             93 ->
                                 sendLine(
                                     player,
-                                    "Verac's flail: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.VERACS_FLAIL_4755,
-                                    )}",
+                                    "Verac's flail: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.VERACS_FLAIL_4755,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             94 ->
                                 sendLine(
                                     player,
-                                    "Verac's brassard: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.VERACS_BRASSARD_4757,
-                                    )}",
+                                    "Verac's brassard: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.VERACS_BRASSARD_4757,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             95 ->
                                 sendLine(
                                     player,
-                                    "Verac's plateskirt: ${PlayerStatsCounter.getRareDrops(
-                                        queryPlayer,
-                                        Items.VERACS_PLATESKIRT_4759,
-                                    )}",
+                                    "Verac's plateskirt: ${
+                                        PlayerStatsCounter.getRareDrops(
+                                            queryPlayer,
+                                            Items.VERACS_PLATESKIRT_4759,
+                                        )
+                                    }",
                                     i,
                                 )
+
                             else -> sendLine(player, "", i)
                         }
                     }

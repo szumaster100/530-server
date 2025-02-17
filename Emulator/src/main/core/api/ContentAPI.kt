@@ -6,6 +6,7 @@ import core.ServerConfig
 import core.api.item.itemDefinition
 import core.api.movement.finishedMoving
 import core.api.utils.PlayerCamera
+import core.api.utils.PlayerStatsCounter
 import core.api.utils.Vector
 import core.cache.def.impl.AnimationDefinition
 import core.cache.def.impl.ItemDefinition
@@ -3054,7 +3055,7 @@ fun announceIfRare(
 ) {
     if (item.definition.getConfiguration(ItemConfigParser.RARE_ITEM, false)) {
         sendNews("${player.username} has just received: ${item.amount} x ${item.name}.");
-        GlobalKillCounter.incrementRareDrop(player, item)
+        PlayerStatsCounter.incrementRareDrop(player, item)
     }
 }
 
