@@ -3043,6 +3043,22 @@ fun sendItemSelect(
 }
 
 /**
+ * Announces a rare item drop for the player, if the item is rare.
+ *
+ * @param player The player receiving the rare item.
+ * @param item The item being dropped.
+ */
+fun announceIfRare(
+    player: Player,
+    item: Item,
+) {
+    if (item.definition.getConfiguration(ItemConfigParser.RARE_ITEM, false)) {
+        sendNews("${player.username} has just received: ${item.amount} x ${item.name}.");
+        GlobalKillCounter.incrementRareDrop(player, item)
+    }
+}
+
+/**
  * Checks if the player has met the requirements for a given quest.
  *
  * @param player The player checking the requirements.

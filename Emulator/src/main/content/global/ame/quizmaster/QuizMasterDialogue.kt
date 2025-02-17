@@ -1,105 +1,89 @@
 package content.global.ame.quizmaster
 
 import content.data.GameAttributes
-import core.api.addItemOrBank
-import core.api.log
-import core.api.setAttribute
-import core.api.submitIndividualPulse
-import core.cache.def.impl.ItemDefinition
-import core.game.dialogue.Dialogue
+import core.ServerConfig
+import core.api.*
+import core.game.dialogue.DialogueFile
 import core.game.dialogue.FaceAnim
+import core.game.interaction.QueueStrength
 import core.game.node.entity.player.Player
-import core.game.system.task.Pulse
-import core.game.world.GameWorld
-import core.net.packet.PacketRepository
-import core.net.packet.context.DisplayModelContext
-import core.net.packet.context.DisplayModelContext.ModelType
-import core.net.packet.out.DisplayModel
-import core.plugin.Initializable
-import core.tools.Log
-import core.tools.RandomFunction
+import core.tools.END_DIALOGUE
 import org.rs.consts.Components
-import org.rs.consts.Items
-import org.rs.consts.NPCs
 
-/**
- * Handles the quiz master dialogue.
- * @author Vexia
- */
-@Initializable
-class QuizMasterDialogue : Dialogue {
-    /**
-     * The wrong button id.
-     */
-    private var wrongId = 0
+class QuizMasterDialogue : DialogueFile() {
+    companion object {
+        const val QUIZMASTER_INTERFACE = Components.MACRO_QUIZSHOW_191
+        const val QUIZMASTER_ATTRIBUTE_RETURN_LOC = "/save:original-loc"
+        const val QUIZMASTER_ATTRIBUTE_QUESTIONS_CORRECT = "/save:quizmaster:questions-correct"
+        const val QUIZMASTER_ATTRIBUTE_RANDOM_ANSWER = "quizmaster:random-answer"
 
-    constructor()
-
-    constructor(player: Player?) : super(player)
-
-    override fun newInstance(player: Player?): Dialogue {
-        return QuizMasterDialogue(player)
-    }
-
-    override fun open(vararg args: Any?): Boolean {
-        npc(
-            "WELCOME to the GREATEST QUIZ SHOW in the",
-            "whole of " + GameWorld.settings?.name + ".",
-            "<col=7f0000>O <col=6f000f>D <col=5f001f>D <col=4f002f>O <col=3f003f>N <col=2f004f>E <col=1f005f>O <col=0f006f>U <col=00007f>T",
+        val sets = arrayOf(
+            intArrayOf(8828, 8829, 8829),
+            intArrayOf(8831, 8837, 8835),
+            intArrayOf(8830, 8832, 8833),
+            intArrayOf(8835, 8834, 8831),
+            intArrayOf(8837, 8836, 8828),
         )
-        return true
+
+        fun randomQuestion(player: Player): Int {
+            val randomSet = intArrayOf(*sets.random())
+            val answer = intArrayOf(*randomSet)[0]
+            randomSet.shuffle()
+            val correctButton = randomSet.indexOf(answer) + 2
+
+            player.packetDispatch.sendModelOnInterface(randomSet[0], QUIZMASTER_INTERFACE, 6, 512)
+            player.packetDispatch.sendModelOnInterface(randomSet[1], QUIZMASTER_INTERFACE, 7, 512)
+            player.packetDispatch.sendModelOnInterface(randomSet[2], QUIZMASTER_INTERFACE, 8, 512)
+            player.packetDispatch.sendAngleOnInterface(QUIZMASTER_INTERFACE, 6, 512, 0, 0)
+            player.packetDispatch.sendAngleOnInterface(QUIZMASTER_INTERFACE, 7, 512, 0, 0)
+            player.packetDispatch.sendAngleOnInterface(QUIZMASTER_INTERFACE, 8, 512, 0, 0)
+
+            return correctButton
+        }
+
     }
 
-    override fun handle(
-        interfaceId: Int,
-        buttonId: Int,
-    ): Boolean {
-        var buttonId = buttonId
-        when (stage) {
-            0 -> player(FaceAnim.THINKING, "I'm sure I didn't ask to take part in a quiz show...").also { stage++ }
-            1 -> {
-                npc(
-                    "Please welcome our newest contestant:",
-                    RED + player.username,
-                    "Just pick the ODD ONE OUT",
-                    "Four questions right, and then you win!",
-                )
-                setAttribute(player, GameAttributes.RE_QUIZ_SCORE, 0)
-                stage++
-            }
 
-            2 -> {
-                display(QuizSet.quizSet)
-                player.interfaceManager.openChatbox(Components.MACRO_QUIZSHOW_191)
-                stage++
-            }
+    override fun handle(componentID: Int, buttonID: Int) {
+        when (stage) {
+            0 -> npc(
+                FaceAnim.FRIENDLY,
+                "WELCOME to the GREATEST QUIZ SHOW in the",
+                "whole of ${ServerConfig.SERVER_NAME}:",
+                "<col=8A0808>O D D</col>  <col=8A088A>O N E</col>  <col=08088A>O U T</col>"
+            ).also { stage++ }
+
+            1 -> player(FaceAnim.THINKING, "I'm sure I didn't ask to take part in a quiz show...").also { stage++ }
+            2 -> npc(
+                FaceAnim.FRIENDLY,
+                "Please welcome our newest contestant:",
+                "<col=FF0000>${player?.username}</col>!",
+                "Just pick the O D D  O N E  O U T.",
+                "Four questions right, and then you win!"
+            ).also { stage++ }
 
             3 -> {
-                /*
-                 * TODO: I will fix it as soon as I can.
-                 */
-                buttonId -= 1
-                val wrong = wrongId != buttonId
-                if (wrong) {
-                    setAttribute(player, GameAttributes.RE_QUIZ_SCORE, 0)
-                } else {
-                    player.incrementAttribute(GameAttributes.RE_QUIZ_SCORE)
-                }
-                if (player.getAttribute(GameAttributes.RE_QUIZ_SCORE, -1) == 4) {
-                    npc(
-                        BLUE + "CONGRATULATIONS!",
-                        "You are a " + RED + "WINNER</col>!",
-                        "Please choose your " + BLUE + "PRIZE</col>!",
+                setAttribute(player!!, QUIZMASTER_ATTRIBUTE_RANDOM_ANSWER, randomQuestion(player!!))
+                player!!.interfaceManager.openChatbox(QUIZMASTER_INTERFACE)
+                stage++
+            }
+
+            4 -> {
+                if (buttonID == getAttribute(player!!, QUIZMASTER_ATTRIBUTE_RANDOM_ANSWER, 0)) {
+                    // Correct Answer
+                    setAttribute(
+                        player!!,
+                        QUIZMASTER_ATTRIBUTE_QUESTIONS_CORRECT,
+                        getAttribute(player!!, QUIZMASTER_ATTRIBUTE_QUESTIONS_CORRECT, 0) + 1
                     )
-                    stage = 4
-                } else {
-                    if (wrong) {
+                    if (getAttribute(player!!, QUIZMASTER_ATTRIBUTE_QUESTIONS_CORRECT, 0) >= 4) {
                         npc(
-                            FaceAnim.NEUTRAL,
-                            QuizMaster.WRONG.random(),
-                            "You're supposed to pick the ODD ONE OUT.",
-                            "Now, let's start again..."
+                            FaceAnim.FRIENDLY,
+                            "<col=08088A>CONGRATULATIONS!</col>",
+                            "You are a <col=8A0808>WINNER</col>!",
+                            "Please choose your <col=08088A>PRIZE</col>!"
                         )
+                        stage = 5
                     } else {
                         npc(
                             FaceAnim.HAPPY,
@@ -107,116 +91,46 @@ class QuizMasterDialogue : Dialogue {
                             "Okay, next question!"
                         )
                     }
-                    stage = 2
-                }
-            }
+                    stage = 3
 
-            4 -> options("1000 Coins", "Mystery Box").also { stage++ }
-            5 -> {
-                if (buttonId == 1) {
-                    addItemOrBank(player, QuizMaster.COINS, 1000)
                 } else {
-                    addItemOrBank(player, QuizMaster.MYSTERY_BOX, 1)
-                    setAttribute(player, GameAttributes.RE_QUIZ_REWARD, true)
+                    // Wrong Answer
+                    npc(
+                        FaceAnim.NEUTRAL,
+                        QuizMaster.WRONG.random(),
+                        "You're supposed to pick the ODD ONE OUT.",
+                        "Now, let's start again..."
+                    )
+                    stage = 3
                 }
-                end()
-                QuizMaster.cleanup(player)
-                submitIndividualPulse(
-                    player,
-                    object : Pulse(1) {
-                        override fun pulse(): Boolean {
-                            QuizMaster.cleanup(player)
-                            return true
+            }
+
+            5 -> options("1000 Coins", "Mystery Box").also { stage++ }
+            6 -> {
+                resetAnimator(player!!)
+                QuizMaster.cleanup(player!!)
+                when (buttonID) {
+                    1 -> {
+                        queueScript(player!!, 0, QueueStrength.SOFT) {
+                            addItemOrDrop(player!!, QuizMaster.COINS, 1000)
+                            return@queueScript stopExecuting(player!!)
                         }
-                    },
-                )
-                return false
-            }
+                    }
 
-            else -> log(this::class.java, Log.WARN, RED + "UNHANDLED QUIZ STAGE $stage, $buttonId, $interfaceId")
-        }
-        return true
-    }
-
-    /**
-     * Displays a quiz.
-     * @param quiz the quiz.
-     */
-    private fun display(quiz: Array<QuizSet?>) {
-        val correct = quiz[0]
-        val wrong = quiz[1]
-        val childs: MutableList<Int> = ArrayList()
-        childs.add(1)
-        childs.add(2)
-        childs.add(3)
-        childs.shuffle()
-        for (i in 0..1) {
-            sendItem(correct!!.getModel(i), childs[i])
-        }
-        wrongId = childs[2]
-        sendItem(wrong!!.getModel(RandomFunction.random(wrong.ids.size)), wrongId)
-    }
-
-    /**
-     * Sends an item.
-     * @param model the model.
-     * @param index the index.
-     */
-    private fun sendItem(
-        model: Int,
-        index: Int,
-    ) {
-        PacketRepository.send(
-            DisplayModel::class.java,
-            DisplayModelContext(player, ModelType.MODEL, model, 1, Components.MACRO_QUIZSHOW_191, 6 + index),
-        )
-    }
-
-    override fun getIds(): IntArray {
-        return intArrayOf(NPCs.QUIZ_MASTER_2477)
-    }
-}
-
-/**
- * Represents a quiz set.
- * @author Vexia
- */
-enum class QuizSet(
-    internal vararg val ids: Int,
-) {
-    FISH(Items.NULL_6189, Items.NULL_6190),
-    WEAPONRY(Items.NULL_6191, Items.NULL_6192),
-    ARMOUR(Items.NULL_6193, Items.NULL_6194),
-    TOOLS(Items.NULL_6195, Items.NULL_6196),
-    JEWELLERY(Items.NULL_6197, Items.NULL_6198),
-    ;
-
-    /**
-     * Gets the model id.
-     * @param index the index.
-     * @return the model.
-     */
-    fun getModel(index: Int): Int {
-        return ItemDefinition.forId(ids[index]).interfaceModelId
-    }
-
-    companion object {
-        val quizSet: Array<QuizSet?>
-            /**
-             * Gets the quiz set.
-             * @return the set.
-             */
-            get() {
-                val sets: MutableList<QuizSet?> = ArrayList()
-                for (s in QuizSet.values()) {
-                    sets.add(s)
+                    2 -> {
+                        queueScript(player!!, 0, QueueStrength.SOFT) {
+                            addItemOrDrop(player!!, QuizMaster.MYSTERY_BOX)
+                            setAttribute(player!!, GameAttributes.RE_QUIZ_REWARD, true)
+                            return@queueScript stopExecuting(player!!)
+                        }
+                    }
                 }
-                sets.shuffle()
-                val set = arrayOfNulls<QuizSet>(2)
-                set[0] = sets[0]
-                sets.remove(set[0])
-                set[1] = sets[RandomFunction.random(sets.size)]
-                return set
+                removeAttribute(player!!, QUIZMASTER_ATTRIBUTE_RETURN_LOC)
+                removeAttribute(player!!, QUIZMASTER_ATTRIBUTE_QUESTIONS_CORRECT)
+                removeAttribute(player!!, QUIZMASTER_ATTRIBUTE_RANDOM_ANSWER)
+                stage = END_DIALOGUE
+                end()
             }
+        }
     }
 }

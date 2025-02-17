@@ -60,6 +60,7 @@ credentials.json
 data/eco/offer_dispatch_db.emp
 data/logs/**
 data/players/**
+data/playerstats/**
 data/profile/**
 docker
 gradle

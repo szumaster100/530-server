@@ -16,6 +16,8 @@ import core.game.node.entity.player.link.diary.DiaryType
 import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import core.game.system.command.sets.STATS_BASE
+import core.game.system.command.sets.STATS_RC
 import core.game.world.GameWorld.ticks
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
@@ -135,6 +137,7 @@ class RunecraftPulse(
 
             if (removeItem(player, item) && hasSpaceFor(player, i)) {
                 addItem(player, i.id, total)
+                player.incrementAttribute("/save:$STATS_BASE:$STATS_RC", amount)
                 sendMessage(
                     player,
                     "You bind the temple's power into " +

@@ -21,6 +21,8 @@ import core.tools.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static core.api.ContentAPIKt.announceIfRare;
+
 /**
  * Holds and handles the NPC drop tables.
  *
@@ -107,6 +109,7 @@ public final class NPCDropTables {
             }
             return;
         }
+        announceIfRare(player, item);
         if (item.getId() == 6199 && player instanceof Player) {
             player.sendMessage("<col=990000>A mystery box has fallen on the ground.</col>");
         }

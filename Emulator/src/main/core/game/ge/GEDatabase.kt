@@ -2,20 +2,20 @@ package core.game.ge
 
 import core.ServerConfig
 import core.cache.def.impl.ItemDefinition
-import core.tools.integration.mysql.DatabaseManager
+import core.tools.integration.mysql.SQLiteProvider
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 import java.sql.Connection
 
 object GEDatabase {
-    lateinit var db: DatabaseManager
+    lateinit var db: SQLiteProvider
 
     fun init() {
         init(ServerConfig.GRAND_EXCHANGE_DATA_PATH + "grandexchange.db")
     }
 
     fun init(path: String) {
-        db = DatabaseManager(path, expectedTables)
+        db = SQLiteProvider(path, expectedTables)
         db.initTables { createdTable: String ->
             if (createdTable == "price_index") {
                 populateInitialPriceIndex()

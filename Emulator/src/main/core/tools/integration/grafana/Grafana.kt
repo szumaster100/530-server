@@ -3,7 +3,7 @@ package core.tools.integration.grafana
 import core.ServerConfig
 import core.api.StartupListener
 import core.game.bots.AIRepository
-import core.tools.integration.mysql.DatabaseManager
+import core.tools.integration.mysql.SQLiteProvider
 import kotlinx.coroutines.Job
 import org.json.simple.JSONObject
 import java.util.*
@@ -11,7 +11,7 @@ import java.util.*
 class Grafana : StartupListener {
     override fun startup() {
         if (!ServerConfig.GRAFANA_LOGGING) return
-        db = DatabaseManager(ServerConfig.GRAFANA_PATH + "grafana.db", expectedTables)
+        db = SQLiteProvider(ServerConfig.GRAFANA_PATH + "grafana.db", expectedTables)
         db.initTables()
         db.pruneOldData(ServerConfig.GRAFANA_TTL_DAYS)
     }
@@ -38,7 +38,7 @@ class Grafana : StartupListener {
         var packetProcessTime = 0
         var botPulseTime = 0
         var otherPulseTime = 0
-        lateinit var db: DatabaseManager
+        lateinit var db: SQLiteProvider
         var cycleData = LinkedList<GrafanaData>()
         var currentTask: Job? = null
 

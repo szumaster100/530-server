@@ -10,7 +10,7 @@ import java.sql.Connection
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantLock
 
-class DatabaseManager(
+class SQLiteProvider(
     private val path: String,
     private val expectedTables: HashMap<String, String>? = null,
 ) {

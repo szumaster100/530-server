@@ -7,6 +7,8 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import core.game.system.command.sets.STATS_BASE
+import core.game.system.command.sets.STATS_FISH
 import core.game.system.task.Pulse
 import core.game.world.GameWorld.Pulser
 import core.game.world.map.Location
@@ -117,6 +119,8 @@ class FishingPulse(
                 player.dispatch(ResourceProducedEvent(fish!!.id, 1, node!!))
                 val item = fish!!
                 addItem(player, item.id)
+                var fishCaught = player.getAttribute(STATS_BASE + ":" + STATS_FISH, 0)
+                setAttribute(player, "/save:$STATS_BASE:$STATS_FISH", ++fishCaught)
                 rewardXP(player, Skills.FISHING, fish!!.experience)
                 message(2)
             }

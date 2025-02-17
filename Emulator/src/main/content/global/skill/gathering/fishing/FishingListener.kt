@@ -16,6 +16,8 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
+import core.game.system.command.sets.STATS_BASE
+import core.game.system.command.sets.STATS_FISH
 import core.game.world.GameWorld
 import core.game.world.map.path.Pathfinder
 import core.tools.RandomFunction
@@ -127,6 +129,8 @@ class FishingListener : InteractionListener {
                 sendMessage(player, msg)
                 addItemOrDrop(player, item.id, item.amount)
             }
+
+            player.incrementAttribute("/save:$STATS_BASE:$STATS_FISH")
 
             var xp = fish.experience
             if ((item.id == Items.RAW_SWORDFISH_371 && inEquipment(player, Items.SWORDFISH_GLOVES_12860)) ||

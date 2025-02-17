@@ -1,6 +1,11 @@
 package core.game.system.timer.impl
 
-import core.api.*
+import core.api.EquipmentSlot
+import core.api.Event
+import core.api.getDynLevel
+import core.api.getItemFromEquipment
+import core.api.getOrStartTimer
+import core.api.getStatLevel
 import core.game.event.EventHook
 import core.game.event.PrayerActivatedEvent
 import core.game.event.PrayerDeactivatedEvent

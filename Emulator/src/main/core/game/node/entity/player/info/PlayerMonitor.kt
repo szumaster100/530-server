@@ -6,7 +6,7 @@ import core.game.container.Container
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.tools.Log
-import core.tools.integration.mysql.DatabaseManager
+import core.tools.integration.mysql.SQLiteProvider
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import java.sql.Connection
@@ -15,7 +15,7 @@ import java.util.concurrent.LinkedBlockingQueue
 object PlayerMonitor {
     private val eventQueue = LinkedBlockingQueue<LogEvent>()
     private var activeTask: Job? = null
-    private lateinit var db: DatabaseManager
+    private lateinit var db: SQLiteProvider
 
     var expectedTables =
         hashMapOf(
@@ -173,7 +173,7 @@ object PlayerMonitor {
     fun init() {
         if (!this::db.isInitialized) {
             var path = ServerConfig.LOGS_PATH + "playerlogs.db"
-            db = DatabaseManager(path, expectedTables)
+            db = SQLiteProvider(path, expectedTables)
             db.initTables()
         }
     }

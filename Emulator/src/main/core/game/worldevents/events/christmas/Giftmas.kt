@@ -1,5 +1,6 @@
 package core.game.worldevents.events.christmas
 
+import content.data.GameAttributes
 import core.ServerStore
 import core.ServerStore.Companion.getBoolean
 import core.ServerStore.Companion.getInt
@@ -44,7 +45,7 @@ class Giftmas :
     fun init() {
         try {
             on(Items.MYSTERY_BOX_6199, IntType.ITEM, "open") { player, node ->
-                /*
+
                 val isRandom = player.getAttribute(GameAttributes.RE_QUIZ_REWARD, false)
                 val enabled = checkActive()
 
@@ -52,27 +53,27 @@ class Giftmas :
                     removeItem(player, node.asItem())
                     return@on true
                 }
-                 */
+
 
                 if (!removeItem(player, node.asItem())) return@on true
 
                 val loot = MBOX_LOOT.roll().first()
-                /*
+
                 if (isRandom) {
                     removeAttribute(player, GameAttributes.RE_QUIZ_REWARD)
                     MBOX_QUIZ.roll().first()
                 } else {
                     MBOX_LOOT.roll().first()
                 }
-                 */
+
 
                 sendDialogue(
                     player,
-                    /*
+
                     if (loot.id == 956)
                         "Inside the box you find a flier! Better luck next time!"
                     else
-                     */
+
                     "You open the mystery box and find ${loot.amount}x ${loot.name.lowercase()}!",
                 )
 
