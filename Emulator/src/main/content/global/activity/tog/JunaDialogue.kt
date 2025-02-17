@@ -585,16 +585,6 @@ class JunaDialogue(
                 }
 
             23 -> {
-                var x = player.location.regionX
-                var y = player.location.regionY
-
-                val xB = x + 25
-                val yB = y + 28
-
-                PacketRepository.send(
-                    CameraViewPacket::class.java,
-                    CameraContext(player, CameraContext.CameraType.ROTATION, xB, yB, 400, 1, 20),
-                )
                 npc(
                     FaceAnim.OLD_DEFAULT,
                     "There is a cave on the south side of the chasm that is",
@@ -612,7 +602,6 @@ class JunaDialogue(
                     "and bring it to me, and then I will let you catch the tears.",
                 )
                 player.questRepository.setStageNonmonotonic(player.questRepository.forIndex(120), 1)
-                resetCamera(player)
                 stage = END_DIALOGUE
             }
             25 -> player("I have a bowl.").also { stage++ }
