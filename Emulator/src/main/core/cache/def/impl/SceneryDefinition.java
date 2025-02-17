@@ -194,11 +194,6 @@ public class SceneryDefinition extends Definition<Scenery> {
                 return;
             }
             SceneryDefinition.getDefinitions().put(objectId, def);
-            if (def.id == 13523) {
-                String[] options = {"Rub", null, null, null, "Remove"};
-                def.setOptions(options);
-                def.printOptions();
-            }
             data = null;
         }
     }
