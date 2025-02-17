@@ -71,7 +71,7 @@ class CaveZone :
             player.unlock()
             player.animator.animate(
                 Animation.RESET,
-                Graphics(302),
+                Graphics(org.rs.consts.Graphics.ROCKS_FALLING_ON_HEAD_302),
             )
             player.impactHandler.manualHit(player, RandomFunction.random(1, 7), ImpactHandler.HitsplatType.NORMAL)
         }

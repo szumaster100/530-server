@@ -5,6 +5,7 @@ import core.game.dialogue.FaceAnim
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
 class KazgarDialogue(
@@ -45,6 +46,6 @@ class KazgarDialogue(
     }
 
     override fun getIds(): IntArray {
-        return intArrayOf(2085)
+        return intArrayOf(NPCs.MISTAG_2085)
     }
 }

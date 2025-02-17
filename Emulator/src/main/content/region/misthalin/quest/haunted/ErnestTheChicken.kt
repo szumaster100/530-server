@@ -23,7 +23,6 @@ class ErnestTheChicken :
     ) {
         super.drawJournal(player, stage)
         var line = 11
-        player ?: return
         if (getStage(player) == 0) {
             line(player, "I can start this quest by speaking to !!Veronica?? who is", line++)
             line(player, "outside !!Draynor Manor??.", line++)
@@ -69,7 +68,6 @@ class ErnestTheChicken :
         player.unlock()
         sendMessage(player, "Ernest hands you 300 coins.")
         super.finish(player)
-        player ?: return
         var line = 10
         drawReward(player, "4 Quest Points", line++)
         drawReward(player, "300 coins", line++)

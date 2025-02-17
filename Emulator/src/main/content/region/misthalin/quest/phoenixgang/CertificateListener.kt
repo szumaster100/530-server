@@ -1,4 +1,4 @@
-package content.region.misthalin.quest.phoenixgang.handlers
+package content.region.misthalin.quest.phoenixgang
 
 import core.api.removeItem
 import core.api.replaceSlot

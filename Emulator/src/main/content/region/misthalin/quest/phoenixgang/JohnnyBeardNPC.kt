@@ -1,6 +1,5 @@
-package content.region.misthalin.quest.phoenixgang.handlers
+package content.region.misthalin.quest.phoenixgang
 
-import content.region.misthalin.quest.phoenixgang.ShieldofArrav
 import core.api.inBank
 import core.api.inInventory
 import core.api.quest.getQuestStage
@@ -31,10 +30,7 @@ class JohnnyBeardNPC : AbstractNPC {
         if (killer is Player) {
             val player = killer.asPlayer()
             val quest = getQuestStage(player, Quests.SHIELD_OF_ARRAV)
-            if (quest == 60 &&
-                ShieldofArrav.isPhoenixMission(player) &&
-                (!inInventory(player, Items.INTEL_REPORT_761) && !inBank(player, Items.INTEL_REPORT_761))
-            ) {
+            if (quest == 60 && ShieldofArrav.isPhoenixMission(player) && (!inInventory(player, Items.INTEL_REPORT_761) && !inBank(player, Items.INTEL_REPORT_761))) {
                 GroundItemManager.create(ShieldofArrav.INTEL_REPORT, getLocation(), player)
             }
         }

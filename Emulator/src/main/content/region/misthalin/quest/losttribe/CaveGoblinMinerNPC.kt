@@ -16,7 +16,7 @@ class CaveGoblinMinerNPC(
     val forceChat = arrayOf("Nooo!", "Eeek!")
 
     init {
-        originallyMiner = id > 2073
+        originallyMiner = id > NPCs.CAVE_GOBLIN_GUARD_2073
     }
 
     override fun construct(

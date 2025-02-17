@@ -8,12 +8,14 @@ import core.game.node.entity.npc.NPC
 import core.tools.END_DIALOGUE
 import core.tools.START_DIALOGUE
 import org.rs.consts.Items
+import org.rs.consts.NPCs
 import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 class DukeHoracioLostTribeDialogue(
     val questStage: Int,
 ) : DialogueFile() {
-    private val sigmund = NPC(2082)
+    private val sigmund = NPC(NPCs.SIGMUND_2082)
 
     override fun handle(
         componentID: Int,
@@ -278,7 +280,7 @@ class DukeHoracioLostTribeDialogue(
                     )
                     addItemOrDrop(player!!, Items.PEACE_TREATY_5012)
                     setQuestStage(player!!, Quests.THE_LOST_TRIBE, 50)
-                    setVarbit(player!!, 532, 9, true)
+                    setVarbit(player!!, Vars.VARBIT_QUEST_LOST_TRIBE_CAVE_HOLE_STATUS_532, 9, true)
                     stage = END_DIALOGUE
                 }
             }

@@ -113,9 +113,7 @@ class LostTribe : Quest(Quests.THE_LOST_TRIBE, 84, 83, 1) {
         drawReward(player, "Freedom of the", ln++)
         drawReward(player, "Dorgeshuun mines.", ln)
         rewardXP(player, Skills.MINING, 3000.0)
-        if (!player.inventory.add(Item(Items.RING_OF_LIFE_2570))) {
-            GroundItemManager.create(Item(Items.RING_OF_LIFE_2570), player)
-        }
+        addItemOrDrop(player, Items.RING_OF_LIFE_2570)
         setVarp(player, 465, 11)
     }
 
