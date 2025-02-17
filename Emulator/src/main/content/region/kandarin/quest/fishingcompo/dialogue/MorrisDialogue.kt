@@ -7,6 +7,7 @@ import core.game.dialogue.FaceAnim
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
 class MorrisDialogue(
@@ -59,6 +60,6 @@ class MorrisDialogue(
     }
 
     override fun getIds(): IntArray {
-        return intArrayOf(227)
+        return intArrayOf(NPCs.MORRIS_227)
     }
 }

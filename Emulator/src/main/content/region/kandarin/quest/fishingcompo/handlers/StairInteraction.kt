@@ -10,6 +10,7 @@ import core.game.node.scenery.Scenery
 import core.game.world.repository.Repository.findNPC
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Quests
 
 @Initializable
 class StairInteraction : PluginInteraction() {
@@ -17,7 +18,7 @@ class StairInteraction : PluginInteraction() {
         player: Player,
         node: Node,
     ): Boolean {
-        if (!player.getQuestRepository().isComplete("Fishing Contest")) {
+        if (!player.getQuestRepository().isComplete(Quests.FISHING_CONTEST)) {
             val `object` = node.asScenery()
             when (`object`.id) {
                 57 -> {

@@ -6,6 +6,7 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
 class GrandpaJackDialogue(
@@ -28,9 +29,7 @@ class GrandpaJackDialogue(
     ): Boolean {
         when (stage) {
             0 -> {
-                interpreter.sendOptions(
-                    "Choose an option:",
-                    "Tell me a story then.",
+                options("Tell me a story then.",
                     "Are you entering the fishing competition?",
                     "Sorry, I don't have time now.",
                     "Can I buy one of your fishing rods?",
@@ -68,9 +67,7 @@ class GrandpaJackDialogue(
                 }
 
             4 -> {
-                interpreter.sendOptions(
-                    "Choose an option:",
-                    "I don't suppose you could give me any hints?",
+                options("I don't suppose you could give me any hints?",
                     "That's less competition for me then.",
                 )
                 stage++
@@ -90,9 +87,7 @@ class GrandpaJackDialogue(
                 }
 
             6 -> {
-                interpreter.sendOptions(
-                    "Choose an option:",
-                    "Very fair, I'll buy that rod!",
+                options("Very fair, I'll buy that rod!",
                     "That's too rich for me, I'll go to Catherby.",
                 )
                 stage++
@@ -303,6 +298,6 @@ class GrandpaJackDialogue(
     }
 
     override fun getIds(): IntArray {
-        return intArrayOf(230)
+        return intArrayOf(NPCs.GRANDPA_JACK_230)
     }
 }

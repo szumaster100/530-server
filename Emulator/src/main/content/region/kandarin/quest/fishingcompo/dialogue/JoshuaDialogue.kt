@@ -4,6 +4,7 @@ import core.game.dialogue.Dialogue
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
 class JoshuaDialogue(
@@ -21,9 +22,7 @@ class JoshuaDialogue(
     ): Boolean {
         when (stage) {
             0 -> {
-                interpreter.sendOptions(
-                    "Choose an option:",
-                    "Um... nothing really...",
+                options("Um... nothing really...",
                     "Can I fish here instead of you?",
                     "Do you have any tips for me?",
                 )
@@ -87,6 +86,6 @@ class JoshuaDialogue(
     }
 
     override fun getIds(): IntArray {
-        return intArrayOf(229)
+        return intArrayOf(NPCs.JOSHUA_229)
     }
 }

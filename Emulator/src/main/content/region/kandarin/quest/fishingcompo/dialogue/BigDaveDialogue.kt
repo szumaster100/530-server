@@ -4,6 +4,7 @@ import core.game.dialogue.Dialogue
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
 class BigDaveDialogue(
@@ -21,9 +22,7 @@ class BigDaveDialogue(
     ): Boolean {
         when (stage) {
             0 -> {
-                interpreter.sendOptions(
-                    "Choose an option:",
-                    "So you're the champ?",
+                options("So you're the champ?",
                     "Can I fish here instead of you?",
                     "Do you have any tips for me?",
                 )
@@ -86,6 +85,6 @@ class BigDaveDialogue(
     }
 
     override fun getIds(): IntArray {
-        return intArrayOf(228)
+        return intArrayOf(NPCs.BIG_DAVE_228)
     }
 }

@@ -11,6 +11,7 @@ import core.game.node.entity.player.Player
 import core.game.world.map.Location
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.NPCs
 
 @Initializable
 class FishingSpotInteraction : PluginInteraction() {
@@ -89,7 +90,7 @@ class FishingSpotInteraction : PluginInteraction() {
     }
 
     override fun newInstance(arg: Any?): Plugin<Any> {
-        setIds(intArrayOf(309))
+        setIds(intArrayOf(NPCs.FISHING_SPOT_309))
         PluginInteractionManager.register(this, PluginInteractionManager.InteractionType.NPC)
         return this
     }

@@ -1,12 +1,17 @@
 package content.region.kandarin.quest.fishingcompo.dialogue
 
 import content.region.kandarin.quest.fishingcompo.FishingContest
+import core.api.*
+import core.api.quest.finishQuest
+import core.api.quest.getQuestStage
+import core.api.quest.setQuestStage
+import core.api.quest.updateQuestTab
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
-import core.game.node.item.GroundItemManager
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 import org.rs.consts.Quests
 
 @Initializable
@@ -15,23 +20,20 @@ class DwarfDialogue(
 ) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
-        val questStage = player.getQuestRepository().getStage("Fishing Contest")
-        if (questStage < 20 && questStage > 0 && !player.inventory.containsItem(FishingContest.FISHING_PASS)) {
+        val questStage = getQuestStage(player, Quests.FISHING_CONTEST)
+        if (questStage in 1..19 && !inInventory(player, FishingContest.FISHING_PASS.id)) {
             player("I lost my fishing pass...")
             stage = 1000
             return true
         }
-        if (player.inventory.containsItem(FishingContest.FISHING_TROPHY) &&
-            player.getAttribute(
-                "fishing_contest:won",
-                false,
-            )
+        if (inInventory(player, FishingContest.FISHING_TROPHY.id) &&
+            player.getAttribute("fishing_contest:won", false)
         ) {
             npc(FaceAnim.OLD_NORMAL, "Have you won yet?")
             stage = 2000
             return true
         }
-        if (player.getQuestRepository().getStage("Fishing Contest") >= 10 &&
+        if (getQuestStage(player, Quests.FISHING_CONTEST) >= 10 &&
             !player.getAttribute(
                 "fishing_contest:won",
                 false,
@@ -41,7 +43,7 @@ class DwarfDialogue(
             stage = 1500
             return true
         }
-        if (player.getQuestRepository().getStage("Fishing Contest") == 100) {
+        if (getQuestStage(player, Quests.FISHING_CONTEST) == 100) {
             npc(
                 FaceAnim.OLD_NORMAL,
                 "Welcome, oh great fishing champion!",
@@ -229,11 +231,9 @@ class DwarfDialogue(
             }
 
             57 -> {
-                player.dialogueInterpreter.sendDialogue("You got the Fishing Contest Pass!")
-                if (!player.inventory.add(FishingContest.FISHING_PASS)) {
-                    GroundItemManager.create(FishingContest.FISHING_PASS, player.location)
-                }
-                player.getQuestRepository().getQuest(Quests.FISHING_CONTEST).start(player)
+                sendItemDialogue(player, FishingContest.FISHING_PASS, "You got the Fishing Contest Pass!")
+                addItemOrDrop(player, FishingContest.FISHING_PASS.id, 1)
+                setQuestStage(player, Quests.FISHING_CONTEST, 10)
                 stage++
             }
 
@@ -249,7 +249,7 @@ class DwarfDialogue(
                     "Hmm. It's a good job they sent us spares.",
                     "There you go. Try not to lose that one.",
                 )
-                player.inventory.add(FishingContest.FISHING_PASS)
+                addItem(player, FishingContest.FISHING_PASS.id, 1)
                 stage++
             }
 
@@ -299,9 +299,11 @@ class DwarfDialogue(
             }
 
             2004 -> {
-                player.getQuestRepository().getQuest(Quests.FISHING_CONTEST).finish(player)
-                player.inventory.remove(FishingContest.FISHING_TROPHY)
                 end()
+                if (removeItem(player, FishingContest.FISHING_TROPHY)) {
+                    finishQuest(player, Quests.FISHING_CONTEST)
+                    updateQuestTab(player)
+                }
             }
 
             1500 -> {
@@ -319,6 +321,6 @@ class DwarfDialogue(
     }
 
     override fun getIds(): IntArray {
-        return intArrayOf(232, 3679)
+        return intArrayOf(NPCs.AUSTRI_232, NPCs.VESTRI_3679)
     }
 }

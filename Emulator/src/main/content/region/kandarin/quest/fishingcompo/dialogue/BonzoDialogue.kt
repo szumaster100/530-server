@@ -1,12 +1,15 @@
 package content.region.kandarin.quest.fishingcompo.dialogue
 
 import content.region.kandarin.quest.fishingcompo.FishingContest
+import core.api.*
 import core.game.activity.ActivityManager
 import core.game.dialogue.Dialogue
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.QuestRepository
 import core.game.node.item.Item
 import core.plugin.Initializable
+import org.rs.consts.Items
+import org.rs.consts.NPCs
 
 @Initializable
 class BonzoDialogue(
@@ -15,7 +18,7 @@ class BonzoDialogue(
     override fun open(vararg args: Any): Boolean {
         stage =
             if (args.size < 2) {
-                if (player.inventory.containsItem(FishingContest.FISHING_ROD)) {
+                if (inInventory(player, FishingContest.FISHING_ROD.id)) {
                     npc("Roll up, roll up! Enter the great Hemenster", "Fishing Contest! Only 5gp entrance fee!")
                     0
                 } else {
@@ -63,14 +66,11 @@ class BonzoDialogue(
             }
 
             11 ->
-                if (player.inventory.remove(Item(995, 5))) {
-                    stage = 20
-                    player.dialogueInterpreter.sendDialogue("You pay Bonzo 5 coins")
+                if(!removeItem(player, Item(Items.COINS_995, 5), Container.INVENTORY)){
+                    player("I don't have the 5gp though...").also { stage++ }
                 } else {
-                    player("I don't have the 5gp though...")
-                    stage++
+                    sendDialogue(player, "You pay Bonzo 5 coins").also { stage = 20 }
                 }
-
             12 -> {
                 npc("No pay, no play.")
                 stage = 100
@@ -102,17 +102,14 @@ class BonzoDialogue(
 
             100 -> end()
             1000 ->
-                if (player.inventory.containsItem(FishingContest.RAW_GIANT_CARP)) {
-                    player("I have a fish.")
-                    stage++
+                if (!inInventory(player, FishingContest.RAW_GIANT_CARP.id)) {
+                    npc("And our winner is... the stranger who", "was fishing over by the pipes!").also { stage = 100 }
                 } else {
-                    npc("And our winner is... the stranger who", "was fishing over by the pipes!")
-                    stage = 100
+                    player("I have a fish.").also { stage++ }
                 }
 
             1001 -> {
-                player.dialogueInterpreter.sendDialogue("You hand over your fish.")
-                stage++
+                sendDialogue(player, "You hand over your fish.").also { stage++ }
             }
 
             1002 -> {
@@ -126,10 +123,15 @@ class BonzoDialogue(
             }
 
             1003 -> {
-                player.dialogueInterpreter.sendDialogue("You are given the Hemenester fishing trophy!")
-                player.inventory.add(FishingContest.FISHING_TROPHY)
-                player.inventory.remove(FishingContest.RAW_GIANT_CARP)
-                player.getQuestRepository().setStage(QuestRepository.getQuests()["Fishing Contest"], 20)
+                if(removeItem(player, FishingContest.RAW_GIANT_CARP)) {
+                    sendItemDialogue(
+                        player,
+                        FishingContest.FISHING_TROPHY.id,
+                        "You are given the Hemenester fishing trophy!"
+                    )
+                    player.inventory.add(FishingContest.FISHING_TROPHY)
+                    player.getQuestRepository().setStage(QuestRepository.getQuests()["Fishing Contest"], 20)
+                }
                 stage = 100
             }
         }
@@ -137,6 +139,6 @@ class BonzoDialogue(
     }
 
     override fun getIds(): IntArray {
-        return intArrayOf(225)
+        return intArrayOf(NPCs.BONZO_225)
     }
 }

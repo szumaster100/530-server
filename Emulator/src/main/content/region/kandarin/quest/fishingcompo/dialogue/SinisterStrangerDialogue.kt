@@ -4,6 +4,7 @@ import core.game.dialogue.Dialogue
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
+import org.rs.consts.NPCs
 
 @Initializable
 class SinisterStrangerDialogue(
@@ -21,7 +22,7 @@ class SinisterStrangerDialogue(
     ): Boolean {
         when (stage) {
             0 -> {
-                interpreter.sendOptions("Choose an option:", "...?", "Who are you?", "So... you like fishing?")
+                options("...?", "Who are you?", "So... you like fishing?")
                 stage++
             }
 
@@ -44,8 +45,7 @@ class SinisterStrangerDialogue(
                 }
 
             2 -> {
-                interpreter.sendOptions(
-                    "Choose an option:",
+                options(
                     "You're a vampire aren't you?",
                     "Is it nice there?",
                     "So you like fishing?",
@@ -72,8 +72,7 @@ class SinisterStrangerDialogue(
                 }
 
             4 -> {
-                interpreter.sendOptions(
-                    "Choose an option:",
+                options(
                     "You're a vampire aren't you?",
                     "So you like fishing?",
                     "Well, good luck with the fishing.",
@@ -186,6 +185,6 @@ class SinisterStrangerDialogue(
     }
 
     override fun getIds(): IntArray {
-        return intArrayOf(3677)
+        return intArrayOf(NPCs.SINISTER_STRANGER_3677)
     }
 }
