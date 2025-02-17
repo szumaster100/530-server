@@ -10899,6 +10899,10 @@
   },
   {
     "examine": "A vicious attacking camel.",
+    "melee_animation": "9666",
+    "range_animation": "9666",
+    "defence_animation": "9667",
+    "magic_animation": "9666",
     "death_animation": "9674",
     "name": "Ugthanki",
     "defence_level": "1",

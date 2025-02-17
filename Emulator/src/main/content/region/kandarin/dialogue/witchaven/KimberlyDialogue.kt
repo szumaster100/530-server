@@ -14,7 +14,7 @@ class KimberlyDialogue(
 ) : Dialogue(player) {
     override fun open(vararg args: Any?): Boolean {
         npc = args[0] as NPC
-        npc(FaceAnim.FRIENDLY, "Hello there.").also { stage = END_DIALOGUE }
+        npc(FaceAnim.CHILD_SAD, "Hello there.").also { stage = END_DIALOGUE }
         return true
     }
 
