@@ -2,7 +2,7 @@ package content.region.kandarin.handlers
 
 import content.global.handlers.iface.FairyRing
 import content.global.handlers.item.withnpc.ChaliceOnKingArthurListener
-import content.region.kandarin.quest.grail.dialogue.GalahadHGDialogue
+import content.region.kandarin.quest.grail.dialogue.GalahadDialogue
 import content.region.kandarin.quest.scorpcatcher.dialogue.ThormacDialogueFile
 import core.api.hasLevelDyn
 import core.api.inBorders
@@ -334,7 +334,7 @@ class SeersVillageAchievementDiary : DiaryEventHookBase(DiaryType.SEERS_VILLAGE)
                 }
             }
 
-            is GalahadHGDialogue -> {
+            is GalahadDialogue -> {
                 if (event.currentStage == 3) {
                     finishTask(
                         player,

@@ -9,7 +9,7 @@ import core.game.world.repository.Repository
 import core.tools.END_DIALOGUE
 import org.rs.consts.NPCs
 
-class BKTitanHGDialogue(
+class BlackKnightTitanDialogue(
     val forced: Boolean,
 ) : DialogueFile() {
     override fun handle(

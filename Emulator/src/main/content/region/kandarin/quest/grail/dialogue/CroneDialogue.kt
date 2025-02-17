@@ -10,7 +10,7 @@ import core.tools.END_DIALOGUE
 import org.rs.consts.NPCs
 import org.rs.consts.Quests
 
-class CroneHGDialogue(
+class CroneDialogue(
     val forced: Boolean,
 ) : DialogueFile() {
     var STAGE_SIX_HEADS = 5

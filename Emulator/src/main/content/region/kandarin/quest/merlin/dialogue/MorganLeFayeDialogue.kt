@@ -14,7 +14,7 @@ import core.tools.END_DIALOGUE
 import org.rs.consts.NPCs
 import org.rs.consts.Quests
 
-class MorganLeFayeDialogueFile : DialogueFile() {
+class MorganLeFayeDialogue : DialogueFile() {
     var STAGE_VANISH = 50
     var STAGE_EXCALIBUR = 15
     var STAGE_MAGIC_WORDS = 32

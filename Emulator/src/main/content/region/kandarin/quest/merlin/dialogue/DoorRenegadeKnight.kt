@@ -8,7 +8,7 @@ import core.game.node.entity.npc.NPC
 import core.tools.END_DIALOGUE
 import org.rs.consts.NPCs
 
-class DoorRenegadeKnightDialogueFile : DialogueFile() {
+class DoorRenegadeKnight : DialogueFile() {
     var STAGE_NO = 10
 
     override fun handle(

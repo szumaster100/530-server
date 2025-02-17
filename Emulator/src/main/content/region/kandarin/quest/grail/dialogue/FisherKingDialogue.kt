@@ -10,7 +10,7 @@ import core.tools.END_DIALOGUE
 import org.rs.consts.NPCs
 import org.rs.consts.Quests
 
-class FisherKingHGDialogue : DialogueFile() {
+class FisherKingDialogue : DialogueFile() {
     var STAGE_SEEK_GRAIL = 10
     var STAGE_LOOK_WELL = 20
     var STAGE_HOW_KNOW = 2

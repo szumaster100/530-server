@@ -15,7 +15,7 @@ import org.rs.consts.Items.CUP_OF_TEA_712
 import org.rs.consts.NPCs
 import org.rs.consts.Quests
 
-class GalahadHGDialogue : DialogueFile() {
+class GalahadDialogue : DialogueFile() {
     val STAGE_WHY_LEAVE = 40
     val STAGE_CUP_TEA = 5
     var STAGE_GRAIL_WITH_YOU = 50

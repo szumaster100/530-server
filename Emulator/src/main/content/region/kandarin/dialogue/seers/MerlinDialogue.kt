@@ -1,6 +1,6 @@
 package content.region.kandarin.dialogue.seers
 
-import content.region.kandarin.quest.grail.dialogue.MerlinHGDialogue
+import content.region.kandarin.quest.grail.dialogue.MerlinDialogue
 import content.region.kandarin.quest.merlin.dialogue.MerlinDialogueFile
 import core.api.openDialogue
 import core.api.quest.isQuestComplete
@@ -21,7 +21,7 @@ class MerlinDialogue(
         if (!isQuestComplete(player, Quests.MERLINS_CRYSTAL)) {
             openDialogue(player, MerlinDialogueFile(false), NPCs.MERLIN_249)
         } else {
-            openDialogue(player, MerlinHGDialogue(), NPCs.MERLIN_249)
+            openDialogue(player, MerlinDialogue(), NPCs.MERLIN_249)
         }
         return true
     }

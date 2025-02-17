@@ -24,12 +24,17 @@ import org.rs.consts.Quests
 class HolyGrailListener : InteractionListener {
     override fun defineListeners() {
         on(NPCs.BLACK_KNIGHT_TITAN_221, IntType.NPC, "talk-to") { player, _ ->
-            openDialogue(player, BKTitanHGDialogue(false), NPCs.BLACK_KNIGHT_TITAN_221)
+            openDialogue(player, BlackKnightTitanDialogue(false), NPCs.BLACK_KNIGHT_TITAN_221)
+            return@on true
+        }
+
+        on(NPCs.HIGH_PRIEST_216, IntType.NPC, "talk-to") { player, _ ->
+            openDialogue(player, HighPriestDialogue(), NPCs.FISHERMAN_219)
             return@on true
         }
 
         on(NPCs.FISHERMAN_219, IntType.NPC, "talk-to") { player, _ ->
-            openDialogue(player, FishermanHGDialogue(), NPCs.FISHERMAN_219)
+            openDialogue(player, FishermanDialogue(), NPCs.FISHERMAN_219)
             return@on true
         }
 
@@ -44,17 +49,17 @@ class HolyGrailListener : InteractionListener {
         }
 
         on(NPCs.GRAIL_MAIDEN_210, IntType.NPC, "talk-to") { player, _ ->
-            openDialogue(player, MaidenHGDialogue(false), NPCs.GRAIL_MAIDEN_210)
+            openDialogue(player, MaidenDialogue(false), NPCs.GRAIL_MAIDEN_210)
             return@on true
         }
 
         on(NPCs.THE_FISHER_KING_220, IntType.NPC, "talk-to") { player, _ ->
-            openDialogue(player, FisherKingHGDialogue(), NPCs.THE_FISHER_KING_220)
+            openDialogue(player, FisherKingDialogue(), NPCs.THE_FISHER_KING_220)
             return@on true
         }
 
         on(Items.GRAIL_BELL_17, IntType.ITEM, "ring") { player, _ ->
-            openDialogue(player, MaidenHGDialogue(true), NPCs.GRAIL_MAIDEN_210)
+            openDialogue(player, MaidenDialogue(true), NPCs.GRAIL_MAIDEN_210)
             return@on true
         }
 
@@ -139,17 +144,17 @@ class HolyGrailListener : InteractionListener {
         }
 
         on(NPCs.SIR_PERCIVAL_211, IntType.NPC, "talk-to") { player, _ ->
-            openDialogue(player, SirPercivalHGDialogue("talk-to"))
+            openDialogue(player, SirPercivalDialogue("talk-to"))
             return@on true
         }
 
         on(org.rs.consts.Scenery.SACKS_23, IntType.SCENERY, "prod") { player, _ ->
-            openDialogue(player, SirPercivalHGDialogue("prod"))
+            openDialogue(player, SirPercivalDialogue("prod"))
             return@on true
         }
 
         on(org.rs.consts.Scenery.SACKS_23, IntType.SCENERY, "open") { player, _ ->
-            openDialogue(player, SirPercivalHGDialogue("open"))
+            openDialogue(player, SirPercivalDialogue("open"))
             return@on true
         }
 

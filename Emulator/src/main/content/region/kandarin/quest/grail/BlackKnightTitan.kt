@@ -1,6 +1,6 @@
 package content.region.kandarin.quest.grail
 
-import content.region.kandarin.quest.grail.dialogue.BKTitanHGDialogue
+import content.region.kandarin.quest.grail.dialogue.BlackKnightTitanDialogue
 import core.api.openDialogue
 import core.api.sendMessage
 import core.api.setAttribute
@@ -16,10 +16,10 @@ import org.rs.consts.Items
 import org.rs.consts.NPCs
 
 @Initializable
-class BlackKnightTitanArea :
+class BlackKnightTitan :
     MapZone("BlackKnightTitanZone", true),
     Plugin<Any?> {
-    override fun newInstance(arg: Any?): BlackKnightTitanArea {
+    override fun newInstance(arg: Any?): BlackKnightTitan {
         ZoneBuilder.configure(this)
         return this
     }
@@ -47,7 +47,7 @@ class BlackKnightTitanArea :
         }
 
         setAttribute(killer!!.asPlayer(), HolyGrail.attribute_failed_titan, true)
-        openDialogue(killer.asPlayer(), BKTitanHGDialogue(true), NPCs.BLACK_KNIGHT_TITAN_221)
+        openDialogue(killer.asPlayer(), BlackKnightTitanDialogue(true), NPCs.BLACK_KNIGHT_TITAN_221)
         return false
     }
 }

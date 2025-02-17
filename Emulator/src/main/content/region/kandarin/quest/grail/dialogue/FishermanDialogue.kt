@@ -11,7 +11,7 @@ import core.tools.END_DIALOGUE
 import org.rs.consts.Items
 import org.rs.consts.NPCs
 
-class FishermanHGDialogue : DialogueFile() {
+class FishermanDialogue : DialogueFile() {
     override fun handle(
         componentID: Int,
         buttonID: Int,

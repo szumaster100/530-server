@@ -18,7 +18,7 @@ import org.rs.consts.Items
 import org.rs.consts.NPCs
 import org.rs.consts.Quests
 
-class ThrantaxDialogueFile : DialogueFile() {
+class ThrantaxDialogue : DialogueFile() {
     val options = arrayOf("Snarthanto Candon Termtrick", "Snarthtrick Candanto Termon", "Snarthon Candtrick Termanto")
     var correct = options[2]
     var shuffled = emptyArray<String>()

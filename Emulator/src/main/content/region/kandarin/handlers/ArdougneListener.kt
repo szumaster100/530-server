@@ -2,7 +2,7 @@ package content.region.kandarin.handlers
 
 import content.global.travel.charter.Charter
 import content.region.kandarin.dialogue.ardougne.CaptainBarnabyDialogue
-import content.region.kandarin.quest.grail.dialogue.GalahadHGDialogue
+import content.region.kandarin.quest.grail.dialogue.GalahadDialogue
 import core.api.*
 import core.api.quest.hasRequirement
 import core.game.dialogue.DialogueFile
@@ -22,7 +22,7 @@ class ArdougneListener : InteractionListener {
     override fun defineListeners() {
         on(NPCs.GALAHAD_218, IntType.NPC, "talk-to") { player, _ ->
 
-            openDialogue(player, GalahadHGDialogue())
+            openDialogue(player, GalahadDialogue())
             return@on true
         }
 

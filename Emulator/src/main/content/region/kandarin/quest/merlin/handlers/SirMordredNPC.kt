@@ -1,6 +1,6 @@
 package content.region.kandarin.quest.merlin.handlers
 
-import content.region.kandarin.quest.merlin.dialogue.MorganLeFayeDialogueFile
+import content.region.kandarin.quest.merlin.dialogue.MorganLeFayeDialogue
 import core.api.openDialogue
 import core.game.node.entity.Entity
 import core.game.node.entity.combat.CombatStyle
@@ -76,7 +76,7 @@ class SirMordredNPC(
                 }
 
                 if (!lockMovementPlr!!.interfaceManager.hasChatbox()) {
-                    openDialogue(lockMovementPlr!!, MorganLeFayeDialogueFile(), NPCs.MORGAN_LE_FAYE_248)
+                    openDialogue(lockMovementPlr!!, MorganLeFayeDialogue(), NPCs.MORGAN_LE_FAYE_248)
                 }
             }
         }

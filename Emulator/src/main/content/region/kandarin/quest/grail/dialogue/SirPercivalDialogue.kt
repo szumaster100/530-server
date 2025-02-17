@@ -17,7 +17,7 @@ import org.rs.consts.Items
 import org.rs.consts.NPCs
 import org.rs.consts.Quests
 
-class SirPercivalHGDialogue(
+class SirPercivalDialogue(
     val interactionType: String,
 ) : DialogueFile() {
     val STAGE_COME_KING = 10

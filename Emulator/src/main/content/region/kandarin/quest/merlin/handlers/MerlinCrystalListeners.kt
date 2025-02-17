@@ -41,7 +41,7 @@ class MerlinCrystalListeners : InteractionListener {
                 sendDialogue(player, "The door is securely locked.")
                 return@on true
             }
-            openDialogue(player, DoorRenegadeKnightDialogueFile(), NPCs.RENEGADE_KNIGHT_237)
+            openDialogue(player, DoorRenegadeKnight(), NPCs.RENEGADE_KNIGHT_237)
             return@on true
         }
 
@@ -157,7 +157,7 @@ class MerlinCrystalListeners : InteractionListener {
                     forceWalk(player, Location.create(2778, 3515, 0), "smart")
 
                     queueScript(player, 2, QueueStrength.SOFT) { _ ->
-                        openDialogue(player, ThrantaxDialogueFile())
+                        openDialogue(player, ThrantaxDialogue())
                         return@queueScript stopExecuting(player)
                     }
                 }

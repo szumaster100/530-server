@@ -9,7 +9,7 @@ import core.game.world.map.Location
 import core.tools.END_DIALOGUE
 import org.rs.consts.NPCs
 
-class MaidenHGDialogue(
+class MaidenDialogue(
     var forced: Boolean,
 ) : DialogueFile() {
     override fun handle(

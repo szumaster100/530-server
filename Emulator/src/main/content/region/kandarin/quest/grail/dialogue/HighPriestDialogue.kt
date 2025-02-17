@@ -6,7 +6,7 @@ import core.game.dialogue.FaceAnim
 import core.game.node.entity.npc.NPC
 import org.rs.consts.NPCs
 
-class HighPriestHGDialogue : DialogueFile() {
+class HighPriestDialogue : DialogueFile() {
     override fun handle(
         componentID: Int,
         buttonID: Int,
@@ -26,7 +26,7 @@ class HighPriestHGDialogue : DialogueFile() {
 
             3 -> npcl(FaceAnim.NEUTRAL, "Nor do I really care.").also { stage++ }
             4 -> {
-                openDialogue(player!!, CroneHGDialogue(true), NPCs.CRONE_217)
+                openDialogue(player!!, CroneDialogue(true), NPCs.CRONE_217)
             }
         }
     }

@@ -13,7 +13,7 @@ import org.rs.consts.Items
 import org.rs.consts.NPCs
 import org.rs.consts.Quests
 
-class MerlinHGDialogue : DialogueFile() {
+class MerlinDialogue : DialogueFile() {
     override fun handle(
         componentID: Int,
         buttonID: Int,
