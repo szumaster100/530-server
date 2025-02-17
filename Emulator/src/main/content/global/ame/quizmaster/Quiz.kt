@@ -28,7 +28,7 @@ class Quiz : MapArea {
             val player = entity.asPlayer()
             player.lock()
             removeTabs(player, 0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14)
-            player.dialogueInterpreter.open(NPCs.QUIZ_MASTER_2477)
+            player.dialogueInterpreter.open(QuizMasterDialogue())
         }
     }
 }

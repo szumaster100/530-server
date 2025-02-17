@@ -25,3 +25,4 @@ data/logs/**
 data/players/**
 data/profile/**
 out/**
+/data/playerstats/player_stats.db

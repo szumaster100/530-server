@@ -14,6 +14,7 @@ import content.global.ame.maze.MazeNPC
 import content.global.ame.mime.MimeNPC
 import content.global.ame.pillory.PilloryNPC
 import content.global.ame.pinball.PinballNPC
+import content.global.ame.quizmaster.QuizMasterNPC
 import content.global.ame.rickturpentine.RickTurpentineNPC
 import content.global.ame.rivertroll.RiverTrollNPC
 import content.global.ame.rockgolem.RockGolemNPC
@@ -81,7 +82,7 @@ enum class RandomEvents(
         loot = CERTER.loot,
     ),
     MAZE(npc = MazeNPC()),
-/*
+
     QUIZ_MASTER(npc = QuizMasterNPC(), skillIds = intArrayOf(
         Skills.FISHING,
         Skills.HITPOINTS,
@@ -89,7 +90,7 @@ enum class RandomEvents(
         Skills.MINING,
         Skills.WOODCUTTING
     )),
-*/
+
     SWARM(npc = SwarmNPC()),
     SECURITY_GUARD(
         npc = SecurityGuardNPC(),

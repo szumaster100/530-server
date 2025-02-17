@@ -37,7 +37,7 @@ class MainGameInterface : InterfaceListener {
                     setInterfaceText(
                         player,
                         "When you have finished playing " + settings!!.name +
-                            ", always use the button below to logout safely. ",
+                            ", always use the button below to logout safely.",
                         Components.LOGOUT_182,
                         0,
                     )
@@ -76,7 +76,7 @@ class MainGameInterface : InterfaceListener {
                 69 ->
                     player.packetDispatch.sendString(
                         "When you have finished playing " + settings!!.name +
-                            ", always use the button below to logout safely. ",
+                            ", always use the button below to logout safely.",
                         Components.LOGOUT_182,
                         0,
                     )
