@@ -35,7 +35,7 @@ class DimintheisDialogue(
                 Items.CHAOS_GAUNTLETS_777,
                 Items.FAMILY_GAUNTLETS_778,
             ).container !=
-                null
+                    null
 
         if (questComplete && hasGauntlets) {
             npc("Thank you for saving our family honour,  ", "We will never forget you")
@@ -51,16 +51,8 @@ class DimintheisDialogue(
 
         when (questStage) {
             0 -> npc("Hello. My name is Dimintheis, ", "of the noble family Fitzharmon.").also { stage = 1 }
-            10 -> player("Where did you say I could find your son Caleb again?").also { stage = 3000 }
-            11 -> player("Where did you say I could find your son Caleb again?").also { stage = 3000 }
-            12 -> npc("Have you found my crest yet?").also { stage = 4000 }
-            13 -> npc("Have you found my crest yet?").also { stage = 4000 }
-            14 -> npc("Have you found my crest yet?").also { stage = 4000 }
-            15 -> npc("Have you found my crest yet?").also { stage = 4000 }
-            16 -> npc("Have you found my crest yet?").also { stage = 4000 }
-            17 -> npc("Have you found my crest yet?").also { stage = 4000 }
-            18 -> npc("Have you found my crest yet?").also { stage = 4000 }
-            19 -> npc("Have you found my crest yet?").also { stage = 4000 }
+            10, 11 -> player("Where did you say I could find your son Caleb again?").also { stage = 3000 }
+            12, 13, 14, 15, 16, 17, 18, 19 -> npc("Have you found my crest yet?").also { stage = 4000 }
         }
         return true
     }
@@ -78,6 +70,7 @@ class DimintheisDialogue(
                 ).also {
                     stage++
                 }
+
             2 ->
                 when (buttonId) {
                     1 ->
@@ -88,6 +81,7 @@ class DimintheisDialogue(
                             stage =
                                 3
                         }
+
                     2 ->
                         npc(
                             "Gah! Lousy beggar! ",
@@ -98,6 +92,7 @@ class DimintheisDialogue(
                             stage =
                                 1000
                         }
+
                     3 ->
                         npc(
                             "An adventurer hmmm? How lucky. I may have an adventure for you. ",
@@ -108,6 +103,7 @@ class DimintheisDialogue(
                                 4
                         }
                 }
+
             3 -> options("Why would he do that?", "So where is this crest?").also { stage = 5 }
             4 ->
                 options(
@@ -118,6 +114,7 @@ class DimintheisDialogue(
                     stage =
                         6
                 }
+
             5 ->
                 when (buttonId) {
                     1 ->
@@ -128,6 +125,7 @@ class DimintheisDialogue(
                             stage =
                                 2000
                         }
+
                     2 ->
                         npc(
                             "Well, my three sons took it with them ",
@@ -145,11 +143,13 @@ class DimintheisDialogue(
                             stage =
                                 2000
                         }
+
                     2 ->
                         npc(
                             "Well, my three sons took it with them ",
                             "many years ago when they rode ",
                         ).also { stage = 2007 }
+
                     3 -> npc("I realise it was a lot to ask of a stranger.").also { stage = 1000 }
                 }
 
@@ -160,6 +160,7 @@ class DimintheisDialogue(
                 ).also {
                     stage++
                 }
+
             2001 ->
                 npc(
                     "More than this however, it also represents the ",
@@ -168,6 +169,7 @@ class DimintheisDialogue(
                 ).also {
                     stage++
                 }
+
             2002 ->
                 npc(
                     "then the family's estate is handed over to the ",
@@ -175,6 +177,7 @@ class DimintheisDialogue(
                 ).also {
                     stage++
                 }
+
             2003 ->
                 npc(
                     "This dates back to the times when there was much in-fighting ",
@@ -184,11 +187,13 @@ class DimintheisDialogue(
                 ).also {
                     stage++
                 }
+
             2004 ->
                 npc(
                     "When you captured a rival family's clan, ",
                     "you also captured their lands and wealth.",
                 ).also { stage++ }
+
             2005 -> options("So where is this crest?", "I'm not interested in an adventure right now").also { stage++ }
             2006 ->
                 when (buttonId) {
@@ -200,6 +205,7 @@ class DimintheisDialogue(
 
                     2 -> npc("I realise it was a lot to ask of a stranger.").also { stage = 1000 }
                 }
+
             2007 ->
                 npc(
                     "to fight in the war against the undead necromancer ",
@@ -207,11 +213,13 @@ class DimintheisDialogue(
                 ).also {
                     stage++
                 }
+
             2008 ->
                 npc(
                     "For many years I had assumed them all dead, ",
                     "as I had heard no word from them.",
                 ).also { stage++ }
+
             2009 ->
                 npc(
                     "Recently I heard that my son Caleb is alive and well, ",
@@ -219,12 +227,14 @@ class DimintheisDialogue(
                 ).also {
                     stage++
                 }
+
             2010 -> options("Ok, I will help you", "I'm not interested in an adventure right now").also { stage++ }
             2011 ->
                 when (buttonId) {
                     1 -> npc("I thank you greatly adventurer!").also { stage++ }
                     2 -> npc("I realise it was a lot to ask of a stranger.").also { stage = 1000 }
                 }
+
             2012 ->
                 if (startQuest(player, Quests.FAMILY_CREST)) {
                     npc(
@@ -237,6 +247,7 @@ class DimintheisDialogue(
                 } else {
                     npc("But im sorry, but you cannot help me right now").also { stage = 1000 }
                 }
+
             3000 ->
                 npc(
                     "The only thing I have heard of my son Caleb ",
@@ -244,6 +255,7 @@ class DimintheisDialogue(
                 ).also {
                     stage++
                 }
+
             3001 ->
                 npc(
                     "I believe he is staying with a friend ",
@@ -252,6 +264,7 @@ class DimintheisDialogue(
                     stage =
                         1000
                 }
+
             4000 -> player("I'm still looking for it").also { stage = 1000 }
             5000 ->
                 npc(
@@ -261,6 +274,7 @@ class DimintheisDialogue(
                 ).also {
                     stage++
                 }
+
             5001 ->
                 npc(
                     "You are truly a hero in every sense, ",
@@ -269,6 +283,7 @@ class DimintheisDialogue(
                 ).also {
                     stage++
                 }
+
             5002 ->
                 npc(
                     "I know not how I can adequately reward you for your efforts... ",
@@ -278,6 +293,7 @@ class DimintheisDialogue(
                 ).also {
                     stage++
                 }
+
             5003 ->
                 npc(
                     "or if the owner has died.",
@@ -287,6 +303,7 @@ class DimintheisDialogue(
                 ).also {
                     stage++
                 }
+
             5004 ->
                 npc(
                     "They can also be granted extra powers.",
