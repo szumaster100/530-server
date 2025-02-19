@@ -19,22 +19,61 @@ class ShieldofArrav : Quest(
     Quests.SHIELD_OF_ARRAV, 29, 28, 1, Vars.VARP_QUEST_SHIELD_OF_ARRAV_PROGRESS_145, 0, 1, 7
 ) {
     companion object {
+        /**
+         * Represents the shield of arrav book item.
+         */
         val BOOK = Item(Items.BOOK_757)
+
+        /**
+         * Represents the intel report item.
+         */
         val INTEL_REPORT = Item(Items.INTEL_REPORT_761)
+
+        /**
+         * Represents the weapon store item key.
+         */
         val KEY = Item(Items.WEAPON_STORE_KEY_759)
+
+        /**
+         * Represents the phoenix shield item.
+         */
         val PHOENIX_SHIELD = Item(Items.BROKEN_SHIELD_763)
+
+        /**
+         * Represents the black arm shield item.
+         */
         val BLACKARM_SHIELD = Item(Items.BROKEN_SHIELD_765)
+
+        /**
+         * Represents the blackarm certificate item.
+         */
         val BLACKARM_CERTIFICATE = Item(Items.HALF_CERTIFICATE_11174, 2)
+
+        /**
+         * Represents the phoenix certificate item.
+         */
         val PHOENIX_CERTIFICATE = Item(Items.HALF_CERTIFICATE_11173, 2)
 
+        /**
+         * Sets the phoenix gang.
+         * @param player the player.
+         */
         fun setPhoenix(player: Player) {
             setAttribute(player, "/save:phoenix-gang", true)
         }
 
+        /**
+         * Sets the black arm gang.
+         * @param player the player.
+         */
         fun setBlackArm(player: Player) {
             player.setAttribute("/save:black-arm-gang", true)
         }
 
+        /**
+         * Swaps the gang.
+         * @param player the player.
+         */
         fun swapGang(player: Player) {
             when {
                 isPhoenix(player) -> {
@@ -51,30 +90,64 @@ class ShieldofArrav : Quest(
             }
         }
 
+        /**
+         * Method used to check if the player is part of the phoenix gang.
+         * @param player the player.
+         * @return `true` if so.
+         */
         fun isPhoenix(player: Player): Boolean {
             return player.getAttribute("phoenix-gang", false)
         }
 
+        /**
+         * Method used to check if the player is part of the black arm gang.
+         * @param player the player.
+         * @return `true` if so.
+         */
         fun isBlackArm(player: Player): Boolean {
             return player.getAttribute("black-arm-gang", false)
         }
 
+        /**
+         * Method used to set that the player is trying to do the phoenix mission.
+         * @param player the player.
+         */
         fun setPhoenixMission(player: Player) {
             player.setAttribute("/save:phoenix-mission", true)
         }
 
+        /**
+         * Method used to set that the player is trying to do the black arm gang
+         * mission.
+         * @param player the player.
+         */
         fun setBlackArmMission(player: Player) {
             setAttribute(player, "/save:blackarm-mission", true)
         }
 
+        /**
+         * Method used to check if they're doing the black arm gang mission.
+         * @param player the player.
+         * @return `true` if so.
+         */
         fun isBlackArmMission(player: Player): Boolean {
             return player.getAttribute("blackarm-mission", false)
         }
 
+        /**
+         * Method used to check if they're doing the phoenix gang mission.
+         * @param player the player.
+         * @return `true` if so.
+         */
         fun isPhoenixMission(player: Player): Boolean {
             return player.getAttribute("phoenix-mission", false)
         }
 
+        /**
+         * Gets the shield item.
+         * @param player the player.
+         * @return
+         */
         fun getShield(player: Player): Item {
             return if (isBlackArm(player)) BLACKARM_SHIELD else PHOENIX_SHIELD
         }
@@ -117,7 +190,13 @@ class ShieldofArrav : Quest(
                 line(player, "$RED Baraek$BLUE, knows about the $RED Phoenix Gang$BLUE. I should speak to", 14)
                 line(player, "$BLUE him next.", 15)
             }
-
+            40 -> {
+                line(player, "<str>I read about a valuable shield stolen long ago by a gang of", 4 + 7)
+                line(player, "<str>thieves with an outstanding reward upon it.", 5 + 7)
+                line(player, "${BLUE}Baraek told me that the ${RED}'Phoenix Gang' ${BLUE}have a hideout in", 6 + 7)
+                line(player, "${BLUE}the ${RED}south-eastern part of Varrock${BLUE}, disguising themselves", 7 + 7)
+                line(player, "${BLUE}as the ${RED}VTAM Corporation${BLUE}. I should find them and join.", 8 + 7)
+            }
             50 -> {
                 line(player, "<str>I read about a valuable shield stolen long ago by a gang of", 11)
                 line(player, "<str>thieves with an outstanding reward upon it.", 12)
@@ -129,7 +208,39 @@ class ShieldofArrav : Quest(
                 line(player, "$BLUE the $RED 'Black Arm Gang'$BLUE down an alley near to him. I should", 18)
                 line(player, "$BLUE speak to their $RED leader, Katrine$BLUE, about joining.", 19)
             }
-
+            60 -> {
+                line(player, "<str>I read about a valuable shield stolen long ago by a gang of", 4 + 7)
+                line(player, "<str>thieves with an outstanding reward upon it. Baraek told me", 5 + 7)
+                line(player, "<str>the location of the Phoenix Gang hideout.", 6 + 7)
+                line(player, "<str>I also spoke to Charlie the tramp in Varrock.", 7 + 7)
+                line(player, "<str>According to him there is a criminal organisation known as", 8 + 7)
+                line(player, "<str>the ${RED}'Black Arm Gang'${BLUE}down the alley near to him.", 9 + 7)
+                if (isPhoenixMission(player) && isBlackArmMission(player)) {
+                    line(player, "<str>I read about a valuable shield stolen long ago by a gang of", 4 + 7)
+                    line(player, "<str>thieves with an outstanding reward upon it. Baraek told me", 5 + 7)
+                    line(player, "<str>the location of the Phoenix Gang hideout.", 6 + 7)
+                    line(player, "<str>To start this quest, I spoke to Charlie the tramp in Varrock.", 7 + 7)
+                    line(player, "<str>He gave me the location of the Black Arm gang HQ.", 8 + 7)
+                    line(player, "<str>According to him there is a criminal organisation known as", 9 + 7)
+                    line(player, "<str>the ${RED}'Black Arm Gang'${BLUE}down the alley near to him.", 10 + 7)
+                    line(player, "${BLUE}If I want to join the ${RED}Phoenix Gang ${BLUE}I need to kill${RED} Jonny The", 11 + 7)
+                    line(player, "${RED}Beard ${BLUE}in the ${RED}Blue Moon Inn ${BLUE}and retrieve his ${RED}report.", 12 + 7)
+                    line(player, "${RED}Katrine ${BLUE}said if I wanted to join the ${RED}Black Arm Gang,${BLUE} I'd", 13 + 7)
+                    line(player, "${BLUE}have to steal ${RED}two Phoenix crossbows ${BLUE}from the rival gang.", 14 + 7)
+                    line(player, "${BLUE}Maybe ${RED}Charlie the tramp ${BLUE}can give me some ideas about", 15 + 7)
+                    line(player, "${BLUE}how to do this.", 16 + 7)
+                } else if (isPhoenixMission(player)) {
+                    line(player, "${BLUE}If I want to join the ${RED}Phoenix Gang ${BLUE}I need to kill${RED} Jonny The", 10 + 7)
+                    line(player, "${RED}Beard ${BLUE}in the ${RED}Blue Moon Inn ${BLUE}and retrieve his ${RED}report.", 11 + 7)
+                    line(player, "${BLUE}Alternatively, if I want to join the ${RED}Blackarm gang ${BLUE}I should", 12 + 7)
+                    line(player, "${BLUE}speak to their ${RED}leader, Katrine, ${BLUE}about joining.", 13 + 7)
+                } else if (isBlackArmMission(player)) {
+                    line(player, "${RED}Katrine ${BLUE}said if I wanted to join the ${RED}Black Arm Gang${BLUE}, I'd", 10 + 7)
+                    line(player, "${BLUE}have to steal ${RED}two Phoenix crossbows ${BLUE}from the rival gang.", 11 + 7)
+                    line(player, "${BLUE}Maybe ${RED}Charlie the tramp ${BLUE}can give me some ideas about", 12 + 7)
+                    line(player, "${BLUE}how to do this.", 13 + 7)
+                }
+            }
             70 -> {
                 if (isPhoenix(player)) {
                     line(player, "<str>I read about a valuable shield stolen long ago by a gang of", 11)
@@ -142,20 +253,12 @@ class ShieldofArrav : Quest(
                         line(player, "$BLUE I need to search the $RED Phoenix Gang's hideout$BLUE to find half", 17)
                         line(player, "$BLUE of the $RED Shield of Arrav.", 18)
                     } else {
-                        line(
-                            player,
-                            "$BLUE I found half of the $RED Shield of Arrav$BLUE in the $RED Phoenix Gang's",
-                            17
-                        )
+                        line(player, "$BLUE I found half of the $RED Shield of Arrav$BLUE in the $RED Phoenix Gang's", 17)
                         line(player, "$RED hideout.", 18)
                     }
 
                     line(player, "$BLUE The second half of the $RED shield$BLUE belongs to a rival gang", 19)
-                    line(
-                        player,
-                        "$BLUE known as the $RED Black Arm Gang$BLUE. I will need $RED a friend's help$BLUE to",
-                        20
-                    )
+                    line(player, "$BLUE known as the $RED Black Arm Gang$BLUE. I will need $RED a friend's help$BLUE to", 20)
                     line(player, "$BLUE retrieve it before claiming the $RED reward$BLUE for it.", 21)
                 } else {
                     line(player, "<str>I read about a valuable shield stolen long ago by a gang of", 11)

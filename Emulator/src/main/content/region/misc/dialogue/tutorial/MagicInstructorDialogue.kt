@@ -149,8 +149,7 @@ class MagicInstructorDialogue(
                             stage++
                         }
                     5 ->
-                        sendItemDialogue(
-                            player,
+                        player.dialogueInterpreter.sendItemMessage(
                             Items.NULL_5079,
                             "When you get to Lumbridge, look for this icon on your minimap. The Lumbridge Guide and the other tutors will be standing near one of these. The Lumbridge Guide should be standing slightly to the north-east of",
                         ).also {

@@ -75,15 +75,19 @@ class LostTribeListener : InteractionListener {
         }
 
         on(BOOKCASE, IntType.SCENERY, "search") { player, _ ->
+            sendMessage(player, "You search the bookcase...")
             val hasAnBook = hasAnItem(player, Items.GOBLIN_SYMBOL_BOOK_5009).container != null
             if (!hasAnBook && getQuestStage(player, Quests.THE_LOST_TRIBE) >= 41) {
                 sendDialogue(player, "'A History of the Goblin Race.' This must be it.")
                 addItemOrDrop(player, Items.GOBLIN_SYMBOL_BOOK_5009)
+            } else {
+                sendMessage(player, "You find nothing of interests to you.")
             }
             return@on true
         }
 
         on(CRATE, IntType.SCENERY, "search") { player, _ ->
+            sendMessage(player, "You search the bookcase...")
             if (!inInventory(player, Items.SILVERWARE_5011) && getQuestStage(player, Quests.THE_LOST_TRIBE) == 48) {
                 sendItemDialogue(player, Items.SILVERWARE_5011, "You find the missing silverware!")
                 addItemOrDrop(player, Items.SILVERWARE_5011)
