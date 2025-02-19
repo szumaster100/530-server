@@ -69,7 +69,7 @@
         <!-- https://gitlab.com/rs-source/library -->
         <dependency>
             <groupId>org.rs.consts</groupId>
-            <artifactId>530-constants</artifactId>
+            <artifactId>530-consts</artifactId>
             <version>[1.0.0,)</version>
             <scope>compile</scope>
         </dependency>
@@ -133,7 +133,7 @@
                         <id>install-consts</id>
                         <phase>clean</phase>
                         <configuration>
-                            <file>${project.basedir}/libs/530-constants-1.0.jar</file>
+                            <file>${project.basedir}/libs/530-consts-1.0.jar</file>
                             <repositoryLayout>default</repositoryLayout>
                             <groupId>org.rs</groupId>
                             <artifactId>consts</artifactId>
