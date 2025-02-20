@@ -22,8 +22,7 @@ class KlarenseDialogue(
         npc = args[0] as NPC
         quest = player.getQuestRepository().getQuest(Quests.DRAGON_SLAYER)
         if (args.size > 1) {
-            npc(FaceAnim.ANGRY, "Hey, stay off my ship! That's private property!")
-            stage = 0
+            npc(FaceAnim.ANGRY, "Hey, stay off my ship! That's private property!").also { stage = END_DIALOGUE }
             return true
         }
         when (quest!!.getStage(player)) {
