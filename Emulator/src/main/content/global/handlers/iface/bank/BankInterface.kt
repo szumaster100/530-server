@@ -13,6 +13,11 @@ import core.game.node.entity.player.Player
 import org.rs.consts.Components
 import org.rs.consts.Items
 
+/**
+ * Handles player interaction with the bank interface.
+ *
+ * @author vddCore
+ */
 class BankInterface : InterfaceListener {
     companion object {
         private const val MAIN_BUTTON_CLOSE = 10
@@ -42,30 +47,27 @@ class BankInterface : InterfaceListener {
         private const val BANK_TAB_8 = 27
         private const val BANK_TAB_9 = 25
 
-        private val BANK_TABS =
-            intArrayOf(
-                BANK_TAB_1,
-                BANK_TAB_2,
-                BANK_TAB_3,
-                BANK_TAB_4,
-                BANK_TAB_5,
-                BANK_TAB_6,
-                BANK_TAB_7,
-                BANK_TAB_8,
-                BANK_TAB_9,
-            )
+        private val BANK_TABS = intArrayOf(
+            BANK_TAB_1, BANK_TAB_2, BANK_TAB_3,
+            BANK_TAB_4, BANK_TAB_5, BANK_TAB_6,
+            BANK_TAB_7, BANK_TAB_8, BANK_TAB_9
+        )
 
         private const val OP_SET_TAB = 155
         private const val OP_COLLAPSE_TAB = 196
+
         private const val THRESHOLD_TO_DISPLAY_EXACT_QUANTITY_ON_EXAMINE = 100000
 
+        /**
+         * Handles the input dialogue for entering an item transfer amount.
+         *
+         * @param player The player performing the action.
+         * @param slot The slot of the item in the inventory or bank.
+         * @param withdraw Whether the item is being withdrawn from the bank.
+         * @param after An optional action to perform after the transfer.
+         */
         @JvmStatic
-        fun transferX(
-            player: Player,
-            slot: Int,
-            withdraw: Boolean,
-            after: (() -> Unit)? = null,
-        ) {
+        fun transferX(player: Player, slot: Int, withdraw: Boolean, after: (() -> Unit)? = null) {
             sendInputDialogue(player, InputType.AMOUNT, "Enter the amount:") { value ->
                 val number = Integer.parseInt(value.toString())
                 if (withdraw) {
@@ -79,34 +81,56 @@ class BankInterface : InterfaceListener {
         }
     }
 
-    @Suppress("UNUSED_PARAMETER")
-    private fun onBankInterfaceOpen(
-        player: Player,
-        component: Component,
-    ): Boolean {
-        val settings =
-            IfaceSettingsBuilder()
-                .enableAllOptions()
-                .enableSlotSwitch()
-                .setInterfaceEventsDepth(2)
-                .build()
+    /**
+     * Handles the event when the bank interface is opened.
+     *
+     * @param player The player opening the bank.
+     * @param component The component representing the bank interface.
+     * @return `false` to allow the interface to be opened.
+     */
+    private fun onBankInterfaceOpen(player: Player, component: Component): Boolean {
+        player.bank.sendBankSpace()
 
-        player.packetDispatch.sendIfaceSettings(settings, 73, Components.BANK_V2_MAIN_762, 0, ServerConfig.BANK_SIZE)
-        player.bank.refresh()
-        resetSearch(player)
+        val settings = IfaceSettingsBuilder()
+            .enableAllOptions()
+            .enableSlotSwitch()
+            .setInterfaceEventsDepth(2)
+            .build()
+
+        player.packetDispatch.sendIfaceSettings(
+            settings,
+            73,
+            Components.BANK_V2_MAIN_762,
+            0,
+            ServerConfig.BANK_SIZE
+        )
+
         return false
     }
 
-    @Suppress("UNUSED_PARAMETER")
+    /**
+     * Handles tab interactions within the bank interface.
+     *
+     * @param player The player interacting with the bank.
+     * @param component The component representing the bank interface.
+     * @param opcode The operation code of the interaction.
+     * @param buttonID The button ID within the interface.
+     * @param slot The slot in the bank.
+     * @param itemID The item ID being interacted with.
+     * @return `true` if the interaction was handled successfully.
+     */
     private fun handleTabInteraction(
         player: Player,
         component: Component,
         opcode: Int,
         buttonID: Int,
         slot: Int,
-        itemID: Int,
+        itemID: Int
     ): Boolean {
-        resetSearch(player)
+        if (getAttribute(player, "search", false)) {
+            player.bank.reopen()
+        }
+
         val clickedTabIndex = -((buttonID - 41) / 2)
 
         when (opcode) {
@@ -124,27 +148,61 @@ class BankInterface : InterfaceListener {
         return true
     }
 
-    @Suppress("UNUSED_PARAMETER")
+    /**
+     * Handles menu interactions within the bank.
+     *
+     * @param player The player interacting with the menu.
+     * @param component The component representing the bank menu.
+     * @param opcode The operation code of the interaction.
+     * @param buttonID The button ID within the interface.
+     * @param slot The slot in the bank.
+     * @param itemID The item ID being interacted with.
+     * @return `true` if the interaction was handled successfully.
+     */
     private fun handleBankMenu(
         player: Player,
         component: Component,
         opcode: Int,
         buttonID: Int,
         slot: Int,
-        itemID: Int,
+        itemID: Int
     ): Boolean {
-        val item = player.bank.get(slot) ?: return true
-        player.bank.refresh()
-        resetSearch(player)
+        val item = player.bank.get(slot)
+            ?: return true
 
         when (opcode) {
-            OP_AMOUNT_ONE -> player.bank.takeItem(slot, 1)
-            OP_AMOUNT_FIVE -> player.bank.takeItem(slot, 5)
-            OP_AMOUNT_TEN -> player.bank.takeItem(slot, 10)
-            OP_AMOUNT_LAST_X -> player.bank.takeItem(slot, player.bank.lastAmountX)
-            OP_AMOUNT_X -> transferX(player, slot, true)
-            OP_AMOUNT_ALL -> player.bank.takeItem(slot, player.bank.getAmount(item))
-            OP_AMOUNT_ALL_BUT_ONE -> player.bank.takeItem(slot, player.bank.getAmount(item) - 1)
+            OP_AMOUNT_ONE -> runWorldTask { player.bank.takeItem(slot, 1) }
+            OP_AMOUNT_FIVE -> runWorldTask { player.bank.takeItem(slot, 5) }
+            OP_AMOUNT_TEN -> runWorldTask { player.bank.takeItem(slot, 10) }
+            OP_AMOUNT_LAST_X -> runWorldTask {
+                player.bank.takeItem(
+                    slot,
+                    player.bank.lastAmountX
+                )
+            }
+
+            OP_AMOUNT_X -> runWorldTask {
+                transferX(
+                    player,
+                    slot,
+                    true
+                )
+            }
+
+            OP_AMOUNT_ALL -> runWorldTask {
+                player.bank.takeItem(
+                    slot,
+                    player.bank.getAmount(item)
+                )
+            }
+
+            OP_AMOUNT_ALL_BUT_ONE -> runWorldTask {
+                player.bank.takeItem(
+                    slot,
+                    player.bank.getAmount(item) - 1
+                )
+            }
+
             OP_EXAMINE -> {
                 var examineText = item.definition.examine
                 val id = item.definition.id
@@ -161,18 +219,27 @@ class BankInterface : InterfaceListener {
         return true
     }
 
-    @Suppress("UNUSED_PARAMETER")
+    /**
+     * Handles menu interactions within the bank.
+     *
+     * @param player The player interacting with the menu.
+     * @param component The component representing the bank menu.
+     * @param opcode The operation code of the interaction.
+     * @param buttonID The button ID within the interface.
+     * @param slot The slot in the bank.
+     * @param itemID The item ID being interacted with.
+     * @return `true` if the interaction was handled successfully.
+     */
     private fun handleInventoryMenu(
         player: Player,
         component: Component,
         opcode: Int,
         buttonID: Int,
         slot: Int,
-        itemID: Int,
+        itemID: Int
     ): Boolean {
-        val item = player.inventory.get(slot) ?: return true
-        player.bank.refresh()
-        resetSearch(player)
+        val item = player.inventory.get(slot)
+            ?: return true
 
         when (opcode) {
             OP_AMOUNT_ONE -> player.bank.addItem(slot, 1)
@@ -214,7 +281,7 @@ class BankInterface : InterfaceListener {
             return@on true
         }
 
-        on(Components.BANK_V2_HELP_767) { player, _, _, buttonID, _, _ ->
+        on(Components.BANK_V2_HELP_767) { player, component, opcode, buttonID, slot, itemID ->
             when (buttonID) {
                 MAIN_BUTTON_CLOSE -> openBankAccount(player)
             }
@@ -225,17 +292,29 @@ class BankInterface : InterfaceListener {
         on(Components.BANK_V2_SIDE_763, ::handleInventoryMenu)
     }
 
-    private fun isCoinOverrideNeeded(
-        id: Int,
-        container: Container,
-    ): Boolean {
+    /**
+     * Checks if the coin override is needed when examining an item.
+     *
+     * @param id The item ID.
+     * @param container The container holding the item.
+     * @return `true` if the override is needed, otherwise `false`.
+     */
+    private fun isCoinOverrideNeeded(id: Int, container: Container): Boolean {
         val amount = container.getAmount(id)
+
+        // Only COINS_995 are obtainable and bankable by player
         if (id == Items.COINS_995 && amount >= THRESHOLD_TO_DISPLAY_EXACT_QUANTITY_ON_EXAMINE) {
             return true
         }
+
         return false
     }
 
+    /**
+     * Resets the bank search mode.
+     *
+     * @param player The player whose search mode should be reset.
+     */
     private fun resetSearch(player: Player) {
         val lastTab = getAttribute(player, "bank:lasttab", 0)
         player.bank.tabIndex = lastTab

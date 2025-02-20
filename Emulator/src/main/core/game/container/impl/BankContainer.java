@@ -24,30 +24,68 @@ import java.nio.ByteBuffer;
 
 import static core.api.ContentAPIKt.*;
 
+
+/**
+ * Represents the bank container.
+ *
+ * @author Emperor
+ */
 public final class BankContainer extends Container {
 
+    /**
+     * The bank container size.
+     */
     public static final int SIZE = ServerConfig.BANK_SIZE;
 
+    /**
+     * The maximum amount of bank tabs
+     */
     public static final int TAB_SIZE = 11;
 
+    /**
+     * The player reference.
+     */
     private Player player;
 
+    /**
+     * The bank listener.
+     */
     private final BankListener listener;
 
+    /**
+     * If the bank is open.
+     */
     private boolean open;
 
+    /**
+     * The last x-amount entered.
+     */
     private int lastAmountX = 50;
 
+    /**
+     * The current tab index.
+     */
     private int tabIndex = 10;
 
+    /**
+     * The tab start indexes.
+     */
     private final int[] tabStartSlot = new int[TAB_SIZE];
 
+    /**
+     * Construct a new {@code BankContainer} {@code Object}.
+     *
+     * @param player The player reference.
+     */
     public BankContainer(Player player) {
         super(SIZE, ContainerType.ALWAYS_STACK, SortType.HASH);
-        super.register(listener = new BankListener(player));
+        super.register((ContainerListener) (listener = new BankListener(player)));
         this.player = player;
     }
 
+    /**
+     * Method used to open the deposit box.
+     */
     public void openDepositBox() {
         player.getInterfaceManager().open(new Component(11)).setCloseEvent((player, c) -> {
             player.getInterfaceManager().openDefaultTabs();
@@ -57,21 +95,28 @@ public final class BankContainer extends Container {
         refreshDepositBoxInterface();
     }
 
+    /**
+     * Invalidates the visual state of deposit box interface
+     * forcing the client to re-draw the items
+     */
     public void refreshDepositBoxInterface() {
         InterfaceContainer.generateItems(
-            player,
-            player.getInventory().toArray(),
-            new String[]{
-                "Examine",
-                "Deposit-X",
-                "Deposit-All",
-                "Deposit-10",
-                "Deposit-5",
-                "Deposit-1"
-            }, 11, 15, 5, 7
+                player,
+                player.getInventory().toArray(),
+                new String[]{
+                        "Examine",
+                        "Deposit-X",
+                        "Deposit-All",
+                        "Deposit-10",
+                        "Deposit-5",
+                        "Deposit-1"
+                }, 11, 15, 5, 7
         );
     }
 
+    /**
+     * Open the bank.
+     */
     public void open() {
         if (open) {
             return;
@@ -94,7 +139,10 @@ public final class BankContainer extends Container {
         setVarp(player, 1249, lastAmountX);
         int settings = new IfaceSettingsBuilder().enableOptions(new IntRange(0, 5)).enableExamine().enableSlotSwitch().build();
         player.getPacketDispatch().sendIfaceSettings(settings, 0, 763, 0, 27);
+        player.getPacketDispatch().sendRunScript(1451, "");
         open = true;
+        setTabConfigurations();
+        sendBankSpace();
     }
 
     public void open(Player player) {
@@ -122,6 +170,7 @@ public final class BankContainer extends Container {
         player.getPacketDispatch().sendIfaceSettings(settings, 0, 763, 0, 27);
         player.getPacketDispatch().sendRunScript(1451, "");
         open = true;
+        this.player.getBank().setTabConfigurations(player);
 
     }
 
@@ -145,6 +194,9 @@ public final class BankContainer extends Container {
         return super.parse(buffer);
     }
 
+    /**
+     * Closes the bank.
+     */
     public void close() {
         open = false;
         player.getInventory().getListeners().remove(listener);
@@ -153,6 +205,12 @@ public final class BankContainer extends Container {
         player.getPacketDispatch().sendRunScript(571, "");
     }
 
+    /**
+     * Adds an item to the bank container.
+     *
+     * @param slot   The item slot.
+     * @param amount The amount.
+     */
     public void addItem(int slot, int amount) {
         if (slot < 0 || slot > player.getInventory().capacity() || amount < 1) {
             return;
@@ -190,7 +248,7 @@ public final class BankContainer extends Container {
             }
         }
 
-        if (player.getInventory().remove(item, slot, false)) {
+        if (player.getInventory().remove(item, slot, true)) {
             int preferredSlot = -1;
             if (tabIndex != 0 && tabIndex != 10 && !super.contains(add.getId(), 1)) {
                 preferredSlot = tabStartSlot[tabIndex] + getItemsInTab(tabIndex);
@@ -198,10 +256,29 @@ public final class BankContainer extends Container {
                 increaseTabStartSlots(tabIndex);
             }
             super.add(add, true, preferredSlot);
-            player.getInventory().update();
+            setTabConfigurations();
         }
     }
 
+    /**
+     * Re-opens the bank interface.
+     */
+    public void reopen() {
+        if (!open) {
+            return;
+        }
+        player.getInterfaceManager().close();
+        open();
+        refresh();
+    }
+
+    /**
+     * Takes a item from the bank container and adds one to the inventory
+     * container.
+     *
+     * @param slot   The slot.
+     * @param amount The amount.
+     */
     public void takeItem(int slot, int amount) {
         if (slot < 0 || slot > super.capacity() || amount <= 0) {
             return;
@@ -211,7 +288,7 @@ public final class BankContainer extends Container {
             return;
         }
         if (amount > item.getAmount()) {
-            amount = item.getAmount();
+            amount = item.getAmount(); // It always stacks in the bank.
         }
         item = new Item(item.getId(), amount, item.getCharge());
         int noteId = item.getDefinition().getNoteId();
@@ -230,21 +307,35 @@ public final class BankContainer extends Container {
             add = item;
         }
         if (super.remove(item, slot, false)) {
-            player.getInventory().add(add, false);
+            player.getInventory().add(add);
         }
+        int tabId = getTabByItemSlot(slot);
         if (get(slot) == null) {
-            int tabId = getTabByItemSlot(slot);
             decreaseTabStartSlots(tabId);
-            shift();
-        } else update();
-        player.getInventory().update();
+        }
+        setTabConfigurations();
+        shift();
+        if (player.getAttribute("search", false)) {
+            reopen();
+        }
     }
 
+    /**
+     * Updates the last x-amount entered.
+     *
+     * @param amount The amount to set.
+     */
     public void updateLastAmountX(int amount) {
         this.lastAmountX = amount;
         setVarp(player, 1249, amount);
     }
 
+    /**
+     * Gets the tab the item slot is in.
+     *
+     * @param itemSlot The item slot.
+     * @return The tab index.
+     */
     public int getTabByItemSlot(int itemSlot) {
         int tabId = 0;
         for (int i = 0; i < tabStartSlot.length; i++) {
@@ -255,12 +346,22 @@ public final class BankContainer extends Container {
         return tabId;
     }
 
+    /**
+     * Increases a tab's start slot.
+     *
+     * @param startId The start id.
+     */
     public void increaseTabStartSlots(int startId) {
         for (int i = startId + 1; i < tabStartSlot.length; i++) {
             tabStartSlot[i]++;
         }
     }
 
+    /**
+     * Decreases a tab's start slot.
+     *
+     * @param startId The start id.
+     */
     public void decreaseTabStartSlots(int startId) {
         if (startId == 10) {
             return;
@@ -273,6 +374,12 @@ public final class BankContainer extends Container {
         }
     }
 
+    /**
+     * Gets the array index for a tab.
+     *
+     * @param tabId The tab id.
+     * @return The array index.
+     */
     public static int getArrayIndex(int tabId) {
         if (tabId == 41 || tabId == 74) {
             return 10;
@@ -287,10 +394,19 @@ public final class BankContainer extends Container {
         return -1;
     }
 
+    /**
+     * Sends the bank space values on the interface.
+     */
     public void sendBankSpace() {
-        setVarc(player, 192, capacity() - freeSlots());
+        player.getPacketDispatch().sendString(Integer.toString(capacity() - freeSlots()), 762, 97);
+        player.getPacketDispatch().sendString(Integer.toString(capacity()), 762, 98);
     }
 
+    /**
+     * Collapses a tab.
+     *
+     * @param tabId The tab index.
+     */
     public void collapseTab(int tabId) {
         int size = getItemsInTab(tabId);
         Item[] tempTabItems = new Item[size];
@@ -307,65 +423,173 @@ public final class BankContainer extends Container {
             int slot = freeSlot();
             replace(tempTabItems[i], slot, false);
         }
-        refresh();
+        refresh(); //We only refresh once.
+        setTabConfigurations();
     }
 
+    /**
+     * Sets the tab configs.
+     */
     public void setTabConfigurations() {
-        for (int i = 0; i < 8; i++) {
-            setVarbit(player, 4885 + i, getItemsInTab(i + 1));
-        }
+        int value = getItemsInTab(1);
+        value += getItemsInTab(2) << 10;
+        value += getItemsInTab(3) << 20;
+        setVarp(player, 1246, value);
+        value = getItemsInTab(4);
+        value += getItemsInTab(5) << 10;
+        value += getItemsInTab(6) << 20;
+        setVarp(player, 1247, value);
+        value = -2013265920;
+        value += (134217728 * (tabIndex == 10 ? 0 : tabIndex));
+        value += getItemsInTab(7);
+        value += getItemsInTab(8) << 10;
+        setVarp(player, 1248, value);
     }
 
+    /**
+     * Sets the tab configs.
+     */
+    public void setTabConfigurations(Player player) {
+        int value = getItemsInTab(1);
+        value += getItemsInTab(2) << 10;
+        value += getItemsInTab(3) << 20;
+        setVarp(player, 1246, value);
+        value = getItemsInTab(4);
+        value += getItemsInTab(5) << 10;
+        value += getItemsInTab(6) << 20;
+        setVarp(player, 1247, value);
+        value = -2013265920;
+        value += (134217728 * (tabIndex == 10 ? 0 : tabIndex));
+        value += getItemsInTab(7);
+        value += getItemsInTab(8) << 10;
+        setVarp(player, 1248, value);
+    }
+
+    /**
+     * Gets the amount of items in one tab.
+     *
+     * @param tabId The tab index.
+     * @return The amount of items in this tab.
+     */
     public int getItemsInTab(int tabId) {
         return tabStartSlot[tabId + 1] - tabStartSlot[tabId];
     }
 
+    /**
+     * Checks if the item can be added.
+     *
+     * @param item the item.
+     * @return {@code True} if so.
+     */
     public boolean canAdd(Item item) {
         return item.getDefinition().getConfiguration(ItemConfigParser.BANKABLE, true);
     }
 
+    /**
+     * Gets the last x-amount.
+     *
+     * @return The last x-amount.
+     */
     public int getLastAmountX() {
         return lastAmountX;
     }
 
+    /**
+     * If items have to be noted.
+     *
+     * @return If items have to be noted {@code true}.
+     */
     public boolean isNoteItems() {
         return getVarbit(player, Vars.VARBIT_IFACE_BANK_NOTE_MODE_7001) == 1;
     }
 
+    /**
+     * Set if items have to be noted.
+     *
+     * @param noteItems If items have to be noted {@code true}.
+     */
     public void setNoteItems(boolean noteItems) {
-        setVarbit(player, Vars.VARBIT_IFACE_BANK_NOTE_MODE_7001, noteItems ? 1 : 0);
+        setVarbit(player, Vars.VARBIT_IFACE_BANK_NOTE_MODE_7001, noteItems ? 1 : 0, true);
     }
 
+    /**
+     * Gets the tabStartSlot value.
+     *
+     * @return The tabStartSlot.
+     */
     public int[] getTabStartSlot() {
         return tabStartSlot;
     }
 
+    /**
+     * Gets the tabIndex value.
+     *
+     * @return The tabIndex.
+     */
     public int getTabIndex() {
         return tabIndex;
     }
 
+    /**
+     * Sets the tabIndex value.
+     *
+     * @param tabIndex The tabIndex to set.
+     */
     public void setTabIndex(int tabIndex) {
-        this.tabIndex = tabIndex == 0 ? 10 : tabIndex;
-        setVarbit(player, 4893, tabIndex + 1);
-        setAttribute(player, "bank:lasttab", tabIndex);
+        this.tabIndex = tabIndex;
+
+        /*
+         * Kludge to update the interface
+         * after dumping all to prevent
+         * "invisible" items in slots.
+         */
+        update(true);
     }
 
+    /**
+     * Sets the insert items value.
+     *
+     * @param insertItems The insert items value.
+     */
     public void setInsertItems(boolean insertItems) {
-        setVarbit(player, Vars.VARBIT_IFACE_BANK_INSERT_MODE_7000, insertItems ? 1 : 0);
+        setVarbit(player, Vars.VARBIT_IFACE_BANK_INSERT_MODE_7000, insertItems ? 1 : 0, true);
     }
 
+    /**
+     * Gets the insert items value.
+     *
+     * @return {@code True} if inserting items mode is enabled.
+     */
     public boolean isInsertItems() {
         return getVarbit(player, Vars.VARBIT_IFACE_BANK_INSERT_MODE_7000) == 1;
     }
 
+    /**
+     * Checks if the bank is opened.
+     *
+     * @return {@code True} if so.
+     */
     public boolean isOpen() {
         return open;
     }
 
+    /**
+     * Listens to the bank container.
+     *
+     * @author Emperor
+     */
     private static class BankListener implements ContainerListener {
 
+        /**
+         * The player reference.
+         */
         private Player player;
 
+        /**
+         * Construct a new {@code BankListener} {@code Object}.
+         *
+         * @param player The player reference.
+         */
         public BankListener(Player player) {
             this.player = player;
         }
