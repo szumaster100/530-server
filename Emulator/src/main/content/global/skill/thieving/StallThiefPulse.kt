@@ -1,6 +1,7 @@
 package content.global.skill.thieving
 
 import core.api.*
+import core.api.interaction.getSceneryName
 import core.api.quest.isQuestComplete
 import core.game.event.ResourceProducedEvent
 import core.game.node.entity.combat.ImpactHandler
@@ -40,7 +41,7 @@ class StallThiefPulse(
             return false
         }
         if (getStatLevel(player, Skills.THIEVING) < stall.level) {
-            sendMessage(
+            sendDialogue(
                 player,
                 "You need to be level " + stall.level + " to steal from the " + node!!.name.lowercase() + ".",
             )
@@ -84,13 +85,19 @@ class StallThiefPulse(
     override fun animate() {}
 
     override fun reward(): Boolean {
+        val goods = stall?.message ?: "goods"
+
         if (ticks == 0) {
             animate(player, ANIMATION)
             lockInteractions(player, 2)
+            sendMessage(player, "You attempt to steal some $goods from the stall.")
         }
         if (++ticks % 3 != 0) {
             return false
         }
+
+        val stallName = stall?.fullIDs?.firstOrNull()?.let { getSceneryName(it) }
+
         val success = success()
         if (success) {
             if (stall == Stall.SILK_STALL) {

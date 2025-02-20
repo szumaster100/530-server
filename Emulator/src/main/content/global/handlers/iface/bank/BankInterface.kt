@@ -135,8 +135,8 @@ class BankInterface : InterfaceListener {
 
         when (opcode) {
             OP_SET_TAB -> {
-                if (player.bank.tabIndex != clickedTabIndex) {
-                    player.bank.tabIndex = clickedTabIndex
+                if (player.bank.getTabIndex() != clickedTabIndex) {
+                    player.bank.setTabIndex(clickedTabIndex)
                 }
             }
 
@@ -281,7 +281,7 @@ class BankInterface : InterfaceListener {
             return@on true
         }
 
-        on(Components.BANK_V2_HELP_767) { player, component, opcode, buttonID, slot, itemID ->
+        on(Components.BANK_V2_HELP_767) { player, _, _, buttonID, _, _ ->
             when (buttonID) {
                 MAIN_BUTTON_CLOSE -> openBankAccount(player)
             }
@@ -301,13 +301,8 @@ class BankInterface : InterfaceListener {
      */
     private fun isCoinOverrideNeeded(id: Int, container: Container): Boolean {
         val amount = container.getAmount(id)
-
-        // Only COINS_995 are obtainable and bankable by player
-        if (id == Items.COINS_995 && amount >= THRESHOLD_TO_DISPLAY_EXACT_QUANTITY_ON_EXAMINE) {
-            return true
-        }
-
-        return false
+        // Only COINS_995 are obtainable and bankable by player.
+        return id == Items.COINS_995 && amount >= THRESHOLD_TO_DISPLAY_EXACT_QUANTITY_ON_EXAMINE
     }
 
     /**
@@ -317,7 +312,7 @@ class BankInterface : InterfaceListener {
      */
     private fun resetSearch(player: Player) {
         val lastTab = getAttribute(player, "bank:lasttab", 0)
-        player.bank.tabIndex = lastTab
+        player.bank.setTabIndex(lastTab)
         setVarc(player, 190, 1)
     }
 }

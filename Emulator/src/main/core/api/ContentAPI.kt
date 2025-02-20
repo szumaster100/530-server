@@ -2306,6 +2306,22 @@ fun teleport(
 }
 
 /**
+ * Teleports the given entity to the specified location after the specified number of ticks.
+ *
+ * @param entity The entity that should be teleported.
+ * @param location The location to which the entity should be teleported.
+ * @param ticks The number of ticks after which the teleportation should occur.
+ */
+fun teleport(entity: Entity, location: Location, type: TeleportManager.TeleportType = TeleportManager.TeleportType.INSTANT, ticks: Int) {
+    GameWorld.Pulser.submit(object : Pulse(ticks) {
+        override fun pulse(): Boolean {
+            teleport(entity, location, type)
+            return true
+        }
+    })
+}
+
+/**
  * Sets a temporary skill level for the entity.
  *
  * @param entity The entity whose skill level is to be set.
@@ -3428,8 +3444,8 @@ fun clearHintIcon(player: Player) {
 fun hasHandsFree(player: Player): Boolean {
     val equipment = player.equipment
     return equipment[EquipmentContainer.SLOT_HANDS] == null &&
-        equipment[EquipmentContainer.SLOT_SHIELD] == null &&
-        equipment[EquipmentContainer.SLOT_WEAPON] == null
+            equipment[EquipmentContainer.SLOT_SHIELD] == null &&
+            equipment[EquipmentContainer.SLOT_WEAPON] == null
 }
 
 /**

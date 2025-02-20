@@ -49,7 +49,7 @@ enum class Stall(
         rewards = arrayOf(Item(Items.CAKE_1891, 1), Item(Items.BREAD_2309, 1), Item(Items.CHOCOLATE_SLICE_1901, 1)),
         experience = 16.0,
         delay = 4,
-        message = "pastries",
+        message = "bread",
     ),
     CRAFTING_STALL(
         full = arrayOf(org.rs.consts.Scenery.CRAFTING_STALL_4874, org.rs.consts.Scenery.CRAFTING_STALL_6166),
@@ -63,7 +63,7 @@ enum class Stall(
             ),
         experience = 16.0,
         delay = 12,
-        message = "crafting supplies",
+        message = "tool",
     ),
     TEA_STALL(
         full = arrayOf(org.rs.consts.Scenery.TEA_STALL_635, org.rs.consts.Scenery.TEA_STALL_6574),
@@ -165,7 +165,7 @@ enum class Stall(
             ),
         experience = 52.0,
         delay = 19,
-        message = "equipment",
+        message = "crossbow parts",
     ),
     SILVER_STALL(
         full =
@@ -184,7 +184,7 @@ enum class Stall(
         rewards = arrayOf(Item(Items.SILVER_ORE_442, 1)),
         experience = 54.0,
         delay = 50,
-        message = "jewellery",
+        message = "silver",
     ),
     SPICE_STALL(
         full = arrayOf(org.rs.consts.Scenery.SPICE_STALL_34386, org.rs.consts.Scenery.CRAFTING_STALL_6166),

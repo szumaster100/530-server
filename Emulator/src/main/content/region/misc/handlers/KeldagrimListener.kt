@@ -13,38 +13,52 @@ import org.rs.consts.Scenery
 
 class KeldagrimListener : InteractionListener {
     override fun defineListeners() {
+        /*
+         * Handles entering through doorway.
+         */
+
         on(DOORWAY_1, IntType.SCENERY, "enter") { player, _ ->
             teleport(player, Location(2941, 10179, 0))
             return@on true
         }
-
         on(DOORWAY_2, IntType.SCENERY, "enter") { player, _ ->
             teleport(player, Location(2435, 5535, 0))
             return@on true
         }
+
+        /*
+         * Handles changing armguards.
+         */
 
         on(REINALD, IntType.NPC, "change-armguards") { player, _ ->
             openInterface(player, Components.REINALD_SMITHING_EMPORIUM_593)
             return@on true
         }
 
+        /*
+         * Handles using Fusion Hammer on Foreman NPC.
+         */
+
         onUseWith(IntType.NPC, FUSION_HAMMER, FOREMAN) { player, _, npc ->
             openDialogue(player, BlastFusionHammerDialogue(), npc)
             return@onUseWith true
         }
 
+        /*
+         * Handles entering a cave entrance.
+         */
+
         on(ENTRANCE, IntType.SCENERY, "go-through") { player, node ->
-            if (node.id == Scenery.CAVE_ENTRANCE_5973) {
-                runTask(player, 1) {
-                    teleport(player, Location(2838, 10125), TeleportManager.TeleportType.INSTANT)
-                }
-            } else {
-                runTask(player, 1) {
-                    teleport(player, Location(2780, 10161), TeleportManager.TeleportType.INSTANT)
-                }
-            }
+            teleport(player, if (node.id == Scenery.CAVE_ENTRANCE_5973)
+                Location(2838, 10125) else Location(2780, 10161)
+            , TeleportManager.TeleportType.INSTANT, 1)
+            sendMessage(player, "You're just about able to squeeze through.")
             return@on true
         }
+
+        /*
+         * Handles searching a bookcase.
+         */
 
         on(Scenery.BOOKCASE_6091, IntType.SCENERY, "search") { player, _ ->
             if (inInventory(player, Items.EXPLORERS_NOTES_11677)) {
@@ -59,6 +73,10 @@ class KeldagrimListener : InteractionListener {
             return@on true
         }
 
+        /*
+         * Handles entering the tunnel.
+         */
+
         on(TUNNEL, IntType.SCENERY, "enter") { player, _ ->
             teleport(player, Location(2730, 3713, 0), TeleportManager.TeleportType.INSTANT)
             return@on true
@@ -66,6 +84,10 @@ class KeldagrimListener : InteractionListener {
     }
 
     override fun defineDestinationOverrides() {
+        /*
+         * Overrides the destination for InnKeeper NPC.
+         */
+
         setDest(IntType.NPC, intArrayOf(INN_KEEPER), "talk-to") { _, _ ->
             return@setDest Location.create(2843, 10193, 1)
         }

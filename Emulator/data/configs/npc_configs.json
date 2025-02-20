@@ -19702,7 +19702,7 @@
     "id": "2203"
   },
   {
-    "examine": "You cannot see his ship",
+    "examine": "He seems to be in charge of the ship on the river.",
     "name": "Dwarven Boatman",
     "id": "2205"
   },
@@ -19712,14 +19712,143 @@
     "id": "2206"
   },
   {
-    "examine": "He carries a heavy load.",
+    "examine": "He's delivered his ores.",
     "name": "Dwarven Miner",
     "id": "2207"
   },
   {
-    "examine": "An elite member of the Black Guard.",
+    "examine": "He carries a heavy load.",
+    "name": "Dwarven Miner",
+    "id": "2208"
+  },
+  {
+    "examine": "He carries a heavy load.",
+    "name": "Dwarven Miner",
+    "id": "2209"
+  },
+  {
+    "examine": "He's delivered his ores.",
+    "name": "Dwarven Miner",
+    "id": "2210"
+  },
+  {
+    "examine": "He carries a heavy load.",
+    "name": "Dwarven Miner",
+    "id": "2211"
+  },
+  {
+    "examine": "He's delivered his ores.",
+    "name": "Dwarven Miner",
+    "id": "2212"
+  },
+  {
+    "examine": "He carries a heavy load.",
+    "name": "Dwarven Miner",
+    "id": "2213"
+  },
+  {
+    "examine": "He's delivered his ores.",
+    "name": "Dwarven Miner",
+    "id": "2214"
+  },
+  {
+    "examine": "He carries a heavy load.",
+    "name": "Dwarven Miner",
+    "id": "2215"
+  },
+  {
+    "examine": "He's delivered his ores.",
+    "name": "Dwarven Miner",
+    "id": "2216"
+  },
+  {
+    "examine": "He carries a heavy load.",
+    "name": "Dwarven Miner",
+    "id": "2217"
+  },
+  {
+    "examine": "He's delivered his ores.",
+    "name": "Dwarven Miner",
+    "id": "2218"
+  },
+  {
+    "examine": "One of the leaders of the business Consortium, a ruler of Keldagrim.",
+    "name": "Purple Pewter Director",
+    "id": "2219"
+  },
+  {
+    "examine": "One of the leaders of the business Consortium, a ruler of Keldagrim.",
+    "name": "Purple Pewter Director",
+    "id": "2220"
+  },
+  {
+    "examine": "One of the leaders of the business Consortium, a ruler of Keldagrim.",
+    "name": "Blue Opal Director",
+    "id": "2221"
+  },
+  {
+    "examine": "One of the leaders of the business Consortium, a ruler of Keldagrim.",
+    "name": "Yellow Fortune Director",
+    "id": "2222"
+  },
+  {
+    "examine": "One of the leaders of the business Consortium, a ruler of Keldagrim.",
+    "name": "Green Gemstone Director",
+    "id": "2223"
+  },
+  {
+    "examine": "One of the leaders of the business Consortium, a ruler of Keldagrim.",
+    "name": "White Chisel Director",
+    "id": "2224"
+  },
+  {
+    "examine": "One of the leaders of the business Consortium, a ruler of Keldagrim.",
+    "name": "Silver Cog Director",
+    "id": "2225"
+  },
+  {
+    "examine": "One of the leaders of the business Consortium, a ruler of Keldagrim.",
+    "name": "Brown Engine Director",
+    "id": "2226"
+  },
+  {
+    "examine": "One of the leaders of the business Consortium, a ruler of Keldagrim.",
+    "name": "Brown Engine Director",
+    "id": "2226"
+  },
+  {
+    "examine": "A dwarf gone bad.",
+    "name": "Red Axe Director",
+    "id": "2227"
+  },
+  {
+    "examine": "Veldaban, Commander of the Black Guard in Keldagrim.",
+    "name": "Commander Veldaban",
+    "id": "2228"
+  },
+  {
+    "examine": "The cat belongs to the director of the Red Axe.",
+    "name": "Red Axe Cat",
+    "id": "2229"
+  },
+  {
+    "examine": "The cat belongs to the director of the Red Axe.",
+    "name": "Red Axe Cat",
+    "id": "2230"
+  },
+  {
+    "name": "null",
+    "id": "2231"
+  },
+  {
+    "examine": "An elite member of the black guard.",
     "name": "Black Guard Berserker",
     "id": "2232"
+  },
+  {
+    "examine": "She's a seed merchant.",
+    "name": "Olivia",
+    "id": "2233"
   },
   {
     "examine": "A master at farming.",
