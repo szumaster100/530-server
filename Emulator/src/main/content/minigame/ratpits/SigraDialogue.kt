@@ -48,7 +48,7 @@ class SigraDialogue : DialogueFile() {
 
             14 -> {
                 end()
-                openDialogue(player!!, ChallangeDialogue(), npc!!.id)
+                openDialogue(player!!, ChallengeDialogue(npc!!.id))
             }
         }
     }

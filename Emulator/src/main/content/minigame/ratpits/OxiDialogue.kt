@@ -47,7 +47,7 @@ class OxiDialogue : DialogueFile() {
 
             11 -> {
                 end()
-                openDialogue(player!!, ChallangeDialogue(), npc!!.id)
+                openDialogue(player!!, ChallengeDialogue(npc!!.id))
             }
         }
     }

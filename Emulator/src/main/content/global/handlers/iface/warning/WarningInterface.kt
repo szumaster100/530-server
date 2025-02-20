@@ -4,7 +4,6 @@ import content.global.skill.agility.AgilityHandler
 import core.api.*
 import core.api.quest.hasRequirement
 import core.game.dialogue.FaceAnim
-import core.game.global.action.ClimbActionHandler
 import core.game.global.action.ClimbActionHandler.climb
 import core.game.global.action.DoorActionHandler
 import core.game.interaction.InterfaceListener
@@ -79,7 +78,7 @@ class WarningInterface : InterfaceListener {
                     if (!player.getSavedData().globalData.hasTiedLumbridgeRope()) {
                         sendDialogue(player, "There is a sheer drop below the hole. You will need a rope.")
                     } else {
-                        ClimbActionHandler.climb(
+                        climb(
                             player,
                             Animation(Animations.MULTI_BEND_OVER_827),
                             Location.create(3168, 9572, 0),

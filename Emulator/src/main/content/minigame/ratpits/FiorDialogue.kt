@@ -49,7 +49,7 @@ class FiorDialogue : DialogueFile() {
 
             13 -> {
                 end()
-                openDialogue(player!!, ChallangeDialogue(), npc!!.id)
+                openDialogue(player!!, ChallengeDialogue(npc!!.id))
             }
         }
     }

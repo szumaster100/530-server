@@ -2,10 +2,12 @@ package content.minigame.ratpits
 
 import core.game.dialogue.DialogueFile
 import core.game.dialogue.FaceAnim
+import core.game.node.entity.npc.NPC
 import core.tools.END_DIALOGUE
 
-class ChallangeDialogue : DialogueFile() {
+class ChallengeDialogue(var npcId : Int) : DialogueFile() {
     override fun handle(componentID: Int, buttonID: Int) {
+        npc = NPC(npcId)
         when (stage) {
             0 -> options(
                 "That sounds vile and cruel.",
@@ -45,13 +47,13 @@ class ChallangeDialogue : DialogueFile() {
             13 -> npcl(
                 FaceAnim.OLD_DEFAULT,
                 "So the longer it stays in the fight the better chance you have of winning."
-            ).also { stage = 5 }
+            ).also { stage = 4 }
 
             14 -> npcl(FaceAnim.OLD_DEFAULT, "I don't know about that.").also { stage++ }
             15 -> npcl(
                 FaceAnim.OLD_DEFAULT,
                 "One thing I know though is that it's a quick way to make and lose money."
-            ).also { stage = 5 }
+            ).also { stage = 4 }
 
             16 -> npcl(
                 FaceAnim.OLD_DEFAULT,
@@ -64,7 +66,7 @@ class ChallangeDialogue : DialogueFile() {
                 "You'd be surprised what some people would be willing to bet."
             ).also { stage++ }
 
-            19 -> npcl(FaceAnim.OLD_DEFAULT, "There is a minimum bet of 100 coins too.").also { stage = 5 }
+            19 -> npcl(FaceAnim.OLD_DEFAULT, "There is a minimum bet of 100 coins too.").also { stage = 4 }
             20 -> npcl(FaceAnim.OLD_DEFAULT, "No, not now, we don't really bet with outsiders.").also { stage++ }
             21 -> playerl("But I'm not an outsider, am I not inside in the pits now?").also { stage++ }
             22 -> npcl(
@@ -78,7 +80,7 @@ class ChallangeDialogue : DialogueFile() {
             26 -> npcl(
                 FaceAnim.OLD_DEFAULT,
                 "No. Regular townsfolk don't like us, which leads us to distrust them and anyone else."
-            ).also { stage = 5 }
+            ).also { stage = 4 }
         }
     }
 }

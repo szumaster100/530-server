@@ -17,9 +17,10 @@ import kotlin.reflect.jvm.isAccessible
 
 @Initializable
 class CacheCommandSet : CommandSet(Privilege.ADMIN) {
+
     override fun defineCommands() {
         /*
-         * Dumps for educational purposes the sprite data (both metadata and first frame image) to .txt and .png files.
+         * Dumps for educational purposes the sprite to .png files.
          */
 
         define(
@@ -51,39 +52,90 @@ class CacheCommandSet : CommandSet(Privilege.ADMIN) {
         }
 
         /*
-         * Dumps for educational purposes identity kit configurations to a .txt file.
+         * Dumps for educational purposes the interface id data.
+         */
+
+        /*
+        define(
+            name = "dumpinterfaces",
+            privilege = Privilege.ADMIN,
+            usage = "::dumpinterfaces",
+            description = "Dumps all interface definitions to a .json file."
+        ) { p, _ ->
+            val gson = GsonBuilder().setPrettyPrinting().create()
+            val dump = File("interface_definitions.json")
+            val interfaces = mutableListOf<Map<String, Any?>>()
+
+            for (interfaceId in 0 until Cache.getInterfaceDefinitionsSize()) {
+                val ifaceDef = try {
+                    IfaceDefinition.loadAndParse(interfaceId)
+                } catch (e: Exception) {
+                    println("Error loading interface ID $interfaceId: ${e.message}")
+                    null
+                } ?: continue
+
+                try {
+                    val ifaceMap = ifaceDef::class
+                        .memberProperties
+                        .filter { prop ->
+                            prop.returnType.classifier !in listOf(
+                                IfaceDefinition::class,
+                                List::class,
+                                Map::class
+                            )
+                        }
+                        .associate { prop ->
+                            prop.isAccessible = true
+                            prop.name to (prop.getter.call(ifaceDef) ?: "null")
+                        }
+
+                    if (ifaceMap.isNotEmpty()) {
+                        interfaces.add(ifaceMap)
+                    }
+                } catch (e: Exception) {
+                    println("Error processing interface ID $interfaceId: ${e.message}")
+                }
+            }
+
+            dump.writeText(gson.toJson(interfaces))
+            p.debug("Interface definitions have been successfully dumped to $dump.")
+        }
+        */
+
+        /*
+         * Dumps for educational purposes identity kit configurations to a .csv file.
          */
 
         define(
             name = "dumpidk",
             privilege = Privilege.ADMIN,
             usage = "::dumpidk",
-            description = "Dumps identity kits data to a .json file.",
+            description = "Dumps identity kits data to a .csv file.",
         ) { p, _ ->
             val index = Cache.getIndexes()[Indices.CONFIGURATION]
             val length = index.getFilesSize(Archives.IDENTITY_KIT)
 
-            val dump = File("identity_kits.json")
-            val gson = GsonBuilder().setPrettyPrinting().create()
-            val identityKitsList = mutableListOf<Map<String, Any?>>()
+            val dump = File("identity_kits.csv")
+            val headers = listOf("id", "bodyPartId", "bodyModelIds", "isSelectable", "headModelIds")
+
+            if (dump.exists()) {
+                dump.delete()
+            }
+
+            val writer = dump.bufferedWriter()
+            writer.appendLine(headers.joinToString(","))
 
             for (i in 0 until length) {
                 val def = ClothDefinition.forId(i)
 
-                val identityKit =
-                    mapOf(
-                        "id" to i,
-                        "bodyPartId" to def.bodyPartId,
-                        "bodyModelIds" to def.bodyModelIds?.toList(),
-                        "isSelectable" to def.isNotSelectable,
-                        "headModelIds" to def.headModelIds.toList(),
-                    )
+                val bodyModelIdsString = def.bodyModelIds?.joinToString(",") { it.toString() } ?: ""
+                val headModelIdsString = def.headModelIds?.joinToString(",") { it.toString() }
 
-                identityKitsList.add(identityKit)
+                writer.appendLine("${i},${def.bodyPartId},${bodyModelIdsString},${def.isNotSelectable},${headModelIdsString}")
             }
 
-            dump.writeText(gson.toJson(identityKitsList))
-            p.debug("Item data has been successfully dumped to $dump.")
+            writer.close()
+            p.debug("Identity kits data has been successfully dumped to $dump.")
         }
 
         /*
@@ -167,7 +219,7 @@ class CacheCommandSet : CommandSet(Privilege.ADMIN) {
                                 } ?: "null"
                             }
 
-                        writer.write(values.joinToString(","))
+                        writer.write(values.joinToString(", "))
                         writer.newLine()
                     }
                 }
@@ -180,19 +232,23 @@ class CacheCommandSet : CommandSet(Privilege.ADMIN) {
         }
 
         /*
-         * Dumps for educational purposes struct data to a .json file.
+         * Dumps for educational purposes struct data to a .csv file.
          */
 
         define(
             name = "dumpstructs",
             privilege = Privilege.ADMIN,
             usage = "::dumpstructs",
-            description = "Dumps structs data to a .json file.",
+            description = "Dumps structs data to a .csv file.",
         ) { player, _ ->
             try {
-                val dump = File("structs.json")
-                val gson = GsonBuilder().setPrettyPrinting().create()
-                val structs = mutableListOf<Map<String, Any>>()
+                val dump = File("structs.csv")
+                val headers = listOf("id", "data")
+                if (dump.exists()) {
+                    dump.delete()
+                }
+                val writer = dump.bufferedWriter()
+                writer.appendLine(headers.joinToString(", "))
 
                 val index = Cache.getIndexes()[Indices.CONFIGURATION]
                 val containers = index.information.containers[Archives.STRUCT].filesIndexes
@@ -202,15 +258,13 @@ class CacheCommandSet : CommandSet(Privilege.ADMIN) {
                     if (file != null) {
                         val def = Struct.parse(fID, file)
                         if (def.dataStore.isNotEmpty()) {
-                            val structMap = mutableMapOf<String, Any>()
-                            structMap["id"] = def.id
-                            structMap["data"] = def.dataStore
-                            structs.add(structMap)
+                            val structData = def.dataStore.map { it.toString() }.joinToString(",")
+                            writer.appendLine("${def.id}, $structData")
                         }
                     }
                 }
 
-                dump.writeText(gson.toJson(structs))
+                writer.close()
                 player.debug("Struct data has been successfully dumped to $dump.")
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -226,41 +280,52 @@ class CacheCommandSet : CommandSet(Privilege.ADMIN) {
             name = "dumpdatamaps",
             privilege = Privilege.ADMIN,
             usage = "::dumpdatamaps",
-            description = "Dumps data maps configurations to a .json file.",
+            description = "Dumps data maps configurations to a .csv file.",
         ) { player, _ ->
-            val dump = File("datamaps.json")
-            val gson = GsonBuilder().setPrettyPrinting().create()
-            val dataMapsList = mutableListOf<Map<String, Any>>()
+            try {
+                val dump = File("datamaps.csv")
+                val headers = listOf("id", "keyType", "valueType", "defaultString", "defaultInt", "dataStore")
 
-            val index = Cache.getIndexes()[Indices.CONFIGURATION_ENUMS]
-            val containers = index.information.containersIndexes
+                if (dump.exists()) {
+                    dump.delete()
+                }
+                val writer = dump.bufferedWriter()
+                writer.appendLine(headers.joinToString(","))
 
-            containers.forEach { cID ->
-                val fileIndexes = index.information.containers[cID].filesIndexes
-                fileIndexes.forEach { fID ->
-                    val file = index.getFileData(cID, fID)
-                    file?.let {
-                        val def = DataMap.parse((cID shl 8) or fID, it)
-                        val dataMap = mutableMapOf<String, Any>()
-                        dataMap["id"] = def.id
-                        dataMap["keyType"] = def.keyType
-                        dataMap["valueType"] =
-                            when (def.valueType) {
-                                'K' -> "Normal"
-                                'J' -> "Struct Pointer"
-                                else -> "Unknown"
-                            }
-                        dataMap["defaultString"] = def.defaultString ?: "N/A"
-                        dataMap["defaultInt"] = def.defaultInt
-                        dataMap["dataStore"] = def.dataStore
+                val index = Cache.getIndexes()[Indices.CONFIGURATION_ENUMS]
+                val containers = index.information.containersIndexes
 
-                        dataMapsList.add(dataMap)
+                containers.forEach { cID ->
+                    val fileIndexes = index.information.containers[cID].filesIndexes
+                    fileIndexes.forEach { fID ->
+                        val file = index.getFileData(cID, fID)
+                        file?.let {
+                            val def = DataMap.parse((cID shl 8) or fID, it)
+
+                            val dataMap = mutableListOf<String>()
+                            dataMap.add(def.id.toString())
+                            dataMap.add(def.keyType.toString())
+                            dataMap.add(
+                                when (def.valueType) {
+                                    'K' -> "Normal"
+                                    'J' -> "Struct Pointer"
+                                    else -> "Unknown"
+                                }
+                            )
+                            dataMap.add(def.defaultString ?: "N/A")
+                            dataMap.add(def.defaultInt.toString())
+                            dataMap.add(def.dataStore.toString())
+                            writer.appendLine(dataMap.joinToString(", "))
+                        }
                     }
                 }
-            }
 
-            dump.writeText(gson.toJson(dataMapsList))
-            player.debug("Data maps successfully dumped to $dump.")
+                writer.close()
+                player.debug("Data maps successfully dumped to $dump.")
+            } catch (e: IOException) {
+                e.printStackTrace()
+                reject(player, "Error writing to file: ${e.message}")
+            }
         }
 
         /*
