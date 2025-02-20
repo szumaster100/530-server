@@ -9,7 +9,7 @@ import core.game.node.entity.player.Player
 import core.game.world.map.zone.ZoneBorders
 import org.rs.consts.Components
 
-class RatPit : MapArea {
+class Ratpit : MapArea {
     override fun defineAreaBorders(): Array<ZoneBorders> {
         return arrayOf(
             getRegionBorders(VARROCK_RAT_PITS_REGION),

@@ -13,7 +13,7 @@ import org.rs.consts.Items
 import org.rs.consts.NPCs
 
 @Initializable
-class RatPitsBarmanDialogue(
+class RatpitBarmanDialogue(
     player: Player? = null,
 ) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
@@ -73,7 +73,7 @@ class RatPitsBarmanDialogue(
     }
 
     override fun newInstance(player: Player): Dialogue {
-        return RatPitsBarmanDialogue(player)
+        return RatpitBarmanDialogue(player)
     }
 
     override fun getIds(): IntArray {
