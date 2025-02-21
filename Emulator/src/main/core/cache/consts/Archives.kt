@@ -1,4 +1,4 @@
-package core.cache
+package core.cache.consts
 
 object Archives {
     const val FLOOR_UNDERLAYS = 1

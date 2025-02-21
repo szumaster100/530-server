@@ -1,9 +1,9 @@
 package core.game.system.command.sets
 
 import com.google.gson.GsonBuilder
-import core.cache.Archives
+import core.cache.consts.Archives
 import core.cache.Cache
-import core.cache.Indices
+import core.cache.consts.Indices
 import core.cache.def.impl.*
 import core.game.system.command.Privilege
 import core.plugin.Initializable
@@ -14,43 +14,10 @@ import java.io.IOException
 import java.lang.reflect.Modifier
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
-
 @Initializable
 class CacheCommandSet : CommandSet(Privilege.ADMIN) {
 
     override fun defineCommands() {
-        /*
-         * Dumps for educational purposes the sprite to .png files.
-         */
-
-        define(
-            name = "dumpsprite",
-            privilege = Privilege.ADMIN,
-            usage = "::dumpsprite [spriteId] [outputDir]",
-            description = "Dumps sprite data to .txt and .png.",
-        ) { p, args ->
-            /*
-             * Unused.
-             */
-            return@define
-        }
-
-        /*
-         * Writes sprite data for educational purposes to a .png file.
-         */
-
-        define(
-            name = "writesprite",
-            privilege = Privilege.ADMIN,
-            usage = "::writesprite [spriteId] [directory] [name]",
-            description = "Writes sprite data to .png.",
-        ) { p, args ->
-            /*
-             * Unused.
-             */
-            return@define
-        }
-
         /*
          * Dumps for educational purposes the interface id data.
          */
@@ -280,17 +247,14 @@ class CacheCommandSet : CommandSet(Privilege.ADMIN) {
             name = "dumpdatamaps",
             privilege = Privilege.ADMIN,
             usage = "::dumpdatamaps",
-            description = "Dumps data maps configurations to a .csv file.",
+            description = "Dumps data maps configurations to a JSON file."
         ) { player, _ ->
             try {
-                val dump = File("datamaps.csv")
-                val headers = listOf("id", "keyType", "valueType", "defaultString", "defaultInt", "dataStore")
+                val dump = File("datamaps.json")
 
-                if (dump.exists()) {
-                    dump.delete()
-                }
-                val writer = dump.bufferedWriter()
-                writer.appendLine(headers.joinToString(","))
+                val gson = GsonBuilder().setPrettyPrinting().create()
+
+                val dataMapsList = mutableListOf<Map<String, Any>>()
 
                 val index = Cache.getIndexes()[Indices.CONFIGURATION_ENUMS]
                 val containers = index.information.containersIndexes
@@ -302,25 +266,25 @@ class CacheCommandSet : CommandSet(Privilege.ADMIN) {
                         file?.let {
                             val def = DataMap.parse((cID shl 8) or fID, it)
 
-                            val dataMap = mutableListOf<String>()
-                            dataMap.add(def.id.toString())
-                            dataMap.add(def.keyType.toString())
-                            dataMap.add(
-                                when (def.valueType) {
+                            val dataMap = mapOf(
+                                "id" to def.id,
+                                "keyType" to def.keyType,
+                                "valueType" to when (def.valueType) {
                                     'K' -> "Normal"
                                     'J' -> "Struct Pointer"
                                     else -> "Unknown"
-                                }
+                                },
+                                "defaultString" to (def.defaultString ?: "N/A"),
+                                "defaultInt" to def.defaultInt,
+                                "dataStore" to def.dataStore
                             )
-                            dataMap.add(def.defaultString ?: "N/A")
-                            dataMap.add(def.defaultInt.toString())
-                            dataMap.add(def.dataStore.toString())
-                            writer.appendLine(dataMap.joinToString(", "))
+
+                            dataMapsList.add(dataMap)
                         }
                     }
                 }
 
-                writer.close()
+                dump.writeText(gson.toJson(dataMapsList))
                 player.debug("Data maps successfully dumped to $dump.")
             } catch (e: IOException) {
                 e.printStackTrace()

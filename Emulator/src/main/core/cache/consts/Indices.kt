@@ -1,4 +1,4 @@
-package core.cache
+package core.cache.consts
 
 object Indices {
     const val SKELETONS = 0
