@@ -206,6 +206,8 @@ class PyramidArea {
                 mummyNpc.attack(player)
                 return@queueScript stopExecuting(player)
             }
+            delayScript(player, 100)
+            mummyNpc.clear()
         }
 
         fun spawnScarabs(player: Player) {
@@ -236,6 +238,8 @@ class PyramidArea {
                 }
                 return@queueScript stopExecuting(player)
             }
+            delayScript(player, 100)
+            scarabNpc.clear()
         }
     }
 }
