@@ -28,10 +28,7 @@ object PinballUtils {
     val PINBALL_EVENT_MYSTERIOUS_OLD_MAN = NPC(NPCs.MYSTERIOUS_OLD_MAN_410, Location.create(1971, 5046, 0))
 
     val PINBALL_REWARD = intArrayOf(
-        Items.UNCUT_DIAMOND_1618,
-        Items.UNCUT_RUBY_1620,
-        Items.UNCUT_EMERALD_1622,
-        Items.UNCUT_SAPPHIRE_1624
+        Items.UNCUT_DIAMOND_1618, Items.UNCUT_RUBY_1620, Items.UNCUT_EMERALD_1622, Items.UNCUT_SAPPHIRE_1624
     )
 
     private val PILLAR_MAP = arrayOf(
@@ -59,20 +56,13 @@ object PinballUtils {
                 setAttribute(player, GameAttributes.RE_PINBALL_INTER, i)
                 playAudio(player, Sounds.PILLARTAG_PINBALL_2278)
             }
-            /**
-             * OVA THERE IS THE ROOM FOR THE CAMERA MOVEMENT.
-             * It's easy if you write your own framework <false positive laugh>
-             * or do it within a dynamic region, but there's a risk you'll end up tagging the stone circle wall in Varok.
-             * Without a loading dynamic region, you need to chop-chop the camera position in a way that prevents peps
-             * from seeing the transparent doors from the POH region.
-             */
         }
         return false
     }
 
     fun replaceTag(player: Player) {
         val index = getAttribute(player, GameAttributes.RE_PINBALL_INTER, -1)
-        if (index in 0..4) {
+        if (index in 0..4) runTask(player, 1) {
             val (newId, location) = SCENERY_REPLACEMENTS[index]
             replaceScenery(Scenery(newId, location), PILLAR_MAP[index].id, -1, location)
         }
@@ -102,9 +92,7 @@ object PinballUtils {
             AntiMacro.terminateEventNpc(player)
             setVarbit(player, VARBIT_PINBALL_SCORE, 0)
             addItemOrDrop(
-                player,
-                PINBALL_REWARD.random(),
-                if (PINBALL_REWARD.contains(Items.UNCUT_DIAMOND_1618)) 2
+                player, PINBALL_REWARD.random(), if (PINBALL_REWARD.contains(Items.UNCUT_DIAMOND_1618)) 2
                 else (3..5).random()
             )
             return@queueScript stopExecuting(player)

@@ -18,7 +18,6 @@ class PinballDialogue : DialogueFile() {
         npc = NPC(NPCs.MYSTERIOUS_OLD_MAN_410)
         when (stage) {
             0 -> {
-                player!!.lock()
                 npc(
                     "The rules of the game are quite simple. You have to",
                     "score 10 points by tagging the flashing pillars.",
@@ -39,6 +38,7 @@ class PinballDialogue : DialogueFile() {
             3 -> playerl(FaceAnim.SCARED, "Wait, I didn't ask to play this game!").also { stage++ }
             4 -> {
                 end()
+                unlock(player!!)
                 PinballUtils.generateTag(player!!)
                 sendUnclosablePlainDialogue(
                     player!!,
@@ -47,7 +47,6 @@ class PinballDialogue : DialogueFile() {
                     "Tag the post with the " + BLUE + "flashing rings</col>.",
                 )
                 runTask(player!!, 3) {
-                    unlock(player!!)
                     findNPC(NPCs.MYSTERIOUS_OLD_MAN_410)!!.clear()
                 }
             }

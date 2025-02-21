@@ -18,7 +18,7 @@ class PinballNPC(
 ) : RandomEventNPC(NPCs.MYSTERIOUS_OLD_MAN_410) {
     override fun init() {
         super.init()
-        lock(player, 8)
+        player.lock()
         submitWorldPulse(
             object : Pulse(1) {
                 var counter = 0
