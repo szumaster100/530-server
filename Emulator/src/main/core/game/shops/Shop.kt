@@ -452,7 +452,7 @@ class Shop(
                         player,
                         "You don't have enough castle wars tickets to purchase that.",
                     )
-                else -> sendMessage(player, "You only had enough money to buy some of the items you requested.")
+                else -> sendMessage(player, "You don't have enough money.")
             }
             return TransactionStatus.Failure("Not enough money in inventory")
         }

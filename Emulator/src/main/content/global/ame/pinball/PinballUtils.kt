@@ -5,51 +5,50 @@ import content.data.RandomEvent
 import core.api.*
 import core.api.ui.restoreTabs
 import core.api.ui.setMinimapState
+import core.game.interaction.QueueStrength
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.scenery.Scenery
 import core.game.system.timer.impl.AntiMacro
 import core.game.world.map.Location
 import core.game.world.map.zone.ZoneBorders
+import org.rs.consts.Components
+import org.rs.consts.Items
 import org.rs.consts.NPCs
 import org.rs.consts.Sounds
 
 object PinballUtils {
+    val VARBIT_PINBALL_SCORE = 2121
     val PINBALL_EVENT_LOCATION = Location.create(1972, 5046, 0)
     val PINBALL_EVENT_ZONE_BORDERS = ZoneBorders(1961, 5033, 1982, 5054)
-    val PINBALL_EVENT_WRONG_SCENERY_ID = intArrayOf(15001, 15003, 15005, 15007, 15009)
-    val PINBALL_EVENT_SCENERY_ID = intArrayOf(15000, 15001, 15002, 15004, 15005, 15006, 15007, 15008, 15009)
+    val PINBALL_EVENT_WRONG_SCENERY_IDs = intArrayOf(15001, 15003, 15005, 15007, 15009)
+    val PINBALL_EVENT_SCENERY_IDs = intArrayOf(15000, 15001, 15002, 15004, 15005, 15006, 15007, 15008, 15009)
     val PINBALL_EVENT_CAVE_EXIT_SCENERY_ID = 15010
-    val PINBALL_EVENT_GUARD_NPC = intArrayOf(NPCs.FLIPPA_3912, NPCs.TILT_3913)
+    val PINBALL_EVENT_GUARD_NPCs = intArrayOf(NPCs.FLIPPA_3912, NPCs.TILT_3913)
     val PINBALL_EVENT_MYSTERIOUS_OLD_MAN = NPC(NPCs.MYSTERIOUS_OLD_MAN_410, Location.create(1971, 5046, 0))
 
-    fun exitRandomEventArea(player: Player) {
-        player.properties.teleportLocation = getAttribute(player, RandomEvent.save(), null)
-        clearLogoutListener(player, RandomEvent.logout())
-        removeAttributes(
-            player,
-            RandomEvent.logout(),
-            RandomEvent.save(),
-            GameAttributes.RE_PINBALL_START,
-            GameAttributes.RE_PINBALL_OBJ,
-            GameAttributes.RE_PINBALL_INTER,
-        )
-        restoreTabs(player)
-        closeOverlay(player)
-        setMinimapState(player, 0)
-        PINBALL_EVENT_MYSTERIOUS_OLD_MAN.clear()
-        setVarbit(player, 2121, 0)
-        AntiMacro.terminateEventNpc(player)
-    }
+    val PINBALL_REWARD = intArrayOf(
+        Items.UNCUT_DIAMOND_1618,
+        Items.UNCUT_RUBY_1620,
+        Items.UNCUT_EMERALD_1622,
+        Items.UNCUT_SAPPHIRE_1624
+    )
 
-    private val PILLAR_MAP =
-        arrayOf(
-            Scenery(15001, Location(1967, 5046, 0)),
-            Scenery(15003, Location(1969, 5049, 0)),
-            Scenery(15005, Location(1972, 5050, 0)),
-            Scenery(15007, Location(1975, 5049, 0)),
-            Scenery(15009, Location(1977, 5046, 0)),
-        )
+    private val PILLAR_MAP = arrayOf(
+        Scenery(15001, Location(1967, 5046, 0)),
+        Scenery(15003, Location(1969, 5049, 0)),
+        Scenery(15005, Location(1972, 5050, 0)),
+        Scenery(15007, Location(1975, 5049, 0)),
+        Scenery(15009, Location(1977, 5046, 0)),
+    )
+
+    private val SCENERY_REPLACEMENTS = arrayOf(
+        Pair(15000, Location(1967, 5046, 0)),
+        Pair(15002, Location(1969, 5049, 0)),
+        Pair(15004, Location(1972, 5050, 0)),
+        Pair(15006, Location(1975, 5049, 0)),
+        Pair(15008, Location(1977, 5046, 0)),
+    )
 
     fun generateTag(player: Player): Boolean {
         val score = getAttribute(player, GameAttributes.RE_PINBALL_OBJ, -1)
@@ -60,70 +59,55 @@ object PinballUtils {
                 setAttribute(player, GameAttributes.RE_PINBALL_INTER, i)
                 playAudio(player, Sounds.PILLARTAG_PINBALL_2278)
             }
+            /**
+             * OVA THERE IS THE ROOM FOR THE CAMERA MOVEMENT.
+             * It's easy if you write your own framework <false positive laugh>
+             * or do it within a dynamic region, but there's a risk you'll end up tagging the stone circle wall in Varok.
+             * Without a loading dynamic region, you need to chop-chop the camera position in a way that prevents peps
+             * from seeing the transparent doors from the POH region.
+             */
         }
         return false
     }
 
     fun replaceTag(player: Player) {
-        for (i in 0..4) {
-            if (getAttribute(player, GameAttributes.RE_PINBALL_INTER, -1) == i) {
-                when (i) {
-                    0 ->
-                        replaceScenery(
-                            Scenery(
-                                15000,
-                                Location(1967, 5046, 0),
-                            ),
-                            15001,
-                            -1,
-                            Location(1967, 5046, 0),
-                        )
+        val index = getAttribute(player, GameAttributes.RE_PINBALL_INTER, -1)
+        if (index in 0..4) {
+            val (newId, location) = SCENERY_REPLACEMENTS[index]
+            replaceScenery(Scenery(newId, location), PILLAR_MAP[index].id, -1, location)
+        }
+    }
 
-                    1 ->
-                        replaceScenery(
-                            Scenery(
-                                15002,
-                                Location(1969, 5049, 0),
-                            ),
-                            15003,
-                            -1,
-                            Location(1969, 5049, 0),
-                        )
+    fun cleanup(player: Player) {
+        player.properties.teleportLocation = getAttribute(player, RandomEvent.save(), null)
+        clearLogoutListener(player, RandomEvent.logout())
+        restoreTabs(player)
+        closeOverlay(player)
+        closeInterface(player)
+        removeAttributes(
+            player,
+            RandomEvent.save(),
+            GameAttributes.RE_PINBALL_START,
+            GameAttributes.RE_PINBALL_OBJ,
+            GameAttributes.RE_PINBALL_INTER
+        )
+        openInterface(player, Components.CHATDEFAULT_137)
+        setMinimapState(player, 0)
+    }
 
-                    2 ->
-                        replaceScenery(
-                            Scenery(
-                                15004,
-                                Location(1972, 5050, 0),
-                            ),
-                            15005,
-                            -1,
-                            Location(1972, 5050, 0),
-                        )
-
-                    3 ->
-                        replaceScenery(
-                            Scenery(
-                                15006,
-                                Location(1975, 5049, 0),
-                            ),
-                            15007,
-                            -1,
-                            Location(1975, 5049, 0),
-                        )
-
-                    4 ->
-                        replaceScenery(
-                            Scenery(
-                                15008,
-                                Location(1977, 5046, 0),
-                            ),
-                            15009,
-                            -1,
-                            Location(1977, 5046, 0),
-                        )
-                }
-            }
+    fun reward(player: Player) {
+        queueScript(
+            player, 2, QueueStrength.STRONG//TOUGH
+        ) {
+            AntiMacro.terminateEventNpc(player)
+            setVarbit(player, VARBIT_PINBALL_SCORE, 0)
+            addItemOrDrop(
+                player,
+                PINBALL_REWARD.random(),
+                if (PINBALL_REWARD.contains(Items.UNCUT_DIAMOND_1618)) 2
+                else (3..5).random()
+            )
+            return@queueScript stopExecuting(player)
         }
     }
 }

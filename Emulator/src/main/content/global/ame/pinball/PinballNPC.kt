@@ -18,23 +18,24 @@ class PinballNPC(
 ) : RandomEventNPC(NPCs.MYSTERIOUS_OLD_MAN_410) {
     override fun init() {
         super.init()
+        lock(player, 8)
         submitWorldPulse(
             object : Pulse(1) {
                 var counter = 0
-
                 override fun pulse(): Boolean {
                     when (counter++) {
-                        0 ->
-                            sendChat(
-                                "Good day, ${player.username.replaceFirstChar {
+                        0 -> sendChat(
+                            "Good day, ${
+                                player.username.replaceFirstChar {
                                     if (it.isLowerCase()) {
                                         it.titlecase()
                                     } else {
-                                        it
-                                            .toString()
+                                        it.toString()
                                     }
-                                }}, care for a quick game?",
-                            )
+                                }
+                            }, care for a quick game?",
+                        )
+
                         3 -> {
                             setAttribute(player, RandomEvent.save(), player.location)
                             registerLogoutListener(player, RandomEvent.logout()) { p ->
@@ -49,7 +50,7 @@ class PinballNPC(
                         7 -> {
                             setMinimapState(player, 2)
                             openOverlay(player, Components.PINBALL_INTERFACE_263)
-                            setVarbit(player, 2121, 0)
+                            setVarbit(player, PinballUtils.VARBIT_PINBALL_SCORE, 0)
                             setAttribute(player, GameAttributes.RE_PINBALL_OBJ, 0)
                             removeTabs(player, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14)
                             face(player, findNPC(NPCs.MYSTERIOUS_OLD_MAN_410)!!)

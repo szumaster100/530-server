@@ -65,7 +65,7 @@ enum class RandomEvents(
     KISS_THE_FROG(npc = FrogHeraldNPC()),
     LOST_AND_FOUND(npc = LostAndFoundNPC(), skillIds = intArrayOf(Skills.MAGIC)),
     EVIL_BOB(npc = EvilBobNPC(), skillIds = intArrayOf(Skills.FISHING, Skills.MAGIC)),
-    EVIL_TWIN(npc = MollyNPC(), skillIds = intArrayOf(Skills.MINING, Skills.MAGIC), loot = CERTER.loot),
+    EVIL_TWIN(npc = MollyNPC(), skillIds = intArrayOf(Skills.MINING, Skills.MAGIC)),
     SURPRISE_EXAM(npc = PatternRecognitionNPC(), type = "sexam"),
     PILLORY(
         npc = PilloryNPC(),
