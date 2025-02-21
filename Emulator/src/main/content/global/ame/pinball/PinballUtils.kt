@@ -62,7 +62,7 @@ object PinballUtils {
 
     fun replaceTag(player: Player) {
         val index = getAttribute(player, GameAttributes.RE_PINBALL_INTER, -1)
-        if (index in 0..4) runTask(player, 1) {
+        if (index in 0..4) {
             val (newId, location) = SCENERY_REPLACEMENTS[index]
             replaceScenery(Scenery(newId, location), PILLAR_MAP[index].id, -1, location)
         }
