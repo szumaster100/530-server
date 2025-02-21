@@ -773,13 +773,13 @@ public class ItemEditor extends JFrame {
     }
 
     private void export() {
-        File f = new File(System.getProperty("user.home") + "/FCE/items/");
+        File f = new File("./export");
         f.mkdirs();
         String lineSep = System.getProperty("line.separator");
         BufferedWriter writer = null;
 
         try {
-            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(System.getProperty("user.home") + "/FCE/items/" + this.defs.id + ".txt"), StandardCharsets.UTF_8));
+            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("export/" + this.defs.id + ".txt"), StandardCharsets.UTF_8));
             writer.write("name = " + this.defs.getName());
             writer.write(lineSep);
             writer.write("value = " + this.defs.getCost());
