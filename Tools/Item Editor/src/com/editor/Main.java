@@ -29,11 +29,6 @@ public class Main {
         File f = new File("logs.txt");
 
         try {
-            File parentDir = f.getParentFile();
-            if (parentDir != null && !parentDir.exists()) {
-                parentDir.mkdirs();
-            }
-
             if (!f.exists()) {
                 f.createNewFile();
             }

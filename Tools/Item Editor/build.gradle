@@ -1,16 +1,16 @@
 /*
- * 𝕋𝕙𝕚𝕤 𝕡𝕣𝕠𝕛𝕖𝕔𝕥 𝕚𝕤 𝕒 𝕗𝕠𝕣𝕜 𝕠𝕗 𝕙𝕥𝕥𝕡𝕤://𝕘𝕚𝕥𝕝𝕒𝕓.𝕔𝕠𝕞/𝟚𝟘𝟘𝟡𝕤𝕔𝕒𝕡𝕖/𝕥𝕠𝕠𝕝𝕤/𝟚𝟘𝟘𝟡𝕤𝕔𝕒𝕡𝕖-𝕚𝕥𝕖𝕞-𝕕𝕖𝕗𝕚𝕟𝕚𝕥𝕚𝕠𝕟-𝕖𝕕𝕚𝕥𝕠𝕣.
+ * This project is a fork of https://gitlab.com/2009scape/tools/2009scape-item-definition-editor.
  *
- * 𝕃𝕚𝕔𝕖𝕟𝕤𝕖𝕕 𝕦𝕟𝕕𝕖𝕣 𝕥𝕙𝕖 𝔾ℕ𝕌 𝔸𝕗𝕗𝕖𝕣𝕠 𝔾𝕖𝕟𝕖𝕣𝕒𝕝 ℙ𝕦𝕓𝕝𝕚𝕔 𝕃𝕚𝕔𝕖𝕟𝕤𝕖 (𝔸𝔾ℙ𝕃) 𝕧𝟛.𝟘.
- * 𝕐𝕠𝕦 𝕞𝕒𝕪 𝕠𝕓𝕥𝕒𝕚𝕟 𝕒 𝕔𝕠𝕡𝕪 𝕠𝕗 𝕥𝕙𝕖 𝕃𝕚𝕔𝕖𝕟𝕤𝕖 𝕒𝕥:
- * 𝕙𝕥𝕥𝕡𝕤://𝕨𝕨𝕨.𝕘𝕟𝕦.𝕠𝕣𝕘/𝕝𝕚𝕔𝕖𝕟𝕤𝕖𝕤/𝕒𝕘𝕡𝕝-𝟛.𝟘.𝕙𝕥𝕞𝕝
+ * Licensed under the GNU Affero General Public License (AGPL) v3.0.
+ * You may obtain a copy of the License at:
+ * https://www.gnu.org/licenses/agpl-3.0.html
  *
- * 𝕋𝕙𝕚𝕤 𝕡𝕣𝕠𝕛𝕖𝕔𝕥 𝕚𝕤 𝕕𝕚𝕤𝕥𝕣𝕚𝕓𝕦𝕥𝕖𝕕 𝕦𝕟𝕕𝕖𝕣 𝕥𝕙𝕖 𝕥𝕖𝕣𝕞𝕤 𝕠𝕗 𝕥𝕙𝕖 𝔸𝔾ℙ𝕃, 𝕨𝕙𝕚𝕔𝕙 𝕞𝕖𝕒𝕟𝕤:
- * - 𝔸𝕟𝕪 𝕕𝕖𝕣𝕚𝕧𝕒𝕥𝕚𝕧𝕖 𝕨𝕠𝕣𝕜𝕤 𝕞𝕦𝕤𝕥 𝕒𝕝𝕤𝕠 𝕓𝕖 𝕝𝕚𝕔𝕖𝕟𝕤𝕖𝕕 𝕦𝕟𝕕𝕖𝕣 𝕥𝕙𝕖 𝔸𝔾ℙ𝕃.
- * - 𝕀𝕗 𝕪𝕠𝕦 𝕞𝕠𝕕𝕚𝕗𝕪 𝕒𝕟𝕕 𝕕𝕖𝕡𝕝𝕠𝕪 𝕥𝕙𝕚𝕤 𝕤𝕠𝕗𝕥𝕨𝕒𝕣𝕖 𝕠𝕟 𝕒 𝕟𝕖𝕥𝕨𝕠𝕣𝕜 𝕤𝕖𝕣𝕧𝕖𝕣, 𝕪𝕠𝕦 𝕞𝕦𝕤𝕥 𝕡𝕣𝕠𝕧𝕚𝕕𝕖 𝕒𝕔𝕔𝕖𝕤𝕤 𝕥𝕠 𝕥𝕙𝕖 𝕤𝕠𝕦𝕣𝕔𝕖 𝕔𝕠𝕕𝕖 𝕥𝕠 𝕦𝕤𝕖𝕣𝕤 𝕚𝕟𝕥𝕖𝕣𝕒𝕔𝕥𝕚𝕟𝕘 𝕨𝕚𝕥𝕙 𝕥𝕙𝕖 𝕤𝕠𝕗𝕥𝕨𝕒𝕣𝕖 𝕠𝕧𝕖𝕣 𝕥𝕙𝕖 𝕟𝕖𝕥𝕨𝕠𝕣𝕜.
+ * This project is distributed under the terms of the AGPL, which means:
+ * - Any derivative works must also be licensed under the AGPL.
+ * - If you modify and deploy this software on a network server, you must provide access to the source code to users interacting with the software over the network.
  *
- *  𝟚𝟘𝟘𝟡𝕤𝕔𝕒𝕡𝕖 𝕀𝕥𝕖𝕞 𝔻𝕖𝕗𝕚𝕟𝕚𝕥𝕚𝕠𝕟 𝔼𝕕𝕚𝕥𝕠𝕣
- *  ℂ𝕠𝕡𝕪𝕣𝕚𝕘𝕙𝕥 (ℂ) 𝟚𝟘𝟚𝟚  𝟚𝟘𝟘𝟡𝕊𝕔𝕒𝕡𝕖 / 𝕋𝕠𝕠𝕝𝕤
+ * 2009scape Item Definition Editor
+ * Copyright (C) 2022  2009Scape / Tools
  */
 plugins {
     id 'java'
@@ -18,22 +18,16 @@ plugins {
 }
 
 group = 'org.rs'
-version = '1.0'
 
 repositories {
     mavenCentral()
 }
 
-dependencies {}
+dependencies {
+}
 
 application {
     mainClass.set('com.editor.ToolSelection')
-}
-
-task licenseInfo {
-    doLast {
-        println 'This project is licensed under the GNU Affero General Public License (AGPL) v3.0.'
-    }
 }
 
 sourceSets {
@@ -42,7 +36,15 @@ sourceSets {
             srcDirs = ['src']
         }
         resources {
-            srcDirs = ['src/com/editor/resources']
+            srcDirs = ['src/main/resources']
         }
+    }
+}
+
+tasks.jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.editor.ToolSelection'
+        )
     }
 }
