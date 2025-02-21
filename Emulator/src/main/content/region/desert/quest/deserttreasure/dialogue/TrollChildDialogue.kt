@@ -1,5 +1,6 @@
 package content.region.desert.quest.deserttreasure.dialogue
 
+import content.region.desert.quest.deserttreasure.DTUtils
 import content.region.desert.quest.deserttreasure.DesertTreasure
 import core.api.inInventory
 import core.api.openDialogue
@@ -11,6 +12,7 @@ import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import org.rs.consts.Items
 import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
 class TrollChildDialogue(
@@ -123,14 +125,14 @@ class TrollChildDialogueFile : DialogueBuilderFile() {
 
     override fun create(b: DialogueBuilder) {
         b
-            .onQuestStages(DesertTreasure.questName, 0, 1, 2, 3, 4, 5, 6, 7, 8)
+            .onQuestStages(Quests.DESERT_TREASURE, 0, 1, 2, 3, 4, 5, 6, 7, 8)
             .let { dialogueBeforeQuestCrying(it) }
             .end()
 
         b
-            .onQuestStages(DesertTreasure.questName, 9)
+            .onQuestStages(Quests.DESERT_TREASURE, 9)
             .branch { player ->
-                return@branch DesertTreasure.getSubStage(player, DesertTreasure.attributeIceStage)
+                return@branch DTUtils.getSubStage(player, DesertTreasure.iceStage)
             }.let { branch ->
 
                 branch
@@ -147,8 +149,8 @@ class TrollChildDialogueFile : DialogueBuilderFile() {
                             .option("Yes")
                             .let { dialogueYesToHelp(it) }
                             .endWith { _, player ->
-                                if (DesertTreasure.getSubStage(player, DesertTreasure.attributeIceStage) == 1) {
-                                    DesertTreasure.setSubStage(player, DesertTreasure.attributeIceStage, 2)
+                                if (DTUtils.getSubStage(player, DesertTreasure.iceStage) == 1) {
+                                    DTUtils.setSubStage(player, DesertTreasure.iceStage, 2)
                                 }
                             }
                         optionBuilder

@@ -1,5 +1,6 @@
 package content.region.desert.quest.deserttreasure.npc
 
+import content.region.desert.quest.deserttreasure.DTUtils
 import content.region.desert.quest.deserttreasure.DesertTreasure
 import core.api.*
 import core.api.interaction.transformNpc
@@ -90,9 +91,9 @@ class DamisBehavior : NPCBehavior(NPCs.DAMIS_1974, NPCs.DAMIS_1975) {
     ) {
         if (killer is Player) {
             if (self.id == NPCs.DAMIS_1975) {
-                if (DesertTreasure.getSubStage(killer, DesertTreasure.attributeShadowStage) == 3) {
+                if (DTUtils.getSubStage(killer, DesertTreasure.shadowStage) == 3) {
                     GroundItemManager.create(Item(Items.SHADOW_DIAMOND_4673), self.location, killer)
-                    DesertTreasure.setSubStage(killer, DesertTreasure.attributeShadowStage, 100)
+                    DTUtils.setSubStage(killer, DesertTreasure.shadowStage, 100)
                     removeAttribute(killer, DesertTreasure.attributeFareedInstance)
                 }
             }

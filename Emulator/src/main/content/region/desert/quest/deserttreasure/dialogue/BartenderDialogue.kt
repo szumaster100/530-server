@@ -145,7 +145,7 @@ class BartenderDialogueFile : DialogueBuilderFile() {
             }
 
         b
-            .onQuestStages(DesertTreasure.questName, 6, 7, 8, 9, 10, 11)
+            .onQuestStages(Quests.DESERT_TREASURE, 6, 7, 8, 9, 10, 11)
             .branch { player ->
                 return@branch if (getAttribute(player, DesertTreasure.attributeBoughtBeer, false)) {
                     1
@@ -204,7 +204,7 @@ class BartenderDialogueFile : DialogueBuilderFile() {
             }
 
         b
-            .onQuestStages(DesertTreasure.questName, 100)
+            .onQuestStages(Quests.DESERT_TREASURE, 100)
             .npcl("So you're the @g[fella,lass] that freed Azzanadra, huh? Fair play to ya. What will you have?")
             .end()
     }

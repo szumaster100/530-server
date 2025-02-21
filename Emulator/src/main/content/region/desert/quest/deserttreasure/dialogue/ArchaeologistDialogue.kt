@@ -17,6 +17,7 @@ import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import org.rs.consts.Items
 import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
 class ArchaeologistDialogue(
@@ -42,7 +43,7 @@ class ArchaeologistDialogue(
 class ArchaeologistDialogueFile : DialogueBuilderFile() {
     override fun create(b: DialogueBuilder) {
         b
-            .onQuestStages(DesertTreasure.questName, 0)
+            .onQuestStages(Quests.DESERT_TREASURE, 0)
             .player(FaceAnim.FRIENDLY, "Hello there.")
             .branch { player ->
                 return@branch if (DesertTreasure.hasRequirements(player)) {
@@ -119,8 +120,8 @@ class ArchaeologistDialogueFile : DialogueBuilderFile() {
                                     "to waste my time excavating anything that isn't worth",
                                     "my time as a world famous archaeologist!",
                                 ).endWith { _, player ->
-                                    if (getQuestStage(player, DesertTreasure.questName) == 0) {
-                                        setQuestStage(player, DesertTreasure.questName, 1)
+                                    if (getQuestStage(player, Quests.DESERT_TREASURE) == 0) {
+                                        setQuestStage(player, Quests.DESERT_TREASURE, 1)
                                     }
                                 }
                             optionBuilder2
@@ -167,7 +168,7 @@ class ArchaeologistDialogueFile : DialogueBuilderFile() {
             }
 
         b
-            .onQuestStages(DesertTreasure.questName, 1, 2)
+            .onQuestStages(Quests.DESERT_TREASURE, 1, 2)
             .npcl("So what did Terry Balando say about those etchings? Did he give you a translation for me?")
             .playerl("Um...yeah...about that... I kind of didn't go and speak to him yet...")
             .npcl(
@@ -176,7 +177,7 @@ class ArchaeologistDialogueFile : DialogueBuilderFile() {
             .end()
 
         b
-            .onQuestStages(DesertTreasure.questName, 3)
+            .onQuestStages(Quests.DESERT_TREASURE, 3)
             .playerl("Hello there.")
             .npcl("So what did Terry Balando say about those etchings? Did he give you a translation for me?")
             .playerl("Yeah, he did. I have it here in this book.")
@@ -198,16 +199,16 @@ class ArchaeologistDialogueFile : DialogueBuilderFile() {
             .playerl("Yeah, I did. Kind of boring really.")
             .npcl("Excellent. Just give me a moment to read this, and talk to me again in a second.")
             .endWith { _, player ->
-                if (getQuestStage(player, DesertTreasure.questName) == 3) {
+                if (getQuestStage(player, Quests.DESERT_TREASURE) == 3) {
                     if (inInventory(player, Items.TRANSLATION_4655)) {
                         removeItem(player, Items.TRANSLATION_4655)
                     }
-                    setQuestStage(player, DesertTreasure.questName, 4)
+                    setQuestStage(player, Quests.DESERT_TREASURE, 4)
                 }
             }
 
         b
-            .onQuestStages(DesertTreasure.questName, 4)
+            .onQuestStages(Quests.DESERT_TREASURE, 4)
             .playerl("Hello there.")
             .npcl("Hmmm. Interesting. It seems to me like there's some kind of treasure hidden out in the desert.")
             .npcl("So what do you say? Fancy being a treasure hunter like me?")
@@ -242,8 +243,8 @@ class ArchaeologistDialogueFile : DialogueBuilderFile() {
                         "I'll continue searching around here in this Bedabin Camp, you head due South to the Bandit Village. If either of us find anything, we'll come find each other and say what, okay?",
                     ).npcl("You head due South, see what you can find out about this tablet.")
                     .endWith { _, player ->
-                        if (getQuestStage(player, DesertTreasure.questName) == 4) {
-                            setQuestStage(player, DesertTreasure.questName, 5)
+                        if (getQuestStage(player, Quests.DESERT_TREASURE) == 4) {
+                            setQuestStage(player, Quests.DESERT_TREASURE, 5)
                         }
                     }
                 optionBuilder
@@ -268,8 +269,8 @@ class ArchaeologistDialogueFile : DialogueBuilderFile() {
                                 "I'll continue searching around here in this Bedabin Camp, you head due South to the Bandit Village. If either of us find anything, we'll come find each other and say what, okay?",
                             ).npcl("You head due South, see what you can find out about this tablet.")
                             .endWith { _, player ->
-                                if (getQuestStage(player, DesertTreasure.questName) == 4) {
-                                    setQuestStage(player, DesertTreasure.questName, 5)
+                                if (getQuestStage(player, Quests.DESERT_TREASURE) == 4) {
+                                    setQuestStage(player, Quests.DESERT_TREASURE, 5)
                                 }
                             }
                         optionBuilder
@@ -284,7 +285,7 @@ class ArchaeologistDialogueFile : DialogueBuilderFile() {
             }
 
         b
-            .onQuestStages(DesertTreasure.questName, 5)
+            .onQuestStages(Quests.DESERT_TREASURE, 5)
             .playerl("Hello there.")
             .npcl("Hello again. You find any signs of that treasure yet?")
             .playerl("Not yet...")
@@ -293,7 +294,7 @@ class ArchaeologistDialogueFile : DialogueBuilderFile() {
             )
 
         b
-            .onQuestStages(DesertTreasure.questName, 6, 7, 8)
+            .onQuestStages(Quests.DESERT_TREASURE, 6, 7, 8)
             .playerl("Hello there.")
             .npcl("Hello again. You find any signs of that treasure yet?")
             .playerl("Not as such... Although I think I'm onto something of a promising lead...")

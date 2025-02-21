@@ -1,6 +1,7 @@
 package content.region.desert.quest.deserttreasure.npc
 
 import content.global.skill.magic.spells.modern.WaterSpell
+import content.region.desert.quest.deserttreasure.DTUtils
 import content.region.desert.quest.deserttreasure.DesertTreasure
 import core.api.*
 import core.game.container.impl.EquipmentContainer
@@ -79,8 +80,8 @@ class FareedBehavior : NPCBehavior(NPCs.FAREED_1977) {
         if (killer is Player) {
             addItemOrDrop(killer, Items.SMOKE_DIAMOND_4672)
             sendMessage(killer, "You take the Diamond of Smoke from the ashes of the warrior.")
-            if (DesertTreasure.getSubStage(killer, DesertTreasure.attributeSmokeStage) == 1) {
-                DesertTreasure.setSubStage(killer, DesertTreasure.attributeSmokeStage, 100)
+            if (DTUtils.getSubStage(killer, DesertTreasure.smokeStage) == 1) {
+                DTUtils.setSubStage(killer, DesertTreasure.smokeStage, 100)
                 removeAttribute(killer, DesertTreasure.attributeFareedInstance)
             }
         }

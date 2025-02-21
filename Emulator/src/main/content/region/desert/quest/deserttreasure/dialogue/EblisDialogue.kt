@@ -1,29 +1,339 @@
 package content.region.desert.quest.deserttreasure.dialogue
 
+import content.region.desert.quest.deserttreasure.DTUtils
 import content.region.desert.quest.deserttreasure.DesertTreasure
 import core.api.*
 import core.api.quest.getQuestStage
+import core.api.quest.isQuestComplete
 import core.api.quest.setQuestStage
 import core.game.dialogue.Dialogue
 import core.game.dialogue.DialogueBuilder
 import core.game.dialogue.DialogueBuilderFile
 import core.game.dialogue.FaceAnim
-import core.game.interaction.IntType
-import core.game.interaction.InteractionListener
+import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
+import core.game.node.item.Item
 import core.plugin.Initializable
 import org.rs.consts.Items
 import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
 class EblisDialogue(
     player: Player? = null,
 ) : Dialogue(player) {
+    override fun open(vararg args: Any): Boolean {
+        npc = args[0] as NPC
+        if(npc.id in NPCs.EBLIS_1924..NPCs.EBLIS_1925) {
+            when {
+                getQuestStage(player, Quests.DESERT_TREASURE) == 8 -> {
+                    npc("Ah, so you got here at last.")
+                    stage = 1
+                }
+
+                getQuestStage(player, Quests.DESERT_TREASURE) in 9..10 -> {
+                    if (DTUtils.completedAllSubStages(player)) {
+                        player(FaceAnim.THINKING, "So I have all four of these Diamonds of Azzanadra, now", "what?")
+                        stage = 9
+                    } else {
+                        playerl(
+                            FaceAnim.HALF_ASKING,
+                            "So can you give me any help on where to find these warriors and their diamonds?"
+                        )
+                        stage = 18
+                    }
+                }
+
+                else -> {
+                    player("Hello again.")
+                    stage = 26
+                }
+            }
+        } else {
+            end()
+            openDialogue(player!!, EblisDialogueFile(), npc)
+        }
+        return true
+    }
+
     override fun handle(
         interfaceId: Int,
         buttonId: Int,
     ): Boolean {
-        openDialogue(player!!, EblisDialogueFile(), npc)
+        when (stage) {
+            1 -> {
+                npcl(
+                    FaceAnim.FRIENDLY,
+                    "As you may have noticed, I have made the mirrors for the spell, and cast the enchantment upon them."
+                )
+                stage++
+            }
+
+            2 -> {
+                npcl(
+                    FaceAnim.FRIENDLY,
+                    "By simply looking into each mirror, you will be able to see the area where the trace magics from the Diamonds of Azzanadra are emanating from."
+                )
+                stage++
+            }
+
+            3 -> {
+                npcl(
+                    FaceAnim.FRIENDLY,
+                    "Unfortunately, I cannot narrow the search closer with this kind of spell, but if you search the areas shown to you, you may be able to find some clues leading you to the evil warriors of Zamorak who stole the diamonds in"
+                )
+                stage++
+            }
+
+            4 -> {
+                npcl(FaceAnim.FRIENDLY, "the first place.")
+                stage++
+            }
+
+            5 -> {
+                player(
+                    FaceAnim.THINKING,
+                    "So you can't be any more specific about where to look for these warriors and their diamonds?"
+                )
+                stage++
+            }
+
+            6 -> {
+                npcl(
+                    FaceAnim.FRIENDLY,
+                    "I'm afraid not, other than the direction that the mirrow is facing will be approximately the direction you will need to head in."
+                )
+                stage++
+            }
+
+            7 -> {
+                npcl(
+                    FaceAnim.FRIENDLY,
+                    "Make sure to come and speak to me when you have retrieved all four diamonds."
+                )
+                stage++
+            }
+
+            8 -> {
+                end()
+                setQuestStage(player, Quests.DESERT_TREASURE, 9)
+            }
+
+            9 -> {
+                npc(
+                    "Azzanadra was our greatest ever hero.",
+                    "He was unkillable, and the cowardly traitors who stole",
+                    "our lands did not know what to do with him, for his",
+                    "hatred for them was as strong as his magics.",
+                )
+                stage++
+            }
+
+            10 -> {
+                npc(
+                    FaceAnim.SAD,
+                    "In the end, they cast a spell upon him, to trap him in",
+                    "the stone structure to the South of here.",
+                )
+                stage++
+            }
+
+            11 -> {
+                npc(
+                    FaceAnim.ANNOYED,
+                    "They stole his very life force, the essence of his power,",
+                    "and trapped it within four crystals - the very same",
+                    "Four Diamonds which you have now recovered from",
+                    "the brigands who stole from us.",
+                )
+                stage++
+            }
+
+            12 -> {
+                npc(
+                    FaceAnim.ANNOYED,
+                    "The four pillars surrounding the structure are keeping",
+                    "the containment spell intact.",
+                    "By placing a diamond into each, you will breach the",
+                    "magical defenses and begin to restore Azzanadra's",
+                )
+                stage++
+            }
+
+            13 -> {
+                npcl(FaceAnim.ANNOYED, "power, and be able to enter the structure.")
+                stage++
+            }
+
+            14 -> {
+                npcl(FaceAnim.FRIENDLY, "Go, place the diamonds, and free my lord Azzanadra!")
+                stage++
+            }
+
+            15 -> {
+                npc(
+                    FaceAnim.FRIENDLY,
+                    "The path will be hard, for his prison is full of traps",
+                    "and danger to prevent his rescue, but he will reward you",
+                    "beyond your wildest dreams when freed!",
+                )
+                stage++
+            }
+
+            16 -> {
+                npc(
+                    "Quickly...",
+                    "After all these centuries, Lord Azzanadra is nearly free!",
+                    "You must spare no time, place the Diamonds upon the",
+                    "pillars and enter the pyramid so that you may free him!",
+                )
+                stage++
+            }
+
+            17 -> end()
+
+            18 -> {
+                npcl(
+                    FaceAnim.FRIENDLY,
+                    "No, the magic used in this spell is powerful, but inaccurate. The direction the scrying glass faces is roughly the direction you will find the warrior, but I'm afraid I"
+                )
+                stage++
+            }
+
+            19 -> {
+                npc("can't be any more help than that.")
+                stage++
+            }
+
+            20 -> {
+                playerl(
+                    FaceAnim.STRUGGLE,
+                    "I don't understand why there are six mirrors when there are only four diamonds..."
+                )
+                stage++
+            }
+
+            21 -> {
+                npc("As I say, the enchantment is very inaccurate.")
+                stage++
+            }
+
+            22 -> {
+                npcl(
+                    FaceAnim.FRIENDLY,
+                    "I can only focus upon the aura the diamonds have left behind them, so any place where the Diamonds were present for a significant period of time will still be shown - such as the Bandit Camp where I make my home."
+                )
+                stage++
+            }
+
+            23 -> {
+                npcl(FaceAnim.HALF_GUILTY, "My apologies, but magic is an inaccurate art in many respects.")
+                stage++
+            }
+
+            24 -> {
+                npcl(FaceAnim.NEUTRAL, "Don't forget to come back here when you have collected all four diamonds.")
+                stage++
+            }
+
+            25 -> end()
+
+            26 -> if (!inInventory(player, Items.ANCIENT_STAFF_4675) && isQuestComplete(player, Quests.DESERT_TREASURE)
+            ) {
+                npc("So have you spoken to my Lord Azzanadra yet?")
+                stage++
+            } else {
+                npc(
+                    "Greetings. I await the return of my Lord Azzanadra and of our god.",
+                    "I do not know why, but I feel this spot has some significance..."
+                )
+                stage = 25
+            }
+
+            27 -> {
+                player("Yes I have.")
+                stage++
+            }
+
+            28 -> {
+                npcl(FaceAnim.NEUTRAL, "And what words did he have for his followers?")
+                stage++
+            }
+
+            29 -> {
+                playerl(
+                    FaceAnim.STRUGGLE,
+                    "Er... He didn't really mention you at all, but he did teach me some cool new magic spells."
+                )
+                stage++
+            }
+
+            30 -> {
+                npcl(
+                    FaceAnim.NEUTRAL,
+                    "It is understandable perhaps... His poor mind must be addled after all of those years of confinement, he would not willingly ignore his followers..."
+                )
+                stage++
+            }
+
+            31 -> {
+                npcl(
+                    FaceAnim.NEUTRAL,
+                    "Anyway, if he has taught you our ancient magics, you may be interested in purchasing an ancient heirloom that was passed down to me. My ancestor fought in the ancient battles using the"
+                )
+                stage++
+            }
+
+            32 -> {
+                npcl(
+                    FaceAnim.NEUTRAL,
+                    "magic of our god. This heirloom will help you with the speed of your spell-casting."
+                )
+                stage++
+            }
+
+            33 -> {
+                npcl(
+                    FaceAnim.NEUTRAL,
+                    "Normally I could not bear to part with such a priceless relic, but for your help in freeing my Lord Azzanadra, I will be prepared to sell it to you for a mere 80,000 gold."
+                )
+                stage++
+            }
+
+            34 -> {
+                npc("Are you interested?")
+                stage++
+            }
+
+            35 -> {
+                options("Yes please", "No thanks")
+                stage++
+            }
+
+            36 -> when (buttonId) {
+                1 -> if (!removeItem(player, Item(Items.COINS_995, 80000))) {
+                    sendDialogue(player, "You don't have enough money to buy that.")
+                    stage = 25
+                } else {
+                    addItemOrDrop(player, Items.ANCIENT_STAFF_4675)
+                    npcl(
+                        FaceAnim.FRIENDLY,
+                        "Take care of it, it is the only heirloom from those times I possess, although rumour has it many of our ancient warriors were buried with identical weapons so that they could continue to fight for my Lord in their deaths."
+                    )
+                    stage = 25
+                }
+
+                2 -> {
+                    player("No, not really.")
+                    stage = 37
+                }
+            }
+
+            37 -> npcl(
+                FaceAnim.FRIENDLY,
+                "As you wish. Bear my offer in mind should you ever change your decision, I will remain here.",
+            )
+        }
         return false
     }
 
@@ -32,33 +342,19 @@ class EblisDialogue(
     }
 
     override fun getIds(): IntArray {
-        return intArrayOf(NPCs.EBLIS_1923)
+        return intArrayOf(NPCs.EBLIS_1923, NPCs.EBLIS_1924, NPCs.EBLIS_1925)
     }
 }
 
 class EblisDialogueFile : DialogueBuilderFile() {
-    companion object {
-        fun checkAllGiven(player: Player): Boolean {
-            return (
-                getAttribute(player, DesertTreasure.attributeCountMagicLogs, 0) >= 12 &&
-                    getAttribute(player, DesertTreasure.attributeCountSteelBars, 0) >= 6 &&
-                    getAttribute(player, DesertTreasure.attributeCountMoltenGlass, 0) >= 6 &&
-                    getAttribute(player, DesertTreasure.attributeCountBones, 0) >= 1 &&
-                    getAttribute(player, DesertTreasure.attributeCountAshes, 0) >= 1 &&
-                    getAttribute(player, DesertTreasure.attributeCountCharcoal, 0) >= 1 &&
-                    getAttribute(player, DesertTreasure.attributeCountBloodRune, 0) >= 1
-            )
-        }
-    }
-
     override fun create(b: DialogueBuilder) {
         b
-            .onQuestStages(DesertTreasure.questName, 0, 1, 2, 3, 4)
+            .onQuestStages(Quests.DESERT_TREASURE, 0, 1, 2, 3, 4)
             .npcl("Leave us to our fate. We care nothing for the world that betrayed us, or those that come from it.")
             .end()
 
         b
-            .onQuestStages(DesertTreasure.questName, 5, 6)
+            .onQuestStages(Quests.DESERT_TREASURE, 5, 6)
             .playerl(
                 "Hello. I represent the Museum of Varrock, and I have reason to believe there may be some kinds of artefacts of historical significance in the nearby area...",
             ).npcl(
@@ -143,7 +439,7 @@ class EblisDialogueFile : DialogueBuilderFile() {
 
                 optionBuilder
                     .optionIf("Tell me of the four diamonds of Azzanadra.") { player ->
-                        return@optionIf getQuestStage(player, DesertTreasure.questName) == 6
+                        return@optionIf getQuestStage(player, Quests.DESERT_TREASURE) == 6
                     }.playerl("So tell me... Did you ever hear of something called the Diamonds of Azzanadra?")
                     .npcl("This is the treasure which you seek???")
                     .npcl(
@@ -200,8 +496,8 @@ class EblisDialogueFile : DialogueBuilderFile() {
                                     .playerl(
                                         "It's a slightly odd collection of ingredients, but I shouldn't have too much trouble getting those for you.",
                                     ).endWith { _, player ->
-                                        if (getQuestStage(player, DesertTreasure.questName) == 6) {
-                                            setQuestStage(player, DesertTreasure.questName, 7)
+                                        if (getQuestStage(player, Quests.DESERT_TREASURE) == 6) {
+                                            setQuestStage(player, Quests.DESERT_TREASURE, 7)
                                         }
                                     }
 
@@ -215,8 +511,8 @@ class EblisDialogueFile : DialogueBuilderFile() {
                                         "1 charcoal",
                                         "and 1 blood rune.",
                                     ).endWith { _, player ->
-                                        if (getQuestStage(player, DesertTreasure.questName) == 6) {
-                                            setQuestStage(player, DesertTreasure.questName, 7)
+                                        if (getQuestStage(player, Quests.DESERT_TREASURE) == 6) {
+                                            setQuestStage(player, Quests.DESERT_TREASURE, 7)
                                         }
                                     }
                             }
@@ -237,9 +533,9 @@ class EblisDialogueFile : DialogueBuilderFile() {
             }
 
         b
-            .onQuestStages(DesertTreasure.questName, 7)
+            .onQuestStages(Quests.DESERT_TREASURE, 7)
             .branch { player ->
-                return@branch if (checkAllGiven(player)) {
+                return@branch if (DTUtils.checkGivenItem(player)) {
                     1
                 } else {
                     0
@@ -252,8 +548,8 @@ class EblisDialogueFile : DialogueBuilderFile() {
                         "I will find a suitable spot in the desert to the East of here, and set them up. When you are ready to begin your search, please come and find me there, I will show you how to utilise the",
                     ).npcl("mirrors to find the diamonds.")
                     .endWith { _, player ->
-                        if (getQuestStage(player, DesertTreasure.questName) == 7) {
-                            setQuestStage(player, DesertTreasure.questName, 8)
+                        if (getQuestStage(player, Quests.DESERT_TREASURE) == 7) {
+                            setQuestStage(player, Quests.DESERT_TREASURE, 8)
                         }
                     }
 
@@ -264,191 +560,45 @@ class EblisDialogueFile : DialogueBuilderFile() {
                         df.interpreter!!.sendDialogues(
                             npc!!.id,
                             FaceAnim.NEUTRAL,
-                            "" + (12 - getAttribute(player, DesertTreasure.attributeCountMagicLogs, 0)) + " magic logs",
-                            "" + (6 - getAttribute(player, DesertTreasure.attributeCountSteelBars, 0)) + " steel bars",
+                            "" + (12 - getAttribute(player, DesertTreasure.magicLogsAmount, 0)) + " magic logs",
+                            "" + (6 - getAttribute(player, DesertTreasure.steelBarsAmount, 0)) + " steel bars",
                             "" + (
-                                6 -
-                                    getAttribute(
-                                        player,
-                                        DesertTreasure.attributeCountMoltenGlass,
-                                        0,
-                                    )
-                            ) + " molten glass",
+                                    6 -
+                                            getAttribute(
+                                                player,
+                                                DesertTreasure.moltenGlassAmount,
+                                                0,
+                                            )
+                                    ) + " molten glass",
                         )
                     }.manualStage { df, player, _, _ ->
                         df.interpreter!!.sendDialogues(
                             npc!!.id,
                             FaceAnim.NEUTRAL,
-                            "" + (1 - getAttribute(player, DesertTreasure.attributeCountBones, 0)) + " bones,",
-                            "" + (1 - getAttribute(player, DesertTreasure.attributeCountAshes, 0)) + " ashes,",
-                            "" + (1 - getAttribute(player, DesertTreasure.attributeCountCharcoal, 0)) + " charcoal",
+                            "" + (1 - getAttribute(player, DesertTreasure.bonesAmount, 0)) + " bones,",
+                            "" + (1 - getAttribute(player, DesertTreasure.ashesAmount, 0)) + " ashes,",
+                            "" + (1 - getAttribute(player, DesertTreasure.charcoalAmount, 0)) + " charcoal",
                             "and " + (
-                                1 -
-                                    getAttribute(
-                                        player,
-                                        DesertTreasure.attributeCountBloodRune,
-                                        0,
-                                    )
-                            ) + " blood rune.",
+                                    1 -
+                                            getAttribute(
+                                                player,
+                                                DesertTreasure.bloodRunesAmount,
+                                                0,
+                                            )
+                                    ) + " blood rune.",
                         )
                     }.end()
             }
 
         b
-            .onQuestStages(DesertTreasure.questName, 8, 9, 10)
+            .onQuestStages(Quests.DESERT_TREASURE, 8, 9, 10)
             .npcl(
                 "Meet me again in the desert East of here, I will use these ingredients to create a scrying glass for you.",
             ).end()
 
         b
-            .onQuestStages(DesertTreasure.questName, 100)
+            .onQuestStages(Quests.DESERT_TREASURE, 100)
             .npcl("Meet me again in the desert East of here.")
             .end()
-    }
-}
-
-class EblisCollectionsListeners : InteractionListener {
-    override fun defineListeners() {
-        onUseWith(
-            IntType.NPC,
-            intArrayOf(Items.MAGIC_LOGS_1513, Items.MAGIC_LOGS_1514),
-            NPCs.EBLIS_1923,
-        ) { player, used, _ ->
-            for (i in 0..11) {
-                if (inInventory(player, used.id)) {
-                    if (getAttribute(player, DesertTreasure.attributeCountMagicLogs, 0) < 12) {
-                        if (removeItem(player, used.id)) {
-                            setAttribute(
-                                player,
-                                DesertTreasure.attributeCountMagicLogs,
-                                getAttribute(player, DesertTreasure.attributeCountMagicLogs, 0) + 1,
-                            )
-                            sendMessage(player, "You hand over a magic log.")
-                        }
-                    } else {
-                        break
-                    }
-                } else {
-                    break
-                }
-            }
-            return@onUseWith true
-        }
-
-        onUseWith(
-            IntType.NPC,
-            intArrayOf(Items.STEEL_BAR_2353, Items.STEEL_BAR_2354),
-            NPCs.EBLIS_1923,
-        ) { player, used, _ ->
-            for (i in 0..5) {
-                if (inInventory(player, used.id)) {
-                    if (getAttribute(player, DesertTreasure.attributeCountSteelBars, 0) < 6) {
-                        if (removeItem(player, used.id)) {
-                            setAttribute(
-                                player,
-                                DesertTreasure.attributeCountSteelBars,
-                                getAttribute(player, DesertTreasure.attributeCountSteelBars, 0) + 1,
-                            )
-                            sendMessage(player, "You hand over a steel bar.")
-                        }
-                    } else {
-                        break
-                    }
-                } else {
-                    break
-                }
-            }
-            return@onUseWith true
-        }
-
-        onUseWith(
-            IntType.NPC,
-            intArrayOf(Items.MOLTEN_GLASS_1775, Items.MOLTEN_GLASS_1776),
-            NPCs.EBLIS_1923,
-        ) { player, used, _ ->
-            for (i in 0..5) {
-                if (inInventory(player, used.id)) {
-                    if (getAttribute(player, DesertTreasure.attributeCountMoltenGlass, 0) < 6) {
-                        if (removeItem(player, used.id)) {
-                            setAttribute(
-                                player,
-                                DesertTreasure.attributeCountMoltenGlass,
-                                getAttribute(player, DesertTreasure.attributeCountMoltenGlass, 0) + 1,
-                            )
-                            sendMessage(player, "You hand over some molten glass.")
-                        }
-                    } else {
-                        break
-                    }
-                } else {
-                    break
-                }
-            }
-            return@onUseWith true
-        }
-
-        onUseWith(IntType.NPC, intArrayOf(Items.BONES_526, Items.BONES_527), NPCs.EBLIS_1923) { player, used, _ ->
-            if (getAttribute(player, DesertTreasure.attributeCountBones, 0) < 1) {
-                if (removeItem(player, used.id)) {
-                    setAttribute(
-                        player,
-                        DesertTreasure.attributeCountBones,
-                        getAttribute(player, DesertTreasure.attributeCountBones, 0) + 1,
-                    )
-                    sendNPCDialogue(player, NPCs.EBLIS_1923, "Thank you, those are enough bones for the spell.")
-                }
-            }
-            return@onUseWith true
-        }
-
-        onUseWith(IntType.NPC, intArrayOf(Items.ASHES_592, Items.ASHES_593), NPCs.EBLIS_1923) { player, used, _ ->
-            if (getAttribute(player, DesertTreasure.attributeCountAshes, 0) < 1) {
-                if (removeItem(player, used.id)) {
-                    setAttribute(
-                        player,
-                        DesertTreasure.attributeCountAshes,
-                        getAttribute(player, DesertTreasure.attributeCountAshes, 0) + 1,
-                    )
-                    sendNPCDialogue(player, NPCs.EBLIS_1923, "Thank you, that is enough ash for the spell.")
-                }
-            }
-            return@onUseWith true
-        }
-
-        onUseWith(
-            IntType.NPC,
-            intArrayOf(Items.CHARCOAL_973, Items.CHARCOAL_974),
-            NPCs.EBLIS_1923,
-        ) { player, used, _ ->
-            if (getAttribute(player, DesertTreasure.attributeCountCharcoal, 0) < 1) {
-                if (removeItem(player, used.id)) {
-                    setAttribute(
-                        player,
-                        DesertTreasure.attributeCountCharcoal,
-                        getAttribute(player, DesertTreasure.attributeCountCharcoal, 0) + 1,
-                    )
-                    sendNPCDialogue(player, NPCs.EBLIS_1923, "Thank you, that is enough charcoal for the spell.")
-                }
-            }
-            return@onUseWith true
-        }
-
-        onUseWith(IntType.NPC, intArrayOf(Items.BLOOD_RUNE_565), NPCs.EBLIS_1923) { player, used, _ ->
-            if (getAttribute(player, DesertTreasure.attributeCountBloodRune, 0) < 1) {
-                if (removeItem(player, used.id)) {
-                    setAttribute(
-                        player,
-                        DesertTreasure.attributeCountBloodRune,
-                        getAttribute(player, DesertTreasure.attributeCountBloodRune, 0) + 1,
-                    )
-                    sendNPCDialogue(
-                        player,
-                        NPCs.EBLIS_1923,
-                        "Thank you, that blood rune should be sufficient for the spell.",
-                    )
-                }
-            }
-            return@onUseWith true
-        }
     }
 }

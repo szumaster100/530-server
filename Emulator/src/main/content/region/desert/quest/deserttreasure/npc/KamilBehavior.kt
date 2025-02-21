@@ -1,5 +1,6 @@
 package content.region.desert.quest.deserttreasure.npc
 
+import content.region.desert.quest.deserttreasure.DTUtils
 import content.region.desert.quest.deserttreasure.DesertTreasure
 import core.api.*
 import core.game.node.entity.Entity
@@ -51,8 +52,8 @@ class KamilBehavior : NPCBehavior(NPCs.KAMIL_1913) {
         killer: Entity,
     ) {
         if (killer is Player) {
-            if (DesertTreasure.getSubStage(killer, DesertTreasure.attributeIceStage) == 2) {
-                DesertTreasure.setSubStage(killer, DesertTreasure.attributeIceStage, 3)
+            if (DTUtils.getSubStage(killer, DesertTreasure.iceStage) == 2) {
+                DTUtils.setSubStage(killer, DesertTreasure.iceStage, 3)
                 removeAttribute(killer, DesertTreasure.attributeKamilInstance)
                 sendPlayerDialogue(
                     killer,

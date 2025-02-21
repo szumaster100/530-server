@@ -1,5 +1,6 @@
 package content.region.desert.quest.deserttreasure.dialogue
 
+import content.region.desert.quest.deserttreasure.DTUtils
 import content.region.desert.quest.deserttreasure.DesertTreasure
 import core.api.*
 import core.game.dialogue.Dialogue
@@ -10,6 +11,7 @@ import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import org.rs.consts.Items
 import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
 class MalakDialogue(
@@ -36,17 +38,17 @@ class MalakDialogueFile : DialogueBuilderFile() {
     override fun create(b: DialogueBuilder) {
         // "Don't think that silly little ring of yours will fool me"
         b
-            .onQuestStages(DesertTreasure.questName, 0, 1, 2, 3, 4, 5, 6, 7, 8)
+            .onQuestStages(Quests.DESERT_TREASURE, 0, 1, 2, 3, 4, 5, 6, 7, 8)
             .npc("Away from me, dog.", "I have business to discuss with the barkeeper.")
             .end()
 
         b
-            .onQuestStages(DesertTreasure.questName, 9)
+            .onQuestStages(Quests.DESERT_TREASURE, 9)
             .branch { player ->
-                if (DesertTreasure.getSubStage(player, DesertTreasure.attributeBloodStage) == 1) {
+                if (DTUtils.getSubStage(player, DesertTreasure.bloodStage) == 1) {
                     return@branch 0
                 }
-                return@branch DesertTreasure.getSubStage(player, DesertTreasure.attributeBloodStage)
+                return@branch DTUtils.getSubStage(player, DesertTreasure.bloodStage)
             }.let { branch ->
                 branch
                     .onValue(0)
@@ -121,26 +123,26 @@ class MalakDialogueFile : DialogueBuilderFile() {
                                         "So what say you? A life for a diamond. As a mark of good faith, I will give you some information free:",
                                     ).npcl("The current owner of this diamond is named Dessous.")
                                     .betweenStage { _, player, _, _ ->
-                                        if (DesertTreasure.getSubStage(
+                                        if (DTUtils.getSubStage(
                                                 player,
-                                                DesertTreasure.attributeBloodStage,
+                                                DesertTreasure.bloodStage,
                                             ) == 0
                                         ) {
-                                            DesertTreasure.setSubStage(player, DesertTreasure.attributeBloodStage, 1)
+                                            DTUtils.setSubStage(player, DesertTreasure.bloodStage, 1)
                                         }
                                     }.options("Agree to this arrangement?")
                                     .let { optionBuilder2 ->
                                         optionBuilder2
                                             .option("Yes")
                                             .betweenStage { _, player, _, _ ->
-                                                if (DesertTreasure.getSubStage(
+                                                if (DTUtils.getSubStage(
                                                         player,
-                                                        DesertTreasure.attributeBloodStage,
+                                                        DesertTreasure.bloodStage,
                                                     ) == 1
                                                 ) {
-                                                    DesertTreasure.setSubStage(
+                                                    DTUtils.setSubStage(
                                                         player,
-                                                        DesertTreasure.attributeBloodStage,
+                                                        DesertTreasure.bloodStage,
                                                         2,
                                                     )
                                                 }
@@ -326,9 +328,9 @@ class MalakDialogueFile : DialogueBuilderFile() {
                     .npcl("Ah, the wandering hero returns! I take it you have dispatched poor old Dessous for me?")
                     .playerl("Quit playing games with me, Malak. I want that diamond, and I want it now!")
                     .betweenStage { df, player, _, _ ->
-                        if (DesertTreasure.getSubStage(player, DesertTreasure.attributeBloodStage) == 3) {
+                        if (DTUtils.getSubStage(player, DesertTreasure.bloodStage) == 3) {
                             addItemOrDrop(player, Items.BLOOD_DIAMOND_4670)
-                            DesertTreasure.setSubStage(player, DesertTreasure.attributeBloodStage, 100)
+                            DTUtils.setSubStage(player, DesertTreasure.bloodStage, 100)
                         }
                     }.npcl(
                         "Do not take that tone of voice with me, meat. You should be thankful I have allowed you your life.",
@@ -366,7 +368,7 @@ class MalakDialogueFile : DialogueBuilderFile() {
             }
 
         b
-            .onQuestStages(DesertTreasure.questName, 10, 11, 12, 13, 100)
+            .onQuestStages(Quests.DESERT_TREASURE, 10, 11, 12, 13, 100)
             .npcl("Be lucky I have let you live, meat. Our deal is done, I wish no further dealing with you.")
             .end()
     }

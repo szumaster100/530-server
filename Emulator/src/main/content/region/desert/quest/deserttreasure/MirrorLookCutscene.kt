@@ -1,4 +1,4 @@
-package content.region.desert.quest.deserttreasure.handlers
+package content.region.desert.quest.deserttreasure
 
 import core.api.closeInterface
 import core.api.openInterface

@@ -1,5 +1,6 @@
 package content.region.desert.quest.deserttreasure.dialogue
 
+import content.region.desert.quest.deserttreasure.DTUtils
 import content.region.desert.quest.deserttreasure.DesertTreasure
 import core.api.*
 import core.api.quest.getQuestStage
@@ -14,6 +15,7 @@ import core.tools.END_DIALOGUE
 import org.rs.consts.Components
 import org.rs.consts.Items
 import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
 class FatherTrollDialogue(
@@ -23,12 +25,12 @@ class FatherTrollDialogue(
         interfaceId: Int,
         buttonId: Int,
     ): Boolean {
-        if (DesertTreasure.getSubStage(player, DesertTreasure.attributeIceStage) == 3 &&
+        if (DTUtils.getSubStage(player, DesertTreasure.iceStage) == 3 &&
             getVarbit(player, DesertTreasure.varbitFrozenFather) == 1 &&
             getVarbit(player, DesertTreasure.varbitFrozenMother) == 1
         ) {
             openDialogue(player!!, ChatFatherAndMotherTrollDialogueFile(), npc)
-        } else if (DesertTreasure.getSubStage(player, DesertTreasure.attributeIceStage) == 3) {
+        } else if (DTUtils.getSubStage(player, DesertTreasure.iceStage) == 3) {
             openDialogue(
                 player,
                 object : DialogueFile() {
@@ -47,13 +49,13 @@ class FatherTrollDialogue(
                 },
                 npc,
             )
-        } else if (DesertTreasure.getSubStage(player, DesertTreasure.attributeIceStage) == 4) {
+        } else if (DTUtils.getSubStage(player, DesertTreasure.iceStage) == 4) {
             openDialogue(player!!, ChatFatherAndMotherTrollAfterDialogueFile(), npc)
         } else if ((
-                getQuestStage(player, DesertTreasure.questName) == 9 &&
-                    DesertTreasure.getSubStage(player, DesertTreasure.attributeIceStage) >= 5
-            ) ||
-            getQuestStage(player, DesertTreasure.questName) >= 10
+                    getQuestStage(player, Quests.DESERT_TREASURE) == 9 &&
+                            DTUtils.getSubStage(player, DesertTreasure.iceStage) >= 5
+                    ) ||
+            getQuestStage(player, Quests.DESERT_TREASURE) >= 10
         ) {
             openDialogue(
                 player,
@@ -95,15 +97,15 @@ class MotherTrollDialogue(
         buttonId: Int,
     ): Boolean {
         println(
-            getQuestStage(player, DesertTreasure.questName) == 9 &&
-                DesertTreasure.getSubStage(player, DesertTreasure.attributeIceStage) >= 5,
+            getQuestStage(player, Quests.DESERT_TREASURE) == 9 &&
+                    DTUtils.getSubStage(player, DesertTreasure.iceStage) >= 5,
         )
-        if (DesertTreasure.getSubStage(player, DesertTreasure.attributeIceStage) == 3 &&
+        if (DTUtils.getSubStage(player, DesertTreasure.iceStage) == 3 &&
             getVarbit(player, DesertTreasure.varbitFrozenFather) == 1 &&
             getVarbit(player, DesertTreasure.varbitFrozenMother) == 1
         ) {
             openDialogue(player!!, ChatFatherAndMotherTrollDialogueFile(), npc)
-        } else if (DesertTreasure.getSubStage(player, DesertTreasure.attributeIceStage) == 3) {
+        } else if (DTUtils.getSubStage(player, DesertTreasure.iceStage) == 3) {
             openDialogue(
                 player,
                 object : DialogueFile() {
@@ -122,13 +124,13 @@ class MotherTrollDialogue(
                 },
                 npc,
             )
-        } else if (DesertTreasure.getSubStage(player, DesertTreasure.attributeIceStage) == 4) {
+        } else if (DTUtils.getSubStage(player, DesertTreasure.iceStage) == 4) {
             openDialogue(player!!, ChatFatherAndMotherTrollAfterDialogueFile(), npc)
         } else if ((
-                getQuestStage(player, DesertTreasure.questName) == 9 &&
-                    DesertTreasure.getSubStage(player, DesertTreasure.attributeIceStage) >= 5
-            ) ||
-            getQuestStage(player, DesertTreasure.questName) >= 10
+                    getQuestStage(player, Quests.DESERT_TREASURE) == 9 &&
+                            DTUtils.getSubStage(player, DesertTreasure.iceStage) >= 5
+                    ) ||
+            getQuestStage(player, Quests.DESERT_TREASURE) >= 10
         ) {
             openDialogue(
                 player,
@@ -202,6 +204,7 @@ class ChatFatherAndMotherTrollDialogueFile : DialogueFile() {
                 ).also {
                     stage++
                 }
+
             6 ->
                 npcl(
                     NPCs.TROLL_MOTHER_1950,
@@ -245,8 +248,8 @@ class ChatFatherAndMotherTrollDialogueFile : DialogueFile() {
                     "Let's get out of this terrible place and see our son!",
                 ).also {
                     stage++
-                    if (DesertTreasure.getSubStage(player!!, DesertTreasure.attributeIceStage) == 3) {
-                        DesertTreasure.setSubStage(player!!, DesertTreasure.attributeIceStage, 4)
+                    if (DTUtils.getSubStage(player!!, DesertTreasure.iceStage) == 3) {
+                        DTUtils.setSubStage(player!!, DesertTreasure.iceStage, 4)
                     }
                 }
 
@@ -329,9 +332,9 @@ class ChatFatherAndMotherTrollAfterDialogueFile : DialogueFile() {
                     "Here ya go mister! Thanks for getting my mom and dad away from the bad man!",
                 ).also {
                     stage++
-                    if (DesertTreasure.getSubStage(player!!, DesertTreasure.attributeIceStage) in 3..4) {
+                    if (DTUtils.getSubStage(player!!, DesertTreasure.iceStage) in 3..4) {
                         addItemOrDrop(player!!, Items.ICE_DIAMOND_4671)
-                        DesertTreasure.setSubStage(player!!, DesertTreasure.attributeIceStage, 100)
+                        DTUtils.setSubStage(player!!, DesertTreasure.iceStage, 100)
                     }
                 }
 

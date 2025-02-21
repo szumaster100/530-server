@@ -1,6 +1,5 @@
 package content.region.desert.quest.deserttreasure.dialogue
 
-import content.region.desert.quest.deserttreasure.DesertTreasure
 import core.api.addItemOrDrop
 import core.api.inInventory
 import core.api.openDialogue
@@ -13,6 +12,7 @@ import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import org.rs.consts.Items
 import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 @Initializable
 class RuantunDialogue(
@@ -38,7 +38,7 @@ class RuantunDialogue(
 class RuantunDialogueFile : DialogueBuilderFile() {
     override fun create(b: DialogueBuilder) {
         b
-            .onQuestStages(DesertTreasure.questName, 0, 1, 2, 3, 4, 5, 6, 7, 8)
+            .onQuestStages(Quests.DESERT_TREASURE, 0, 1, 2, 3, 4, 5, 6, 7, 8)
             .playerl("Hello.")
             .npcl(FaceAnim.OLD_NORMAL, "You ssshould not be down here...")
             .options()
@@ -72,7 +72,7 @@ class RuantunDialogueFile : DialogueBuilderFile() {
             }
 
         b
-            .onQuestStages(DesertTreasure.questName, 9, 10, 100)
+            .onQuestStages(Quests.DESERT_TREASURE, 9, 10, 100)
             .playerl("Hello.")
             .npcl(FaceAnim.OLD_NORMAL, "You sshould not be down here...")
             .playerl("Are you an assistant to Count Draynor?")

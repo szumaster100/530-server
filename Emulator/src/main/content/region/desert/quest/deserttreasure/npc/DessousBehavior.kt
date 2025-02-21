@@ -1,5 +1,6 @@
 package content.region.desert.quest.deserttreasure.npc
 
+import content.region.desert.quest.deserttreasure.DTUtils
 import content.region.desert.quest.deserttreasure.DesertTreasure
 import core.api.*
 import core.game.dialogue.DialogueFile
@@ -124,8 +125,8 @@ class DessousMeleeBehavior : NPCBehavior(NPCs.DESSOUS_1914, NPCs.DESSOUS_1915) {
     ) {
         if (killer is Player) {
             val player = killer
-            if (DesertTreasure.getSubStage(player, DesertTreasure.attributeBloodStage) == 2) {
-                DesertTreasure.setSubStage(player, DesertTreasure.attributeBloodStage, 3)
+            if (DTUtils.getSubStage(player, DesertTreasure.bloodStage) == 2) {
+                DTUtils.setSubStage(player, DesertTreasure.bloodStage, 3)
             }
             removeAttribute(player, DesertTreasure.attributeDessousInstance)
             openDialogue(

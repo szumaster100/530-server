@@ -11,6 +11,7 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.npc.NPCBehavior
 import core.game.node.entity.player.Player
 import org.rs.consts.NPCs
+import org.rs.consts.Quests
 
 class IceTrollBehavior : NPCBehavior(*iceTrollIds) {
     companion object {
@@ -31,7 +32,7 @@ class IceTrollBehavior : NPCBehavior(*iceTrollIds) {
         killer: Entity,
     ) {
         if (killer is Player) {
-            if (getQuestStage(killer, DesertTreasure.questName) >= 9) {
+            if (getQuestStage(killer, Quests.DESERT_TREASURE) >= 9) {
                 val currentIceTrollKill = getAttribute(killer, DesertTreasure.attributeTrollKillCount, 0)
                 if (currentIceTrollKill < 5) {
                     setAttribute(killer, DesertTreasure.attributeTrollKillCount, currentIceTrollKill + 1)

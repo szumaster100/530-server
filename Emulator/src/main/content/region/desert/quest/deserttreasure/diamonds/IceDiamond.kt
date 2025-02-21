@@ -1,5 +1,6 @@
-package content.region.desert.quest.deserttreasure.handlers
+package content.region.desert.quest.deserttreasure.diamonds
 
+import content.region.desert.quest.deserttreasure.DTUtils
 import content.region.desert.quest.deserttreasure.DesertTreasure
 import core.api.*
 import core.api.quest.getQuestStage
@@ -16,9 +17,10 @@ import core.game.world.map.zone.ZoneBorders
 import core.tools.END_DIALOGUE
 import org.rs.consts.Items
 import org.rs.consts.NPCs
+import org.rs.consts.Quests
 import org.rs.consts.Scenery
 
-class DiamondOfIceListener : InteractionListener {
+class IceDiamond : InteractionListener {
     override fun defineListeners() {
         onUseWith(
             IntType.NPC,
@@ -26,8 +28,8 @@ class DiamondOfIceListener : InteractionListener {
             NPCs.BANDIT_1932,
         ) { player, used, with ->
             if (removeItem(player, used)) {
-                if (DesertTreasure.getSubStage(player, DesertTreasure.attributeIceStage) == 0) {
-                    DesertTreasure.setSubStage(player, DesertTreasure.attributeIceStage, 1)
+                if (DTUtils.getSubStage(player, DesertTreasure.iceStage) == 0) {
+                    DTUtils.setSubStage(player, DesertTreasure.iceStage, 1)
                 }
                 openDialogue(
                     player,
@@ -58,10 +60,10 @@ class DiamondOfIceListener : InteractionListener {
 
         on(intArrayOf(Scenery.ICE_GATE_5043, Scenery.ICE_GATE_5044), SCENERY, "go-through") { player, _ ->
             if ((
-                    getQuestStage(player, DesertTreasure.questName) == 9 &&
-                        DesertTreasure.getSubStage(player, DesertTreasure.attributeIceStage) > 1
+                    getQuestStage(player, Quests.DESERT_TREASURE) == 9 &&
+                        DTUtils.getSubStage(player, DesertTreasure.iceStage) > 1
                 ) ||
-                getQuestStage(player, DesertTreasure.questName) >= 10
+                getQuestStage(player, Quests.DESERT_TREASURE) >= 10
             ) {
                 sendMessage(player, "You squeeze through the large icy bars of the gate.")
 
@@ -108,10 +110,10 @@ class DiamondOfIceListener : InteractionListener {
         on(Scenery.ICE_LEDGE_6455, SCENERY, "use") { player, _ ->
 
             if ((
-                    getQuestStage(player, DesertTreasure.questName) == 9 &&
-                        DesertTreasure.getSubStage(player, DesertTreasure.attributeIceStage) >= 3
+                    getQuestStage(player, Quests.DESERT_TREASURE) == 9 &&
+                        DTUtils.getSubStage(player, DesertTreasure.iceStage) >= 3
                 ) ||
-                getQuestStage(player, DesertTreasure.questName) >= 10
+                getQuestStage(player, Quests.DESERT_TREASURE) >= 10
             ) {
                 if (inEquipment(player, Items.SPIKED_BOOTS_3107)) {
                     teleport(player, Location(2838, 3803, 1))
@@ -191,8 +193,8 @@ class IceAttack : MapArea {
 
     override fun areaEnter(entity: Entity) {
         if (entity is Player &&
-            getQuestStage(entity, DesertTreasure.questName) == 9 &&
-            DesertTreasure.getSubStage(entity, DesertTreasure.attributeIceStage) == 2 &&
+            getQuestStage(entity, Quests.DESERT_TREASURE) == 9 &&
+            DTUtils.getSubStage(entity, DesertTreasure.iceStage) == 2 &&
             getAttribute<NPC?>(entity, DesertTreasure.attributeKamilInstance, null) == null
         ) {
             sendMessage(entity, "You can feel an evil presence nearby...")
