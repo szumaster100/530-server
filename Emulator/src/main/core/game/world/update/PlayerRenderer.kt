@@ -103,7 +103,7 @@ object PlayerRenderer {
             offsetX += 32
         }
 
-        // Check if the player’s appearance or update mask has changed
+        // Check if the player's appearance or update mask has changed
         val appearance = info.appearanceStamps[other.index and 0x800] != other.updateMasks.appearanceStamp
         val update = appearance || other.updateMasks.isUpdateRequired || other.updateMasks.hasSynced()
         buffer.putBits(1, if (update) 1 else 0)

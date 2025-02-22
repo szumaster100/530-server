@@ -22,8 +22,7 @@ import org.rs.consts.Quests
 import org.rs.consts.Scenery
 
 /*
-    TODO: Check, remove content from later revisions,
-     until implementation of Garden of Tranquillity normal ring also work.
+    TODO: Check, remove content from later revisions, until implementation of Garden of Tranquillity normal ring also work.
 
     Transportation
 
@@ -55,7 +54,7 @@ import org.rs.consts.Scenery
     - [ ] Reduced Blast Furnace cost (for those with less than 60 Smithing).
     - [ ] Ability to convince Brundt the Chieftain to change your Fremennik name.
     - [x] Ability to convince the Fossegrimen south-west of Rellekka into accepting bass in place of shark to charge your enchanted lyre with 20 teleports.
-    - [ ] Used to access the Werewolf Agility Course (the inactivated version will grant this as well).
+    - [x] Used to access the Werewolf Agility Course (the inactivated version will grant this as well).
     - [ ] Sell grey wolf fur for 150 coins instead of 120 coins to Baraek in Varrock fur stall.
     - [ ] Sell molten glass for 25 coins instead of 20 coins to Fritz the Glassblower on Entrana.
     - [ ] 50% Luke will tell the story of how he lost half of his body.
@@ -63,6 +62,11 @@ import org.rs.consts.Scenery
     - [ ] Choose the colour of your kitten from Gertrude.
     - [ ] Wizard Elriss will tell more about her research in the Runecrafting Guild (any colour of the full runecrafter robes must also be worn).
     - [ ] Beefy Bill will bank your beef, cowhide, and flour for free.
+       1. Transfer flour, cowhides, and raw beef to the bank, charging a 10% commission [?] (rounded up),
+         or for free if charmed with an activated ring of charos.
+       2. If players use coins on him, he will say "Thanks!" and they will lose 1 coin.
+       3. If players try to bank cooked beef, he will say "It's unhygienic to mix raw and cooked meats." and he will not bank it.
+       4. If players try to bank raw undead beef, he will say, "Woah! Whatever that thing is, I'm not transporting it."
     - [ ] Can be used for prosecution in Court Cases for those with lower than 65 Attack. Also gives insight into jury members' backgrounds and motives on the jury selection screen.
     - [ ] Though he's not weak minded, the Wise Old Man will tell you more about his partyhat.
     - [ ] The sellers of Capes of Accomplishment will ask for 92,000 coins instead of the usual 99,000 when buying a Cape of Accomplishment.

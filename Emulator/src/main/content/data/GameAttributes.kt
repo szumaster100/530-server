@@ -130,4 +130,8 @@ internal object GameAttributes {
     const val ITEM_AVA_DEVICE = "item:ava-device:burping"
 
     const val ITEM_TOY_MOUSE_RELEASE = "item:released:toy-mouse"
+
+    const val RC_GUILD_TALISMAN = "/save:rcguild:shown_talisman"
+    const val RC_GUILD_TALISMAN_TASK_START = "/save:rcguild:talisman_task"
+    const val RC_GUILD_TALISMAN_TASK_COMPLETE = "/save:rcguild:omni-access"
 }

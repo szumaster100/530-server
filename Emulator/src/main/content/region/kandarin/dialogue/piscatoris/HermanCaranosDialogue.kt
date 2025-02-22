@@ -31,7 +31,7 @@ class HermanCaranosDialogue(
             1 -> {
                 npcl(
                     FaceAnim.ANNOYED,
-                    "Lovely? If you say so... But I'm afraid I don’t have time to chat about the weather.",
+                    "Lovely? If you say so... But I'm afraid I don't have time to chat about the weather.",
                 )
                 stage++
             }
@@ -67,7 +67,7 @@ class HermanCaranosDialogue(
             7 -> {
                 npcl(
                     FaceAnim.FRIENDLY,
-                    "Yes, I do. I’ve researched this, and I believe our best hope is to find an experienced adventurer.",
+                    "Yes, I do. I've researched this, and I believe our best hope is to find an experienced adventurer.",
                 )
                 stage++
             }
@@ -75,20 +75,20 @@ class HermanCaranosDialogue(
             8 -> {
                 npcl(
                     FaceAnim.FRIENDLY,
-                    "In the legends I’ve read, adventurers can deal with any monster that threatens a helpless settlement!",
+                    "In the legends I've read, adventurers can deal with any monster that threatens a helpless settlement!",
                 )
                 stage++
             }
 
             9 -> {
-                playerl(FaceAnim.FRIENDLY, "You’ve been... reading stories about adventurers?")
+                playerl(FaceAnim.FRIENDLY, "You've been... reading stories about adventurers?")
                 stage++
             }
 
             10 -> {
                 npcl(
                     FaceAnim.FRIENDLY,
-                    "Yes! I’ve done extensive research! I always make important decisions based on careful analysis. For example, I chose this site for the colony because records show this part of the sea is perfect for monkfish fishing. I don’t just stumble along blindly!",
+                    "Yes! I've done extensive research! I always make important decisions based on careful analysis. For example, I chose this site for the colony because records show this part of the sea is perfect for monkfish fishing. I don't just stumble along blindly!",
                 )
                 stage++
             }
@@ -104,7 +104,7 @@ class HermanCaranosDialogue(
             }
 
             13 -> {
-                playerl(FaceAnim.FRIENDLY, "I’m a brave adventurer! Can I try?")
+                playerl(FaceAnim.FRIENDLY, "I'm a brave adventurer! Can I try?")
                 stage++
             }
 
@@ -116,7 +116,7 @@ class HermanCaranosDialogue(
             15 -> {
                 npcl(
                     FaceAnim.NEUTRAL,
-                    "Well... you're not quite what I had in mind. But, I see you've earned quite a few Quest Points. Maybe you’re up for the task after all...",
+                    "Well... you're not quite what I had in mind. But, I see you've earned quite a few Quest Points. Maybe you're up for the task after all...",
                 )
                 stage++
             }
@@ -145,7 +145,7 @@ class HermanCaranosDialogue(
             19 -> {
                 playerl(
                     FaceAnim.FRIENDLY,
-                    "An expert adventurer? I’ve had more adventures than you've had pickled gherkins!",
+                    "An expert adventurer? I've had more adventures than you've had pickled gherkins!",
                 )
                 stage++
             }
@@ -163,7 +163,7 @@ class HermanCaranosDialogue(
             22 -> {
                 npcl(
                     FaceAnim.FRIENDLY,
-                    "Fine, let me tell you what I’ve read about one of the greatest adventurers of all time.",
+                    "Fine, let me tell you what I've read about one of the greatest adventurers of all time.",
                 )
                 stage++
             }
@@ -184,7 +184,7 @@ class HermanCaranosDialogue(
             25 -> {
                 npcl(
                     FaceAnim.HALF_ASKING,
-                    "Do you know him? He’s a bit... eccentric, but he’s one of the greatest adventurers to ever live!",
+                    "Do you know him? He's a bit... eccentric, but he's one of the greatest adventurers to ever live!",
                 )
                 stage++
             }
@@ -192,7 +192,7 @@ class HermanCaranosDialogue(
             26 -> {
                 playerl(
                     FaceAnim.FRIENDLY,
-                    "Yes! He’s mad! Didn’t he smash his way into a bank and steal a bunch of stuff?",
+                    "Yes! He's mad! Didn't he smash his way into a bank and steal a bunch of stuff?",
                 )
                 stage++
             }
@@ -210,14 +210,14 @@ class HermanCaranosDialogue(
             29 -> {
                 npcl(
                     FaceAnim.FRIENDLY,
-                    "Yes, that’s right. But watch out for those sea trolls, and be careful when you speak to him.",
+                    "Yes, that's right. But watch out for those sea trolls, and be careful when you speak to him.",
                 )
                 stage++
             }
 
             30 -> {
                 sendDialogue(
-                    "Herman describes the Wise Old Man’s greatest feats. A cutscene plays, showing the Wise Old Man slaying various creatures.",
+                    "Herman describes the Wise Old Man's greatest feats. A cutscene plays, showing the Wise Old Man slaying various creatures.",
                 )
                 stage++
             }
@@ -264,7 +264,7 @@ class HermanCaranosDialogue(
             }
 
             38 -> {
-                playerl(FaceAnim.FRIENDLY, "Okay, I’ll help out, then I get my reward?")
+                playerl(FaceAnim.FRIENDLY, "Okay, I'll help out, then I get my reward?")
                 stage++
             }
 
@@ -274,12 +274,12 @@ class HermanCaranosDialogue(
             }
 
             40 -> {
-                playerl(FaceAnim.FRIENDLY, "I’ve finished helping Franklin and Arnold.")
+                playerl(FaceAnim.FRIENDLY, "I've finished helping Franklin and Arnold.")
                 stage++
             }
 
             41 -> {
-                npcl(FaceAnim.FRIENDLY, "Oh, uh... that’s good...")
+                npcl(FaceAnim.FRIENDLY, "Oh, uh... that's good...")
                 stage++
             }
 
@@ -289,7 +289,7 @@ class HermanCaranosDialogue(
             }
 
             43 -> {
-                npcl(FaceAnim.THINKING, "Well, there’s something else I need you to do first...")
+                npcl(FaceAnim.THINKING, "Well, there's something else I need you to do first...")
                 stage++
             }
 
@@ -301,7 +301,7 @@ class HermanCaranosDialogue(
             45 -> {
                 npcl(
                     FaceAnim.FRIENDLY,
-                    "The Wise Old Man and I have discussed the situation. He’s come up with a plan...",
+                    "The Wise Old Man and I have discussed the situation. He's come up with a plan...",
                 )
                 stage++
             }
@@ -309,7 +309,7 @@ class HermanCaranosDialogue(
             46 -> {
                 npcl(
                     FaceAnim.FRIENDLY,
-                    "Yes, that’s right. The sheer number of trolls means our best hope is to gather our forces and wipe out all the trolls at once.",
+                    "Yes, that's right. The sheer number of trolls means our best hope is to gather our forces and wipe out all the trolls at once.",
                 )
                 stage++
             }
@@ -320,7 +320,7 @@ class HermanCaranosDialogue(
             }
 
             48 -> {
-                npcl(FaceAnim.FRIENDLY, "There’s a slight problem though...")
+                npcl(FaceAnim.FRIENDLY, "There's a slight problem though...")
                 stage++
             }
 
@@ -330,7 +330,7 @@ class HermanCaranosDialogue(
             }
 
             50 -> {
-                playerl(FaceAnim.FRIENDLY, "Let me guess - you haven’t got any forces to gather!")
+                playerl(FaceAnim.FRIENDLY, "Let me guess - you haven't got any forces to gather!")
                 stage++
             }
 
