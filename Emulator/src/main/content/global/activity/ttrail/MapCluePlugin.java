@@ -4,6 +4,32 @@ import core.game.world.map.Location;
 import core.game.world.map.zone.ZoneBorders;
 import core.plugin.Plugin;
 
+// TODO NOT IMPLEMENTED CLUES.
+//
+// Maps with Crates
+//  [ ] - Clock Tower – South of Ardougne's Castle.
+//  [ ] - Dark Knight's Fortress – Level 14 Wilderness. Search a crate in the southwest corner of the main room.
+//  [ ] - Observatory – Southwest of Ardougne. Search the crate in the westernmost building near the 3 goblins.
+//  [ ] - Varrock Lumberyard – Northeast of Varrock. Search the indicated crate.
+// Maps with X (No Crates) With Buildings
+//  [ ] - Chaos Altar – North of the Observatory. Dig next to the standards behind the altar.
+//  [ ] - Brother Galahad's House – West of Seers' Village, across the river from the coal trucks.
+//  [ ] - Miscellania – East of the castle.
+//  [ ] - Necromancer's Tower – North of Tower of Life, south of Ardougne, near the Necromancer's tower. Fairy ring code DJP is nearby.
+//  [ ] - Ranging Guild – East of the Ranging Guild.
+// Without Buildings
+//  [ ] - North Falador Rocks – East of Falador's walls, near some stones.
+//  [ ] - Varrock West Mine – South-west of Varrock, near the mining spot.
+//  [ ] - North Falador Statue – Just north of Falador, near a statue at a crossroads.
+//  [ ] - Road to Rellekka – Between Seers' Village and Rellekka, near two oak trees.
+//  [ ] - Crafting Guild Peninsula – West of the Crafting Guild.
+//  [ ] - Picnic Tables – South of Legends' Guild, east of Ardougne.
+//  [ ] - Volcanoes – Level 50 Wilderness, southeast of the Agility Dungeon and west of the Mage Arena. Dig between the three volcanoes.
+//  [ ] - Rellekka Bridge – On the road between Rellekka and the Lighthouse.
+// Maps with Fish
+//  [ ] - Draynor – South of Draynor Village bank, by the fishing spot.
+//  [ ] - Mort'ton – North of the Haunted Mine, along the path to Mort'ton (03.15N 31.03E).
+//
 public final class MapCluePlugin extends MapClueScroll {
 
     public MapCluePlugin() {

@@ -11,6 +11,7 @@ import core.game.world.map.Location;
 import core.game.world.map.RegionManager;
 import core.plugin.Initializable;
 import core.plugin.Plugin;
+import org.rs.consts.Animations;
 import org.rs.consts.Sounds;
 
 import static core.api.ContentAPIKt.animate;
@@ -42,7 +43,7 @@ public final class DoorManagingPlugin extends OptionHandler {
                         animate(player, 546, false);
                         playAudio(player, Sounds.DRAWER_OPEN_64);
                     } else if (name.contains("wardrobe")) {
-                        animate(player, 545, false);
+                        animate(player, Animations.OPEN_WARDROBE_545, false);
                         playAudio(player, Sounds.WARDROBE_OPEN_96);
                     } else if (name.contains("cupboard")) {
                         animate(player, 542, false);
@@ -59,7 +60,7 @@ public final class DoorManagingPlugin extends OptionHandler {
                         animate(player, 547, false);
                         playAudio(player, Sounds.DRAWER_CLOSE_63);
                     } else if (name.contains("wardrobe")) {
-                        animate(player, 543, false);
+                        animate(player, 546, false);
                         playAudio(player, Sounds.WARDROBE_CLOSE_95);
                     } else if (name.contains("cupboard")) {
                         animate(player, 541, false);

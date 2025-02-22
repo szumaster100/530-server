@@ -824,6 +824,22 @@ fun impact(
 }
 
 /**
+ * Applies an impact to an entity, affecting its health or other attributes.
+ *
+ * @param entity The entity to apply the impact to.
+ * @param amount The amount of damage or impact.
+ * @param type The type of hitsplat (impact effect) to apply.
+ * @param ticks The delay in ticks before the damage punch.
+ */
+fun impact(
+    entity: Entity,
+    amount: Int,
+    type: ImpactHandler.HitsplatType = ImpactHandler.HitsplatType.NORMAL, ticks : Int
+) {
+    entity.impactHandler.manualHit(entity, amount, type, ticks)
+}
+
+/**
  * Checks if a specific node (NPC, Scenery, or Item) has a particular option available.
  *
  * @param node The node to check.

@@ -10,6 +10,9 @@ import org.rs.consts.Quests
 
 /**
  * Represents the Merlin NPC after [MerlinCrystal] quest.
+ * TODO:
+ *  [ ] - Camelot teleport.
+ *  [ ] - To early, he should spawn after Kenniths concerns.
  */
 @Initializable
 class MerlinNPC : AbstractNPC {
