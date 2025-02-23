@@ -29,7 +29,7 @@ class GrandExchangeOffer {
     var totalCoinExchange = 0
     var player: Player? = null
     var playerUID = 0
-    var isLimitation = false
+    var tradeRestriction = false
     var isBot = false
     var amount: Int = 0
         get() = if (isBot) min(field, ServerConfig.BOTSTOCK_LIMIT) else field
@@ -140,8 +140,8 @@ class GrandExchangeOffer {
                 )
                 val nowuid = stmt.executeQuery("SELECT last_insert_rowid()")
                 uid = nowuid.getLong(1)
-                GERecords.getInstance(player).offerRecords[index] =
-                    GERecords.OfferRecord(uid, index)
+                ExchangeHistory.getInstance(player).offerRecords[index] =
+                    ExchangeHistory.OfferRecord(uid, index)
                 visualize(player)
                 stmt.close()
 

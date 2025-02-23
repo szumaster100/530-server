@@ -6,7 +6,7 @@ import core.api.interaction.openBankPinSettings
 import core.api.interaction.openGrandExchangeCollectionBox
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
-import core.game.ge.GERecords
+import core.game.ge.ExchangeHistory
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.npc.NPC
@@ -24,7 +24,7 @@ class OdovacarDialogue(
     InteractionListener {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
-        val activeOffer = GERecords.getInstance(player)
+        val activeOffer = ExchangeHistory.getInstance(player)
         val hasOffer =
             activeOffer?.offerRecords?.any { record ->
                 record != null &&

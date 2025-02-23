@@ -15,7 +15,7 @@ import core.game.container.impl.BankContainer;
 import core.game.container.impl.EquipmentContainer;
 import core.game.container.impl.InventoryListener;
 import core.game.dialogue.DialogueInterpreter;
-import core.game.ge.GERecords;
+import core.game.ge.ExchangeHistory;
 import core.game.ge.GrandExchangeOffer;
 import core.game.interaction.InteractPlugin;
 import core.game.interaction.InteractionListeners;
@@ -522,7 +522,7 @@ public class Player extends Entity {
                 if (i == null) break;
                 totalWealth += (long) i.getDefinition().getValue() * i.getAmount();
             }
-            GERecords ge = GERecords.getInstance(this);
+            ExchangeHistory ge = ExchangeHistory.getInstance(this);
             for (int i = 0; i < 6; i++) {
                 GrandExchangeOffer offer = ge.getOffer(i);
                 if (offer != null) {

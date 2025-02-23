@@ -1,8 +1,8 @@
 package content.region.misthalin.dialogue.varrock
 
 import core.game.dialogue.Dialogue
-import core.game.ge.PriceGuide
-import core.game.ge.PriceGuide.GuideType
+import core.game.ge.GuidePrices
+import core.game.ge.GuidePrices.GuideType
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
@@ -68,7 +68,7 @@ class BobBarterDialogue(
                 }
             10 -> {
                 end()
-                PriceGuide.open(player, GuideType.HERBS)
+                GuidePrices.open(player, GuideType.HERBS)
             }
         }
         return true

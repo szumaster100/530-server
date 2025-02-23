@@ -3,7 +3,7 @@ package core.api.interaction
 import content.global.handlers.iface.ge.StockMarket
 import core.api.*
 import core.api.interaction.SecondaryBankAccountActivationResult.*
-import core.game.ge.GERecords
+import core.game.ge.ExchangeHistory
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.IronmanMode
 import core.game.node.item.Item
@@ -33,7 +33,7 @@ fun restrictForIronman(
  * @return true if there is at least one offer with an item awaiting collection, otherwise false.
  */
 fun hasAwaitingGrandExchangeCollections(player: Player): Boolean {
-    val records = GERecords.getInstance(player)
+    val records = ExchangeHistory.getInstance(player)
 
     for (record in records.offerRecords) {
         val offer = records.getOffer(record)
@@ -51,7 +51,7 @@ fun hasAwaitingGrandExchangeCollections(player: Player): Boolean {
  */
 fun openGrandExchangeCollectionBox(player: Player) {
     restrictForIronman(player, IronmanMode.ULTIMATE) {
-        GERecords.getInstance(player).openCollectionBox()
+        ExchangeHistory.getInstance(player).openCollectionBox()
     }
 }
 

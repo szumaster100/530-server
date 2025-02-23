@@ -4,8 +4,8 @@ import content.global.handlers.iface.ge.ExchangeItemSets
 import content.global.handlers.iface.ge.StockMarket
 import core.api.getUsedOption
 import core.api.openDialogue
-import core.game.ge.GERecords
-import core.game.ge.PriceGuide
+import core.game.ge.ExchangeHistory
+import core.game.ge.GuidePrices
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.npc.NPC
@@ -32,7 +32,7 @@ class GrandExchangeListener : InteractionListener {
 
     override fun defineListeners() {
         on(CLERK, IntType.NPC, "talk-to", "exchange", "history", "sets") { player, node ->
-            val records = GERecords.getInstance(player)
+            val records = ExchangeHistory.getInstance(player)
             if (getUsedOption(player) == "talk-to") {
                 val npc = node as NPC
                 player.dialogueInterpreter.open(npc.id, npc)
@@ -44,7 +44,7 @@ class GrandExchangeListener : InteractionListener {
         }
 
         on(Scenery.DESK_28089, IntType.SCENERY, "use", "exchange", "collect", "history", "sets") { player, _ ->
-            val records = GERecords.getInstance(player)
+            val records = ExchangeHistory.getInstance(player)
             when (getUsedOption(player)) {
                 "use" -> openDialogue(player, NPCs.GRAND_EXCHANGE_CLERK_6528)
                 "exchange" -> StockMarket.openFor(player)
@@ -56,27 +56,27 @@ class GrandExchangeListener : InteractionListener {
         }
 
         on(NPCs.FARID_MORRISANE_ORES_6523, IntType.NPC, "info-ores") { player, _ ->
-            PriceGuide.open(player, PriceGuide.GuideType.ORES)
+            GuidePrices.open(player, GuidePrices.GuideType.ORES)
             return@on true
         }
 
         on(NPCs.BOB_BARTER_HERBS_6524, IntType.NPC, "info-herbs") { player, _ ->
-            PriceGuide.open(player, PriceGuide.GuideType.HERBS)
+            GuidePrices.open(player, GuidePrices.GuideType.HERBS)
             return@on true
         }
 
         on(NPCs.MURKY_MATT_RUNES_6525, IntType.NPC, "info-runes") { player, _ ->
-            PriceGuide.open(player, PriceGuide.GuideType.RUNES)
+            GuidePrices.open(player, GuidePrices.GuideType.RUNES)
             return@on true
         }
 
         on(NPCs.RELOBO_BLINYO_LOGS_6526, IntType.NPC, "info-logs") { player, _ ->
-            PriceGuide.open(player, PriceGuide.GuideType.LOGS)
+            GuidePrices.open(player, GuidePrices.GuideType.LOGS)
             return@on true
         }
 
         on(NPCs.HOFUTHAND_ARMOUR_AND_WEAPONS_6527, IntType.NPC, "info-combat") { player, _ ->
-            PriceGuide.open(player, PriceGuide.GuideType.WEAPONS_AND_ARMOUR)
+            GuidePrices.open(player, GuidePrices.GuideType.WEAPONS_AND_ARMOUR)
             return@on true
         }
     }

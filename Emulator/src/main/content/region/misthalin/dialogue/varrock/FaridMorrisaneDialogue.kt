@@ -2,8 +2,8 @@ package content.region.misthalin.dialogue.varrock
 
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
-import core.game.ge.PriceGuide
-import core.game.ge.PriceGuide.GuideType
+import core.game.ge.GuidePrices
+import core.game.ge.GuidePrices.GuideType
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
@@ -85,7 +85,7 @@ class FaridMorrisaneDialogue(
                 }
             16 -> {
                 end()
-                PriceGuide.open(player, GuideType.ORES)
+                GuidePrices.open(player, GuideType.ORES)
             }
             17 ->
                 npc(FaceAnim.CHILD_NORMAL, "Then I shall not stop you, mister. I've too", "much work to do.").also {

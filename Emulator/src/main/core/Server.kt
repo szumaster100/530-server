@@ -1,6 +1,7 @@
 package core
 
 import core.api.log
+import core.game.ge.AutoStock
 import core.game.system.SystemManager
 import core.game.system.SystemState
 import core.game.system.config.ServerConfigParser
@@ -81,8 +82,9 @@ object Server {
         // cacheTo.index(CacheIndex.INTERFACES.id).update()
         // SystemLogger.logCache("index=$index | update=${index.update()}")
 
-        // GEAutoStock.autostock()
         // WorldCommunicator.connect()
+
+        AutoStock.autostock()
 
         log(this::class.java, Log.INFO, GameWorld.settings?.name + " flags " + GameWorld.settings?.toString())
         log(

@@ -2,8 +2,8 @@ package content.region.misthalin.dialogue.varrock
 
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
-import core.game.ge.PriceGuide
-import core.game.ge.PriceGuide.GuideType
+import core.game.ge.GuidePrices
+import core.game.ge.GuidePrices.GuideType
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
@@ -86,7 +86,7 @@ class ReloboBlinyoDialogue(
             11 -> npcl(FaceAnim.HALF_GUILTY, "Then you've come to the right person.").also { stage++ }
             12 -> {
                 end()
-                PriceGuide.open(player, GuideType.LOGS)
+                GuidePrices.open(player, GuideType.LOGS)
             }
         }
         return true

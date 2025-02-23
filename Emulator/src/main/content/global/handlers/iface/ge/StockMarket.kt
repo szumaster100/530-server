@@ -89,7 +89,7 @@ class StockMarket : InterfaceListener {
         on(Components.STOCKMARKET_105) { player, _, op, button, _, _ ->
             val tempOffer = getAttribute(player, "ge-temp", GrandExchangeOffer())
             var openedIndex = getAttribute(player, "ge-index", -1)
-            var openedOffer = GERecords.getInstance(player).getOffer(openedIndex)
+            var openedOffer = ExchangeHistory.getInstance(player).getOffer(openedIndex)
 
             when (button) {
                 209, 211 ->
@@ -105,7 +105,7 @@ class StockMarket : InterfaceListener {
                 203 -> abortOffer(player, openedOffer)
                 18, 34, 50, 69, 88, 107 -> {
                     openedIndex = (button - 18) shr 4
-                    openedOffer = GERecords.getInstance(player).getOffer(openedIndex)
+                    openedOffer = ExchangeHistory.getInstance(player).getOffer(openedIndex)
                     if (op == 205) {
                         abortOffer(player, openedOffer)
                     } else {
@@ -125,14 +125,14 @@ class StockMarket : InterfaceListener {
 
                 30, 46, 62, 81, 100, 119 -> {
                     openedIndex = (button - 30) shr 4
-                    openedOffer = GERecords.getInstance(player).getOffer(openedIndex)
+                    openedOffer = ExchangeHistory.getInstance(player).getOffer(openedIndex)
                     updateVarbits(player, openedOffer, openedIndex)
                     player.interfaceManager.openChatbox(Components.OBJDIALOG_389)
                 }
 
                 31, 47, 63, 82, 101, 120 -> {
                     openedIndex = (button - 31) shr 4
-                    openedOffer = GERecords.getInstance(player).getOffer(openedIndex)
+                    openedOffer = ExchangeHistory.getInstance(player).getOffer(openedIndex)
                     updateVarbits(player, openedOffer, openedIndex, true)
                     player.interfaceManager.openSingleTab(Component(Components.STOCKSIDE_107)).open(player)
                     player.packetDispatch.sendRunScript(
@@ -443,10 +443,10 @@ class StockMarket : InterfaceListener {
                 if (offer.completedAmount > 0) {
                     val newHistory = arrayOfNulls<GrandExchangeOffer>(5)
                     newHistory[0] = offer
-                    System.arraycopy(GERecords.getInstance(player).history, 0, newHistory, 1, 4)
-                    GERecords.getInstance(player).history = newHistory
+                    System.arraycopy(ExchangeHistory.getInstance(player).history, 0, newHistory, 1, 4)
+                    ExchangeHistory.getInstance(player).history = newHistory
                 }
-                GERecords.getInstance(player).offerRecords[offer.index] = null
+                ExchangeHistory.getInstance(player).offerRecords[offer.index] = null
                 toMainInterface(player)
             }
             offer.update()

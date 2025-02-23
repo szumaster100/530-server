@@ -1,6 +1,6 @@
 package content.region.misthalin.handlers;
 
-import core.game.ge.PriceGuide;
+import core.game.ge.GuidePrices;
 import org.rs.consts.Components;
 import org.rs.consts.NPCs;
 import core.game.activity.ActivityManager;
@@ -10,7 +10,7 @@ import core.game.component.Component;
 import core.game.component.ComponentDefinition;
 import core.game.component.ComponentPlugin;
 import core.game.dialogue.Dialogue;
-import core.game.ge.PriceGuide.GuideType;
+import core.game.ge.GuidePrices.GuideType;
 import core.game.node.entity.player.Player;
 import core.game.system.task.Pulse;
 import core.game.world.GameWorld;
@@ -312,7 +312,7 @@ public final class GrandExchangeCutscene extends CutscenePlugin {
                     break;
                 case 311:
                     end();
-                    PriceGuide.open(player, GuideType.ORES);
+                    GuidePrices.open(player, GuideType.ORES);
                     break;
                 case 320:
                     npc("My pleasure, but you can probably get this", "information quicker by visitng Murky Matt.");
@@ -320,7 +320,7 @@ public final class GrandExchangeCutscene extends CutscenePlugin {
                     break;
                 case 321:
                     end();
-                    PriceGuide.open(player, GuideType.RUNES);
+                    GuidePrices.open(player, GuideType.RUNES);
                     break;
                 case 330:
                     npc("Sure thing, but you can probably get this", "information quicker by visiting Relobo.");
@@ -328,7 +328,7 @@ public final class GrandExchangeCutscene extends CutscenePlugin {
                     break;
                 case 331:
                     end();
-                    PriceGuide.open(player, GuideType.LOGS);
+                    GuidePrices.open(player, GuideType.LOGS);
                     break;
                 case 340:
                     npc("Of course, but you can probably get at this", "information quicker by visiting Bob Barter.");
@@ -336,7 +336,7 @@ public final class GrandExchangeCutscene extends CutscenePlugin {
                     break;
                 case 341:
                     end();
-                    PriceGuide.open(player, GuideType.HERBS);
+                    GuidePrices.open(player, GuideType.HERBS);
                     break;
                 case 350:
                     npc("That's easy, but you can probably get at this", "information quicker by visiting Hofuthand.");
@@ -344,7 +344,7 @@ public final class GrandExchangeCutscene extends CutscenePlugin {
                     break;
                 case 351:
                     end();
-                    PriceGuide.open(player, GuideType.WEAPONS_AND_ARMOUR);
+                    GuidePrices.open(player, GuideType.WEAPONS_AND_ARMOUR);
                     break;
                 case 240:
                     npc("I'm glad you ask! I like telling this story. Are you sitting", "comfortably?");

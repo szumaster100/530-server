@@ -2,8 +2,8 @@ package content.region.misthalin.dialogue.varrock
 
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
-import core.game.ge.PriceGuide
-import core.game.ge.PriceGuide.GuideType
+import core.game.ge.GuidePrices
+import core.game.ge.GuidePrices.GuideType
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
@@ -63,7 +63,7 @@ class HofutHandDialogue(
                 }
             5 -> {
                 end()
-                PriceGuide.open(player, GuideType.WEAPONS_AND_ARMOUR)
+                GuidePrices.open(player, GuideType.WEAPONS_AND_ARMOUR)
             }
         }
         return true

@@ -5,10 +5,10 @@ import core.cache.def.impl.ItemDefinition;
 import core.game.component.Component;
 import core.game.component.ComponentDefinition;
 import core.game.component.ComponentPlugin;
-import core.game.ge.GEItemSet;
-import core.game.ge.GERecords;
+import core.game.ge.ItemSet;
+import core.game.ge.ExchangeHistory;
 import core.game.ge.GrandExchangeOffer;
-import core.game.ge.PriceGuide;
+import core.game.ge.GuidePrices;
 import core.game.node.entity.player.Player;
 import core.game.node.item.Item;
 import core.game.system.task.Pulse;
@@ -112,7 +112,7 @@ public class GrandExchangeInterface extends ComponentPlugin {
                 break;
         }
         GrandExchangeOffer offer;
-        GERecords records = GERecords.getInstance(player);
+        ExchangeHistory records = ExchangeHistory.getInstance(player);
         if (index > -1 && (offer = records.getOffer(records.getOfferRecords()[index])) != null) {
             StockMarket.withdraw(player, offer, slot >> 1, opcode);
         }
@@ -133,19 +133,19 @@ public class GrandExchangeInterface extends ComponentPlugin {
             return;
         }
         boolean inventory = component.getId() == 644;
-        if (slot < 0 || slot >= (inventory ? 28 : GEItemSet.values().length)) {
+        if (slot < 0 || slot >= (inventory ? 28 : ItemSet.values().length)) {
             return;
         }
 
         Item item;
-        GEItemSet set;
+        ItemSet set;
         if (inventory) {
             item = player.getInventory().get(slot);
             if (item == null) return;
-            set = GEItemSet.forId(item.getId());
+            set = ItemSet.forId(item.getId());
             if (set == null) return;
         } else {
-            set = GEItemSet.values()[slot];
+            set = ItemSet.values()[slot];
             item = new Item(set.getItemId());
         }
 
@@ -207,7 +207,7 @@ public class GrandExchangeInterface extends ComponentPlugin {
     private void handleGuidePrice(final Player player, final int opcode, final int buttonId, final int slot, final int itemId) {
         switch (opcode) {
             case 155:
-                PriceGuide.GuideType type = player.getAttribute("guide-price", null);
+                GuidePrices.GuideType type = player.getAttribute("guide-price", null);
                 if (type == null) {
                     return;
                 }

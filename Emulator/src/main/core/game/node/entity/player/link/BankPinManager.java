@@ -3,7 +3,7 @@ package core.game.node.entity.player.link;
 import content.global.handlers.iface.ge.StockMarket;
 import core.game.component.CloseEvent;
 import core.game.component.Component;
-import core.game.ge.GERecords;
+import core.game.ge.ExchangeHistory;
 import core.game.node.entity.player.Player;
 import core.game.world.GameWorld;
 import core.net.packet.PacketRepository;
@@ -144,7 +144,7 @@ public class BankPinManager {
                 player.getBank().open();
             }
         } else if (buttonId == 3) {
-            GERecords.getInstance(player).openCollectionBox();
+            ExchangeHistory.getInstance(player).openCollectionBox();
         } else if (buttonId == 4) {
             StockMarket.openFor(player);
         }

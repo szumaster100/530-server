@@ -8,7 +8,7 @@ import core.game.component.Component
 import core.game.container.Container
 import core.game.container.ContainerEvent
 import core.game.container.access.InterfaceContainer
-import core.game.ge.GEItemSet
+import core.game.ge.ItemSet
 import core.game.interaction.InterfaceListener
 import core.game.node.entity.player.Player
 import org.rs.consts.Components
@@ -71,7 +71,7 @@ class ExchangeItemSets : InterfaceListener {
 
             InterfaceContainer.generateItems(
                 player,
-                GEItemSet.getItemArray(),
+                ItemSet.getItemArray(),
                 arrayOf("Exchange", "Components"),
                 Components.EXCHANGE_ITEMSETS_645,
                 16,

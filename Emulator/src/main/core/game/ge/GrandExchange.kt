@@ -134,7 +134,7 @@ class GrandExchange :
             fromBot: Boolean = false,
         ): Int {
             var base = max(PriceIndex.getValue(itemID), getItemDefPrice(itemID))
-            if (fromBot) base = (max(GEBotPrices.getPrice(itemID), base) * 1.10).toInt()
+            if (fromBot) base = (max(BotPrices.getPrice(itemID), base) * 1.10).toInt()
             return base
         }
 
@@ -333,10 +333,10 @@ class GrandExchange :
 
             seller.update()
             val sellerPlayer = Repository.uid_map[seller.playerUID]
-            sellerPlayer?.let { GERecords.getInstance(sellerPlayer).visualizeRecords() }
+            sellerPlayer?.let { ExchangeHistory.getInstance(sellerPlayer).visualizeRecords() }
             buyer.update()
             val buyerPlayer = Repository.uid_map[buyer.playerUID]
-            buyerPlayer?.let { GERecords.getInstance(buyerPlayer).visualizeRecords() }
+            buyerPlayer?.let { ExchangeHistory.getInstance(buyerPlayer).visualizeRecords() }
         }
 
         private fun canUpdatePriceIndex(

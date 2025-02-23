@@ -4,7 +4,7 @@ import content.global.handlers.iface.ge.ExchangeItemSets
 import content.global.handlers.iface.ge.StockMarket
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
-import core.game.ge.GERecords.Companion.getInstance
+import core.game.ge.ExchangeHistory.Companion.getInstance
 import core.game.node.entity.player.Player
 import core.plugin.Initializable
 import core.tools.END_DIALOGUE
