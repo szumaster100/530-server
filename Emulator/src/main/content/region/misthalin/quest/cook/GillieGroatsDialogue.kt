@@ -102,7 +102,7 @@ class GillieGroatsDialogue(
             103 ->
                 npc(
                     FaceAnim.LAUGH,
-                    "You're from the city, aren't you... Try it again with an",
+                    "You're from the city, aren't you? Try it again with an",
                     "empty bucket.",
                 ).also { stage++ }
 

@@ -9,27 +9,21 @@ import core.api.interaction.openDepositBox
 import core.game.dialogue.FaceAnim
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
-import core.game.node.Node
 import core.game.node.entity.combat.equipment.WeaponInterface
 import core.game.node.entity.npc.IdleAbstractNPC
 import core.game.node.entity.npc.NPC
-import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
-import core.game.node.item.Item
-import core.game.system.task.Pulse
 import core.game.system.timer.impl.AntiMacro
 import core.game.worldevents.events.HolidayRandomEventNPC
 import core.game.worldevents.events.HolidayRandomEvents
 import core.game.worldevents.events.HolidayRandoms
-import org.rs.consts.*
+import org.rs.consts.Components
+import org.rs.consts.Items
+import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 class NPCListener : InteractionListener {
     override fun defineListeners() {
-        onUseWith(IntType.ITEM, Items.BUCKET_1925, *cowSceneryIds) { player, _, with ->
-            milk(player, with.asScenery())
-            return@onUseWith true
-        }
-
         on(NPCs.HAIRDRESSER_598, IntType.NPC, "hair-cut") { player, node ->
             player.dialogueInterpreter.open(NPCs.HAIRDRESSER_598, (node as NPC?), true)
             return@on true
@@ -104,10 +98,7 @@ class NPCListener : InteractionListener {
             val npc = node.asNpc()
 
             if (RandomEvents.randomIDs.contains(node.id)) {
-                if (AntiMacro.getEventNpc(player) == null ||
-                    AntiMacro.getEventNpc(player) != node.asNpc() ||
-                    AntiMacro
-                        .getEventNpc(
+                if (AntiMacro.getEventNpc(player) == null || AntiMacro.getEventNpc(player) != node.asNpc() || AntiMacro.getEventNpc(
                             player,
                         )?.finalized == true
                 ) {
@@ -119,10 +110,7 @@ class NPCListener : InteractionListener {
             }
 
             if (HolidayRandomEvents.holidayRandomIDs.contains(node.id) && node is HolidayRandomEventNPC) {
-                if (HolidayRandoms.getEventNpc(player) == null ||
-                    HolidayRandoms.getEventNpc(player) != node.asNpc() ||
-                    HolidayRandoms
-                        .getEventNpc(
+                if (HolidayRandoms.getEventNpc(player) == null || HolidayRandoms.getEventNpc(player) != node.asNpc() || HolidayRandoms.getEventNpc(
                             player,
                         )?.finalized == true
                 ) {
@@ -165,80 +153,33 @@ class NPCListener : InteractionListener {
 
     companion object {
         val peerTheSeerNPC = NPCs.PEER_THE_SEER_1288
-        val barCrawlNPCs =
-            intArrayOf(
-                NPCs.BARTENDER_733,
-                NPCs.BLURBERRY_848,
-                NPCs.BARTENDER_735,
-                NPCs.BARTENDER_739,
-                NPCs.BARTENDER_737,
-                NPCs.BARTENDER_738,
-                NPCs.BARTENDER_731,
-                NPCs.ZAMBO_568,
-                NPCs.KAYLEE_3217,
-                NPCs.EMILY_736,
-                NPCs.BARTENDER_734,
-            )
-        val dummySceneryIds =
-            intArrayOf(
-                Scenery.DUMMY_2038,
-                Scenery.DUMMY_15624,
-                Scenery.DUMMY_15625,
-                Scenery.DUMMY_15626,
-                Scenery.DUMMY_15627,
-                Scenery.DUMMY_15628,
-                Scenery.DUMMY_15629,
-                Scenery.DUMMY_15630,
-                Scenery.DUMMY_18238,
-                Scenery.DUMMY_25648,
-                Scenery.DUMMY_PAWYA_CORPSE_28912,
-                Scenery.DUMMY_823,
-                Scenery.DUMMY_23921,
-            )
-        val cowSceneryIds = intArrayOf(Scenery.DAIRY_COW_8689, Scenery.DAIRY_COW_12111)
-        val items: Array<Item> =
-            arrayOf(Item(Items.BUCKET_1925, 1), Item(Items.EMPTY_BUCKET_3727, 1), Item(Items.BUCKET_OF_MILK_1927, 1))
-
-        fun milk(
-            player: Player,
-            node: Node,
-        ): Boolean {
-            if (!anyInInventory(player, Items.BUCKET_1925, Items.EMPTY_BUCKET_3727)) {
-                player.dialogueInterpreter.open(NPCs.GILLIE_GROATS_3807, true, true)
-                return true
-            }
-
-            lock(player, 8)
-            animate(player, Animations.MILKING_COW_2305)
-            playAudio(player, Sounds.MILK_COW_372)
-            player.pulseManager.run(
-                object : Pulse(8, player) {
-                    override fun pulse(): Boolean {
-                        if (player.inventory.remove(items[0]) || player.inventory.remove(items[1])) {
-                            player.inventory.add(items[2])
-                            sendMessage(player, "You milk the cow.")
-                        }
-                        if (inInventory(player, Items.BUCKET_1925, 1) ||
-                            inInventory(
-                                player,
-                                Items.EMPTY_BUCKET_3727,
-                                1,
-                            )
-                        ) {
-                            animate(player, Animations.MILKING_COW_2305)
-                            playAudio(player, Sounds.MILK_COW2_373)
-                            return false
-                        }
-                        return true
-                    }
-
-                    override fun stop() {
-                        super.stop()
-                        resetAnimator(player)
-                    }
-                },
-            )
-            return true
-        }
+        val barCrawlNPCs = intArrayOf(
+            NPCs.BARTENDER_733,
+            NPCs.BLURBERRY_848,
+            NPCs.BARTENDER_735,
+            NPCs.BARTENDER_739,
+            NPCs.BARTENDER_737,
+            NPCs.BARTENDER_738,
+            NPCs.BARTENDER_731,
+            NPCs.ZAMBO_568,
+            NPCs.KAYLEE_3217,
+            NPCs.EMILY_736,
+            NPCs.BARTENDER_734
+        )
+        val dummySceneryIds = intArrayOf(
+            Scenery.DUMMY_2038,
+            Scenery.DUMMY_15624,
+            Scenery.DUMMY_15625,
+            Scenery.DUMMY_15626,
+            Scenery.DUMMY_15627,
+            Scenery.DUMMY_15628,
+            Scenery.DUMMY_15629,
+            Scenery.DUMMY_15630,
+            Scenery.DUMMY_18238,
+            Scenery.DUMMY_25648,
+            Scenery.DUMMY_PAWYA_CORPSE_28912,
+            Scenery.DUMMY_823,
+            Scenery.DUMMY_23921
+        )
     }
 }

@@ -4,6 +4,10 @@ import core.ServerConfig
 import core.game.node.entity.player.Player
 import core.game.world.GameWorld
 
+/*
+ * TODO
+ *  [ ] - Replace to book interface.
+ */
 class Command(
     val name: String,
     val privilege: Privilege,

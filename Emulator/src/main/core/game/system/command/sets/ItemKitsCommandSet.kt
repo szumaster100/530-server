@@ -16,61 +16,13 @@ import org.rs.consts.Quests
 
 @Initializable
 class ItemKitsCommandSet : CommandSet(Privilege.ADMIN) {
-    private val farmKitItems =
-        arrayListOf(
-            Items.RAKE_5341,
-            Items.SPADE_952,
-            Items.SEED_DIBBER_5343,
-            Items.WATERING_CAN8_5340,
-            Items.SECATEURS_5329,
-            Items.GARDENING_TROWEL_5325,
-        )
-    private val runeKitItems =
-        arrayListOf(
-            Items.AIR_RUNE_556,
-            Items.EARTH_RUNE_557,
-            Items.FIRE_RUNE_554,
-            Items.WATER_RUNE_555,
-            Items.MIND_RUNE_558,
-            Items.BODY_RUNE_559,
-            Items.DEATH_RUNE_560,
-            Items.NATURE_RUNE_561,
-            Items.CHAOS_RUNE_562,
-            Items.LAW_RUNE_563,
-            Items.COSMIC_RUNE_564,
-            Items.BLOOD_RUNE_565,
-            Items.SOUL_RUNE_566,
-            Items.ASTRAL_RUNE_9075,
-        )
-    private val talismanKitItems =
-        arrayListOf(
-            Items.AIR_TALISMAN_1438,
-            Items.EARTH_TALISMAN_1440,
-            Items.FIRE_TALISMAN_1442,
-            Items.WATER_TALISMAN_1444,
-            Items.MIND_TALISMAN_1448,
-            Items.BODY_TALISMAN_1446,
-            Items.DEATH_TALISMAN_1456,
-            Items.NATURE_TALISMAN_1462,
-            Items.CHAOS_TALISMAN_1452,
-            Items.LAW_TALISMAN_1458,
-            Items.COSMIC_TALISMAN_1454,
-            Items.BLOOD_TALISMAN_1450,
-            Items.SOUL_TALISMAN_1460,
-        )
-    private val dyeKitItems =
-        arrayListOf(
-            Items.RED_DYE_1763,
-            Items.YELLOW_DYE_1765,
-            Items.BLUE_DYE_1767,
-            Items.ORANGE_DYE_1769,
-            Items.GREEN_DYE_1771,
-            Items.PURPLE_DYE_1773,
-            Items.BLACK_MUSHROOM_INK_4622,
-            Items.PINK_DYE_6955,
-        )
 
     override fun defineCommands() {
+
+        /*
+         * Provides a set of dyes.
+         */
+
         define(
             name = "dyeskit",
             privilege = Privilege.ADMIN,
@@ -84,6 +36,10 @@ class ItemKitsCommandSet : CommandSet(Privilege.ADMIN) {
             return@define
         }
 
+        /*
+         * Provide a set of talismans.
+         */
+
         define(
             name = "talismankit",
             privilege = Privilege.ADMIN,
@@ -95,6 +51,10 @@ class ItemKitsCommandSet : CommandSet(Privilege.ADMIN) {
             }
             return@define
         }
+
+        /*
+         * Provide a kit of various farming equipment.
+         */
 
         define(
             name = "farmkit",
@@ -108,6 +68,10 @@ class ItemKitsCommandSet : CommandSet(Privilege.ADMIN) {
             return@define
         }
 
+        /*
+         * Provides 1000 of each rune type to the player.
+         */
+
         define(
             name = "runekit",
             privilege = Privilege.ADMIN,
@@ -120,15 +84,19 @@ class ItemKitsCommandSet : CommandSet(Privilege.ADMIN) {
             return@define
         }
 
+        /*
+         * Provide all ingredients for the spinning wheel.
+         */
+
         define(
             name = "spinningkit",
             privilege = Privilege.ADMIN,
             usage = "::spinningkit",
-            description = "Spinning items.",
+            description = "Provides all ingredients for spinning wheel, with product information.",
         ) { player, _ ->
             val spinningWheelLocation = Location.create(3209, 3213, 1)
             for (spinning in Spinning.values()) {
-                val needMessage = "Item need: ${spinning.need} -> Reward: ${spinning.product}"
+                val needMessage = "Item needed: ${spinning.need} -> Reward: ${spinning.product}"
                 sendMessage(player, needMessage)
             }
             player.inventory.addList(Spinning.getAllNeed())
@@ -137,24 +105,48 @@ class ItemKitsCommandSet : CommandSet(Privilege.ADMIN) {
             return@define
         }
 
-        define(name = "barkit", privilege = Privilege.ADMIN, usage = "::barkit", description = "Bars.") { player, _ ->
+        /*
+         * Provides all bars.
+         */
+
+        define(
+            name = "barkit",
+            privilege = Privilege.ADMIN,
+            usage = "::barkit",
+            description = "Provides all bars and hammer and teleport to anvil."
+        ) { player, _ ->
             val anvilLocation = Location.create(2919, 3573, 0)
-            player.inventory.addList(Bar.getAllBars())
+            player.bank.addList(Bar.getAllBars())
             addItem(player, Items.HAMMER_2347)
             teleport(player, anvilLocation)
             return@define
         }
 
-        define(name = "orekit", privilege = Privilege.ADMIN, usage = "::orekit", description = "Ores.") { player, _ ->
-            player.inventory.addList(Bar.getAllOres())
+        /*
+         * Provides all ores.
+         */
+
+        define(
+            name = "orekit",
+            privilege = Privilege.ADMIN,
+            usage = "::orekit",
+            description = "Provides all ores to the bank and teleports to the furnace."
+        ) { player, _ ->
+            val furnaceLocation = Location.create(3227, 3255, 0)
+            player.bank.addList(Bar.getAllOres())
+            teleport(player, furnaceLocation)
             return@define
         }
+
+        /*
+         * Provides all summoning pouches.
+         */
 
         define(
             name = "summoningkit",
             privilege = Privilege.ADMIN,
-            usage = "::orekit",
-            description = "Ores.",
+            usage = "::summoningkit",
+            description = "Provides all pouches to the bank and teleports to the obelisk."
         ) { player, _ ->
             val obeliskLocation = Location.create(2208, 5344, 0)
             finishQuest(player, Quests.WOLF_WHISTLE)
@@ -162,5 +154,16 @@ class ItemKitsCommandSet : CommandSet(Privilege.ADMIN) {
             teleport(player, obeliskLocation)
             return@define
         }
+    }
+
+    companion object {
+        private val farmKitItems =
+            arrayListOf(Items.RAKE_5341, Items.SPADE_952, Items.SEED_DIBBER_5343, Items.WATERING_CAN8_5340, Items.SECATEURS_5329, Items.GARDENING_TROWEL_5325)
+        private val runeKitItems =
+            arrayListOf(Items.AIR_RUNE_556, Items.EARTH_RUNE_557, Items.FIRE_RUNE_554, Items.WATER_RUNE_555, Items.MIND_RUNE_558, Items.BODY_RUNE_559, Items.DEATH_RUNE_560, Items.NATURE_RUNE_561, Items.CHAOS_RUNE_562, Items.LAW_RUNE_563, Items.COSMIC_RUNE_564, Items.BLOOD_RUNE_565, Items.SOUL_RUNE_566, Items.ASTRAL_RUNE_9075)
+        private val talismanKitItems =
+            arrayListOf(Items.AIR_TALISMAN_1438, Items.EARTH_TALISMAN_1440, Items.FIRE_TALISMAN_1442, Items.WATER_TALISMAN_1444, Items.MIND_TALISMAN_1448, Items.BODY_TALISMAN_1446, Items.DEATH_TALISMAN_1456, Items.NATURE_TALISMAN_1462, Items.CHAOS_TALISMAN_1452, Items.LAW_TALISMAN_1458, Items.COSMIC_TALISMAN_1454, Items.BLOOD_TALISMAN_1450, Items.SOUL_TALISMAN_1460)
+        private val dyeKitItems =
+            arrayListOf(Items.RED_DYE_1763, Items.YELLOW_DYE_1765, Items.BLUE_DYE_1767, Items.ORANGE_DYE_1769, Items.GREEN_DYE_1771, Items.PURPLE_DYE_1773, Items.BLACK_MUSHROOM_INK_4622, Items.PINK_DYE_6955)
     }
 }

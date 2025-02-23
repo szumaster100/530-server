@@ -48,7 +48,7 @@ class InoculationBraceListener :
     }
 
     override fun defineCommands() {
-        define("disease", privilege = Privilege.ADMIN) { player, strings ->
+        define("disease", privilege = Privilege.ADMIN, "Disease for testing purposes.") { player, strings ->
             if (strings.size != 3) {
                 sendMessage(player, "Invalid arguments. Use: ::disease username damage")
                 return@define

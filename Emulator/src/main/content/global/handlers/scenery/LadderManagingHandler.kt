@@ -17,8 +17,6 @@ class LadderManagingHandler : OptionHandler() {
         SceneryDefinition.setOptionHandler("climb-up", this)
         SceneryDefinition.setOptionHandler("climb-down", this)
         SceneryDefinition.setOptionHandler("climb", this)
-        SceneryDefinition.setOptionHandler("walk-up", this)
-        SceneryDefinition.setOptionHandler("walk-down", this)
         return this
     }
 

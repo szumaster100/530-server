@@ -16,11 +16,11 @@ class CommandSystem {
         if (command == null && (player.rights != Rights.REGULAR_PLAYER)) {
             for (set in CommandSet.values()) {
                 if (set.interpret(player, arguments[0], *arguments)) {
-                    player.sendMessage(colorize("-->%Y${arguments[0]}: Deprecated command"))
+                    player.sendMessage(colorize("-->%DO${arguments[0]}: Deprecated command"))
                     return true
                 }
             }
-            player.sendMessage(colorize("-->%R${arguments[0]}: command not found"))
+            player.sendMessage(colorize("-->%R${arguments[0]}: command not found."))
         } else {
             try {
                 command?.attemptHandling(player, arguments)

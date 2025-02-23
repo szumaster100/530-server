@@ -18,8 +18,7 @@ class MerlinCrystal : Quest(Quests.MERLINS_CRYSTAL, 87, 86, 6, Vars.VARP_QUEST_M
         stage: Int,
     ) {
         super.drawJournal(player, stage)
-        player ?: return
-        var line = 11
+        var line = 12
 
         when (stage) {
             0 -> {

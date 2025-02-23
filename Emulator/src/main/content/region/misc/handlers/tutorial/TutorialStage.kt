@@ -20,6 +20,7 @@ import core.tools.BLUE
 import core.worker.ManagementEvents
 import org.rs.consts.Components
 import org.rs.consts.Items
+import org.rs.consts.Music
 import org.rs.consts.NPCs
 import proto.management.JoinClanRequest
 
@@ -77,6 +78,7 @@ object TutorialStage {
             player.hook(Event.SpellCast, TutorialCompletionReceiver)
             openOverlay(player, Components.TUTORIAL_PROGRESS_371)
             sendInterfaceConfig(player, Components.TUTORIAL_PROGRESS_371, 4, true)
+            playAudio(player, Music.NEWBIE_MELODY_62)
         }
 
         updateProgressBar(player)

@@ -6,9 +6,7 @@ import content.region.kandarin.quest.phoenix.handlers.allTwigs
 import core.api.Container
 import core.api.addItem
 import core.api.quest.finishQuest
-import core.api.quest.setQuestStage
 import core.api.sendString
-import core.game.activity.ActivityManager
 import core.game.component.Component
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.QuestRepository
@@ -49,16 +47,6 @@ class QuestCommandSet : CommandSet(Privilege.ADMIN) {
             for (i in weavingRibbons) {
                 addItem(player, i, 1, Container.INVENTORY)
             }
-        }
-
-        define(
-            name = "dscut",
-            privilege = Privilege.ADMIN,
-            usage = "::dscut",
-            description = "Starts the Dragon slayer cutscene.",
-        ) { player, _ ->
-            setQuestStage(player, Quests.DRAGON_SLAYER, 30)
-            ActivityManager.start(player, Quests.DRAGON_SLAYER, false, player.location)
         }
 
         define(

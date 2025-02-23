@@ -154,7 +154,7 @@ class SmeltingPulse : SkillPulse<Item?> {
         if (!superHeat) {
             sendMessage(
                 player,
-                "You place a lump of " + StringUtils.formatDisplayName(bar.toString().lowercase()) + " in the furnace.",
+                "You place a lump of " + StringUtils.formatDisplayName(bar.toString()).lowercase() + " in the furnace.",
             )
         }
         for (i in bar!!.ores) {

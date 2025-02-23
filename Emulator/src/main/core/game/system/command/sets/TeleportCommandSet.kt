@@ -193,7 +193,7 @@ class TeleportCommandSet : CommandSet(Privilege.ADMIN) {
             name = "home",
             privilege = Privilege.ADMIN,
             usage = "",
-            description = "Teleports to ServerConfig.HOME_LOCATION or HOME_LOCATION_ALT (after RD quest).",
+            description = "Teleports to HOME_LOCATION",
         ) { player, _ ->
             player.properties.teleportLocation = ServerConfig.HOME_LOCATION
         }
