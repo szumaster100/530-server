@@ -1,207 +1,106 @@
 package content.global.skill.construction.decoration.workshop
 
-import content.data.GameAttributes
 import content.global.skill.construction.BuildingUtils
-import content.global.skill.construction.Decoration
 import core.api.*
-import core.cache.def.impl.SceneryDefinition
-import core.game.dialogue.Dialogue
-import core.game.dialogue.DialogueInterpreter
-import core.game.interaction.OptionHandler
-import core.game.node.Node
+import core.game.interaction.IntType
+import core.game.interaction.InteractionListener
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
-import core.game.node.scenery.Scenery
-import core.plugin.ClassScanner.definePlugin
-import core.plugin.Initializable
-import core.plugin.Plugin
 import org.rs.consts.Items
+import org.rs.consts.Scenery
 
-@Initializable
-class ClockmakingSpace : OptionHandler() {
-    internal enum class Craftable(
-        val itemId: Int,
-        val craftingLevel: Int,
-        vararg materials: Item,
-    ) {
-        TOY_HORSEY(itemId = Items.TOY_HORSEY_2520, craftingLevel = 10, BuildingUtils.PLANK),
-        CLOCKWORK(itemId = Items.CLOCKWORK_8792, craftingLevel = 8, Item(Items.STEEL_BAR_2353)),
-        TOY_SOLDIER(
-            itemId = Items.TOY_SOLDIER_7759,
-            craftingLevel = 13,
-            BuildingUtils.PLANK,
-            Item(Items.CLOCKWORK_8792),
-        ),
-        TOY_DOLL(itemId = Items.TOY_DOLL_7763, craftingLevel = 18, BuildingUtils.PLANK, Item(Items.CLOCKWORK_8792)),
-        TOY_MOUSE(itemId = Items.TOY_MOUSE_7767, craftingLevel = 33, BuildingUtils.PLANK, Item(Items.CLOCKWORK_8792)),
-        TOY_CAT(itemId = Items.CLOCKWORK_CAT_7771, craftingLevel = 85, BuildingUtils.PLANK, Item(Items.CLOCKWORK_8792)),
-        WATCH(itemId = Items.WATCH_2575, craftingLevel = 28, Item(Items.CLOCKWORK_8792), Item(Items.STEEL_BAR_2353)),
-        SEXTANT(itemId = Items.SEXTANT_2574, craftingLevel = 23, Item(Items.STEEL_BAR_2353)),
-        ;
+class ClockmakingSpace : InteractionListener {
 
-        val materials: Array<Item> = materials as Array<Item>
+    private val sceneryIDs = intArrayOf(
+        Scenery.CLOCKMAKER_S_BENCH_13709,
+        Scenery.CLOCKMAKER_S_BENCH_13710,
+        Scenery.CLOCKMAKER_S_BENCH_13711,
+        Scenery.CLOCKMAKER_S_BENCH_13712
+    )
+
+    private enum class Products(var itemId: Int, val craftingLevel: Int, vararg val materials: Item) {
+        TOY_HORSEY(0, 10, BuildingUtils.PLANK),
+        WOODEN_CAT(Items.WOODEN_CAT_10892, 10, BuildingUtils.PLANK),
+        CLOCKWORK(Items.CLOCKWORK_8792, 8, Item(Items.STEEL_BAR_2353)),
+        TOY_DOLL(Items.TOY_DOLL_7763, 18, BuildingUtils.PLANK, Item(Items.CLOCKWORK_8792)),
+        TOY_MOUSE(Items.TOY_MOUSE_7767, 33, BuildingUtils.PLANK, Item(Items.CLOCKWORK_8792)),
+        WATCH(Items.WATCH_2575, 28, Item(Items.CLOCKWORK_8792), Item(Items.STEEL_BAR_2353)),
+        SEXTANT(Items.SEXTANT_2574, 23, Item(Items.STEEL_BAR_2353));
     }
 
-    @Throws(Throwable::class)
-    override fun newInstance(arg: Any?): Plugin<Any> {
-        SceneryDefinition.forId(13709).handlers["option:craft"] = this
-        SceneryDefinition.forId(13710).handlers["option:craft"] = this
-        SceneryDefinition.forId(13711).handlers["option:craft"] = this
-        SceneryDefinition.forId(13712).handlers["option:craft"] = this
-        definePlugin(ClockmakerBenchDialogue())
-        return this
+    private val toyHorseyVariants = listOf(
+        Items.TOY_HORSEY_2520,
+        Items.TOY_HORSEY_2522,
+        Items.TOY_HORSEY_2524,
+        Items.TOY_HORSEY_2526
+    )
+
+    private val woodenCatIngredientIDs = intArrayOf(
+        Items.BEAR_FUR_949, Items.FUR_6814, Items.GREY_WOLF_FUR_959
+    )
+
+    override fun defineListeners() {
+        on(sceneryIDs, IntType.SCENERY, "craft") { player, node ->
+            val unlockLevel = node.id - Scenery.CLOCKMAKER_S_BENCH_13709
+
+            val productList = when (node.id) {
+                Scenery.CLOCKMAKER_S_BENCH_13712 -> {
+                    listOf(
+                        Products.CLOCKWORK,
+                        Products.TOY_DOLL,
+                        Products.TOY_MOUSE,
+                        Products.SEXTANT,
+                        Products.WATCH
+                    )
+                }
+                else -> {
+                    enumValues<Products>().take(unlockLevel + 2)
+                }
+            }
+
+            // Roll toy horsey variant because I cannot find how it was in 2009.
+            val toyHorseyProduct = productList.find { it == Products.TOY_HORSEY }
+            if (toyHorseyProduct != null) {
+                val randomToyHorsey = toyHorseyVariants.random()
+                toyHorseyProduct.itemId = randomToyHorsey
+            }
+
+            setTitle(player, productList.size)
+            sendDialogueOptions(
+                player, "What would you like to craft?", *productList.map { getItemName(it.itemId) }.toTypedArray()
+            )
+            addDialogueAction(player) { _, buttonID ->
+                if (buttonID - 2 in productList.indices) {
+                    craftItem(player, productList[buttonID - 2])
+                }
+            }
+            return@on true
+        }
     }
 
-    override fun handle(
-        player: Player,
-        node: Node,
-        option: String,
-    ): Boolean {
-        player.dialogueInterpreter.open(
-            DialogueInterpreter.getDialogueKey(GameAttributes.CON_CLOCKMAKER_DIAL),
-            node.asScenery(),
-        )
-        return true
-    }
-
-    private inner class ClockmakerBenchDialogue : Dialogue {
-        var decoration: Decoration? = null
-
-        internal constructor()
-
-        internal constructor(player: Player?) : super(player)
-
-        override fun newInstance(player: Player?): Dialogue {
-            return ClockmakerBenchDialogue(player)
+    private fun craftItem(player: Player, product: Products) {
+        if (getStatLevel(player, Skills.CRAFTING) < product.craftingLevel) {
+            sendMessage(player, "You need level ${product.craftingLevel} crafting to make that.")
+            return
         }
-
-        override fun open(vararg args: Any): Boolean {
-            val scenery = args[0] as Scenery
-            decoration = Decoration.forObjectId(scenery.id)
-            if (decoration != null) {
-                when (decoration) {
-                    Decoration.CRAFTING_TABLE_1 ->
-                        sendDialogueOptions(
-                            player,
-                            "Select an Option",
-                            "Toy Horsey",
-                            "Nevermind",
-                        )
-
-                    Decoration.CRAFTING_TABLE_2 ->
-                        sendDialogueOptions(
-                            player,
-                            "Select an Option",
-                            "Toy Horsey",
-                            "Clockwork Mechanism",
-                        )
-
-                    Decoration.CRAFTING_TABLE_3 ->
-                        sendDialogueOptions(
-                            player,
-                            "Select an Option",
-                            "Toy Horsey",
-                            "Clockwork Mechanism",
-                            "Clockwork Devices",
-                        )
-
-                    Decoration.CRAFTING_TABLE_4 ->
-                        sendDialogueOptions(
-                            player,
-                            "Select an Option",
-                            "Toy Horsey",
-                            "Clockwork Mechanism",
-                            "Clockwork Devices",
-                            "Watch",
-                            "Sextant",
-                        )
-
-                    else -> {}
-                }
+        if (product == Products.WOODEN_CAT) {
+            val ingredientID = woodenCatIngredientIDs.find { inInventory(player, it) }
+            if (!inInventory(player, BuildingUtils.PLANK.id) || ingredientID == null) {
+                sendMessage(player, "You need a plank and fur to make that.")
+                return
             }
-            stage = 1
-            return true
+            removeItem(player, BuildingUtils.PLANK)
+            removeItem(player, ingredientID)
+        } else if (!product.materials.all { inInventory(player, it.id) }) {
+            sendMessage(player, "You need the required materials to make that.")
+            return
+        } else {
+            product.materials.forEach { player.inventory.remove(it) }
         }
-
-        override fun handle(
-            interfaceId: Int,
-            buttonId: Int,
-        ): Boolean {
-            when (stage) {
-                1 ->
-                    when (buttonId) {
-                        1, 2 -> {
-                            if (decoration == Decoration.CRAFTING_TABLE_1 && buttonId == 2) {
-                                end()
-                                return true
-                            }
-                            craftItem(if (buttonId == 1) Craftable.TOY_HORSEY else Craftable.CLOCKWORK)
-                            stage = 3
-                        }
-
-                        3 -> {
-                            if (decoration == Decoration.CRAFTING_TABLE_3) {
-                                sendDialogueOptions(player, "Select an Option", "Clockwork Soldier", "Clockwork Doll")
-                            } else if (decoration == Decoration.CRAFTING_TABLE_4) {
-                                sendDialogueOptions(
-                                    player,
-                                    "Select an Option",
-                                    "Clockwork Soldier",
-                                    "Clockwork Doll",
-                                    "Clockwork Mouse",
-                                    "Clockwork Cat",
-                                )
-                            }
-                            stage = 2
-                        }
-
-                        4, 5 -> {
-                            craftItem(if (buttonId == 4) Craftable.WATCH else Craftable.SEXTANT)
-                            stage = 3
-                        }
-                    }
-
-                2 -> {
-                    when (buttonId) {
-                        1 -> craftItem(Craftable.TOY_SOLDIER)
-                        2 -> craftItem(Craftable.TOY_DOLL)
-                        3 -> craftItem(Craftable.TOY_MOUSE)
-                        4 -> craftItem(Craftable.TOY_CAT)
-                    }
-                    stage = 3
-                }
-
-                3 -> end()
-            }
-            return true
-        }
-
-        override fun getIds(): IntArray {
-            return intArrayOf(DialogueInterpreter.getDialogueKey(GameAttributes.CON_CLOCKMAKER_DIAL))
-        }
-
-        fun craftItem(c: Craftable?) {
-            if (c != null) {
-                if (getStatLevel(player, Skills.CRAFTING) < c.craftingLevel) {
-                    sendDialogue(player!!, "You need level " + c.craftingLevel + " crafting to make that.")
-                    return
-                }
-                for (n in c.materials) {
-                    if (!player.inventory.containsItem(n)) {
-                        sendDialogue(player!!, "You need a " + getItemName(n.id) + " to make that.")
-                        return
-                    }
-                }
-                for (n in c.materials) {
-                    n.amount = 1
-                    player.inventory.remove(n)
-                }
-                rewardXP(player, Skills.CRAFTING, 15.0)
-                addItem(player, c.itemId, 1)
-                animate(player, BuildingUtils.BUILD_MID_ANIM)
-                sendDialogue(player, "You made a " + getItemName(c.itemId) + ".")
-            }
-        }
+        animate(player, BuildingUtils.BUILD_MID_ANIM)
+        addItem(player, product.itemId, 1)
+        rewardXP(player, Skills.CRAFTING, 15.0)
+        sendMessage(player, "You made a ${getItemName(product.itemId).lowercase()}.")
     }
 }
