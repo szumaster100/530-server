@@ -15086,5 +15086,9 @@
   {
     "examine": "A whole lot of crossbow items.",
     "ids": "17031"
+  },
+  {
+    "examine": "Home sweet home?",
+    "ids": "15478"
   }
 ]
