@@ -184,11 +184,6 @@ class RepairSpace :
         val item = event.used.asItem()
         val repairItem = RepairItem.forId(item.id)
 
-        if (player.houseManager.isBuildingMode && !player.isAdmin) {
-            player.sendMessage("You can't do this in build mode.")
-            return true
-        }
-
         val brokenItem =
             intArrayOf(
                 Items.BROKEN_ARROW_687,

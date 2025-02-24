@@ -115,7 +115,7 @@ class TeaMakingListener :
         }
 
         onUseWith(IntType.SCENERY, KETTLE_IDS, *SINK_IDS) { player, used, with ->
-            if (player.houseManager.isBuildingMode) {
+            if (!player.houseManager.isBuildingMode) {
                 sendMessage(player, "You cannot do this in building mode.")
                 return@onUseWith false
             }

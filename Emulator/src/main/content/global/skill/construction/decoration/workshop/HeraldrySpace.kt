@@ -27,10 +27,6 @@ class HeraldrySpace : InteractionListener {
             "make-helmet",
             "use",
         ) { player, node ->
-            if (player.houseManager.isBuildingMode && !player.isAdmin) {
-                player.sendMessage("You can't do this in build mode.")
-                return@on true
-            }
             if (node.id == 13716 && getDynLevel(player, Skills.CRAFTING) < 38) {
                 sendMessage(player, "You need a crafting level of 38 in order to do this.")
                 return@on true

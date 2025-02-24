@@ -58,11 +58,6 @@ class ClockmakingSpace : OptionHandler() {
         node: Node,
         option: String,
     ): Boolean {
-        if (player.houseManager.isBuildingMode && !player.isAdmin) {
-            player.sendMessage("You can't do this in build mode.")
-            return true
-        }
-
         player.dialogueInterpreter.open(
             DialogueInterpreter.getDialogueKey(GameAttributes.CON_CLOCKMAKER_DIAL),
             node.asScenery(),

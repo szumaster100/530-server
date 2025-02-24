@@ -48,28 +48,23 @@ class MountedGlory : InteractionListener {
                         }
                     }
                 }
-                else -> {
+                "remove" -> {
                     if (!player.houseManager.isBuildingMode) {
                         sendMessage(player, "You have to be in building mode to do this.")
-                    } else {
-                        openDialogue(player, "con:removedec", node.asScenery())
+                        return@on true
                     }
+                    openDialogue(player, "con:removedec", node.asScenery())
                 }
+                else -> return@on false
             }
             return@on true
         }
     }
 
     private fun mountedGloryAction(player: Player, `object`: Node, int: Int) {
-        if (player.houseManager.isBuildingMode) {
-            player.dialogueInterpreter.open("con:removedec", `object` as core.game.node.scenery.Scenery)
-            return
-        }
-
         if (!player.zoneMonitor.teleport(1, Item(Items.AMULET_OF_GLORY_1704))) {
             return
         }
-
         Executors.newSingleThreadScheduledExecutor().schedule({
             player.pulseManager.run(object : Pulse(4) {
                 override fun pulse(): Boolean {

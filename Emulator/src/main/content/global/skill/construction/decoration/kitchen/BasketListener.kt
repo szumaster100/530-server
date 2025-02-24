@@ -19,10 +19,7 @@ class BasketListener : InteractionListener {
         onUseWith(IntType.SCENERY, petItemIDs, *blanketIDs) { player, used, scenery ->
             val item = used as? Item ?: return@onUseWith false
             val familiar = player.familiarManager.familiar
-            if (player.houseManager.isBuildingMode) {
-                sendMessage(player, "You cannot do this in building mode.")
-                return@onUseWith false
-            }
+
             if (player.familiarManager.hasFamiliar()) {
                 return@onUseWith false
             }

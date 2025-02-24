@@ -29,10 +29,6 @@ class WorkbenchSpace :
 
     override fun defineListeners() {
         on(workBenchIDs, IntType.SCENERY, "work-at") { player, obj ->
-            if (player.houseManager.isBuildingMode && !player.isAdmin) {
-                player.sendMessage("You can't do this in build mode.")
-                return@on true
-            }
             player.interfaceManager.close()
             openInterface(player, Components.POH_WORKBENCH_397)
             when (obj.id) {
