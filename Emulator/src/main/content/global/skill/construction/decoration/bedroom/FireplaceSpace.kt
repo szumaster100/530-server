@@ -11,7 +11,7 @@ import org.rs.consts.Animations
 import org.rs.consts.Items
 import org.rs.consts.Scenery
 
-class FireplaceListener : InteractionListener {
+class FireplaceSpace : InteractionListener {
     private val animationId = Animations.TINDERBOX_3658
     private val fireplaceSpaceFurniture =
         intArrayOf(Scenery.CLAY_FIREPLACE_13609, Scenery.LIMESTONE_FIREPLACE_13611, Scenery.MARBLE_FIREPLACE_13613)

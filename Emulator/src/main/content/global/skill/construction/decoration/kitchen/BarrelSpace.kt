@@ -12,7 +12,7 @@ import core.game.world.update.flag.context.Animation
 import org.rs.consts.Animations
 import org.rs.consts.Items
 
-class BeerBarrelListener : InteractionListener {
+class BarrelSpace : InteractionListener {
     override fun defineListeners() {
         onUseWith(IntType.SCENERY, BARRELS) { player, used, _ ->
             val node = used.id as Scenery

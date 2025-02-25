@@ -14,7 +14,7 @@ import org.rs.consts.Animations
 import org.rs.consts.Items
 import org.rs.consts.Scenery
 
-class CombatRingListener : InteractionListener {
+class CombatRingSpace : InteractionListener {
     private val combatRings =
         intArrayOf(
             Scenery.BOXING_RING_13129,

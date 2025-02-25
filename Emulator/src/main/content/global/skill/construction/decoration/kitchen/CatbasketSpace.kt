@@ -3,7 +3,6 @@ package content.global.skill.construction.decoration.kitchen
 import content.global.skill.summoning.pet.Pets
 import core.api.animate
 import core.api.lock
-import core.api.sendMessage
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.item.Item
@@ -14,7 +13,7 @@ import org.rs.consts.Animations
 import org.rs.consts.Items
 import org.rs.consts.Scenery
 
-class BasketListener : InteractionListener {
+class CatbasketSpace : InteractionListener {
     override fun defineListeners() {
         onUseWith(IntType.SCENERY, petItemIDs, *blanketIDs) { player, used, scenery ->
             val item = used as? Item ?: return@onUseWith false

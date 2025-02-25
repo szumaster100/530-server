@@ -13,7 +13,7 @@ import core.game.node.item.Item
 import org.rs.consts.Items
 import org.rs.consts.Scenery
 
-class WeaponRackListener : InteractionListener {
+class StorageSpace : InteractionListener {
     private val sceneryIDs =
         intArrayOf(Scenery.GLOVE_RACK_13381, Scenery.WEAPONS_RACK_13382, Scenery.WEAPONS_RACK_13383)
     private val boxingGlovesIDs = intArrayOf(Items.BOXING_GLOVES_7671, Items.BOXING_GLOVES_7673)

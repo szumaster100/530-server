@@ -1,9 +1,7 @@
 package content.global.skill.construction.decoration.chapel
 
 import content.global.skill.prayer.Bones
-import core.api.playAudio
-import core.api.sendMessage
-import core.api.submitIndividualPulse
+import core.api.*
 import core.cache.def.impl.SceneryDefinition
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
@@ -16,9 +14,10 @@ import core.game.world.map.RegionManager
 import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
 import org.rs.consts.Animations
+import org.rs.consts.Items
 import org.rs.consts.Sounds
 
-class AltarListener : InteractionListener {
+class AltarSpace : InteractionListener {
     override fun defineListeners() {
         onUseWith(IntType.SCENERY, BONES, *ALTAR) { player, used, with ->
             var left: core.game.node.scenery.Scenery? = null
@@ -33,6 +32,24 @@ class AltarListener : InteractionListener {
             val b = Bones.forId(used.id)
             if (b != null) {
                 worship(player, with.asScenery(), left, right, b)
+            }
+            return@onUseWith true
+        }
+
+        onUseWith(IntType.SCENERY, intArrayOf(Items.SPIRIT_SHIELD_13734, Items.HOLY_ELIXIR_13754), *ALTAR) { player, used, with ->
+            if (player.ironmanManager.isIronman && !player.houseManager.isInHouse(player)) {
+                sendMessage(player, "You cannot do this on someone else's altar.")
+                return@onUseWith false
+            }
+            if (getStatLevel(player, Skills.PRAYER) < 85) {
+                sendMessage(player, "You need 85 prayer to do this.")
+                return@onUseWith false
+            }
+
+            animate(player, Animations.HUMAN_COOKING_RANGE_896)
+            playAudio(player, Sounds.POH_OFFER_BONES_958)
+            if (removeItem(player, used.asItem()) && removeItem(player, with.asItem())) {
+                addItem(player, Items.BLESSED_SPIRIT_SHIELD_13736)
             }
             return@onUseWith true
         }

@@ -1,4 +1,4 @@
-package content.global.skill.construction.items
+package content.global.skill.construction.item
 
 import org.rs.consts.Items
 

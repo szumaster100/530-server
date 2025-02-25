@@ -7,7 +7,7 @@ import core.game.system.task.Pulse
 import org.rs.consts.Components
 import org.rs.consts.Scenery
 
-class WardrobeListener : InteractionListener {
+class WardrobeSpace : InteractionListener {
     private val wardrobeSpaceFurniture =
         intArrayOf(
             Scenery.SHOE_BOX_13155,

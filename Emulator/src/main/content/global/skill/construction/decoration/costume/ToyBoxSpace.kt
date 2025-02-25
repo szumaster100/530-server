@@ -5,7 +5,7 @@ import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import org.rs.consts.Scenery
 
-class ToyBoxListener : InteractionListener {
+class ToyBoxSpace : InteractionListener {
     override fun defineListeners() {
         on(Scenery.TOY_BOX_18802, IntType.SCENERY, "open") { player, _ ->
             DiangoReclaimInterface.open(player)

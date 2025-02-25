@@ -9,7 +9,7 @@ import core.game.interaction.InteractionListener
 import org.rs.consts.Animations
 import org.rs.consts.Scenery
 
-class DresserListener : InteractionListener {
+class DresserSpace : InteractionListener {
     private val dresserSpaceFurniture =
         intArrayOf(
             Scenery.SHAVING_STAND_13162,

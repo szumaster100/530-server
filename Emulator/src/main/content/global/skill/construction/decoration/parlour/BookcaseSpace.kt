@@ -9,7 +9,7 @@ import org.rs.consts.Animations
 import org.rs.consts.Items
 import org.rs.consts.Scenery
 
-class BookcaseListener :
+class BookcaseSpace :
     InteractionListener,
     InterfaceListener {
     override fun defineInterfaceListeners() {

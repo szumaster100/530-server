@@ -14,7 +14,7 @@ import org.rs.consts.Items
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
-class MountedGlory : InteractionListener {
+class GuildTrophySpace : InteractionListener {
 
     val TELEPORTS = arrayOf(
         Location.create(3087, 3495, 0),

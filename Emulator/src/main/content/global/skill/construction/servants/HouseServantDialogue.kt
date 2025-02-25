@@ -1,6 +1,6 @@
 package content.global.skill.construction.servants
 
-import content.global.skill.construction.items.Planks
+import content.global.skill.construction.item.Planks
 import core.api.*
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim

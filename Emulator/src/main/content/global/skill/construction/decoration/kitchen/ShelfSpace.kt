@@ -9,7 +9,7 @@ import core.game.interaction.InteractionListener
 import org.rs.consts.Items
 import org.rs.consts.Scenery
 
-class ShelfListener : InteractionListener {
+class ShelfSpace : InteractionListener {
     override fun defineListeners() {
         on(SHELF, IntType.SCENERY, "search") { player, node ->
             if (freeSlots(player) == 0) {

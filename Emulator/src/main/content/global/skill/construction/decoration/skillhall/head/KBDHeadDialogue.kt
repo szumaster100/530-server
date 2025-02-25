@@ -1,4 +1,4 @@
-package content.global.skill.construction.decoration.skillhall
+package content.global.skill.construction.decoration.skillhall.head
 
 import core.api.sendNPCDialogue
 import core.game.dialogue.DialogueFile

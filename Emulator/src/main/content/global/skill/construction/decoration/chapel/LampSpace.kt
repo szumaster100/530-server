@@ -10,7 +10,7 @@ import org.rs.consts.Animations
 import org.rs.consts.Items
 import org.rs.consts.Scenery
 
-class ChapelListener : InteractionListener {
+class LampSpace : InteractionListener {
     override fun defineListeners() {
         on(burnerIds, IntType.SCENERY, "light") { player, node ->
             if (player.ironmanManager.checkRestriction() && !player.houseManager.isInHouse(player)) return@on true

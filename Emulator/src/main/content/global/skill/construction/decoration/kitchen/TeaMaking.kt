@@ -5,20 +5,16 @@ import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
-import core.game.system.command.Privilege
 import core.game.system.task.Pulse
 import org.rs.consts.Items
 import org.rs.consts.Scenery
 
-class TeaMakingListener :
-    InteractionListener,
-    Commands {
+class TeaMaking : InteractionListener {
     companion object {
         private val KETTLE_IDS = intArrayOf(Items.KETTLE_7688, Items.FULL_KETTLE_7690, Items.HOT_KETTLE_7691)
         private val SINK_IDS = intArrayOf(Scenery.PUMP_AND_DRAIN_13559, Scenery.PUMP_AND_TUB_13561, Scenery.SINK_13563)
         private val TEAPOT_IDS = intArrayOf(Items.TEAPOT_7702, Items.TEAPOT_7714, Items.TEAPOT_7726)
-        private val TEAPOT_LEAVES_IDS =
-            intArrayOf(Items.TEAPOT_WITH_LEAVES_7700, Items.TEAPOT_WITH_LEAVES_7712, Items.TEAPOT_WITH_LEAVES_7724)
+        private val TEAPOT_LEAVES_IDS = intArrayOf(Items.TEAPOT_WITH_LEAVES_7700, Items.TEAPOT_WITH_LEAVES_7712, Items.TEAPOT_WITH_LEAVES_7724)
         private val EMPTY_CUP_IDS = intArrayOf(Items.EMPTY_CUP_7728, Items.PORCELAIN_CUP_7732, Items.PORCELAIN_CUP_7735)
         private val CUP_OF_TEA_IDS = intArrayOf(Items.CUP_OF_TEA_7730, Items.CUP_OF_TEA_7733, Items.CUP_OF_TEA_7736)
         private val TEA_POT_IDS = TeaCup.values.map { it.base }.toIntArray()
@@ -161,40 +157,6 @@ class TeaMakingListener :
         }
     }
 
-    override fun defineCommands() {
-        define(
-            name = "teakit",
-            privilege = Privilege.ADMIN,
-            usage = "::teakit",
-            description = "Stuff to making cup of tea.",
-        ) { player, _ ->
-
-            val itemsToAdd =
-                listOf(
-                    Items.TEA_LEAVES_7738 to 3,
-                    Items.HOT_KETTLE_7691 to 1,
-                    Items.TEAPOT_7702 to 1,
-                    Items.TEAPOT_7714 to 1,
-                    Items.TEAPOT_7726 to 1,
-                    Items.HOT_KETTLE_7691 to 1,
-                    Items.TEAPOT_WITH_LEAVES_7700 to 1,
-                    Items.TEAPOT_WITH_LEAVES_7712 to 1,
-                    Items.TEAPOT_WITH_LEAVES_7724 to 1,
-                    Items.HOT_KETTLE_7691 to 1,
-                    Items.BUCKET_OF_MILK_1927 to 3,
-                    Items.EMPTY_CUP_7728 to 1,
-                    Items.CUP_OF_TEA_7730 to 1,
-                    Items.CUP_OF_TEA_7733 to 2,
-                    Items.PORCELAIN_CUP_7732 to 1,
-                    Items.CUP_OF_TEA_7736 to 2,
-                    Items.PORCELAIN_CUP_7735 to 1,
-                )
-
-            itemsToAdd.forEach { (item, amount) ->
-                addItem(player, item, amount)
-            }
-        }
-    }
 }
 
 enum class TeaCup(

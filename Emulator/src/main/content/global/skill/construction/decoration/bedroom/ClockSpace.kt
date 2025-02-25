@@ -7,7 +7,7 @@ import org.rs.consts.Scenery
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ClockListener : InteractionListener {
+class ClockSpace : InteractionListener {
     private val clockSpaceFurniture = intArrayOf(Scenery.CLOCK_13169, Scenery.CLOCK_13170, Scenery.CLOCK_13171)
 
     override fun defineListeners() {

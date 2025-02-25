@@ -10,7 +10,7 @@ import org.rs.consts.Animations
 import org.rs.consts.Items
 import org.rs.consts.Scenery
 
-class LarderListener : InteractionListener {
+class LarderSpace : InteractionListener {
     override fun defineListeners() {
         on(LARDERS, IntType.SCENERY, "Search") { player, l ->
             if (freeSlots(player) == 0) {
