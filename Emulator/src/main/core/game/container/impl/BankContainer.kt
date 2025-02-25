@@ -37,7 +37,6 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
 
     /**
      * Checks if the bank is opened.
-     *
      * @return `True` if so.
      */
     /**
@@ -48,7 +47,6 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
 
     /**
      * Gets the last x-amount.
-     *
      * @return The last x-amount.
      */
     /**
@@ -64,7 +62,6 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
 
     /**
      * Gets the tabStartSlot value.
-     *
      * @return The tabStartSlot.
      */
     /**
@@ -74,11 +71,10 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
 
     /**
      * Construct a new `BankContainer` `Object`.
-     *
      * @param player The player reference.
      */
     init {
-        super.register((BankListener(player).also { listener = it }) as ContainerListener)
+        super.register(BankListener(player).also { listener = it })
         this.player = player
     }
 
@@ -100,15 +96,8 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
      */
     fun refreshDepositBoxInterface() {
         InterfaceContainer.generateItems(
-            player,
-            player.inventory.toArray(),
-            arrayOf(
-                "Examine",
-                "Deposit-X",
-                "Deposit-All",
-                "Deposit-10",
-                "Deposit-5",
-                "Deposit-1"
+            player, player.inventory.toArray(), arrayOf(
+                "Examine", "Deposit-X", "Deposit-All", "Deposit-10", "Deposit-5", "Deposit-1"
             ), 11, 15, 5, 7
         )
     }
@@ -138,10 +127,7 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
         setVarp(player, 1249, lastAmountX)
         val settings = IfaceSettingsBuilder().enableOptions(IntRange(0, 5)).enableExamine().enableSlotSwitch().build()
         player.packetDispatch.sendIfaceSettings(settings, 0, 763, 0, 27)
-        player.packetDispatch.sendRunScript(1451, "")
         isOpen = true
-        setTabConfigurations()
-        sendBankSpace()
     }
 
     fun open(player: Player) {
@@ -169,7 +155,6 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
         player.packetDispatch.sendIfaceSettings(settings, 0, 763, 0, 27)
         player.packetDispatch.sendRunScript(1451, "")
         isOpen = true
-        this.player.bank.setTabConfigurations(player)
     }
 
     override fun save(buffer: ByteBuffer): Long {
@@ -203,8 +188,7 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
 
     /**
      * Adds an item to the bank container.
-     *
-     * @param slot   The item slot.
+     * @param slot The item slot.
      * @param amount The amount.
      */
     fun addItem(slot: Int, amount: Int) {
@@ -242,7 +226,7 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
             }
         }
 
-        if (player.inventory.remove(item, slot, true)) {
+        if (player.inventory.remove(item, slot, false)) {
             var preferredSlot = -1
             if (tabIndex != 0 && tabIndex != 10 && !super.contains(add.id, 1)) {
                 preferredSlot = tabStartSlot[tabIndex] + getItemsInTab(tabIndex)
@@ -250,27 +234,14 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
                 increaseTabStartSlots(tabIndex)
             }
             super.add(add, true, preferredSlot)
-            setTabConfigurations()
+            player.inventory.update()
         }
     }
 
     /**
-     * Re-opens the bank interface.
-     */
-    fun reopen() {
-        if (!isOpen) {
-            return
-        }
-        player.interfaceManager.close()
-        open()
-        refresh()
-    }
-
-    /**
-     * Takes an item from the bank container and adds one to the inventory
+     * Takes a item from the bank container and adds one to the inventory
      * container.
-     *
-     * @param slot   The slot.
+     * @param slot The slot.
      * @param amount The amount.
      */
     fun takeItem(slot: Int, amount: Int) {
@@ -299,22 +270,18 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
             add = item
         }
         if (super.remove(item, slot, false)) {
-            player.inventory.add(add)
+            player.inventory.add(add, false)
         }
-        val tabId = getTabByItemSlot(slot)
         if (get(slot) == null) {
+            val tabId = getTabByItemSlot(slot)
             decreaseTabStartSlots(tabId)
-        }
-        setTabConfigurations()
-        shift()
-        if (player.getAttribute("search", false)) {
-            reopen()
-        }
+            shift()
+        } else update()
+        player.inventory.update()
     }
 
     /**
      * Updates the last x-amount entered.
-     *
      * @param amount The amount to set.
      */
     fun updateLastAmountX(amount: Int) {
@@ -324,7 +291,6 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
 
     /**
      * Gets the tab the item slot is in.
-     *
      * @param itemSlot The item slot.
      * @return The tab index.
      */
@@ -340,7 +306,6 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
 
     /**
      * Increases a tab's start slot.
-     *
      * @param startId The start id.
      */
     fun increaseTabStartSlots(startId: Int) {
@@ -351,7 +316,6 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
 
     /**
      * Decreases a tab's start slot.
-     *
      * @param startId The start id.
      */
     fun decreaseTabStartSlots(startId: Int) {
@@ -370,13 +334,11 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
      * Sends the bank space values on the interface.
      */
     fun sendBankSpace() {
-        player.packetDispatch.sendString((capacity() - freeSlots()).toString(), 762, 97)
-        player.packetDispatch.sendString(capacity().toString(), 762, 98)
+        setVarc(player, 192, capacity() - freeSlots())
     }
 
     /**
      * Collapses a tab.
-     *
      * @param tabId The tab index.
      */
     fun collapseTab(tabId: Int) {
@@ -396,50 +358,19 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
             replace(tempTabItems[i], slot, false)
         }
         refresh() //We only refresh once.
-        setTabConfigurations()
     }
 
     /**
      * Sets the tab configs.
      */
     fun setTabConfigurations() {
-        var value = getItemsInTab(1)
-        value += getItemsInTab(2) shl 10
-        value += getItemsInTab(3) shl 20
-        setVarp(player, 1246, value)
-        value = getItemsInTab(4)
-        value += getItemsInTab(5) shl 10
-        value += getItemsInTab(6) shl 20
-        setVarp(player, 1247, value)
-        value = -2013265920
-        value += (134217728 * (if (tabIndex == 10) 0 else tabIndex))
-        value += getItemsInTab(7)
-        value += getItemsInTab(8) shl 10
-        setVarp(player, 1248, value)
-    }
-
-    /**
-     * Sets the tab configs.
-     */
-    fun setTabConfigurations(player: Player) {
-        var value = getItemsInTab(1)
-        value += getItemsInTab(2) shl 10
-        value += getItemsInTab(3) shl 20
-        setVarp(player, 1246, value)
-        value = getItemsInTab(4)
-        value += getItemsInTab(5) shl 10
-        value += getItemsInTab(6) shl 20
-        setVarp(player, 1247, value)
-        value = -2013265920
-        value += (134217728 * (if (tabIndex == 10) 0 else tabIndex))
-        value += getItemsInTab(7)
-        value += getItemsInTab(8) shl 10
-        setVarp(player, 1248, value)
+        for (i in 0..7) {
+            setVarbit(player, 4885 + i, getItemsInTab(i + 1))
+        }
     }
 
     /**
      * Gets the amount of items in one tab.
-     *
      * @param tabId The tab index.
      * @return The amount of items in this tab.
      */
@@ -449,7 +380,6 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
 
     /**
      * Checks if the item can be added.
-     *
      * @param item the item.
      * @return `True` if so.
      */
@@ -460,13 +390,11 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
     var isNoteItems: Boolean
         /**
          * If items have to be noted.
-         *
          * @return If items have to be noted `true`.
          */
         get() = getVarbit(player, Vars.VARBIT_IFACE_BANK_NOTE_MODE_7001) == 1
         /**
          * Set if items have to be noted.
-         *
          * @param noteItems If items have to be noted `true`.
          */
         set(noteItems) {
@@ -475,7 +403,6 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
 
     /**
      * Gets the tabIndex value.
-     *
      * @return The tabIndex.
      */
     fun getTabIndex(): Int {
@@ -484,30 +411,22 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
 
     /**
      * Sets the tabIndex value.
-     *
      * @param tabIndex The tabIndex to set.
      */
     fun setTabIndex(tabIndex: Int) {
-        this.tabIndex = tabIndex
-
-        /*
-         * Kludge to update the interface
-         * after dumping all to prevent
-         * "invisible" items in slots.
-         */
-        update(true)
+        this.tabIndex = if (tabIndex == 0) 10 else tabIndex
+        setVarbit(player, 4893, tabIndex + 1)
+        setAttribute(player, "bank:lasttab", tabIndex)
     }
 
     var isInsertItems: Boolean
         /**
          * Gets the insert items value.
-         *
          * @return `True` if inserting items mode is enabled.
          */
         get() = getVarbit(player, Vars.VARBIT_IFACE_BANK_INSERT_MODE_7000) == 1
         /**
          * Sets the insert items value.
-         *
          * @param insertItems The insert items value.
          */
         set(insertItems) {
@@ -516,13 +435,11 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
 
     /**
      * Listens to the bank container.
-     *
      * @author Emperor
      */
     private class BankListener
     /**
      * Construct a new `BankListener` `Object`.
-     *
      * @param player The player reference.
      */(
         /**
@@ -530,16 +447,16 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
          */
         private val player: Player
     ) : ContainerListener {
-        override fun update(container: Container?, event: ContainerEvent?) {
-            if (container is BankContainer) {
+        override fun update(c: Container?, event: ContainerEvent?) {
+            if (c is BankContainer) {
                 PacketRepository.send(
                     ContainerPacket::class.java,
-                    ContainerContext(player, 762, 64000, 95, event!!.items, false, *event.slots)
+                    ContainerContext(player, 762, 64000, 95, event?.items, false, *event!!.slots)
                 )
             } else {
                 PacketRepository.send(
                     ContainerPacket::class.java,
-                    ContainerContext(player, 763, 64000, 93, event!!.items, false, *event.slots)
+                    ContainerContext(player, 763, 64000, 93, event?.items, false, *event!!.slots)
                 )
             }
             player.bank.setTabConfigurations()
@@ -554,8 +471,7 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
                 )
             } else {
                 PacketRepository.send(
-                    ContainerPacket::class.java,
-                    ContainerContext(player, 763, 64000, 93, c!!.toArray(), 28, false)
+                    ContainerPacket::class.java, ContainerContext(player, 763, 64000, 93, c?.toArray(), 28, false)
                 )
             }
             player.bank.setTabConfigurations()
@@ -576,7 +492,6 @@ class BankContainer(player: Player) : Container(SIZE, ContainerType.ALWAYS_STACK
 
         /**
          * Gets the array index for a tab.
-         *
          * @param tabId The tab id.
          * @return The array index.
          */
