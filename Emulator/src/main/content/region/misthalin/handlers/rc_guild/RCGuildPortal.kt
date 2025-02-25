@@ -36,6 +36,8 @@ class RCGuildPortal : InteractionListener {
                 } else {
                     Location.create(3106, 3160, 1)
                 }
+
+            player.lock(4)
             visualize(player, Animations.RC_TP_A_10180, Graphics.RC_GUILD_TP)
             queueScript(player, 3, QueueStrength.SOFT) {
                 teleport(player, destination)
@@ -45,6 +47,7 @@ class RCGuildPortal : InteractionListener {
             }
             return@on true
         }
+
     }
 
     override fun defineDestinationOverrides() {

@@ -69,13 +69,10 @@ class WizardElrissDialogue(
         if (talismans.any { hasAnItem(player, it).container != null }) {
             npc("Show me all the talismans one by one.")
             stage = 2
-            return true
         } else {
             npc("You don't have any required talismans. Come back when you find them.")
             stage = END_DIALOGUE
-            return true
         }
-
         npcl(FaceAnim.HAPPY, "Welcome to the Runecrafting Guild.")
         return true
     }

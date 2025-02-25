@@ -77,7 +77,7 @@ class RunecraftingGuildListener : InteractionListener {
          * Handles dialogue interaction with Wizards.
          */
 
-        on(NPCs.WIZARD_ELRISS_8032, IntType.NPC, "talk-to") { player, _ ->
+        on(WIZARD_NPCs, IntType.NPC, "talk-to") { player, _ ->
             sendDialogueOptions(player, "Select an option", "I want to join the orb project!", "Never mind.")
             addDialogueAction(player) { player, button ->
                 closeDialogue(player)
