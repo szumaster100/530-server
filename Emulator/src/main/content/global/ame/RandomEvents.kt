@@ -81,7 +81,7 @@ enum class RandomEvents(
             ),
         loot = CERTER.loot,
     ),
-    MAZE(npc = MazeNPC()),
+    //MAZE(npc = MazeNPC()),
 
     QUIZ_MASTER(npc = QuizMasterNPC(), skillIds = intArrayOf(
         Skills.FISHING,

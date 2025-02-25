@@ -184,60 +184,10 @@ class MazeInterface : InteractionListener, EventHook<TickEvent>, MapArea {
                 val tableRoll = CHEST_REWARDS.roll()
                 addItemOrBank(player, tableRoll[0].id)
                 when (tableRoll[0].id) {
-                    Items.AIR_RUNE_556 -> sendItemDialogue(player, Items.AIR_RUNE_556, "You've found some air runes!")
-                    Items.WATER_RUNE_555 -> sendItemDialogue(
-                        player,
-                        Items.WATER_RUNE_555,
-                        "You've found some water runes!"
-                    )
-
-                    Items.EARTH_RUNE_557 -> sendItemDialogue(
-                        player,
-                        Items.EARTH_RUNE_557,
-                        "You've found some earth runes!"
-                    )
-
-                    Items.FIRE_RUNE_554 -> sendItemDialogue(
-                        player,
-                        Items.FIRE_RUNE_554,
-                        "You've found some fire runes!"
-                    )
-
-                    Items.BRONZE_ARROW_882 -> sendItemDialogue(
-                        player,
-                        Items.BRONZE_ARROW_882,
-                        "You've found some bronze arrows!"
-                    )
-
-                    Items.BRONZE_BOLTS_877 -> sendItemDialogue(
-                        player,
-                        Items.BRONZE_BOLTS_877,
-                        "You've found some bronze bolts!"
-                    )
-
-                    Items.IRON_ARROW_884 -> sendItemDialogue(
-                        player,
-                        Items.IRON_ARROW_884,
-                        "You've found some iron arrows!"
-                    )
-
-                    Items.ATTACK_POTION2_123 -> sendItemDialogue(
-                        player,
-                        Items.ATTACK_POTION2_123,
-                        "You've found an attack potion!"
-                    )
-
-                    Items.STRENGTH_POTION2_117 -> sendItemDialogue(
-                        player,
-                        Items.STRENGTH_POTION2_117,
-                        "You've found a strength potion!"
-                    )
-
-                    Items.DEFENCE_POTION2_135 -> sendItemDialogue(
-                        player,
-                        Items.DEFENCE_POTION2_135,
-                        "You've found a defence potion!"
-                    )
+                    Items.ATTACK_POTION2_123 -> sendItemDialogue(player, Items.ATTACK_POTION2_123, "You've found an attack potion!")
+                    Items.STRENGTH_POTION2_117 -> sendItemDialogue(player, Items.STRENGTH_POTION2_117, "You've found a strength potion!")
+                    Items.DEFENCE_POTION2_135 -> sendItemDialogue(player, Items.DEFENCE_POTION2_135, "You've found a defence potion!")
+                    else -> sendItemDialogue(player, tableRoll[0].id, "You've found some ${getItemName(tableRoll[0].id).lowercase()}!")
                 }
                 setAttribute(player, MAZE_ATTRIBUTE_CHESTS_OPEN, getAttribute(player, MAZE_ATTRIBUTE_CHESTS_OPEN, 0))
             } else {
