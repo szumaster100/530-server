@@ -65,7 +65,10 @@ class CrystalBallsSpace : InteractionListener {
                 return@onUseWith false
             }
             if (scenery.id == Scenery.ELEMENTAL_SPHERE_13660 && staffType == StaffType.MYSTIC) {
-                sendMessage(player, "You can only change the element of basic staves and battlestaves on this elemental sphere.")
+                sendMessage(
+                    player,
+                    "You can only change the element of basic staves and battlestaves on this elemental sphere."
+                )
                 return@onUseWith false
             }
 
