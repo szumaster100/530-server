@@ -1,22 +1,8 @@
-### Emulation - Fork of [2009scape](https://gitlab.com/2009scape/2009scape)
+### Emulation 
+An open-source emulation of RuneScape as it was on January 28, 2009, fork of [2009scape](https://gitlab.com/2009scape/2009scape).
 
-An open-source emulation of RuneScape as it was on January 28, 2009.
 
----
-
-[![License][license-shield]][license-url] [![Fork][fork-shield]][fork-url] [![Release][libs]][libs-url] [![Release][play-release]][play-url]<br>
-
-#### Description
-
-This project is an updated version for **single-player mode**.
-
-#### Modifications
-
-The following changes were made compared to the original project:
-
-- Experience settings are modifiable through the configuration file without any negative consequences.
-- I disabled logout timer.
-- Restored 1 object, 1 interface, removed 2 sprites, 8 models, and few item definitions, mhm I think it's all here.
+[![License][license-shield]][license-url] [![Release][libs]][libs-url] [![Release][play-release]][play-url]<br>
 
 ___
 
@@ -49,6 +35,8 @@ Make sure you have the following installed:
 #### Forking the Repository
 
 1. Click the **Fork** button at the top right to create a personal copy of the repository.
+
+___
 
 #### Cloning the Repository
 
