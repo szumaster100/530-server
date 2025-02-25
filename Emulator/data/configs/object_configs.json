@@ -14432,7 +14432,7 @@
     "ids": "37451"
   },
   {
-    "examine": "Only experienced Runecrafters can pass through this portal.",
+    "examine": "Where could this lead?",
     "ids": "38279"
   },
   {
@@ -15090,5 +15090,21 @@
   {
     "examine": "Home sweet home?",
     "ids": "15478"
+  },
+  {
+    "examine": "Wizard Vief created this esoteric device.",
+    "ids": "38329"
+  },
+  {
+    "examine": "That's an impressive map of Gielinor.",
+    "ids": "38315"
+  },
+  {
+    "examine": "The wizards have captured an energy orb and contained it here for study.",
+    "ids": "38325,38326"
+  },
+  {
+    "examine": "Energy orbs are captured here for study.",
+    "ids": "30327"
   }
 ]

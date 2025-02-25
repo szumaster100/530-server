@@ -106,7 +106,11 @@
     <ObjectAction mode="add" id="41906" x="3473" y="5209" z="0"/>
     <ObjectAction mode="add" id="41907" x="3535" y="5242" z="0"/>
 
-    <!-- Runecrafting Guild - Temporary bank for quick buying tokens. -->
+    <!--
+    Runecrafting Guild - Bank deposit box.
+    Patch 22 February 2010 (Update):
+    Added a bank deposit box to the Runecrafting Guild.
+    -->
 
     <!-- Fishing platform bank - Temporary bank. -->
 

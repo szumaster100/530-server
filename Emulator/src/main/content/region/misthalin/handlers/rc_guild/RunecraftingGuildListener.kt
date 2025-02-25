@@ -9,6 +9,7 @@ import core.game.node.item.Item
 import org.rs.consts.Components
 import org.rs.consts.Items
 import org.rs.consts.NPCs
+import org.rs.consts.Scenery
 
 /*
  * TODO CHECKLIST
@@ -43,6 +44,30 @@ class RunecraftingGuildListener : InteractionListener {
     }
 
     override fun defineListeners() {
+        /*
+         * Handles interactions with various objects inside the guild.
+         */
+
+        on(Scenery.CONTAINMENT_UNIT_38327, IntType.SCENERY, "activate") { player, node ->
+            lockInteractions(player, 1)
+            animateScenery(node.asScenery(), 10193)
+            return@on true
+        }
+        on(Scenery.GLASS_SPHERES_38331, IntType.SCENERY, "activate") { player, node ->
+            lockInteractions(player, 1)
+            animateScenery(node.asScenery(), 10128)
+            return@on true
+        }
+        on(Scenery.GYROSCOPE_38330, IntType.SCENERY, "activate") { player, node ->
+            lockInteractions(player, 1)
+            animateScenery(node.asScenery(), 10127)
+            return@on true
+        }
+        on(Scenery.RUNESTONE_ACCELERATOR_38329, IntType.SCENERY, "activate") { player, node ->
+            lockInteractions(player, 1)
+            animateScenery(node.asScenery(), 10196)
+            return@on true
+        }
 
         /*
          * Handles the interaction with the RC Hat item by toggling between two variations.

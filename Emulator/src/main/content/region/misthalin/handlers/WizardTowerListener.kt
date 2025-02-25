@@ -12,6 +12,7 @@ import core.game.system.task.Pulse
 import core.game.world.GameWorld
 import core.game.world.map.Location
 import core.game.world.update.flag.context.Graphics
+import core.tools.RandomFunction
 import org.rs.consts.NPCs
 import org.rs.consts.Quests
 import org.rs.consts.Scenery
@@ -20,7 +21,30 @@ import org.rs.consts.Sounds
 class WizardTowerListener : InteractionListener {
     override fun defineListeners() {
         on(intArrayOf(WIZARDS_TOWER_BOOKCASE_1, WIZARDS_TOWER_BOOKCASE_2), IntType.SCENERY, "search") { player, _ ->
-            openDialogue(player, "wizard-tower-dialogue")
+            val books =
+                arrayOf(
+                    "Living with a Wizard Husband - a Housewife's Story",
+                    "Wind Strike for Beginners",
+                    "So you think you're a Mage? Volume 28",
+                    "101 Ways to Impress your Mates with Magic",
+                    "The Life & Times of a Thingummywut by Traiborn the Wizard",
+                    "How to become the Ultimate Wizard of the Universe",
+                    "The Dark Arts of Magical Wands",
+                )
+            player.dialogueInterpreter.sendDialogue(
+                "There's a large selection of books, the majority of which look fairly",
+                "old. Some very strange names... You pick one at random:",
+            )
+            var bookName = books[RandomFunction.random(books.size)]
+            addDialogueAction(player) { player, buttonID ->
+                if(buttonID >= 0) {
+                    sendDialogue(player, bookName).also {
+                        runTask(player, 3) {
+                            sendPlayerDialogue(player, "Interesting...")
+                        }
+                    }
+                }
+            }
             return@on true
         }
 
