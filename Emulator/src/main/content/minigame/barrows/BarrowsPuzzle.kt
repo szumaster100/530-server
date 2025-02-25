@@ -73,21 +73,21 @@ class BarrowsPuzzle private constructor(
                 getAnswerModel(6732, false),
                 getAnswerModel(6733, false),
             )
-        val LINES =
+        private val LINES =
             BarrowsPuzzle(
                 intArrayOf(6728, 6729, 6730),
                 getAnswerModel(6725, true),
                 getAnswerModel(6726, false),
                 getAnswerModel(6727, false),
             )
-        val SQUARES =
+        private val SQUARES =
             BarrowsPuzzle(
                 intArrayOf(6722, 6723, 6724),
                 getAnswerModel(6719, true),
                 getAnswerModel(6720, false),
                 getAnswerModel(6721, false),
             )
-        val TRIANGLE_CIRCLES =
+        private val TRIANGLE_CIRCLES =
             BarrowsPuzzle(
                 intArrayOf(6716, 6717, 6718),
                 getAnswerModel(6713, true),

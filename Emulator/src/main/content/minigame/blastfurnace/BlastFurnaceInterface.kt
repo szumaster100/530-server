@@ -7,7 +7,7 @@ import core.game.interaction.InterfaceListener
 import core.game.system.task.Pulse
 import org.rs.consts.Components
 
-class BlastFurnaceInterfaceListener : InterfaceListener {
+class BlastFurnaceInterface : InterfaceListener {
     override fun defineInterfaceListeners() {
         onOpen(Components.BLAST_FURNACE_BAR_STOCK_28) { player, _ ->
             val state = BlastFurnace.getPlayerState(player)

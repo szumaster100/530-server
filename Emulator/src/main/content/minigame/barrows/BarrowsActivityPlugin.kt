@@ -32,7 +32,6 @@ import core.net.packet.out.CameraViewPacket
 import core.plugin.ClassScanner.definePlugin
 import core.plugin.Initializable
 import core.tools.RandomFunction
-import java.util.stream.IntStream
 
 @Initializable
 class BarrowsActivityPlugin : ActivityPlugin("Barrows", false, false, false) {
@@ -48,7 +47,7 @@ class BarrowsActivityPlugin : ActivityPlugin("Barrows", false, false, false) {
                     break
                 }
             }
-            val player = e
+            val player = e.asPlayer()
             if (getVarp(player, 1270) == 1 != tunnel) {
                 setVarp(player, 1270, if (tunnel) 3 else 0, true)
             }
@@ -57,7 +56,7 @@ class BarrowsActivityPlugin : ActivityPlugin("Barrows", false, false, false) {
 
     override fun enter(e: Entity): Boolean {
         if (e is Player) {
-            val player = e
+            val player = e.asPlayer()
             setMinimapState(player, 2)
             player.interfaceManager.openOverlay(OVERLAY)
             setVarp(player, 0, 1)
@@ -72,21 +71,20 @@ class BarrowsActivityPlugin : ActivityPlugin("Barrows", false, false, false) {
             }
         } else {
             (e as NPC).isAggressive = true
-            e.aggressiveHandler =
-                AggressiveHandler(
-                    e,
-                    object : AggressiveBehavior() {
-                        override fun canSelectTarget(
-                            entity: Entity?,
-                            target: Entity,
-                        ): Boolean {
-                            if (!target.isActive || DeathTask.isDead(target)) {
-                                return false
-                            }
-                            return !(!target.properties.isMultiZone && target.inCombat())
+            e.aggressiveHandler = AggressiveHandler(
+                e,
+                object : AggressiveBehavior() {
+                    override fun canSelectTarget(
+                        entity: Entity?,
+                        target: Entity,
+                    ): Boolean {
+                        if (!target.isActive || DeathTask.isDead(target)) {
+                            return false
                         }
-                    },
-                )
+                        return !(!target.properties.isMultiZone && target.inCombat())
+                    }
+                },
+            )
         }
         return super.enter(e)
     }
@@ -96,7 +94,7 @@ class BarrowsActivityPlugin : ActivityPlugin("Barrows", false, false, false) {
         logout: Boolean,
     ): Boolean {
         if (e is Player) {
-            val player = e
+            val player = e.asPlayer()
             setMinimapState(player, 0)
             player.interfaceManager.closeOverlay()
             val npc = player.getAttribute<NPC>("barrow:npc")
@@ -158,9 +156,7 @@ class BarrowsActivityPlugin : ActivityPlugin("Barrows", false, false, false) {
                 ClimbActionHandler.climb(
                     e,
                     ClimbActionHandler.CLIMB_UP,
-                    BarrowsCrypt
-                        .getCrypt(player.getSavedData().activityData.barrowTunnelIndex)
-                        .exitLocation,
+                    BarrowsCrypt.getCrypt(player.getSavedData().activityData.barrowTunnelIndex).exitLocation,
                 )
                 return true
             }
@@ -175,19 +171,19 @@ class BarrowsActivityPlugin : ActivityPlugin("Barrows", false, false, false) {
                     }
                 }
             }
+
             when (`object`.id) {
                 6714, 6733 -> {
                     DoorActionHandler.handleAutowalkDoor(e, target)
                     if (RandomFunction.random(15) == 0) {
                         val brothers = player.getSavedData().activityData.barrowBrothers
-                        val alive = IntStream.range(0, 6).filter { i: Int -> !brothers[i] }.toArray()
-                        if (alive.size > 0) {
+                        val alive = (0..5).filter { i -> !brothers[i] }.toIntArray()
+                        if (alive.isNotEmpty()) {
                             var index = 0
                             if (alive.size > 1) {
                                 index = RandomFunction.random(0, alive.size)
                             }
-                            BarrowsCrypt
-                                .getCrypt(alive[index])
+                            BarrowsCrypt.getCrypt(alive[index])
                                 .spawnBrother(player, getTeleportLocation(target.getLocation(), 1))
                         }
                     }
@@ -227,14 +223,12 @@ class BarrowsActivityPlugin : ActivityPlugin("Barrows", false, false, false) {
                 6774 -> {
                     player.lock(1)
                     val brother = player.getSavedData().activityData.barrowTunnelIndex
-                    if (!player.getSavedData().activityData.barrowBrothers[brother] &&
-                        !player.getAttribute<Boolean>(
+                    if (!player.getSavedData().activityData.barrowBrothers[brother] && !player.getAttribute(
                             "brother:$brother",
-                            false,
+                            false
                         )
                     ) {
-                        BarrowsCrypt
-                            .getCrypt(brother)
+                        BarrowsCrypt.getCrypt(brother)
                             .spawnBrother(player, getTeleportLocation(target.getCenterLocation(), 4))
                     }
                     setAttribute(player, "barrow:opened_chest", true)
@@ -317,70 +311,68 @@ class BarrowsActivityPlugin : ActivityPlugin("Barrows", false, false, false) {
         private val TUNNEL_CONFIGS =
             intArrayOf(55328769, 2867201, 44582944, 817160, 537688072, 40763408, 44320784, 23478274)
 
-        val MINI_TUNNELS =
-            arrayOf(
-                ZoneBorders(3532, 9665, 3570, 9671),
-                ZoneBorders(3575, 9676, 3570, 9671),
-                ZoneBorders(3575, 9676, 3581, 9714),
-                ZoneBorders(3534, 9718, 3570, 9723),
-                ZoneBorders(3523, 9675, 3528, 9712),
-                ZoneBorders(3541, 9711, 3545, 9712),
-                ZoneBorders(3558, 9711, 3562, 9712),
-                ZoneBorders(3568, 9701, 3569, 9705),
-                ZoneBorders(3551, 9701, 3552, 9705),
-                ZoneBorders(3534, 9701, 3535, 9705),
-                ZoneBorders(3541, 9694, 3545, 9695),
-                ZoneBorders(3558, 9694, 3562, 9695),
-                ZoneBorders(3568, 9684, 3569, 9688),
-                ZoneBorders(3551, 9684, 3552, 9688),
-                ZoneBorders(3534, 9684, 3535, 9688),
-                ZoneBorders(3541, 9677, 3545, 9678),
-                ZoneBorders(3558, 9677, 3562, 9678),
-            )
+        private val MINI_TUNNELS = arrayOf(
+            ZoneBorders(3532, 9665, 3570, 9671),
+            ZoneBorders(3575, 9676, 3570, 9671),
+            ZoneBorders(3575, 9676, 3581, 9714),
+            ZoneBorders(3534, 9718, 3570, 9723),
+            ZoneBorders(3523, 9675, 3528, 9712),
+            ZoneBorders(3541, 9711, 3545, 9712),
+            ZoneBorders(3558, 9711, 3562, 9712),
+            ZoneBorders(3568, 9701, 3569, 9705),
+            ZoneBorders(3551, 9701, 3552, 9705),
+            ZoneBorders(3534, 9701, 3535, 9705),
+            ZoneBorders(3541, 9694, 3545, 9695),
+            ZoneBorders(3558, 9694, 3562, 9695),
+            ZoneBorders(3568, 9684, 3569, 9688),
+            ZoneBorders(3551, 9684, 3552, 9688),
+            ZoneBorders(3534, 9684, 3535, 9688),
+            ZoneBorders(3541, 9677, 3545, 9678),
+            ZoneBorders(3558, 9677, 3562, 9678),
+        )
 
         private val OVERLAY = Component(24)
 
-        private val PULSE: Pulse =
-            object : Pulse(0) {
-                override fun pulse(): Boolean {
-                    var end = true
-                    for (p in getRegionPlayers(14231)) {
-                        end = false
-                        var index = p.getAttribute("barrow:drain-index", -1)
-                        if (index > -1) {
-                            p.removeAttribute("barrow:drain-index")
-                            p.packetDispatch.sendItemOnInterface(-1, 1, 24, index)
-                            continue
-                        }
-                        if (p.location.z == 0 && p.getAttribute("barrow:looted", false) && getWorldTicks() % 3 == 0) {
-                            if (RandomFunction.random(15) == 0) {
-                                p.impactHandler.manualHit(
-                                    p,
-                                    RandomFunction.random(5),
-                                    ImpactHandler.HitsplatType.NORMAL,
-                                )
-                                Graphics.send(Graphics.create(405), p.location)
-                            }
-                        }
-                        var drain = 8
-
-                        for (killed in p.getSavedData().activityData.barrowBrothers) {
-                            if (killed) {
-                                drain += 1
-                            }
-                        }
-                        if (getWorldTicks() % 30 == 0) {
-                            p.getSkills().decrementPrayerPoints(drain.toDouble())
-                            p.locks.lock("barrow:drain", (3 + RandomFunction.random(15)) * 3)
-                            index = 1 + RandomFunction.random(6)
-                            p.setAttribute("barrow:drain-index", index)
-                            p.packetDispatch.sendItemZoomOnInterface(4761 + RandomFunction.random(12), 100, 24, index)
-                            p.packetDispatch.sendAnimationInterface(9810, 24, index)
+        private val PULSE: Pulse = object : Pulse(0) {
+            override fun pulse(): Boolean {
+                var end = true
+                for (p in getRegionPlayers(14231)) {
+                    end = false
+                    var index = p.getAttribute("barrow:drain-index", -1)
+                    if (index > -1) {
+                        p.removeAttribute("barrow:drain-index")
+                        p.packetDispatch.sendItemOnInterface(-1, 1, 24, index)
+                        continue
+                    }
+                    if (p.location.z == 0 && p.getAttribute("barrow:looted", false) && getWorldTicks() % 3 == 0) {
+                        if (RandomFunction.random(15) == 0) {
+                            p.impactHandler.manualHit(
+                                p,
+                                RandomFunction.random(5),
+                                ImpactHandler.HitsplatType.NORMAL,
+                            )
+                            Graphics.send(Graphics.create(405), p.location)
                         }
                     }
-                    return end
+                    var drain = 8
+
+                    for (killed in p.getSavedData().activityData.barrowBrothers) {
+                        if (killed) {
+                            drain += 1
+                        }
+                    }
+                    if (getWorldTicks() % 30 == 0) {
+                        p.getSkills().decrementPrayerPoints(drain.toDouble())
+                        p.locks.lock("barrow:drain", (3 + RandomFunction.random(15)) * 3)
+                        index = 1 + RandomFunction.random(6)
+                        p.setAttribute("barrow:drain-index", index)
+                        p.packetDispatch.sendItemZoomOnInterface(4761 + RandomFunction.random(12), 100, 24, index)
+                        p.packetDispatch.sendAnimationInterface(9810, 24, index)
+                    }
                 }
+                return end
             }
+        }
 
         fun shuffleCatacombs(player: Player?) {
             var value = TUNNEL_CONFIGS[RandomFunction.random(TUNNEL_CONFIGS.size)]
