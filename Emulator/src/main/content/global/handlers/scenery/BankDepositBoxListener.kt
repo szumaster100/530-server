@@ -1,10 +1,10 @@
 package content.global.handlers.scenery
 
+import core.api.*
 import core.api.interaction.restrictForIronman
-import core.api.removeTabs
-import core.api.sendString
 import core.game.component.CloseEvent
 import core.game.component.Component
+import core.game.container.Container
 import core.game.container.access.InterfaceContainer
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
@@ -21,6 +21,12 @@ class BankDepositBoxListener : InteractionListener {
         node: Node,
         state: Int,
     ): Boolean {
+        val option = getUsedOption(player)
+        if(option == "Deposit-all") {
+            dumpContainer(player, player.inventory)
+            return true
+        }
+
         restrictForIronman(player, IronmanMode.ULTIMATE) {
             player.interfaceManager.open(Component(Components.BANK_DEPOSIT_BOX_11)).closeEvent =
                 CloseEvent { p, _ ->
@@ -48,7 +54,7 @@ class BankDepositBoxListener : InteractionListener {
     }
 
     override fun defineListeners() {
-        defineInteraction(IntType.SCENERY, BANK_DEPOSIT_BOXES, "deposit", handler = ::openDepositBox)
+        defineInteraction(IntType.SCENERY, BANK_DEPOSIT_BOXES, "deposit","deposit-all", handler = ::openDepositBox)
     }
 
     companion object {
@@ -63,6 +69,7 @@ class BankDepositBoxListener : InteractionListener {
                 Scenery.BANK_DEPOSIT_BOX_39830,
                 Scenery.DEPOSIT_BOX_15985,
                 Scenery.DEPOSIT_BOX_30044,
+                Scenery.DEPOSIT_BOX_30045,
             )
     }
 }

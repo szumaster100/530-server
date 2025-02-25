@@ -107,11 +107,13 @@
     <ObjectAction mode="add" id="41907" x="3535" y="5242" z="0"/>
 
     <!--
-    Runecrafting Guild - Bank deposit box.
-    Patch 22 February 2010 (Update):
-    Added a bank deposit box to the Runecrafting Guild.
+        Runecrafting Guild - Bank deposit box.
+        Patch 22 February 2010 (Update):
+        Added a bank deposit box to the Runecrafting Guild.
     -->
+    <ObjectAction mode="add" id="25937" x="1692" y="5462" z="2" type="10" direction="e"/>
 
-    <!-- Fishing platform bank - Temporary bank. -->
+    <!-- Fishing platform bank - Temporary bank chest. -->
+    <ObjectAction mode="add" id="21301" x="2784" y="3279" z="0" type="10" direction="s"/>
 
 </parsing>

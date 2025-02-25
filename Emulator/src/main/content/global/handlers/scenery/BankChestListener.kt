@@ -7,7 +7,7 @@ import org.rs.consts.Scenery
 
 class BankChestListener : InteractionListener {
     override fun defineListeners() {
-        defineInteraction(IntType.SCENERY, BANK_CHESTS, "bank", "use") { player, _, _ ->
+        defineInteraction(IntType.SCENERY, BANK_CHESTS, "bank", "use", "open") { player, _, _ ->
             openBankAccount(player)
             return@defineInteraction true
         }
