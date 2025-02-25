@@ -18,7 +18,7 @@ import static core.api.ContentAPIKt.animate;
 import static core.api.ContentAPIKt.playAudio;
 
 @Initializable
-public final class DoorManagingPlugin extends OptionHandler {
+public final class ObjectManagerPlugin extends OptionHandler {
 
     @Override
     public Plugin<java.lang.Object> newInstance(java.lang.Object arg) throws Throwable {

@@ -11,7 +11,7 @@ import org.rs.consts.Items
 import org.rs.consts.Quests
 import org.rs.consts.Scenery
 
-class TotemPole : InteractionListener {
+class TotemPoleListener : InteractionListener {
     private val skillsNecklaces: IntArray =
         intArrayOf(
             Items.SKILLS_NECKLACE_11113,
