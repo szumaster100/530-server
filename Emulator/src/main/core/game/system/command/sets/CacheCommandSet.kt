@@ -18,12 +18,10 @@ import kotlin.reflect.jvm.isAccessible
 
 @Initializable
 class CacheCommandSet : CommandSet(Privilege.ADMIN) {
-    override fun defineCommands() {
-        /*
+    override fun defineCommands() {/*
          * Dumps for educational purposes the interface id data.
          */
 
-        /*
         define(
             name = "dumpinterfaces",
             privilege = Privilege.ADMIN,
@@ -36,23 +34,18 @@ class CacheCommandSet : CommandSet(Privilege.ADMIN) {
 
             for (interfaceId in 0 until Cache.getInterfaceDefinitionsSize()) {
                 val ifaceDef = try {
-                    IfaceDefinition.loadAndParse(interfaceId)
+                    IfaceDefinition.forId(interfaceId)
                 } catch (e: Exception) {
                     println("Error loading interface ID $interfaceId: ${e.message}")
                     null
                 } ?: continue
 
                 try {
-                    val ifaceMap = ifaceDef::class
-                        .memberProperties
-                        .filter { prop ->
+                    val ifaceMap = ifaceDef::class.memberProperties.filter { prop ->
                             prop.returnType.classifier !in listOf(
-                                IfaceDefinition::class,
-                                List::class,
-                                Map::class
+                                IfaceDefinition::class, List::class, Map::class
                             )
-                        }
-                        .associate { prop ->
+                        }.associate { prop ->
                             prop.isAccessible = true
                             prop.name to (prop.getter.call(ifaceDef) ?: "null")
                         }
@@ -68,7 +61,6 @@ class CacheCommandSet : CommandSet(Privilege.ADMIN) {
             dump.writeText(gson.toJson(interfaces))
             p.debug("Interface definitions have been successfully dumped to $dump.")
         }
-         */
 
         /*
          * Dumps for educational purposes identity kit configurations to a .csv file.
@@ -122,19 +114,16 @@ class CacheCommandSet : CommandSet(Privilege.ADMIN) {
 
             for (itemId in 0 until Cache.getItemDefinitionsSize()) {
                 val itemDef = ItemDefinition.forId(itemId) ?: continue
-                val itemMap =
-                    itemDef::class
-                        .memberProperties
-                        .filter { prop ->
-                            prop.returnType.classifier !in listOf(ItemDefinition::class, List::class, Map::class)
-                        }.associate { prop ->
-                            prop.isAccessible = true
-                            try {
-                                prop.name to prop.getter.call(itemDef)
-                            } catch (e: Exception) {
-                                prop.name to "Error"
-                            }
+                val itemMap = itemDef::class.memberProperties.filter { prop ->
+                        prop.returnType.classifier !in listOf(ItemDefinition::class, List::class, Map::class)
+                    }.associate { prop ->
+                        prop.isAccessible = true
+                        try {
+                            prop.name to prop.getter.call(itemDef)
+                        } catch (e: Exception) {
+                            prop.name to "Error"
                         }
+                    }
 
                 if (itemMap.isNotEmpty()) {
                     items.add(itemMap)
@@ -167,25 +156,24 @@ class CacheCommandSet : CommandSet(Privilege.ADMIN) {
                     for (itemId in 0 until 6000) {
                         val itemDef = CS2Mapping.forId(itemId) ?: continue
 
-                        val values =
-                            allProperties.map { propName ->
-                                val prop = CS2Mapping::class.memberProperties.find { it.name == propName }
-                                prop?.let {
-                                    it.isAccessible = true
-                                    try {
-                                        val value = it.getter.call(itemDef)
-                                        when (value) {
-                                            is Array<*> -> value.joinToString(";") { it.toString() }
-                                            is List<*> -> value.joinToString(";") { it.toString() }
-                                            is Map<*, *> -> gson.toJson(value)
-                                            null -> "null"
-                                            else -> value.toString()
-                                        }
-                                    } catch (e: Exception) {
-                                        "Error"
+                        val values = allProperties.map { propName ->
+                            val prop = CS2Mapping::class.memberProperties.find { it.name == propName }
+                            prop?.let {
+                                it.isAccessible = true
+                                try {
+                                    val value = it.getter.call(itemDef)
+                                    when (value) {
+                                        is Array<*> -> value.joinToString(";") { it.toString() }
+                                        is List<*> -> value.joinToString(";") { it.toString() }
+                                        is Map<*, *> -> gson.toJson(value)
+                                        null -> "null"
+                                        else -> value.toString()
                                     }
-                                } ?: "null"
-                            }
+                                } catch (e: Exception) {
+                                    "Error"
+                                }
+                            } ?: "null"
+                        }
 
                         writer.write(values.joinToString(", "))
                         writer.newLine()
@@ -267,20 +255,18 @@ class CacheCommandSet : CommandSet(Privilege.ADMIN) {
                         file?.let {
                             val def = DataMap.parse((cID shl 8) or fID, it)
 
-                            val dataMap =
-                                mapOf(
-                                    "id" to def.id,
-                                    "keyType" to def.keyType,
-                                    "valueType" to
-                                        when (def.valueType) {
-                                            'K' -> "Normal"
-                                            'J' -> "Struct Pointer"
-                                            else -> "Unknown"
-                                        },
-                                    "defaultString" to (def.defaultString ?: "N/A"),
-                                    "defaultInt" to def.defaultInt,
-                                    "dataStore" to def.dataStore,
-                                )
+                            val dataMap = mapOf(
+                                "id" to def.id,
+                                "keyType" to def.keyType,
+                                "valueType" to when (def.valueType) {
+                                    'K' -> "Normal"
+                                    'J' -> "Struct Pointer"
+                                    else -> "Unknown"
+                                },
+                                "defaultString" to (def.defaultString ?: "N/A"),
+                                "defaultInt" to def.defaultInt,
+                                "dataStore" to def.dataStore,
+                            )
 
                             dataMapsList.add(dataMap)
                         }
@@ -306,10 +292,7 @@ class CacheCommandSet : CommandSet(Privilege.ADMIN) {
             description = "Dumps NPC definitions data to a .json file.",
         ) { p, _ ->
             val gson =
-                GsonBuilder()
-                    .setPrettyPrinting()
-                    .disableHtmlEscaping()
-                    .excludeFieldsWithModifiers(Modifier.TRANSIENT)
+                GsonBuilder().setPrettyPrinting().disableHtmlEscaping().excludeFieldsWithModifiers(Modifier.TRANSIENT)
                     .create()
 
             val dump = File("npc_definitions.json")
@@ -330,37 +313,32 @@ class CacheCommandSet : CommandSet(Privilege.ADMIN) {
                     try {
                         val value = prop.getter.call(npcDef)
 
-                        npcMap[prop.name] =
-                            when (value) {
-                                is String -> {
-                                    if (prop.name == "combat_audio") {
-                                        value
-                                    } else {
-                                        value
-                                            .contains("Animation [priority=")
-                                            .toString()
-                                            .replace("Animation [priority=", "priority=")
-                                            .replace("]", " ")
-                                    }
+                        npcMap[prop.name] = when (value) {
+                            is String -> {
+                                if (prop.name == "combat_audio") {
+                                    value
+                                } else {
+                                    value.contains("Animation [priority=").toString()
+                                        .replace("Animation [priority=", "priority=").replace("]", " ")
                                 }
+                            }
 
-                                is Number, is Boolean -> value
-                                is List<*> -> value.map { it.toString() }
-                                is Map<*, *> -> value.mapValues { it.value.toString() }
+                            is Number, is Boolean -> value
+                            is List<*> -> value.map { it.toString() }
+                            is Map<*, *> -> value.mapValues { it.value.toString() }
+                            is ShortArray -> value.toList().map { it.toInt().toString() }
+                            is ByteArray -> value.toList().map { it.toString() }
+                            is IntArray -> value.toList().map { it.toInt().toString() }
+                            is Array<*> -> when (value) {
                                 is ShortArray -> value.toList().map { it.toInt().toString() }
                                 is ByteArray -> value.toList().map { it.toString() }
                                 is IntArray -> value.toList().map { it.toInt().toString() }
-                                is Array<*> ->
-                                    when (value) {
-                                        is ShortArray -> value.toList().map { it.toInt().toString() }
-                                        is ByteArray -> value.toList().map { it.toString() }
-                                        is IntArray -> value.toList().map { it.toInt().toString() }
-                                        else -> value.toList().joinToString(",") { it.toString() }
-                                    }
-
-                                null -> "null"
-                                else -> value.toString()
+                                else -> value.toList().joinToString(",") { it.toString() }
                             }
+
+                            null -> "null"
+                            else -> value.toString()
+                        }
                     } catch (e: Exception) {
                         p.debug("Err read prop '${prop.name}': ${e.message}")
                         npcMap[prop.name] = "Err: ${e.message}"
@@ -395,14 +373,13 @@ class CacheCommandSet : CommandSet(Privilege.ADMIN) {
             val components = mutableListOf<Map<String, Any?>>()
 
             for ((id, componentDef) in ComponentDefinition.getDefinitions()) {
-                val componentMap =
-                    mapOf(
-                        "id" to id,
-                        "type" to componentDef.type.name,
-                        "walkable" to componentDef.isWalkable,
-                        "tabIndex" to componentDef.tabIndex,
-                        "plugin" to componentDef.plugin?.javaClass?.simpleName,
-                    )
+                val componentMap = mapOf(
+                    "id" to id,
+                    "type" to componentDef.type.name,
+                    "walkable" to componentDef.isWalkable,
+                    "tabIndex" to componentDef.tabIndex,
+                    "plugin" to componentDef.plugin?.javaClass?.simpleName,
+                )
                 components.add(componentMap)
             }
 
@@ -425,21 +402,86 @@ class CacheCommandSet : CommandSet(Privilege.ADMIN) {
             val animations = mutableListOf<Map<String, Any?>>()
 
             for ((id, animDef) in AnimationDefinition.getDefinition()) {
-                val animationMap =
-                    mapOf(
-                        "id" to id,
-                        "duration" to animDef.getDuration(),
-                        "cycles" to animDef.getCycles(),
-                        "durationTicks" to animDef.getDurationTicks(),
-                        "emoteItem" to animDef.emoteItem,
-                        "hasSoundEffect" to animDef.hasSoundEffect,
-                        "effect2Sound" to animDef.effect2Sound,
-                    )
+                val animationMap = mapOf(
+                    "id" to id,
+                    "duration" to animDef.getDuration(),
+                    "cycles" to animDef.getCycles(),
+                    "durationTicks" to animDef.getDurationTicks(),
+                    "emoteItem" to animDef.emoteItem,
+                    "hasSoundEffect" to animDef.hasSoundEffect,
+                    "effect2Sound" to animDef.effect2Sound,
+                )
                 animations.add(animationMap)
             }
 
             dump.writeText(gson.toJson(animations))
             p.debug("Animation data has been successfully dumped to $dump.")
         }
+
+        /*
+         * Dumps the varbit definitions into a .json file.
+         */
+
+        define(
+            name = "dumpvarbits",
+            privilege = Privilege.ADMIN,
+            usage = "::dumpvarbits",
+            description = "Dumps varbit definitions data to a .json file.",
+        ) { p, _ ->
+            val gson = GsonBuilder().setPrettyPrinting().create()
+            val dump = File("varbit_definitions.json")
+            val varbits = mutableListOf<Map<String, Any?>>()
+
+            for ((id, varbitDef) in VarbitDefinition.getMapping()) {
+                val varbitMap = mapOf(
+                    "id" to id,
+                    "varpId" to varbitDef.varpId,
+                    "startBit" to varbitDef.startBit,
+                    "endBit" to varbitDef.endBit,
+                    "mask" to varbitDef.getMask()
+                )
+                varbits.add(varbitMap)
+            }
+
+            dump.writeText(gson.toJson(varbits))
+            p.debug("Varbit data has been successfully dumped to $dump.")
+        }
+
+        /*
+         * Dumps the CS2Mapping definitions into a .txt file.
+         */
+
+        define(
+            name = "dumpcs2txt",
+            privilege = Privilege.ADMIN,
+            usage = "::dumpcs2txt",
+            description = "Dumps CS2Mapping data to a .txt file."
+        ) { p, _ ->
+            val dump = File("cs2_mappings.txt")
+            val sb = StringBuilder()
+
+            for (scriptId in 0 until 10000) {
+                val mapping = CS2Mapping.forId(scriptId) ?: continue
+                val map = mapping.getMap() ?: continue
+
+                sb.append("Script ID: ${mapping.getScriptId()}\n")
+                sb.append("Unknown: ${mapping.getUnknown()}\n")
+                sb.append("Unknown1: ${mapping.getUnknown1()}\n")
+                sb.append("Default String: ${mapping.getDefaultString()}\n")
+                sb.append("Default Int: ${mapping.getDefaultInt()}\n")
+                sb.append("Map:\n")
+                for ((key, value) in map) {
+                    sb.append("  Key: $key, Value: $value\n")
+                }
+                mapping.getArray()?.let { array ->
+                    sb.append("Array: ${array.joinToString(", ")}\n")
+                }
+                sb.append("\n")
+            }
+
+            dump.writeText(sb.toString())
+            p.debug("CS2Mapping data has been successfully dumped to $dump.")
+        }
+
     }
 }
