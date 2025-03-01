@@ -40,11 +40,12 @@ class CreatureOfFenkenstrain :
             line(player, "centre of !!Canifis??.", line++, false)
             line(player, "I must be able to defeat a !!level 51 monster??, and need the", line++, false)
             line(player, "following skill levels:", line++, false)
-            line(player, "Level 20 Crafting", line++, hasLevelStat(player, Skills.CRAFTING, 20))
-            line(player, "Level 25 Thieving", line++, hasLevelStat(player, Skills.THIEVING, 25))
+            line(player, "!!Level 20 Crafting??", line++, hasLevelStat(player, Skills.CRAFTING, 20))
+            line(player, "!!Level 25 Thieving??", line++, hasLevelStat(player, Skills.THIEVING, 25))
             line(player, "I also need to have completed the following quests:", line++, false)
-            line(player, Quests.PRIEST_IN_PERIL, line++, isQuestComplete(player, Quests.PRIEST_IN_PERIL))
-            line(player, Quests.THE_RESTLESS_GHOST, line++, isQuestComplete(player, Quests.THE_RESTLESS_GHOST))
+            line(player, "!!${Quests.PRIEST_IN_PERIL}??", line++, isQuestComplete(player, Quests.PRIEST_IN_PERIL))
+            line(player, "!!${Quests.THE_RESTLESS_GHOST}??", line++, isQuestComplete(player, Quests.THE_RESTLESS_GHOST))
+            limitScrolling(player, line, false)
         } else {
             line(player, "I read the signpost in Canifis, which tells of a butler", line++, true)
             line(player, "position that is available at the castle to the northeast.", line++, true)
@@ -112,6 +113,7 @@ class CreatureOfFenkenstrain :
             if (stage >= 100) {
                 line++
                 line(player, "<col=FF0000>QUEST COMPLETE!</col>", line)
+                limitScrolling(player, line, false)
             }
         }
     }
@@ -145,7 +147,7 @@ class CreatureOfFenkenstrain :
 
         drawReward(player, "2 quest points", ln++)
         drawReward(player, "Ring of Charos", ln++)
-        drawReward(player, "1,000 Theiving XP", ln++)
+        drawReward(player, "1,000 Thieving XP", ln++)
 
         addItemOrDrop(player, Items.RING_OF_CHAROS_4202, 1)
         rewardXP(player, Skills.THIEVING, 1000.0)

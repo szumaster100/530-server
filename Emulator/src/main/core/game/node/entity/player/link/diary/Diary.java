@@ -78,6 +78,7 @@ public class Diary {
         if (!player.getInterfaceManager().isOpened()) {
             player.getInterfaceManager().open(new Component(DIARY_COMPONENT));
         }
+        player.getPacketDispatch().sendRunScript(1207, "ii", 1, child - 10);
     }
 
     private void clear(Player player) {

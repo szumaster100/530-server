@@ -39,6 +39,7 @@ class AllFiredUp : Quest(Quests.ALL_FIRED_UP, 157, 156, 1) {
                 line++,
                 isQuestComplete(player, Quests.PRIEST_IN_PERIL),
             )
+            limitScrolling(player, line, true)
         } else {
             line(player, "I have agreed to help King Roald test the beacon network", line++, true)
             line(player, "that he hopes will serve as an early warning system,", line++, true)
@@ -139,6 +140,7 @@ class AllFiredUp : Quest(Quests.ALL_FIRED_UP, 157, 156, 1) {
                 line++
                 line(player, "<col=FF0000>QUEST COMPLETE!", line)
             }
+            limitScrolling(player, line, true)
         }
     }
 

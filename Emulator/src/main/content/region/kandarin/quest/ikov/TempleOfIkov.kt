@@ -31,7 +31,8 @@ class TempleOfIkov : Quest(Quests.TEMPLE_OF_IKOV, 121, 120, 1, Vars.VARP_QUEST_T
             line(player, "To start this quest I will need:", line++, false)
             line(player, "Level 42 !!Thieving??", line++, hasLevelStat(player, Skills.THIEVING, 42))
             line(player, "Level 40 !!Ranged??", line++, hasLevelStat(player, Skills.RANGE, 40))
-            line(player, "Ability to defeat a level 84 enemy with Ranged.", line++, false)
+            line(player, "!!Ability to defeat a level 84 enemy with Ranged??.", line++, false)
+            limitScrolling(player, line, true)
         } else {
             if (stage >= 2) {
                 line(player, "Lucien has asked me to retrieve the !!Staff of Armadyl?? from", line++, true)
@@ -131,6 +132,7 @@ class TempleOfIkov : Quest(Quests.TEMPLE_OF_IKOV, 121, 120, 1, Vars.VARP_QUEST_T
 
                 line++
                 line(player, "<col=FF0000>QUEST COMPLETE!</col>", line)
+                limitScrolling(player, line, false)
             }
         }
     }
