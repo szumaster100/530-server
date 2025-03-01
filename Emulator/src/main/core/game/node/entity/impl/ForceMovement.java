@@ -10,34 +10,65 @@ import core.game.world.update.flag.EntityFlag;
 import core.game.world.update.flag.context.Animation;
 import core.game.world.update.flag.context.ForceMoveCtx;
 
+/**
+ * This class represents a force movement action for an entity in the game world.
+ * It handles the animation, pathfinding, speed, and movement directions for an entity during forced movement.
+ * The movement consists of an initial animation, followed by the entity moving to a destination with a specified speed.
+ */
 public class ForceMovement extends Pulse {
 
+    /** Constant speed for walking. */
     public static final int WALKING_SPEED = 10;
 
+    /** Constant speed for running. */
     public static final int RUNNING_SPEED = 20;
 
+    /** Animation for walking. */
     public static final Animation WALK_ANIMATION = Animation.create(819);
 
+    /** The entity that is being moved. */
     protected Entity entity;
 
+    /** The starting location of the movement. */
     private Location start;
 
+    /** The destination location of the movement. */
     private Location destination;
 
+    /** The animation played at the start of the movement. */
     private Animation startAnim;
 
+    /** The animation applied while the entity is moving. */
     protected Animation animation;
 
+    /** The animation played at the end of the movement. */
     private Animation endAnimation = null;
 
+    /** The direction of the movement. */
     protected Direction direction;
 
+    /** The speed at which the movement commences. */
     private int commenceSpeed;
 
+    /** The speed at which the entity moves along the path. */
     private int pathSpeed;
 
+    /** Flag to determine if the entity should be unlocked after the movement. */
     private boolean unlockAfter;
 
+    /**
+     * Constructs a new ForceMovement object with specified parameters for forced movement.
+     *
+     * @param e The entity being moved.
+     * @param start The starting location of the movement.
+     * @param destination The destination location of the movement.
+     * @param startAnim The animation to play at the start of the movement.
+     * @param animation The animation applied while moving.
+     * @param direction The direction of movement.
+     * @param commenceSpeed The speed at which movement commences.
+     * @param pathSpeed The speed at which the entity moves along the path.
+     * @param unlockAfter Flag to unlock the entity after movement.
+     */
     @Deprecated
     public ForceMovement(Entity e, Location start, Location destination, Animation startAnim, Animation animation, Direction direction, int commenceSpeed, int pathSpeed, boolean unlockAfter) {
         super(1, e);
@@ -165,6 +196,9 @@ public class ForceMovement extends Pulse {
         return Direction.getDirection(0, delta.getY());
     }
 
+    /**
+     * Starts the force movement with the given parameters.
+     */
     @Override
     public void start() {
         commenceSpeed = (int) Math.ceil(start.getDistance(entity.getLocation()) / (commenceSpeed * 0.1));
@@ -185,6 +219,11 @@ public class ForceMovement extends Pulse {
         super.start();
     }
 
+    /**
+     * Called on each pulse of the force movement to update the animation and movement.
+     *
+     * @return False if movement is not completed, true otherwise.
+     */
     @Override
     public boolean pulse() {
         if (commenceSpeed != 0) {
@@ -197,6 +236,9 @@ public class ForceMovement extends Pulse {
         return true;
     }
 
+    /**
+     * Stops the force movement and applies the end animation and destination teleportation.
+     */
     @Override
     public void stop() {
         super.stop();
@@ -207,34 +249,74 @@ public class ForceMovement extends Pulse {
         if (unlockAfter) entity.unlock();
     }
 
+    /**
+     * Gets the start location of the movement.
+     *
+     * @return The start location.
+     */
     public Location getStart() {
         return start;
     }
 
+    /**
+     * Sets the start location of the movement.
+     *
+     * @param start The new start location.
+     */
     public void setStart(Location start) {
         this.start = start;
     }
 
+    /**
+     * Gets the destination location of the movement.
+     *
+     * @return The destination location.
+     */
     public Location getDestination() {
         return destination;
     }
 
+    /**
+     * Sets the destination location of the movement.
+     *
+     * @param destination The new destination location.
+     */
     public void setDestination(Location destination) {
         this.destination = destination;
     }
 
+    /**
+     * Gets the direction of the movement.
+     *
+     * @return The direction of the movement.
+     */
     public Direction getDirection() {
         return direction;
     }
 
+    /**
+     * Sets the direction of the movement.
+     *
+     * @param direction The new direction of the movement.
+     */
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
 
+    /**
+     * Gets the commence speed of the movement.
+     *
+     * @return The commence speed.
+     */
     public int getCommenceSpeed() {
         return commenceSpeed;
     }
 
+    /**
+     * Sets the commence speed of the movement.
+     *
+     * @param commenceSpeed The new commence speed.
+     */
     public void setCommenceSpeed(int commenceSpeed) {
         this.commenceSpeed = commenceSpeed;
     }
@@ -243,38 +325,83 @@ public class ForceMovement extends Pulse {
         this.entity = entity;
     }
 
+    /**
+     * Gets the path speed of the movement.
+     *
+     * @return The path speed.
+     */
     public int getPathSpeed() {
         return pathSpeed;
     }
 
+    /**
+     * Sets the path speed of the movement.
+     *
+     * @param pathSpeed The new path speed.
+     */
     public void setPathSpeed(int pathSpeed) {
         this.pathSpeed = pathSpeed;
     }
 
+    /**
+     * Gets the entity being moved.
+     *
+     * @return The entity.
+     */
     public Entity getEntity() {
         return entity;
     }
 
+    /**
+     * Gets the start animation for the movement.
+     *
+     * @return The start animation.
+     */
     public Animation getStartAnim() {
         return startAnim;
     }
 
+    /**
+     * Sets the start animation for the movement.
+     *
+     * @param startAnim The new start animation.
+     */
     public void setStartAnim(Animation startAnim) {
         this.startAnim = startAnim;
     }
 
+    /**
+     * Gets the animation applied during the movement.
+     *
+     * @return The movement animation.
+     */
     public Animation getAnimation() {
         return animation;
     }
 
+    /**
+     * Sets the animation applied during the movement.
+     *
+     * @param animation The new movement animation.
+     */
     public void setAnimation(Animation animation) {
         this.animation = animation;
     }
 
+    /**
+     * Gets the end animation for the movement.
+     *
+     * @return The end animation.
+     */
     public Animation getEndAnimation() {
         return endAnimation;
     }
 
+    /**
+     * Sets the end animation for the movement.
+     *
+     * @param endAnimation The new end animation.
+     */
     public void setEndAnimation(Animation endAnimation) {
         this.endAnimation = endAnimation;
     }
