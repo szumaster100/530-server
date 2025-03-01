@@ -1,0 +1,1174 @@
+1a6842c1 Correct height of Infernal mage spell graphics
+9097b9ea 100th commit
+7792ccd6 Improved and fixed `DarkWizardNPC`, correctly assigned spells
+a5454743 Fixed `DarkWizardNPC` not casting randomly spells
+8188b2f2 Removed duplicated NPC from `npc_configs.json`
+44df1c01 Documentation
+e1362fa3 Removed duplicate from interface_configs.json
+c40a6091 Dagannoth kings ladder warning activation
+b6876286 Renamed `KudosOverlay.kt`
+d983f33d Removed Data from GliderData now is Glider without Data
+4e51fa61 Optimize dirt
+60cc6f5b Protection message
+ed47a847 Antichrist fix
+e25d3c6c Improved satchel
+56c4ea9f Misc fixes & improvements
+a9400125 Update combat level calculating
+fe2ce849 Cherry pick: ObjectManagerPlugin
+3fc58662 Update README.md
+c977455f Json bourne
+b1ae58c0 Fixed and enabled warning restrictions
+a2d395f8 Fixed NPE being on lunars
+28c714a2 Removed WarningInterface, duplicates, etc
+facbdaf3 `ObjectManagerPlugin` Replaced by OpenableSceneryListener
+2273b904 Noticeboard on the falador west bank wall
+42d4f3e7 Fixed 2 bank directions
+d7af9a39 Rollback `BankContainer` and `BankInterface`
+d90fc506 Bump sqlite-jdbc library
+f7ac9d93 Removed & replaced the Java stream from the Kotlin class
+a1a95f68 Renamed `DoorManagingPlugin` to `ObjectManagerPlugin`
+582b83a8 Update README.md
+17c08a74 Added more bank options
+13db3949 Happiest implementation
+77d38875 Fixed most valuable RC dialogue
+0100f5c7 Update README.md
+41b7523c Disabled maze + small clean
+246cb99a Update and correct naming for con
+2c8ad51d Renamed Lectern and Telescope
+2ff79940 Implemented Crystal balls
+9d63add9 Fixed ClockmakingSpace and converted to listener
+04f6171f Fixed regression preventing interactions in build mode, fixed `ToolSpace`, and rewrote it as a listener
+d4558413 Rebuild cache
+d26ef8f1 Misc improvements and fixes
+c7eab369 Added components to references
+4f53bdb0 Time period based coordinates
+95b63ab1 Clue scrolls data, converted beehive plugin to listener
+d50a1d64 Runecrafting guild fixes
+14bfeb44 Exports does not go beyond the repository
+d2f1224e A better and simpler solution for my drama
+86155935 Added run.bat again
+0b63825a OK so no run.bat
+f7044787 Added logs.txt to .gitignore
+81ea2f1c Enable run the `ItemEditor` from .bat
+1fc62ed7 Cleaned commands, added ItemEditor
+5b46ffc3 Removed pulse from replacing tag
+1d8491ef Proper lock the player in Pinball random event
+b47e95d5 Fixed & improved pinball random event
+ac0fda92 Proper doomsayer manager for future implementation
+bbe420b2 Clear `AncientPyramid` NPCs after 100 ticks
+c20ecf87 Small rewrote of @ovenbreado DesertTreasure quest
+59b3d5c6 Fixed Gunslik's shop stock, added authentic stall messages
+6c8152ef Fixed Ratpit dialogues and typo
+9f1b1201 Downgrade SQL libraries to reduce the JAR file size
+fcfe232d NPC configuration
+6bd393aa Update `npc_configs.json`
+4bdc0983 Added `MerlinNPC` to castle after quest, fixed `KlarenseDialogue` freeze
+fcb1c695 Undoing the changes for bank container
+927bd2fe Update the config.properties
+c22d4d77 Update the config.properties
+a19daaee Shrink the size of the cache
+fea1fa0a Update library
+1f24bf56 Link new library
+e8d345fe Update the `MountedGlory` code
+072c30bf Welcome screen + mounted glory from 530
+4a73b62c Replaced MountedGlory options, but not visually
+50f639cc add some methods to IfaceDefinition and SceneryDefinition
+8e5644c0 Converted `ShieldArravPlugin` & `ShieldofArrav` to kotlin
+7081af95 Removed dirt from DimintheisDialogue
+5e874d34 Update gfx consts
+84215469 Update fishing contest
+ef867f89 Cleaned some holy grail & merlin dialogues
+9baf4d12 Fixed Ugthanki animations & Kimberly head
+c0cf2fa8 Removed archives and custom item definitions
+dcbfa616 Removed camera flick from Juna
+343d3aff Miscellaneous fixes
+80582162 Hope it will work on single
+aeb0a2cc Fixed imports, removed unused tool
+ad0f1518 Import fixes
+b3a42bc5 Update cache apparently I uploaded another
+e6f47b5d Rollback cache & mounted glory, can't make it authentic
+bbf6f581 Removed unused library
+e310e987 Removed few wildcard imports
+d6268976 Trivia for ogre and comp ogre bow when trying to light a barbarian fire
+147e9eeb Moved general shadows to new package
+d8c57d2f Removed custom messages and counters
+96592388 Split correct lines for quiz master (still not work)
+24e59bfb Klint format
+e2ce9b02 Increase the height of the cast graphics for milestones
+9de4ecd6 Added KDoc documentation to API classes
+3a8785ec Removed custom ring from item_configs.json
+69c40b58 Fixed import for AntonDialogue
+36797dfb Initial commit
+c2d537a0 Update README.md
+8402949d Fixed falcon glove config, typo
+6dbd0cd4 Clean & setting a lower fail rate for catching tm
+162b7b2f Fix toy mouse removal, check, and hope spawning behind the wall
+fb991379 Japierdole, maybe uid_map will work
+64059d83 Fixed & improved handling for toy mouse
+b6281825 Implemented toy mouse catching
+478eeb87 Improved The Dig Site dig messages
+fcbe3151 Added exception for admins
+aeea5c81 Added restriction when build mode is toggled & messages
+c1b53a5b Fixed ArmorStand, add RepairBench & Whetstone
+efd3b04e Added Cattleprod item configuration
+f2d6d635 Match AvaDevices rewards with 2009 data
+c9f1994a Updated ArmourSalesmanDialogue
+e6025713 Added some interfaces screenshots to refs
+7009b5a0 Added list of object types
+92b7e8b9 Dump commend for repeating models
+47e4ee15 Moved references
+e11f3edc Replaced taxi too
+2a31e957 Copied guilds from main project cause to many problems
+0c475a00 Ok bring back GemBolt
+87c142a5 Fixed fletch, rg iface brutals, reqs, impl barbed bolt + cfg, guard cfg
+8e24216b Improved crafting, fletching barb smithing, turn on range ticket exchange
+100542f5 Replaced the sending of the model with an item for drill re
+1a6778a3 Fixed bank ui update
+c2d8d786 Removed unnecessary refresh from BankDepositDialogue
+5c74d9fe Prevent save that dirt
+8ed5b757 Fixed CompostMoundDialogue
+af327b37 Removed varbit_definitions.json, CustomVarbitParser.kt
+7f3a7b63 Removed old interaction
+e85d5274 Stikklebrix's search, lock spy-on, obelisk, infuse animation fix
+de702a1e LogTypes for shadesofmorton
+91aae3e3 More dialogue hugs
+a401eb70 Corrected FairyFixitDialogue
+a7f9f564 Chop that dirty space
+73681996 Hug MasterChefDialogue
+06d53a1c Renames and fixes for crafting, fletching
+877fa0a5 Fixed ZogreFleshEaters journal, swap sending models for items
+870bd410 Fixed Spin animations
+92d9f405 Fixed fletching
+1b34448c Fixed gem cutting
+3df3db4e Fixed crafting rewards
+1343df66 Fixed Rug merchant
+d9b2e593 Added `RespawnPoint`s
+9da9734f That was dumb
+f4b65dae Fix golem stair anim, examines, etc
+cb42ce25 Fixed smithing lock, added ItemKitsCommandSet
+ac737c3a Fixed dupe, few NPE and added some examines
+bb4319a1 Update The Golem quest with details
+c9550494 Wrong paste
+3e1b547f Another part of Watchtower
+6b64562f Small fixes for display cases
+578ce5c4 Better handling for display cases
+3bd1d83b Fixed AggiePuzzleAreaDialogue
+64176ac6 Added Kudos overlay
+ee3922f3 Fixed last imports
+0e9f4552 Fixed imports, BarrowsEquipmentRegister, hug almost all dialogues
+686b5926 Update repository to 530-Constants v1.0.9
+bb674643 Hug those dirty lines
+1df9e35b Rollback Torrcs & fixed id for one display
+45c772ef Rename .java to .kt
+f40a8916 Authentic display case text split
+b8bf30b7 Implemented all Display cases
+2819d6ae Fixed Museum NPCs, dialogues, interactions
+ff3984c0 Added interface to iceberg boat
+b48ab909 Unblocking fishing spawn
+9e1acd03 Corrected ground spawns for jangerberries location
+8e01df57 Some work of WatchTower
+2b38407d Fixed MultiwayCombatZone
+525de91f Added Reborn warrior teleport animations
+4b81222e Small fix for In pyre need journal
+6fcb520a Small unfuck the cutscene
+1de2b07c Rewrote In pyre need, added tp to reborn warriors, some Watchtower quest
+1319720b Lock behind requirements the funeral pyre
+a66c3332 Cleaning
+5e8920c4 Fixed imports
+8439f4fe Some cleaning
+76ab5718 Immerse Barbarian Village
+d9d55e07 Fixed spin anim, perfectly shape interface, fixed typo
+85c7c2a3 Refresh bank, fixed item_configs for oak tree
+fb139b6e Moved references
+f26a4264 Authentic face anim for Juna, completed dialogue
+e6311a7a Improved LightSourceHandler, corrected Warning for Lumbridge dungeon, corrected zone borders for tog
+dbfe4631 Replace faceAnims for JunaDialogue
+da9f6ffd Update README.md
+b6f148df Removed tool run files, added run and build scripts
+1fc280a3 Removed ItemEditor.jar
+9286868e I forgot to add the event exit interaction
+632cdd8f Authentic score handling for Pinball event
+46f709fc Little improvement for Penguins
+010e66cf Converted Smithing & Smelting to kotlin after applied fixes
+ec51bc5a Improved smelting interface
+7c6878a1 Fixed GiantRatNPC
+9aee8a32 Second wave of Tutorial island fixes & improvements
+cdcb963e Fixed smithing interface, hide all products for tutorial island except dagger
+6e8303bd First wave of tutorial island fixes and improvements
+ff79e877 Renamed FireWarriorOfLesarkus to Leka dialogue
+c04ddfb2 Added Temple of Ikov attributes to GameAttributes
+78d7a94a Added JunaDialoguePlugin base
+0ec68dec Added tutorial prospect to MiningListener
+3fd2477d Added Magic stone to MiningPulse
+a8624478 Added Magic stone to MiningListener, attempt to fix destroying pickaxe
+b611d9fd Quick fixes for tog
+9ae826c7 Copied Tog
+42a4532b Moved activities
+a4af76a6 Fixed restrictions incorrectly applied to bronze tools
+5638e563 Separation of ContentAPI methods
+6cfb5302 Removed duplicated dialogue
+43995d3c Removed one more deprecated makeExtensionsImmutable() call from protobuf class after update
+95ac7d80 Removed deprecated makeExtensionsImmutable() call
+581bb30c Fixed typo in PetRockItemListener
+cb886fcb Prevent pet rock interactions during combat
+f3a6c97e Update dependencies to address 10 security vulnerabilities
+7943e4e0 Complete fix for the In Pyre Need quest
+2d03373e Fixed PhoenixDialogue NPC id, added temporary cutscenes bypass to complete quest
+ea455bde Removed duplicate BeaverDialogue, fixed few imports
+d8944a3e Restored accidentally deleted tasks
+95e4b631 Small fix for familiars
+9189ab4b Fixed harvesting twigs, added PlayerScore for Stealing creation
+1611f5ab Fixed removing & spawning NPC's in Phoenix Lair
+c054e0bf A workaround for spawning reborn warriors at Phoenix Lair
+bc2d53e3 Removed not working tool
+21cd8608 Removed duplicated region from Tutorial island, added more references
+c3ad6b46 Implemented In Pyre Need quest
+a2748077 Update README.md
+24ffdcdb Rollback archives
+7f817bc4 Added all trick or treat event items
+d9481814 Added quest transcripts
+ceedaed3 Constants update to current library version
+567ffabf Initial commit
+530b85c00 [Content #11] Added River Lum grapple
+2de2fb731 [Fixes #59] Stew rollback, fixed fishing guild doors
+e365bf6b3 [Improvements #83] Format
+97bb7a51f [Fixes #58] Spam on loading world
+c10cb2cc0 [Improvements #82] Renames to match package classes
+dbca13b6c [Improvements #81] Fixed cooking messages, requirements, convert MakeStewPlugin to listener
+0dd643530 [Improvements #80] Agility courses conversion
+fc0f60f23 [Improvements #79] Cleaned SeleneDialogue
+a88ce3893 [Improvements #78] Moved guides
+62d6db036 Update links
+da4fd48bb [Improvements #77] Format
+14891bb82 [Fixes #57] Fixed last commit
+870c8e2c2 [Improvements #76] Fixes
+fd3373659 [Improvements #74] Fixes
+6e49bd705 [Improvements #74] Another machine convert
+3b438cb33 [Improvements #73] Adjustments
+1a69f6018 [Improvements #72] Machine conversion
+cc86722f8 [Improvements #71] Removed next DialogueBuilderFile
+6777a0a5e [Improvements #70] Removed ExpertDialogue.kt
+819cdcfbc [Improvements #67] Converted to dialogue plugin
+3d68b1f08 [Improvements #67] Can't read that crap
+0688e9b61 [Improvements #67] Nvm
+c1f99fd95 [Improvements #66] Typo?
+0980f4d07 [Improvements #65] Converted DialogueBuilderFile to plugin
+0a3b57966 [Fixes #56] Converted Professor Henry dialogue, unfreeze the dialogue box, renames
+7cd7be1e7 [Improvements #64]
+deae05973  [Content #10] The Restless Ghost cutscene + conversion + fixes
+505430c84 [Improvements #63]
+76b5c2728 [Fixes #55] Corrected Enchant jewellery anim and gfx
+c8ecf0e0d [Fixes #54] Adjust lock delay
+9379ed1c3 [Fixes #53] Corrected graphic and animation for reading dossier in Black Knights Fortress
+8b3b12d3f [Fixes #52] Corrected NPC Id for GarkorDialogue
+a36f8631f [Improvements #62] Some quest classes moved from handlers
+3053a02dd [Fixes #51] Combining all Garkor dialogue files into one plugin, misc fixes
+4ccb21985 [Improvements #61]
+d654bc991 Merge branch 'test' into 'master'
+12c3fa2ad [Fixes #50] Conversion & Dialogue fixes
+89bedfa42 [Fixes #49] Unfreeze Ned dialogue & misc
+f3f1bbf84 [Improvements #60] Better naming + format
+a1b0271dd [Fixes #48] Satchel fix - prevents losing an item when we don't have room in our inventory
+b3f72102e [Content #9] SatchelItem but the jug code
+3e5e11063 [Fixes #46] Tea flask
+46c24fb5b [Chicken #1] Tea flask uses charge item system to prevent stack
+e2657438a [Fixes #45] Removed trash
+833a65569 [Fixes #45] Fixed barbarian smithing
+32661dc9e [Improvements #59]
+8621cfc5b [Fixes #44] sending strings separately for the two opt in `sendDialogueHandler` interface
+ee4af6820 [Fixes #43] Messages
+b8df38c75 [Improvements #58] Messages
+a10f3f648 [Improvements #57] Beckon enchant emote
+ee004d175 [Fixes #42] Imports & Fire pottery
+fc09f5778 [Improvements #56] Fixed core issue
+e20ab8162 [Info #6] Rename some enums
+d8ad013fa [Improvements #55] Gunthor Brave & Sigurd full dialogues, clean imports, fixed typos
+c12327d5f [Improvements #54] Dialogue fixes & miscs
+f5c1307b7 [Improvements #53] Lost & Found office small update
+9832f23f7 [Improvements #52]
+171e22897 [Improvements #50] Added two music ids to be unlocked in cc dung
+4257545bc [Fixes #41] Restore pom.xml from before the last commit
+8561ddb99 [Improvements #49] Assigned resources to satchel, fixed pickpockets interaction for guns and desert phoenix & miscs
+e5d7b3ad2 [Improvements #48] Added ktlint plugin & format
+4ea143897 [Improvements #47] Emotes
+bbe0f9ada Rename .java to .kt
+0386d2b16 [Content #8] Fixed Beckon emote while wearing builder stuff
+22517ccbe [Content #7] Re-added Tower of life base
+e5fe25339 [Improvements #46]
+01008e80d [Fixes #40] Bug fixes for creature creation spawn
+9ac2856b0 [Improvements #45] Corrected message for summoning-free area
+0ad555ef2 [Improvements #44] Clean
+7e686eb66 [Improvements #43]
+03dd505cf [Improvements #42] Dialogue check
+48310c70e [Improvements #41] Replaced CombatRingActivity & CombatRingZone with CombatRingActivity
+6c2667b2c [Improvements #40] Combat Ring zone skeleton/base
+97793b08b [Improvements #39] Lock house setting tab outside of house
+7f5d0c777 [Improvements #38] Brother Jered
+b001478a1 [Improvements #37] Interfaces update
+f3288b85f [Improvements #36]
+6443e7ae8 [Improvements #35] Removed flash icons from objects that should not be marked during tutorial
+f309de415 [Info #5] Renames
+d46d81d7d [Fixes #39] Build & Ladder objects
+62441b998 [Fixes #38] Defs
+4e7e73bed [Improvements #34] Corrected location of home teleport / exit from tutorial island according to https://youtu.be/HMYJjrX5gtI?si=PfYnPal7h3js9skr&t=505
+13ba794dd [Fixes #37] Fixed build
+1f393d581 [Info #4] Format README.md
+2bc27c7ac [Info #3] Hide library badge
+c0ec7e91a [Improvements #33] Converted some java classes
+6e827dd96 [Fixes #36] Temporarily replaced cache to last change
+858fb6c65 [Fixes #35] Fixed region loading, and mainly problems with POH
+32adf91b9 [Authenticity #1] Untouched cache
+8288077d1 [Fixes #34] Tutorial island
+5c6b637b5 [Fixes #33] Ladders, duplicates
+1b7b9c30d [Improvements #32] Added werewolf guard dialogue
+067b2ca32 [Improvements #31] Werewolf agility adjustments
+aa2def89a [Fixes #32] Replaced teleport type for mounted glory
+52f2a4034 [Fixes #31] Fixed Mounted glory teleport, removed `MountedGloryPlugin`, adjust time of hide minimap while using home teleport
+662f43072 [Improvements #30] Hide dev messages for regular player
+e27d55e8f [Fixes #30] Fixed not openingable doors at poh
+891e3dba1 [Improvements #28]
+10a83df6f [Improvements #27]
+66f4daad1 [Improvements #26]
+621cee00f [Content #6] Added Penguin dialogue
+a5d677130 [Content #5] Added Gecko dialogue
+f1886d83c [Content #4] Pet dialogues base
+d3246d938 [Fixes #29] Completed impl tutorial end stage
+930a950c8 [Improvements #25]
+0b66f7744 [Cache #3] rewrite tables
+e617d08b9 [Fixes #28] Some adjustments, I will test it tomorrow
+cfb3289b8 [Content #3] Authentic tutorial endstage (23.03.2009)
+37ae1940e [Fixes #27] That's how it is when you never test, But slowly, everything will be fixed
+a87df097c [Fixes #26] Quick fixes
+3c3f84354 [Improvements #24] Fog rewards
+d0fad466c [Fixes #25] Fixed build
+19f0a033b [Improvements #23] Replaced some magic ints
+0a7a3d936 [Fixes #24] QuestTabInterface
+ed712da15 [Cache #2] Cache repack
+f15483ffc [Cache #1] Cache repack
+b91461c73 [Fixes #23] Fixes for previous commit
+a0cb1bc17 [Improvements #22] Puro-Puro
+52b398e15 [Fixes #22] Removed custom items from cache
+fc117e692 [Fixes #21] Bedroom POH furnitures, warnings
+af2960255 [Improvements #21] Full dialogue for `GoblinVillageDialogue`
+3fce7355d [Fixes #20] Now Elnock interface, I guess I'm retarded
+482a073a1 [Fixes #19] Impling scroll + added `inZone` function to ContentAPI
+2606c1fd0 [Fixes #18] Impling scroll
+29d81dcc7 [Fixes #17] Elnock Exchange & dialogue
+9b721348b [Improvements #20] Clay golem post-quest dialogue, fail for desert phoenix
+fac78ea12 [Fixes #17] `QuestTabInterface` & `AllFiredUp` journal
+2cb9a2686 [Improvements #19] Improved interaction with coffin
+7cbef2362 [Improvements #18] can't exit the basement for a while
+8ce95221a [Improvements #17] Count Draynor & Coffin animation
+ac4eae19f [Fixes #16] Fixed ghosts npc at taverley, all fired up journal
+da9db3154 [Fixes #15] Removed custom Ring of wealth
+2b99a51e1 [Content #2] King Lathas' Weaponry Shop
+a69c24577 [Fixes #14] Replaced ItemEditor
+358ab2d4e [Fixes #13] Fixed throwing balloons
+6e4134025 [Improvements #6] Hot Air balloon
+0532edc16 [Fixes #12] Removed the error caused by multiple registration of the same type of event for a scenery
+9071beb31 [Fixes #11] Fixed cc activation, infinity spawn
+1686ca7be [Improvements #5] Improved enchanted key
+7a630ca26 [Info #2] Update readme
+27eab31e8 [Info #1] Update readme
+2f02871fa [Fixes #10] Fixes & completed impl of creation creature
+2c0a077b9 [Fixes #9] Quick fixes for creature creation
+f73eb83ba [Content #1] Creature Creation
+44373ad90 [Fixes #8] Authentic mounted glory
+ec2004ef2 [Fixes #7] Undo the deleted class and overwrite the listener
+88744c35a [Fixes #6] Patchy dialogue, item ids
+93c081a5d [Fixes #5] Quick fixes for previous commit
+12a961844 [Improvements #4] Plague City & Biohazard & Cat sale
+8ed4bca8d [Improvements #3] Bot
+a7ed3ec75 [Based #1] first approach to prison pete interface
+92eb2ad40 [Update #1] Added omitted varp trigger for shoe selection
+169eebe06 [Improvements #2] Replace magic ints with consts in world event package
+ccb1feecd [Fixes #4] Welcome message
+4b1910cef [Fixes #3] Slayer Master
+1ebf3b9ef [Fixes #2] Karamja
+c98280f83 [Improvements #1] Karamja
+c65ba4168 [Fixes #1] Shilo Village
+6d14ad02f Improved Cairn island shortcut using authentic source from 2009
+0099560e8 Correct fall location for `RockClimbShortcut`
+90bcd78e2 Added requirements for Cairn Island shortcut, fail attempt (formulae was taken from the library at hogwarts)
+b3c84ae7d Improved CaptainShanks dialogue
+84c7af8d8 Fixed Spirit tree interaction
+79607ce6f Added `faceLocation` function to `ContentAPI`
+043d5afdf Improved some dialogues
+ca9e745ee Merge branch 'cache_classes' into 'master'
+c762040e5 Converted cache classes
+ed86ef620 Added burned message to cup & bowl of hot water
+82b33919f Added loading screen when entering the house
+caced2eb3 Improved `BuildInterface`, which shows whether we can afford a given room or not
+cc4bac65e Replace `Pulser.submit` to `submitWorldPulse` Content Api function
+0d1732bdd Improved last commit & added special case for slaying ring
+57f3899f7 Fixed enchanted jewellery use bug, messages
+cac969607 End `TeaSellerDialogue` after interaction with
+5f1ef9f61 Fixed two locations ladders at Tree Gnome Stronghold
+e84793bdf Removed the news announcements, lock selling stolen tea
+6c12430cf Earlier unlock the default tab
+3d6600103 Fixes for `RugMerchantDialogue` & `RecruitmentDriveListener`
+8518cf5af `ChairBenchPlugin` to kotlin
+a1cd27466 Removed `ConstructionInterface`, fixes
+4825ab037 don't know what i'm doing
+eb9c92af4 Nargles again
+1e9df9780 Added hot water to `Cookable`, Added bas guthix rest tea handling, miscs,
+dc0128cea Relleka, tutorial and configs update
+8b9023f8f Corrected 219 iface type
+f9446a2d4 Welcome screen upgrade
+31f8e649c More cups, update tea stall & tea seller, tea shop and more
+040328df9 Another cooking moves
+e32418ba8 Improved nettle tea creation (part 39), corrected product id in `StandardCookingPulse` and examine for nettle
+0cd4ce891 moved cooking recipes
+dd5653b41 Improved interactions related to the creation of nettle and related tea, added burn option
+2a71fadf5 Handles pouring the hot water
+4b684548d Fixed typo in `SkullballBossDialogue` and `WerewolfCourse`
+a27fbdf05 Fixed uninitialized property access exception caused by invalid session initialization
+e9cc09400 Added Herb tea item examines to `item_configs.json`
+9b8021499 Cleaned `FacialExpression.kt`
+140747b3f Fixed facial expression for Chaeldar in `EnchantedGemDialogue`
+7c79b431c Fixed / Added a lot of slayer task tips
+373f07c13 Fixed weird player bouncing when an item was used on an npc
+0e903ca72 Fixed ZygomiteNPC, added refill spray interaction, fixed npc animations
+e5138f3a5 Fixed null
+6dfa14917 Wrong project
+a142a6ef6 rs2emu/game-server!12
+d6742bf90 Added `FeatherHeaddress` gear
+c807e248e More work on pottery messages, cleaned charset implementation
+adf039e7c Improved message for firing pottery
+de4982842 Fixed Pottery crafting
+6a7625654 Fixed requirement check for chaos temple trapdoor
+cd50e424a Make sure the player cannot die doing the knight waves
+1c21e6ec6 Improved action handlers, misc fixes
+9b91a5031 Fixed Lava maze doors, removed `WildernessPlugin`
+c283c8a22 Improved some dialogues
+e59465589 Restored an earlier deleted plugin
+971925268 Fixed DDS special attack animation, wilderness ladders, removed inauthentic content
+00665d9cf Removed lock from first stages at tutorial island
+c4e0c7296 German invasion on `DragonSlayerListener`
+a003a4b66 Removed `CrandorMapPlugin`, Fixed few interactions, typo, etc
+f8468fb76 Fixed weird bug
+8177d691a Removed dialogues referring to the purchase of the 2nd bank
+68a8ab299 Cleaned mta docs
+6debdb5e3 Fixed build and tests errors
+64afc74ed Removed `SkillcapePerksEffect`
+d61f41a09 Removed `RunecraftingEquipment.kt`
+765bb0ffe Slight improved in interaction with mysterious ruins using staves and tiaras in the sense that it now works although not yet as it should be
+04666d256 Interaction with blood altar no longer spam errors,
+8ceb6f62d Added chat phrases to Cave goblin miners
+2cb4e5ea4 Fixed equip sounds for rc staff
+b0b7d11d9 Added rc staffs to `item_configs.json`
+ce5f105a8 Fixed `TalismanStaves` enchanting, runecraft messages
+7ce018422 Rewrote `TribalItemListener`
+37428676d Replace `pulse` with `queueScript` in `SnowGlobeHandler`
+4b925dfcc Added Seers headband to `LightSource`
+27e8017d9 Update `CadavaPotionListener`
+b348082d0 Clean up before runecraft refactoring
+5158b460d Clean root files
+9fd5963b2 Rollback changes made to the cache
+374d90fe2 Removed custom sprites, models, items and idx28
+125ba2c01 Update `README.md`
+338154da7 Update README.md
+45cf747f9 Fixed & added some examines, destroy messages to `item_config.json`
+484afbf7d Fixed all crafting operations
+187c9995a Added `sendAnimation` method to `ContentAPI`
+34e3fed41 Rename classes to match 2009 sources
+c0f94d7de Update `README.md`
+ce9a41ad7 Converted `RovingElves` journal to kotlin
+414190f03 Renamed classes related to Gnome glider
+38ad01355 Fixed quest requirement in `GnomePilotListener`
+e9b858d7f Fixed typo in `Ship.kt`
+4b5adab24 Removed Skippy NPC from tutorial island
+a785398a6 Converted `WeightedChanceItem`
+136e85cf1 Converted `WeightedChanceItem`
+44a31f59c Added `sendInterfaceConfig` method to `ContentAPI`
+885869e3c Fixed run configuration for config editor
+a0a7a1648 Crafting slayer conversion
+29cecb644 Rename magic classes
+d294bae75 Update `README.md`
+d1e919610 Update `README.md`
+45c8f587a Update `.gitignore`, Removed Frostys Cache Editor
+0074ec70f Update `README.md`
+8df46fc17 Added `sendMessages` method to `ContentAPI`
+040220122 Fixed tests
+59daf104a Merge branch 'removed-customs' into 'master'
+d1cc666bb Removed star ring, slayer re-rolls, content not related to 2009
+eb09406ea Lock commands for sure
+cb20f18ba Fixed `MagicTutorDialogue` stages
+d920dcf40 Removed ability to choose gamemode, xp, etc
+83b1aaf96 Sled upgrade, other fixes;
+f7a5ae3bc Authenticity is central to the work
+ce4f01121 Fixed errors in `item_config.json`
+23ebd0739 Fixed errors in `item_config.json` that allows to wield items via the stats interface without that option.
+f4ad9154a Replaced `CoconutMakePlugin` with `CoconutListener`
+eb2989539 Removed wrong weights from `item_configs.json`
+bd161a3cd Fixed weaving display items
+4917d1460 Fixed snelm crafting
+238ea7937 Refactor Snelm crafting, fixed ids & examines
+4a16df92d Removed interaction listener from interface
+690a9414e Split then unify silver/gold casting, fixed/added  authentic messages
+aa216e95c Removed LeatherCraftingDialogue.kt
+b0e954ecd Removed unused code
+a24aa7642 Fixes for crafting, others
+da438a22f Start fixing crafting
+f661f7466 Merge branch 'xa1' into 'master'
+d6aa9c782 Replaced quest names
+3afe5493e Update README.md
+8c755c12c Fog gloves & brawlers to kotlin
+f6838a6d3 Cleaning the src replacing old java code with api methods
+ee2f9d8ee Removed miscellania shortcut access from right side
+33126e7f0 Replace item with int
+0cc50161c Guam in the box, tar listener
+222fe02a8 Replace slayerTowerPlugin with SlayerTowerListener
+e7affe8d5 Rename .java to .kt
+84ef38eda Update README.md
+2152db68f Update README.md
+fb19b698e Update README.md
+dda0f4c06 Fixed animation for wall safe
+bb480fcdd Update README.md
+faa0fe5a9 A5
+9168ca6d3 Update pom.xml
+ee49cb53b _
+9508c7e7c Test AI ass
+ea08fedcf Fixed few tutorial island stages
+829ac7a89 Fixed few tutorial island stages
+df2ff67fa matching dialogues to source
+44632540f Added missing stage, dialogue, using a previously unused stage
+4b4245253 Addition from a friend
+a8ff3cfa7 Use correct c loaders
+b5aa5ede5 Checking if it's worth the effort
+6fb3a2ca7 Merge branch 'project_overhaul_3' into 'master'
+1c7970b1c Merge branch 'project_overhaul_3' into 'master'
+a2c323a43 Replaced quest name string with constants
+85deb1c9a Replaced quest name string with constants
+d5418926e Unify class names
+43786df86 Unify class names
+2e5a8638c Git lfs
+5cfcb4a05 Crafting & fletching overhaul
+11d7f7a54 Crafting & fletching overhaul
+37828c2f9 Refactor Phasmatys classes
+5eee6abb8 Refactor fletching data str
+cd937e9c0 Initial commit
+2009b0059 Merge pull request #1 from szumaster1/dependabot/maven/Emulator/org.xerial-sqlite-jdbc-3.41.2.2
+628fa8349 Bump org.xerial:sqlite-jdbc from 3.36.0.3 to 3.41.2.2 in /Emulator
+5da1cf8a7 Added LICENSE
+e94bd912c Added README.md
+c9ae272dc Fixed spawns
+737582272 Adjust docs
+1d7a5654c Adjust fletching related classes
+3c55865d9 Rename reference guides
+46ecb6e9f Complete skill repacking, removed erroneously generated docs
+8a61d9a27 Massive repack
+eda4238a6 Fixed Evil twin & Kiss the frog random event
+0ec56eda1 Adjustments
+1655e5eb4 Adjustments
+c2a4d6fbd Adjustments
+1a366a5f5 Clean decorations, added more npc examines
+31606da7a Fixed interface lock after random event
+e90c03c65 Rollback MysteriousRuin
+36aa69c56 Converted Jungle potion journal, update MysteriousRuin
+97397279c Improved the CoalTruckListener
+e4d9b5c09 Fixed item ids after removed seers headbands, update coal truck code
+aae9b66d9 Update pom.xml
+92b0cf2df Update imports to match new lib
+01e5a9734 Update library
+6335bd461 Shortened guild names
+8f8ce6a09 Fixed typo
+160041ea1 More fixes
+7943d2313 Small adjustments to previous commit
+b9bf434f0 Small refactor of hunter skill
+ae60a8cff Fixed typo
+893faf485 Fixed typo
+600bd150d Fixed SnowZone that not worked
+dca0a26f8 Summoning cleaning
+5d61997e5 Removed generated docs, and adjust them
+55ff6a7b4 Update dependencies
+6b90fb15b Fixed proto
+e6ad17ef8 Fixed imports
+67f3a6741 Fixed typo
+1aa66450d Simplify docs
+74e9d5a63 Replace sendInterfaceText method name to sendString
+0bfd4e8c7 Removed repository layout from pom.xml, Added Fremennik diary info
+6055132ea Hide minimap for minecart travel
+ca3930c34 Fixed quest journals
+1de0c5563 Removed useless comments
+aa57b3eb0 Removed useless comments
+55bda8758 Fletching code refactor
+13542c329 Fletching code refactor
+4bc5c0496 Initial commit
+102b770ca Initial commit
+65f648e9b Initial commit
+2ac428789 Initial commit
+ca56d96d4 Initial commit
+d67e2ac6b Initial commit
+4cd95e4ea Update cache editor
+01fe35c91 Update cache editor
+ab9432cce Charters, servertools, altar conversion
+a462f2a94 Adjust pom space
+f56327349 Reorganize warrior guild package
+7db779184 Fixed docs, some work on rc, herb, smithing
+250815135 Fixed reward for Prison pete, rc pouches
+d20340f5f Fixed bugs related to runecrafting skill interactions
+22a1c280b Reorganise Biohazard quest package
+26d0f19ec Fixed Zogre flesh eaters
+834be54e4 Fixed getters
+2234ae65a Cherry-pick revert summoning conversion
+0a606b162 Cherry-pick revert summoning conversion
+8249e4d3d Replace constants-0.0.19.jar
+58f280159 Update pom.xml
+6e3397c00 Update 2 files
+4c278c603 Update pom.xml
+6243feab5 Summoning conversion
+040f4837b Fixed chest interaction at champions' guild
+e2fe8fd51 Unique interaction for champions' guild (code probably is wrong but authentic anyway)
+cd4714a31 Fixed Champions guild message, player required at least 33 	33 Quest points
+ab10457b5 Rollback MovementPulse caused npc get clogged
+731259575 Converted pickable door handler to kotlin
+a1acd2d48 Fixed looping the interaction to the last log as in the original
+446c0db1c Removed split log plugins, fixed fairyring typo everywhere
+ff4814a7a Update sophanem & desert dialogues
+38f32ed41 Rename for some classes
+01ffd2f51 moved constants from library to libs
+002934fb5 Fixes & Improvements
+f15a2c3fa Fixes & Improvements
+9d0dca7de Normal to instant tp for command
+9c601e3f8 Removed unused, cleaned CatBlanketListener
+87c7e4444 Removed duplicated chat
+8187cabc6 Implemented cat blanket space
+a62518618 HouseManager class docs
+ba872cff4 You cannot bring a familiar into your house in construction mode, but you could summon inside
+ca6da958c Npc renderer fixed
+471db498f Fixed SceneryManagingPlugin
+3c0b88624 Removed CatBlanketListener, CatblanketNPC
+21d2f53aa Transcript update for Giant Dwarf
+7aa0bd34f Some work on cat blanket space
+1a745c7a1 Pet examines
+a8b889260 Added Raccoon & Squirrel dialogue
+1aa4b340f Removed screenshot from README.md
+f538b3b6c Added comments which are pointless but separate every function so that they are visible, at least to me
+56448743b Update the Necromancer npc
+932c9b656 Necromancer tower update
+d93f30845 Improvements on spawning zombie by Invrigar The Necromancer
+8ffdc03ef Small improvements & fixes for Biohazard quest
+eaf0a67d2 Fixed Lost City quest journal
+39eb87491 Fixed imports
+2055230f9 Some clean
+cb12c397d Added/Corrected few examines in npc_configs.json
+20096181a Docs for consumable
+71f78e2bf Not implemented quest journals to text files
+8f0d39b73 Improved last commit
+d212b34a1 Small rework of Black Knights Fortress
+87c1f7a4d Corrected title of bank assistance interface
+aee655a18 Fixed bank assistance title
+230b72dbf Added Player dialogue with Postie Pete for two locations + corrected Varrock spawn point
+7e1706c41 Fixed last stage for knight waves
+969cec18c Forgot about rug
+acc4eae20 Fixed typo in README.md
+6c0ec7b88 Added comments, fixed typo in litara dialogue
+b663bce13 Comments up
+240ce96b6 Cleaned con and consumables
+68b42c2e7 Fixed typos in mm dialogues
+30bdc3a3e Cleaning, fixed random roll for some dialogues
+7581e89f3 Cleaning, fixed random roll for some dialogues
+6c7e85b09 Fixed wildy gate, converted Rug Merchant
+f7eb29a7f Fixed dialogues, renames, improvements
+f93e24de2 Fixed combat pulse
+349637317 Fixed combat pulse
+514c0c723 Implemented Khazard Battlefield
+7c8c66c96 Fixed imports
+cf7dfc63f Replaced dialogue file with dialogue
+123142001 Replace deprecated code
+0eb2ba8d8 Update combat pulse
+970f90e96 Added dialogue to mourner near the gate outside plague cty on the west ardougne
+b2d0797c3 Another doors were swapped to fit together
+8a3f15a4a Fixed doors, of course Ceikry fault, humph
+00bb4e5c7 Bring back the door config
+92a824b4f Removed door config, doors work without that fucking trash anyway
+c2073acf9 Rollback door_configs.json
+b3099dc00 Fixed few dialogues, Added Hengel and Anja to pickpocket npcs
+a90f14e99 Fixed few dialogues in Burthope
+db8285092 Removed custom exchange
+4195d707b Renames
+925599020 Fixed Rune Mysteries quest journal
+7431069d4 Fixed consts version
+58336fbd0 Converted some construction class, equipment interface again
+7527435be Converted some core class, fixed equipment interface
+0fa9f1711 Fixed a bunch of Keldagrim dialogues
+7cbdd9f79 Update lost tribe, removed PickaxeOnRubbleHandler
+d1b764ef1 Upgrade the Rune Mysteries journal
+8d73701fc Removed Edgeville node plugin
+1f2dd59c7 Saved Rune Mysteries journal
+080e1928d Restless Ghost conversion
+ca41c70fa Witch house conversion update
+94cff7b47 Fixed naming
+70f9d243f Fixed star sprite spawn in Yanille
+3d05dd0b2 Fixed Wise Old Man dialogue
+7e151d77f Update README.md
+efd9a8928 Rollback RC shop to the form in which it operated
+9f863c59c Fixed use of spray on Zygomite $wagg & YOLO, Added exceptions for rcshop although confirm does not yet work
+5e302f708 Update confirm purchase for rc shop
+4add77304 Fixed id for using spray, Added confirm purchase for rc shop [still draft]
+d8e805b88 Cleaned config.properties
+aac9c2289 Replaced animations (still incorrect but don't damage eyes), Removed message spam
+8ae2746d4 Fixed picking Fungi interaction
+0c6f0c0fc Added all fungicide spray items for use on zygomites
+e4fa52e6a Improvements & Fixes for Fungies
+4a49913fa Added Fungi & Zygomite slayer task NPC
+df4f9b9dc Nevermind
+3fbfbf882 Save journal for Rocking Out
+05a346942 Added Rocking Out quest to Requirements
+56ecd76d4 Prevent escape from graveyard with coffin in inventory
+7ad9b7484 Random event fixes & improvements
+a38b3e48c Cleaned gravedigger utils etc
+88517d554 Re-added grave listener
+1d921097d Improved Gravedigger interactions
+ff347b4c7 Improved Crest types
+11b952edf Improved handling the Ernest The Chicken quest
+993a2d7df Fixed lever config calculation
+074eea8e2 Converted Ernest the chicken to kotlin, fixed journal
+cdc1e635d Fixed last line of Goblin diplomacy journal
+28e664133 Jatix dialogue upgrade
+a4347ec3f Fixed few dialogues, update and fix witch potion journal
+301d4f956 LongbowBen dialogue update (added missed stages, fixed typo, etc)
+70c30a0ef Fixed Grum, update Klarense dialogue
+8437f041f Converted and fixed Goblin Diplomacy quest journal, update grubfoot dialogue
+2157dc2e4 Moved some dialogues into different packages
+3e230276e Bring back Skippy to tutorial island
+c528999d9 Removed Tutorial NPC from cache, added Skippy as replacement
+8ca338fe8 Removed that fucking dialogues from lego marvel & converted workshop `plugins` to `listeners`
+35193ddf3 Rename HamDialogue to HamMemberDialogue
+a7c4440b2 Harlan dialogue update, rename tutors package to tutor
+8d99cbb7b Redeployment of packages to the target location
+a0a48ab22 Consts for traweler
+53466cafe Fixed three docs
+c794c2c55 Refactor diary dialogues, misc
+1db3d0747 Change the title appearing in tutorial guide dialogue
+ac6099db4 Cleaned crafting data
+9a2085a2c Removed or replaced or reworked the docs for fletching
+5f7f6e4fd Fixed prayer lock
+ba258e954 More fixes for Knights waves, Fixed Poison chalice effect
+d9f01afd3 Fixed & Upgraded Knight's training area
+f9e1eef2b Lock chivalry & piety prayer under complete Knight's training, lock prayer in miniquest area
+5bf8fe181 Update and improved Poison chalice effect
+3213bea1f A dialogue that deviated from the authentic one from March 2009 has been fixed.
+c674eb52f Fixed imports
+fb974dfd3 Relocation of classes that are in wrong packages
+7ed4c1c0d Relocation of classes that are in wrong packages
+d54ef8171 Restore pickpocketing requirements for earning an achievement
+03416b311 Before introducing a check to see if the player has successfully completed the activity or not, I revoke the thieving achievement claim from new system
+afe481dcf Fixed music saving
+fd4cce43c Fixed imports
+8bf8c9c44 Update README.md
+5c509b058 Converted definitions, refactor quests packages
+7041714a8 Lock jump between wilderness ditch, added more lock functions to ContentAPI
+509b23bd7 Fixed CI after reorganisation.
+569fa4248 Removed the lock that was when a player closed any door in a given location in remington, and inside plague city
+3b3c7cc99 Merge remote-tracking branch 'origin/master'
+895f6f456 Improvements & fixes
+8ae387a5f Improvements & fixes
+51bd66498 A huge amount of dedicated hours with unquantifiable results.
+a0bffdc09 Grizzly
+5c830d097 Removed TutorialZone.kt
+112670f25 Fixed Tutorial guide
+9862f8711 Removed npc package
+ee9bbb0b3 Renamed directors package to politics
+e53b8396a Match quests with location packages
+2973c5ff6 Licenses for offline pages
+afc72c419 Stop tracking cache with Git LFS
+262c7a9d8 Added quest complete interface references
+446e2454e Rename module
+e10e199aa Completed renaming quests
+cada8642b Reorganisation
+f96bf632a Reorganisation: asgarnia
+4cb5ce95e Reorganisation: fremennik & forgot
+d010f1f1d Reorganisation: misthalin & morytania
+47ad667b4 Next stage of misthalin region reorganization
+51420ee4e Bump java version to 19
+55a63c0fc Merge remote-tracking branch 'origin/master'
+782350d45 Complete now
+c86b6ef87 Varrock package complete
+4419f0a32 Dokka for 1820
+a535f0c09 Continue sort the region content
+5be110eba Start to sort the region content
+99b764a85 Fixed typo
+5a15b05ca Represents i szyny byly zle
+65d1f9de3 Fixed transform the KnightNPC. Moved barb training pulse for smithing to the right package
+163b73df1 Converted SummoningCreation & Creator, scrolls, Removed restrictions from Og'glog & Shipyard, fixed few dialogue
+af4b907b7 Add command set comments
+d15047945 Project reorganization
+8239b394d Project reorganization
+cfbbf7a0f Another part of the project reorganization
+e9d347919 Rollback changes for the Roving Elves Obstacles and fixed only the direction bug
+153a10c3f Simplify Roving elves obstacle plugin
+6792a2907 Fixed imports
+c5bd6dc49 relocate dialogues
+9e28866c2 -
+b6ecf769a simplified & renamed & clean some data
+55136002c Forgot to make Squire move
+5893b5e56 Cleaned comments
+5ffaf03ea Knight Waves upgrade, everything work as expected
+32803c87f Renames, removed lot noneeded hashmaps
+d9d58ca0b Training Ground base
+4210a517b Merge branch 'refs/heads/rd'
+f53663b52 Match package
+461bbfb2e Refactor Recruitment Drive quest
+0026b3156 Completed and tested
+608c24669 Rollback the message that I was think is inauthentic,
+81f55408c Removed inauthentic message
+f73714e97 Removed duplicate config from quest class
+1f5c46ae7 Removed unused imports
+77c12aaf6 Improving basically everything, although it will be easier to rewrite it already, we'll see
+9967d6354 Refactored Miss Cheevers room but no time for tests rn
+045fa5a77 Bookshelf interaction fix
+e032d1415 Miss cheevers & Fixed Lady table
+f62eacc8b Slowly reimplementation of my old RD classes
+42ee1163d Fixed typo in Slayer reward plugin
+4c1c8056a Fixed typo in Nature crafter script
+fd07e3f4a Added missed messages for Nature spirit interactions, fixed inauthentic ones
+8565b795f Corrected filiman dialogue, sort consts in Nature spirit listener
+2434b1293 Generate docs for Nature spirit, some renames and improvements
+c4ce1a191 Unlock Akharanu dialogue, enabling open the conversation in various cases, fixed NPCs id, typo in robin dialogue
+6bb6e40c5 Phasmatys improvements & Fixed Ghosts Ahoy interaction, dialogues
+38dd7c2e2 Fixed ZogreFleshEaters journal, Juliet dialogue lock, Rename and replace Eniola bank interface, fixed typo for other classes
+3c801e0a8 Oglog fixes,Chief tess dialogue, Removed duplicate interaction with Errdo
+0985b5a49 Fixed travel by Gnome Gliders
+ebb6194bc Shantay plugin to kotlin, renames, ints to consts, fingers shop
+9537959eb Upgrade shortcuts, converted to kotlin log balance, desert wall and fence jump
+e4d6cc791 Improved Ardougne log & Alkharid pit shortcut
+ca22a5301 Fixed lock in TunnelShortcut which allowed the player to move around while performing interaction
+fc4ca849d Refactor Watchtower shortcut
+b72cd613f Seer lock interface update
+ebb180652 Improved Smithing emporium interface
+fc9ee3420 Removed unused lines
+54f706d78 Fixed Wizard elriss dialogue
+dd969172c V2
+06875bb3b V1
+5d2084db1 Moved some of the classes to where they should be
+8959c6b7b Rework the construction scenery interactions for barrel, blanket, larder, shelf
+6abb648ce Added BookcaseListener
+616528618 Unlock WLB
+709a41cfa Improved a little displaying the Barbarian guide pages
+91b25aa90 Misthalin quests upgrade
+4d50c2fb6 Added library
+012f44849 Added library
+062151793 Fixed hidden trapdoor interaction
+1cfe18479 More guides
+f6dc3f138 Guides
+1248e9a42 Docs
+309eead87 Removed duplicate interactions
+04fb2a78e Desert treasure quest
+3dd726ecf Improved docs
+7e6f24b04 Improved docs
+914215983 Improved docs
+f4b8a3805 Improved docs
+3a5b7f0ee Fixed tests
+f8f664d0d Fixed tests
+22f1d7b21 Clean up files, fixed tests
+6cc8eb0ef Cleanup the docs
+c72b24a29 Cleanup the docs
+87f45701d Heroes quest
+151c7c7b4 Fixed Hunter NPCs
+f83121d4a Fixed Tests related to Random event
+2355119f5 Rename dumps to reference files
+801db2c40 Rework the Tutorial Guide NPC
+3e420b46f Docs
+a2ded1497 Docs
+6cf21d488 Docs
+ef6015f7b Docs
+1a29488d1 Docs
+0ec9bddfd Docs
+272a17a4a Docs
+2b1c0617f Docs
+947cc7331 Added Blue dragons to chromatic class
+9d8f03cba Fixed randoms
+d107d8ece Fixed Karamja zone
+20b3b182e Fixed teleport problem
+9bccf1eb9 Dialogue docs, fixes
+519084d64 Stronghold of Player Safety & Docs
+f24144351 Container fix
+56518e5f3 Zanaris shortcut improvements
+8d3caf4be Fixed messages in firemaking class
+ff9b44155 Fixed barbarian firemaking method
+32d2a3f6d Fixed firemaking
+fad22de6b Some docs update
+c1c9ceeb6 Hopefully fix for lighting fire from the ground
+9d8fb4891 Fixed randoms
+c5af3a29c Docs
+f9d170b20 Rename .java to .kt
+7a08cc057 Fixed activate bug with Enchanted Gem
+b3760f72e Removed unused command
+ede2164eb Adjust docs
+1c2a589a9 Fixed build
+66a79198c Clean up classes from custom spaces etc
+ba8a881d6  {     "npc_id": "2489",     "loc_data": "{3703,3040,0,1,3}-{3706,3051,0,1,1}-{3664,3013,0,1,7}-{3749,3000,0,1,6}-{3723,2998,0,1,2}-{3731,2991,0,1,1}-{3775,3033,0,1,4}-{3766,3010,0,1,4}-{3764,3020,0,1,1}-{3738,3010,0,1,3}-{3720,3040,0,1,6}-{3719,3045,0,1,6}-{3781,3031,0,1,5}-{3780,3022,0,1,1}-{3788,3011,0,1,2}-{3793,3019,0,1,5}-{3779,3045,0,1,1}-{3784,3040,0,1,3}-{3802,3037,0,1,2}-{3808,3026,0,1,3}-{3799,3024,0,1,4}-"   },   {     "npc_id": "2490",     "loc_data": "{3782,3016,0,1,7}-"   },
+19357b73a A lot of fixes, docs, etc
+a1fa61e62 Update pom.xml
+61118bb51 More docs
+1bf1e2d59 More docs
+221a0135e Docs & clean imports
+a7932a461 C to M
+e637b79ff Fixed docs
+6a7d0a7aa Fixed docs
+fccdc432a Fixed docs
+3956090f1 Fixed docs
+eb8df6138 Fixed spells, converted MagicSpell, other
+ff59d0fe5 Rename .java to .kt
+3f84286bd Skip tests
+aa551efe8 Update Tutorial guide
+89c24991e Update .gitignore
+c53af03b5 Removed reports
+d27c56d04 Fixed docs
+d3e892591 Fixed docs
+5df88a602 Cleanup config files
+5f457410d Fixed docs
+68989646b Fixed docs
+e311318fe Fixes & added Tutorial Guide NPC
+ce5872d8b Added docs
+06705b0a3 Added docs
+30143523b Added docs
+ffd3891f5 Added docs
+c49a40ce4 Fixed achievements
+ff5a37e58 Improved documentation for functions, methods, fixed teleport spells
+fb948948f Generate JavaDocs for some kotlin classes
+a5c88cdc0 Clean useless javadocs
+245985d59 Combat tab interface fix
+d515b1251 Added Caviar to consumables, fixed abyssal leecher NPC
+bed58cc60 Gertrude's Cat rewrite & Fixed Lumberyard shortcut
+a9666402d Split lumberyardListeners into shortcut, quest listener and SawmillListeners
+2972e39f5 The fence crossing is now smoother but longer
+570a5a265 Fixed the displaying ttl milestone message
+4582f0815 Set default_xp_rate to 500.0x
+0c1b44136 Generate docs
+3bfa46074 Some fixes
+3d4f84a98 pom roll
+58d360338 Generate docs for kotlin classes & functions in skill.gathering.farming package
+94b8aee48 Generate docs for kotlin classes & functions in skill.combat.magic package
+50c3b2af1 Evil twin adjustments
+9c126ebf0 Stop initiating not yet introduced NPC
+a693252b2 Added Meeting history to QuestRequirements
+9824e1c05 MR: rs-source/2009scape!34
+6549eaac3 Link cache
+874a1ee40 Generate docs for random events, fix tests
+fab2ed994 README.md
+54f597f91 Generate docs and fix a few things
+cfda580a9 Cleaning
+d0d10ce86 Construction, fixes
+5f9033c30 Cleaned java classes
+fc4bd89d6 Added Cache Editor, Config Editor
+db7f03d17 Cleaned config and added gitignore for interface editor
+b94e96364 Fixed typo
+42b335a84 Connect and rename interfaces override
+60257c84d Added Quick chat help interface
+21b84a65c Clean-up repository
+1f8318d16 Clean-up repository
+1df5a1562 Clean-up repository
+afaea3587 Clean-up repository
+e8fa24bbe Achievements, organise imports
+148b630fa Added mvnw.cmd
+5e0f59769 Removed unused
+a06ec48c3 Removed unused.
+310466632 Update README.md
+f74d3f7eb Update README.md
+bde50260d Monkey bar shortcut to kotlin
+17d3ea9f8 Update README.md
+6305c41ea Converted few plugins, fix camera reset in Player Safety basement
+345324a14 Added combat audio to Thrower Troll
+d19979958 Fixed Thrower Troll projectile & animations
+342bcf33f Update code
+a1326bb15 Adjust rates in MagicTutorDialogue
+eda3025a9 Update configuration files
+bc8a1a981 Removed Hans, increase XP rate
+2bee17d48 Shows poh interface 1 tick later
+0d7a98ae4 Fixed banker NPCs, Corrected Lletya NPCs
+d78104ed3 Removed console errors
+72a80d729 Summoning familiars to kotlin
+83f3ef882 Quest related plugins to kotlin
+8ab0b1d43 Fixed Karamja diary
+e460b8af2 Convert the rest of magic ints in pets enum class
+b14b1f259 Incubator egg, pets enum to kotlin
+ee37e560f Hide summoning orb before quest completion, fixed interaction with balloon
+2793db5e2 Summoning obelisk plugin to listener
+3bd53a09d Lumbridge basement, TDs, Gnome copter conversion
+ca834951c Rollback burthope dialogue plugins
+a3dfd0d61 Cleanup after conversion
+53ff31507 Burthope dialogue plugins to files
+04cc1f324 More work on Postie Pete
+a51a38ce6 Barley malt + Brewing products
+a5c94d130 Added pot to keldagrim house
+84828295a Hotfix for bank
+f6b7fd5c8 Rename & fixes
+ea31e29d5 Clean & fixed scenery interactions
+d3913687d Fixed core exploit
+ec1611a6b Clean imports
+46a3ec060 Scenery plugins to kotlin
+0af52f12c Item plugins to kotlin
+faef48ecb Recreate Ratpit manual
+515eba077 Replaced falador shield plugin with listener
+43e5dcdaf Fixed Overlapping
+e0dfcfe70 Corrected achievement diary messages, ask about recharge f shield
+bbbb92d4d Rewritten use of firelighter interaction
+33a8cc289 Added GnomishFirelighters data
+fa7f34eb3 Improved crafting FremennikShield, fixed enchanted gem dialogue face expressions
+7426478a2 Remove init before completing MM quest
+ef26dcd23 Rename DoorManagingPlugin to SceneryManagingPlugin, converted SlashWebPlugin to kotlin
+99c40c965 Corrected time of effect message for Poison chalice
+df7d71394 Added Poison chalice effects
+869073cf6 Convert Consumable
+d7eeac4a6 Converted global actions to kotlin
+d85c4c543 Disable ChallengeCluePlugin
+5d9724e2a Limestone should be replaced correctly
+5da18378f Increase delay on chop the canoe station tree
+19659ba10 Removed the challenge scrolls for now
+bc09419d0 Added Gnome Coach as first challenge scroll npc
+65bd5ba37 Cleaned TreasureTrail package
+c0875331b Pack stronghold dialogues to stronghold package
+e2b2faaec Now the graphics
+94eff4137 Removed duplicate dialogues
+1f08ad8c4 Removed Learning the ropes files
+ed5226398 Disabled bots on test world
+e52ce2134 I don't know, but the world duplicated npcs before that fix
+9cab8cae6 Fixed godsword assembling, corrected item examine, corrected dragon forge animation
+3f0558807 Enchanted spell anim & gfx
+46efdee47 Fixes & NPC examines
+cdf9b6c1c Fixed spells
+be621edbf Terror dogs
+ff237c458 Clean & fixed typo in some dialogues
+fd1ed9419 Clean & fixed typo in some dialogues
+8b4a15799 Clean & fixed typo in some dialogues
+91bdb5a89 Removed duplicate line from Cavey~ dialogue
+d2b674304 Fixed README.md
+5ca983bac Added few music ids
+0f447b66a Seers' Village achievements rewards
+1ca5c76d7 Cleanup Jarvald dialogue
+d6c9b8ce4 AI docs test for LevelUp.kt
+7a83fc4e9 Converted LevelUp, removed milestones and moved them to LevelUp class, impl fix for werewolf
+a01713451 update README.md
+c245643b6 Added 47 tracks to music config
+6fc38118b Fixed the problem with shared warning interface for Waterbirth and Ice cavern.
+20cc1c39b PickupHandler authentic message, corrected TakeWineOfZamorakListener typo, added champions ladders down so I doesn't start from the side
+c59a88552 Roll LogBalance, the rest checked and corrected
+a19865a13 Removed duplicate interaction, convert shortcuts (no-edit)
+a0ccf271e Fix build, blood altar
+eb902b5c2 Wave of fixes [2]
+7fa5b477b Fix TownCrier, Removed custom, added bug lantern extinguish option after ealier conversion
+0566c244b Rollback name class changes
+a833e4545 Implemented Pickpocket message for each npc
+27638e9ec Next wave of fixes & Improvements
+5f006d374 Fixes & cleaning
+5beae4f22 Less chargs for raw bass & misc changes
+6c407707e Removed playaudio for poison to prevent errors
+c6552c74f Minor bug fixes
+c6404507f Network
+0653fa994 Minor improvements & fixes
+3715ba68d Speed up Miscellania shortcut interaction
+45a2ab9aa Fixed Fisherman Frodi, Added Farmers, Fixed ship nammes
+2a4d7be23 Fixed interaction with Gabooty, Tamayu, Tiadeche NPCs
+1cf7456ed Snow zone, corrected slayer interactions
+5551b93b0 Replaced attack,follow plugin with listener
+b8886ac64 Bot cleanup, removed java imports from kotlin
+b86bf665d Olaf Hradson, Converted Slayer plugin to listener
+2151fbc31 Add Bug lantern to LightSource, removed BuglanternPlugin, adjust Slayer master dialogue
+6a4859932 Tamayu, shop, monkeys
+e202e3704 Siegfried
+b03abf860 Convert slayer tasks
+98a1433da Fixed interaction with coffin at Jiggig, corrected weight table, separate & convert fishing explosive plugin, fixed falador achievement, fixed task names
+e8a573ddb Slayer cleaned .* + Added More as task
+f13b797a3 Vars update
+664b803ba Restored the ability to talk with Curator Haig Halen
+065dfc2f7 Fixed few Varrock achievements and pickpocketing
+0bdce7191 Wanted to improve docs but broke "I" on my kibord
+c7d89cb6d Misthalin improvements and bug fixes
+a2fc1cd9d Fixed museum stairs, animate cuting watermelon
+a35503c2c Cleaned converted Skilling resources & mining node classes
+882ee6f33 I got overwritten again
+c96954d23 Fixed lighting fires with a bow
+01d1f84d3 Barbarian Firemaking: Lighting fires with a bow
+315cae437 Rename AbyssPlugin to AbyssListeners
+a51d23cf2 Prevent save varbit value onequip interaction
+cfc33c401 Bunch of fixes
+7888aff69 Editorconfig
+865a65235 Thieving stall fix
+b4f713684 Runecrafting update & convert + misc fixes
+95440e451 Added OrbViewingInterface
+bf6f9c357 Fixed small details that I would end up forgetting
+ac83dd7b7 Fixed error with init Bardur dialogue
+217094bbd Fremennik province fixes & improvements
+5a3cc9bb3 Fixed typo
+2176983ee Converted Alfred Grimhand's Bar Crawl
+bc5566903 Reorganised diaries
+ce99d7127 Fixed experience reward for talismans
+5d5b8c3af Reorganized some content classes
+82679b2ff Mogre activity fixes & improvements
+217352cff Fixed/Rewritten Skippy miniquest, fixed doris dialogue, fixed emptying nettle cups
+cc2598725 Removed sprite editor
+b6deb5af3 Fixed Mogre which could be spawn more than possible
+45bb67715 I already learn why ShopNPC class is for, what a mess
+8ffd74f6a Converted some packets, fixed summoning NPCs, update config for Fremennik NPCs
+8ffcc65e2 Corrected the nature rune ground spawn according to 2k9 sources
+3109cfcad Prison pete area clean + some config for npcs
+f8a3ab158 Fixed console spam
+8967a6458 Small upgrade, fixed typos in Animal Magnetism quest
+b8d76157c Converted AnimalMagnetism plugin to kotlin
+56f2b7157 Upgrade Ava dialogue
+89b4f5e6e Added authentic dialogue for purchasing ava devices
+69b4a8350 Animal Magnetism small adjustments, Added Doris in Edgeville, fixed few npc configs
+f860da43b Fixed the naming of some classes
+cd03ff9a1 Fixed the info received after entering a laf event
+183f7e8a2 Added Lost and Found random event
+aa935c40e Small fix for Surprise Exam
+be2dbad94 Fixed pickpocketing, removed pheasant npc from pickpocket data
+841cd541b Clean tools folder
+7b194afc8 Fixed Alice Husband dialogue which blocked further progress of the animal magnetism quest
+4b559e86e Improved pickpocketing again, cleaned ppre event classes, corrected direction of lever
+7793882c3 Replaced Lever at Prison pete
+424248c09 Added Windswept tree, fixed doors leads to Old Crone NPC
+19c438e83 Forgot to withdraw the changes for ArheinDialogue
+81d1f2d95 Authentic improvements + thieving update
+d20ec1cda Added player safety music, fixed typos
+79ec5df80 Random updating of gray docs
+d82a2406b Cooking recipes to kotlin
+83e168182 Various improvements
+fbe33434e Cleaned fishing classes
+ccc1bff8c Fixed message for making scarecrow
+b6a2000e5 Fixed crossing port scenery interaction
+b619696c7 Converted Ship travel, misc fixes
+7b9735042 Hotfix for Goblin followers
+4130e95a2 Fixed console spam
+c81e9fa3e Combine warning interfaces into one class
+dddc150e8 Converted few cooking plugins into listeners, misc fixes
+53df1c8f8 Send dialogue instead of send duplicate messages cause cooking interaction attempts to open cooking interface (307) and chatbox (211)
+d0aab4a50 Fixed slicing watermelon, Converted Lost tribe plugin to listener, continue cleaning
+910b44b16 Rename .java to .kt
+792cc12e3 Made enums more visible
+505326f3d Update cooking with contentAPI methods, replaced magic ints with consts
+91fcdc936 Cast rollback for Pottery crafting
+9ec6543c7 Fixed Pottery crafting
+711826c89 Converted herblore classes to kotlin
+587458ebb breakdown of the send message
+5d8e885b2 Replaced dialogue with instant teleport for Surprise Exam
+fce9cf2a9 Added Monkey madness dialogues
+83eef1437 Impl authentic limestone mining, misc fixes
+b47ce29c2 Implementation qol don't suit tough guys
+1a9fbab12 Fixed bad import
+451529ca7 I Chuj z agility, odechcia┼éo mi si─Ö gra─ç
+9836885ea Fixed creating plank at sawmill
+91ea6c76b Restored authenticity of Sergeant Damien random event
+9797c035f Prevent to set a cannon in the bank areas
+e7e904354 Fixed animations for chaos druids
+bfee25af1 Added Barbarian assault reward shop
+fcede2473 Rework desert heat area from scratch
+978bca216 Split lines for sea boots dialogues
+31dfd2961 Fixing the all-too-frequent clucking of ducks
+d8e769f29 Fixed equipment interface, details on tutorial island
+0734ee6a3 Converted & Fixed effects
+994b55409 Converted interfaces
+1dc555d6b Added interaction with sand piles
+9e90c3865 Added interface config variables
+e0daba5f8 Fixed random event naming, impl missed messsages
+5a0b6cfb6 Fixed previous commit
+a69400cc8 Fixed config for Jeffery
+e66976216 Convert some NPCs
+2d21d2f3b Improved authenticity for Edgeville
+d606eeaec Rename interaction package back to handlers
+9eed3384a Removed custom IDs from special equipment
+163af538c Initial commit
+2ed0f2abe Initial commit

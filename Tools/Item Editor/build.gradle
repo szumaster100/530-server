@@ -1,0 +1,50 @@
+/*
+ * This project is a fork of https://gitlab.com/2009scape/tools/2009scape-item-definition-editor.
+ *
+ * Licensed under the GNU Affero General Public License (AGPL) v3.0.
+ * You may obtain a copy of the License at:
+ * https://www.gnu.org/licenses/agpl-3.0.html
+ *
+ * This project is distributed under the terms of the AGPL, which means:
+ * - Any derivative works must also be licensed under the AGPL.
+ * - If you modify and deploy this software on a network server, you must provide access to the source code to users interacting with the software over the network.
+ *
+ * 2009scape Item Definition Editor
+ * Copyright (C) 2022  2009Scape / Tools
+ */
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'org.rs'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+}
+
+application {
+    mainClass.set('com.editor.ToolSelection')
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
+}
+
+tasks.jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.editor.ToolSelection'
+        )
+    }
+}
