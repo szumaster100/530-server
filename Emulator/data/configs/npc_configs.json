@@ -15551,24 +15551,24 @@
     "start_gfx": "99",
     "start_height": "40",
     "melee_animation": "811",
-    "range_animation": "811",
-    "magic_level": "75",
     "respawn_delay": "12",
-    "end_gfx": "101",
-    "defence_animation": "0",
     "weakness": "3",
-    "end_height": "36",
     "magic_animation": "811",
     "death_animation": "836",
-    "name": "Infernal Mage",
-    "defence_level": "60",
     "lifepoints": "60",
-    "strength_level": "1",
     "id": "1643",
     "bonuses": "0,0,0,0,0,0,0,0,40,0,0,0,0,0,0",
+    "prj_height": "40",
+    "range_animation": "811",
+    "magic_level": "75",
+    "end_gfx": "101",
+    "defence_animation": "0",
+    "end_height": "36",
+    "name": "Infernal Mage",
+    "defence_level": "60",
+    "strength_level": "1",
     "range_level": "1",
     "projectile": "100",
-    "prj_height": "40",
     "attack_level": "1"
   },
   {
@@ -24314,6 +24314,16 @@
     "examine": "Lovely, cute, and possibly what dreams are made of.",
     "name": "Bones",
     "id": "2945"
+  },
+  {
+    "examine": "Cracking personality.",
+    "name": "Grimesquit",
+    "id": "2946"
+  },
+  {
+    "examine": "Lovely girl, shame about the smell.",
+    "name": "Phingspet",
+    "id": "2947"
   },
   {
     "examine": "Obviously punches above his weight.",
@@ -34333,13 +34343,13 @@
     "magic_animation": "711",
     "death_animation": "9055",
     "name": "Dark wizard",
-    "prj_height": "40",
     "defence_level": "5",
     "lifepoints": "12",
     "strength_level": "2",
     "id": "4659",
     "aggressive": "true",
     "range_level": "1",
+    "prj_height": "40",
     "attack_level": "5"
   },
   {
@@ -34353,7 +34363,6 @@
     "respawn_delay": "60",
     "defence_animation": "425",
     "end_height": "36",
-    "prj_height": "40",
     "magic_animation": "711",
     "death_animation": "9055",
     "name": "Dark wizard",
@@ -34363,6 +34372,7 @@
     "id": "4660",
     "aggressive": "true",
     "range_level": "1",
+    "prj_height": "40",
     "attack_level": "17"
   },
   {
@@ -60073,6 +60083,151 @@
     "attack_level": "85"
   },
   {
+    "examine": "An ancient looking gnome.",
+    "name": "Hazelmere",
+    "id": "8490"
+  },
+  {
+    "examine": "You won't like them when they're angry.",
+    "name": "Sithaph",
+    "id": "8493"
+  },
+  {
+    "examine": "You won't like them when they're angry.",
+    "name": "Strisath",
+    "id": "8494"
+  },
+  {
+    "examine": "You won't like them when they're angry.",
+    "name": "Sakirth",
+    "id": "8495"
+  },
+  {
+    "examine": "The hat of a recently deceased Hazelmere.",
+    "name": "Hazelmere's hat",
+    "id": "8496"
+  },
+  {
+    "examine": "A Mahjarrat of incomprehensible power.",
+    "name": "Lucien",
+    "id": "8497"
+  },
+  {
+    "name": "A lazy Khazard guard",
+    "id": "8498"
+  },
+  {
+    "examine": "The brother of the Head Cook of Lumbridge Castle.",
+    "name": "Cook's brother",
+    "id": "8500"
+  },
+  {
+    "examine": "It's huge and delicious!",
+    "combat_style": "0",
+    "death_animation": "11001",
+    "name": "Turkey",
+    "melee_animation": "11000",
+    "lifepoints": "5",
+    "id": "8501",
+    "attack_level": "5",
+    "defence_animation": "10999"
+  },
+  {
+    "examine": "What's black and white and covered in spines?",
+    "name": "Cactus",
+    "id": "8502"
+  },
+  {
+    "examine": "What's black and white and covered in spines?",
+    "name": "Cactus",
+    "id": "8503"
+  },
+  {
+    "examine": "What's black and white and down to earth?",
+    "name": "Bush",
+    "id": "8504"
+  },
+  {
+    "examine": "What's black and white and covered in mushroom?",
+    "name": "Toadstool",
+    "id": "8505"
+  },
+  {
+    "examine": "What's black and white and smells like beer?",
+    "name": "Barrel",
+    "id": "8506"
+  },
+  {
+    "examine": "What's black and white and down to earth?",
+    "name": "Bush",
+    "id": "8507"
+  },
+  {
+    "examine": "What's black and white and on a sneaking mission?",
+    "name": "Crate",
+    "id": "8508"
+  },
+  {
+    "examine": "What's black and white and down to earth?",
+    "name": "Bush",
+    "id": "8509"
+  },
+  {
+    "examine": "What's black and white and looks like a rock hopper?",
+    "name": "Rock",
+    "id": "8510"
+  },
+  {
+    "examine": "What's black and white and down to earth?",
+    "name": "Bush",
+    "id": "8511"
+  },
+  {
+    "examine": "It looks right at home here.",
+    "name": "Marvin",
+    "id": "8512"
+  },
+  {
+    "examine": "It looks right at home here.",
+    "name": "Marius",
+    "id": "8513"
+  },
+  {
+    "examine": "It looks right at home here.",
+    "name": "Benny",
+    "id": "8514"
+  },
+  {
+    "examine": "He's unconscious. That horn must have given him quite the fright!",
+    "name": "Yeti",
+    "id": "8515"
+  },
+  {
+    "examine": "He's sleeping like a baby.",
+    "name": "Yeti",
+    "id": "8516"
+  },
+  {
+    "examine": "The rebellious teenage son of the Queen of Snow.",
+    "name": "Jack Frost",
+    "id": "8517"
+  },
+  {
+    "examine": "Interesting outfit!",
+    "name": "Jack Frost",
+    "id": "8518"
+  },
+  {
+    "examine": "The Queen of Snow's rebellious teenage son.",
+    "name": "Jack Frost",
+    "id": "8519"
+  },
+  {
+    "examine": "He seems at ease on an iceberg.",
+    "name": "Jack Frost",
+    "id": "8520"
+  },
+  {
     "examine": "It appears to be the head of a dragon.",
     "name": "Dragon head",
     "id": "8425"
@@ -60093,9 +60248,59 @@
     "id": "8428"
   },
   {
+    "examine": "Small, blue and mischievous - it's a snow imp all right.",
+    "name": "Snow imp",
+    "id": "8536"
+  },
+  {
+    "examine": "Small, blue and mischievous - it's a snow imp all right.",
+    "name": "Snow imp",
+    "id": "8537"
+  },
+  {
+    "examine": "Small, blue and mischievous - it's a snow imp all right.",
+    "name": "Snow imp",
+    "id": "8538"
+  },
+  {
+    "examine": "Her lack of body heat is unsettling.",
+    "name": "Queen of snow",
+    "id": "8539"
+  },
+  {
+    "examine": "A jolly distributor of presents.",
+    "name": "Santa Claus",
+    "id": "8540"
+  },
+  {
+    "examine": "A festive emissary of the Land of Snow.",
+    "name": "Head snow imp",
+    "id": "8541"
+  },
+  {
+    "examine": "A festive emissary of the Land of Snow.",
+    "name": "Head snow imp",
+    "id": "8542"
+  },
+  {
+    "examine": "A festive emissary of the Land of Snow.",
+    "name": "Head snow imp",
+    "id": "8543"
+  },
+  {
     "examine": "A wizard. Apparently he's into portals.",
     "name": "Isidor",
     "id": "8544"
+  },
+  {
+    "examine": "He worships the spirits of the Wilderness.",
+    "name": "Mystic",
+    "id": "8545"
+  },
+  {
+    "examine": "Elementally balanced.",
+    "name": "Balance Elemental",
+    "id": "8546"
   },
   {
     "examine": "The phoenix is mortally wounded.",
@@ -60139,9 +60344,19 @@
     "id": "8551"
   },
   {
+    "examine": "Did you see that? It moved!",
+    "name": "Large egg",
+    "id": "8552"
+  },
+  {
     "examine": "A worshipper of Guthix.",
     "name": "Priest of Guthix",
     "id": "8555"
+  },
+  {
+    "examine": "A worshipper of Guthix.",
+    "name": "Brian Twitcher",
+    "id": "8556"
   },
   {
     "examine": "A warrior that died and was reborn through the phoenix's power.",
