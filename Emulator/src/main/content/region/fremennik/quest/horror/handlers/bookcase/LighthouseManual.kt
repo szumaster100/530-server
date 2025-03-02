@@ -10,6 +10,10 @@ import core.game.node.entity.player.Player
 import org.rs.consts.Items
 
 class LighthouseManual : InteractionListener {
+    /*
+     * Ancient diary located at Lighthouse.
+     * Authentic state.
+     */
     companion object {
         private val TITLE = "Manual"
         private val CONTENTS =

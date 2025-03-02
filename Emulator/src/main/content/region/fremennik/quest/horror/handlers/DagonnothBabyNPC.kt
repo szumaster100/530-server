@@ -1,8 +1,9 @@
 package content.region.fremennik.quest.horror.handlers
 
-import content.region.fremennik.quest.horror.dialogue.JossikDialogueFile
+import content.region.fremennik.quest.horror.JossikLighthouseDialogue
 import core.api.*
 import core.api.quest.setQuestStage
+import core.game.interaction.QueueStrength
 import core.game.node.entity.Entity
 import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.player.Player
@@ -31,6 +32,7 @@ class DagonnothBabyNPC(
     }
 
     companion object {
+        @JvmStatic
         fun spawnDagannothBaby(player: Player) {
             val dag = DagonnothBabyNPC(NPCs.DAGANNOTH_1347)
             dag.location = location(2520, 4645, 0)
@@ -59,13 +61,14 @@ class DagonnothBabyNPC(
 
     override fun finalizeDeath(killer: Entity?) {
         if (killer is Player) {
-            lock(killer, 10)
+            lock(killer, 2)
             setQuestStage(killer, Quests.HORROR_FROM_THE_DEEP, 60)
             clearHintIcon(killer)
-            runTask(killer, 1) {
+            queueScript(killer, 1, QueueStrength.SOFT) {
                 face(findNPC(NPCs.JOSSIK_1335)).also {
-                    openDialogue(killer, JossikDialogueFile())
+                    openDialogue(killer, JossikLighthouseDialogue())
                 }
+                return@queueScript stopExecuting(killer)
             }
         }
         clear()

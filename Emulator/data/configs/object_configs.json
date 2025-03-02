@@ -15106,5 +15106,25 @@
   {
     "examine": "Energy orbs are captured here for study.",
     "ids": "30327"
+  },
+  {
+    "examine": "This suit looks fairly ordinary.",
+    "ids": "41506"
+  },
+  {
+    "examine": "He looks like he's had a drink or ten.",
+    "ids": "41497"
+  },
+  {
+    "examine": "He looks like he's had a drink or ten.",
+    "ids": "41496"
+  },
+  {
+    "examine": "He looks like he should stay away from Khali brew.",
+    "ids": "41495"
+  },
+  {
+    "examine": "He looks like he enjoys the odd beer.",
+    "ids": "41494"
   }
 ]

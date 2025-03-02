@@ -16,7 +16,7 @@ class CommandSystem {
         if (command == null && (player.rights != Rights.REGULAR_PLAYER)) {
             for (set in CommandSet.values()) {
                 if (set.interpret(player, arguments[0], *arguments)) {
-                    player.sendMessage(colorize("-->%DO${arguments[0]}: Deprecated command"))
+                    player.sendMessage("-->${arguments[0]}: Deprecated command")
                     return true
                 }
             }

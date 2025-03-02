@@ -1,8 +1,5 @@
-package content.region.asgarnia.quest.ball.handlers.npc
+package content.region.asgarnia.quest.ball.handlers
 
-import content.region.asgarnia.quest.ball.handlers.WitchHousePlugin.Companion.BALL
-import content.region.asgarnia.quest.ball.handlers.WitchHousePlugin.Companion.DOOR_KEY
-import content.region.asgarnia.quest.ball.handlers.WitchHousePlugin.Companion.KEY
 import core.api.*
 import core.api.ui.setMinimapState
 import core.game.node.entity.Entity
@@ -18,6 +15,7 @@ import core.game.world.update.flag.context.Animation
 import core.game.world.update.flag.context.Graphics
 import core.plugin.Initializable
 import core.plugin.Plugin
+import org.rs.consts.Items
 import org.rs.consts.NPCs
 
 @Initializable
@@ -91,15 +89,15 @@ class NoraTHaggNPC : AbstractNPC {
                     when (counter++) {
                         0 -> {
                             face(player)
-                            removeItem(player, BALL)
-                            removeItem(player, KEY)
-                            removeItem(player, DOOR_KEY)
+                            removeItem(player, Items.BALL_2407)
+                            removeItem(player, Items.KEY_2411)
+                            removeItem(player, Items.DOOR_KEY_2409)
                             sendChat("Stop! Thief!")
                             sendMessage(player, "You've been spotted by the witch.")
                             visualize(
                                 player,
                                 -1,
-                                Graphics(110, 100),
+                                Graphics(org.rs.consts.Graphics.CURSE_IMPACT_110, 100),
                             )
                             setMinimapState(player, 2)
                         }

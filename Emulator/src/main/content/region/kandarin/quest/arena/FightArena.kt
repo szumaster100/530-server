@@ -25,25 +25,25 @@ class FightArena : Quest(Quests.FIGHT_ARENA, 61, 60, 2, Vars.VARP_QUEST_FIGHT_AR
             line(player, "!!North-West?? of the !!Khazard Port??.", line++)
             line += 1
             line(player, "I must be able to defeat a !!level 137?? enemy.", line++)
-            line++
+            limitScrolling(player, line, true)
         }
         if (stage > 1) {
             line += 1
-            line(player, "I encountered a distraught Lady Servil, who said that her son and", line++, stage > 10)
-            line(player, "husband had been kidnapped by the !!evil General Khazard??,", line++, stage > 10)
-            line(player, "and were being forced to fight in his !!fight arena??.", line++, stage > 10)
+            line(player, "I encountered a distraught Lady Servil, who said that her son and", line++, stage >= 10)
+            line(player, "husband had been kidnapped by the !!evil General Khazard??,", line++, stage >= 10)
+            line(player, "and were being forced to fight in his !!fight arena??.", line++, stage >= 10)
             line += 1
             line(
                 player,
                 "I headed to the arena to try and find !!Lady Servil's son?? and !!husband??.",
                 line++,
-                stage > 10,
+                stage >= 10,
             )
             line++
         }
         if (stage >= 10) {
-            line(player, "I found some !!Khazard armour?? in the armoury, on the north-east", line++, stage > 10)
-            line(player, "!!edge of town??.", line++, stage > 10)
+            line(player, "I found some !!Khazard armour?? in the armoury, on the north-east", line++, stage >= 10)
+            line(player, "edge of town.", line++, stage >= 10)
             line++
             line(player, "I used it to disguise myself as a guard so I could look around.", line++, stage >= 20)
             line++
@@ -60,8 +60,9 @@ class FightArena : Quest(Quests.FIGHT_ARENA, 61, 60, 2, Vars.VARP_QUEST_FIGHT_AR
             line++
         }
         if (stage >= 50) {
-            line(player, "I found the !!guard Jeremy?? mentioned. He said that he'd like a drink,", line++, stage > 55)
-            line(player, "but too much !!Khali brew?? would make him fall asleep.", line++, stage > 55)
+            line(player, "I found the guard Jeremy mentioned.", line++, stage > 55)
+            line(player, "He said that he'd like a drink, but too much !!Khali brew??", line++, stage > 55)
+            line(player, "would make him fall asleep.", line++, stage > 55)
             line++
         }
         if (stage >= 60) {
@@ -92,13 +93,12 @@ class FightArena : Quest(Quests.FIGHT_ARENA, 61, 60, 2, Vars.VARP_QUEST_FIGHT_AR
             line(player, "!!Bouncer?? that he came to fight me himself.", line++, stage >= 97)
             line++
         }
-        if (stage >= 99) {
-            line(player, "I escaped from the arena and returned to Lady Servil", line++, stage == 100)
-            line(player, "She thanked me profusely and rewarded me for my help.", line++, stage == 100)
-            line++
-        }
         if (stage == 100) {
+            line(player, "I escaped from the arena and returned to Lady Servil", line++, true)
+            line(player, "She thanked me profusely and rewarded me for my help.", line++, true)
+            line++
             line(player, "<col=FF0000>QUEST COMPLETE!", line, false)
+            limitScrolling(player, line, false)
         }
     }
 

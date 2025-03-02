@@ -48,6 +48,7 @@ class JatizsoListener : InteractionListener {
                     replaceScenery(other.asScenery(), other.id, -1, Direction.SOUTH)
                 }
             }
+            // AND NICE CODE
             playAudio(player, Sounds.NICEDOOR_OPEN_81)
             return@on true
         }

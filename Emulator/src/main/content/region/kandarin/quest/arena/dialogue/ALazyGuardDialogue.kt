@@ -147,11 +147,9 @@ class ALazyGuardDialogue : DialogueFile() {
                     0 -> {
                         if (!inInventory(player!!, Items.KHAZARD_CELL_KEYS_76)) {
                             face(player!!, guardLocation)
-                            setVarbit(player!!, 5627, 0)
                             playerl(FaceAnim.HALF_GUILTY, "Hi, er.. I lost the keys.").also { stage = 2 }
                         } else {
                             face(player!!, guardLocation)
-                            setVarbit(player!!, 5627, 0)
                             playerl(FaceAnim.HALF_ASKING, "Hello, how's the job?").also { stage++ }
                         }
                     }
@@ -169,7 +167,6 @@ class ALazyGuardDialogue : DialogueFile() {
                     3 -> npcl(FaceAnim.DRUNK, "...and I'm drunk. Here, take my spare set.").also { stage++ }
                     4 -> {
                         end()
-                        setVarbit(player!!, 5627, 3)
                         addItemOrDrop(player!!, Items.KHAZARD_CELL_KEYS_76, 1)
                     }
                 }

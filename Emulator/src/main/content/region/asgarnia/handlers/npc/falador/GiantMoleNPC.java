@@ -1,11 +1,10 @@
 package content.region.asgarnia.handlers.npc.falador;
 
 import content.data.LightSource;
+import content.global.handlers.iface.warning.WarningManager;
+import content.global.handlers.iface.warning.Warnings;
 import core.api.utils.BossKillCounter;
 import core.cache.def.impl.SceneryDefinition;
-import core.game.component.Component;
-import core.game.component.ComponentDefinition;
-import core.game.component.ComponentPlugin;
 import core.game.global.action.DigAction;
 import core.game.global.action.DigSpadeHandler;
 import core.game.interaction.OptionHandler;
@@ -33,6 +32,7 @@ import core.net.packet.out.Interface;
 import core.plugin.Initializable;
 import core.plugin.Plugin;
 import core.tools.RandomFunction;
+import org.rs.consts.Animations;
 import org.rs.consts.NPCs;
 import org.rs.consts.Sounds;
 
@@ -42,15 +42,15 @@ import static core.api.ContentAPIKt.playAudio;
 public final class GiantMoleNPC extends AbstractNPC {
     private static final Location[] DIG_LOCATIONS = new Location[]{Location.create(1760, 5183, 0), Location.create(1736, 5223, 0), Location.create(1777, 5235, 0), Location.create(1739, 5150, 0), Location.create(1769, 5148, 0), Location.create(1750, 5195, 0), Location.create(1778, 5207, 0), Location.create(1772, 5199, 0), Location.create(1774, 5173, 0), Location.create(1760, 5162, 0), Location.create(1753, 5151, 0), Location.create(1739, 5152, 0)};
     private static final Animation DIG_ANIMATION = new Animation(3314, Priority.VERY_HIGH);
-    private static final Graphics DIG_GRAPHIC = new Graphics(572);
+    private static final Graphics DIG_GRAPHIC = new Graphics(org.rs.consts.Graphics.HOLE_OPENS_IN_GROUND_572);
     private static final Animation DIG_UP_ANIMATION = new Animation(3315, Priority.VERY_HIGH);
-    private static final Graphics DIG_UP_GRAPHIC = new Graphics(573);
-    private static final Graphics DUST_GRAPHIC = new Graphics(571);
+    private static final Graphics DIG_UP_GRAPHIC = new Graphics(org.rs.consts.Graphics.HOLE_OPENS_IN_GROUND_SHORTER_573);
+    private static final Graphics DUST_GRAPHIC = new Graphics(org.rs.consts.Graphics.BUNCHA_SMOKE_BROWN_COLORED_571);
 
     private boolean digging;
 
     public GiantMoleNPC() {
-        super(3340, null);
+        super(NPCs.GIANT_MOLE_3340, null);
     }
 
     public GiantMoleNPC(int id, Location location) {
@@ -178,15 +178,16 @@ public final class GiantMoleNPC extends AbstractNPC {
 
     @Override
     public Plugin<Object> newInstance(Object arg) throws Throwable {
-        ComponentDefinition.put(568, new ComponentPlugin() {
+        DigAction action = new DigAction() {
             @Override
-            public Plugin<Object> newInstance(Object arg) throws Throwable {
-                return this;
-            }
-
-            @Override
-            public boolean handle(Player player, Component component, int opcode, int button, int slot, int itemId) {
-                if (button == 17) {
+            public void run(Player player) {
+                if (!LightSource.hasActiveLightSource(player)) {
+                    player.getPacketDispatch().sendMessage("It's going to be dark down there, I should bring a light source.");
+                    return;
+                }
+                if (!Warnings.FALADOR_MOLE_LAIR.isDisabled()) {
+                    WarningManager.openWarning(player, Warnings.FALADOR_MOLE_LAIR);
+                } else {
                     player.getProperties().setTeleportLocation(Location.create(1752, 5237, 0));
                     playAudio(player, Sounds.ROOF_COLLAPSE_1384);
                     player.getPacketDispatch().sendMessage("You seem to have dropped down into a network of mole tunnels.");
@@ -195,19 +196,6 @@ public final class GiantMoleNPC extends AbstractNPC {
                         player.getAchievementDiaryManager().getDiary(DiaryType.FALADOR).updateTask(player, 0, 5, true);
                     }
                 }
-                player.getInterfaceManager().close();
-                return false;
-            }
-        });
-
-        DigAction action = new DigAction() {
-            @Override
-            public void run(Player player) {
-                if (!LightSource.hasActiveLightSource(player)) {
-                    player.getPacketDispatch().sendMessage("It's going to be dark down there, I should bring a light source.");
-                    return;
-                }
-                player.getInterfaceManager().open(new Component(568));
             }
         };
         DigSpadeHandler.register(Location.create(3005, 3376, 0), action);
@@ -216,6 +204,7 @@ public final class GiantMoleNPC extends AbstractNPC {
         DigSpadeHandler.register(Location.create(2989, 3378, 0), action);
         DigSpadeHandler.register(Location.create(2984, 3387, 0), action);
         DigSpadeHandler.register(Location.create(2987, 3387, 0), action);
+
         SceneryDefinition.forId(12230).getHandlers().put("option:climb", new OptionHandler() {
             @Override
             public Plugin<Object> newInstance(Object arg) throws Throwable {
@@ -224,7 +213,7 @@ public final class GiantMoleNPC extends AbstractNPC {
 
             @Override
             public boolean handle(final Player player, Node node, String option) {
-                player.animate(Animation.create(828));
+                player.animate(Animation.create(Animations.USE_LADDER_828));
                 player.lock(2);
                 GameWorld.getPulser().submit(new Pulse(1, player) {
                     @Override

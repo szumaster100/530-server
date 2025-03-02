@@ -9,7 +9,7 @@ import core.game.interaction.InteractionListener
 import org.rs.consts.Scenery
 
 class BarbSmithingListener : InteractionListener {
-    val bars = BarbarianWeapon.values().map { it.requiredBar }.toIntArray()
+    private val bars = BarbarianWeapon.values().map { it.requiredBar }.toIntArray()
 
     override fun defineListeners() {
         onUseWith(IntType.SCENERY, bars, Scenery.BARBARIAN_ANVIL_25349) { player, used, _ ->
@@ -20,7 +20,7 @@ class BarbSmithingListener : InteractionListener {
                 create { id, amount ->
                     submitIndividualPulse(
                         entity = player,
-                        pulse = BarbSmithingPulse(player, weapon, amount, id),
+                        pulse = BarbSmithingPulse(player, weapon, amount, id)
                     )
                 }
                 calculateMaxAmount {
@@ -30,4 +30,5 @@ class BarbSmithingListener : InteractionListener {
             return@onUseWith true
         }
     }
+
 }

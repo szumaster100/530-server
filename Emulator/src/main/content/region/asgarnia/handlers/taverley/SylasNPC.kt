@@ -1,4 +1,4 @@
-package content.region.asgarnia.handlers.npc.taverley
+package content.region.asgarnia.handlers.taverley
 
 import core.api.sendChat
 import core.game.node.entity.npc.NPC

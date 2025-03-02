@@ -8,6 +8,7 @@ import core.game.activity.Cutscene
 import core.game.node.entity.player.Player
 import core.game.world.GameWorld
 import core.game.world.map.Direction
+import org.rs.consts.NPCs
 
 class DagannothBossCutscene(
     player: Player,
@@ -58,11 +59,10 @@ class DagannothBossCutscene(
     }
 
     companion object {
-        private const val DAGANNOTH_NECK = 1348
-        private const val DAGANNOTH_BODY = 1349
-        private const val DAGANNOTH_LEGS = 1350
-        private const val DAGANNOTH_FULL = 1351
-
-        private const val JOSSIK = 1335
+        private const val DAGANNOTH_NECK = NPCs.DAGANNOTH_MOTHER_1348
+        private const val DAGANNOTH_BODY = NPCs.DAGANNOTH_MOTHER_1349
+        private const val DAGANNOTH_LEGS = NPCs.DAGANNOTH_MOTHER_1350
+        private const val DAGANNOTH_FULL = NPCs.DAGANNOTH_MOTHER_1351
+        private const val JOSSIK = NPCs.JOSSIK_1335
     }
 }

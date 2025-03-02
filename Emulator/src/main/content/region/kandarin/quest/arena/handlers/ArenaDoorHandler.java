@@ -23,20 +23,18 @@ public final class ArenaDoorHandler extends OptionHandler {
 
     @Override
     public boolean handle(Player player, Node node, String option) {
-        switch (option) {
-            case "open":
-                if (player.getQuestRepository().getStage(Quests.FIGHT_ARENA) <= 67) {
-                    player.getDialogueInterpreter().sendDialogues(255, FaceAnim.ANNOYED, "And where do you think you're going? Only General", "Khazard decides who fights in the arena. Get out of", "here.");
+        if (option.equals("open")) {
+            if (player.getQuestRepository().getStage(Quests.FIGHT_ARENA) <= 67) {
+                player.getDialogueInterpreter().sendDialogues(255, FaceAnim.ANNOYED, "And where do you think you're going? Only General", "Khazard decides who fights in the arena. Get out of", "here.");
 
-                } else if (player.getQuestRepository().getStage(Quests.FIGHT_ARENA) >= 68 && player.getQuestRepository().getStage(Quests.FIGHT_ARENA) < 91) {
-                    player.getDialogueInterpreter().sendDialogue("This door appears to be locked.");
+            } else if (player.getQuestRepository().getStage(Quests.FIGHT_ARENA) >= 68 && player.getQuestRepository().getStage(Quests.FIGHT_ARENA) < 91) {
+                player.getDialogueInterpreter().sendDialogue("This door appears to be locked.");
 
-                } else if (player.getQuestRepository().getStage(Quests.FIGHT_ARENA) >= 91 && node.getLocation().equals(new Location(2606, 3152, 0))) {
-                    DoorActionHandler.handleAutowalkDoor(player, (Scenery) node, player.getLocation().getX() >= 2606 ? Location.create(2605, 3153, 0) : Location.create(2607, 3151, 0));
-                } else {
-                    DoorActionHandler.handleDoor(player, (Scenery) node);
-                }
-                break;
+            } else if (player.getQuestRepository().getStage(Quests.FIGHT_ARENA) >= 91 && node.getLocation().equals(new Location(2606, 3152, 0))) {
+                DoorActionHandler.handleAutowalkDoor(player, (Scenery) node, player.getLocation().getX() >= 2606 ? Location.create(2605, 3153, 0) : Location.create(2607, 3151, 0));
+            } else {
+                DoorActionHandler.handleDoor(player, (Scenery) node);
+            }
         }
         return true;
     }

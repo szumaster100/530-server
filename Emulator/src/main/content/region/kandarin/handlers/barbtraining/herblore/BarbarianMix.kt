@@ -1,11 +1,16 @@
-package content.region.kandarin.handlers.barbtraining.herblore;
+package content.region.kandarin.handlers.barbtraining.herblore
 
-import org.rs.consts.Items;
+import org.rs.consts.Items
 
-public enum BarbarianMix {
-
+enum class BarbarianMix(
+    val item: Int,
+    val level: Int,
+    val product: Int,
+    val exp: Double,
+    val both: Boolean
+) {
     ATTACK_POTION(Items.ATTACK_POTION2_123, 4, Items.ATTACK_MIX2_11429, 8.0, true),
-    ANTI_POISION_POTION(Items.ANTIPOISON2_177, 6, Items.ANTIPOISON_MIX2_11433, 12.0, true),
+    ANTI_POISON_POTION(Items.ANTIPOISON2_177, 6, Items.ANTIPOISON_MIX2_11433, 12.0, true),
     RELIC(Items.RELICYMS_BALM2_4846, 9, Items.RELICYMS_MIX2_11437, 14.0, true),
     STRENGTH_POTION(Items.STRENGTH_POTION2_117, 14, Items.STRENGTH_MIX2_11443, 17.0, true),
     RESTORE_POTION(Items.RESTORE_POTION2_129, 24, Items.RESTORE_MIX2_11449, 21.0, true),
@@ -15,7 +20,7 @@ public enum BarbarianMix {
     COMBAT_POTION(Items.COMBAT_POTION2_9743, 40, Items.COMBAT_MIX2_11445, 28.0, false),
     PRAYER_POTION(Items.PRAYER_POTION2_141, 42, Items.PRAYER_MIX2_11465, 29.0, false),
     SUPER_ATTACK_POTION(Items.SUPER_ATTACK2_147, 47, Items.SUPERATTACK_MIX2_11469, 33.0, false),
-    SUPER_ANTIPOISON_POTION(Items.SUPER_ANTIPOISON2_183, 51, Items.ANTI_P_SUPERMIX2_11473, 35.0, false),
+    SUPER_ANTI_POISON_POTION(Items.SUPER_ANTIPOISON2_183, 51, Items.ANTI_P_SUPERMIX2_11473, 35.0, false),
     FISHING_POTION(Items.FISHING_POTION2_153, 53, Items.FISHING_MIX2_11477, 38.0, false),
     SUPER_ENERGY_POTION(Items.SUPER_ENERGY2_3020, 56, Items.SUP_ENERGY_MIX2_11481, 39.0, false),
     HUNTER_POTION(Items.HUNTER_POTION2_10002, 58, Items.HUNTING_MIX2_11517, 40.0, false),
@@ -29,47 +34,9 @@ public enum BarbarianMix {
     MAGIC_POTION(Items.MAGIC_POTION2_3044, 83, Items.MAGIC_MIX2_11513, 57.0, false),
     ZAMORAK_BREW(Items.ZAMORAK_BREW2_191, 85, Items.ZAMORAK_MIX2_11521, 58.0, false);
 
-    private final int item;
-    private final int level;
-    private final int product;
-    private final double exp;
-    private final boolean both;
-
-    // Constructor
-    BarbarianMix(int item, int level, int product, double exp, boolean both) {
-        this.item = item;
-        this.level = level;
-        this.product = product;
-        this.exp = exp;
-        this.both = both;
-    }
-
-    public int getItem() {
-        return item;
-    }
-
-    public int getProduct() {
-        return product;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public double getExp() {
-        return exp;
-    }
-
-    public boolean isBoth() {
-        return both;
-    }
-
-    public static BarbarianMix forId(int id) {
-        for (BarbarianMix mix : BarbarianMix.values()) {
-            if (mix.getItem() == id) {
-                return mix;
-            }
+    companion object {
+        fun forId(id: Int): BarbarianMix? {
+            return values().find { it.item == id }
         }
-        return null;
     }
 }

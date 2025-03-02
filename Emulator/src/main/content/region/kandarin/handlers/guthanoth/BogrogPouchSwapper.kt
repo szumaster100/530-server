@@ -20,8 +20,6 @@ object BogrogPouchSwapper {
     private const val OP_SWAP_X = 4
     private const val SPIRIT_SHARD = Items.SPIRIT_SHARDS_12183
 
-    private val GEBorders = ZoneBorders(3151, 3501, 3175, 3477)
-
     @JvmStatic
     fun handle(
         player: Player,

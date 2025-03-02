@@ -8,6 +8,8 @@ import core.game.node.item.GroundItemManager;
 import core.game.node.item.Item;
 import core.plugin.ClassScanner;
 import core.plugin.Initializable;
+import org.rs.consts.Components;
+import org.rs.consts.Items;
 import org.rs.consts.Quests;
 import org.rs.consts.Vars;
 
@@ -16,17 +18,17 @@ import static core.api.ContentAPIKt.removeAttribute;
 @Initializable
 public final class PiratesTreasure extends Quest {
 
-    public static final Component MESSAGE_COMPONENT = new Component(222);
+    public static final Component MESSAGE_COMPONENT = new Component(Components.BLANK_SCROLL_222);
 
-    public static final Item[] CASKET_REWARDS = new Item[]{new Item(995, 450), new Item(1635), new Item(1605)};
+    public static final Item[] CASKET_REWARDS = new Item[]{new Item(Items.COINS_995, 450), new Item(Items.GOLD_RING_1635), new Item(Items.EMERALD_1605)};
 
-    public static final Item KARAMJAN_RUM = new Item(431);
+    public static final Item KARAMJAN_RUM = new Item(Items.KARAMJAN_RUM_431);
 
-    public static final Item KEY = new Item(432);
+    public static final Item KEY = new Item(Items.CHEST_KEY_432);
 
-    public static final Item PIRATE_MESSAGE = new Item(433);
+    public static final Item PIRATE_MESSAGE = new Item(Items.PIRATE_MESSAGE_433);
 
-    public static final Item CASKET = new Item(7956);
+    public static final Item CASKET = new Item(Items.CASKET_7956);
 
     public PiratesTreasure() {
         super(Quests.PIRATES_TREASURE, 23, 22, 2, Vars.VARP_QUEST_PIRATES_TREASURE_PROGRESS_71, 0, 1, 4);
@@ -103,14 +105,14 @@ public final class PiratesTreasure extends Quest {
     @Override
     public void finish(Player player) {
         super.finish(player);
-        player.getPacketDispatch().sendString("2 Quest Points", 277, 8 + 2);
-        player.getPacketDispatch().sendString("One-Eyed Hector's Treasure", 277, 9 + 2);
-        player.getPacketDispatch().sendString("Chest", 277, 10 + 2);
-        player.getPacketDispatch().sendString("You can also use the Pay-", 277, 11 + 2);
-        player.getPacketDispatch().sendString("fare option to go to and from", 277, 12 + 2);
-        player.getPacketDispatch().sendString("Karamja", 277, 13 + 2);
-        player.getPacketDispatch().sendString("You have completed the Pirate's Treasure Quest!", 277, 2 + 2);
-        player.getPacketDispatch().sendItemZoomOnInterface(7956, 230, 277, 3 + 2);
+        player.getPacketDispatch().sendString("2 Quest Points", Components.QUEST_COMPLETE_SCROLL_277, 8 + 2);
+        player.getPacketDispatch().sendString("One-Eyed Hector's Treasure", Components.QUEST_COMPLETE_SCROLL_277, 9 + 2);
+        player.getPacketDispatch().sendString("Chest", Components.QUEST_COMPLETE_SCROLL_277, 10 + 2);
+        player.getPacketDispatch().sendString("You can also use the Pay-", Components.QUEST_COMPLETE_SCROLL_277, 11 + 2);
+        player.getPacketDispatch().sendString("fare option to go to and from", Components.QUEST_COMPLETE_SCROLL_277, 12 + 2);
+        player.getPacketDispatch().sendString("Karamja", Components.QUEST_COMPLETE_SCROLL_277, 13 + 2);
+        player.getPacketDispatch().sendString("You have completed the Pirate's Treasure Quest!", Components.QUEST_COMPLETE_SCROLL_277, 2 + 2);
+        player.getPacketDispatch().sendItemZoomOnInterface(Items.CASKET_7956, 230, Components.QUEST_COMPLETE_SCROLL_277, 3 + 2);
         removeAttribute(player, "gardener-attack");
         removeAttribute(player, "pirate-read");
         if (!player.getInventory().add(CASKET)) {

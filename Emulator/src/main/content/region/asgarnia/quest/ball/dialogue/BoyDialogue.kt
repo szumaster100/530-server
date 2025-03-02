@@ -1,37 +1,50 @@
 package content.region.asgarnia.quest.ball.dialogue
 
+import core.api.inInventory
+import core.api.quest.finishQuest
+import core.api.quest.getQuestStage
+import core.api.quest.startQuest
+import core.api.removeItem
+import core.api.sendItemDialogue
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
 import core.game.node.entity.player.Player
-import core.game.node.item.Item
 import core.plugin.Initializable
+import core.tools.END_DIALOGUE
 import org.rs.consts.Items
 import org.rs.consts.NPCs
 import org.rs.consts.Quests
 
+/**
+ * Represents the Boy dialogue in Witches' House quest.
+ */
 @Initializable
 class BoyDialogue(
     player: Player? = null,
 ) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
-        val quest = player.getQuestRepository().getQuest(Quests.WITCHS_HOUSE)
-        player.debug(quest.isStarted(player).toString() + " " + quest.getStage(player))
-        if (!quest.isStarted(player) && quest.getStage(player) < 10) {
-            player("Hello young man.")
-            setStage(1)
+        val quest = getQuestStage(player, Quests.WITCHS_HOUSE)
+
+        if (quest < 10) {
+            playerl(FaceAnim.FRIENDLY, "Hello young man.")
+            stage = 1
             return true
         }
-        if (quest.isCompleted(player) || quest.getStage(player) == 100) {
+
+        if (quest == 100) {
             sendDialogue("The boy is too busy playing with his ball to talk.")
-            finish()
+            stage = END_DIALOGUE
             return true
         }
-        if (!player.inventory.containsItem(BALL)) {
-            npc(FaceAnim.CHILD_GUILTY, "Have you gotten my ball back yet?")
-        } else {
-            player("Hi, I have got your ball back. It was MUCH harder", "than I thought it would be.")
+
+        if (!inInventory(player, Items.BALL_2407)) {
+            npcl(FaceAnim.CHILD_GUILTY, "Have you gotten my ball back yet?")
+            stage = 11
+            return true
         }
-        setStage(11)
+
+        playerl(FaceAnim.FRIENDLY, "Hi, I have got your ball back. It was MUCH harder than I thought it would be.")
+        stage = 11
         return true
     }
 
@@ -39,35 +52,32 @@ class BoyDialogue(
         interfaceId: Int,
         buttonId: Int,
     ): Boolean {
-        val quest = player.getQuestRepository().getQuest(Quests.WITCHS_HOUSE)
         when (stage) {
-            -1 -> end()
             1 -> {
                 sendDialogue("The boy sobs.")
-                next()
+                stage++
             }
 
             2 -> {
                 options("What's the matter?", "Well if you're not going to answer then I'll go.")
-                next()
+                stage++
             }
 
-            3 ->
-                when (buttonId) {
-                    1 -> {
-                        player("What's the matter?")
-                        setStage(5)
-                    }
-
-                    2 -> {
-                        player("Well if you're not going to answer then I'll go.")
-                        next()
-                    }
+            3 -> when (buttonId) {
+                1 -> {
+                    playerl(FaceAnim.HALF_ASKING, "What's the matter?")
+                    stage = 5
                 }
+
+                2 -> {
+                    playerl(FaceAnim.NEUTRAL, "Well if you're not going to answer then I'll go.")
+                    stage++
+                }
+            }
 
             4 -> {
                 sendDialogue("The boy sniffs slightly.")
-                finish()
+                stage = END_DIALOGUE
             }
 
             5 -> {
@@ -78,65 +88,62 @@ class BoyDialogue(
                     "ball in her wooden shed! Can you get my ball back for",
                     "me please?",
                 )
-                next()
+                stage++
             }
 
             6 -> {
                 options("Ok, I'll see what I can do.", "Get it back yourself.")
-                next()
+                stage++
             }
 
-            7 ->
-                when (buttonId) {
-                    1 -> {
-                        player("Ok, I'll see what I can do.")
-                        setStage(10)
-                    }
-
-                    2 -> {
-                        player("Get it back yourself.")
-                        next()
-                    }
+            7 -> when (buttonId) {
+                1 -> {
+                    playerl(FaceAnim.HAPPY, "Ok, I'll see what I can do.")
+                    stage = 10
                 }
+
+                2 -> {
+                    player(FaceAnim.NEUTRAL, "Get it back yourself.")
+                    stage++
+                }
+            }
 
             8 -> {
                 npc(FaceAnim.CHILD_SAD, "You're a meany.")
-                next()
+                stage++
             }
 
             9 -> {
                 sendDialogue("The boy starts crying again.")
-                finish()
+                stage++
             }
 
             10 -> {
-                npc(FaceAnim.CHILD_FRIENDLY, "Thanks mister!")
-                finish()
-                quest.start(player)
+                npc(FaceAnim.CHILD_FRIENDLY, "Thanks " + if (!player.isMale) "lady" else "mister" + "!")
+                startQuest(player, Quests.WITCHS_HOUSE)
+                stage = END_DIALOGUE
             }
 
-            11 ->
-                if (!player.inventory.containsItem(BALL)) {
-                    player("Not yet.")
-                    next()
-                } else {
-                    if (player.inventory.remove(BALL)) interpreter.sendItemMessage(BALL, "You give the ball back.")
-                    setStage(13)
-                }
+            11 -> if (!removeItem(player, Items.BALL_2407)) {
+                player("Not yet.")
+                stage++
+            } else {
+                sendItemDialogue(player, Items.BALL_2407, "You give the ball back.")
+                stage = 13
+            }
 
             12 -> {
                 npc(FaceAnim.CHILD_GUILTY, "Well it's in the shed in that garden.")
-                finish()
+                stage = END_DIALOGUE
             }
 
             13 -> {
                 npc(FaceAnim.CHILD_FRIENDLY, "Thank you so much!")
-                next()
+                stage++
             }
-
             14 -> {
-                quest.finish(player)
-                finish()
+                end()
+                finishQuest(player, Quests.WITCHS_HOUSE)
             }
         }
         return true
@@ -146,7 +153,4 @@ class BoyDialogue(
         return intArrayOf(NPCs.BOY_895)
     }
 
-    companion object {
-        private val BALL = Item(Items.BALL_2407)
-    }
 }

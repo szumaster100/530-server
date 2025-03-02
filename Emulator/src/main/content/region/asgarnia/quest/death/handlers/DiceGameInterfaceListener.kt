@@ -71,12 +71,6 @@ class DiceGameInterfaceListener : InterfaceListener {
         }
     }
 
-    private fun onClose(
-        deathDice99: Int,
-        any: Any,
-    ) {
-    }
-
     private fun preRoll(
         player: Player,
         triesRemaining: Int = 5,

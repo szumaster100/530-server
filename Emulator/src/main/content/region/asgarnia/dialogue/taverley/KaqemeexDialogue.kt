@@ -1,6 +1,9 @@
 package content.region.asgarnia.dialogue.taverley
 
 import core.api.quest.finishQuest
+import core.api.quest.getQuestStage
+import core.api.quest.isQuestComplete
+import core.api.quest.startQuest
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
 import core.game.global.Skillcape.isMaster
@@ -32,61 +35,67 @@ class KaqemeexDialogue(
         interfaceId: Int,
         buttonId: Int,
     ): Boolean {
+        val questStage = getQuestStage(player, Quests.DRUIDIC_RITUAL)
         when (stage) {
             0 -> {
-                if (player.getQuestRepository().isComplete(Quests.DRUIDIC_RITUAL)) {
-                    npc("Hello again. How is the Herblore going?")
-                    stage = 600
+                when (questStage) {
+                    100 -> {
+                        npc("Hello again. How is the Herblore going?")
+                        stage = 600
+                    }
+
+                    10 -> {
+                        npc(FaceAnim.FRIENDLY, "Hello again.")
+                        stage = 40
+                    }
+
+                    99 -> {
+                        npc(
+                            FaceAnim.FRIENDLY,
+                            "I have word from Sanfew that you have been very",
+                            "helpful in assisting him with his preparations for the",
+                            "purification ritual. As promised I will now teach you the",
+                            "ancient arts of Herblore.",
+                        )
+                        stage = 200
+                    }
+
+                    else -> {
+                        npc(FaceAnim.FRIENDLY, "What brings you to our holy monument?")
+                        stage = 1
+                    }
                 }
-                if (player.getQuestRepository().getQuest(Quests.DRUIDIC_RITUAL).getStage(player) == 10) {
-                    npc(FaceAnim.FRIENDLY, "Hello again.")
-                    stage = 40
-                }
-                if (player.getQuestRepository().getQuest(Quests.DRUIDIC_RITUAL).getStage(player) == 99) {
-                    npc(
-                        FaceAnim.FRIENDLY,
-                        "I have word from Sanfew that you have been very",
-                        "helpful in assisting him with his preparations for the",
-                        "purification ritual. As promised I will now teach you the",
-                        "ancient arts of Herblore.",
-                    )
-                    stage = 200
-                }
-                npc(FaceAnim.FRIENDLY, "What brings you to our holy monument?")
-                stage = 1
             }
 
-            1 ->
-                if (player.getQuestRepository().getQuest(Quests.DRUIDIC_RITUAL).isStarted(player)) {
-                    if (isMaster(player, Skills.HERBLORE)) {
-                        options("Can I buy a Skillcape of Herblore?", "Who are you?", "Did you build this?")
-                        stage = 800
-                    } else {
-                        options("Who are you?", "Did you build this?")
-                        stage = 500
-                    }
+            1 -> if (questStage == 10) {
+                if (isMaster(player, Skills.HERBLORE)) {
+                    options("Can I buy a Skillcape of Herblore?", "Who are you?", "Did you build this?")
+                    stage = 800
                 } else {
-                    options("Who are you?", "I'm in search of a quest.", "Did you build this?")
-                    stage = 2
+                    options("Who are you?", "Did you build this?")
+                    stage = 500
+                }
+            } else {
+                options("Who are you?", "I'm in search of a quest.", "Did you build this?")
+                stage = 2
+            }
+
+            2 -> when (buttonId) {
+                1 -> {
+                    player(FaceAnim.ASKING, "Who are you?")
+                    stage = 10
                 }
 
-            2 ->
-                when (buttonId) {
-                    1 -> {
-                        player(FaceAnim.ASKING, "Who are you?")
-                        stage = 10
-                    }
-
-                    2 -> {
-                        player(FaceAnim.FRIENDLY, "I'm in search of a quest.")
-                        stage = 20
-                    }
-
-                    3 -> {
-                        player(FaceAnim.ASKING, "Did you build this?")
-                        stage = 30
-                    }
+                2 -> {
+                    player(FaceAnim.FRIENDLY, "I'm in search of a quest.")
+                    stage = 20
                 }
+
+                3 -> {
+                    player(FaceAnim.ASKING, "Did you build this?")
+                    stage = 30
+                }
+            }
 
             10 -> {
                 npc(
@@ -171,18 +180,17 @@ class KaqemeexDialogue(
                 stage = 24
             }
 
-            24 ->
-                when (buttonId) {
-                    1 -> {
-                        player(FaceAnim.HALF_GUILTY, "Ok, I will try and help.")
-                        stage = 26
-                    }
-
-                    2 -> {
-                        player(FaceAnim.HALF_GUILTY, "No, that doesn't sound very interesting.")
-                        stage = 25
-                    }
+            24 -> when (buttonId) {
+                1 -> {
+                    player(FaceAnim.HALF_GUILTY, "Ok, I will try and help.")
+                    stage = 26
                 }
+
+                2 -> {
+                    player(FaceAnim.HALF_GUILTY, "No, that doesn't sound very interesting.")
+                    stage = 25
+                }
+            }
 
             25 -> {
                 npc(
@@ -195,7 +203,6 @@ class KaqemeexDialogue(
             }
 
             26 -> {
-                player.getQuestRepository().getQuest(Quests.DRUIDIC_RITUAL).start(player)
                 npc(
                     FaceAnim.HAPPY,
                     "Excellent. Go to the village south of this place and speak",
@@ -203,6 +210,7 @@ class KaqemeexDialogue(
                     "ritual. He knows better than I what is required to",
                     "complete it.",
                 )
+                startQuest(player, Quests.DRUIDIC_RITUAL)
                 stage = 27
             }
 
@@ -228,52 +236,47 @@ class KaqemeexDialogue(
                 finishQuest(player, Quests.DRUIDIC_RITUAL)
             }
 
-            500 ->
-                when (buttonId) {
-                    1 -> {
-                        player(FaceAnim.HALF_ASKING, "Who are you?")
-                        stage = 10
-                    }
-
-                    2 -> {
-                        player(FaceAnim.HALF_ASKING, "Did you build this?")
-                        stage = 30
-                    }
+            500 -> when (buttonId) {
+                1 -> {
+                    player(FaceAnim.HALF_ASKING, "Who are you?")
+                    stage = 10
                 }
 
-            501 ->
-                when (buttonId) {
-                    1 -> {
-                        player(FaceAnim.HAPPY, "Can I buy a Skillcape of Herblore?")
-                        stage = 800
-                    }
-
-                    2 -> {
-                        player(FaceAnim.ASKING, "Who are you?")
-                        stage = 10
-                    }
-
-                    3 -> {
-                        player(FaceAnim.HALF_ASKING, "Did you build this?")
-                        stage = 30
-                    }
+                2 -> {
+                    player(FaceAnim.HALF_ASKING, "Did you build this?")
+                    stage = 30
                 }
+            }
+
+            501 -> when (buttonId) {
+                1 -> {
+                    player(FaceAnim.HAPPY, "Can I buy a Skillcape of Herblore?")
+                    stage = 800
+                }
+
+                2 -> {
+                    player(FaceAnim.ASKING, "Who are you?")
+                    stage = 10
+                }
+
+                3 -> {
+                    player(FaceAnim.HALF_ASKING, "Did you build this?")
+                    stage = 30
+                }
+            }
 
             600 -> {
                 player("Good good!")
                 stage = 601
             }
 
-            601 ->
-                if (isMaster(player, Skills.HERBLORE)) {
-                    options("Can I buy a Skillcape of Herblore?", "Who are you?", "Did you build this?")
-                    stage = 501
-                    501
-                } else {
-                    options("Who are you?", "Did you build this?")
-                    stage = 500
-                    500
-                }
+            601 -> if (isMaster(player, Skills.HERBLORE)) {
+                options("Can I buy a Skillcape of Herblore?", "Who are you?", "Did you build this?")
+                stage = 501
+            } else {
+                options("Who are you?", "Did you build this?")
+                stage = 500
+            }
 
             1000 -> {
                 npc(
@@ -375,15 +378,14 @@ class KaqemeexDialogue(
                 stage = 802
             }
 
-            802 ->
-                when (buttonId) {
-                    1 -> {
-                        player("Yes, here you go.")
-                        stage = 803
-                    }
-
-                    2 -> end()
+            802 -> when (buttonId) {
+                1 -> {
+                    player("Yes, here you go.")
+                    stage = 803
                 }
+
+                2 -> end()
+            }
 
             803 -> {
                 if (purchase(player, Skills.HERBLORE)) {

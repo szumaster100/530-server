@@ -8,6 +8,7 @@ import core.game.node.entity.skill.SkillPulse
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.tools.RandomFunction
+import org.rs.consts.Animations
 import org.rs.consts.Items
 import org.rs.consts.NPCs
 
@@ -66,7 +67,7 @@ class BarbFishingPulse(
     }
 
     override fun animate() {
-        animate(player, 622, true)
+        animate(player, Animations.ROD_FISHING_622, true)
     }
 
     override fun reward(): Boolean {
@@ -115,31 +116,22 @@ class BarbFishingPulse(
         return player.inventory.freeSlots() == 0
     }
 
-    fun rollSuccess(fish: Int): Boolean {
+    private fun rollSuccess(fish: Int): Boolean {
         val level = 1 + player.skills.getLevel(Skills.FISHING) + player.familiarManager.getBoost(Skills.FISHING)
-
         val hostRatio: Double = Math.random() * fish
-
         val clientRatio: Double = Math.random() * (level * 3.0 - fish)
-
         return hostRatio < clientRatio
     }
 
-    fun getRandomFish(): Item {
+    private fun getRandomFish(): Item {
         val fish = arrayOf(Items.LEAPING_TROUT_11328, Items.LEAPING_SALMON_11330, Items.LEAPING_STURGEON_11332)
-
         val fishing = player.skills.getLevel(Skills.FISHING)
-
         val strength = player.skills.getLevel(Skills.STRENGTH)
-
         val agility = player.skills.getLevel(Skills.AGILITY)
 
         var possibleIndex = 0
-
         if (fishing >= 58 && (strength >= 30 && agility >= 30)) possibleIndex++
-
         if (fishing >= 70 && (strength >= 45 && agility >= 45)) possibleIndex++
-
         return Item(fish[RandomFunction.random(possibleIndex + 1)])
     }
 }

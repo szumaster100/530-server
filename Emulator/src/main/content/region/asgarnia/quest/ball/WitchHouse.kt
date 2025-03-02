@@ -18,30 +18,24 @@ class WitchHouse : Quest(Quests.WITCHS_HOUSE, 124, 123, 4, Vars.VARP_QUEST_WTICH
         stage: Int,
     ) {
         super.drawJournal(player, stage)
-        var line = 12
-
-        if (getStage(player) >= 0) {
+        var line = 11
+        if (stage == 0) {
             line(player, "I can start this quest by speaking to the !!little boy??", line++)
-            line(player, "standing by the long garden just !!north of Taverley??", line++)
-            line(player, "I must be able to defeat a !!level 53 enemy??.", line++)
-            line++
-        }
-
-        if (getStage(player) in 1..10) {
-            line(player, "A small boy has kicked his ball over the fence into the", line++, true)
-            line(player, "nearby garden, and I have agreed to retrieve it for him.", line++, true)
-            line(player, "I should find a way into the !!garden?? where the !!ball?? is.", line++, true)
-            line++
-        }
-
-        if (getStage(player) in 10..100) {
-            line(player, "A small boy has kicked his ball over the fence into the", line++, true)
-            line(player, "nearby garden, and I have agreed to retrieve it for him.", line++, true)
-            line(player, "After puzzling through the strangely elaborate security", line++, true)
-            line(player, "system, and defeating a very strange monster, I returned", line++, true)
-            line(player, "the child's ball to him, and he thanked me for my help.", line++, true)
-            line++
-            line(player, "<col=FF0000>QUEST COMPLETE!", line, false)
+            line(player, "standing by the long garden just !!north of Taverly??.", line++)
+            line(player, "I must be able to defeat a !!level 53 enemy??", line++)
+        } else {
+            line(player, "A small boy kicked his ball over the fence into the nearby", line++, true)
+            line(player, "garden, and I have agreed to retrieve it for him.", line++, true)
+            if (stage == 10) {
+                line(player, "I should find a way into the !!garden?? where the !!ball?? is.", line++)
+            }
+            if (stage >= 100) {
+                line(player, "After puzzling through the strangely elaborate security", line++, true)
+                line(player, "system, and defeating a very strange monster, I returned", line++, true)
+                line(player, "the child's ball to him, and he thanked me for my help.", line++, true)
+                line++;
+                line(player, "<col=FF0000>QUEST COMPLETE!</col>", line)
+            }
         }
     }
 

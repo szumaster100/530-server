@@ -28,10 +28,11 @@ class DagannothSession(
     }
 
     companion object {
+        @JvmStatic
         fun create(player: Player): DagannothSession {
             return DagannothSession(player)
         }
-
+        @JvmStatic
         fun getSession(player: Player): DagannothSession {
             return player.getExtension(DagannothSession::class.java)
         }

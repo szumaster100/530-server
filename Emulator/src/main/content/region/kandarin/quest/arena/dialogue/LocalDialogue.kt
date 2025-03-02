@@ -17,16 +17,24 @@ class LocalDialogue(
 ) : Dialogue(player) {
     override fun open(vararg args: Any?): Boolean {
         npc = args[0] as NPC
-        if (isQuestComplete(player, Quests.FIGHT_ARENA)) {
-            npcl(FaceAnim.FRIENDLY, "Hey, you're the guy from the arena! How'd you get out?").also {
+        val questStage = getQuestStage(player, Quests.FIGHT_ARENA)
+
+        when {
+            isQuestComplete(player, Quests.FIGHT_ARENA) -> {
+                npcl(FaceAnim.FRIENDLY, "Hey, you're the guy from the arena! How'd you get out?")
                 stage = END_DIALOGUE
             }
-        } else if (getQuestStage(player, Quests.FIGHT_ARENA) in 91..99) {
-            playerl(FaceAnim.FRIENDLY, "Hello.").also { stage = 9 }
-        } else if (getQuestStage(player, Quests.FIGHT_ARENA) >= 10) {
-            playerl(FaceAnim.FRIENDLY, "Hello.")
-        } else {
-            playerl(FaceAnim.FRIENDLY, "Hello.").also { stage = 7 }
+            questStage in 91..99 -> {
+                playerl(FaceAnim.FRIENDLY, "Hello.")
+                stage = 9
+            }
+            questStage >= 10 -> {
+                playerl(FaceAnim.FRIENDLY, "Hello.")
+            }
+            else -> {
+                playerl(FaceAnim.FRIENDLY, "Hello.")
+                stage = 7
+            }
         }
         return true
     }

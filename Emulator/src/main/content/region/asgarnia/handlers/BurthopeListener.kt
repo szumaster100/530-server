@@ -20,7 +20,7 @@ class BurthopeListener : InteractionListener {
          */
 
         on(THIEVING_GUILD_PASSAGE, IntType.SCENERY, "enter") { player, node ->
-            if (node.id == 7257) {
+            if (node.id == Scenery.TRAPDOOR_7257) {
                 teleport(player, Location(3061, 4985, 1))
             } else {
                 teleport(player, Location(2906, 3537, 0))

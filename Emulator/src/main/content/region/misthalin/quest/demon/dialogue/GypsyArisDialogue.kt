@@ -1,6 +1,7 @@
 package content.region.misthalin.quest.demon.dialogue
 
 import content.region.misthalin.quest.demon.handlers.DemonSlayerUtils
+import core.api.sendMessage
 import core.api.sendNPCDialogue
 import core.game.activity.ActivityManager
 import core.game.activity.CutscenePlugin
@@ -269,6 +270,7 @@ class GypsyArisDialogue(
 
                     10 -> {
                         if (!player.inventory.containsItem(COINS)) {
+                            sendMessage(player, "You need one gold coin.")
                             end()
                         } else {
                             if (player.inventory.remove(COINS)) {

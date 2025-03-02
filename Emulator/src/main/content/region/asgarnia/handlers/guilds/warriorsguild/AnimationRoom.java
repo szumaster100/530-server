@@ -1,5 +1,8 @@
 package content.region.asgarnia.handlers.guilds.warriorsguild;
 
+import org.rs.consts.Animations;
+import org.rs.consts.Items;
+import org.rs.consts.NPCs;
 import org.rs.consts.Sounds;
 import core.game.interaction.NodeUsageEvent;
 import core.game.interaction.UseWithHandler;
@@ -27,13 +30,13 @@ import static core.api.ContentAPIKt.setAttribute;
 public final class AnimationRoom extends MapZone implements Plugin<java.lang.Object> {
 
     enum ArmourSet {
-        BRONZE(4278, 5, 1155, 1117, 1075),
-        IRON(4279, 10, 1153, 1115, 1067),
-        STEEL(4280, 15, 1157, 1119, 1069),
-        BLACK(4281, 20, 1165, 1125, 1077),
-        MITHRIL(4282, 25, 1159, 1121, 1071),
-        ADAMANT(4283, 30, 1161, 1123, 1073),
-        RUNE(4284, 40, 1163, 1127, 1079);
+        BRONZE(NPCs.ANIMATED_BRONZE_ARMOUR_4278, 5, Items.BRONZE_FULL_HELM_1155, Items.BRONZE_PLATEBODY_1117, Items.BRONZE_PLATELEGS_1075),
+        IRON(NPCs.ANIMATED_IRON_ARMOUR_4279, 10, Items.IRON_FULL_HELM_1153, Items.IRON_PLATEBODY_1115, Items.IRON_PLATELEGS_1067),
+        STEEL(NPCs.ANIMATED_STEEL_ARMOUR_4280, 15, Items.STEEL_FULL_HELM_1157, Items.STEEL_PLATEBODY_1119, Items.STEEL_PLATELEGS_1069),
+        BLACK(NPCs.ANIMATED_BLACK_ARMOUR_4281, 20, Items.BLACK_FULL_HELM_1165, Items.BLACK_PLATEBODY_1125, Items.BLACK_PLATELEGS_1077),
+        MITHRIL(NPCs.ANIMATED_MITHRIL_ARMOUR_4282, 25, Items.MITHRIL_FULL_HELM_1159, Items.MITHRIL_PLATEBODY_1121, Items.MITHRIL_PLATELEGS_1071),
+        ADAMANT(NPCs.ANIMATED_ADAMANT_ARMOUR_4283, 30, Items.ADAMANT_FULL_HELM_1161, Items.ADAMANT_PLATEBODY_1123, Items.ADAMANT_PLATELEGS_1073),
+        RUNE(NPCs.ANIMATED_RUNE_ARMOUR_4284, 40, Items.RUNE_FULL_HELM_1163, Items.RUNE_PLATEBODY_1127, Items.RUNE_PLATELEGS_1079);
 
         private final int npcId;
         private final int tokenAmount;
@@ -84,7 +87,7 @@ public final class AnimationRoom extends MapZone implements Plugin<java.lang.Obj
             return;
         }
         player.lock(10);
-        player.animate(Animation.create(827));
+        player.animate(Animation.create(Animations.MULTI_BEND_OVER_827));
         player.getDialogueInterpreter().sendPlainMessage(true, "You place your armour on the platform where it", "disappears...");
         GameWorld.getPulser().submit(new Pulse(5, player) {
             boolean spawn;
@@ -131,7 +134,7 @@ public final class AnimationRoom extends MapZone implements Plugin<java.lang.Obj
                 ids[index++] = id;
             }
         }
-        UseWithHandler.addHandler(15621, UseWithHandler.OBJECT_TYPE, new UseWithHandler(ids) {
+        UseWithHandler.addHandler(org.rs.consts.Scenery.MAGICAL_ANIMATOR_15621, UseWithHandler.OBJECT_TYPE, new UseWithHandler(ids) {
 
             @Override
             public boolean handle(NodeUsageEvent event) {

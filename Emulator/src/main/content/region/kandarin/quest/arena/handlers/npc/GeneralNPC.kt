@@ -5,6 +5,7 @@ import content.region.kandarin.quest.arena.handlers.FightArenaListener.Companion
 import core.api.openDialogue
 import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
+import core.api.setAttribute
 import core.game.node.entity.Entity
 import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.player.Player
@@ -40,8 +41,9 @@ class GeneralNPC(
         if (killer is Player) {
             if (getQuestStage(killer, Quests.FIGHT_ARENA) == 97) {
                 setQuestStage(killer, Quests.FIGHT_ARENA, 98)
-                openDialogue(killer.asPlayer(), JeremyServilDialogueFile())
+                setAttribute(killer, "/save:quest:arena-optional-task", true)
             }
+            openDialogue(killer.asPlayer(), JeremyServilDialogueFile())
         }
         super.finalizeDeath(killer)
     }

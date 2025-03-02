@@ -1,17 +1,17 @@
 package content.region.asgarnia.handlers.taverley
 
 import core.api.*
+import core.api.quest.isQuestComplete
 import core.game.global.action.DoorActionHandler
 import core.game.interaction.IntType
 import core.game.interaction.InteractionListener
-import core.game.node.entity.npc.NPC
-import core.game.world.map.Location
 import org.rs.consts.Items
+import org.rs.consts.Quests
 import org.rs.consts.Scenery
 
 class TaverleyDungeonListener : InteractionListener {
-    private val SUITS = intArrayOf(2143, 2144)
-    private val ARMOUR_SUITS: Array<NPC?> = arrayOfNulls(2)
+
+    private val GATES = intArrayOf(Scenery.DOOR_31844, Scenery.DOOR_31841)
 
     override fun defineListeners() {
         on(Scenery.GATE_2623, IntType.SCENERY, "open") { player, node ->
@@ -28,32 +28,18 @@ class TaverleyDungeonListener : InteractionListener {
             return@onUseWith true
         }
 
-        on(SUITS, IntType.SCENERY, "open") { player, node ->
-            if (player.location.x < node.location.x && !player.getAttribute<Boolean>("spawned_suits", false)) {
-                var alive = true
-                for (i in ARMOUR_SUITS.indices) {
-                    var npc = ARMOUR_SUITS[i]
-                    if (npc == null || !npc.isActive) {
-                        val location = Location.create(2887, 9829 + (i * 3), 0)
-                        npc = NPC(453, location)
-                        ARMOUR_SUITS[i] = npc
-                        npc.init()
-                        npc.properties.combatPulse.attack(player)
-                        val scenery = getScenery(location)
-                        if (scenery != null) {
-                            removeScenery(scenery)
-                        }
-                        alive = false
-                    }
-                }
-                if (!alive) {
-                    setAttribute(player, "spawned_suits", true)
-                    sendMessage(player, "Suddenly the suit of armour comes to life!")
-                    return@on true
+        /*
+         * Handles the gates to Cauldron of thunder.
+         * Sources: https://runescape.wiki/w/Suit_of_armour_(Taverley_Dungeon)?oldid=1622127
+         */
+
+        on(GATES, IntType.SCENERY, "open") { player, node ->
+            if (!isQuestComplete(player, Quests.DRUIDIC_RITUAL)) {
+                if (ArmourSuitNPC.activeSuits.size < 2) {
+                    ArmourSuitNPC.spawnArmourSuit(player)
                 }
             }
-            removeAttribute(player, "spawned_suits")
-            DoorActionHandler.handleAutowalkDoor(player, node.asScenery())
+            DoorActionHandler.handleAutowalkDoor(player, node as core.game.node.scenery.Scenery)
             return@on true
         }
     }

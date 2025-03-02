@@ -36,7 +36,7 @@ enum class BarcrawlType {
             if (!start) {
                 sendMessages(player, "Your insides feel terrible.", "The bartender signs your card.")
             } else {
-                sendMessages(player, "You buy some " + barName + ".", "You drink the " + barName + ".")
+                sendMessages(player, "You buy some $barName.", "You drink the $barName.")
             }
         }
     },

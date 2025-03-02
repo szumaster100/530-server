@@ -7,6 +7,7 @@ import core.api.TickListener
 import core.game.node.entity.npc.NPC
 import core.game.world.map.Location
 import core.tools.RandomFunction
+import org.rs.consts.NPCs
 
 class BarbFishSpotManager :
     TickListener,
@@ -57,7 +58,7 @@ fun getNewLoc(): Location {
 class BarbFishingSpot(
     var loc: Location? = null,
     var ttl: Int,
-) : NPC(1176) {
+) : NPC(NPCs.FISHING_SPOT_1176) {
     init {
         location = loc
     }

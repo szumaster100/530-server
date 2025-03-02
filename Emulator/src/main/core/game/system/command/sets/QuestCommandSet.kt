@@ -1,5 +1,6 @@
 package core.game.system.command.sets
 
+import content.region.kandarin.quest.arena.cutscene.JeremyRescueCutscene
 import content.region.kandarin.quest.phoenix.handlers.PhoenixLairListener.Companion.weavingRibbons
 import content.region.kandarin.quest.phoenix.handlers.WoundedPhoenixCutscene
 import content.region.kandarin.quest.phoenix.handlers.allTwigs
@@ -63,6 +64,11 @@ class QuestCommandSet : CommandSet(Privilege.ADMIN) {
                 quest.finish(player)
             }
         }
+
+        define(name = "firstquest", Privilege.ADMIN) { player, _ ->
+            JeremyRescueCutscene(player).start()
+        }
+
 
         define(name = "quest", Privilege.ADMIN) { player, args ->
             if (args.size < 3) {

@@ -12,6 +12,12 @@ import org.rs.consts.Scenery
 
 class CauldronOfThunderListener : InteractionListener {
     override fun defineListeners() {
+
+        /*
+         * Handles interaction with cauldron of thunder.
+         * The cauldron of thunder was missing its animation.
+         * 3 March 2009 (Update): "render_anim": "3939"
+         */
         onUseWith(IntType.SCENERY, ITEM_MAP.keys.toIntArray(), Scenery.CAULDRON_OF_THUNDER_2142) { player, used, _ ->
             if (!removeItem(player, used)) {
                 return@onUseWith false

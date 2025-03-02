@@ -1,6 +1,6 @@
 package content.region.fremennik.quest.horror
 
-import content.region.fremennik.quest.horror.handlers.HorrorFromTheDeepUtils
+import content.data.GameAttributes
 import core.api.*
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
@@ -19,12 +19,12 @@ class HorrorFromTheDeep :
         stage: Int,
     ) {
         super.drawJournal(player, stage)
+        // TODO: Replace all stages with varbits.
+        val progress = getVarbit(player, Vars.VARBIT_QUEST_HORROR_FROM_THE_DEEP_PROGRESS_34)
         var line = 11
-        player ?: return
-        if (stage == 0) {
+        if (progress == 0) {
             line(player, "I can start this quest by speaking to !!Larrissa?? at the", line++)
             line(player, "!!Lighthouse?? to the !!North?? of the !!Barbarian Outpost??.", line++)
-            line++
             line(player, "To complete this quest I need:", line++)
             line(
                 player,
@@ -46,9 +46,10 @@ class HorrorFromTheDeep :
                 line++,
             )
             line(player, "!!I must also be able to defeat strong level 100 enemies??", line++)
+            limitScrolling(player, line, true)
             line++
         }
-        if (stage >= 1) {
+        if (progress >= 1) {
             line(
                 player,
                 "I travelled to an isolated !!Lighthouse?? north of the !!Barbarian outpost??, ",
@@ -58,6 +59,8 @@ class HorrorFromTheDeep :
             line(player, "to find a !!Fremennik?? girl called !!Larrissa?? locked outside, ", line++, stage >= 2)
             line(player, "and worried about her boyfriend !!Jossik??.", line++, stage >= 2)
             line++
+        }
+        if(stage >= 2) {
             line(
                 player,
                 "I recovered a !!spare key?? from Larrissa's cousin !!Gunnjorn??",
@@ -68,7 +71,7 @@ class HorrorFromTheDeep :
                 player,
                 "and repaired the !!bridge?? to Rellekka with some planks.",
                 line++,
-                getAttribute(player, HorrorFromTheDeepUtils.UNLOCK_BRIDGE, 0) == 2,
+                getAttribute(player, GameAttributes.QUEST_HFTD_UNLOCK_BRIDGE, 0) == 2,
             )
             line++
         }
@@ -76,7 +79,7 @@ class HorrorFromTheDeep :
             line(player, "I should talk to !!Larrissa??.", line++, stage >= 40)
             line++
         }
-        if (stage >= 40 && getAttribute(player, HorrorFromTheDeepUtils.STRANGE_WALL_DISCOVER, false)) {
+        if (stage >= 40 && getAttribute(player, GameAttributes.QUEST_HFTD_STRANGE_WALL_DISCOVER, false)) {
             line(
                 player,
                 "After I entered the !!lighthouse??, and repaired the !!lighting mechanism??, ",
@@ -105,14 +108,17 @@ class HorrorFromTheDeep :
         }
         if (stage == 100) {
             line(player, "<col=FF0000>QUEST COMPLETE!</col>", line, false)
+            limitScrolling(player, line, false)
         }
     }
 
     override fun finish(player: Player) {
         super.finish(player)
-        player ?: return
         var ln = 10
-        player.packetDispatch.sendString("You have survived the ${Quests.HORROR_FROM_THE_DEEP}!", 277, 4)
+        /*
+         * Trivia: The only one interface that has different text in journal.
+         */
+        sendString(player, "You have survived the ${Quests.HORROR_FROM_THE_DEEP}!", Components.QUEST_COMPLETE_SCROLL_277, 4)
         sendItemZoomOnInterface(player, Components.QUEST_COMPLETE_SCROLL_277, 5, Items.RUSTY_CASKET_3849)
         drawReward(player, "2 Quest Points", ln++)
         drawReward(player, "4662 XP in each of: Ranged,", ln++)
@@ -121,19 +127,21 @@ class HorrorFromTheDeep :
         rewardXP(player, Skills.RANGE, 4662.0)
         rewardXP(player, Skills.MAGIC, 4662.0)
         rewardXP(player, Skills.STRENGTH, 4662.0)
+        /*
         removeAttributes(
             player,
-            HorrorFromTheDeepUtils.LIGHTHOUSE_MECHANISM,
-            HorrorFromTheDeepUtils.UNLOCK_BRIDGE,
-            HorrorFromTheDeepUtils.UNLOCK_DOOR,
-            HorrorFromTheDeepUtils.STRANGE_WALL_DISCOVER,
-            HorrorFromTheDeepUtils.USE_AIR_RUNE,
-            HorrorFromTheDeepUtils.USE_FIRE_RUNE,
-            HorrorFromTheDeepUtils.USE_EARTH_RUNE,
-            HorrorFromTheDeepUtils.USE_WATER_RUNE,
-            HorrorFromTheDeepUtils.USE_ARROW,
-            HorrorFromTheDeepUtils.USE_SWORD,
+            GameAttributes.QUEST_HFTD_LIGHTHOUSE_MECHANISM,
+            GameAttributes.QUEST_HFTD_UNLOCK_BRIDGE,
+            GameAttributes.QUEST_HFTD_UNLOCK_DOOR,
+            GameAttributes.QUEST_HFTD_STRANGE_WALL_DISCOVER,
+            GameAttributes.QUEST_HFTD_USE_AIR_RUNE,
+            GameAttributes.QUEST_HFTD_USE_FIRE_RUNE,
+            GameAttributes.QUEST_HFTD_USE_EARTH_RUNE,
+            GameAttributes.QUEST_HFTD_USE_WATER_RUNE,
+            GameAttributes.QUEST_HFTD_USE_ARROW,
+            GameAttributes.QUEST_HFTD_USE_SWORD,
         )
+        */
     }
 
     override fun newInstance(`object`: Any?): Quest {

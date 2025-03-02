@@ -37,21 +37,14 @@ public final class BogrogPlugin extends OptionHandler {
     }
 
     public static void openSwap(Player player) {
-        if (isSummoningLevelInsufficient(player)) {
+        if (player.getSkills().getStaticLevel(Skills.SUMMONING) < 21) {
             player.sendMessage("You need a Summoning level of at least 21 in order to do that.");
         } else {
-            displaySwapOptions(player);
+            sendItemSelect(player, new String[]{"Value", "Swap 1", "Swap 5", "Swap 10", "Swap X"}, true, (slot, index) -> {
+                BogrogPouchSwapper.handle(player, index, slot);
+                return Unit.INSTANCE;
+            });
         }
     }
 
-    private static boolean isSummoningLevelInsufficient(Player player) {
-        return player.getSkills().getStaticLevel(Skills.SUMMONING) < 21;
-    }
-
-    private static void displaySwapOptions(Player player) {
-        sendItemSelect(player, new String[]{"Value", "Swap 1", "Swap 5", "Swap 10", "Swap X"}, true, (slot, index) -> {
-            BogrogPouchSwapper.handle(player, index, slot);
-            return Unit.INSTANCE;
-        });
-    }
 }

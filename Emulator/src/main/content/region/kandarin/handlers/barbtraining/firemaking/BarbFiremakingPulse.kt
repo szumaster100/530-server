@@ -29,7 +29,7 @@ class BarbFiremakingPulse(
 ) : SkillPulse<Item?>(player, node) {
     val tools = SkillingTool.getFiremakingTool(player)
     private val animationId = Animation(tools!!.animation)
-    private val graphicsId = Graphics(1169)
+    private val graphicsId = Graphics(org.rs.consts.Graphics.BARBARIAN_FIREMAKING_1169)
     private val fire = forId(node.id)
     private var groundItem: GroundItem? = null
     private var ticks = 0

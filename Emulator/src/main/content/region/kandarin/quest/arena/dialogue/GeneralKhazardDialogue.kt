@@ -15,7 +15,7 @@ import org.rs.consts.Items
 import org.rs.consts.NPCs
 import org.rs.consts.Quests
 
-class GeneralDialogue : DialogueFile() {
+class GeneralKhazardDialogue : DialogueFile() {
     override fun handle(
         componentID: Int,
         buttonID: Int,
@@ -234,6 +234,7 @@ class GeneralDialogue : DialogueFile() {
                         end()
                         setQuestStage(player!!, Quests.FIGHT_ARENA, 97)
                         RegionManager.getNpc(player!!.location, NPCs.GENERAL_KHAZARD_258, 15)
+                        sendChat(findNPC(General.id)!!, "You shall die for your insolence.")
                         General.attack(player!!)
                     }
                 }

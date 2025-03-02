@@ -22,7 +22,11 @@ class TrollNPC : AbstractNPC {
     }
 
     override fun getIds(): IntArray {
-        return intArrayOf(
+        return ID
+    }
+
+    companion object {
+        val ID = intArrayOf(
             NPCs.MOUNTAIN_TROLL_1106,
             NPCs.MOUNTAIN_TROLL_1107,
             NPCs.MOUNTAIN_TROLL_1108,

@@ -45,7 +45,7 @@ class PortSarimListener : InteractionListener {
             sendMessage(player, "There are lots of bananas in the crate.")
             queueScript(player, 1, QueueStrength.SOFT) {
                 if (player.getAttribute("wydin-rum", false)) {
-                    animate(player, 832)
+                    animate(player, Animations.HUMAN_MULTI_USE_832)
                     addItem(player, Items.KARAMJAN_RUM_431)
                     removeAttributes(player, "wydin-rum", "stashed-rum")
                     removeAttribute(player, "stashed-rum")
@@ -69,7 +69,7 @@ class PortSarimListener : InteractionListener {
                                         when (buttonID) {
                                             1 -> {
                                                 end()
-                                                animate(player, 832)
+                                                animate(player, Animations.HUMAN_MULTI_USE_832)
                                                 addItem(player, Items.BANANA_1963)
                                                 sendMessage(player, "You take a banana.")
                                             }

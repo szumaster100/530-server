@@ -1,6 +1,6 @@
 package content.region.fremennik.quest.horror.handlers
 
-import content.region.fremennik.quest.horror.dialogue.JossikDialogueFile
+import content.region.fremennik.quest.horror.JossikLighthouseDialogue
 import core.api.*
 import core.api.quest.finishQuest
 import core.game.node.entity.Entity
@@ -190,7 +190,7 @@ class DagannothMotherNPC(
             }
             runTask(killer, 5) {
                 closeInterface(killer)
-                openDialogue(killer, JossikDialogueFile())
+                openDialogue(killer, JossikLighthouseDialogue())
             }
         }
         clear()

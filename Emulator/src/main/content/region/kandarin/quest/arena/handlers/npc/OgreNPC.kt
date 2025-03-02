@@ -1,6 +1,6 @@
 package content.region.kandarin.quest.arena.handlers.npc
 
-import content.region.kandarin.quest.arena.dialogue.GeneralDialogue
+import content.region.kandarin.quest.arena.dialogue.GeneralKhazardDialogue
 import core.api.*
 import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
@@ -63,7 +63,7 @@ class OgreNPC(
             }
             clearHintIcon(killer)
             removeAttribute(killer, "spawn-ogre")
-            openDialogue(killer, GeneralDialogue())
+            openDialogue(killer, GeneralKhazardDialogue())
         }
         clear()
         super.finalizeDeath(killer)

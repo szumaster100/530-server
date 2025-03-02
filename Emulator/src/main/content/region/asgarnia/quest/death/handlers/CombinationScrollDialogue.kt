@@ -45,7 +45,7 @@ class CombinationScrollDialogue : DialogueFile() {
                         end()
                         stage = END_DIALOGUE
                         openInterface(player!!, Components.BLANK_SCROLL_222).also {
-                            CombinationScroll.CombinationScroll(
+                            CombinationScroll.combinationScroll(
                                 player!!,
                             )
                         }

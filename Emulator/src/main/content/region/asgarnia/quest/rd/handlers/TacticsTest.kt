@@ -95,6 +95,7 @@ class SirLeyeNPC : NPCBehavior(NPCs.SIR_LEYE_2285) {
     ): Double = 0.0
 
     companion object {
+        @JvmStatic
         fun init(player: Player) {
             val boss = NPC.create(NPCs.SIR_LEYE_2285, Location.create(2457, 4966, 0))
             boss.isWalks = true

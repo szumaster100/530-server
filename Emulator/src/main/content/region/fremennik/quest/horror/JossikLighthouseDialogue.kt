@@ -1,4 +1,4 @@
-package content.region.fremennik.quest.horror.dialogue
+package content.region.fremennik.quest.horror
 
 import content.region.fremennik.quest.horror.handlers.DagannothBossCutscene
 import content.region.fremennik.quest.horror.handlers.DagannothCutscene
@@ -10,7 +10,10 @@ import core.game.node.entity.npc.NPC
 import org.rs.consts.NPCs
 import org.rs.consts.Quests
 
-class JossikDialogueFile : DialogueFile() {
+/**
+ * Represents the Jossik dialogue under lighthouse.
+ */
+class JossikLighthouseDialogue : DialogueFile() {
     override fun handle(
         componentID: Int,
         buttonID: Int,
@@ -142,6 +145,7 @@ class JossikDialogueFile : DialogueFile() {
                             FaceAnim.FRIENDLY,
                             "Bring it to my library, it looks familiar somehow...",
                         ).also { stage++ }
+
                     4 -> {
                         end()
                     }

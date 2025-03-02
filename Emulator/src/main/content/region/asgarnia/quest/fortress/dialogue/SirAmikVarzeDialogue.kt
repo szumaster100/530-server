@@ -27,7 +27,7 @@ class SirAmikVarzeDialogue(
             100 -> player(FaceAnim.HAPPY, "Hello Sir Amik.")
             else ->
                 npc(
-                    FaceAnim.ASKING,
+                    FaceAnim.THINKING,
                     "I am the leader of the White Knights of Falador. Why",
                     "do you seek my audience?",
                 )

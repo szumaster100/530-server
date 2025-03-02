@@ -11,6 +11,10 @@ import core.game.node.entity.player.Player
 import org.rs.consts.Items
 
 class WitchesDiaryBook : InteractionListener {
+    /*
+     * Witch's diary located in witch's house.
+     * Authentic state.
+     */
     companion object {
         private val TITLE = "Witches' Diary"
         private val CONTENTS =

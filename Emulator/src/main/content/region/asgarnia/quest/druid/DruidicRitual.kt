@@ -1,10 +1,7 @@
 package content.region.asgarnia.quest.druid
 
-import core.api.openDialogue
+import core.api.*
 import core.api.quest.getQuestStage
-import core.api.queueScript
-import core.api.rewardXP
-import core.api.stopExecuting
 import core.game.component.Component
 import core.game.interaction.QueueStrength
 import core.game.node.entity.npc.NPC
@@ -12,6 +9,7 @@ import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.quest.Quest
 import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
+import org.rs.consts.Components
 import org.rs.consts.Items
 import org.rs.consts.NPCs
 import org.rs.consts.Quests
@@ -31,6 +29,7 @@ class DruidicRitual : Quest(Quests.DRUIDIC_RITUAL, 48, 47, 4, 80, 0, 3, 4) {
         if (!started) {
             line(player, "I can start this quest by speaking to !!Kaqemeex?? who is at", line++)
             line(player, "the !!Druids Circle?? just !!north?? of !!Taverly??.", line++)
+            limitScrolling(player, line, true)
         } else {
             line(player, "Kaqemeex and the druids are preparing a ceremony to", line++, true)
             line(player, "purify the Varrock stone circle. I told Kaqemeex I would", line++, true)
@@ -62,8 +61,9 @@ class DruidicRitual : Quest(Quests.DRUIDIC_RITUAL, 48, 47, 4, 80, 0, 3, 4) {
             if (stage >= 100) {
                 line++
                 line(player, "<col=FF0000>QUEST COMPLETE!</col>", line++)
-                line(player, "I gained !!4 quest points??, !!250 Heblore XP?? and access to", line++)
-                line(player, "the !!Heblore skill??.", line)
+                line(player, "I gained !!4 quest points??, !!250 Herblore XP?? and access to", line++)
+                line(player, "the !!Herblore skill??.", line)
+                limitScrolling(player, line, false)
             }
         }
     }
@@ -71,8 +71,8 @@ class DruidicRitual : Quest(Quests.DRUIDIC_RITUAL, 48, 47, 4, 80, 0, 3, 4) {
     override fun finish(player: Player) {
         var ln = 10
         super.finish(player)
-        player.packetDispatch.sendString("You have completed the ${Quests.DRUIDIC_RITUAL} Quest!", 277, 4)
-        player.packetDispatch.sendItemZoomOnInterface(Items.CLEAN_GUAM_249, 230, 277, 5)
+        sendString(player, "You have completed the ${Quests.DRUIDIC_RITUAL} quest!", 277, 4)
+        sendItemZoomOnInterface(player, Components.QUEST_COMPLETE_SCROLL_277, 5, Items.CLEAN_GUAM_249, 240)
 
         drawReward(player, "4 Quest Points", ln++)
         drawReward(player, "250 Herblore XP", ln++)

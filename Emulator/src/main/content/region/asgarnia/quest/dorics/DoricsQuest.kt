@@ -39,7 +39,7 @@ class DoricsQuest : Quest(Quests.DORICS_QUEST, 17, 16, 1, Vars.VARP_QUEST_DORICS
                 line(player, "Doric rewarded me for all my hard work.", line++, true)
                 line(player, "I can now use Doric's Anvils whenever I want.", line++, true)
                 line++
-                line(player, "%%QUEST COMPLETE!&&", line++)
+                line(player, "%%QUEST COMPLETE!&&", line)
             }
         }
     }

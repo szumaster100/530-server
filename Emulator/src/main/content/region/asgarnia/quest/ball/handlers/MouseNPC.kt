@@ -1,4 +1,4 @@
-package content.region.asgarnia.quest.ball.handlers.npc
+package content.region.asgarnia.quest.ball.handlers
 
 import core.game.node.entity.npc.AbstractNPC
 import core.game.node.entity.player.Player
@@ -6,6 +6,10 @@ import core.game.world.GameWorld.ticks
 import core.game.world.map.Location
 import org.rs.consts.NPCs
 
+/**
+ * Represents Mouse NPC in Witch's house.
+ * @author Ethan Kyle Millard (March 15, 2020, 10:56 AM)
+ */
 class MouseNPC : AbstractNPC {
     var player: Player? = null
     private var endTime = 0

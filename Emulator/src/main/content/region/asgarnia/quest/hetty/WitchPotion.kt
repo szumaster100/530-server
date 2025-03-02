@@ -11,10 +11,11 @@ import core.game.node.entity.skill.Skills
 import core.plugin.Initializable
 import org.rs.consts.Components
 import org.rs.consts.Items
+import org.rs.consts.Quests
 import org.rs.consts.Vars
 
 @Initializable
-class WitchPotion : Quest("Witch's Potion", 31, 30, 1, Vars.VARP_QUEST_WITCHS_POTION_PROGRESS_67, 0, 1, 3) {
+class WitchPotion : Quest(Quests.WITCHS_POTION, 31, 30, 1, Vars.VARP_QUEST_WITCHS_POTION_PROGRESS_67, 0, 1, 3) {
     override fun drawJournal(
         player: Player,
         stage: Int,

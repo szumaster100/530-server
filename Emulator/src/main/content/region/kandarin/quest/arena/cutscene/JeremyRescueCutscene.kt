@@ -46,13 +46,13 @@ class JeremyRescueCutscene(
             3 -> {
                 move(Jeremy, 56, 31)
                 face(player, location(2616, 3167, 0))
-                animate(player, Animations.HUMAN_OPEN_CELL_DOOR_2098, forced = true)
-                timedUpdate(2, 4)
+                animate(player, Animations.HUMAN_OPEN_CELL_DOOR_2098)
+                timedUpdate(3)
             }
 
             4 -> {
                 move(player, 57, 32)
-                timedUpdate(1)
+                timedUpdate(2)
             }
 
             5 -> {
@@ -64,17 +64,17 @@ class JeremyRescueCutscene(
                 face(player, Jeremy, 1)
                 sendChat(Jeremy, "I'll run ahead.")
                 move(Jeremy, 57, 20)
-                timedUpdate(6)
+                timedUpdate(5)
             }
 
             7 -> {
                 teleport(Jeremy, 56, 31)
                 loadRegion(10289)
-                addNPC(JEREMYRESCUE, 41, 17, Direction.NORTH)
+                addNPC(JEREMY_RESCUE, 41, 17, Direction.NORTH)
                 addNPC(GENERAL, 45, 19, Direction.NORTH)
                 addNPC(OGRE, 48, 30, Direction.NORTH)
                 addNPC(JUSTIN, 41, 32, Direction.EAST)
-                timedUpdate(-1, 8)
+                timedUpdate(1)
             }
 
             8 -> {
@@ -106,15 +106,15 @@ class JeremyRescueCutscene(
             }
 
             13 -> {
-                face(player, getNPC(JEREMYRESCUE)!!, 1)
+                face(player, getNPC(JEREMY_RESCUE)!!, 1)
                 playerDialogueUpdate(FaceAnim.HALF_ASKING, "Jeremy, where's your father?")
             }
 
             14 -> {
                 move(getNPC(JUSTIN)!!, 42, 32)
-                face(getNPC(JEREMYRESCUE)!!, player, 1)
+                face(getNPC(JEREMY_RESCUE)!!, player, 1)
                 dialogueUpdate(
-                    JEREMYRESCUE,
+                    JEREMY_RESCUE,
                     FaceAnim.CHILD_SAD,
                     "Quick help him! That beast will kill him. He's too old to fight.",
                 )
@@ -125,7 +125,7 @@ class JeremyRescueCutscene(
                 rotateCamera(44, 29)
                 teleport(getNPC(OGRE)!!, 47, 29)
                 registerHintIcon(player, getNPC(OGRE)!!)
-                timedUpdate(-1, 16)
+                timedUpdate(1)
             }
 
             16 -> {
@@ -140,12 +140,12 @@ class JeremyRescueCutscene(
             }
 
             18 -> {
-                rotateCamera(44, 30)
+                rotateCamera(44, 30, 300, 5)
                 timedUpdate(1)
             }
 
             19 -> {
-                rotateCamera(44, 38)
+                rotateCamera(44, 38, 300, 3)
                 timedUpdate(1)
             }
 
@@ -155,8 +155,8 @@ class JeremyRescueCutscene(
                         JUSTIN,
                     )!!.location,
                 )
-                animate(getNPC(OGRE)!!, 359, forced = true)
-                animate(getNPC(JUSTIN)!!, 404, forced = true)
+                animate(getNPC(OGRE)!!, 359)
+                animate(getNPC(JUSTIN)!!, 404)
                 timedUpdate(1)
             }
 
@@ -171,7 +171,7 @@ class JeremyRescueCutscene(
 
     companion object {
         private const val GENERAL = NPCs.GENERAL_KHAZARD_258
-        private const val JEREMYRESCUE = NPCs.JEREMY_SERVIL_266
+        private const val JEREMY_RESCUE = NPCs.JEREMY_SERVIL_266
         private const val JUSTIN = NPCs.JUSTIN_SERVIL_267
         private const val OGRE = NPCs.KHAZARD_OGRE_270
     }

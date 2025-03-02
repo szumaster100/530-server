@@ -14,6 +14,7 @@ import org.rs.consts.Quests
 class TorrcsAndMarfetDialogue(
     player: Player? = null,
 ) : Dialogue(player) {
+
     override fun handle(
         interfaceId: Int,
         buttonId: Int,
@@ -30,6 +31,7 @@ class TorrcsAndMarfetDialogue(
                         } else {
                             playerl(FaceAnim.HALF_GUILTY, "Yes, I did it all.").also { stage = 6 }
                         }
+
                     4 ->
                         npcl(
                             FaceAnim.HALF_GUILTY,
@@ -37,11 +39,13 @@ class TorrcsAndMarfetDialogue(
                         ).also {
                             stage++
                         }
+
                     5 ->
                         playerl(FaceAnim.HALF_GUILTY, "Sounds fun, I should probably check it out.").also {
                             stage =
                                 END_DIALOGUE
                         }
+
                     6 -> playerl(FaceAnim.HALF_GUILTY, "Yes, I did it all.").also { stage++ }
                     7 ->
                         npcl(
@@ -50,6 +54,7 @@ class TorrcsAndMarfetDialogue(
                         ).also {
                             stage++
                         }
+
                     8 ->
                         playerl(
                             FaceAnim.HALF_GUILTY,
@@ -65,6 +70,7 @@ class TorrcsAndMarfetDialogue(
                             FaceAnim.HALF_GUILTY,
                             "Oh, hello. I was just looking at this display here.",
                         ).also { stage++ }
+
                     2 -> playerl(FaceAnim.HALF_GUILTY, "Anything interesting?").also { stage++ }
                     3 ->
                         npcl(
@@ -73,6 +79,7 @@ class TorrcsAndMarfetDialogue(
                         ).also {
                             stage++
                         }
+
                     4 -> playerl(FaceAnim.HALF_GUILTY, "Okay, I'll let you get on then.").also { stage++ }
                     5 -> npcl(FaceAnim.HALF_GUILTY, "Hmm, yes. Okay.").also { stage++ }
                     6 ->
@@ -82,6 +89,7 @@ class TorrcsAndMarfetDialogue(
                         ).also {
                             stage++
                         }
+
                     7 -> playerl(FaceAnim.HALF_GUILTY, "Right, bye!").also { stage = END_DIALOGUE }
                 }
 
@@ -96,6 +104,7 @@ class TorrcsAndMarfetDialogue(
                         ).also {
                             stage++
                         }
+
                     3 -> playerl(FaceAnim.HALF_GUILTY, "Really? Tell me something I didn't know!").also { stage++ }
                     4 ->
                         npcl(
@@ -104,6 +113,7 @@ class TorrcsAndMarfetDialogue(
                         ).also {
                             stage++
                         }
+
                     5 -> playerl(FaceAnim.HALF_GUILTY, "He's what? Tell me!").also { stage = END_DIALOGUE }
                     6 ->
                         if (!isQuestComplete(player, Quests.A_TAIL_OF_TWO_CATS)) {
@@ -121,6 +131,7 @@ class TorrcsAndMarfetDialogue(
                             stage =
                                 END_DIALOGUE
                         }
+
                     9 -> npcl(FaceAnim.HALF_GUILTY, "He's a very famous hero! Robert the Strong!").also { stage++ }
                     10 -> playerl(FaceAnim.HALF_GUILTY, "Oh, yes, I knew that.").also { stage++ }
                     11 -> npcl(FaceAnim.HALF_GUILTY, "Oh, I thought I was going to surprise you.").also { stage++ }
@@ -136,6 +147,7 @@ class TorrcsAndMarfetDialogue(
                             FaceAnim.HALF_GUILTY,
                             "Yep, could be looking all day! Updated any displays yet?",
                         ).also { stage++ }
+
                     3 ->
                         npcl(
                             FaceAnim.HALF_GUILTY,
@@ -143,12 +155,14 @@ class TorrcsAndMarfetDialogue(
                         ).also {
                             stage++
                         }
+
                     4 -> playerl(FaceAnim.HALF_GUILTY, "Sounds fun, how did you do that?").also { stage++ }
                     5 ->
                         npcl(
                             FaceAnim.HALF_GUILTY,
                             "Ahh, I'm big on quests me, love questing. So when I've done one,",
                         ).also { stage++ }
+
                     6 ->
                         npcl(
                             FaceAnim.HALF_GUILTY,
@@ -156,6 +170,7 @@ class TorrcsAndMarfetDialogue(
                         ).also {
                             stage++
                         }
+
                     7 ->
                         npcl(
                             FaceAnim.HALF_GUILTY,
@@ -163,16 +178,19 @@ class TorrcsAndMarfetDialogue(
                         ).also {
                             stage++
                         }
+
                     8 ->
                         playerl(
                             FaceAnim.HALF_GUILTY,
                             "That sounds really good. Perhaps I should do the same!",
                         ).also { stage++ }
+
                     9 ->
                         npcl(
                             FaceAnim.HALF_GUILTY,
                             "You should, as well as everything else there is here in the Museum.",
                         ).also { stage++ }
+
                     10 ->
                         npcl(
                             FaceAnim.HALF_GUILTY,
@@ -180,11 +198,13 @@ class TorrcsAndMarfetDialogue(
                         ).also {
                             stage++
                         }
+
                     11 ->
                         playerl(
                             FaceAnim.HALF_GUILTY,
                             "I'll check it out. Got to get going now, nice talking to you.",
                         ).also { stage++ }
+
                     12 -> npcl(FaceAnim.HALF_GUILTY, "Have a good day!").also { stage = END_DIALOGUE }
                 }
 
@@ -200,6 +220,7 @@ class TorrcsAndMarfetDialogue(
                         ).also {
                             stage++
                         }
+
                     4 -> playerl(FaceAnim.HALF_GUILTY, "HELLO! Are you there?").also { stage++ }
                     5 ->
                         npcl(
@@ -208,6 +229,7 @@ class TorrcsAndMarfetDialogue(
                         ).also {
                             stage++
                         }
+
                     6 ->
                         npcl(
                             FaceAnim.HALF_GUILTY,
@@ -215,22 +237,26 @@ class TorrcsAndMarfetDialogue(
                         ).also {
                             stage++
                         }
+
                     7 -> playerl(FaceAnim.HALF_GUILTY, "Yes, well, no need to ignore me.").also { stage++ }
                     8 ->
                         npcl(
                             FaceAnim.HALF_GUILTY,
                             "No offence intended, my dear " + if (player.isMale) "chap" else "girl" + ".",
                         ).also { stage++ }
+
                     9 ->
                         npcl(
                             FaceAnim.HALF_GUILTY,
                             "Just very interested in this history stuff, that's all.",
                         ).also { stage++ }
+
                     10 ->
                         playerl(
                             FaceAnim.HALF_GUILTY,
                             "Okay. Have you seen the Natural History exhibit in the basement?",
                         ).also { stage++ }
+
                     11 ->
                         npcl(
                             FaceAnim.HALF_GUILTY,
@@ -238,6 +264,7 @@ class TorrcsAndMarfetDialogue(
                         ).also {
                             stage++
                         }
+
                     12 ->
                         npcl(
                             FaceAnim.HALF_GUILTY,
@@ -245,6 +272,7 @@ class TorrcsAndMarfetDialogue(
                         ).also {
                             stage++
                         }
+
                     13 ->
                         playerl(
                             FaceAnim.HALF_GUILTY,
@@ -252,6 +280,7 @@ class TorrcsAndMarfetDialogue(
                         ).also {
                             stage++
                         }
+
                     14 ->
                         npcl(
                             FaceAnim.HALF_GUILTY,
@@ -259,6 +288,7 @@ class TorrcsAndMarfetDialogue(
                         ).also {
                             stage++
                         }
+
                     15 ->
                         npcl(
                             FaceAnim.HALF_GUILTY,
@@ -266,6 +296,7 @@ class TorrcsAndMarfetDialogue(
                         ).also {
                             stage++
                         }
+
                     16 -> playerl(FaceAnim.HALF_GUILTY, "That's not very nice!").also { stage++ }
                     17 ->
                         npcl(
@@ -274,6 +305,7 @@ class TorrcsAndMarfetDialogue(
                         ).also {
                             stage++
                         }
+
                     18 ->
                         playerl(
                             FaceAnim.HALF_GUILTY,
@@ -281,25 +313,34 @@ class TorrcsAndMarfetDialogue(
                         ).also {
                             stage++
                         }
+
                     19 ->
                         playerl(
                             FaceAnim.HALF_GUILTY,
                             "They might entertain him with his very own floor - we'll see.",
                         ).also { stage++ }
+
                     20 ->
                         npcl(
                             FaceAnim.HALF_GUILTY,
                             "I guess so. Wonder what poetry he'll come up with then! Still,",
                         ).also { stage++ }
+
                     21 ->
                         npcl(
                             FaceAnim.HALF_GUILTY,
                             "I must get on with this display. See you around I hope!",
                         ).also { stage++ }
+
                     22 -> playerl(FaceAnim.HALF_GUILTY, "Bye!").also { stage = END_DIALOGUE }
                 }
         }
         return true
+    }
+
+
+    override fun newInstance(player: Player): Dialogue {
+        return TorrcsAndMarfetDialogue(player)
     }
 
     override fun getIds(): IntArray {

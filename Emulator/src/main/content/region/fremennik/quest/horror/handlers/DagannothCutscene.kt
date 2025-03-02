@@ -7,6 +7,7 @@ import core.api.runTask
 import core.game.activity.Cutscene
 import core.game.node.entity.player.Player
 import core.game.world.map.Direction
+import org.rs.consts.NPCs
 
 class DagannothCutscene(
     player: Player,
@@ -51,9 +52,8 @@ class DagannothCutscene(
     }
 
     companion object {
-        private const val SMALL_DAGANNOTH = 1338
-        private const val LARGE_DAGANNOTH = 1342
-
-        private const val JOSSIK = 1335
+        private const val SMALL_DAGANNOTH = NPCs.DAGANNOTH_1338
+        private const val LARGE_DAGANNOTH = NPCs.DAGANNOTH_1342
+        private const val JOSSIK = NPCs.JOSSIK_1335
     }
 }

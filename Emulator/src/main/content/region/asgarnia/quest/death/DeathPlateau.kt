@@ -216,7 +216,7 @@ class DeathPlateau : Quest(Quests.DEATH_PLATEAU, 44, 43, 1, 314, 0, 1, 80) {
         drawReward(player, "1 Quest Point", ln++)
         drawReward(player, "3,000 Attack XP", ln++)
         drawReward(player, "Some Steel Claws", ln++)
-        drawReward(player, "Ability to make Claws", ln++)
+        drawReward(player, "Ability to make Claws", ln)
 
         addItemOrDrop(player, Items.STEEL_CLAWS_3097, 1)
         player.skills.addExperience(Skills.ATTACK, 3000.0)

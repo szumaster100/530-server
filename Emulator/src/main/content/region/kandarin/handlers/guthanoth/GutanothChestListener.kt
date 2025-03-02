@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit
 private const val CHEST = org.rs.consts.Scenery.CHEST_2827
 
 class GutanothChestListener : InteractionListener {
+
     override fun defineListeners() {
         on(CHEST, IntType.SCENERY, "open") { player, node ->
             val delay = getAttribute(player, "gutanoth-chest-delay", 0L)
@@ -54,7 +55,7 @@ class GutanothChestListener : InteractionListener {
             return false
         }
 
-        fun lootChest(player: Player) {
+        private fun lootChest(player: Player) {
             if (isLoot) {
                 setAttribute(
                     player,
@@ -94,11 +95,7 @@ class GutanothChestListener : InteractionListener {
         ) {
             BONES(id = Items.BONES_2530, type = Type.ITEM, message = "Oh! Some bones. Delightful."),
             EMERALD(id = Items.EMERALD_1605, type = Type.ITEM, message = "Ooh! A lovely emerald!"),
-            ROTTEN_APPLE(
-                id = Items.ROTTEN_APPLE_1984,
-                type = Type.ITEM,
-                message = "Oh, joy, spoiled fruit! My favorite!",
-            ),
+            ROTTEN_APPLE(id = Items.ROTTEN_APPLE_1984, type = Type.ITEM, message = "Oh, joy, spoiled fruit! My favorite!"),
             CHAOS_DWARF(id = NPCs.CHAOS_DWARF_119, type = Type.NPC, message = "You've gotta be kidding me, a dwarf?!"),
             RAT(id = NPCs.RAT_47, type = Type.NPC, message = "Eek!"),
             SCORPION(id = NPCs.SCORPION_1477, type = Type.NPC, message = "Zoinks!"),

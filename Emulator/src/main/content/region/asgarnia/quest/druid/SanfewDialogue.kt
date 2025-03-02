@@ -1,5 +1,6 @@
-package content.region.asgarnia.dialogue.taverley
+package content.region.asgarnia.quest.druid
 
+import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
 import core.api.quest.updateQuestTab
 import core.game.dialogue.Dialogue
@@ -8,6 +9,7 @@ import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.node.item.Item
 import core.plugin.Initializable
+import org.rs.consts.Items
 import org.rs.consts.NPCs
 import org.rs.consts.Quests
 
@@ -25,43 +27,48 @@ class SanfewDialogue(
         interfaceId: Int,
         buttonId: Int,
     ): Boolean {
+        val questStage = getQuestStage(player, Quests.DRUIDIC_RITUAL)
         when (stage) {
             0 -> {
-                if (player.getQuestRepository().getQuest(Quests.DRUIDIC_RITUAL).getStage(player) == 20) {
-                    npc(FaceAnim.HALF_ASKING, "Did you bring me the required ingredients for the", "potion?")
-                    stage = 100
+                when (questStage) {
+                    20 -> {
+                        npc(FaceAnim.ASKING, "Did you bring me the required ingredients for the", "potion?")
+                        stage = 100
+                    }
+
+                    10 -> {
+                        options(
+                            "I've been sent to help purify the Varrock stone circle.",
+                            "Actually, I don't need to speak to you.",
+                        )
+                        stage = 2
+                    }
+                    else -> {
+                        player(
+                            FaceAnim.HALF_GUILTY,
+                            "Nothing... I'll just be on my way now.",
+                        )
+                        stage = 1
+                    }
                 }
-                if (player.getQuestRepository().getQuest(Quests.DRUIDIC_RITUAL).getStage(player) == 10) {
-                    options(
-                        "I've been sent to help purify the Varrock stone circle.",
-                        "Actually, I don't need to speak to you.",
-                    )
-                    stage = 2
-                }
-                player(
-                    FaceAnim.HALF_GUILTY,
-                    "Nothing... I'll just be on my way now.",
-                )
-                stage = 1
             }
 
             1 -> end()
-            2 ->
-                when (buttonId) {
-                    1 -> {
-                        player(
-                            FaceAnim.HALF_GUILTY,
-                            "I've been sent to assist you with the ritual to purify the",
-                            "Varrockian stone circle.",
-                        )
-                        stage = 5
-                    }
-
-                    2 -> {
-                        player(FaceAnim.NEUTRAL, "Actually, I don't need to speak to you.")
-                        stage = 3
-                    }
+            2 -> when (buttonId) {
+                1 -> {
+                    player(
+                        FaceAnim.HALF_GUILTY,
+                        "I've been sent to assist you with the ritual to purify the",
+                        "Varrockian stone circle.",
+                    )
+                    stage = 5
                 }
+
+                2 -> {
+                    player(FaceAnim.NEUTRAL, "Actually, I don't need to speak to you.")
+                    stage = 3
+                }
+            }
 
             3 -> {
                 npc(FaceAnim.FRIENDLY, "Well, we all make mistakes sometimes.")
@@ -90,11 +97,16 @@ class SanfewDialogue(
             }
 
             7 -> {
-                player(FaceAnim.ASKING, "Where can I find this cauldron?")
+                options("Where can I find this cauldron?", "Ok, I'll do that then.")
                 stage = 8
             }
 
-            8 -> {
+            8 -> when (buttonId) {
+                1 -> player(FaceAnim.ASKING, "Where can I find this cauldron?").also { stage = 9 }
+                2 -> player(FaceAnim.FRIENDLY, "Ok, I'll do that then.").also { stage = 10 }
+            }
+
+            9 -> {
                 npc(
                     FaceAnim.HALF_GUILTY,
                     "It is located somewhere in the mysterious underground",
@@ -102,18 +114,28 @@ class SanfewDialogue(
                     "South of here. They are too dangerous for me to go",
                     "myself however.",
                 )
-                setQuestStage(player, Quests.DRUIDIC_RITUAL, 20)
-                stage = 9
+                stage = 10
             }
 
-            9 -> end()
+            10 -> {
+                setQuestStage(player, Quests.DRUIDIC_RITUAL, 20)
+                end()
+            }
+
             100 -> {
-                if (player.inventory.containItems(522, 523, 524, 525)) {
-                    player("Yes, I have all four now!")
+                if (!player.inventory.containItems(
+                        Items.ENCHANTED_BEEF_522,
+                        Items.ENCHANTED_RAT_MEAT_523,
+                        Items.ENCHANTED_BEAR_MEAT_524,
+                        Items.ENCHANTED_CHICKEN_525
+                    )
+                ) {
+                    player(FaceAnim.HALF_GUILTY, "No, not yet...")
+                    stage = 101
+                } else {
+                    player(FaceAnim.HAPPY, "Yes, I have all four now!")
                     stage = 200
                 }
-                player(FaceAnim.HALF_GUILTY, "No, not yet...")
-                stage = 101
             }
 
             101 -> {
@@ -149,7 +171,12 @@ class SanfewDialogue(
             }
 
             202 -> {
-                player.inventory.remove(Item(522, 1), Item(523, 1), Item(524, 1), Item(525, 1))
+                player.inventory.remove(
+                    Item(Items.ENCHANTED_BEEF_522, 1),
+                    Item(Items.ENCHANTED_RAT_MEAT_523, 1),
+                    Item(Items.ENCHANTED_BEAR_MEAT_524, 1),
+                    Item(Items.ENCHANTED_CHICKEN_525, 1)
+                )
                 setQuestStage(player, Quests.DRUIDIC_RITUAL, 99)
                 updateQuestTab(player)
                 npc(
@@ -162,6 +189,7 @@ class SanfewDialogue(
 
             203 -> end()
         }
+
         return true
     }
 

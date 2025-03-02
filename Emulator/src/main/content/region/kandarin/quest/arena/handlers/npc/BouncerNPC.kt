@@ -1,6 +1,6 @@
 package content.region.kandarin.quest.arena.handlers.npc
 
-import content.region.kandarin.quest.arena.dialogue.GeneralDialogue
+import content.region.kandarin.quest.arena.dialogue.GeneralKhazardDialogue
 import core.api.*
 import core.api.quest.getQuestStage
 import core.api.quest.setQuestStage
@@ -61,7 +61,7 @@ class BouncerNPC(
                 setQuestStage(killer, Quests.FIGHT_ARENA, 91)
             }
             removeAttribute(killer, "spawn-bouncer")
-            openDialogue(killer, GeneralDialogue())
+            openDialogue(killer, GeneralKhazardDialogue())
         }
         clear()
         super.finalizeDeath(killer)

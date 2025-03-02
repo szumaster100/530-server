@@ -8,6 +8,7 @@ import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
 import core.game.system.task.Pulse
 import core.game.world.update.flag.context.Animation
+import org.rs.consts.Animations
 import org.rs.consts.Items
 
 class BarbFishCuttingPulse(
@@ -23,14 +24,14 @@ class BarbFishCuttingPulse(
     }
 
     override fun pulse(): Boolean {
-        player.animator.animate(Animation(5244))
+        player.animator.animate(Animation(Animations.CRAFT_KNIFE_5244))
         player.inventory.remove(Item(fish))
         player.inventory.add(Item(Items.FISH_OFFCUTS_11334))
         player.inventory.add(
             Item(
                 when (fish) {
-                    11328, 11330 -> Items.ROE_11324
-                    11332 -> Items.CAVIAR_11326
+                    Items.LEAPING_TROUT_11328, Items.LEAPING_SALMON_11330 -> Items.ROE_11324
+                    Items.LEAPING_STURGEON_11332 -> Items.CAVIAR_11326
                     else -> 0
                 },
             ),
@@ -39,8 +40,8 @@ class BarbFishCuttingPulse(
         player.skills.addExperience(
             Skills.COOKING,
             when (fish) {
-                11328, 11330 -> 10.0
-                11332 -> 15.0
+                Items.LEAPING_TROUT_11328, Items.LEAPING_SALMON_11330 -> 10.0
+                Items.LEAPING_STURGEON_11332 -> 15.0
                 else -> 0.0
             },
         )

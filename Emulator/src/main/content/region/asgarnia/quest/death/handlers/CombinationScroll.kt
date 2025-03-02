@@ -10,7 +10,7 @@ import org.rs.consts.Items
 
 class CombinationScroll : InteractionListener {
     companion object {
-        fun CombinationScroll(player: Player) {
+        fun combinationScroll(player: Player) {
             val combinationScroll =
                 arrayOf(
                     "",
@@ -25,7 +25,7 @@ class CombinationScroll : InteractionListener {
 
     override fun defineListeners() {
         on(Items.COMBINATION_3102, IntType.ITEM, "read") { player, _ ->
-            openInterface(player, Components.BLANK_SCROLL_222).also { CombinationScroll(player) }
+            openInterface(player, Components.BLANK_SCROLL_222).also { combinationScroll(player) }
             return@on true
         }
     }

@@ -26,6 +26,8 @@ import core.plugin.ClassScanner.definePlugin
 import core.plugin.Initializable
 import core.plugin.Plugin
 import core.tools.RandomFunction
+import org.rs.consts.Animations
+import org.rs.consts.Items
 import kotlin.math.ceil
 
 @Initializable
@@ -46,17 +48,17 @@ class ShotPutRoom(
     ): Boolean {
         when (buttonId) {
             1 -> {
-                animate(player, Animation.create(4181))
+                animate(player, Animation.create(Animations.HIT_WITH_DRAGON_PICKAXE_4181))
                 throwShotPut(player, 5, lowWeight, "You throw the shot as hard as you can.")
             }
 
             2 -> {
-                animate(player, Animation.create(4182))
+                animate(player, Animation.create(Animations.HIT_WITH_RUNE_PICKAXE_4182))
                 throwShotPut(player, 2, lowWeight, "You take a step and throw the shot as hard as you can.")
             }
 
             3 -> {
-                animate(player, Animation.create(4183))
+                animate(player, Animation.create(Animations.HIT_WITH_ADAMANT_PICKAXE_4183))
                 throwShotPut(player, 5, lowWeight, "You spin around and release the shot.")
             }
 
@@ -103,7 +105,7 @@ class ShotPutRoom(
                             return true
                         }
                         player.lock(4)
-                        player.animate(Animation.create(827))
+                        player.animate(Animation.create(Animations.MULTI_BEND_OVER_827))
                         Pulser.submit(
                             object : Pulse(2) {
                                 override fun pulse(): Boolean {
@@ -129,8 +131,8 @@ class ShotPutRoom(
                     override fun newInstance(arg: Any?): Plugin<Any> {
                         SceneryDefinition.forId(15664).handlers["option:throw"] = this
                         SceneryDefinition.forId(15665).handlers["option:throw"] = this
-                        ItemDefinition.forId(8858).handlers["option:take"] = this
-                        ItemDefinition.forId(8859).handlers["option:take"] = this
+                        ItemDefinition.forId(Items.EIGHTEEN_LB_SHOT_8858).handlers["option:take"] = this
+                        ItemDefinition.forId(Items.TWENTY_TWO_LB_SHOT_8859).handlers["option:take"] = this
                         return this
                     }
                 },
@@ -199,7 +201,7 @@ class ShotPutRoom(
                                     (if (tiles > 2) "s!" else "!"),
                             )
                         }
-                        GroundItemManager.create(GroundItem(Item(if (lowWeight) 8858 else 8859), loc, 20, player))
+                        GroundItemManager.create(GroundItem(Item(if (lowWeight) Items.EIGHTEEN_LB_SHOT_8858 else Items.TWENTY_TWO_LB_SHOT_8859), loc, 20, player))
                         return true
                     }
                 },

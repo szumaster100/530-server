@@ -57,7 +57,12 @@ class ThrowerTrollNPC(
     }
 
     override fun getIds(): IntArray {
-        return intArrayOf(
+        return ID
+    }
+
+
+    companion object {
+        val ID = intArrayOf(
             NPCs.THROWER_TROLL_1101,
             NPCs.THROWER_TROLL_1102,
             NPCs.THROWER_TROLL_1103,

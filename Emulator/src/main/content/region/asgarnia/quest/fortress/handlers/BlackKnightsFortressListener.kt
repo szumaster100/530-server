@@ -1,5 +1,6 @@
 package content.region.asgarnia.quest.fortress.handlers
 
+import content.data.GameAttributes
 import core.api.*
 import core.api.movement.finishedMoving
 import core.api.quest.getQuestStage
@@ -92,6 +93,7 @@ class BlackKnightsFortressListener : InteractionListener {
                                 "Infiltrate fortress... sabotage secret weapon... self",
                                 "destruct in 3...2...ARG!",
                             )
+                            setAttribute(player, GameAttributes.QUEST_BKF_DOSSIER_INTER, true)
                             return@queueScript delayScript(player, animationCycles(Animations.BURN_NOTE_4551))
                         }
 

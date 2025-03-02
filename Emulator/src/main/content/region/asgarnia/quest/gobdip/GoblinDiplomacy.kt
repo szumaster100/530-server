@@ -3,6 +3,7 @@ package content.region.asgarnia.quest.gobdip
 import content.region.asgarnia.quest.gobdip.dialogue.GrubfootDialogue
 import content.region.asgarnia.quest.gobdip.handlers.GDiplomacyCutscene
 import content.region.asgarnia.quest.gobdip.handlers.GoblinDiplomacyPlugin
+import core.api.addItemOrDrop
 import core.api.inInventory
 import core.api.quest.updateQuestTab
 import core.api.rewardXP
@@ -27,7 +28,6 @@ class GoblinDiplomacy :
         stage: Int,
     ) {
         super.drawJournal(player, stage)
-        player ?: return
         var line = 11
         when (stage) {
             0 -> {
@@ -109,7 +109,6 @@ class GoblinDiplomacy :
 
     override fun finish(player: Player) {
         super.finish(player)
-        player ?: return
         var line = 10
 
         drawReward(player, "5 Quests Points", line++)
@@ -119,9 +118,7 @@ class GoblinDiplomacy :
 
         sendItemZoomOnInterface(player, Components.QUEST_COMPLETE_SCROLL_277, 5, Items.GOBLIN_MAIL_288, 230)
         rewardXP(player, Skills.CRAFTING, 200.0)
-        if (!player.inventory.add(Item(Items.GOLD_BAR_2357, 1))) {
-            GroundItemManager.create(Item(Items.GOLD_BAR_2357, 1), player)
-        }
+        addItemOrDrop(player, Items.GOLD_BAR_2357, 1)
         updateQuestTab(player)
     }
 

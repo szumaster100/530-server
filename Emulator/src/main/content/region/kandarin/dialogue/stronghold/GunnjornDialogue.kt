@@ -1,8 +1,7 @@
 package content.region.kandarin.dialogue.stronghold
 
-import core.api.inInventory
-import core.api.openDialogue
-import core.api.quest.getQuestStage
+import core.api.*
+import core.api.quest.setQuestStage
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
 import core.game.node.entity.npc.NPC
@@ -12,6 +11,7 @@ import core.tools.END_DIALOGUE
 import org.rs.consts.Items
 import org.rs.consts.NPCs
 import org.rs.consts.Quests
+import org.rs.consts.Vars
 
 @Initializable
 class GunnjornDialogue(
@@ -19,7 +19,7 @@ class GunnjornDialogue(
 ) : Dialogue(player) {
     override fun open(vararg args: Any): Boolean {
         npc = args[0] as NPC
-        if (getQuestStage(player, Quests.HORROR_FROM_THE_DEEP) > 0 && !inInventory(player, Items.LIGHTHOUSE_KEY_3848)) {
+        if (getVarbit(player, Vars.VARBIT_QUEST_HORROR_FROM_THE_DEEP_PROGRESS_34) >= 1 && !inInventory(player, Items.LIGHTHOUSE_KEY_3848)) {
             options(
                 "Talk about Horror from the Deep.",
                 "Talk about the Agility course.",
@@ -51,16 +51,12 @@ class GunnjornDialogue(
             1 ->
                 when (buttonId) {
                     1 -> {
-                        end()
-                        openDialogue(
-                            player,
-                            content.region.fremennik.quest.horror.dialogue
-                                .GunnjornDialogueFile(),
-                            npc,
-                        ).also {
-                            stage =
-                                END_DIALOGUE
-                        }
+                        npc(
+                            FaceAnim.FRIENDLY,
+                            "Haha welcome to my obstacle course. Have fun, but",
+                            "remember this isn't a child's playground. People have",
+                            "died here.",
+                        ).also { stage = 20 }
                     }
 
                     2 -> playerl(FaceAnim.FRIENDLY, "Hey there. What is this place?").also { stage = 3 }
@@ -69,8 +65,10 @@ class GunnjornDialogue(
                             stage =
                                 6
                         }
+
                     4 -> playerl(FaceAnim.FRIENDLY, "Nothing.").also { stage = 15 }
                 }
+
             2 ->
                 when (buttonId) {
                     1 -> playerl(FaceAnim.FRIENDLY, "Hey there. What is this place?").also { stage = 3 }
@@ -79,12 +77,15 @@ class GunnjornDialogue(
                             stage =
                                 6
                         }
+
                     3 ->
                         playerl(FaceAnim.FRIENDLY, "Can I talk about rewards?").also {
                             stage = 16
                         }
+
                     4 -> playerl(FaceAnim.FRIENDLY, "Nothing.").also { stage = 15 }
                 }
+
             3 ->
                 npc(
                     FaceAnim.FRIENDLY,
@@ -94,6 +95,7 @@ class GunnjornDialogue(
                 ).also {
                     stage++
                 }
+
             4 ->
                 npcl(
                     FaceAnim.FRIENDLY,
@@ -101,6 +103,7 @@ class GunnjornDialogue(
                 ).also {
                     stage++
                 }
+
             5 ->
                 npcl(
                     FaceAnim.FRIENDLY,
@@ -109,6 +112,7 @@ class GunnjornDialogue(
                     stage =
                         END_DIALOGUE
                 }
+
             6 ->
                 npcl(
                     FaceAnim.FRIENDLY,
@@ -116,6 +120,7 @@ class GunnjornDialogue(
                 ).also {
                     stage++
                 }
+
             7 -> playerl(FaceAnim.FRIENDLY, "Why would you do that?").also { stage++ }
             8 ->
                 npcl(
@@ -124,6 +129,7 @@ class GunnjornDialogue(
                 ).also {
                     stage++
                 }
+
             9 ->
                 npcl(
                     FaceAnim.FRIENDLY,
@@ -131,6 +137,7 @@ class GunnjornDialogue(
                 ).also {
                     stage++
                 }
+
             10 -> playerl(FaceAnim.FRIENDLY, "Sounds interesting. Anything else I should know?").also { stage++ }
             11 ->
                 npcl(
@@ -139,6 +146,7 @@ class GunnjornDialogue(
                 ).also {
                     stage++
                 }
+
             12 ->
                 npcl(
                     FaceAnim.FRIENDLY,
@@ -146,6 +154,7 @@ class GunnjornDialogue(
                 ).also {
                     stage++
                 }
+
             13 ->
                 npcl(
                     FaceAnim.FRIENDLY,
@@ -153,6 +162,7 @@ class GunnjornDialogue(
                 ).also {
                     stage++
                 }
+
             14 -> playerl(FaceAnim.FRIENDLY, "That's all I need for now. Bye.").also { stage++ }
             15 -> npcl(FaceAnim.FRIENDLY, "Bye for now. Come back if you need any help.").also { stage = END_DIALOGUE }
             16 ->
@@ -163,6 +173,55 @@ class GunnjornDialogue(
                     stage =
                         END_DIALOGUE
                 }
+            /*
+             * Horror from the deep dialogue.
+             */
+
+            20 -> playerl(FaceAnim.HALF_ASKING, "Hi, are you called Gunnjorn?").also { stage++ }
+            21 ->
+                npc(
+                    FaceAnim.FRIENDLY,
+                    "Why, indeed I am. I own this agility course, it can be",
+                    "very dangerous!",
+                ).also { stage++ }
+
+            22 ->
+                player(
+                    FaceAnim.FRIENDLY,
+                    "Yeah, that's great. Anyway, I understand you have a",
+                    "cousin named Larrissa who gave you a key...?",
+                ).also { stage++ }
+
+            23 ->
+                npc(
+                    FaceAnim.FRIENDLY,
+                    "Yes, she did! How did you know of this? She said she",
+                    "probably wouldn't need it, but gave it to me for safe",
+                    "keeping just in case.",
+                ).also { stage++ }
+
+            24 ->
+                player(
+                    FaceAnim.FRIENDLY,
+                    "Well, something has happened at the lighthouse, and she",
+                    "has been locked out. I need you to give me her key.",
+                ).also { stage++ }
+
+            25 -> {
+                if (freeSlots(player!!) == 0) {
+                    end()
+                    npc(
+                        FaceAnim.HALF_GUILTY,
+                        "Well, I would give you the key, but apparently you",
+                        "don't have any room.",
+                    )
+                    return true
+                }
+                end()
+                npc("Sure. Here you go.")
+                addItem(player!!, Items.LIGHTHOUSE_KEY_3848)
+                setQuestStage(player!!, Quests.HORROR_FROM_THE_DEEP, 5)
+            }
         }
         return true
     }
