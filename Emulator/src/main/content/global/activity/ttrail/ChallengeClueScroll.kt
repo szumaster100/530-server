@@ -1,10 +1,10 @@
 package content.global.activity.ttrail
 
+import core.api.interaction.getNPCName
 import core.api.ui.setInterfaceText
 import core.game.interaction.Option
 import core.game.node.Node
 import core.game.node.entity.Entity
-import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.world.map.zone.ZoneBorders
 
@@ -34,14 +34,8 @@ abstract class ChallengeClueScroll(
         }
 
         super.read(player)
-
-        val npcName =
-            NPC(npc!!)
-                .name
-                .lowercase()
-                .replace("_", " ")
-                .replaceFirstChar { it.uppercaseChar() }
-        setInterfaceText(player, "<br><br><br><br><br> Speak to $npcName.", interfaceId, 1)
+        val npc = getNPCName(npc!!).lowercase()
+        setInterfaceText(player, "<br><br><br><br><br> Speak to $npc.", interfaceId, 1)
     }
 
     override fun interact(
