@@ -6,6 +6,16 @@ import core.plugin.Plugin
 class CrypticCluePlugin : CrypticClueScroll {
     constructor() : super(null, -1, null, null, null, null,null)
 
+    constructor(name: String, clueId: Int, boolean: Boolean, location: Location, string: String) : super(
+        name,
+        clueId,
+        ClueLevel.EASY,
+        1,
+        Location.create(0, 0, 0),
+        "",
+        1
+    )
+    
     override fun newInstance(arg: Any): Plugin<Any>? {
         register(CrypticCluePlugin("wilderness-sapphire", 0, false, Location(0, 0, 0), "46 is my number, my body is the colour of burnt orange and crawls among those with eight. Three mouths I have, yet I cannot eat. My blinking blue eye hides my grave."))
         register(CrypticCluePlugin("abbot-langley", 0, false, Location(0, 0, 0), "'A bag belt only?' he asked his balding brothers"))
