@@ -54,6 +54,8 @@ enum class Pickpocket(
             NPCs.WOMAN_7883,
             NPCs.WOMAN_7884,
             NPCs.WOMAN_7925,
+            NPCs.HENGEL_2683,
+            NPCs.ANJA_2684,
         ),
         1,
         180.0,
