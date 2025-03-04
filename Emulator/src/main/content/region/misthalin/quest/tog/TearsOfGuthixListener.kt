@@ -51,7 +51,7 @@ class TearsOfGuthixListener : InteractionListener {
         }
 
         // Quest complete
-        on(Scenery.JUNA_31303, SCENERY, "talk-to") { player, node ->
+        on(Scenery.JUNA_31303, SCENERY, "talk-to", "tell-story") { player, node ->
             openDialogue(player, NPCs.JUNA_2023, node.location)
             return@on true
         }

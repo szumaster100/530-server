@@ -21,7 +21,7 @@ import org.rs.consts.Vars
 @Initializable
 class
 TearsOfGuthix :
-    Quest(Quests.TEARS_OF_GUTHIX, 120, 119, 1, Vars.VARBIT_QUEST_TEARS_OF_GUTHIX_PROGRESS_451, 0, 1, 2) {
+    Quest(Quests.TEARS_OF_GUTHIX, 120, 119, 1, 449, Vars.VARBIT_QUEST_TEARS_OF_GUTHIX_PROGRESS_451, 0, 1, 2) {
     companion object {
         fun daysLeft(player: Player): Int {
             val currentTime = System.currentTimeMillis()
@@ -100,23 +100,23 @@ TearsOfGuthix :
             if (daysLeft(player) > 0 && xpLeft(player) > 0 && questPointsLeft(player) > 0) {
                 line(
                     player,
-                    "I will be able to collect the Tears of Guthix !!in " + daysLeft(player) + " days??, as",
+                    "I will be able to collect the Tears of Guthix !!in ${daysLeft(player)} days??, as",
                     line++,
                     false,
                 )
                 line(
                     player,
-                    "long as I gain either !!1 Quest Point?? or !!" + xpLeft(player) + " total XP??",
+                    "long as I gain either !!1 Quest Point?? or !!${xpLeft(player)} total XP??",
                     line++,
                     false,
                 )
             } else if (xpLeft(player) > 0 && questPointsLeft(player) > 0) {
                 line(player, "I will be able to collect the Tears of Guthix, as long as I", line++, false)
-                line(player, "gain either !!1 Quest Point?? or !!" + xpLeft(player) + " total XP??", line++, false)
+                line(player, "gain either !!1 Quest Point?? or !!${xpLeft(player)} total XP??.", line++, false)
             } else if (daysLeft(player) > 0) {
                 line(
                     player,
-                    "I will be able to collect the Tears of Guthix !!in?? " + daysLeft(player) + " !!days??.",
+                    "I will be able to collect the Tears of Guthix !!in ${daysLeft(player)} days??.",
                     line++,
                     false,
                 )
@@ -133,7 +133,7 @@ TearsOfGuthix :
         super.finish(player)
         player.packetDispatch.sendItemZoomOnInterface(
             Items.STONE_BOWL_4704,
-            230,
+            240,
             Components.QUEST_COMPLETE_SCROLL_277,
             5,
         )
@@ -142,6 +142,7 @@ TearsOfGuthix :
         drawReward(player, "Access to the Tears of Guthix", ln++)
         drawReward(player, "cave", ln)
         rewardXP(player, Skills.CRAFTING, 1000.0)
+        setVarbit(player, Vars.VARBIT_QUEST_TEARS_OF_GUTHIX_PROGRESS_451, 2, true)
     }
 
     override fun reset(player: Player) {

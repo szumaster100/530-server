@@ -406,7 +406,7 @@ class MiningListener : InteractionListener {
         resource: MiningNode?,
         tool: SkillingTool,
     ) {
-        val isEssence = resource!!.id in intArrayOf(2491, 16684)
+        val isEssence = resource!!.id in intArrayOf(org.rs.consts.Scenery.RUNE_ESSENCE_2491, org.rs.consts.Scenery.ROCK_16684)
         if (animationFinished(player)) {
             animate(player, if (!isEssence) tool.animation else tool.animation + 6128, true)
         }
@@ -427,6 +427,10 @@ class MiningListener : InteractionListener {
         }
         if (freeSlots(player) == 0) {
             sendMessage(player, "Your inventory is too full to hold any more ore.")
+            return false
+        }
+        if(inInventory(player, Items.MAGIC_STONE_4703)) {
+            sendMessage(player, "You have already mined some stone. You don't need any more.")
             return false
         }
         return node.isActive

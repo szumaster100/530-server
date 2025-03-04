@@ -1,5 +1,11 @@
 [
   {
+    "id": "4",
+    "interfaceType": "3",
+    "walkable": "true",
+    "tabIndex": "-1"
+  },
+  {
     "id": "5",
     "interfaceType": "8",
     "walkable": "true",

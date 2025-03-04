@@ -76,10 +76,10 @@ class MiningPulse(
             return
         }
 
-        if (resource!!.id == 2099 && !perfectGoldOreLocations.contains(node.location)) {
-            resource = MiningNode.forId(2098)
+        if (resource!!.id == org.rs.consts.Scenery.ROCKS_2099 && !perfectGoldOreLocations.contains(node.location)) {
+            resource = MiningNode.forId(org.rs.consts.Scenery.ROCKS_2098)
         }
-        if (resource!!.id == 2491 || resource!!.id == 16684) {
+        if (resource!!.id == org.rs.consts.Scenery.RUNE_ESSENCE_2491 || resource!!.id == org.rs.consts.Scenery.ROCK_16684) {
             isMiningEssence = true
         }
         if (resource!!.identifier == MiningNode.GEM_ROCK_0.identifier) {
@@ -130,15 +130,14 @@ class MiningPulse(
                 sendDialogue(player, "Your inventory is too full to hold any more granite.")
                 return false
             }
-            if (resource!!.identifier == 18.toByte()) {
+            if (resource!!.identifier == 18.toByte() && inInventory(player, Items.MAGIC_STONE_4703)) {
                 sendMessage(player, "You have already mined some stone. You don't need any more.")
                 return false
             }
+            val item = getItemName(resource!!.reward).lowercase()
             sendDialogue(
                 player,
-                "Your inventory is too full to hold any more ${ItemDefinition.forId(
-                    resource!!.reward,
-                ).name.lowercase()}.",
+                "Your inventory is too full to hold any more $item.",
             )
             return false
         }
