@@ -48,7 +48,7 @@ object GraveUtils {
         )
 
     val gravestones =
-        arrayOf(
+        intArrayOf(
             Scenery.GRAVESTONE_12716,
             Scenery.GRAVESTONE_12717,
             Scenery.GRAVESTONE_12718,
@@ -56,7 +56,7 @@ object GraveUtils {
             Scenery.GRAVESTONE_12720,
         )
 
-    val coffins = arrayOf(Items.COFFIN_7587, Items.COFFIN_7588, Items.COFFIN_7589, Items.COFFIN_7590, Items.COFFIN_7591)
+    val coffins = intArrayOf(Items.COFFIN_7587, Items.COFFIN_7588, Items.COFFIN_7589, Items.COFFIN_7590, Items.COFFIN_7591)
 
     const val COFFIN_INTERFACE = Components.GRAVEDIGGER_COFFIN_141
     const val GRAVESTONE_INTERFACE = Components.GRAVEDIGGER_GRAVE_143
@@ -71,9 +71,6 @@ object GraveUtils {
             intArrayOf(13395, 13396, 13383, 13397, 13383, 13383, 13383, 13383, 13387),
             intArrayOf(13383, 13383, 13394, 13384, 13383, 13388, 13397, 13393, 13383),
         )
-
-    val itemsCoffin = coffins.toIntArray()
-    val graveStones = gravestones.toIntArray()
     val gravePlates = intArrayOf(13398, 13400, 13401, 13402, 13403)
 
     fun getRandomCoffinContent(player: Player) {
@@ -98,7 +95,7 @@ object GraveUtils {
         setMinimapState(player, 0)
         clearLogoutListener(player, RandomEvent.logout())
         removeAttributes(player, RandomEvent.save(), LEO_COFFIN_POINTS, LEO_TASK)
-        removeAll(player, itemsCoffin)
+        removeAll(player, coffins)
     }
 
     fun reward(player: Player) {

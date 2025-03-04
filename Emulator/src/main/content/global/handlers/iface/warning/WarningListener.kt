@@ -53,6 +53,20 @@ class WarningListener :
                     18 -> {
                         closeOverlay(player)
                         closeInterface(player)
+
+                        if (component.id == Components.WILDERNESS_WARNING_382) {
+                            val wildernessDitch = player.getAttribute<Scenery>("wildy_ditch")
+                            val wildernessGate = player.getAttribute<Scenery>("wildy_gate")
+
+                            if (wildernessDitch != null) {
+                                player.interfaceManager.close()
+                                handleDitch(player)
+                            } else if (wildernessGate != null) {
+                                player.interfaceManager.close()
+                                handleGate(player)
+                            }
+                            WarningManager.increment(player, component.id)
+                        }
                     }
 
                     20, 28, // 28 for Wilderness warning.
@@ -162,21 +176,6 @@ class WarningListener :
                                     )
                                     WarningManager.increment(player, component.id)
                                 }
-                            }
-
-                            Components.WILDERNESS_WARNING_382 -> {
-                                val wildyDitch = player.getAttribute<Scenery>("wildy_ditch")
-                                val wildyGate = player.getAttribute<Scenery>("wildy_gate")
-
-                                if (wildyDitch != null) {
-                                    player.interfaceManager.close()
-                                    handleDitch(player)
-                                } else if (wildyGate != null) {
-                                    player.interfaceManager.close()
-                                    handleGate(player)
-                                }
-
-                                WarningManager.increment(player, component.id)
                             }
                         }
                     }
@@ -372,13 +371,14 @@ class WarningListener :
             val shouldWarn = shouldWarnCrossing(player, ditch)
             if (shouldWarn) {
                 val warning = Warnings.WILDERNESS_DITCH
-                if (warning.isDisabled) {
-                    handleDitch(player)
-                } else {
+                if (!warning.isDisabled) {
                     WarningManager.openWarning(
                         player,
                         warning,
                     )
+                    handleDitch(player)
+                } else {
+                    handleDitch(player)
                 }
                 return
             }

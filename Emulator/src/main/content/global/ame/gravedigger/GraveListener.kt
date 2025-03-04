@@ -47,13 +47,13 @@ class GraveListener :
             return@on true
         }
 
-        on(GraveUtils.itemsCoffin, IntType.ITEM, "check") { player, _ ->
+        on(GraveUtils.coffins, IntType.ITEM, "check") { player, _ ->
             openInterface(player, GraveUtils.COFFIN_INTERFACE)
             GraveUtils.getRandomCoffinContent(player)
             return@on true
         }
 
-        on(GraveUtils.graveStones, IntType.SCENERY, "read") { player, _ ->
+        on(GraveUtils.gravestones, IntType.SCENERY, "read") { player, _ ->
             openInterface(player, GraveUtils.GRAVESTONE_INTERFACE)
             GraveUtils.getRandomGraveContent(player)
             sendMessage(player, "You look at the gravestone.")
@@ -66,7 +66,7 @@ class GraveListener :
                 return@on true
             }
 
-            onUseWith(SCENERY, GraveUtils.itemsCoffin, emptyGrave) { player, used, _ ->
+            onUseWith(SCENERY, GraveUtils.coffins, emptyGrave) { player, used, _ ->
                 handleCoffinAction(player, grave, emptyGrave, graveLocations[index], index + 1, "drop", used.asItem())
                 return@onUseWith true
             }
@@ -99,7 +99,7 @@ class GraveListener :
     }
 
     override fun defineAreaBorders(): Array<ZoneBorders> {
-        return arrayOf(ZoneBorders(1934, 4993, 1921, 5006))
+        return arrayOf(ZoneBorders(1921, 4993, 1934, 5006))
     }
 
     override fun areaLeave(
@@ -108,7 +108,11 @@ class GraveListener :
     ) {
         super.areaLeave(entity, logout)
         if (entity is Player) {
-            removeAll(entity, GraveUtils.coffins)
+            val player = entity.asPlayer()
+            for (itemId in GraveUtils.coffins) {
+                if (anyInInventory(player, *GraveUtils.coffins))
+                    removeItem(player, itemId)
+            }
         }
     }
 }
