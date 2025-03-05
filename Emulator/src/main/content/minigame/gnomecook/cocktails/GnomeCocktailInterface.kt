@@ -1,157 +1,89 @@
 package content.minigame.gnomecook.cocktails
 
-import core.game.component.Component
-import core.game.component.ComponentDefinition
-import core.game.component.ComponentPlugin
-import core.game.node.entity.player.Player
+import core.api.*
+import core.game.interaction.InterfaceListener
 import core.game.node.entity.skill.Skills
-import core.game.node.item.Item
-import core.plugin.Initializable
-import core.plugin.Plugin
 import org.rs.consts.Items
 
-private const val WIZARD_BLIZZARD = Items.WIZARD_BLIZZARD_2054
-private const val SHORT_GREEN_GUY = Items.SHORT_GREEN_GUY_2080
-private const val FRUIT_BLAST = Items.FRUIT_BLAST_2084
-private const val PINEAPPLE_PUNCH = Items.PINEAPPLE_PUNCH_2048
-private const val DRUNK_DRAGON = Items.DRUNK_DRAGON_2092
-private const val CHOC_SATURDAY = Items.CHOC_SATURDAY_2074
-private const val BLURBERRY_SPECIAL = Items.BLURBERRY_SPECIAL_2064
+class GnomeCocktailInterface : InterfaceListener {
 
-@Initializable
-class GnomeCocktailInterface : ComponentPlugin() {
-    override fun open(
-        player: Player?,
-        component: Component?,
-    ) {
-        player ?: return
-        component ?: return
-        super.open(player, component)
-        player.packetDispatch.sendItemOnInterface(WIZARD_BLIZZARD, 1, component.id, 3)
-        player.packetDispatch.sendItemOnInterface(SHORT_GREEN_GUY, 1, component.id, 16)
-        player.packetDispatch.sendItemOnInterface(FRUIT_BLAST, 1, component.id, 23)
-        player.packetDispatch.sendItemOnInterface(PINEAPPLE_PUNCH, 1, component.id, 32)
-        player.packetDispatch.sendItemOnInterface(DRUNK_DRAGON, 1, component.id, 41)
-        player.packetDispatch.sendItemOnInterface(CHOC_SATURDAY, 1, component.id, 50)
-        player.packetDispatch.sendItemOnInterface(BLURBERRY_SPECIAL, 1, component.id, 61)
-    }
+    private val cookingGnomeCocktailsInterface = 436
 
-    override fun handle(
-        player: Player?,
-        component: Component?,
-        opcode: Int,
-        button: Int,
-        slot: Int,
-        itemId: Int,
-    ): Boolean {
-        player ?: return false
-        when (button) {
-            3 -> attemptMake(FruitCocktail.WIZARD_BLIZZARD, player)
-            16 -> attemptMake(FruitCocktail.SHORT_GREEN_GUY, player)
-            23 -> attemptMake(FruitCocktail.FRUIT_BLAST, player)
-            32 -> attemptMake(FruitCocktail.PINEAPPLE_PUNCH, player)
-            41 -> attemptMake(FruitCocktail.DRUNK_DRAGON, player)
-            50 -> attemptMake(FruitCocktail.CHOC_SATURDAY, player)
-            61 -> attemptMake(FruitCocktail.BLURBERRY_SPEC, player)
-        }
-        return true
-    }
-
-    private fun attemptMake(
-        cocktail: FruitCocktail,
-        player: Player,
-    ) {
-        var hasAll = true
-        val cookingLevel = player.skills.getLevel(Skills.COOKING)
-
-        if (cookingLevel < cocktail.levelReq) {
-            player.dialogueInterpreter.sendDialogue("You don't have the necessary level to make that.")
-            return
+    override fun defineInterfaceListeners() {
+        onOpen(cookingGnomeCocktailsInterface) { player, component ->
+            sendItemOnInterface(player, component.id, 3,  Items.WIZARD_BLIZZARD_2054, 1)
+            sendItemOnInterface(player, component.id, 16, Items.SHORT_GREEN_GUY_2080, 1)
+            sendItemOnInterface(player, component.id, 23, Items.FRUIT_BLAST_2084, 1)
+            sendItemOnInterface(player, component.id, 32, Items.PINEAPPLE_PUNCH_2048, 1)
+            sendItemOnInterface(player, component.id, 41, Items.DRUNK_DRAGON_2092, 1)
+            sendItemOnInterface(player, component.id, 50, Items.CHOC_SATURDAY_2074, 1)
+            sendItemOnInterface(player, component.id, 61, Items.BLURBERRY_SPECIAL_2064, 1)
+            return@onOpen true
         }
 
-        for (ingredient in cocktail.requiredItems) {
-            if (!player.inventory.containsItem(ingredient)) {
-                hasAll = false
-                break
+        /*
+         * Handles make a cocktail.
+         */
+
+        on(cookingGnomeCocktailsInterface) { player, _, _, buttonID, _, _ ->
+            var hasAll = true
+            val cocktail: FruitCocktail? = when (buttonID) {
+                3 -> FruitCocktail.WIZARD_BLIZZARD
+                16 -> FruitCocktail.SHORT_GREEN_GUY
+                23 -> FruitCocktail.FRUIT_BLAST
+                32 -> FruitCocktail.PINEAPPLE_PUNCH
+                41 -> FruitCocktail.DRUNK_DRAGON
+                50 -> FruitCocktail.CHOC_SATURDAY
+                61 -> FruitCocktail.BLURBERRY_SPEC
+                else -> null
             }
+
+            if (cocktail != null) {
+                val cookingLevel = getStatLevel(player, Skills.COOKING)
+                if (cookingLevel < cocktail.levelReq) {
+                    sendDialogue(player, "You don't have the necessary level to make that.")
+                    return@on true
+                }
+
+                val requiredItems = cocktail.requiredItems.map { it }
+                for (ingredient in requiredItems) {
+                    if (!inInventory(player, ingredient)) {
+                        hasAll = false
+                        break
+                    }
+                }
+
+                if (!hasAll) {
+                    sendDialogue(player, "You don't have the ingredients to make that.")
+                    return@on true
+                }
+
+                requiredItems.forEach {
+                    removeItem(player, it)
+                }
+
+                removeItem(player, Items.COCKTAIL_SHAKER_2025, Container.INVENTORY)
+                addItem(player, cocktail.product, 1)
+                rewardXP(player, Skills.COOKING, cocktail.experience)
+                closeInterface(player)
+            }
+
+            return@on true
         }
-
-        if (!hasAll) {
-            player.dialogueInterpreter.sendDialogue("You don't have the ingredients to make that.")
-            return
-        }
-
-        player.inventory.remove(*cocktail.requiredItems)
-        player.inventory.remove(Item(Items.COCKTAIL_SHAKER_2025))
-        player.inventory.add(Item(cocktail.product))
-        player.skills.addExperience(Skills.COOKING, cocktail.experience)
-        player.interfaceManager.close()
-    }
-
-    override fun newInstance(arg: Any?): Plugin<Any> {
-        ComponentDefinition.put(436, this)
-        return this
     }
 
     internal enum class FruitCocktail(
         val levelReq: Int,
         val experience: Double,
         val product: Int,
-        val requiredItems: Array<Item>,
+        vararg val requiredItems: Int
     ) {
-        FRUIT_BLAST(
-            6,
-            50.0,
-            9568,
-            arrayOf(Item(Items.PINEAPPLE_2114), Item(Items.LEMON_2102), Item(Items.ORANGE_2108)),
-        ),
-        PINEAPPLE_PUNCH(
-            8,
-            70.0,
-            9569,
-            arrayOf(Item(Items.PINEAPPLE_2114, 2), Item(Items.LEMON_2102), Item(Items.ORANGE_2108)),
-        ),
-        WIZARD_BLIZZARD(
-            18,
-            110.0,
-            9566,
-            arrayOf(
-                Item(Items.VODKA_2015, 2),
-                Item(Items.GIN_2019),
-                Item(Items.LIME_2120),
-                Item(Items.LEMON_2102),
-                Item(Items.ORANGE_2108),
-            ),
-        ),
-        SHORT_GREEN_GUY(20, 120.0, 9567, arrayOf(Item(Items.VODKA_2015), Item(Items.LIME_2120, 3))),
-        DRUNK_DRAGON(
-            32,
-            160.0,
-            9574,
-            arrayOf(Item(Items.VODKA_2015), Item(Items.GIN_2019), Item(Items.DWELLBERRIES_2126)),
-        ),
-        CHOC_SATURDAY(
-            33,
-            170.0,
-            9571,
-            arrayOf(
-                Item(Items.WHISKY_2017),
-                Item(Items.CHOCOLATE_BAR_1973),
-                Item(Items.EQUA_LEAVES_2128),
-                Item(Items.BUCKET_OF_MILK_1927),
-            ),
-        ),
-        BLURBERRY_SPEC(
-            37,
-            180.0,
-            9570,
-            arrayOf(
-                Item(Items.VODKA_2015),
-                Item(Items.BRANDY_2021),
-                Item(Items.GIN_2019),
-                Item(Items.LEMON_2102, 2),
-                Item(Items.ORANGE_2108),
-            ),
-        ),
+        FRUIT_BLAST(6, 50.0, Items.MIXED_BLAST_9568, Items.PINEAPPLE_2114, Items.LEMON_2102, Items.ORANGE_2108),
+        PINEAPPLE_PUNCH(8, 70.0, Items.MIXED_PUNCH_9569, Items.PINEAPPLE_2114, Items.PINEAPPLE_2114, Items.LEMON_2102, Items.ORANGE_2108),
+        WIZARD_BLIZZARD(18, 110.0, Items.MIXED_BLIZZARD_9566, Items.VODKA_2015, Items.VODKA_2015, Items.GIN_2019, Items.LIME_2120, Items.LEMON_2102, Items.ORANGE_2108),
+        SHORT_GREEN_GUY(20, 120.0, Items.MIXED_SGG_9567, Items.VODKA_2015, Items.LIME_2120, Items.LIME_2120, Items.LIME_2120),
+        DRUNK_DRAGON(32, 160.0, Items.MIXED_DRAGON_9574, Items.VODKA_2015, Items.GIN_2019, Items.DWELLBERRIES_2126),
+        CHOC_SATURDAY(33, 170.0, Items.MIXED_SATURDAY_9571, Items.WHISKY_2017, Items.CHOCOLATE_BAR_1973, Items.EQUA_LEAVES_2128, Items.BUCKET_OF_MILK_1927),
+        BLURBERRY_SPEC(37, 180.0, Items.MIXED_BLURBERRY_SPECIAL_9570, Items.VODKA_2015, Items.BRANDY_2021, Items.GIN_2019, Items.LEMON_2102, Items.LEMON_2102, Items.ORANGE_2108),
     }
 }
