@@ -1,6 +1,6 @@
 package content.minigame.gnomecook
 
-import content.minigame.gnomecook.GnomeTipper.getTip
+import content.minigame.gnomecook.GnomeCookingTipper.getTip
 import core.api.*
 import core.game.dialogue.DialogueFile
 import core.game.dialogue.FaceAnim
@@ -9,7 +9,7 @@ import core.tools.END_DIALOGUE
 import core.tools.colorize
 import org.rs.consts.Items
 
-class GCCompletionDialogue(
+class GnomeCookingDialogue(
     val job: GnomeCookingTask,
 ) : DialogueFile() {
     override fun handle(

@@ -149,7 +149,7 @@ class NPCListener : InteractionListener {
             if (player.getAttribute("$GC_BASE_ATTRIBUTE:$GC_JOB_ORDINAL", -1) != -1) {
                 val job = GnomeCookingTask.values()[player.getAttribute("$GC_BASE_ATTRIBUTE:$GC_JOB_ORDINAL", -1)]
                 if (node.id == job.npc_id && !player.getAttribute("$GC_BASE_ATTRIBUTE:$GC_JOB_COMPLETE", false)) {
-                    player.dialogueInterpreter.open(GCCompletionDialogue(job))
+                    player.dialogueInterpreter.open(GnomeCookingDialogue(job))
                     return@on true
                 }
             }

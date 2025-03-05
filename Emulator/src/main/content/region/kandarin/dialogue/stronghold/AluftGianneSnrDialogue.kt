@@ -175,8 +175,8 @@ class AluftGianneSnrDialogue(
             301 ->
                 end().also {
                     when (buttonId) {
-                        1 -> getJob(GnomeTipper.LEVEL.HARD)
-                        2 -> getJob(GnomeTipper.LEVEL.EASY)
+                        1 -> getJob(GnomeCookingTipper.LEVEL.HARD)
+                        2 -> getJob(GnomeCookingTipper.LEVEL.EASY)
                     }
                 }
 
@@ -197,7 +197,7 @@ class AluftGianneSnrDialogue(
         return intArrayOf(NPCs.ALUFT_GIANNE_SNR_850)
     }
 
-    private fun getJob(level: GnomeTipper.LEVEL) {
+    private fun getJob(level: GnomeCookingTipper.LEVEL) {
         if (!player.inventory.containsItem(ALUFT_ALOFT_BOX) && !player.bank.containsItem(ALUFT_ALOFT_BOX)) {
             player.inventory.add(ALUFT_ALOFT_BOX)
         }
@@ -217,7 +217,7 @@ class AluftGianneSnrDialogue(
                     "I need to deliver a ${item.name.lowercase()} to ${NPC(job.npc_id).name.lowercase()},",
                     "who is ${job.tip}",
                 )
-                GameWorld.Pulser.submit(GnomeRestaurantPulse(player, if (level == GnomeTipper.LEVEL.HARD) 11L else 6L))
+                GameWorld.Pulser.submit(GnomeRestaurantPulse(player, if (level == GnomeCookingTipper.LEVEL.HARD) 11L else 6L))
             }
         }
     }

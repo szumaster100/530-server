@@ -1,4 +1,4 @@
-package content.minigame.gnomecook
+package content.minigame.gnomecook.handlers
 
 import core.api.*
 import core.game.interaction.IntType

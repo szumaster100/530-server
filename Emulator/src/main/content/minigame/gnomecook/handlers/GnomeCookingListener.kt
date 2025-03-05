@@ -1,5 +1,6 @@
-package content.minigame.gnomecook
+package content.minigame.gnomecook.handlers
 
+import content.minigame.gnomecook.*
 import core.api.*
 import core.api.interaction.getNPCName
 import core.game.interaction.IntType

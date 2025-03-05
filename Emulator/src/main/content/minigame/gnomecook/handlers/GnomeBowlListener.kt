@@ -1,4 +1,4 @@
-package content.minigame.gnomecook
+package content.minigame.gnomecook.handlers
 
 import core.api.*
 import core.game.interaction.IntType
@@ -13,7 +13,6 @@ import org.rs.consts.Scenery
 class GnomeBowlListener : InteractionListener {
 
     private val sceneryIDs = intArrayOf(Scenery.GNOME_COOKER_17131, Scenery.RANGE_2728)
-    private val gnomeBowlInterface = 435
 
     override fun defineListeners() {
         val cookingMap = mapOf(
