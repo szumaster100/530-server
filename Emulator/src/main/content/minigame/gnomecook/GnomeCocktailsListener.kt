@@ -1,4 +1,4 @@
-package content.minigame.gnomecook.cocktails
+package content.minigame.gnomecook
 
 import core.api.*
 import core.game.interaction.IntType

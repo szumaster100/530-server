@@ -205,9 +205,9 @@ class AluftGianneSnrDialogue(
             sendDialogue(player, "You already have a job.")
         } else {
             GlobalScope.launch {
-                var job = GnomeCookingJob.values().random()
+                var job = GnomeCookingTask.values().random()
                 while (job.level != level) {
-                    job = GnomeCookingJob.values().random()
+                    job = GnomeCookingTask.values().random()
                 }
                 val item = Item(gnomeItems.random())
                 setAttribute(player, "$GC_BASE_ATTRIBUTE:$GC_JOB_ORDINAL", job.ordinal)

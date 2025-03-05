@@ -1,4 +1,4 @@
-package content.minigame.gnomecook.battas
+package content.minigame.gnomecook.components
 
 import core.api.inInventory
 import core.game.component.Component
@@ -11,12 +11,6 @@ import core.plugin.Initializable
 import core.plugin.Plugin
 import org.rs.consts.Items
 
-private const val WORM_BATTA = 2219
-private const val TOAD_BATTA = 2221
-private const val CHEESE_TOM_BATTA = 2223
-private const val FRUIT_BATTA = 2225
-private const val VEG_BATTA = 2227
-
 @Initializable
 class GnomeBattaInterface : ComponentPlugin() {
     override fun open(
@@ -26,11 +20,11 @@ class GnomeBattaInterface : ComponentPlugin() {
         component ?: return
         player ?: return
         super.open(player, component)
-        player.packetDispatch.sendItemOnInterface(FRUIT_BATTA, component.id, component.id, 3)
-        player.packetDispatch.sendItemOnInterface(TOAD_BATTA, component.id, component.id, 14)
-        player.packetDispatch.sendItemOnInterface(WORM_BATTA, component.id, component.id, 25)
-        player.packetDispatch.sendItemOnInterface(VEG_BATTA, component.id, component.id, 34)
-        player.packetDispatch.sendItemOnInterface(CHEESE_TOM_BATTA, component.id, component.id, 47)
+        player.packetDispatch.sendItemOnInterface(Items.PREMADE_FRT_BATTA_2225, component.id, component.id, 3)
+        player.packetDispatch.sendItemOnInterface(Items.PREMADE_TD_BATTA_2221, component.id, component.id, 14)
+        player.packetDispatch.sendItemOnInterface(Items.PREMADE_WM_BATTA_2219, component.id, component.id, 25)
+        player.packetDispatch.sendItemOnInterface(Items.PREMADE_VEG_BATTA_2227, component.id, component.id, 34)
+        player.packetDispatch.sendItemOnInterface(Items.PREMADE_C_PLUST_BATTA_2223, component.id, component.id, 47)
     }
 
     override fun handle(

@@ -10,7 +10,7 @@ import core.tools.colorize
 import org.rs.consts.Items
 
 class GCCompletionDialogue(
-    val job: GnomeCookingJob,
+    val job: GnomeCookingTask,
 ) : DialogueFile() {
     override fun handle(
         componentID: Int,

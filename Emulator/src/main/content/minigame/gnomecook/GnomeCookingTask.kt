@@ -2,7 +2,7 @@ package content.minigame.gnomecook
 
 import org.rs.consts.NPCs
 
-enum class GnomeCookingJob(
+enum class GnomeCookingTask(
     val level: GnomeTipper.LEVEL,
     val npc_id: Int,
     val tip: String,
