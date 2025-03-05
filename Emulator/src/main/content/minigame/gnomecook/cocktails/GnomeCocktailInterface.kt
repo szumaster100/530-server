@@ -10,13 +10,13 @@ import core.plugin.Initializable
 import core.plugin.Plugin
 import org.rs.consts.Items
 
-private const val WIZARD_BLIZZARD = 2054
-private const val SHORT_GREEN_GUY = 2080
-private const val FRUIT_BLAST = 2084
-private const val PINEAPPLE_PUNCH = 2048
-private const val DRUNK_DRAGON = 2092
-private const val CHOC_SATURDAY = 2074
-private const val BLURBERRY_SPECIAL = 2064
+private const val WIZARD_BLIZZARD = Items.WIZARD_BLIZZARD_2054
+private const val SHORT_GREEN_GUY = Items.SHORT_GREEN_GUY_2080
+private const val FRUIT_BLAST = Items.FRUIT_BLAST_2084
+private const val PINEAPPLE_PUNCH = Items.PINEAPPLE_PUNCH_2048
+private const val DRUNK_DRAGON = Items.DRUNK_DRAGON_2092
+private const val CHOC_SATURDAY = Items.CHOC_SATURDAY_2074
+private const val BLURBERRY_SPECIAL = Items.BLURBERRY_SPECIAL_2064
 
 @Initializable
 class GnomeCocktailInterface : ComponentPlugin() {
