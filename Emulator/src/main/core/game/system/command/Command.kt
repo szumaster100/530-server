@@ -1,6 +1,6 @@
 package core.game.system.command
 
-import core.ServerConfig
+import core.ServerConstants
 import core.game.node.entity.player.Player
 import core.game.world.GameWorld
 
@@ -22,7 +22,7 @@ class Command(
         args ?: return
         if (player.rights.ordinal >= privilege.ordinal ||
             GameWorld.settings?.isDevMode == true ||
-            ServerConfig.I_AM_A_CHEATER
+            ServerConstants.I_AM_A_CHEATER
         ) {
             handle(player, args)
         }

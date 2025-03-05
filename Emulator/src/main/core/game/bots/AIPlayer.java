@@ -1,7 +1,7 @@
 package core.game.bots;
 
 import content.region.misc.handlers.tutorial.CharacterDesign;
-import core.ServerConfig;
+import core.ServerConstants;
 import core.game.container.impl.EquipmentContainer;
 import core.game.interaction.DestinationFlag;
 import core.game.interaction.MovementPulse;
@@ -132,7 +132,7 @@ public class AIPlayer extends Player {
 
     public static void loadNames(String fileName) {
         try {
-            Scanner sc = new Scanner(new File(ServerConfig.BOT_DATA_PATH + fileName));
+            Scanner sc = new Scanner(new File(ServerConstants.BOT_DATA_PATH + fileName));
             while (sc.hasNextLine()) {
                 botNames.add(sc.nextLine());
             }
@@ -152,7 +152,7 @@ public class AIPlayer extends Player {
         Random rand = new Random();
         int n = 0;
         try {
-            for (Scanner sc = new Scanner(new File(ServerConfig.BOT_DATA_PATH + fileName)); sc.hasNext(); ) {
+            for (Scanner sc = new Scanner(new File(ServerConstants.BOT_DATA_PATH + fileName)); sc.hasNext(); ) {
                 ++n;
                 String line = sc.nextLine();
                 if (rand.nextInt(n) == 0) {

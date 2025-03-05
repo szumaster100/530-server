@@ -1,6 +1,6 @@
 package core.game.world
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.log
 import core.game.bots.GeneralBotCreator
 import core.game.system.task.Pulse
@@ -51,7 +51,7 @@ class PulseRunner {
             notifyIfTooLong(pulse, elapsedTime)
         }
 
-        if (ServerConfig.GRAFANA_LOGGING) {
+        if (ServerConstants.GRAFANA_LOGGING) {
             Grafana.botPulseTime = totalTimeBotPulses
             Grafana.otherPulseTime = totalTimeOtherPulses
         }

@@ -1,7 +1,7 @@
 package core.net.packet.`in`
 
 import com.moandjiezana.toml.Toml
-import core.ServerConfig
+import core.ServerConstants
 import core.ServerStore
 import core.ServerStore.Companion.addToList
 import core.ServerStore.Companion.getList
@@ -70,7 +70,7 @@ object Login {
             // Read client-reported CRC sums
             for (i in 0 until CACHE_INDEX_COUNT) info.crcSums[i] = buffer.int
 
-            val decryptedBuffer = decryptRSABuffer(buffer, ServerConfig.EXPONENT, ServerConfig.MODULUS)
+            val decryptedBuffer = decryptRSABuffer(buffer, ServerConstants.EXPONENT, ServerConstants.MODULUS)
             decryptedBuffer.rewind()
 
             if (decryptedBuffer.get().toInt() != ENCRYPTION_VERIFICATION_BYTE) {
@@ -188,11 +188,11 @@ object Login {
         ipAddress: String,
         username: String,
     ): Boolean {
-        var accountLimit = ServerConfig.DAILY_ACCOUNT_LIMIT
+        var accountLimit = ServerConstants.DAILY_ACCOUNT_LIMIT
 
-        if (File(ServerConfig.CONFIG_PATH + "account_limit_exceptions.conf").exists()) {
+        if (File(ServerConstants.CONFIG_PATH + "account_limit_exceptions.conf").exists()) {
             try {
-                val f = File(ServerConfig.CONFIG_PATH + "account_limit_exceptions.conf")
+                val f = File(ServerConstants.CONFIG_PATH + "account_limit_exceptions.conf")
                 if (f.lastModified() != lastModifiedData) {
                     exceptionData = Toml().read(f)
                     lastModifiedData = f.lastModified()

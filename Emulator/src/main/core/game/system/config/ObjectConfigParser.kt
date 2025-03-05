@@ -1,6 +1,6 @@
 package core.game.system.config
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.log
 import core.cache.def.impl.SceneryDefinition
 import core.tools.Log
@@ -15,7 +15,7 @@ class ObjectConfigParser {
 
     fun load() {
         var count = 0
-        reader = FileReader(ServerConfig.CONFIG_PATH + "object_configs.json")
+        reader = FileReader(ServerConstants.CONFIG_PATH + "object_configs.json")
         val configlist = parser.parse(reader) as JSONArray
         for (config in configlist) {
             val e = config as JSONObject

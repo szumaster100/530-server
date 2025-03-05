@@ -1,6 +1,6 @@
 package core.game.world.map.path
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.log
 import core.api.utils.Vector
 import core.game.world.GameWorld
@@ -78,10 +78,10 @@ class SmartPathfinder
             var vec = Vector.betweenLocs(start!!, dest!!)
             var mag = kotlin.math.floor(vec.magnitude())
             var end = dest!!
-            if (mag > ServerConfig.MAX_PATHFIND_DISTANCE) {
+            if (mag > ServerConstants.MAX_PATHFIND_DISTANCE) {
                 try {
                     if (mag < 50.0) { // truncate the path if it's realistically long
-                        vec = vec.normalized() * (ServerConfig.MAX_PATHFIND_DISTANCE - 1)
+                        vec = vec.normalized() * (ServerConstants.MAX_PATHFIND_DISTANCE - 1)
                         end = start!!.transform(vec)
                     } else {
                         throw Exception(

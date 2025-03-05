@@ -2,7 +2,7 @@ package content.region.asgarnia.dialogue.falador
 
 import content.data.GameAttributes
 import content.global.skill.construction.Crests
-import core.ServerConfig
+import core.ServerConstants
 import core.Util
 import core.api.*
 import core.api.quest.getQuestPoints
@@ -52,7 +52,7 @@ class SirReniteeDialogue(
                 npc(
                     FaceAnim.HALF_GUILTY,
                     "Hmm, well, mmm, do you have a family crest? I keep",
-                    "track of every " + ServerConfig.SERVER_NAME + " family, you know, so I might",
+                    "track of every " + ServerConstants.SERVER_NAME + " family, you know, so I might",
                     "be able to find yours.",
                 ).also {
                     stage =

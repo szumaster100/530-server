@@ -1,6 +1,6 @@
 package core.game.world
 
-import core.ServerConfig
+import core.ServerConstants
 import core.ServerStore
 import core.api.*
 import core.auth.Auth
@@ -128,7 +128,7 @@ object GameWorld {
         directory: String?,
     ) {
         log(GameWorld::class.java, Log.FINE, "Prompting ${settings?.name} Game World...")
-        Cache.init(ServerConfig.CACHE_PATH)
+        Cache.init(ServerConstants.CACHE_PATH)
         Auth.configure()
         ConfigParser().prePlugin()
         ClassScanner.scanClasspath()
@@ -145,7 +145,7 @@ object GameWorld {
         }
         SceneryDefinition.getDefinitions().values.forEach(Consumer { obj: SceneryDefinition -> obj.examine })
 
-        if (ServerConfig.PRELOAD_MAP) {
+        if (ServerConstants.PRELOAD_MAP) {
             (7483..15420).forEach { id -> RegionManager.forId(id).also { Region.load(it) } }
         }
 

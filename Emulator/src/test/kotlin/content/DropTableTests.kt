@@ -2,7 +2,7 @@ package content
 
 import TestUtils
 import content.global.handlers.npc.ChromaticDragonBehavior
-import core.ServerConfig
+import core.ServerConstants
 import core.api.utils.NPCDropTable
 import core.api.utils.WeightedItem
 import core.game.node.entity.npc.NPC
@@ -18,7 +18,7 @@ class DropTableTests {
     }
 
     @Test fun chromaticDragonsShouldDropEggsOnlyAfter99Summoning() {
-        val npc = NPC.create(NPCs.BLACK_DRAGON_54, ServerConfig.HOME_LOCATION)
+        val npc = NPC.create(NPCs.BLACK_DRAGON_54, ServerConstants.HOME_LOCATION)
         val oldTable = npc.definition.dropTables.table
 
         val testTable = NPCDropTable() // manufacture a fake table that's guaranteed to give an egg, for testing safety.

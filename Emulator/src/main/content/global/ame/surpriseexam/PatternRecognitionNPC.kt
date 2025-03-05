@@ -2,7 +2,7 @@ package content.global.ame.surpriseexam
 
 import content.data.RandomEvent
 import content.global.ame.RandomEventNPC
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.api.utils.WeightBasedTable
 import core.game.interaction.QueueStrength
@@ -27,7 +27,7 @@ class PatternRecognitionNPC(
                 0 -> {
                     setAttribute(player, RandomEvent.save(), player.location)
                     registerLogoutListener(player, SurpriseExamUtils.SE_LOGOUT_KEY) { p ->
-                        p.location = getAttribute(p, RandomEvent.save(), ServerConfig.HOME_LOCATION)
+                        p.location = getAttribute(p, RandomEvent.save(), ServerConstants.HOME_LOCATION)
                     }
 
                     if (!player.musicPlayer.hasUnlocked(Music.SCHOOLS_OUT_371)) {

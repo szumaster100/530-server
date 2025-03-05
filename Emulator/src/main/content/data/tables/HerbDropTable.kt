@@ -1,6 +1,6 @@
 package content.data.tables
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.StartupListener
 import core.api.log
 import core.api.shouldRemoveNothings
@@ -21,12 +21,12 @@ import javax.xml.parsers.ParserConfigurationException
 
 class HerbDropTable : StartupListener {
     override fun startup() {
-        if (ServerConfig.HDT_DATA_PATH != null && !File(ServerConfig.HDT_DATA_PATH!!).exists()) {
-            log(this.javaClass, Log.ERR, "Can't locate HDT file at " + ServerConfig.HDT_DATA_PATH)
+        if (ServerConstants.HDT_DATA_PATH != null && !File(ServerConstants.HDT_DATA_PATH!!).exists()) {
+            log(this.javaClass, Log.ERR, "Can't locate HDT file at " + ServerConstants.HDT_DATA_PATH)
             return
         }
-        parse(ServerConfig.HDT_DATA_PATH)
-        log(this.javaClass, Log.FINE, "Initialized Herb Drop Table from " + ServerConfig.HDT_DATA_PATH)
+        parse(ServerConstants.HDT_DATA_PATH)
+        log(this.javaClass, Log.FINE, "Initialized Herb Drop Table from " + ServerConstants.HDT_DATA_PATH)
     }
 
     companion object {

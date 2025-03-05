@@ -1,6 +1,6 @@
 package content.minigame.mta
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.game.interaction.Option
 import core.game.node.Node
@@ -85,7 +85,7 @@ open class MTAZone(
             if (logout) {
                 player.location = Location(3363, 3302, 0)
             } else {
-                player.properties.spawnLocation = ServerConfig.HOME_LOCATION
+                player.properties.spawnLocation = ServerConstants.HOME_LOCATION
             }
             cleanItems(player)
             closeOverlay(player)

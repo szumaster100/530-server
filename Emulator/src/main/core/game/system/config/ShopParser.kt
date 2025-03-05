@@ -1,6 +1,6 @@
 package core.game.system.config
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.log
 import core.game.node.entity.player.Player
 import core.tools.Log
@@ -23,7 +23,7 @@ class ShopParser {
 
     fun load() {
         var count = 0
-        reader = FileReader(ServerConfig.CONFIG_PATH + "shops.json")
+        reader = FileReader(ServerConstants.CONFIG_PATH + "shops.json")
         val configlist = parser.parse(reader) as JSONArray
         for (config in configlist) {
             count++

@@ -1,7 +1,7 @@
 package content.minigame.pestcontrol;
 
 import content.minigame.pestcontrol.npc.*;
-import core.ServerConfig;
+import core.ServerConstants;
 import core.game.activity.ActivityManager;
 import core.game.activity.ActivityPlugin;
 import core.game.component.Component;
@@ -141,7 +141,7 @@ public final class PestControlActivityPlugin extends ActivityPlugin {
             case VETERAN:
                 return Location.create(2638, 2653, 0);
         }
-        return ServerConfig.HOME_LOCATION;
+        return ServerConstants.HOME_LOCATION;
     }
 
     @Override
@@ -246,7 +246,7 @@ public final class PestControlActivityPlugin extends ActivityPlugin {
 
     @Override
     public Location getSpawnLocation() {
-        return ServerConfig.HOME_LOCATION;
+        return ServerConstants.HOME_LOCATION;
     }
 
     @Override

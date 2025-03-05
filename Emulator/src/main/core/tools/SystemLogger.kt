@@ -3,7 +3,7 @@ package core.tools
 import com.displee.cache.ProgressListener
 import com.github.ajalt.mordant.rendering.TextColors
 import com.github.ajalt.mordant.terminal.Terminal
-import core.ServerConfig
+import core.ServerConstants
 import core.api.log
 import core.game.world.GameWorld
 import java.text.SimpleDateFormat
@@ -34,7 +34,7 @@ object SystemLogger {
             }
 
             Log.FINE -> {
-                if (ServerConfig.LOG_LEVEL < LogLevel.VERBOSE) {
+                if (ServerConstants.LOG_LEVEL < LogLevel.VERBOSE) {
                     return
                 }
                 val msg = TextColors.gray("${getTime()}: [${clazz.simpleName}] $message")
@@ -42,7 +42,7 @@ object SystemLogger {
             }
 
             Log.INFO -> {
-                if (ServerConfig.LOG_LEVEL < LogLevel.DETAILED) {
+                if (ServerConstants.LOG_LEVEL < LogLevel.DETAILED) {
                     return
                 }
 
@@ -51,7 +51,7 @@ object SystemLogger {
             }
 
             Log.WARN -> {
-                if (ServerConfig.LOG_LEVEL < LogLevel.CAUTIOUS) {
+                if (ServerConstants.LOG_LEVEL < LogLevel.CAUTIOUS) {
                     return
                 }
 

@@ -1,6 +1,6 @@
 package core.game.ge
 
-import core.ServerConfig
+import core.ServerConstants
 import core.cache.def.impl.ItemDefinition
 import core.tools.integration.mysql.SQLiteProvider
 import org.json.simple.JSONArray
@@ -11,7 +11,7 @@ object GEDatabase {
     lateinit var db: SQLiteProvider
 
     fun init() {
-        init(ServerConfig.GRAND_EXCHANGE_DATA_PATH + "grandexchange.db")
+        init(ServerConstants.GRAND_EXCHANGE_DATA_PATH + "grandexchange.db")
     }
 
     fun init(path: String) {

@@ -7,7 +7,7 @@ import content.global.handlers.iface.PageSet
 import content.global.skill.farming.timers.Compost
 import content.global.skill.farming.timers.CropGrowth
 import content.minigame.fishingtrawler.TrawlerLoot
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.cache.def.impl.NPCDefinition
 import core.cache.def.impl.SceneryDefinition
@@ -509,7 +509,7 @@ class MiscCommandSet : CommandSet(Privilege.ADMIN) {
             usage = "",
             description = "Right as it says on the tin.",
         ) { player, _ ->
-            for (i in 0 until ServerConfig.BANK_SIZE) {
+            for (i in 0 until ServerConstants.BANK_SIZE) {
                 player.bank.add(Item(i))
             }
         }

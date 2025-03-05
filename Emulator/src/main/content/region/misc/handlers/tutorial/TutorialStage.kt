@@ -1,7 +1,7 @@
 package content.region.misc.handlers.tutorial
 
 import content.data.GameAttributes
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.api.ui.sendInterfaceConfig
 import core.api.ui.setMinimapState
@@ -1312,9 +1312,9 @@ object TutorialStage {
                                     player.unhook(TutorialButtonReceiver)
 
                                     if (settings!!.enable_default_clan) {
-                                        player.communication.currentClan = ServerConfig.SERVER_NAME
+                                        player.communication.currentClan = ServerConstants.SERVER_NAME
                                         val clanJoin = JoinClanRequest.newBuilder()
-                                        clanJoin.clanName = ServerConfig.SERVER_NAME
+                                        clanJoin.clanName = ServerConstants.SERVER_NAME
                                         clanJoin.username = player.name
                                         ManagementEvents.publish(clanJoin.build())
                                     }

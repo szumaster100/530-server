@@ -1,6 +1,6 @@
 package core.game.shops
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.api.item.itemDefinition
 import core.game.component.Component
@@ -68,7 +68,7 @@ class Shop(
 
     init {
         if (!getServerConfig().getBoolean(Shops.personalizedShops, false) || forceShared) {
-            stockInstances[ServerConfig.SERVER_NAME.hashCode()] = generateStockContainer()
+            stockInstances[ServerConstants.SERVER_NAME.hashCode()] = generateStockContainer()
         }
     }
 
@@ -151,8 +151,8 @@ class Shop(
                     stockInstances[player.details.uid] = it
                 }
             } else {
-                stockInstances[ServerConfig.SERVER_NAME.hashCode()]
-                    ?: generateStockContainer().also { stockInstances[ServerConfig.SERVER_NAME.hashCode()] = it }
+                stockInstances[ServerConstants.SERVER_NAME.hashCode()]
+                    ?: generateStockContainer().also { stockInstances[ServerConstants.SERVER_NAME.hashCode()] = it }
             }
 
         val listener = listenerInstances[player.details.uid]
@@ -436,7 +436,7 @@ class Shop(
                 if (getServerConfig().getBoolean(Shops.personalizedShops, false)) {
                     needsUpdate[player.details.uid] = true
                 } else {
-                    needsUpdate[ServerConfig.SERVER_NAME.hashCode()] = true
+                    needsUpdate[ServerConstants.SERVER_NAME.hashCode()] = true
                 }
             }
         } else {
@@ -542,7 +542,7 @@ class Shop(
             if (getServerConfig().getBoolean(Shops.personalizedShops, false)) {
                 needsUpdate[player.details.uid] = true
             } else {
-                needsUpdate[ServerConfig.SERVER_NAME.hashCode()] = true
+                needsUpdate[ServerConstants.SERVER_NAME.hashCode()] = true
             }
         }
 

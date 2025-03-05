@@ -1,6 +1,6 @@
 package core.game.system.monitor;
 
-import core.ServerConfig;
+import core.ServerConstants;
 
 public final class DuplicationLog extends MessageLog {
 
@@ -28,7 +28,7 @@ public final class DuplicationLog extends MessageLog {
             case 2:
                 priority = "mid";
         }
-        super.write(ServerConfig.LOGS_PATH + "duplicationflags/" + priority + "prior/" + playerName + ".log");
+        super.write(ServerConstants.LOGS_PATH + "duplicationflags/" + priority + "prior/" + playerName + ".log");
     }
 
     public int getProbability() {

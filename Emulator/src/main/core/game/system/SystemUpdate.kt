@@ -1,6 +1,6 @@
 package core.game.system
 
-import core.ServerConfig
+import core.ServerConstants
 import core.game.node.entity.player.Player
 import core.game.system.SystemManager.flag
 import core.game.system.SystemManager.terminator
@@ -16,7 +16,7 @@ class SystemUpdate : Pulse(DEFAULT_COUNTDOWN) {
     override fun pulse(): Boolean {
         if (delay >= BACKUP_TICK && isCreateBackup) {
             try {
-                terminator.save(ServerConfig.DATA_PATH!!)
+                terminator.save(ServerConstants.DATA_PATH!!)
             } catch (e: Throwable) {
                 e.printStackTrace()
             }

@@ -1,6 +1,6 @@
 package core.net.event;
 
-import core.ServerConfig;
+import core.ServerConstants;
 import core.cache.misc.buffer.ByteBufferUtils;
 import core.net.IoSession;
 import core.net.IoWriteEvent;
@@ -15,9 +15,9 @@ public final class MSHSWriteEvent extends IoWriteEvent {
 
 	@Override
 	public void write(IoSession session, Object context) {
-		ByteBuffer	buffer = ByteBuffer.allocate(2 + ServerConfig.MS_SECRET_KEY.length());
+		ByteBuffer	buffer = ByteBuffer.allocate(2 + ServerConstants.MS_SECRET_KEY.length());
 		buffer.put((byte) 88);
-		ByteBufferUtils.putString(ServerConfig.MS_SECRET_KEY, buffer);
+		ByteBufferUtils.putString(ServerConstants.MS_SECRET_KEY, buffer);
 		session.queue((ByteBuffer) buffer.flip());
 	}
 

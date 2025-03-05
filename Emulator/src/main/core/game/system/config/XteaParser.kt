@@ -1,6 +1,6 @@
 package core.game.system.config
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.log
 import core.tools.Log
 import org.json.simple.JSONArray
@@ -24,7 +24,7 @@ class XteaParser {
 
     fun load() {
         var count = 0
-        reader = FileReader(ServerConfig.CONFIG_PATH + "xteas.json")
+        reader = FileReader(ServerConstants.CONFIG_PATH + "xteas.json")
         val obj = parser.parse(reader) as JSONObject
         val configlist = obj["xteas"] as JSONArray
         for (config in configlist) {

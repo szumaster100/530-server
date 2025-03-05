@@ -1,7 +1,7 @@
 package content.region.asgarnia.dialogue.falador
 
 import content.region.asgarnia.quest.rd.cutscene.SirTiffyCashienDialogueFile
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.api.interaction.openNpcShop
 import core.api.quest.isQuestComplete
@@ -76,7 +76,7 @@ class SirTiffyCashienDialogue(
                         }
                     3 -> playerl(FaceAnim.FRIENDLY, "Can I buy some armours?").also { stage = 19 }
                     4 ->
-                        if (player.properties.spawnLocation == ServerConfig.HOME_LOCATION) {
+                        if (player.properties.spawnLocation == ServerConstants.HOME_LOCATION) {
                             playerl(
                                 FaceAnim.FRIENDLY,
                                 "Hi Tiffy, I was wondering, can I change my respawn point to Falador?",

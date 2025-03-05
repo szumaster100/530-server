@@ -1,6 +1,6 @@
 package content.region.misthalin.handlers.playersafety
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.api.quest.getQuestPoints
 import core.game.dialogue.Dialogue
@@ -99,7 +99,7 @@ class ProfessorHenryDialogue(
                     FaceAnim.HALF_GUILTY,
                     "Here you can take part in the Player Safety test: " +
                         "a set of valuable lessons to learn about staying safe " +
-                        "in ${ServerConfig.SERVER_NAME}.",
+                        "in ${ServerConstants.SERVER_NAME}.",
                 ).also { stage++ }
             111 ->
                 npcl(

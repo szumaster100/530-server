@@ -1,7 +1,7 @@
 package core.worker
 
 import com.google.protobuf.Message
-import core.ServerConfig
+import core.ServerConstants
 import core.api.sendMessage
 import core.auth.UserAccountInfo
 import core.game.system.communication.ClanEntry
@@ -273,11 +273,11 @@ object ManagementEvents {
                     } else {
                         SystemLogger.logMS("Creating default server clan")
                         if (GameWorld.settings!!.enable_default_clan &&
-                            event.clanOwner == ServerConfig.SERVER_NAME.lowercase()
+                            event.clanOwner == ServerConstants.SERVER_NAME.lowercase()
                         ) {
                             if (info == UserAccountInfo.createDefault()) {
-                                info.username = ServerConfig.SERVER_NAME.lowercase()
-                                info.password = ServerConfig.MS_SECRET_KEY
+                                info.username = ServerConstants.SERVER_NAME.lowercase()
+                                info.password = ServerConstants.MS_SECRET_KEY
                                 info.rights = 2
                                 GameWorld.authenticator.createAccountWith(info)
                                 info = GameWorld.accountStorage.getAccountInfo(event.clanOwner)

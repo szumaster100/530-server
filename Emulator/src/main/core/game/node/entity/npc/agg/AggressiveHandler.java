@@ -1,6 +1,6 @@
 package core.game.node.entity.npc.agg;
 
-import core.ServerConfig;
+import core.ServerConstants;
 import core.game.node.entity.Entity;
 import core.game.node.entity.combat.DeathTask;
 import core.game.node.entity.npc.NPC;
@@ -16,7 +16,7 @@ public final class AggressiveHandler {
     private boolean targetSwitching;
     private final AggressiveBehavior behavior;
     private int chanceRatio = 2;
-    private final int[] playerTolerance = new int[ServerConfig.MAX_PLAYERS];
+    private final int[] playerTolerance = new int[ServerConstants.MAX_PLAYERS];
     private boolean allowTolerance = true;
 
     public AggressiveHandler(Entity entity, AggressiveBehavior behavior) {

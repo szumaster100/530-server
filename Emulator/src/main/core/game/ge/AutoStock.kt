@@ -1,6 +1,6 @@
 package core.game.ge
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.StartupListener
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
@@ -17,7 +17,7 @@ class AutoStock : StartupListener {
         private val DB_PATH = "data" + File.separator + "eco" + File.separator + "autostock.json"
 
         fun autostock() {
-            if (ServerConfig.GE_AUTOSTOCK_ENABLED) {
+            if (ServerConstants.GE_AUTOSTOCK_ENABLED) {
                 val parser = JSONParser()
 
                 val botReader: FileReader = FileReader(DB_PATH)

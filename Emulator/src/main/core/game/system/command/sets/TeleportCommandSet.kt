@@ -1,6 +1,6 @@
 package core.game.system.command.sets
 
-import core.ServerConfig
+import core.ServerConstants
 import core.game.node.entity.player.link.TeleportManager
 import core.game.system.command.Privilege
 import core.game.world.map.Location
@@ -17,11 +17,11 @@ class TeleportCommandSet : CommandSet(Privilege.ADMIN) {
             name = "to",
             privilege = Privilege.ADMIN,
             usage = "::to <lt>String<gt>",
-            description = "See ServerConfig.TELEPORT_DESTINATIONS",
+            description = "See ServerConstants.TELEPORT_DESTINATIONS",
         ) { player, args ->
             var destination: Location? = null
             val place = args.slice(1 until args.size).joinToString(" ")
-            for (destinations in ServerConfig.TELEPORT_DESTINATIONS) {
+            for (destinations in ServerConstants.TELEPORT_DESTINATIONS) {
                 var i = 1
                 while (i < destinations.size) {
                     if (place == destinations[i]) {
@@ -195,7 +195,7 @@ class TeleportCommandSet : CommandSet(Privilege.ADMIN) {
             usage = "",
             description = "Teleports to HOME_LOCATION",
         ) { player, _ ->
-            player.properties.teleportLocation = ServerConfig.HOME_LOCATION
+            player.properties.teleportLocation = ServerConstants.HOME_LOCATION
         }
 
         define(

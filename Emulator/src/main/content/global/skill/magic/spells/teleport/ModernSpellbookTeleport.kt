@@ -5,7 +5,7 @@ import content.global.skill.magic.SpellListener
 import content.global.skill.magic.TeleportMethod
 import content.global.skill.magic.spells.ModernSpells
 import content.region.misthalin.handlers.VarrockAchievementDiary
-import core.ServerConfig
+import core.ServerConstants
 import core.api.finishDiaryTask
 import core.api.getAttribute
 import core.api.openInterface
@@ -31,7 +31,7 @@ class ModernSpellbookTeleport : SpellListener("modern") {
             if (!getAttribute(player, GameAttributes.TUTORIAL_COMPLETE, false)) {
                 player.teleporter.send(Location.create(3233, 3230, 0), TeleportManager.TeleportType.HOME)
             } else {
-                player.teleporter.send(ServerConfig.HOME_LOCATION, TeleportManager.TeleportType.HOME)
+                player.teleporter.send(ServerConstants.HOME_LOCATION, TeleportManager.TeleportType.HOME)
             }
             setDelay(player, true)
         }

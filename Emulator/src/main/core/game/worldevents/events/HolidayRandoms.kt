@@ -1,7 +1,7 @@
 package core.game.worldevents.events
 
 import content.global.ame.RandomEventNPC
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.game.node.entity.Entity
 import core.game.node.entity.player.Player
@@ -53,7 +53,7 @@ class HolidayRandoms :
     }
 
     override fun onRegister(entity: Entity) {
-        if (entity !is Player || entity.isArtificial || !ServerConfig.HOLIDAY_EVENT_RANDOMS) {
+        if (entity !is Player || entity.isArtificial || !ServerConstants.HOLIDAY_EVENT_RANDOMS) {
             entity.timers.removeTimer(this)
             return
         }
@@ -81,13 +81,13 @@ class HolidayRandoms :
     fun checkIfHoliday(): String {
         val currentDate = LocalDate.now()
         if ((!currentDate.isBefore(halloweenStartDate) && !currentDate.isAfter(halloweenEndDate)) ||
-            ServerConfig.FORCE_HALLOWEEN_EVENTS
+            ServerConstants.FORCE_HALLOWEEN_EVENTS
         ) {
             return "halloween"
         }
 
         if ((!currentDate.isBefore(christmasStartDate) && !currentDate.isAfter(christmasEndDate)) ||
-            ServerConfig.FORCE_CHRISTMAS_EVENTS
+            ServerConstants.FORCE_CHRISTMAS_EVENTS
         ) {
             return "christmas"
         }
@@ -202,10 +202,10 @@ class HolidayRandoms :
             if (checkIfHoliday() != "none") {
                 reject(player, "Holiday randoms are already enabled: ${checkIfHoliday()}. Use ::stophrevents first.")
             }
-            ServerConfig.HOLIDAY_EVENT_RANDOMS = true
+            ServerConstants.HOLIDAY_EVENT_RANDOMS = true
             when (event) {
                 "halloween" -> {
-                    ServerConfig.FORCE_HALLOWEEN_EVENTS = true
+                    ServerConstants.FORCE_HALLOWEEN_EVENTS = true
                     for (p in Repository.players) {
                         if (getTimer<HolidayRandoms>(p) != null || p.isArtificial) {
                             continue
@@ -216,7 +216,7 @@ class HolidayRandoms :
                 }
 
                 "christmas" -> {
-                    ServerConfig.FORCE_CHRISTMAS_EVENTS = true
+                    ServerConstants.FORCE_CHRISTMAS_EVENTS = true
                     for (p in Repository.players) {
                         if (getTimer<HolidayRandoms>(p) != null || p.isArtificial) {
                             continue
@@ -231,12 +231,12 @@ class HolidayRandoms :
         }
 
         define("stophrevents", Privilege.ADMIN, "::stophrevents", "Stops all holiday random events.") { player, _ ->
-            if (checkIfHoliday() == "none" || !ServerConfig.HOLIDAY_EVENT_RANDOMS) {
+            if (checkIfHoliday() == "none" || !ServerConstants.HOLIDAY_EVENT_RANDOMS) {
                 reject(player, "No holiday random events are currently active.")
             }
-            ServerConfig.HOLIDAY_EVENT_RANDOMS = false
-            ServerConfig.FORCE_HALLOWEEN_EVENTS = false
-            ServerConfig.FORCE_CHRISTMAS_EVENTS = false
+            ServerConstants.HOLIDAY_EVENT_RANDOMS = false
+            ServerConstants.FORCE_HALLOWEEN_EVENTS = false
+            ServerConstants.FORCE_CHRISTMAS_EVENTS = false
             for (p in Repository.players) {
                 if (getTimer<HolidayRandoms>(p) == null) {
                     continue

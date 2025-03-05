@@ -1,6 +1,6 @@
 package content.data.tables
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.StartupListener
 import core.api.log
 import core.api.shouldRemoveNothings
@@ -21,12 +21,12 @@ import javax.xml.parsers.ParserConfigurationException
 
 class GemDropTable : StartupListener {
     override fun startup() {
-        if (ServerConfig.GDT_DATA_PATH != null && !File(ServerConfig.GDT_DATA_PATH!!).exists()) {
-            log(this.javaClass, Log.ERR, "Can't locate GDT file at " + ServerConfig.GDT_DATA_PATH)
+        if (ServerConstants.GDT_DATA_PATH != null && !File(ServerConstants.GDT_DATA_PATH!!).exists()) {
+            log(this.javaClass, Log.ERR, "Can't locate GDT file at " + ServerConstants.GDT_DATA_PATH)
             return
         }
-        parse(ServerConfig.GDT_DATA_PATH)
-        log(this.javaClass, Log.FINE, "Initialized Gem Drop Table from " + ServerConfig.GDT_DATA_PATH)
+        parse(ServerConstants.GDT_DATA_PATH)
+        log(this.javaClass, Log.FINE, "Initialized Gem Drop Table from " + ServerConstants.GDT_DATA_PATH)
     }
 
     companion object {

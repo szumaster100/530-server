@@ -27,7 +27,7 @@ class PathfinderTests {
             WoodcuttingListener().defineListeners()
         }
 
-        val NPC_TEST_LOC = ServerConfig.HOME_LOCATION!!.transform(2, 10, 0)
+        val NPC_TEST_LOC = ServerConstants.HOME_LOCATION!!.transform(2, 10, 0)
     }
 
     @Test fun getOccupiedTilesShouldReturnCorrectSetOfTilesThatAnObjectOccupiesAtAllRotations() {
@@ -103,11 +103,11 @@ class PathfinderTests {
         option.handler = testHandler
 
         TestUtils.getMockPlayer("interactionTest").use { p ->
-            p.location = ServerConfig.HOME_LOCATION
+            p.location = ServerConstants.HOME_LOCATION
             TestUtils.simulateInteraction(p, npc, 0)
             TestUtils.advanceTicks(10, false)
             Assertions.assertEquals(true, intListenerRan)
-            p.location = ServerConfig.HOME_LOCATION
+            p.location = ServerConstants.HOME_LOCATION
             TestUtils.simulateInteraction(p, npc, 4)
             TestUtils.advanceTicks(10, false)
             Assertions.assertEquals(true, pluginRan)
@@ -116,7 +116,7 @@ class PathfinderTests {
 
     @Test fun entityMovingToStationaryNPCShouldNotIdleIndefinitely() {
         TestUtils.getMockPlayer("idlenpcdest").use { p ->
-            val startLoc = ServerConfig.HOME_LOCATION
+            val startLoc = ServerConstants.HOME_LOCATION
             p.location = startLoc
             val npc = NPC.create(0, NPC_TEST_LOC)
             npc.isNeverWalks = true
@@ -135,7 +135,7 @@ class PathfinderTests {
 
     @Test fun entityTargetMovementPulseShouldNotStopOnSameTileAsEntity() {
         TestUtils.getMockPlayer("entitystoptest").use { p ->
-            p.location = ServerConfig.HOME_LOCATION
+            p.location = ServerConstants.HOME_LOCATION
             val npc = NPC.create(0, NPC_TEST_LOC)
             npc.isNeverWalks = true
             npc.init()
@@ -154,7 +154,7 @@ class PathfinderTests {
 
     @Test fun entityTargetMovementPulseWithExplicitParamsShouldNotStopOnSameTile() {
         TestUtils.getMockPlayer("entitystoptest2").use { p ->
-            p.location = ServerConfig.HOME_LOCATION
+            p.location = ServerConstants.HOME_LOCATION
             val npc = NPC.create(0, NPC_TEST_LOC)
             npc.isNeverWalks = true
             npc.init()
@@ -173,7 +173,7 @@ class PathfinderTests {
 
     @Test fun doubleMovementPulseToEntityShouldNotStopOnSameTile() {
         TestUtils.getMockPlayer("entitystoptest3").use { p ->
-            p.location = ServerConfig.HOME_LOCATION
+            p.location = ServerConstants.HOME_LOCATION
             val npc = NPC.create(0, NPC_TEST_LOC)
             npc.isNeverWalks = true
             npc.init()
@@ -193,7 +193,7 @@ class PathfinderTests {
                 PulseType.STANDARD,
             )
             TestUtils.advanceTicks(10, false)
-            Assertions.assertNotEquals(ServerConfig.HOME_LOCATION, p.location)
+            Assertions.assertNotEquals(ServerConstants.HOME_LOCATION, p.location)
             Assertions.assertNotEquals(p.location, npc.location)
             Assertions.assertEquals(1.0, p.location.getDistance(npc.location))
         }
@@ -223,12 +223,12 @@ class PathfinderTests {
         option.handler = testHandler
 
         TestUtils.getMockPlayer("entitystoptest4").use { p ->
-            p.location = ServerConfig.HOME_LOCATION
+            p.location = ServerConstants.HOME_LOCATION
             npc.isNeverWalks = true
             npc.init()
             TestUtils.simulateInteraction(p, npc, 4)
             TestUtils.advanceTicks(20, false)
-            Assertions.assertNotEquals(ServerConfig.HOME_LOCATION, p.location)
+            Assertions.assertNotEquals(ServerConstants.HOME_LOCATION, p.location)
             Assertions.assertNotEquals(p.location, npc.location)
             Assertions.assertEquals(1.0, p.location.getDistance(npc.location))
         }
@@ -251,10 +251,10 @@ class PathfinderTests {
         npc.interaction.set(opt)
 
         TestUtils.getMockPlayer("entitystoptest5").use { p ->
-            p.location = ServerConfig.HOME_LOCATION
+            p.location = ServerConstants.HOME_LOCATION
             TestUtils.simulateInteraction(p, npc, 1)
             TestUtils.advanceTicks(20, false)
-            Assertions.assertNotEquals(ServerConfig.HOME_LOCATION, p.location)
+            Assertions.assertNotEquals(ServerConstants.HOME_LOCATION, p.location)
             Assertions.assertNotEquals(p.location, npc.location)
             Assertions.assertEquals(1.0, p.location.getDistance(npc.location))
         }
@@ -268,11 +268,11 @@ class PathfinderTests {
             npc.isNeverWalks = false
             npc.walkRadius = 5
             npc.init()
-            npc.properties.spawnLocation = ServerConfig.HOME_LOCATION
+            npc.properties.spawnLocation = ServerConstants.HOME_LOCATION
             TestUtils.advanceTicks(5, false)
             Assertions.assertEquals(true, npc.getAttribute("return-to-spawn", false))
             TestUtils.advanceTicks(50, false)
-            Assertions.assertEquals(true, npc.location.getDistance(ServerConfig.HOME_LOCATION) <= 9)
+            Assertions.assertEquals(true, npc.location.getDistance(ServerConstants.HOME_LOCATION) <= 9)
         }
     }
 
@@ -284,14 +284,14 @@ class PathfinderTests {
             npc.isNeverWalks = false
             npc.walkRadius = 5
             npc.init()
-            npc.properties.spawnLocation = ServerConfig.HOME_LOCATION
+            npc.properties.spawnLocation = ServerConstants.HOME_LOCATION
             TestUtils.advanceTicks(3, false)
             Assertions.assertEquals(true, npc.getAttribute("return-to-spawn", false))
             p.clear()
             RegionManager.forId(npc.location.regionId).flagInactive(true)
             TestUtils.advanceTicks(50, false)
             Assertions.assertEquals(false, npc.getAttribute("return-to-spawn", false))
-            Assertions.assertEquals(true, npc.location.getDistance(ServerConfig.HOME_LOCATION) <= 5)
+            Assertions.assertEquals(true, npc.location.getDistance(ServerConstants.HOME_LOCATION) <= 5)
         }
     }
 }

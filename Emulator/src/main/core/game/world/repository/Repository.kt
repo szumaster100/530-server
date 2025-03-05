@@ -1,7 +1,7 @@
 package core.game.world.repository
 
 import content.region.wilderness.handlers.revs.RevenantsNPC
-import core.ServerConfig
+import core.ServerConstants
 import core.game.node.entity.npc.NPC
 import core.game.node.entity.player.Player
 import core.game.world.map.Location
@@ -11,13 +11,13 @@ import java.util.concurrent.CopyOnWriteArrayList
 
 object Repository {
     @JvmStatic
-    val players = NodeList<Player>(ServerConfig.MAX_PLAYERS)
-    val uid_map = HashMap<Int, Player>(ServerConfig.MAX_PLAYERS)
+    val players = NodeList<Player>(ServerConstants.MAX_PLAYERS)
+    val uid_map = HashMap<Int, Player>(ServerConstants.MAX_PLAYERS)
 
     @JvmStatic
-    val npcs = NodeList<NPC>(ServerConfig.MAX_NPCS)
+    val npcs = NodeList<NPC>(ServerConstants.MAX_NPCS)
 
-    val LOGGED_IN_PLAYERS: MutableList<String> = ArrayList(ServerConfig.MAX_PLAYERS)
+    val LOGGED_IN_PLAYERS: MutableList<String> = ArrayList(ServerConstants.MAX_PLAYERS)
 
     val RENDERABLE_NPCS: MutableList<NPC> = CopyOnWriteArrayList()
 

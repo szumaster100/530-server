@@ -1,7 +1,7 @@
 package core.worker
 
 import core.Server
-import core.ServerConfig
+import core.ServerConstants
 import core.ServerStore
 import core.api.log
 import core.api.submitWorldPulse
@@ -66,11 +66,11 @@ class MajorUpdateWorker {
                     }
 
                     ServerStore.clearDailyEntries()
-                    if (ServerConfig.DAILY_RESTART) {
+                    if (ServerConstants.DAILY_RESTART) {
                         for (player in Repository.players.filter { !it.isArtificial }) {
                             player.packetDispatch.sendSystemUpdate(500)
                         }
-                        ServerConfig.DAILY_RESTART = false
+                        ServerConstants.DAILY_RESTART = false
                         submitWorldPulse(
                             object : Pulse(100) {
                                 var counter = 0

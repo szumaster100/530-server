@@ -1,6 +1,6 @@
 package core.game.node.entity.player.info;
 
-import core.ServerConfig;
+import core.ServerConstants;
 import core.game.node.entity.Entity;
 import core.game.node.entity.npc.NPC;
 import core.game.node.entity.player.Player;
@@ -17,7 +17,7 @@ public final class RenderInfo {
 
     private List<NPC> localNpcs = new LinkedList<NPC>();
 
-    private final long[] appearanceStamps = new long[ServerConfig.MAX_PLAYERS];
+    private final long[] appearanceStamps = new long[ServerConstants.MAX_PLAYERS];
 
     private Entity[] maskUpdates = new Entity[256];
 

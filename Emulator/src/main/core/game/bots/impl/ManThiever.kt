@@ -1,6 +1,6 @@
 package core.game.bots.impl
 
-import core.ServerConfig
+import core.ServerConstants
 import core.game.bots.Script
 import core.game.interaction.DestinationFlag
 import core.game.interaction.IntType
@@ -68,7 +68,7 @@ class ManThiever : Script() {
 
     private fun handleRespawnState() {
         bot?.walkingQueue?.reset()
-        bot?.teleport(ServerConfig.HOME_LOCATION)
+        bot?.teleport(ServerConstants.HOME_LOCATION)
         state = State.INIT
     }
 

@@ -1,6 +1,6 @@
 package core.game.system.config
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.log
 import core.cache.def.impl.ItemDefinition
 import core.game.node.entity.impl.Animator
@@ -64,7 +64,7 @@ class ItemConfigParser {
 
     fun load() {
         var count = 0
-        reader = FileReader(ServerConfig.CONFIG_PATH + "item_configs.json")
+        reader = FileReader(ServerConstants.CONFIG_PATH + "item_configs.json")
         val configList = parser.parse(reader) as JSONArray
         for (config in configList) {
             val e = config as JSONObject

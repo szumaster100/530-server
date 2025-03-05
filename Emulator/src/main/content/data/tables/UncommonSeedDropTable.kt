@@ -1,6 +1,6 @@
 package content.data.tables
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.StartupListener
 import core.api.log
 import core.api.shouldRemoveNothings
@@ -21,12 +21,12 @@ import javax.xml.parsers.ParserConfigurationException
 
 class UncommonSeedDropTable : StartupListener {
     override fun startup() {
-        if (ServerConfig.USDT_DATA_PATH != null && !File(ServerConfig.USDT_DATA_PATH!!).exists()) {
-            log(this.javaClass, Log.ERR, "Can't locate USDT file at " + ServerConfig.USDT_DATA_PATH)
+        if (ServerConstants.USDT_DATA_PATH != null && !File(ServerConstants.USDT_DATA_PATH!!).exists()) {
+            log(this.javaClass, Log.ERR, "Can't locate USDT file at " + ServerConstants.USDT_DATA_PATH)
             return
         }
-        parse(ServerConfig.USDT_DATA_PATH)
-        log(this.javaClass, Log.FINE, "Initialized Uncommon Seed Drop Table from " + ServerConfig.USDT_DATA_PATH)
+        parse(ServerConstants.USDT_DATA_PATH)
+        log(this.javaClass, Log.FINE, "Initialized Uncommon Seed Drop Table from " + ServerConstants.USDT_DATA_PATH)
     }
 
     companion object {

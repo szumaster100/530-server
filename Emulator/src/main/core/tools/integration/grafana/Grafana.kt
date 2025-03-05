@@ -1,6 +1,6 @@
 package core.tools.integration.grafana
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.StartupListener
 import core.game.bots.AIRepository
 import core.tools.integration.mysql.SQLiteProvider
@@ -10,10 +10,10 @@ import java.util.*
 
 class Grafana : StartupListener {
     override fun startup() {
-        if (!ServerConfig.GRAFANA_LOGGING) return
-        db = SQLiteProvider(ServerConfig.GRAFANA_PATH + "grafana.db", expectedTables)
+        if (!ServerConstants.GRAFANA_LOGGING) return
+        db = SQLiteProvider(ServerConstants.GRAFANA_PATH + "grafana.db", expectedTables)
         db.initTables()
-        db.pruneOldData(ServerConfig.GRAFANA_TTL_DAYS)
+        db.pruneOldData(ServerConstants.GRAFANA_TTL_DAYS)
     }
 
     data class GrafanaData(

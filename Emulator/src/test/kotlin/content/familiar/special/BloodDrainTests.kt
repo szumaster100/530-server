@@ -3,7 +3,7 @@ package content.familiar.special
 import TestUtils
 import content.global.skill.summoning.familiar.FamiliarSpecial
 import content.global.skill.summoning.familiar.npc.BloatedLeechNPC
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.api.event.applyPoison
 import core.game.node.entity.skill.Skills
@@ -26,7 +26,7 @@ class BloodDrainTests {
             addItem(p, Items.BLOOD_DRAIN_SCROLL_12444)
 
             val npc = BloatedLeechNPC(p, NPCs.BLOATED_LEECH_6843)
-            npc.location = ServerConfig.HOME_LOCATION
+            npc.location = ServerConstants.HOME_LOCATION
             Assertions.assertEquals(true, npc.executeSpecialMove(FamiliarSpecial(p)))
             Assertions.assertEquals(5.0, p.skills.prayerPoints)
         }
@@ -36,7 +36,7 @@ class BloodDrainTests {
         TestUtils.getMockPlayer("bloodDrainHealth").use { p ->
             addItem(p, Items.BLOOD_DRAIN_SCROLL_12444)
             val npc = BloatedLeechNPC(p, NPCs.BLOATED_LEECH_6843)
-            npc.location = ServerConfig.HOME_LOCATION
+            npc.location = ServerConstants.HOME_LOCATION
 
             val npcBaseline = npc.skills.lifepoints
             val ownerBaseline = p.skills.lifepoints
@@ -55,7 +55,7 @@ class BloodDrainTests {
             p.skills.lifepoints = 5
 
             val npc = BloatedLeechNPC(p, NPCs.BLOATED_LEECH_6843)
-            npc.location = ServerConfig.HOME_LOCATION
+            npc.location = ServerConstants.HOME_LOCATION
 
             val ownerBaseline = p.skills.lifepoints
 
@@ -70,7 +70,7 @@ class BloodDrainTests {
         TestUtils.getMockPlayer("bloodDrainStats").use { p ->
             addItem(p, Items.BLOOD_DRAIN_SCROLL_12444)
             val npc = BloatedLeechNPC(p, NPCs.BLOATED_LEECH_6843)
-            npc.location = ServerConfig.HOME_LOCATION
+            npc.location = ServerConstants.HOME_LOCATION
 
             p.skills.setStaticLevel(Skills.STRENGTH, 99)
             p.skills.setStaticLevel(Skills.FARMING, 99)
@@ -87,7 +87,7 @@ class BloodDrainTests {
         TestUtils.getMockPlayer("bloodDrainStats2").use { p ->
             addItem(p, Items.BLOOD_DRAIN_SCROLL_12444)
             val npc = BloatedLeechNPC(p, NPCs.BLOATED_LEECH_6843)
-            npc.location = ServerConfig.HOME_LOCATION
+            npc.location = ServerConstants.HOME_LOCATION
 
             p.skills.setStaticLevel(Skills.STRENGTH, 99)
             p.skills.setStaticLevel(Skills.FARMING, 99)
@@ -104,7 +104,7 @@ class BloodDrainTests {
         TestUtils.getMockPlayer("bloodDrainAilments").use { p ->
             addItem(p, Items.BLOOD_DRAIN_SCROLL_12444)
             val npc = BloatedLeechNPC(p, NPCs.BLOATED_LEECH_6843)
-            npc.location = ServerConfig.HOME_LOCATION
+            npc.location = ServerConstants.HOME_LOCATION
 
             applyPoison(p, p, 40)
             Assertions.assertNotNull(getOrStartTimer<Disease>(p, 40))

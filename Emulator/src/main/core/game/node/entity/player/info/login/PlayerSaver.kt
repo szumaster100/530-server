@@ -3,7 +3,7 @@ package core.game.node.entity.player.info.login
 import com.google.gson.GsonBuilder
 import content.global.skill.summoning.familiar.BurdenBeast
 import content.global.skill.summoning.pet.Pet
-import core.ServerConfig
+import core.ServerConstants
 import core.api.PersistPlayer
 import core.api.log
 import core.game.container.Container
@@ -63,7 +63,7 @@ class PlayerSaver(
         runBlocking {
             if (!player.details.saveParsed) return@runBlocking
             val json: String
-            if (ServerConfig.JAVA_VERSION < 11) {
+            if (ServerConstants.JAVA_VERSION < 11) {
                 val manager = ScriptEngineManager()
                 val scriptEngine = manager.getEngineByName("JavaScript")
                 if (scriptEngine == null) {
@@ -82,14 +82,14 @@ class PlayerSaver(
             }
 
             try {
-                if (!File("${ServerConfig.PLAYER_SAVE_PATH}${player.name}.json").exists()) {
-                    File("${ServerConfig.PLAYER_SAVE_PATH}").mkdirs()
+                if (!File("${ServerConstants.PLAYER_SAVE_PATH}${player.name}.json").exists()) {
+                    File("${ServerConstants.PLAYER_SAVE_PATH}").mkdirs()
                     withContext(Dispatchers.IO) {
-                        File("${ServerConfig.PLAYER_SAVE_PATH}${player.name}.json").createNewFile()
+                        File("${ServerConstants.PLAYER_SAVE_PATH}${player.name}.json").createNewFile()
                     }
                 }
                 withContext(Dispatchers.IO) {
-                    FileWriter("${ServerConfig.PLAYER_SAVE_PATH}${player.name}.json").use { file ->
+                    FileWriter("${ServerConstants.PLAYER_SAVE_PATH}${player.name}.json").use { file ->
                         file.write(json)
                         file.flush()
                     }

@@ -1,6 +1,6 @@
 package core.game.node.entity.player.info.login
 
-import core.ServerConfig
+import core.ServerConstants
 import core.Util
 import core.api.PersistPlayer
 import core.api.log
@@ -36,7 +36,7 @@ class PlayerSaveParser(
     var read = true
 
     fun parse() {
-        val JSON = File(ServerConfig.PLAYER_SAVE_PATH + player.name + ".json")
+        val JSON = File(ServerConstants.PLAYER_SAVE_PATH + player.name + ".json")
         if (JSON.exists()) {
             reader = FileReader(JSON)
         }

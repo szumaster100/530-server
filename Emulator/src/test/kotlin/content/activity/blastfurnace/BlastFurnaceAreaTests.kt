@@ -4,7 +4,7 @@ import TestUtils
 import content.minigame.blastfurnace.BlastFurnace
 import content.minigame.blastfurnace.BlastFurnaceListeners
 import content.minigame.blastfurnace.BlastUtils
-import core.ServerConfig
+import core.ServerConstants
 import core.api.addItem
 import core.api.amountInInventory
 import core.game.node.entity.skill.Skills
@@ -94,10 +94,10 @@ class BlastFurnaceAreaTests {
             TestUtils.advanceTicks(2, false)
             Assertions.assertEquals(BlastUtils.ENTRANCE_LOC, p.location)
 
-            p.location = ServerConfig.HOME_LOCATION
+            p.location = ServerConstants.HOME_LOCATION
 
             TestUtils.advanceTicks(BlastUtils.FEE_ENTRANCE_DURATION, false)
-            Assertions.assertEquals(ServerConfig.HOME_LOCATION, p.location)
+            Assertions.assertEquals(ServerConstants.HOME_LOCATION, p.location)
         }
     }
 

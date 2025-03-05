@@ -1,7 +1,7 @@
 package core.game.worldevents.events.easter
 
 import content.data.GameAttributes
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.api.utils.WeightBasedTable
 import core.api.utils.WeightedItem
@@ -103,7 +103,7 @@ class EasterEvent :
     }
 
     override fun checkActive(cal: Calendar): Boolean {
-        return cal.get(Calendar.MONTH) == Calendar.APRIL || ServerConfig.FORCE_EASTER_EVENTS
+        return cal.get(Calendar.MONTH) == Calendar.APRIL || ServerConstants.FORCE_EASTER_EVENTS
     }
 
     private fun onEggBroken(player: Player) {
@@ -224,7 +224,7 @@ class EasterEvent :
         const val EGG_RATE = 64
         const val EGG_RATE_DEV = 3
 
-        val EGGS_BROKEN = "/save:easter${ServerConfig.STARTUP_MOMENT.get(Calendar.YEAR)}:eggs"
+        val EGGS_BROKEN = "/save:easter${ServerConstants.STARTUP_MOMENT.get(Calendar.YEAR)}:eggs"
         val LAST_EGG_ROLL = "easter:lasteggroll"
         val tracks = arrayOf(TRACK_BSB, TRACK_EJ, TRACK_FB)
         val eggs = intArrayOf(EGG_A, EGG_B, EGG_C, EGG_D)

@@ -1,6 +1,6 @@
 package core.game.ge
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.api.item.itemDefinition
 import core.cache.def.impl.ItemDefinition
@@ -262,7 +262,7 @@ class GrandExchange :
                 )
             }
 
-            if (ServerConfig.I_AM_A_CHEATER) {
+            if (ServerConstants.I_AM_A_CHEATER) {
                 val otherO = GrandExchangeOffer()
                 otherO.itemID = offer.itemID
                 otherO.amount = offer.amount
@@ -344,7 +344,7 @@ class GrandExchange :
             buyer: GrandExchangeOffer,
         ): Boolean {
             if (seller.playerUID == buyer.playerUID) return false
-            if (!ServerConfig.BOTS_INFLUENCE_PRICE_INDEX && (seller.isBot || buyer.isBot)) return false
+            if (!ServerConstants.BOTS_INFLUENCE_PRICE_INDEX && (seller.isBot || buyer.isBot)) return false
             return true
         }
 

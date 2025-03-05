@@ -1,6 +1,6 @@
 package core.net.registry;
 
-import core.ServerConfig;
+import core.ServerConstants;
 import core.auth.UserAccountInfo;
 import core.cache.misc.buffer.ByteBufferUtils;
 import core.game.system.task.Pulse;
@@ -52,7 +52,7 @@ public class AccountRegister {
 				break;
 			case 36://Register details
 				buffer.get(); //Useless size being written that is already written in the RSA block
-				buffer = Login.decryptRSABuffer(buffer, ServerConfig.EXPONENT, ServerConfig.MODULUS);
+				buffer = Login.decryptRSABuffer(buffer, ServerConstants.EXPONENT, ServerConstants.MODULUS);
 				if(buffer.get() != 10){ //RSA header (aka did this decrypt properly)
 					log(AccountRegister.class, Log.ERR, "Decryption failed during registration :(");
 					response(session, RegistryResponse.CANNOT_CREATE);

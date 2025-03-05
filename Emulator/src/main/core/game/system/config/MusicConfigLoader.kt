@@ -1,6 +1,6 @@
 package core.game.system.config
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.log
 import core.cache.def.impl.DataMap
 import core.game.node.entity.player.link.music.MusicEntry
@@ -23,7 +23,7 @@ class MusicConfigLoader {
 
     fun load() {
         var count = 0
-        reader = FileReader(ServerConfig.CONFIG_PATH + "music_configs.json")
+        reader = FileReader(ServerConstants.CONFIG_PATH + "music_configs.json")
         var configs = parser.parse(reader) as JSONArray
 
         val songs = DataMap.get(1351)

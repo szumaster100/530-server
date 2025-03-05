@@ -1,6 +1,5 @@
 package core
 
-import com.displee.cache.CacheLibrary
 import core.api.log
 import core.game.ge.AutoStock
 import core.game.system.SystemManager
@@ -49,7 +48,7 @@ object Server {
         startTime = System.currentTimeMillis()
         val t = TimeStamp()
         GameWorld.prompt(true)
-        Runtime.getRuntime().addShutdownHook(ServerConfig.SHUTDOWN_HOOK)
+        Runtime.getRuntime().addShutdownHook(ServerConstants.SHUTDOWN_HOOK)
         log(this::class.java, Log.INFO, "Starting networking...")
         try {
             reactor = NioReactor.configure(43594 + GameWorld.settings?.worldId!!)
@@ -105,7 +104,7 @@ object Server {
             }
         }
 
-        if (ServerConfig.WATCHDOG_ENABLED) {
+        if (ServerConstants.WATCHDOG_ENABLED) {
             GlobalScope.launch {
                 delay(20000)
                 while (running) {
@@ -143,8 +142,8 @@ object Server {
     }
 
     private fun checkConnectivity(): Boolean {
-        val urls = ServerConfig.CONNECTIVITY_CHECK_URL.split(",")
-        var timeout = ServerConfig.CONNECTIVITY_TIMEOUT
+        val urls = ServerConstants.CONNECTIVITY_CHECK_URL.split(",")
+        var timeout = ServerConstants.CONNECTIVITY_TIMEOUT
         if (timeout * urls.size > 5000) {
             // Limit timeout down to 5000ms so other watchdog functions continue as expected.
             timeout = 5000 / urls.size

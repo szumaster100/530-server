@@ -1,6 +1,6 @@
 package core.tools.integration.discord
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.TickListener
 import core.api.getItemName
 import kotlinx.coroutines.GlobalScope
@@ -53,11 +53,11 @@ class Discord : TickListener {
             qty: Int,
             user: String,
         ) {
-            if (ServerConfig.DISCORD_GE_WEBHOOK.isEmpty()) return
+            if (ServerConstants.DISCORD_GE_WEBHOOK.isEmpty()) return
             GlobalScope.launch {
                 val offer = encodeOfferJson(isSale, itemId, value, qty, user)
                 try {
-                    sendJsonPost(ServerConfig.DISCORD_GE_WEBHOOK, offer)
+                    sendJsonPost(ServerConstants.DISCORD_GE_WEBHOOK, offer)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -70,11 +70,11 @@ class Discord : TickListener {
             value: Int,
             amtLeft: Int,
         ) {
-            if (ServerConfig.DISCORD_GE_WEBHOOK.isEmpty()) return
+            if (ServerConstants.DISCORD_GE_WEBHOOK.isEmpty()) return
             GlobalScope.launch {
                 val offer = encodeUpdateJson(isSale, itemId, value, amtLeft)
                 try {
-                    sendJsonPost(ServerConfig.DISCORD_GE_WEBHOOK, offer)
+                    sendJsonPost(ServerConstants.DISCORD_GE_WEBHOOK, offer)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -86,11 +86,11 @@ class Discord : TickListener {
             player: String,
             type: String,
         ) {
-            if (ServerConfig.DISCORD_MOD_WEBHOOK.isEmpty()) return
+            if (ServerConstants.DISCORD_MOD_WEBHOOK.isEmpty()) return
             GlobalScope.launch {
                 val alert = encodeUserAlert(type, player)
                 try {
-                    sendJsonPost(ServerConfig.DISCORD_MOD_WEBHOOK, alert)
+                    sendJsonPost(ServerConstants.DISCORD_MOD_WEBHOOK, alert)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -101,11 +101,11 @@ class Discord : TickListener {
             player: String,
             type: String,
         ) {
-            if (ServerConfig.DISCORD_OPENRSC_HOOK.isEmpty()) return
+            if (ServerConstants.DISCORD_OPENRSC_HOOK.isEmpty()) return
             GlobalScope.launch {
                 val alert = encodeUserAlert(type, player)
                 try {
-                    sendJsonPost(ServerConfig.DISCORD_OPENRSC_HOOK, alert)
+                    sendJsonPost(ServerConstants.DISCORD_OPENRSC_HOOK, alert)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -218,7 +218,7 @@ class Discord : TickListener {
         }
 
         private fun sendJsonPost(
-            url: String = ServerConfig.DISCORD_GE_WEBHOOK,
+            url: String = ServerConstants.DISCORD_GE_WEBHOOK,
             data: String,
         ) {
             try {

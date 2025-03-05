@@ -1,7 +1,7 @@
 package content.global.ame.quizmaster
 
 import content.data.GameAttributes
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.game.dialogue.DialogueFile
 import core.game.dialogue.FaceAnim
@@ -52,7 +52,7 @@ class QuizMasterDialogue : DialogueFile() {
                 npc(
                     FaceAnim.FRIENDLY,
                     "WELCOME to the GREATEST QUIZ SHOW in the",
-                    "whole of ${ServerConfig.SERVER_NAME}:",
+                    "whole of ${ServerConstants.SERVER_NAME}:",
                     "<col=8A0808>O D D</col>  <col=8A088A>O N E</col>  <col=08088A>O U T</col>",
                 ).also { stage++ }
 

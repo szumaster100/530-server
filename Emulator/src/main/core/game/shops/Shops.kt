@@ -1,7 +1,7 @@
 package core.game.shops
 
 import content.global.skill.crafting.Tanning
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.api.item.itemDefinition
 import core.api.quest.getQuestPoints
@@ -96,7 +96,7 @@ class Shops :
     }
 
     override fun startup() {
-        val path = ServerConfig.CONFIG_PATH + "shops.json"
+        val path = ServerConstants.CONFIG_PATH + "shops.json"
         logShop("Using JSON path: $path")
 
         val reader = FileReader(path)
@@ -124,9 +124,9 @@ class Shops :
     override fun tick() {
         shopsById.values.forEach(Shop::restock)
 
-        val playerStockClearInterval = secondsToTicks(ServerConfig.PLAYER_STOCK_CLEAR_INTERVAL * 60)
+        val playerStockClearInterval = secondsToTicks(ServerConstants.PLAYER_STOCK_CLEAR_INTERVAL * 60)
         if (getWorldTicks() % playerStockClearInterval == 0) {
-            val clearToGe = ServerConfig.PLAYER_STOCK_RECIRCULATE
+            val clearToGe = ServerConstants.PLAYER_STOCK_RECIRCULATE
             if (clearToGe) {
                 Shop.generalPlayerStock.toArray().filterNotNull().forEach {
                     GrandExchange.addBotOffer(it.id, it.amount)
@@ -280,7 +280,7 @@ class Shops :
             ) {
                 shop.stockInstances[player.details.uid]?.listeners?.remove(listener)
             } else {
-                shop.stockInstances[ServerConfig.SERVER_NAME.hashCode()]!!.listeners.remove(listener)
+                shop.stockInstances[ServerConstants.SERVER_NAME.hashCode()]!!.listeners.remove(listener)
             }
 
             shop.playerStock.listeners.remove(listener)

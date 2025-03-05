@@ -2,8 +2,8 @@ package core.game.bots
 
 import content.data.consumables.Consumables
 import content.data.consumables.effects.HealingEffect
-import core.ServerConfig
-import core.ServerConfig.Companion.SERVER_GE_NAME
+import core.ServerConstants
+import core.ServerConstants.Companion.SERVER_GE_NAME
 import core.api.item.itemDefinition
 import core.api.log
 import core.api.sendNews
@@ -249,7 +249,7 @@ class ScriptAPI(
     ): Node? {
         var entity: Node? = null
         var minDistance = Double.MAX_VALUE
-        val maxDistance = ServerConfig.MAX_PATHFIND_DISTANCE.toDouble()
+        val maxDistance = ServerConstants.MAX_PATHFIND_DISTANCE.toDouble()
         for (e in list) {
             if (evaluateViability(e, minDistance, maxDistance, acceptedName, acceptedId, acceptedPredicate)) {
                 entity = e
@@ -429,7 +429,7 @@ class ScriptAPI(
 
         val vec = Vector.betweenLocs(bot.location, loc)
         val norm = vec.normalized()
-        val tiles = kotlin.math.min(kotlin.math.floor(vec.magnitude()).toInt(), ServerConfig.MAX_PATHFIND_DISTANCE - 1)
+        val tiles = kotlin.math.min(kotlin.math.floor(vec.magnitude()).toInt(), ServerConstants.MAX_PATHFIND_DISTANCE - 1)
         val loc = bot.location.transform(norm * tiles)
         bot.pulseManager.run(
             object : MovementPulse(bot, loc) {

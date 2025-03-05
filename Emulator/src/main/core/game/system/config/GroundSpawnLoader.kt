@@ -1,6 +1,6 @@
 package core.game.system.config
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.log
 import core.game.node.item.GroundItem
 import core.game.node.item.GroundItemManager
@@ -24,7 +24,7 @@ class GroundSpawnLoader {
 
     fun load() {
         var count = 0
-        reader = FileReader(ServerConfig.CONFIG_PATH + "ground_spawns.json")
+        reader = FileReader(ServerConstants.CONFIG_PATH + "ground_spawns.json")
         var configs = parser.parse(reader) as JSONArray
         for (config in configs) {
             try {
@@ -120,7 +120,7 @@ class GroundSpawnLoader {
             get() {
                 val minimum = respawnRate and 0xFFFF
                 val maximum = respawnRate shr 16 and 0xFFFF
-                val playerRatio = ServerConfig.MAX_PLAYERS / Repository.players.size.toDouble()
+                val playerRatio = ServerConstants.MAX_PLAYERS / Repository.players.size.toDouble()
                 return (minimum + (maximum - minimum) / playerRatio).toInt()
             }
     }

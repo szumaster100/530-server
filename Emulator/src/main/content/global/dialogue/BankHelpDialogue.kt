@@ -1,6 +1,6 @@
 package content.global.dialogue
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.openInterface
 import core.api.sendDialogue
 import core.api.sendItemDialogue
@@ -57,7 +57,7 @@ class BankHelpDialogue : DialogueFile() {
                                 if (player!!.interfaceManager.isOpened) {
                                     sendString(
                                         player!!,
-                                        "Bank of ${ServerConfig.SERVER_NAME} - Help",
+                                        "Bank of ${ServerConstants.SERVER_NAME} - Help",
                                         Components.BANK_V2_HELP_767,
                                         40,
                                     )

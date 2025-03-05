@@ -1,6 +1,6 @@
 package core.game.system.config
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.log
 import core.cache.def.impl.ItemDefinition
 import core.game.node.entity.combat.equipment.Ammunition
@@ -23,7 +23,7 @@ class RangedConfigLoader {
 
     fun load() {
         var count = 0
-        reader = FileReader(ServerConfig.CONFIG_PATH + "ammo_configs.json")
+        reader = FileReader(ServerConstants.CONFIG_PATH + "ammo_configs.json")
         var configs = parser.parse(reader) as JSONArray
         for (entry in configs) {
             val e = entry as JSONObject
@@ -69,7 +69,7 @@ class RangedConfigLoader {
         log(this::class.java, Log.FINE, "Parsed $count ammo configs...")
 
         count = 0
-        reader = FileReader(ServerConfig.CONFIG_PATH + "ranged_weapon_configs.json")
+        reader = FileReader(ServerConstants.CONFIG_PATH + "ranged_weapon_configs.json")
         configs = parser.parse(reader) as JSONArray
         for (entry in configs) {
             val e = entry as JSONObject

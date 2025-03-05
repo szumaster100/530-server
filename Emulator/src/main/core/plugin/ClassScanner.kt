@@ -1,6 +1,6 @@
 package core.plugin
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.game.activity.ActivityManager
 import core.game.activity.ActivityPlugin
@@ -87,7 +87,7 @@ object ClassScanner {
             try {
                 val clazz = it.loadClass().newInstance()
                 if (clazz is WorldEvent) {
-                    if (!clazz.checkActive(ServerConfig.STARTUP_MOMENT)) return@forEach
+                    if (!clazz.checkActive(ServerConstants.STARTUP_MOMENT)) return@forEach
                     WorldEvents.add(clazz)
                 }
                 if (clazz is LoginListener) GameWorld.loginListeners.add(clazz)

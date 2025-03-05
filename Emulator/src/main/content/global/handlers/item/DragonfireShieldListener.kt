@@ -1,6 +1,6 @@
 package content.global.handlers.item
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.game.container.impl.EquipmentContainer
 import core.game.global.action.DropListener
@@ -30,7 +30,7 @@ class DragonfireShieldListener : InteractionListener {
     val dragonfireShields = intArrayOf(Items.DRAGONFIRE_SHIELD_11283, Items.DRAGONFIRE_SHIELD_11284)
     val dfsEmptyAnim = Animations.SHIELD_DRAGONFIRE_6700
     val dfsEmptyGfx = org.rs.consts.Graphics.DFS_FUSE_DRAGONKIN_KEY_CHARGE_1160
-    val dfsRecharge = if (ServerConfig.BETTER_DFS) secondsToTicks(30) else minutesToTicks(2)
+    val dfsRecharge = if (ServerConstants.BETTER_DFS) secondsToTicks(30) else minutesToTicks(2)
 
     override fun defineListeners() {
         on(dragonfireShields, IntType.ITEM, "operate") { player, node ->

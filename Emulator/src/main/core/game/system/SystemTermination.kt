@@ -1,7 +1,7 @@
 package core.game.system
 
 import core.Server
-import core.ServerConfig
+import core.ServerConstants
 import core.ServerStore
 import core.api.ShutdownListener
 import core.api.log
@@ -53,7 +53,7 @@ class SystemTermination
                 }
                 // ServerStore should always save last.
                 s?.save()
-                if (ServerConfig.DATA_PATH != null) save(ServerConfig.DATA_PATH!!)
+                if (ServerConstants.DATA_PATH != null) save(ServerConstants.DATA_PATH!!)
             } catch (e: Throwable) {
                 e.printStackTrace()
             }

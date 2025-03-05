@@ -1,6 +1,6 @@
 package content.region.misthalin.quest.cook
 
-import core.ServerConfig
+import core.ServerConstants
 import core.game.dialogue.Dialogue
 import core.game.dialogue.FaceAnim
 import core.game.node.entity.npc.NPC
@@ -58,7 +58,7 @@ class MillieMillerDialogue(
                 npc(
                     FaceAnim.SUSPICIOUS,
                     "This is Mill Lane Mill. Millers of the finest flour in",
-                    ServerConfig.SERVER_NAME + ", and home to the Miller family for many",
+                    ServerConstants.SERVER_NAME + ", and home to the Miller family for many",
                     "generations",
                 ).also { stage++ }
 
@@ -70,7 +70,7 @@ class MillieMillerDialogue(
                     "Making flour is pretty easy. First of all you need to",
                     "get some grain. You can pick some from wheat fields.",
                     "There is one just outside the Mill, but there are many",
-                    "others scattered across " + ServerConfig.SERVER_NAME + ". Feel free to pick wheat",
+                    "others scattered across " + ServerConstants.SERVER_NAME + ". Feel free to pick wheat",
                 ).also { stage++ }
 
             31 ->
@@ -84,7 +84,7 @@ class MillieMillerDialogue(
             33 ->
                 npc(
                     FaceAnim.FRIENDLY,
-                    "Yes, or one of the other mills in " + ServerConfig.SERVER_NAME + ". They all work",
+                    "Yes, or one of the other mills in " + ServerConstants.SERVER_NAME + ". They all work",
                     "the same way. Just take your grain to the top floor of",
                     "the mill (up two ladders, there are three floors including",
                     "this one) and then place some grain in to the hopper.",

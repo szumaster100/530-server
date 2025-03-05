@@ -9,7 +9,7 @@ import core.tools.secondsToTicks
 import java.math.BigInteger
 import java.util.*
 
-class ServerConfig {
+class ServerConstants {
     companion object {
         var NOAUTH_DEFAULT_ADMIN: Boolean = true
 

@@ -1,6 +1,6 @@
 package core.game.node.entity.impl;
 
-import core.ServerConfig;
+import core.ServerConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -60,7 +60,7 @@ public final class GameAttributes {
      */
     @Deprecated
     public void parse(String file) {
-        File saveFile = new File(ServerConfig.PLAYER_ATTRIBUTE_PATH + file);
+        File saveFile = new File(ServerConstants.PLAYER_ATTRIBUTE_PATH + file);
         if (!saveFile.exists()) {
             return;
         }

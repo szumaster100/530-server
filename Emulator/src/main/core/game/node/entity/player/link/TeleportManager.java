@@ -1,6 +1,6 @@
 package core.game.node.entity.player.link;
 
-import core.ServerConfig;
+import core.ServerConstants;
 import core.game.node.entity.Entity;
 import core.game.node.entity.impl.Animator.Priority;
 import core.game.node.entity.player.Player;
@@ -31,7 +31,7 @@ public class TeleportManager {
 
     public TeleportManager(Entity entity) {
         this.entity = entity;
-        lastTeleport = TeleportType.HOME.getPulse(entity, ServerConfig.HOME_LOCATION);
+        lastTeleport = TeleportType.HOME.getPulse(entity, ServerConstants.HOME_LOCATION);
     }
 
     public boolean send(Location location) {

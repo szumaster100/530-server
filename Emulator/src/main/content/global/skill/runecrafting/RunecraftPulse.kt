@@ -6,7 +6,7 @@ import content.global.skill.runecrafting.items.Talisman.Companion.forName
 import content.global.skill.runecrafting.runes.CombinationRune
 import content.global.skill.runecrafting.runes.Rune
 import content.global.skill.runecrafting.scenery.Altar
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.api.quest.hasRequirement
 import core.game.container.impl.EquipmentContainer
@@ -276,7 +276,7 @@ class RunecraftPulse(
                 return 1
             }
             val rcLevel = getStatLevel(player, Skills.RUNECRAFTING)
-            val runecraftingFormulaRevision = ServerConfig.RUNECRAFTING_FORMULA_REVISION
+            val runecraftingFormulaRevision = ServerConstants.RUNECRAFTING_FORMULA_REVISION
             val lumbridgeDiary = player.achievementDiaryManager.getDiary(DiaryType.LUMBRIDGE)!!.isComplete(1)
             return getMultiplier(rcLevel, rune, runecraftingFormulaRevision, lumbridgeDiary)
         }

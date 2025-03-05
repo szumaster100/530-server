@@ -1,6 +1,6 @@
 package core.game.world.map.zone.impl
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.sendMessage
 import core.api.ui.restoreTabs
 import core.game.interaction.Option
@@ -79,7 +79,7 @@ class ModeratorZone : MapZone("Moderator Zone", true) {
             "The moderator room is currently " + (if (open) "available" else "not available") + " to player moderators."
 
         @JvmStatic fun home(player: Player) {
-            player.teleporter.send(ServerConfig.HOME_LOCATION, TeleportType.NORMAL)
+            player.teleporter.send(ServerConstants.HOME_LOCATION, TeleportType.NORMAL)
         }
 
         @JvmStatic fun teleport(player: Player) {

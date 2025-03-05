@@ -1,7 +1,7 @@
 package core.game.node.entity.player.info.login
 
 import content.data.GameAttributes
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.api.quest.getQuestStage
 import core.game.node.entity.player.Player
@@ -13,11 +13,11 @@ class SaveVersionHooks : LoginListener {
     // Override the login method to handle player login events
     override fun login(player: Player) {
         // Check if the player's version is less than the current save file version
-        if (player.version < ServerConfig.CURRENT_SAVEFILE_VERSION) {
+        if (player.version < ServerConstants.CURRENT_SAVEFILE_VERSION) {
             // Send a message to the player about migrating their save file version
             sendMessage(
                 player,
-                "<col=CC6600>Migrating save file version ${player.version} to current save file version ${ServerConfig.CURRENT_SAVEFILE_VERSION}.</col>",
+                "<col=CC6600>Migrating save file version ${player.version} to current save file version ${ServerConstants.CURRENT_SAVEFILE_VERSION}.</col>",
             )
 
             // Check if the player's version is less than 1
@@ -82,7 +82,7 @@ class SaveVersionHooks : LoginListener {
             }
 
             // Update the player's version to the current save file version
-            player.version = ServerConfig.CURRENT_SAVEFILE_VERSION
+            player.version = ServerConstants.CURRENT_SAVEFILE_VERSION
         }
     }
 }

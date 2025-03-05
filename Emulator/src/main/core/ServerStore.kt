@@ -21,7 +21,7 @@ import javax.script.ScriptEngineManager
 class ServerStore : PersistWorld {
     override fun parse() {
         logStartup("Parsing server store...")
-        val dir = File(ServerConfig.STORE_PATH!!)
+        val dir = File(ServerConstants.STORE_PATH!!)
         if (!dir.exists()) {
             dir.mkdirs()
             return
@@ -52,7 +52,7 @@ class ServerStore : PersistWorld {
 
     override fun save() {
         logShutdown("Saving server store...")
-        val dir = File(ServerConfig.DATA_PATH + File.separator + "serverstore")
+        val dir = File(ServerConstants.DATA_PATH + File.separator + "serverstore")
         if (!dir.exists()) {
             dir.mkdirs()
             return

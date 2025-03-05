@@ -1,6 +1,6 @@
 package core.auth
 
-import core.ServerConfig
+import core.ServerConstants
 import core.game.node.entity.player.Player
 import core.storage.AccountStorageProvider
 
@@ -26,7 +26,7 @@ class DevelopmentAuthenticator : AuthProvider<AccountStorageProvider>() {
 
     override fun createAccountWith(info: UserAccountInfo): Boolean {
         info.username = info.username.lowercase()
-        if (ServerConfig.NOAUTH_DEFAULT_ADMIN) info.rights = 2
+        if (ServerConstants.NOAUTH_DEFAULT_ADMIN) info.rights = 2
         storageProvider.store(info)
         return true
     }

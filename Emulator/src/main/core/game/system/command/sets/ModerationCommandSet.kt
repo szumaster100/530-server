@@ -1,6 +1,6 @@
 package core.game.system.command.sets
 
-import core.ServerConfig
+import core.ServerConstants
 import core.ServerStore
 import core.ServerStore.Companion.addToList
 import core.api.sendMessage
@@ -325,10 +325,10 @@ class ModerationCommandSet : CommandSet(Privilege.MODERATOR) {
             }
 
             GlobalScope.launch {
-                val f = File(ServerConfig.DATA_PATH + File.separator + filename)
+                val f = File(ServerConstants.DATA_PATH + File.separator + filename)
                 if (!f.exists()) {
                     notify(player, "Unable to locate file $filename.")
-                    notify(player, "Note: The file must be in ${ServerConfig.DATA_PATH}")
+                    notify(player, "Note: The file must be in ${ServerConstants.DATA_PATH}")
                     return@launch
                 }
                 val lines: List<String>

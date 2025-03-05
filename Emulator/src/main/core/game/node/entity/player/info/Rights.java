@@ -1,6 +1,6 @@
 package core.game.node.entity.player.info;
 
-import core.ServerConfig;
+import core.ServerConstants;
 import core.game.node.entity.player.Player;
 
 public enum Rights {
@@ -25,7 +25,7 @@ public enum Rights {
             return c.toInteger();
         }
 
-        if (ServerConfig.IRONMAN_ICONS) {
+        if (ServerConstants.IRONMAN_ICONS) {
             if (player.getIronmanManager().isIronman()) {
 
                 return player.getIronmanManager().getMode().icon;

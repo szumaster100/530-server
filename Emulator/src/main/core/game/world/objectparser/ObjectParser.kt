@@ -1,6 +1,6 @@
 package core.game.world.objectparser
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.StartupListener
 import core.game.node.scenery.Scenery
 import core.game.world.map.build.LandscapeParser
@@ -11,8 +11,8 @@ import javax.xml.parsers.DocumentBuilderFactory
 
 class ObjectParser : StartupListener {
     fun parseObjects() {
-        if (ServerConfig.OBJECT_PARSER_PATH == null) return
-        val f = File(ServerConfig.OBJECT_PARSER_PATH)
+        if (ServerConstants.OBJECT_PARSER_PATH == null) return
+        val f = File(ServerConstants.OBJECT_PARSER_PATH)
         if (!f.exists()) {
             return
         }

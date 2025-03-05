@@ -5,7 +5,7 @@ import content.global.skill.magic.SpellListener
 import content.global.skill.magic.SpellListeners
 import content.global.skill.magic.SpellUtils
 import content.global.skill.summoning.familiar.FamiliarSpecial
-import core.ServerConfig
+import core.ServerConstants
 import core.api.getAttribute
 import core.api.log
 import core.api.sendMessage
@@ -229,7 +229,7 @@ object PacketProcessor {
                 if (pkt.player.details.isMuted) {
                     pkt.player.sendMessage("You have been muted due to breaking a rule.")
                 } else {
-                    if (ServerConfig.ENABLE_GLOBALCHAT && pkt.message.startsWith("//")) {
+                    if (ServerConstants.ENABLE_GLOBALCHAT && pkt.message.startsWith("//")) {
                         if (getAttribute(pkt.player, GlobalChat.ATTR_GLOBAL_MUTE, false)) {
                             return
                         }
@@ -434,7 +434,7 @@ object PacketProcessor {
             targetId = pkt.sceneryId
             type = SpellListener.OBJECT
         } else if (pkt is Packet.ComponentNpcAction) {
-            if (pkt.npcIndex !in 1 until ServerConfig.MAX_NPCS) {
+            if (pkt.npcIndex !in 1 until ServerConstants.MAX_NPCS) {
                 return sendClearMinimap(pkt.player)
             }
             player = pkt.player
@@ -511,8 +511,8 @@ object PacketProcessor {
         var canWalk = !player.locks.isMovementLocked
 
         val vec = Vector.betweenLocs(player.location, loc)
-        if (vec.magnitude() > ServerConfig.MAX_PATHFIND_DISTANCE) {
-            val newVec = vec.normalized() * (ServerConfig.MAX_PATHFIND_DISTANCE - 1)
+        if (vec.magnitude() > ServerConstants.MAX_PATHFIND_DISTANCE) {
+            val newVec = vec.normalized() * (ServerConstants.MAX_PATHFIND_DISTANCE - 1)
             loc = player.location.transform(newVec)
         }
 
@@ -719,7 +719,7 @@ object PacketProcessor {
 
     private fun processPlayerAction(pkt: Packet.PlayerAction) {
         val player = pkt.player
-        if (pkt.otherIndex !in 1 until ServerConfig.MAX_PLAYERS) {
+        if (pkt.otherIndex !in 1 until ServerConstants.MAX_PLAYERS) {
             return sendClearMinimap(player)
         }
         player.scripts.reset()
@@ -791,7 +791,7 @@ object PacketProcessor {
     }
 
     private fun processNpcAction(pkt: Packet.NpcAction) {
-        if (pkt.npcIndex !in 1 until ServerConfig.MAX_NPCS) {
+        if (pkt.npcIndex !in 1 until ServerConstants.MAX_NPCS) {
             return sendClearMinimap(pkt.player)
         }
         val npc = Repository.npcs[pkt.npcIndex] ?: return sendClearMinimap(pkt.player)

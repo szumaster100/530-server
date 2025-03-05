@@ -1,6 +1,6 @@
 package core.game.system.config
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.exceptionToString
 import core.api.log
 import core.api.utils.ConfigParseException
@@ -19,7 +19,7 @@ class DropTableParser {
 
     fun load() {
         var count = 0
-        reader = FileReader(ServerConfig.CONFIG_PATH + "drop_tables.json")
+        reader = FileReader(ServerConstants.CONFIG_PATH + "drop_tables.json")
         val obj = parser.parse(reader) as JSONArray
         for (i in obj) {
             val tab = i as JSONObject

@@ -1,6 +1,6 @@
 package core.api.utils
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.StartupListener
 import core.api.log
 import core.game.node.entity.player.Player
@@ -16,7 +16,7 @@ import java.io.FileReader
 import kotlin.io.path.Path
 
 class PlayerStatsCounter(
-    private val dbPath: String = Path(ServerConfig.DATA_PATH ?: "", "playerstats", "player_stats.db").toString(),
+    private val dbPath: String = Path(ServerConstants.DATA_PATH ?: "", "playerstats", "player_stats.db").toString(),
 ) : StartupListener {
     override fun startup() {
         logStartup("Loading Player Stats")
@@ -37,7 +37,7 @@ class PlayerStatsCounter(
         }
 
         private fun portLegacyKillCounterJsonToSQLite() {
-            val file = File(Path(ServerConfig.DATA_PATH ?: "", "global_kill_stats.json").toString())
+            val file = File(Path(ServerConstants.DATA_PATH ?: "", "global_kill_stats.json").toString())
             if (!file.exists()) {
                 return
             }

@@ -1,6 +1,6 @@
 package core.game.bots.impl
 
-import core.ServerConfig
+import core.ServerConstants
 import core.game.bots.AIRepository
 import core.game.bots.CombatBotAssembler
 import core.game.bots.Script
@@ -763,7 +763,7 @@ class Adventurer(
         val dateCode: Int
 
         init {
-            val reader = FileReader(ServerConfig.BOT_DATA_PATH + File.separator + "bot_dialogue.json")
+            val reader = FileReader(ServerConstants.BOT_DATA_PATH + File.separator + "bot_dialogue.json")
             val parser =
                 org.json.simple.parser
                     .JSONParser()

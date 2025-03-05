@@ -1,6 +1,6 @@
 package core.cache.def.impl;
 
-import core.ServerConfig;
+import core.ServerConstants;
 import core.cache.Cache;
 
 import java.nio.ByteBuffer;
@@ -43,7 +43,7 @@ public class GraphicDefinition {
 
 	public static final void main(String... s) {
 		try {
-			Cache.init(ServerConfig.CACHE_PATH);
+			Cache.init(ServerConstants.CACHE_PATH);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}

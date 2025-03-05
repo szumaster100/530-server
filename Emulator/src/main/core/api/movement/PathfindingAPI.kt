@@ -1,6 +1,6 @@
 package core.api.movement
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.utils.Vector
 import core.game.node.entity.Entity
 import core.game.node.entity.npc.NPC
@@ -23,7 +23,7 @@ fun truncateLoc(
     val normVec = vector.normalized()
     val mag = vector.magnitude()
 
-    var multiplier = if (mover is NPC) 14.0 else ServerConfig.MAX_PATHFIND_DISTANCE.toDouble()
+    var multiplier = if (mover is NPC) 14.0 else ServerConstants.MAX_PATHFIND_DISTANCE.toDouble()
     var clampedMultiplier = min(multiplier, mag)
 
     var truncated = multiplier == clampedMultiplier

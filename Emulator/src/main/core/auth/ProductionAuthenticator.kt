@@ -1,6 +1,6 @@
 package core.auth
 
-import core.ServerConfig
+import core.ServerConstants
 import core.game.node.entity.player.Player
 import core.game.system.SystemManager
 import core.storage.AccountStorageProvider
@@ -13,10 +13,10 @@ class ProductionAuthenticator : AuthProvider<AccountStorageProvider>() {
         storageProvider = provider
         if (provider is SQLStorageProvider) {
             provider.configure(
-                ServerConfig.DATABASE_ADDRESS!!,
-                ServerConfig.DATABASE_NAME!!,
-                ServerConfig.DATABASE_USER!!,
-                ServerConfig.DATABASE_PASS!!,
+                ServerConstants.DATABASE_ADDRESS!!,
+                ServerConstants.DATABASE_NAME!!,
+                ServerConstants.DATABASE_USER!!,
+                ServerConstants.DATABASE_PASS!!,
             )
         }
     }

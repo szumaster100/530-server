@@ -1,6 +1,6 @@
 package content.minigame.bountyhunter
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.cache.def.impl.SceneryDefinition
 import core.game.component.CloseEvent
@@ -192,7 +192,7 @@ class OrbViewingInterface : ComponentPlugin() {
             player.appearance.transformNPC(-1)
             player.appearance.sync()
             player.pulseManager.clear()
-            player.properties.teleportLocation = getAttribute(player, "view-location", ServerConfig.HOME_LOCATION)
+            player.properties.teleportLocation = getAttribute(player, "view-location", ServerConstants.HOME_LOCATION)
         }
     }
 }

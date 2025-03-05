@@ -2,7 +2,7 @@ package content.data
 
 import content.global.skill.magic.TeleportMethod
 import content.global.skill.slayer.SlayerManager
-import core.ServerConfig
+import core.ServerConstants
 import core.Util
 import core.api.*
 import core.api.interaction.getSlayerTaskKillsRemaining
@@ -193,7 +193,7 @@ enum class EnchantedJewellery(
     ),
     RING_OF_LIFE(
         options = arrayOf(),
-        locations = arrayOf(Location.create(ServerConfig.HOME_LOCATION)),
+        locations = arrayOf(Location.create(ServerConstants.HOME_LOCATION)),
         crumbled = true,
         Items.RING_OF_LIFE_2570,
     ),

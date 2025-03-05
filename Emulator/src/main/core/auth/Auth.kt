@@ -1,6 +1,6 @@
 package core.auth
 
-import core.ServerConfig
+import core.ServerConstants
 import core.storage.AccountStorageProvider
 import core.storage.InMemoryStorageProvider
 import core.storage.SQLStorageProvider
@@ -12,7 +12,7 @@ object Auth {
 
     fun configure() {
         storageProvider =
-            if (ServerConfig.PERSIST_ACCOUNTS) {
+            if (ServerConstants.PERSIST_ACCOUNTS) {
                 SQLStorageProvider()
             } else {
                 // Use in-memory storage if persistence is not required.
@@ -21,7 +21,7 @@ object Auth {
 
         // Initialize the authenticator.
         authenticator =
-            if (ServerConfig.USE_AUTH) {
+            if (ServerConstants.USE_AUTH) {
                 ProductionAuthenticator().also { it.configureFor(storageProvider) }
             } else {
                 DevelopmentAuthenticator().also { it.configureFor(storageProvider) }

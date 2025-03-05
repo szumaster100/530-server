@@ -1,6 +1,6 @@
 package core.game.activity;
 
-import core.ServerConfig;
+import core.ServerConstants;
 import core.game.node.entity.Entity;
 import core.game.node.entity.player.Player;
 import core.game.world.map.Location;
@@ -25,7 +25,7 @@ public abstract class ActivityPlugin extends MapZone implements Plugin<Player> {
 
     protected Location base;
 
-    protected Location safeRespawn = ServerConfig.HOME_LOCATION;
+    protected Location safeRespawn = ServerConstants.HOME_LOCATION;
 
     protected Player player;
 
@@ -100,14 +100,14 @@ public abstract class ActivityPlugin extends MapZone implements Plugin<Player> {
     @Override
     public boolean leave(Entity e, boolean logout) {
         if (e instanceof Player) {
-            e.getProperties().setSpawnLocation(ServerConfig.HOME_LOCATION);
+            e.getProperties().setSpawnLocation(ServerConstants.HOME_LOCATION);
         }
         Location l;
         if (instanced && logout && (l = getSpawnLocation()) != null) {
             e.setLocation(l);
         }
         e.getProperties().setSafeZone(false);
-        e.getProperties().safeRespawn = ServerConfig.HOME_LOCATION;
+        e.getProperties().safeRespawn = ServerConstants.HOME_LOCATION;
         e.removeAttribute("activity");
         return super.leave(e, logout);
     }

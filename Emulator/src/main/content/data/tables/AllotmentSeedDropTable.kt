@@ -1,6 +1,6 @@
 package content.data.tables
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.StartupListener
 import core.api.log
 import core.api.shouldRemoveNothings
@@ -21,14 +21,14 @@ import javax.xml.parsers.ParserConfigurationException
 
 class AllotmentSeedDropTable : StartupListener {
     override fun startup() {
-        if (ServerConfig.ASDT_DATA_PATH != null && !File(ServerConfig.ASDT_DATA_PATH!!).exists()) {
-            log(this.javaClass, Log.ERR, "Can't locate ASDT file at " + ServerConfig.ASDT_DATA_PATH)
+        if (ServerConstants.ASDT_DATA_PATH != null && !File(ServerConstants.ASDT_DATA_PATH!!).exists()) {
+            log(this.javaClass, Log.ERR, "Can't locate ASDT file at " + ServerConstants.ASDT_DATA_PATH)
             return
         }
 
-        parse(ServerConfig.ASDT_DATA_PATH)
+        parse(ServerConstants.ASDT_DATA_PATH)
 
-        log(this.javaClass, Log.FINE, "Initialized Allotment Seed Drop Table from " + ServerConfig.ASDT_DATA_PATH)
+        log(this.javaClass, Log.FINE, "Initialized Allotment Seed Drop Table from " + ServerConstants.ASDT_DATA_PATH)
     }
 
     companion object {

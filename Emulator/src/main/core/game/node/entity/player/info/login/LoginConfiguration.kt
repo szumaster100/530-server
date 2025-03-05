@@ -3,7 +3,7 @@ package core.game.node.entity.player.info.login
 import content.data.GameAttributes
 import content.data.GlobalStore
 import content.region.kandarin.miniquest.knightwave.KnightWaveAttributes
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.api.quest.hasRequirement
 import core.api.quest.isQuestComplete
@@ -136,7 +136,7 @@ object LoginConfiguration {
     fun welcome(player: Player) {
         if (player.isArtificial) return
 
-        player.packetDispatch.sendMessage("Welcome to ${ServerConfig.SERVER_NAME}.")
+        player.packetDispatch.sendMessage("Welcome to ${ServerConstants.SERVER_NAME}.")
 
         GlobalStore.check(player)
 
@@ -164,13 +164,13 @@ object LoginConfiguration {
 
         sendString(
             player,
-            "Friends List - ${ServerConfig.SERVER_NAME} ${GameWorld.settings?.worldId}",
+            "Friends List - ${ServerConstants.SERVER_NAME} ${GameWorld.settings?.worldId}",
             Components.FRIENDS2_550,
             3,
         )
         sendString(
             player,
-            "When you have finished playing ${ServerConfig.SERVER_NAME}, always use the button below to logout safely.",
+            "When you have finished playing ${ServerConstants.SERVER_NAME}, always use the button below to logout safely.",
             Components.LOGOUT_182,
             0,
         )

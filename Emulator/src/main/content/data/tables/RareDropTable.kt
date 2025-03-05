@@ -1,6 +1,6 @@
 package content.data.tables
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.StartupListener
 import core.api.log
 import core.api.shouldRemoveNothings
@@ -21,12 +21,12 @@ import javax.xml.parsers.ParserConfigurationException
 
 class RareDropTable : StartupListener {
     override fun startup() {
-        if (ServerConfig.RDT_DATA_PATH != null && !File(ServerConfig.RDT_DATA_PATH!!).exists()) {
-            log(this::class.java, Log.ERR, "Can't locate RDT file at " + ServerConfig.RDT_DATA_PATH)
+        if (ServerConstants.RDT_DATA_PATH != null && !File(ServerConstants.RDT_DATA_PATH!!).exists()) {
+            log(this::class.java, Log.ERR, "Can't locate RDT file at " + ServerConstants.RDT_DATA_PATH)
             return
         }
-        parse(ServerConfig.RDT_DATA_PATH)
-        log(this::class.java, Log.FINE, "Initialized Rare Drop Table from " + ServerConfig.RDT_DATA_PATH)
+        parse(ServerConstants.RDT_DATA_PATH)
+        log(this::class.java, Log.FINE, "Initialized Rare Drop Table from " + ServerConstants.RDT_DATA_PATH)
     }
 
     companion object {

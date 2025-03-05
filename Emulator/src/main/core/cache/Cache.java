@@ -1,6 +1,6 @@
 package core.cache;
 
-import core.ServerConfig;
+import core.ServerConstants;
 import core.cache.def.impl.ItemDefinition;
 import core.cache.def.impl.SceneryDefinition;
 import core.tools.Log;
@@ -50,7 +50,7 @@ public final class Cache {
 
 	public static void init() {
 		try {
-			init(ServerConfig.CACHE_PATH);
+			init(ServerConstants.CACHE_PATH);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}

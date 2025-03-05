@@ -1,6 +1,6 @@
 package core.game.bots.impl
 
-import core.ServerConfig
+import core.ServerConstants
 import core.game.bots.AIRepository
 import core.game.bots.Script
 import core.game.bots.impl.Adventurer.Companion.lumbridge
@@ -334,7 +334,7 @@ class DoublingMoney : Script() {
                 Location.create(3157, 3485, 0),
             )
 
-        private val jsonFilePath = "${ServerConfig.BOT_DATA_PATH}/ge_bot_appearances_and_equipment.json"
+        private val jsonFilePath = "${ServerConstants.BOT_DATA_PATH}/ge_bot_appearances_and_equipment.json"
         private val jsonFile = File(jsonFilePath)
         private val parser = JSONParser()
         val botAppearances = parser.parse(FileReader(jsonFile)) as JSONObject

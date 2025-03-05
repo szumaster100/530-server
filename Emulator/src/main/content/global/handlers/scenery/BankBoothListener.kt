@@ -1,7 +1,7 @@
 package content.global.handlers.scenery
 
 import content.global.handlers.npc.BankerNPC
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.api.interaction.openBankAccount
 import core.api.interaction.openGrandExchangeCollectionBox
@@ -80,7 +80,7 @@ class BankBoothListener : InteractionListener {
             return true
         }
 
-        if (ServerConfig.BANK_BOOTH_QUICK_OPEN) {
+        if (ServerConstants.BANK_BOOTH_QUICK_OPEN) {
             return quickBankBoothUse(player, node, state)
         }
 
@@ -111,7 +111,7 @@ class BankBoothListener : InteractionListener {
             return true
         }
 
-        if (!ServerConfig.BANK_BOOTH_NOTE_UIM && player.ironmanManager.checkRestriction(IronmanMode.ULTIMATE)) {
+        if (!ServerConstants.BANK_BOOTH_NOTE_UIM && player.ironmanManager.checkRestriction(IronmanMode.ULTIMATE)) {
             return true
         }
 
@@ -153,7 +153,7 @@ class BankBoothListener : InteractionListener {
         defineInteraction(IntType.SCENERY, BANK_BOOTHS, "use", handler = ::regularBankBoothUse)
         defineInteraction(IntType.SCENERY, BANK_BOOTHS, "collect", handler = ::collectBankBoothUse)
 
-        if (ServerConfig.BANK_BOOTH_NOTE_ENABLED) {
+        if (ServerConstants.BANK_BOOTH_NOTE_ENABLED) {
             onUseAnyWith(IntType.SCENERY, *BANK_BOOTHS, handler = ::attemptToConvertItems)
         }
     }

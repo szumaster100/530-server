@@ -1,6 +1,6 @@
 package core.game.system.config
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.utils.WeightBasedTable
 import core.api.utils.WeightedItem
 import org.json.simple.JSONArray
@@ -27,7 +27,7 @@ class ClueRewardParser {
     var reader: FileReader? = null
 
     fun load() {
-        reader = FileReader(ServerConfig.CONFIG_PATH + "clue_rewards.json")
+        reader = FileReader(ServerConstants.CONFIG_PATH + "clue_rewards.json")
 
         val rawData = parser.parse(reader) as JSONObject
         easyTable = parseClueTable(rawData["easy"] as JSONArray)

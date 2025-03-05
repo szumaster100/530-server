@@ -5,7 +5,7 @@ import content.global.skill.construction.HouseManager;
 import content.global.skill.runecrafting.pouch.PouchManager;
 import content.global.skill.summoning.familiar.FamiliarManager;
 import core.GlobalStatistics;
-import core.ServerConfig;
+import core.ServerConstants;
 import core.api.EquipmentSlot;
 import core.cache.def.impl.ItemDefinition;
 import core.game.component.Component;
@@ -325,7 +325,7 @@ public class Player extends Entity {
     /**
      * The player's save file version.
      */
-    public int version = ServerConfig.CURRENT_SAVEFILE_VERSION;
+    public int version = ServerConstants.CURRENT_SAVEFILE_VERSION;
 
     /**
      * Operation counts for player actions.
@@ -343,7 +343,7 @@ public class Player extends Entity {
      * @param details The player's account details.
      */
     public Player(PlayerDetails details) {
-        super(details.getUsername(), ServerConfig.START_LOCATION);
+        super(details.getUsername(), ServerConstants.START_LOCATION);
         super.active = false;
         super.interactPlugin = new InteractPlugin(this);
         this.details = details;
@@ -358,7 +358,7 @@ public class Player extends Entity {
         if (!artificial)
             log(this.getClass(), Log.INFO, getUsername() + " initialising...");
         if (!artificial) {
-            getProperties().setSpawnLocation(ServerConfig.HOME_LOCATION);
+            getProperties().setSpawnLocation(ServerConstants.HOME_LOCATION);
             getDetails().getSession().setObject(this);
         }
         super.init();

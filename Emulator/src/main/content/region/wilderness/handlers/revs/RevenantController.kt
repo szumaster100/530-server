@@ -1,6 +1,6 @@
 package content.region.wilderness.handlers.revs
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.game.interaction.MovementPulse
 import core.game.node.entity.npc.NPC
@@ -23,7 +23,7 @@ class RevenantController :
         private val trackedRevenants = ArrayList<RevenantsNPC>()
         private val taskTimeRemaining = HashMap<RevenantsNPC, Int>()
         private val currentTask = HashMap<RevenantsNPC, RevenantTask>()
-        private var expectedRevAmount: Int = ServerConfig.REVENANT_POPULATION
+        private var expectedRevAmount: Int = ServerConstants.REVENANT_POPULATION
         private var groupPatrolQueue = ArrayList<RevenantsNPC>()
 
         @JvmStatic

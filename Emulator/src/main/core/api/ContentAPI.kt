@@ -2,7 +2,7 @@ package core.api
 
 import com.moandjiezana.toml.Toml
 import content.data.God
-import core.ServerConfig
+import core.ServerConstants
 import core.api.item.itemDefinition
 import core.api.movement.finishedMoving
 import core.api.utils.PlayerCamera
@@ -3362,7 +3362,7 @@ fun getPathableRandomLocalCoordinate(
     center: Location,
     maxAttempts: Int = 3,
 ): Location {
-    var maxRadius = Vector.deriveWithEqualComponents(ServerConfig.MAX_PATHFIND_DISTANCE.toDouble()).x - 1
+    var maxRadius = Vector.deriveWithEqualComponents(ServerConstants.MAX_PATHFIND_DISTANCE.toDouble()).x - 1
     var effectiveRadius = min(radius, maxRadius.toInt())
     val swCorner = center.transform(-effectiveRadius, -effectiveRadius, center.z)
     val neCorner = center.transform(effectiveRadius, effectiveRadius, center.z)

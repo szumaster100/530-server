@@ -1,6 +1,6 @@
 package core.cache.def.impl;
 
-import core.ServerConfig;
+import core.ServerConstants;
 import core.cache.Cache;
 
 import java.nio.ByteBuffer;
@@ -26,7 +26,7 @@ public final class ClothDefinition {
 
 	public static void main(String... args) {
 		try {
-			Cache.init(ServerConfig.CACHE_PATH);
+			Cache.init(ServerConstants.CACHE_PATH);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}

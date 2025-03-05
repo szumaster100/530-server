@@ -1,6 +1,6 @@
 package core.game.node.entity.combat.equipment;
 
-import core.ServerConfig;
+import core.ServerConstants;
 import core.game.node.entity.combat.equipment.Weapon.WeaponType;
 import core.game.node.entity.impl.Animator.Priority;
 import core.game.world.update.flag.context.Animation;
@@ -72,7 +72,7 @@ public class RangeWeapon {
         Document doc;
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            doc = factory.newDocumentBuilder().parse(new File(ServerConfig.CACHE_PATH + "ranged_weapon_configs.json"));
+            doc = factory.newDocumentBuilder().parse(new File(ServerConstants.CACHE_PATH + "ranged_weapon_configs.json"));
         } catch (Exception e) {
             e.printStackTrace();
             return false;

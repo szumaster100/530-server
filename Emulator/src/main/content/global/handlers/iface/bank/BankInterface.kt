@@ -2,7 +2,7 @@ package content.global.handlers.iface.bank
 
 import content.global.dialogue.BankDepositDialogue
 import content.global.dialogue.BankHelpDialogue
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.api.interaction.openBankAccount
 import core.game.component.Component
@@ -116,7 +116,7 @@ class BankInterface : InterfaceListener {
             73,
             Components.BANK_V2_MAIN_762,
             0,
-            ServerConfig.BANK_SIZE,
+            ServerConstants.BANK_SIZE,
         )
 
         resetSearch(player)

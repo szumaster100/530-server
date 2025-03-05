@@ -1,6 +1,6 @@
 package content.data.tables
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.StartupListener
 import core.api.log
 import core.api.shouldRemoveNothings
@@ -21,12 +21,12 @@ import javax.xml.parsers.ParserConfigurationException
 
 class RareSeedDropTable : StartupListener {
     override fun startup() {
-        if (ServerConfig.RSDT_DATA_PATH != null && !File(ServerConfig.RSDT_DATA_PATH!!).exists()) {
-            log(this.javaClass, Log.ERR, "Can't locate RSDT file at " + ServerConfig.RSDT_DATA_PATH)
+        if (ServerConstants.RSDT_DATA_PATH != null && !File(ServerConstants.RSDT_DATA_PATH!!).exists()) {
+            log(this.javaClass, Log.ERR, "Can't locate RSDT file at " + ServerConstants.RSDT_DATA_PATH)
             return
         }
-        parse(ServerConfig.RSDT_DATA_PATH)
-        log(this.javaClass, Log.FINE, "Initialized Rare Seed Drop Table from " + ServerConfig.RSDT_DATA_PATH)
+        parse(ServerConstants.RSDT_DATA_PATH)
+        log(this.javaClass, Log.FINE, "Initialized Rare Seed Drop Table from " + ServerConstants.RSDT_DATA_PATH)
     }
 
     companion object {

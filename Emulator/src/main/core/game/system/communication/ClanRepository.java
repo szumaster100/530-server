@@ -1,6 +1,6 @@
 package core.game.system.communication;
 
-import core.ServerConfig;
+import core.ServerConstants;
 import core.game.activity.ActivityPlugin;
 import core.game.node.entity.player.Player;
 import core.game.node.entity.player.info.PlayerDetails;
@@ -51,7 +51,7 @@ public final class ClanRepository {
     }
 
     public boolean enter(Player player) {
-        if (!owner.equals(ServerConfig.SERVER_NAME.toLowerCase()) && players.size() >= MAX_MEMBERS) {
+        if (!owner.equals(ServerConstants.SERVER_NAME.toLowerCase()) && players.size() >= MAX_MEMBERS) {
             player.getPacketDispatch().sendMessage("The channel you tried to join is full.:clan:");
             return false;
         }

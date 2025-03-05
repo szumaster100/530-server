@@ -1,5 +1,5 @@
 import content.global.skill.farming.timers.CropGrowth
-import core.ServerConfig
+import core.ServerConstants
 import core.api.log
 import core.cache.Cache
 import core.cache.crypto.ISAACCipher
@@ -56,7 +56,7 @@ object TestUtils {
         p.ironmanManager.mode = ironman
         p.details.accountInfo.uid = uidCounter++
         p.setPlaying(true)
-        p.playerFlags.lastSceneGraph = p.location ?: ServerConfig.HOME_LOCATION
+        p.playerFlags.lastSceneGraph = p.location ?: ServerConstants.HOME_LOCATION
         Repository.addPlayer(p)
         // Update sequence has a separate list of players for some reason...
         UpdateSequence.rendererPlayers.add(p)
@@ -90,7 +90,7 @@ object TestUtils {
     }
 
     fun preTestSetup() {
-        if (ServerConfig.DATA_PATH == null) {
+        if (ServerConstants.DATA_PATH == null) {
             ServerConfigParser.parse(this::class.java.getResource("test.conf"))
             Cache.init(
                 this::class.java
@@ -185,7 +185,7 @@ class MockPlayer(
 
     fun configureBasicProperties() {
         this.details.session = MockSession()
-        this.location = ServerConfig.HOME_LOCATION
+        this.location = ServerConstants.HOME_LOCATION
         this.properties.attackStyle = WeaponInterface.AttackStyle(0, WeaponInterface.BONUS_CRUSH)
         this.artificial = isBot
     }

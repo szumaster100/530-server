@@ -1,6 +1,6 @@
 package content.data.tables
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.StartupListener
 import core.api.log
 import core.api.shouldRemoveNothings
@@ -21,12 +21,12 @@ import javax.xml.parsers.ParserConfigurationException
 
 class CELEMinorTable : StartupListener {
     override fun startup() {
-        if (ServerConfig.CELEDT_DATA_PATH != null && !File(ServerConfig.CELEDT_DATA_PATH!!).exists()) {
-            log(this.javaClass, Log.ERR, "Can't locate CELEDT file at " + ServerConfig.CELEDT_DATA_PATH)
+        if (ServerConstants.CELEDT_DATA_PATH != null && !File(ServerConstants.CELEDT_DATA_PATH!!).exists()) {
+            log(this.javaClass, Log.ERR, "Can't locate CELEDT file at " + ServerConstants.CELEDT_DATA_PATH)
             return
         }
-        parse(ServerConfig.CELEDT_DATA_PATH)
-        log(this.javaClass, Log.FINE, "Loaded up Chaos Elemental drop table from " + ServerConfig.CELEDT_DATA_PATH)
+        parse(ServerConstants.CELEDT_DATA_PATH)
+        log(this.javaClass, Log.FINE, "Loaded up Chaos Elemental drop table from " + ServerConstants.CELEDT_DATA_PATH)
     }
 
     companion object {

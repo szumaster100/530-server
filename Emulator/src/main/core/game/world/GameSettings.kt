@@ -1,6 +1,6 @@
 package core.game.world
 
-import core.ServerConfig
+import core.ServerConstants
 import org.json.simple.JSONObject
 import java.io.FileInputStream
 import java.io.IOException
@@ -45,7 +45,7 @@ class GameSettings internal constructor(
 
     companion object {
         fun parse(data: JSONObject): GameSettings {
-            val name = ServerConfig.SERVER_NAME
+            val name = ServerConstants.SERVER_NAME
             val debug = data["debug"] as Boolean
             val dev = data["dev"] as Boolean
             val startGui = data["startGui"] as Boolean

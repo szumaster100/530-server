@@ -1,6 +1,6 @@
 package core.game.activity
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.*
 import core.api.ui.closeDialogue
 import core.api.ui.setMinimapState
@@ -254,7 +254,7 @@ abstract class Cutscene(
                     player.removeAttribute(ATTRIBUTE_CUTSCENE)
                     player.removeAttribute(ATTRIBUTE_CUTSCENE_STAGE)
                     player.properties.isSafeZone = false
-                    player.properties.safeRespawn = ServerConfig.HOME_LOCATION
+                    player.properties.safeRespawn = ServerConstants.HOME_LOCATION
                     player.interfaceManager.restoreTabs()
                     player.unlock()
                     clearNPCs()
@@ -299,7 +299,7 @@ abstract class Cutscene(
                     player.removeAttribute(ATTRIBUTE_CUTSCENE)
                     player.removeAttribute(ATTRIBUTE_CUTSCENE_STAGE)
                     player.properties.isSafeZone = false
-                    player.properties.safeRespawn = ServerConfig.HOME_LOCATION
+                    player.properties.safeRespawn = ServerConstants.HOME_LOCATION
                     player.interfaceManager.restoreTabs()
                     player.unlock()
                     clearNPCs()
@@ -346,7 +346,7 @@ abstract class Cutscene(
                     player.removeAttribute(ATTRIBUTE_CUTSCENE)
                     player.removeAttribute(ATTRIBUTE_CUTSCENE_STAGE)
                     player.properties.isSafeZone = false
-                    player.properties.safeRespawn = ServerConfig.HOME_LOCATION
+                    player.properties.safeRespawn = ServerConstants.HOME_LOCATION
                     player.interfaceManager.restoreTabs()
                     player.unlock()
                     clearNPCs()
@@ -432,7 +432,7 @@ abstract class Cutscene(
     }
 
     fun logCutscene(message: String) {
-        if (ServerConfig.LOG_CUTSCENE) {
+        if (ServerConstants.LOG_CUTSCENE) {
             log(this::class.java, Log.FINE, "$message")
         }
     }

@@ -1,6 +1,6 @@
 package core.game.ge
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.getAttribute
 import core.cache.def.impl.ItemDefinition
 import core.game.node.entity.player.Player
@@ -32,13 +32,13 @@ class GrandExchangeOffer {
     var tradeRestriction = false
     var isBot = false
     var amount: Int = 0
-        get() = if (isBot) min(field, ServerConfig.BOTSTOCK_LIMIT) else field
+        get() = if (isBot) min(field, ServerConstants.BOTSTOCK_LIMIT) else field
 
     val totalValue: Int
         get() = offeredValue * amount
 
     val amountLeft: Int
-        get() = if (isBot) min(ServerConfig.BOTSTOCK_LIMIT, amount - completedAmount) else amount - completedAmount
+        get() = if (isBot) min(ServerConstants.BOTSTOCK_LIMIT, amount - completedAmount) else amount - completedAmount
 
     val isActive: Boolean
         get() =

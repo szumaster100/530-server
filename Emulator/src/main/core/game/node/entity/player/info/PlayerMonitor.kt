@@ -1,6 +1,6 @@
 package core.game.node.entity.player.info
 
-import core.ServerConfig
+import core.ServerConstants
 import core.api.getItemName
 import core.game.container.Container
 import core.game.node.entity.player.Player
@@ -172,7 +172,7 @@ object PlayerMonitor {
 
     fun init() {
         if (!this::db.isInitialized) {
-            var path = ServerConfig.LOGS_PATH + "playerlogs.db"
+            var path = ServerConstants.LOGS_PATH + "playerlogs.db"
             db = SQLiteProvider(path, expectedTables)
             db.initTables()
         }

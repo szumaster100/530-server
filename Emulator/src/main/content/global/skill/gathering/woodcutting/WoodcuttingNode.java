@@ -1,6 +1,6 @@
 package content.global.skill.gathering.woodcutting;
 
-import core.ServerConfig;
+import core.ServerConstants;
 import core.game.world.repository.Repository;
 
 import java.util.HashMap;
@@ -492,7 +492,7 @@ public enum WoodcuttingNode {
     public int getRespawnDuration() {
         int minimum = respawnRate & 0xFFFF;
         int maximum = (respawnRate >> 16) & 0xFFFF;
-        double playerRatio = (double) ServerConfig.MAX_PLAYERS / Repository.getPlayers().size();
+        double playerRatio = (double) ServerConstants.MAX_PLAYERS / Repository.getPlayers().size();
         return (int) (minimum + ((maximum - minimum) / playerRatio));
     }
 }
