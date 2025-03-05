@@ -1,100 +1,77 @@
 package content.minigame.gnomecook.components
 
-import core.api.getStatLevel
-import core.api.inInventory
-import core.api.sendDialogue
-import core.game.component.Component
-import core.game.component.ComponentDefinition
-import core.game.component.ComponentPlugin
-import core.game.node.entity.player.Player
+import core.api.*
 import core.game.node.entity.skill.Skills
 import core.game.node.item.Item
-import core.plugin.Initializable
-import core.plugin.Plugin
+import core.game.interaction.InterfaceListener
 import org.rs.consts.Items
 
-@Initializable
-class GnomeBowlInterface : ComponentPlugin() {
-    override fun handle(
-        player: Player?,
-        component: Component?,
-        opcode: Int,
-        button: Int,
-        slot: Int,
-        itemId: Int,
-    ): Boolean {
-        player ?: return false
-        component ?: return false
+class GnomeBowlInterface : InterfaceListener {
 
-        when (button) {
-            3 -> attemptMake(PreparedProduct.HALF_MADE_WOR_HO, player)
-            12 -> attemptMake(PreparedProduct.HALF_MADE_VEG_BA, player)
-            21 -> attemptMake(PreparedProduct.HALF_MADE_TAN_TO, player)
-            34 -> attemptMake(PreparedProduct.HALF_MADE_CHOC_B, player)
-        }
-        return true
-    }
+    private val gnomeBowlInterface = 435
 
-    private fun attemptMake(
-        bowl: PreparedProduct,
-        player: Player,
-    ) {
-        if (!inInventory(player, Items.GNOME_SPICE_2169) && (bowl != PreparedProduct.HALF_MADE_CHOC_B)) {
-            sendDialogue(player, "You need gnome spices for this.")
-            return
+    override fun defineInterfaceListeners() {
+        onOpen(gnomeBowlInterface) { player, component ->
+            sendItemOnInterface(player, component.id, 3, PreparedProduct.HALF_MADE_WOR_HO.product, 1)
+            sendItemOnInterface(player, component.id, 12, PreparedProduct.HALF_MADE_VEG_BA.product, 1)
+            sendItemOnInterface(player, component.id, 21, PreparedProduct.HALF_MADE_TAN_TO.product, 1)
+            sendItemOnInterface(player, component.id, 34, PreparedProduct.HALF_MADE_CHOC_B.product, 1)
+            return@onOpen true
         }
 
-        if (getStatLevel(player, Skills.COOKING) < bowl.levelReq) {
-            sendDialogue(player, "You don't have the needed level to make this.")
-            return
-        }
-
-        var hasAll = true
-        for (item in bowl.requiredItems) {
-            if (!player.inventory.containsItem(item)) {
-                hasAll = false
-                break
+        on(gnomeBowlInterface) { player, _, _, buttonID, _, _ ->
+            var hasAll = true
+            val bowl: PreparedProduct? = when (buttonID) {
+                3 -> PreparedProduct.HALF_MADE_WOR_HO
+                12 -> PreparedProduct.HALF_MADE_VEG_BA
+                21 -> PreparedProduct.HALF_MADE_TAN_TO
+                34 -> PreparedProduct.HALF_MADE_CHOC_B
+                else -> null
             }
-        }
 
-        if (!hasAll) {
-            sendDialogue(player, "You don't have all the ingredients needed for this.")
-            return
-        }
+            if (bowl != null) {
+                if (!inInventory(player, Items.GNOME_SPICE_2169) && (bowl != PreparedProduct.HALF_MADE_CHOC_B)) {
+                    sendDialogue(player, "You need gnome spices for this.")
+                    return@on true
+                }
 
-        player.inventory.remove(*bowl.requiredItems)
-        player.inventory.remove(Item(Items.HALF_BAKED_BOWL_2177))
-        player.inventory.add(Item(bowl.product))
-        player.interfaceManager.close()
+                if (getStatLevel(player, Skills.COOKING) < bowl.levelReq) {
+                    sendDialogue(player, "You don't have the needed level to make this.")
+                    return@on true
+                }
+
+                val requiredItems = bowl.requiredItems.map { it }
+                for (ingredient in requiredItems) {
+                    if (!inInventory(player, ingredient)) {
+                        hasAll = false
+                        break
+                    }
+                }
+
+                if (!hasAll) {
+                    sendDialogue(player, "You don't have all the ingredients needed for this.")
+                    return@on true
+                }
+
+                requiredItems.forEach { removeItem(player, it) }
+                removeItem(player, Items.HALF_BAKED_BOWL_2177, Container.INVENTORY)
+                addItem(player, bowl.product, 1)
+
+                closeInterface(player)
+            }
+
+            return@on true
+        }
     }
 
     internal enum class PreparedProduct(
         val product: Int,
         val levelReq: Int,
-        val requiredItems: Array<Item>,
+        vararg val requiredItems: Int
     ) {
-        HALF_MADE_CHOC_B(
-            Items.HALF_MADE_BOWL_9558, 42, arrayOf(
-                Item(Items.CHOCOLATE_BAR_1973, 4),
-                Item(Items.EQUA_LEAVES_2128)
-            )),
-        HALF_MADE_TAN_TO(
-            Items.HALF_MADE_BOWL_9559, 40, arrayOf(
-                Item(Items.TOADS_LEGS_2152, 4),
-                Item(Items.CHEESE_1985, 2),
-                Item(Items.DWELLBERRIES_2126),
-                Item(Items.EQUA_LEAVES_2128, 2)
-            ),),
-        HALF_MADE_VEG_BA(Items.HALF_MADE_BOWL_9561, 35, arrayOf(Item(Items.POTATO_1942, 2), Item(Items.ONION_1957, 2))),
-        HALF_MADE_WOR_HO(
-            Items.HALF_MADE_BOWL_9563, 30, arrayOf(
-                Item(Items.KING_WORM_2162, 4),
-                Item(Items.ONION_1957, 2)
-            )),
-    }
-
-    override fun newInstance(arg: Any?): Plugin<Any> {
-        ComponentDefinition.put(435, this)
-        return this
+        HALF_MADE_CHOC_B(Items.HALF_MADE_BOWL_9558, 42, Items.CHOCOLATE_BAR_1973, Items.CHOCOLATE_BAR_1973, Items.CHOCOLATE_BAR_1973, Items.CHOCOLATE_BAR_1973, Items.EQUA_LEAVES_2128),
+        HALF_MADE_TAN_TO(Items.HALF_MADE_BOWL_9559, 40, Items.TOADS_LEGS_2152, Items.TOADS_LEGS_2152, Items.TOADS_LEGS_2152, Items.TOADS_LEGS_2152, Items.CHEESE_1985, Items.CHEESE_1985, Items.DWELLBERRIES_2126, Items.EQUA_LEAVES_2128, Items.EQUA_LEAVES_2128),
+        HALF_MADE_VEG_BA(Items.HALF_MADE_BOWL_9561, 35, Items.POTATO_1942, Items.POTATO_1942, Items.ONION_1957, Items.ONION_1957),
+        HALF_MADE_WOR_HO(Items.HALF_MADE_BOWL_9563, 30, Items.KING_WORM_2162, Items.KING_WORM_2162, Items.KING_WORM_2162, Items.KING_WORM_2162, Items.ONION_1957, Items.ONION_1957),
     }
 }

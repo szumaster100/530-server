@@ -1,130 +1,83 @@
 package content.minigame.gnomecook.components
 
-import core.api.inInventory
-import core.game.component.Component
-import core.game.component.ComponentDefinition
-import core.game.component.ComponentPlugin
-import core.game.node.entity.player.Player
+import core.api.*
+import core.game.interaction.InterfaceListener
 import core.game.node.entity.skill.Skills
-import core.game.node.item.Item
-import core.plugin.Initializable
-import core.plugin.Plugin
 import org.rs.consts.Items
 
-@Initializable
-class GnomeBattaInterface : ComponentPlugin() {
-    override fun open(
-        player: Player?,
-        component: Component?,
-    ) {
-        component ?: return
-        player ?: return
-        super.open(player, component)
-        player.packetDispatch.sendItemOnInterface(Items.PREMADE_FRT_BATTA_2225, component.id, component.id, 3)
-        player.packetDispatch.sendItemOnInterface(Items.PREMADE_TD_BATTA_2221, component.id, component.id, 14)
-        player.packetDispatch.sendItemOnInterface(Items.PREMADE_WM_BATTA_2219, component.id, component.id, 25)
-        player.packetDispatch.sendItemOnInterface(Items.PREMADE_VEG_BATTA_2227, component.id, component.id, 34)
-        player.packetDispatch.sendItemOnInterface(Items.PREMADE_C_PLUST_BATTA_2223, component.id, component.id, 47)
-    }
+class GnomeBattaInterface : InterfaceListener {
 
-    override fun handle(
-        player: Player?,
-        component: Component?,
-        opcode: Int,
-        button: Int,
-        slot: Int,
-        itemId: Int,
-    ): Boolean {
-        player ?: return false
-        component ?: return false
+    private val gnomeBattaInterface = 434
 
-        when (button) {
-            3 -> attemptMake(CookedProduct.HALF_MADE_FR, player)
-            14 -> attemptMake(CookedProduct.HALF_MADE_TO, player)
-            25 -> attemptMake(CookedProduct.HALF_MADE_WO, player)
-            34 -> attemptMake(CookedProduct.HALF_MADE_VE, player)
-            47 -> attemptMake(CookedProduct.HALF_MADE_CT, player)
-        }
-        return true
-    }
-
-    private fun attemptMake(
-        batta: CookedProduct,
-        player: Player,
-    ) {
-        if (!inInventory(player, Items.GNOME_SPICE_2169) &&
-            (batta == CookedProduct.HALF_MADE_TO || batta == CookedProduct.HALF_MADE_WO)
-        ) {
-            player.dialogueInterpreter.sendDialogue("You need gnome spices for this.")
-            return
+    override fun defineInterfaceListeners() {
+        onOpen(gnomeBattaInterface) { player, component ->
+            sendItemOnInterface(player, component.id, 3, Items.PREMADE_FRT_BATTA_2225, 1)
+            sendItemOnInterface(player, component.id, 14, Items.PREMADE_TD_BATTA_2221, 1)
+            sendItemOnInterface(player, component.id, 25, Items.PREMADE_WM_BATTA_2219, 1)
+            sendItemOnInterface(player, component.id, 34, Items.PREMADE_VEG_BATTA_2227, 1)
+            sendItemOnInterface(player, component.id, 47, Items.PREMADE_C_PLUST_BATTA_2223, 1)
+            return@onOpen true
         }
 
-        if (player.skills.getLevel(Skills.COOKING) < batta.levelReq) {
-            player.dialogueInterpreter.sendDialogue("You don't have the needed level to make this.")
-            return
-        }
-
-        var hasAll = true
-        for (item in batta.requiredItems) {
-            if (!player.inventory.containsItem(item)) {
-                hasAll = false
-                break
+        on(gnomeBattaInterface) { player, _, _, buttonID, _, _ ->
+            var hasAll = true
+            val batta: CookedProduct? = when (buttonID) {
+                3 -> CookedProduct.HALF_MADE_FR
+                14 -> CookedProduct.HALF_MADE_TO
+                25 -> CookedProduct.HALF_MADE_WO
+                34 -> CookedProduct.HALF_MADE_VE
+                47 -> CookedProduct.HALF_MADE_CT
+                else -> null
             }
-        }
 
-        if (!hasAll) {
-            player.dialogueInterpreter.sendDialogue("You don't have all the ingredients needed for this.")
-            return
-        }
+            if (batta != null) {
+                if (getStatLevel(player, Skills.COOKING) < batta.levelReq) {
+                    sendDialogue(player, "You don't have the needed level to make this.")
+                    return@on true
+                }
 
-        player.inventory.remove(*batta.requiredItems)
-        player.inventory.remove(Item(Items.HALF_BAKED_BATTA_2249))
-        player.inventory.add(Item(batta.product))
-        player.skills.addExperience(Skills.COOKING, batta.experience)
-        player.interfaceManager.close()
+                val requiredItems = batta.requiredItems.map { it }
+                if (!inInventory(player, Items.GNOME_SPICE_2169) &&
+                    (batta == CookedProduct.HALF_MADE_TO || batta == CookedProduct.HALF_MADE_WO)
+                ) {
+                    sendDialogue(player, "You need gnome spices for this.")
+                    return@on true
+                }
+
+                for (ingredient in requiredItems) {
+                    if (!inInventory(player, ingredient)) {
+                        hasAll = false
+                        break
+                    }
+                }
+
+                if (!hasAll) {
+                    sendDialogue(player, "You don't have the ingredients needed for this.")
+                    return@on true
+                }
+
+                requiredItems.forEach { removeItem(player, it) }
+                removeItem(player, Items.HALF_BAKED_BATTA_2249, Container.INVENTORY)
+                addItem(player, batta.product, 1)
+
+                rewardXP(player, Skills.COOKING, batta.experience)
+                closeInterface(player)
+            }
+
+            return@on true
+        }
     }
 
     internal enum class CookedProduct(
         val product: Int,
         val levelReq: Int,
         val experience: Double,
-        val requiredItems: Array<Item>,
+        vararg val requiredItems: Int
     ) {
-        HALF_MADE_CT(9478, 29, 40.0, arrayOf(Item(Items.TOMATO_1982), Item(Items.CHEESE_1985))),
-        HALF_MADE_FR(
-            9480,
-            25,
-            40.0,
-            arrayOf(
-                Item(Items.EQUA_LEAVES_2128, 4),
-                Item(Items.LIME_CHUNKS_2122),
-                Item(Items.ORANGE_CHUNKS_2110),
-                Item(Items.PINEAPPLE_CHUNKS_2116),
-            ),
-        ),
-        HALF_MADE_TO(
-            9482,
-            26,
-            40.0,
-            arrayOf(Item(Items.EQUA_LEAVES_2128), Item(Items.CHEESE_1985), Item(Items.TOADS_LEGS_2152)),
-        ),
-        HALF_MADE_VE(
-            9483,
-            28,
-            40.0,
-            arrayOf(
-                Item(Items.TOMATO_1982, 2),
-                Item(Items.CHEESE_1985),
-                Item(Items.DWELLBERRIES_2126),
-                Item(Items.ONION_1957),
-                Item(Items.CABBAGE_1965),
-            ),
-        ),
-        HALF_MADE_WO(9485, 27, 40.0, arrayOf(Item(Items.KING_WORM_2162), Item(Items.CHEESE_1985))),
-    }
-
-    override fun newInstance(arg: Any?): Plugin<Any> {
-        ComponentDefinition.put(434, this)
-        return this
+        HALF_MADE_CT(Items.HALF_MADE_BATTA_9478, 29, 40.0, Items.TOMATO_1982, Items.CHEESE_1985),
+        HALF_MADE_FR(Items.HALF_MADE_BATTA_9480, 25, 40.0, Items.EQUA_LEAVES_2128, Items.EQUA_LEAVES_2128, Items.LIME_CHUNKS_2122, Items.ORANGE_CHUNKS_2110, Items.PINEAPPLE_CHUNKS_2116),
+        HALF_MADE_TO(Items.HALF_MADE_BATTA_9482, 26, 40.0, Items.EQUA_LEAVES_2128, Items.CHEESE_1985, Items.TOADS_LEGS_2152),
+        HALF_MADE_VE(Items.HALF_MADE_BATTA_9483, 28, 40.0, Items.TOMATO_1982, Items.TOMATO_1982, Items.CHEESE_1985, Items.DWELLBERRIES_2126, Items.ONION_1957, Items.CABBAGE_1965),
+        HALF_MADE_WO(Items.HALF_MADE_BATTA_9485, 27, 40.0, Items.KING_WORM_2162, Items.CHEESE_1985),
     }
 }
