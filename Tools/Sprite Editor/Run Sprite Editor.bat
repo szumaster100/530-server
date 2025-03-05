@@ -1,5 +1,5 @@
 @echo off
-@title Sprite Editor
+@title Steves Sprite Editor
 @echo Running Sprite Editor
 java -classpath bin; steve.SpriteEditorFrame
 pause
