@@ -780,6 +780,42 @@
     "tabIndex": "12"
   },
   {
+    "id": "471",
+    "interfaceType": "3",
+    "walkable": "false",
+    "tabIndex": "-1"
+  },
+  {
+    "id": "472",
+    "interfaceType": "1",
+    "walkable": "false",
+    "tabIndex": "-1"
+  },
+  {
+    "id": "473",
+    "interfaceType": "2",
+    "walkable": "true",
+    "tabIndex": "-1"
+  },
+  {
+    "id": "474",
+    "interfaceType": "2",
+    "walkable": "true",
+    "tabIndex": "-1"
+  },
+  {
+    "id": "475",
+    "interfaceType": "2",
+    "walkable": "true",
+    "tabIndex": "-1"
+  },
+  {
+    "id": "476",
+    "interfaceType": "2",
+    "walkable": "true",
+    "tabIndex": "-1"
+  },
+  {
     "id": "481",
     "interfaceType": "1",
     "walkable": "true",
