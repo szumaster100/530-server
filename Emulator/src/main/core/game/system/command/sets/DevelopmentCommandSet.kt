@@ -1,5 +1,7 @@
 package core.game.system.command.sets
 
+import content.data.RespawnPoint
+import content.data.setRespawnLocation
 import content.global.activity.jobs.JobManager
 import content.region.kandarin.handlers.barbtraining.BarbarianTraining
 import core.api.*
@@ -565,5 +567,37 @@ class DevelopmentCommandSet : CommandSet(Privilege.ADMIN) {
                 notify(player, "Barbarian firemaking method:%DP Enabled.")
             }
         }
+
+        /*
+         * Command for testing the respawn points.
+         */
+
+        define(
+            name = "respawn",
+            privilege = Privilege.ADMIN,
+            usage = "::respawn <point>",
+            description = "Change the player's respawn point."
+        ) { player, args ->
+
+            if (args.isEmpty()) {
+                player.debug("Please specify a respawn point. Usage: ::respawn <lumbridge|falador|camelot>")
+                return@define
+            }
+
+            val respawnPoint = when (args[0].lowercase()) {
+                "lumbridge" -> RespawnPoint.LUMBRIDGE
+                "falador" -> RespawnPoint.FALADOR
+                "camelot" -> RespawnPoint.CAMELOT
+                else -> {
+                    player.debug("Invalid respawn point. Valid options are: lumbridge, falador, camelot.")
+                    return@define
+                }
+            }
+
+            player.setRespawnLocation(respawnPoint)
+
+            player.debug("Your respawn point has been set to: [${respawnPoint.name}]")
+        }
+
     }
 }

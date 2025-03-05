@@ -1,6 +1,8 @@
 package core.game.node.entity.player.info.login
 
+import core.ServerConstants
 import core.api.LoginListener
+import core.api.getAttribute
 import core.api.reinitVarps
 import core.auth.AuthResponse
 import core.game.node.entity.player.Player
@@ -37,6 +39,7 @@ class LoginParser(
                 override fun pulse(): Boolean {
                     try {
                         if (details.session.isActive) {
+                            player.properties.spawnLocation = getAttribute(player, "/save:spawnLocation", ServerConstants.HOME_LOCATION)
                             loginListeners.forEach(Consumer { listener: LoginListener -> listener.login(player) }) // Execute login hooks
                             parser.runContentHooks()
                             player.details.session.`object` = (player)

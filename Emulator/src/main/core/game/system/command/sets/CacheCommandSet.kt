@@ -2,8 +2,6 @@ package core.game.system.command.sets
 
 import com.google.gson.GsonBuilder
 import core.cache.Cache
-import core.cache.consts.Archives
-import core.cache.consts.Indices
 import core.cache.def.impl.*
 import core.game.component.ComponentDefinition
 import core.game.system.command.Privilege
