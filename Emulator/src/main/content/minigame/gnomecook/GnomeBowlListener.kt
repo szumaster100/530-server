@@ -75,17 +75,5 @@ class GnomeBowlListener : InteractionListener {
             addItem(player, product, 1)
             return@onUseWith true
         }
-
-        onUseWith(IntType.ITEM, Items.GIANNE_DOUGH_2171, Items.GNOMEBOWL_MOULD_2166) { player, used, with ->
-            if (removeItem(player, used.asItem()) && removeItem(player, with.asItem())) {
-                addItem(player, Items.RAW_GNOMEBOWL_2178, 1)
-            }
-            return@onUseWith true
-        }
-
-        on(Items.HALF_BAKED_BOWL_2177, IntType.ITEM, "prepare") { player, _ ->
-            openInterface(player, gnomeBowlInterface)
-            return@on true
-        }
     }
 }
