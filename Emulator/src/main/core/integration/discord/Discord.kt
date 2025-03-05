@@ -1,4 +1,4 @@
-package core.tools.integration.discord
+package core.integration.discord
 
 import core.ServerConstants
 import core.api.TickListener

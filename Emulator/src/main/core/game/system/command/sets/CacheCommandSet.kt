@@ -72,8 +72,8 @@ class CacheCommandSet : CommandSet(Privilege.ADMIN) {
             usage = "::dumpidk",
             description = "Dumps identity kits data to a .csv file.",
         ) { p, _ ->
-            val index = Cache.getIndexes()[Indices.CONFIGURATION]
-            val length = index.getFilesSize(Archives.IDENTITY_KIT)
+            val index = Cache.getIndexes()[2]
+            val length = index.getFilesSize(3)
 
             val dump = File("identity_kits.csv")
             val headers = listOf("id", "bodyPartId", "bodyModelIds", "isSelectable", "headModelIds")
@@ -206,11 +206,11 @@ class CacheCommandSet : CommandSet(Privilege.ADMIN) {
                 val writer = dump.bufferedWriter()
                 writer.appendLine(headers.joinToString(", "))
 
-                val index = Cache.getIndexes()[Indices.CONFIGURATION]
-                val containers = index.information.containers[Archives.STRUCT].filesIndexes
+                val index = Cache.getIndexes()[2]
+                val containers = index.information.containers[26].filesIndexes
 
                 for (fID in containers) {
-                    val file = index.getFileData(Archives.STRUCT, fID)
+                    val file = index.getFileData(26, fID)
                     if (file != null) {
                         val def = Struct.parse(fID, file)
                         if (def.dataStore.isNotEmpty()) {
@@ -245,7 +245,7 @@ class CacheCommandSet : CommandSet(Privilege.ADMIN) {
 
                 val dataMapsList = mutableListOf<Map<String, Any>>()
 
-                val index = Cache.getIndexes()[Indices.CONFIGURATION_ENUMS]
+                val index = Cache.getIndexes()[17]
                 val containers = index.information.containersIndexes
 
                 containers.forEach { cID ->

@@ -1,4 +1,4 @@
-package core.tools.integration.mysql
+package core.integration.mysql
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

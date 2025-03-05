@@ -9,7 +9,7 @@ import core.game.world.repository.Repository
 import core.net.packet.PacketRepository
 import core.net.packet.context.PlayerContext
 import core.net.packet.out.ClearMinimapFlag
-import core.tools.integration.grafana.Grafana
+import core.integration.grafana.Grafana
 
 class UpdateSequence {
     // List of players in the lobby.

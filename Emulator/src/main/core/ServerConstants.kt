@@ -4,7 +4,7 @@ import content.minigame.castlewars.CastleWars
 import core.game.system.SystemShutdownHook
 import core.game.world.map.Location
 import core.tools.LogLevel
-import core.tools.integration.mysql.Database
+import core.integration.mysql.Database
 import core.tools.secondsToTicks
 import java.math.BigInteger
 import java.util.*

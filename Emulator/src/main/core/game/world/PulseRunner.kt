@@ -5,7 +5,7 @@ import core.api.log
 import core.game.bots.GeneralBotCreator
 import core.game.system.task.Pulse
 import core.tools.Log
-import core.tools.integration.grafana.Grafana
+import core.integration.grafana.Grafana
 import java.util.concurrent.LinkedBlockingQueue
 
 class PulseRunner {

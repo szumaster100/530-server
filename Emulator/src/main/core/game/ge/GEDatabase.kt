@@ -2,7 +2,7 @@ package core.game.ge
 
 import core.ServerConstants
 import core.cache.def.impl.ItemDefinition
-import core.tools.integration.mysql.SQLiteProvider
+import core.integration.mysql.SQLiteProvider
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 import java.sql.Connection

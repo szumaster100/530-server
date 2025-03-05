@@ -14,7 +14,7 @@ import core.net.packet.PacketWriteQueue
 import core.plugin.type.Managers
 import core.tools.Log
 import core.tools.NetworkReachability
-import core.tools.integration.grafana.Grafana
+import core.integration.grafana.Grafana
 import java.lang.Long.max
 import java.text.SimpleDateFormat
 import java.util.*

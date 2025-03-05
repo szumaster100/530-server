@@ -1,9 +1,9 @@
-package core.tools.integration.grafana
+package core.integration.grafana
 
 import core.ServerConstants
 import core.api.StartupListener
 import core.game.bots.AIRepository
-import core.tools.integration.mysql.SQLiteProvider
+import core.integration.mysql.SQLiteProvider
 import kotlinx.coroutines.Job
 import org.json.simple.JSONObject
 import java.util.*

@@ -6,7 +6,7 @@ import core.game.container.Container
 import core.game.node.entity.player.Player
 import core.game.node.entity.skill.Skills
 import core.tools.Log
-import core.tools.integration.mysql.SQLiteProvider
+import core.integration.mysql.SQLiteProvider
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import java.sql.Connection

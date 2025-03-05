@@ -1,4 +1,4 @@
-package core.tools.integration.mysql;
+package core.integration.mysql;
 
 public class Query {
     private String start;

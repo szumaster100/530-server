@@ -81,8 +81,10 @@ public final class Pet extends Familiar {
         }
         int newItemId = pet.getNextStageItemId(itemId);
         if (newItemId == -1) {
-
             return;
+        }
+        if (pet.isKitten(itemId)) {
+            owner.incrementAttribute("/save:stats_manager:cats_raised");
         }
         owner.getFamiliarManager().removeDetails(this.getItemIdHash());
         owner.getFamiliarManager().dismiss();
@@ -128,6 +130,7 @@ public final class Pet extends Familiar {
     public Pets getPet() {
         return pet;
     }
+
 
     @Override
     public int[] getIds() {

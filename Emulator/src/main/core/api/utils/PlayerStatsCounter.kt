@@ -8,7 +8,7 @@ import core.game.node.item.Item
 import core.game.world.GameWorld
 import core.tools.Log
 import core.tools.SystemLogger.logStartup
-import core.tools.integration.mysql.SQLiteProvider
+import core.integration.mysql.SQLiteProvider
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import java.io.File
