@@ -89,6 +89,13 @@ class SignpostListener : InteractionListener {
                         "East to the Dig Site.",
                         "West to Varrock.",
                     ),
+                Location(2734, 3485) to
+                        listOf(
+                            "North to Sinclair Mansion.",
+                            "South to Keep Le Faye.",
+                            "East to Catherby.",
+                            "West to Hemenster.",
+                        ),
             ),
         )
 
@@ -126,7 +133,7 @@ class SignpostListener : InteractionListener {
         }
 
         on(Scenery.SIGNPOST_31296, IntType.SCENERY, "read") { player, node ->
-            if (node.asScenery().location.equals(Location(3304, 3109))) {
+            if (node.asScenery().location == Location(3304, 3109)) {
                 sendSignpostDirections(
                     player,
                     listOf(

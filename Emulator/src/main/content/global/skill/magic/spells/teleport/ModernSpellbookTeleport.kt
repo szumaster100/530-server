@@ -6,13 +6,8 @@ import content.global.skill.magic.TeleportMethod
 import content.global.skill.magic.spells.ModernSpells
 import content.region.misthalin.handlers.VarrockAchievementDiary
 import core.ServerConstants
-import core.api.finishDiaryTask
-import core.api.getAttribute
-import core.api.openInterface
+import core.api.*
 import core.api.quest.hasRequirement
-import core.api.removeAttribute
-import core.api.sendMessage
-import core.api.submitWorldPulse
 import core.game.event.TeleportEvent
 import core.game.node.entity.player.Player
 import core.game.node.entity.player.link.TeleportManager
@@ -83,10 +78,13 @@ class ModernSpellbookTeleport : SpellListener("modern") {
                 magicLevel = 45,
                 runes = arrayOf(Item(Items.AIR_RUNE_556, 5), Item(Items.LAW_RUNE_563)),
             )
+            // https://runescape.wiki/w/Camelot_Teleport?oldid=1085906
+            val alternateTeleport = inEquipment(player, Items.SEERS_HEADBAND_1_14631)
+            val dest = if (alternateTeleport) Location.create(2731, 3485, 0) else Location.create(2758, 3478, 0)
             sendTeleport(
                 player = player,
                 xp = 55.5,
-                location = Location.create(2758, 3478, 0),
+                location = dest,
             )
             finishDiaryTask(player, DiaryType.SEERS_VILLAGE, 1, 5)
         }

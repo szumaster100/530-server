@@ -584,7 +584,7 @@ class DevelopmentCommandSet : CommandSet(Privilege.ADMIN) {
                 return@define
             }
 
-            val respawnPoint = when (args[0].lowercase()) {
+            val respawnPoint = when (args[1].lowercase()) {
                 "lumbridge" -> RespawnPoint.LUMBRIDGE
                 "falador" -> RespawnPoint.FALADOR
                 "camelot" -> RespawnPoint.CAMELOT

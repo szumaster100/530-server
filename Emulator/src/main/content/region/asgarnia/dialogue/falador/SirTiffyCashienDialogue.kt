@@ -1,5 +1,7 @@
 package content.region.asgarnia.dialogue.falador
 
+import content.data.RespawnPoint
+import content.data.setRespawnLocation
 import content.region.asgarnia.quest.rd.cutscene.SirTiffyCashienDialogueFile
 import core.ServerConstants
 import core.api.*
@@ -167,6 +169,7 @@ class SirTiffyCashienDialogue(
                 }
             25 -> {
                 npcl(FaceAnim.FRIENDLY, "Top-hole, what? Good old Fally is definitely the hot-spot nowadays!")
+                player.setRespawnLocation(RespawnPoint.FALADOR)
                 stage = END_DIALOGUE
             }
             26 ->
@@ -184,6 +187,7 @@ class SirTiffyCashienDialogue(
                     FaceAnim.HALF_GUILTY,
                     "Why anyone would want to visit that smelly little swamp village of oiks is quite beyond me, I'm afraid, but the deed is done now.",
                 )
+                player.setRespawnLocation(RespawnPoint.LUMBRIDGE)
                 stage = END_DIALOGUE
             }
             29 -> npcl(FaceAnim.FRIENDLY, " As you wish, what? Ta-ta for now.").also { stage = END_DIALOGUE }
